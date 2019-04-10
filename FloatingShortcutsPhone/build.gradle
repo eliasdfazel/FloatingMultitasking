@@ -1,0 +1,70 @@
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
+    defaultConfig {
+        applicationId "net.geekstools.floatshort.PRO"
+
+        minSdkVersion 23
+        targetSdkVersion 28
+
+        versionCode 402
+        versionName "14.000.000.402_"
+
+        wearAppUnbundled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+        debug {
+            debuggable true
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    flavorDimensions "FloatingShortcutsPro"
+    productFlavors {
+        releaseConfig {
+            dimension "FloatingShortcutsPro"
+
+            versionNameSuffix 'PRO'
+        }
+        betaConfig {
+            dimension "FloatingShortcutsPro"
+
+            versionNameSuffix 'PRO[BETA]'
+        }
+    }
+}
+dependencies {
+    implementation project(path: ':LicenseLibrary', configuration: 'default')
+    implementation project(path: ':ShapesCustomImageViewLibrary', configuration: 'default')
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha05'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
+
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-appindexing:17.1.0'
+    implementation 'com.google.firebase:firebase-messaging:17.6.0'
+    implementation 'com.google.firebase:firebase-config:16.5.0'
+    implementation 'com.google.firebase:firebase-auth:16.2.1'
+    implementation 'com.google.firebase:firebase-storage:16.1.0'
+
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+}
+apply plugin: 'com.google.gms.google-services'

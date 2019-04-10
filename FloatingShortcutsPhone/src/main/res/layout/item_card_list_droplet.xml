@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:apps="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/item"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/ripple_effect"
+                android:clickable="true">
+
+    <net.geekstools.imageview.customshapes.ShapesImage
+        android:id="@+id/icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="43dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher"
+        apps:shapeDrawable="@drawable/droplet_icon"/>
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/icon"
+        android:gravity="center_vertical"
+        android:paddingStart="27dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="23dp"
+        android:paddingBottom="2dp"
+        android:text="@string/app_name"
+        android:textColor="@color/dark"
+        android:textSize="19sp"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/recoveryIndicator"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_alignStart="@id/icon"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="-27dp"
+        android:background="@drawable/draw_recovery_indicator"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

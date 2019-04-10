@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/wholeCategory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/trans_black_high"
+                tools:context="net.geekstools.floatshort.PRO.Category.CategoryHandler">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="13dp"
+        android:paddingStart="9dp"
+        android:paddingTop="37dp"
+        android:paddingEnd="9dp"
+        android:requiresFadingEdge="vertical"
+        android:scrollbarFadeDuration="270"
+        android:scrollbarSize="5dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbarThumbVertical="@color/trans_black"
+        android:scrollbars="vertical"
+        android:verticalScrollbarPosition="defaultPosition">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categorylist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="7dp"
+                android:isScrollContainer="false"
+                android:nestedScrollingEnabled="false"
+                android:saveEnabled="true"
+                android:smoothScrollbar="true"/>
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/switchFloating"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/switchShortcuts"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/draw_shortcuts"
+            android:text="@string/shortcutHint"/>
+
+        <Button
+            android:id="@+id/switchCategories"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/draw_categories"
+            android:text="@string/categoryHint"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/fullActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/trans_white"
+        android:visibility="invisible">
+
+        <ListView
+            android:id="@+id/actionElementsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:divider="@drawable/draw_divider"
+            android:dividerHeight="2dp"
+            android:listSelector="@color/trans_def"
+            android:saveEnabled="true"
+            android:smoothScrollbar="true"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/preferences"
+                android:layout_width="87dp"
+                android:layout_height="87dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/draw_pref_action"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/loadingSplash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/loadLogo"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/draw_floating_logo"/>
+
+        <ProgressBar
+            android:id="@+id/loadingProgressltr"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="-15dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="cycle"/>
+
+        <TextView
+            android:id="@+id/gx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="33dp"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center"
+            android:padding="7dp"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="25"
+            android:text="@string/group"
+            android:textColor="@color/default_color"
+            android:textSize="53sp"/>
+    </RelativeLayout>
+
+</RelativeLayout>

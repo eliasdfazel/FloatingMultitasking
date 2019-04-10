@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fullActionButton"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_trans"
+    android:visibility="invisible">
+
+    <ListView
+        android:id="@+id/shareElementsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:divider="@drawable/draw_divider"
+        android:dividerHeight="2dp"
+        android:paddingTop="1dp"
+        android:saveEnabled="true"
+        android:smoothScrollbar="true"/>
+
+</RelativeLayout>

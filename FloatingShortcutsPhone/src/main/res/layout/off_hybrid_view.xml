@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/MainView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/trans_black_high">
+
+    <LinearLayout
+        android:id="@+id/switchFloating"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:visibility="invisible"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/switchShortcuts"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/draw_shortcuts"
+            android:text="@string/shortcutHint"/>
+
+        <Button
+            android:id="@+id/switchCategories"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/draw_categories"
+            android:text="@string/categoryHint"/>
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/freqlist"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/switchFloating"
+        android:layout_marginTop="-3.5dp"
+        android:background="@drawable/layer_freq"
+        android:cacheColorHint="@android:color/transparent"
+        android:fadeScrollbars="true"
+        android:fadingEdge="horizontal"
+        android:fadingEdgeLength="37dp"
+        android:paddingStart="9dp"
+        android:paddingEnd="9dp"
+        android:requiresFadingEdge="horizontal"
+        android:scrollbarSize="2dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbarThumbHorizontal="@color/trans_black_high"
+        android:scrollbars="horizontal"
+        android:smoothScrollbar="true"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:id="@+id/freqItem"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="3dp"/>
+    </HorizontalScrollView>
+
+    <ScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/freqlist"
+        android:cacheColorHint="@android:color/transparent"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="37dp"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none"
+        android:smoothScrollbar="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alwaysDrawnWithCache="true"
+                android:drawSelectorOnTop="true"
+                android:isScrollContainer="false"
+                android:listSelector="@color/trans_def"
+                android:nestedScrollingEnabled="false"
+                android:paddingStart="3dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="27dp"
+                android:persistentDrawingCache="animation|scrolling"
+                android:saveEnabled="true"/>
+        </RelativeLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/freqlist"
+        android:layout_alignEnd="@id/nestedScrollView"
+        android:foregroundGravity="center_vertical">
+
+        <LinearLayout
+            android:id="@+id/side_index"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"/>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/fullActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/trans_white"
+        android:visibility="invisible">
+
+        <ListView
+            android:id="@+id/acttionElementsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:divider="@drawable/draw_divider"
+            android:dividerHeight="2dp"
+            android:listSelector="@color/trans_def"
+            android:saveEnabled="true"
+            android:smoothScrollbar="true"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/preferences"
+                android:layout_width="87dp"
+                android:layout_height="87dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/draw_pref_action"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/loadingSplash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/loadLogo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_launcher_layer"/>
+
+        <ProgressBar
+            android:id="@+id/loadingProgressltr"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="-15dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="cycle"/>
+    </RelativeLayout>
+
+</RelativeLayout>
