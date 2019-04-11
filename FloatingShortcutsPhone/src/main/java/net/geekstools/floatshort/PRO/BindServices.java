@@ -36,6 +36,8 @@ public class BindServices extends Service {
 
             return START_NOT_STICKY;
         }
+        startForeground(333, functionsClass.bindServiceNotification());
+
         PublicVariable.contextStatic = getApplicationContext();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -186,7 +188,6 @@ public class BindServices extends Service {
     public void onCreate() {
         super.onCreate();
         functionsClass = new FunctionsClass(getApplicationContext());
-        startForeground(333, functionsClass.bindServiceNotification());
     }
 
     @Override

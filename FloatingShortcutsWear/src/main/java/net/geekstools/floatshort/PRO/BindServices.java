@@ -28,11 +28,8 @@ public class BindServices extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         PublicVariable.contextStatic = getApplicationContext();
         FunctionsClass functionsClass = new FunctionsClass(getApplicationContext());
-        if (functionsClass.returnAPI() < 26) {
-            startForeground(333, bindServiceLow());
-        } else {
-            startForeground(333, bindServiceHigh());
-        }
+
+        startForeground(333, (functionsClass.returnAPI() <= 25) ? bindServiceLow() : bindServiceHigh());
 
         return START_STICKY;
     }

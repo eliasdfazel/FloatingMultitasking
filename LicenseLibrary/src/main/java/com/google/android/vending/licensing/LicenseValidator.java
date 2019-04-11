@@ -113,6 +113,9 @@ class LicenseValidator {
                 Log.e(TAG, "Could not Base64-decode signature.");
                 handleInvalidResponse();
                 return;
+            } catch (NullPointerException e) {
+                handleInvalidResponse();
+                return;
             }
 
             // Parse and validate response.

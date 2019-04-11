@@ -54,7 +54,7 @@
     <string name="whatsnew" translatable="false">What\'s New…</string>
     <string name="changelog" translatable="false">
         <![CDATA[
-        🔵 <b>Optimizing Apps Opening Process</b><br/> | <small>To Open Apps Even Faster ⚡⚡⚡ </small>
+        🔵 <b>Optimizing Apps Opening Process</b> | <small>To Open Apps Even Faster ⚡⚡⚡ </small><br/>
         🔵 <b>Orientation Change Handler</b> | <small>Optimized Position of Floating Shortcuts on Landscape/Portrait Change</small><br/>
         🔵 <b>Float It</b> 🎈<br/>
         &bull; Open All Apps in Floating View (FreeForm)<br/>
