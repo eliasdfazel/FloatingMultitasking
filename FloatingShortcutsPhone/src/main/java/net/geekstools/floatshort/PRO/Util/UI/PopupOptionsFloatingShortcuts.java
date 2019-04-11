@@ -94,22 +94,22 @@ public class PopupOptionsFloatingShortcuts extends Service {
             switch (functionsClass.displaySection(xPosition, yPosition)) {
                 case FunctionsClass.DisplaySection.TopLeft:
                     if (functionsClass.returnAPI() < 24) {
-                        popupItems.add(getString(R.string.pin));
-                        popupItems.add(getString(R.string.unpin));
                         if (functionsClass.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
+                        popupItems.add(getString(R.string.pin));
+                        popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.remove));
                     } else {
                         if (functionsClass.addFloatItItem()) {
                             popupItems.add(getString(R.string.floatIt));
                         }
-                        popupItems.add(getString(R.string.split));
-                        popupItems.add(getString(R.string.pin));
-                        popupItems.add(getString(R.string.unpin));
+                        popupItems.add(getString(R.string.splitIt));
                         if (functionsClass.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
+                        popupItems.add(getString(R.string.pin));
+                        popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.remove));
                     }
 
@@ -119,22 +119,22 @@ public class PopupOptionsFloatingShortcuts extends Service {
                     break;
                 case FunctionsClass.DisplaySection.TopRight:
                     if (functionsClass.returnAPI() < 24) {
-                        popupItems.add(getString(R.string.pin));
-                        popupItems.add(getString(R.string.unpin));
                         if (functionsClass.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
+                        popupItems.add(getString(R.string.pin));
+                        popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.remove));
                     } else {
                         if (functionsClass.addFloatItItem()) {
                             popupItems.add(getString(R.string.floatIt));
                         }
-                        popupItems.add(getString(R.string.split));
-                        popupItems.add(getString(R.string.pin));
-                        popupItems.add(getString(R.string.unpin));
+                        popupItems.add(getString(R.string.splitIt));
                         if (functionsClass.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
+                        popupItems.add(getString(R.string.pin));
+                        popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.remove));
                     }
 
@@ -145,19 +145,19 @@ public class PopupOptionsFloatingShortcuts extends Service {
                 case FunctionsClass.DisplaySection.BottomLeft:
                     if (functionsClass.returnAPI() < 24) {
                         popupItems.add(getString(R.string.remove));
+                        popupItems.add(getString(R.string.unpin));
+                        popupItems.add(getString(R.string.pin));
                         if (functionsClass.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
-                        popupItems.add(getString(R.string.unpin));
-                        popupItems.add(getString(R.string.pin));
                     } else {
                         popupItems.add(getString(R.string.remove));
+                        popupItems.add(getString(R.string.unpin));
+                        popupItems.add(getString(R.string.pin));
                         if (functionsClass.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
-                        popupItems.add(getString(R.string.unpin));
-                        popupItems.add(getString(R.string.pin));
-                        popupItems.add(getString(R.string.split));
+                        popupItems.add(getString(R.string.splitIt));
                         if (functionsClass.addFloatItItem()) {
                             popupItems.add(getString(R.string.floatIt));
                         }
@@ -170,19 +170,19 @@ public class PopupOptionsFloatingShortcuts extends Service {
                 case FunctionsClass.DisplaySection.BottomRight:
                     if (functionsClass.returnAPI() < 24) {
                         popupItems.add(getString(R.string.remove));
+                        popupItems.add(getString(R.string.unpin));
+                        popupItems.add(getString(R.string.pin));
                         if (functionsClass.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
-                        popupItems.add(getString(R.string.unpin));
-                        popupItems.add(getString(R.string.pin));
                     } else {
                         popupItems.add(getString(R.string.remove));
+                        popupItems.add(getString(R.string.unpin));
+                        popupItems.add(getString(R.string.pin));
                         if (functionsClass.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
-                        popupItems.add(getString(R.string.unpin));
-                        popupItems.add(getString(R.string.pin));
-                        popupItems.add(getString(R.string.split));
+                        popupItems.add(getString(R.string.splitIt));
                         if (functionsClass.addFloatItItem()) {
                             popupItems.add(getString(R.string.floatIt));
                         }
@@ -194,22 +194,22 @@ public class PopupOptionsFloatingShortcuts extends Service {
                     break;
                 default:
                     if (functionsClass.returnAPI() < 24) {
-                        popupItems.add(getString(R.string.pin));
-                        popupItems.add(getString(R.string.unpin));
                         if (functionsClass.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
+                        popupItems.add(getString(R.string.pin));
+                        popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.remove));
                     } else {
                         if (functionsClass.addFloatItItem()) {
                             popupItems.add(getString(R.string.floatIt));
                         }
-                        popupItems.add(getString(R.string.split));
-                        popupItems.add(getString(R.string.pin));
-                        popupItems.add(getString(R.string.unpin));
+                        popupItems.add(getString(R.string.splitIt));
                         if (functionsClass.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
+                        popupItems.add(getString(R.string.pin));
+                        popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.remove));
                     }
 

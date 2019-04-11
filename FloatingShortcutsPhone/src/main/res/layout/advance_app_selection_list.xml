@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:text="@string/split"
+        android:text="@string/splitIt"
         android:textSize="19sp"
         android:textStyle="bold"/>
 

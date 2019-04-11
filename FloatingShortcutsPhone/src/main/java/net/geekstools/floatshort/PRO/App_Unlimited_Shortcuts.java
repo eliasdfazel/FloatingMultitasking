@@ -409,7 +409,7 @@ public class App_Unlimited_Shortcuts extends Service {
                                         (functionsClass.displayY() / 2)
                                 );
                             } else {
-                                functionsClass.openApplication(packages[startId]);
+                                functionsClass.appsLaunchPad(packages[startId]);
                             }
                         }
                     } else {

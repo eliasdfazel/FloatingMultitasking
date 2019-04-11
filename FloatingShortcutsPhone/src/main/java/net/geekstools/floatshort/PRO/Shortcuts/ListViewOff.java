@@ -425,7 +425,7 @@ public class ListViewOff extends Activity implements View.OnClickListener, View.
         if (view instanceof ImageView) {
             ImageView freqApp = (ImageView) view;
             int position = freqApp.getId();
-            functionsClass.openApplication(freqApps[position]);
+            functionsClass.appsLaunchPad(freqApps[position]);
         }
         return true;
     }

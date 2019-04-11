@@ -427,7 +427,7 @@ public class App_Unlimited_HIS extends Service {
                                         (functionsClass.displayY() / 2)
                                 );
                             } else {
-                                functionsClass.openApplication(packageNames[startId], classNames[startId]);
+                                functionsClass.appsLaunchPad(packageNames[startId], classNames[startId]);
                             }
                         }
                     } else {

@@ -108,9 +108,9 @@ public class FloatingSplash extends Service {
                 } catch (Exception e) {
                     e.printStackTrace();
                     if (className != null) {
-                        functionsClass.openApplication(packageName, className);
+                        functionsClass.appsLaunchPad(packageName, className);
                     } else {
-                        functionsClass.openApplication(packageName);
+                        functionsClass.appsLaunchPad(packageName);
                     }
                 }
             }
@@ -118,7 +118,7 @@ public class FloatingSplash extends Service {
 
         viewGroup.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent homeScreen = new Intent(Intent.ACTION_MAIN);
                 homeScreen.addCategory(Intent.CATEGORY_HOME);
                 homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

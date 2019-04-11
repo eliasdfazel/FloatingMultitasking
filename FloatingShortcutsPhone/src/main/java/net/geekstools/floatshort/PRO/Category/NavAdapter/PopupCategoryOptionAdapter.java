@@ -144,7 +144,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         try {
             if (context.getFileStreamPath(navDrawerItems.get(position).getPackageName() + ".SplitOne").exists()
                     && context.getFileStreamPath(navDrawerItems.get(position).getPackageName() + ".SplitTwo").exists()
-                    && navDrawerItems.get(position).getAppName().equals(context.getString(R.string.split))) {
+                    && navDrawerItems.get(position).getAppName().equals(context.getString(R.string.splitIt))) {
                 splitOne = functionsClass.loadCustomIcons() ?
                         loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(navDrawerItems.get(position).getPackageName() + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(navDrawerItems.get(position).getPackageName() + ".SplitOne")))
                         :
@@ -159,7 +159,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
 
                 viewHolder.split_one.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
                 viewHolder.split_two.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
-            } else if (navDrawerItems.get(position).getAppName().equals(context.getString(R.string.split))) {
+            } else if (navDrawerItems.get(position).getAppName().equals(context.getString(R.string.splitIt))) {
                 splitOne = functionsClass.loadCustomIcons() ?
                         loadCustomIcons.getDrawableIconForPackage(functionsClass.readFileLine(navDrawerItems.get(position).getPackageName())[0], functionsClass.shapedAppIcon(functionsClass.readFileLine(navDrawerItems.get(position).getPackageName())[0]))
                         :
@@ -208,16 +208,16 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                     if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.edit_category))) {
                         context.startActivity(new Intent(context, CategoryHandler.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.remove_cat))) {
+                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.remove_category))) {
                         context.sendBroadcast(new Intent("Remove_Category_" + className).putExtra("startId", startId));
-                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.unpin))) {
+                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.unpin_category))) {
                         context.sendBroadcast(new Intent("Unpin_App_" + className).putExtra("startId", startId));
-                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.pin))) {
+                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.pin_category))) {
                         context.sendBroadcast(new Intent("Pin_App_" + className).putExtra("startId", startId));
-                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.split))) {
+                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.splitIt))) {
                         if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
                             context.startActivity(new Intent(context, CheckPoint.class)
-                                    .putExtra(context.getString(R.string.split), context.getPackageName())
+                                    .putExtra(context.getString(R.string.splitIt), context.getPackageName())
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         } else {
                             final AccessibilityManager accessibilityManager = (AccessibilityManager) context.getSystemService(ACCESSIBILITY_SERVICE);
@@ -246,7 +246,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                                         (functionsClass.displayY() / 2)
                                 );
                             } else {
-                                functionsClass.openApplication(navDrawerItems.get(position).getPackageName());
+                                functionsClass.appsLaunchPad(navDrawerItems.get(position).getPackageName());
                             }
                         }
 
@@ -263,7 +263,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                 if (functionsClass.returnAPI() >= 24) {
                     if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
                         context.startActivity(new Intent(context, CheckPoint.class)
-                                .putExtra(context.getString(R.string.split), context.getPackageName())
+                                .putExtra(context.getString(R.string.splitIt), context.getPackageName())
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     } else {
                         PublicVariable.splitSinglePackage = navDrawerItems.get(position).getPackageName();

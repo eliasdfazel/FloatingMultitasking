@@ -129,7 +129,7 @@ public class PopupShortcutsNotification extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                functionsClass.openApplication(packageName);
+                functionsClass.appsLaunchPad(packageName);
                 context.sendBroadcast(new Intent("Hide_PopupListView_Shortcuts_Notification"));
             }
         });

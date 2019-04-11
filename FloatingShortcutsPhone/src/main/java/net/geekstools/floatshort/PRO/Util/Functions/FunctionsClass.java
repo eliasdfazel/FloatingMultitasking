@@ -2365,96 +2365,13 @@ public class FunctionsClass {
         return (context.getPackageManager().getLaunchIntentForPackage(packageName) != null);
     }
 
-    public void openApplication(String packageName) {
-        if (SystemCache()) {
-            appsLaunchPad(packageName);
-        } else if (appInstalledOrNot(packageName) == true) {
-            try {
-                Toast(appName(packageName), Gravity.BOTTOM);
-
-                if (returnAPI() < 24) {
-                    try {
-                        Intent i = context.getPackageManager().getLaunchIntentForPackage(packageName);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(i);
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    try {
-                        Intent i = context.getPackageManager().getLaunchIntentForPackage(packageName);
-                        i.setFlags(
-                                Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
-                                        Intent.FLAG_ACTIVITY_NEW_TASK |
-                                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                        context.startActivity(i);
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
-                Intent playStore = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(context.getString(R.string.play_store_link) + packageName));
-                playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(playStore);
-            }
-        } else {
-            Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
-            Intent playStore = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(context.getString(R.string.play_store_link) + packageName));
-            playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(playStore);
-        }
-    }
-
-    public void openApplication(String packageName, String className) {
-        if (SystemCache()) {
-            appsLaunchPad(packageName, className);
-        } else if (appInstalledOrNot(packageName) == true) {
-            try {
-                Toast(String.valueOf(context.getPackageManager().getActivityInfo(new ComponentName(packageName, className), 0).loadLabel(context.getPackageManager())), Gravity.BOTTOM);
-
-                if (returnAPI() < 24) {
-                    Intent openAlias = new Intent();
-                    openAlias.setClassName(packageName, className);
-                    openAlias.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(openAlias);
-                } else {
-                    Intent openAlias = new Intent();
-                    openAlias.setClassName(packageName, className);
-                    openAlias.addCategory(Intent.CATEGORY_LAUNCHER);
-                    openAlias.setFlags(
-                            Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
-                                    Intent.FLAG_ACTIVITY_NEW_TASK |
-                                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                    context.startActivity(openAlias);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
-                Intent playStore = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(context.getString(R.string.play_store_link) + packageName));
-                playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(playStore);
-            }
-        } else {
-            Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
-            Intent playStore = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(context.getString(R.string.play_store_link) + packageName));
-            playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(playStore);
-        }
-    }
-
     public void openApplicationFromActivity(String packageName) {
         if (appInstalledOrNot(packageName) == true) {
             try {
                 Toast(appName(packageName), Gravity.BOTTOM);
 
-                Intent i = context.getPackageManager().getLaunchIntentForPackage(packageName);
-                activity.startActivity(i);
+                Intent launchIntentForPackage = context.getPackageManager().getLaunchIntentForPackage(packageName);
+                activity.startActivity(launchIntentForPackage);
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
@@ -4399,7 +4316,7 @@ public class FunctionsClass {
                                             (displayY() / 2)
                                     );
                                 } else {
-                                    openApplication(packageName, className);
+                                    appsLaunchPad(packageName, className);
                                 }
                             } else {
                                 if (FreeForm()) {
@@ -4410,7 +4327,7 @@ public class FunctionsClass {
                                             (displayY() / 2)
                                     );
                                 } else {
-                                    openApplication(packageName);
+                                    appsLaunchPad(packageName);
                                 }
                             }
                         }

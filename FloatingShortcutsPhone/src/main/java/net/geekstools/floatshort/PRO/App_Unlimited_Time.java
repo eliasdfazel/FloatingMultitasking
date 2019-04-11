@@ -402,7 +402,7 @@ public class App_Unlimited_Time extends Service {
                                         (functionsClass.displayY() / 2)
                                 );
                             } else {
-                                functionsClass.openApplication(packages[startId]);
+                                functionsClass.appsLaunchPad(packages[startId]);
                             }
                         }
                     } else {

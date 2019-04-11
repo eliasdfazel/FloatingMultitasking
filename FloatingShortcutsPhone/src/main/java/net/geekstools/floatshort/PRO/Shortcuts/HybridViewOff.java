@@ -447,7 +447,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         if (view instanceof ImageView) {
             ImageView freqApp = (ImageView) view;
             int position = freqApp.getId();
-            functionsClass.openApplication(freqApps[position]);
+            functionsClass.appsLaunchPad(freqApps[position]);
         }
         return true;
     }

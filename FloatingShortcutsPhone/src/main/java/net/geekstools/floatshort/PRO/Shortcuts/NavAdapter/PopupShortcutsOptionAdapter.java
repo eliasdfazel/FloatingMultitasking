@@ -114,10 +114,10 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (navDrawerItems.get(position).getPackageName().equals(context.getString(R.string.split))) {
+                if (navDrawerItems.get(position).getPackageName().equals(context.getString(R.string.splitIt))) {
                     if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
                         context.startActivity(new Intent(context, CheckPoint.class)
-                                .putExtra(context.getString(R.string.split), context.getPackageName())
+                                .putExtra(context.getString(R.string.splitIt), context.getPackageName())
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     } else {
                         final AccessibilityManager accessibilityManager = (AccessibilityManager) context.getSystemService(ACCESSIBILITY_SERVICE);

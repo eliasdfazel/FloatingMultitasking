@@ -72,7 +72,7 @@ public class CheckPoint extends Activity {
             window.setNavigationBarColor(PublicVariable.themeColor);
         }
 
-        if (getIntent().hasExtra(getString(R.string.split))) {
+        if (getIntent().hasExtra(getString(R.string.splitIt))) {
             functionsClass.AccessibilityService(CheckPoint.this);
         } else {
             ArrayList<String> Permissions = new ArrayList<String>();

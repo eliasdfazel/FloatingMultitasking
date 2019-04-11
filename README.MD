@@ -18,7 +18,7 @@ Features <br />
 ▫️ Choose Delay in Millisecond when Press & Hold on Floating Shortcuts to See the Popup Menu <br />
  <br />
 Advanced Features <br />
-🔵 Split Shortcuts: Open Apps in Multi-Window Simultaneously (Android 7.+) <br />
+🔵 Split It: Open Apps in Multi-Window Simultaneously (Android 7.+) <br />
 🔵 Float It: Open All Apps in Floating View (Android 7.+) <br />
 🔵 Lite Preferences: Set Preferences to Minimum for Better Performance <br />
  <br />

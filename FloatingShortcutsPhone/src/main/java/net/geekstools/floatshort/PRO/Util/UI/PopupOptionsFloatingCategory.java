@@ -116,9 +116,9 @@ public class PopupOptionsFloatingCategory extends Service {
                     case FunctionsClass.DisplaySection.TopLeft:
                         if (functionsClass.returnAPI() < 24) {
                             popupItems = new String[]{
-                                    getString(R.string.pin),
-                                    getString(R.string.unpin),
-                                    getString(R.string.remove_cat) + " " + categoryName,
+                                    getString(R.string.pin_category),
+                                    getString(R.string.unpin_category),
+                                    getString(R.string.remove_category) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -127,10 +127,10 @@ public class PopupOptionsFloatingCategory extends Service {
                             };
                         } else {
                             popupItems = new String[]{
-                                    getString(R.string.split),
-                                    getString(R.string.pin),
-                                    getString(R.string.unpin),
-                                    getString(R.string.remove_cat) + " " + categoryName,
+                                    getString(R.string.splitIt),
+                                    getString(R.string.pin_category),
+                                    getString(R.string.unpin_category),
+                                    getString(R.string.remove_category) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     null,
@@ -146,9 +146,9 @@ public class PopupOptionsFloatingCategory extends Service {
                     case FunctionsClass.DisplaySection.TopRight:
                         if (functionsClass.returnAPI() < 24) {
                             popupItems = new String[]{
-                                    getString(R.string.pin),
-                                    getString(R.string.unpin),
-                                    getString(R.string.remove_cat) + " " + categoryName,
+                                    getString(R.string.pin_category),
+                                    getString(R.string.unpin_category),
+                                    getString(R.string.remove_category) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -157,10 +157,10 @@ public class PopupOptionsFloatingCategory extends Service {
                             };
                         } else {
                             popupItems = new String[]{
-                                    getString(R.string.split),
-                                    getString(R.string.pin),
-                                    getString(R.string.unpin),
-                                    getString(R.string.remove_cat) + " " + categoryName,
+                                    getString(R.string.splitIt),
+                                    getString(R.string.pin_category),
+                                    getString(R.string.unpin_category),
+                                    getString(R.string.remove_category) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     null,
@@ -176,9 +176,9 @@ public class PopupOptionsFloatingCategory extends Service {
                     case FunctionsClass.DisplaySection.BottomLeft:
                         if (functionsClass.returnAPI() < 24) {
                             popupItems = new String[]{
-                                    getString(R.string.remove_cat) + " " + categoryName,
-                                    getString(R.string.unpin),
-                                    getString(R.string.pin),
+                                    getString(R.string.remove_category) + " " + categoryName,
+                                    getString(R.string.unpin_category),
+                                    getString(R.string.pin_category),
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -187,10 +187,10 @@ public class PopupOptionsFloatingCategory extends Service {
                             };
                         } else {
                             popupItems = new String[]{
-                                    getString(R.string.remove_cat) + " " + categoryName,
-                                    getString(R.string.unpin),
-                                    getString(R.string.pin),
-                                    getString(R.string.split),
+                                    getString(R.string.remove_category) + " " + categoryName,
+                                    getString(R.string.unpin_category),
+                                    getString(R.string.pin_category),
+                                    getString(R.string.splitIt),
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -206,9 +206,9 @@ public class PopupOptionsFloatingCategory extends Service {
                     case FunctionsClass.DisplaySection.BottomRight:
                         if (functionsClass.returnAPI() < 24) {
                             popupItems = new String[]{
-                                    getString(R.string.remove_cat) + " " + categoryName,
-                                    getString(R.string.unpin),
-                                    getString(R.string.pin),
+                                    getString(R.string.remove_category) + " " + categoryName,
+                                    getString(R.string.unpin_category),
+                                    getString(R.string.pin_category),
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -217,10 +217,10 @@ public class PopupOptionsFloatingCategory extends Service {
                             };
                         } else {
                             popupItems = new String[]{
-                                    getString(R.string.remove_cat) + " " + categoryName,
-                                    getString(R.string.unpin),
-                                    getString(R.string.pin),
-                                    getString(R.string.split),
+                                    getString(R.string.remove_category) + " " + categoryName,
+                                    getString(R.string.unpin_category),
+                                    getString(R.string.pin_category),
+                                    getString(R.string.splitIt),
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -236,9 +236,9 @@ public class PopupOptionsFloatingCategory extends Service {
                     default:
                         if (functionsClass.returnAPI() < 24) {
                             popupItems = new String[]{
-                                    getString(R.string.pin),
-                                    getString(R.string.unpin),
-                                    getString(R.string.remove_cat) + " " + categoryName,
+                                    getString(R.string.pin_category),
+                                    getString(R.string.unpin_category),
+                                    getString(R.string.remove_category) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -247,10 +247,10 @@ public class PopupOptionsFloatingCategory extends Service {
                             };
                         } else {
                             popupItems = new String[]{
-                                    getString(R.string.split),
-                                    getString(R.string.pin),
-                                    getString(R.string.unpin),
-                                    getString(R.string.remove_cat) + " " + categoryName,
+                                    getString(R.string.splitIt),
+                                    getString(R.string.pin_category),
+                                    getString(R.string.unpin_category),
+                                    getString(R.string.remove_category) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     null,
