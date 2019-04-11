@@ -294,8 +294,8 @@ public class FunctionsClass {
                 Toast.makeText(context,
                         appName(packageName), Toast.LENGTH_SHORT).show();
 
-                Intent i = context.getPackageManager().getLaunchIntentForPackage(packageName);
-                activity.startActivity(i);
+                Intent launchIntentForPackage = context.getPackageManager().getLaunchIntentForPackage(packageName);
+                activity.startActivity(launchIntentForPackage);
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
@@ -320,21 +320,9 @@ public class FunctionsClass {
                         context.getPackageManager().getActivityInfo(new ComponentName(packageName, className), 0).loadLabel(context.getPackageManager()),
                         Toast.LENGTH_SHORT).show();
 
-                if (returnAPI() < 24) {
-                    Intent openAlias = new Intent();
-                    openAlias.setClassName(packageName, className);
-                    openAlias.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(openAlias);
-                } else {
-                    Intent openAlias = new Intent();
-                    openAlias.setClassName(packageName, className);
-                    openAlias.addCategory(Intent.CATEGORY_LAUNCHER);
-                    openAlias.setFlags(
-                            Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
-                                    Intent.FLAG_ACTIVITY_NEW_TASK |
-                                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                    context.startActivity(openAlias);
-                }
+                Intent openAlias = new Intent();
+                openAlias.setClassName(packageName, className);
+                context.startActivity(openAlias);
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();

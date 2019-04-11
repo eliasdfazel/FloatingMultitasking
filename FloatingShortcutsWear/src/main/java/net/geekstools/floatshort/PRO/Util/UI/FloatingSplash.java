@@ -103,9 +103,9 @@ public class FloatingSplash extends Service {
                 } catch (Exception e) {
                     e.printStackTrace();
                     if (className != null) {
-                        functionsClass.openApplication(packageName, className);
+                        functionsClass.appsLaunchPad(packageName, className);
                     } else {
-                        functionsClass.openApplication(packageName);
+                        functionsClass.appsLaunchPad(packageName);
                     }
                 }
             }

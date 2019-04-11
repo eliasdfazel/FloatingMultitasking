@@ -270,7 +270,7 @@ public class App_Unlimited_Shortcuts extends Service {
         });
         floatingView[startId].setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 if (remove[startId] == true) {
                     if (floatingView[startId] == null) {
                         return;

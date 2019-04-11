@@ -336,7 +336,7 @@ public class App_Unlimited_HIS extends Service {
                             splashReveal.putExtra("HW", params[startId].width);
                             startService(splashReveal);
                         } else {
-                            functionsClass.openApplication(packageName[startId], className[startId]);
+                            functionsClass.appsLaunchPad(packageName[startId], className[startId]);
                         }
                     }
                 }
