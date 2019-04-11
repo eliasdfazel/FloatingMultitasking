@@ -36,12 +36,14 @@
     <string name="bootRecovery">Remote Recovery</string>
     <string name="boot_none">NONE</string>
     <string name="remove_all_shortcuts">REMOVE ALL</string>
-    <string name="pin">Pin</string>
-    <string name="unpin">Unpin</string>
+    <string name="pin">Pin Shortcut</string>
+    <string name="unpin">Unpin Shortcut</string>
+    <string name="pin_category">Pin Category</string>
+    <string name="unpin_category">Unpin Category</string>
     <string name="app_info">App Info</string>
     <string name="open">Open App</string>
-    <string name="remove">Remove</string>
-    <string name="remove_cat">Remove Category</string>
+    <string name="remove">Remove Shortcut</string>
+    <string name="remove_category">Remove Category</string>
     <string name="edit_category">Edit </string>
     <string name="recoveryShortText">
         <![CDATA[

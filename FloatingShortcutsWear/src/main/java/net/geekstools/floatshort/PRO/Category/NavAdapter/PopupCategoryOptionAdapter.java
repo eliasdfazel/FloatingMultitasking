@@ -147,11 +147,11 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         viewHolder.items.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.remove))) {
+                if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.remove_category))) {
                     context.sendBroadcast(new Intent("Remove_Category_" + className).putExtra("startId", startId));
-                } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.pin))) {
+                } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.pin_category))) {
                     context.sendBroadcast(new Intent("Pin_App_" + className).putExtra("startId", startId));
-                } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.unpin))) {
+                } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.unpin_category))) {
                     context.sendBroadcast(new Intent("Unpin_App_" + className).putExtra("startId", startId));
                 } else {
                     if (functionsClass.splashReveal()) {

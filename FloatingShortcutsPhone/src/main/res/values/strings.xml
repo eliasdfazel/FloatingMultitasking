@@ -191,10 +191,10 @@
     <string name="moveEdgeRight">➡️️️ Move To Edge</string>
     <string name="backToScreenLeft">➡️️️ Back To Screen</string>
     <string name="backToScreenRight">⬅️️ Back To Screen️</string>
-    <string name="pin">Pin Shortcuts</string>
-    <string name="unpin">Unpin Shortcuts</string>
+    <string name="pin">Pin Shortcut</string>
+    <string name="unpin">Unpin Shortcut</string>
     <string name="close">Minimize It</string>
-    <string name="remove">Remove Shortcuts</string>
+    <string name="remove">Remove Shortcut</string>
     <string name="pin_category">Pin Category</string>
     <string name="unpin_category">Unpin Category</string>
     <string name="remove_category">Remove</string>

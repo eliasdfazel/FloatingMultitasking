@@ -112,9 +112,9 @@ public class PopupOptionsFloatingCategory extends Service {
                 switch (functionsClass.displaySection(xPosition, yPosition)) {
                     case FunctionsClass.DisplaySection.TopLeft:
                         popupItems = new String[]{
-                                getString(R.string.pin),
-                                getString(R.string.unpin),
-                                getString(R.string.remove_cat) + " " + categoryName,
+                                getString(R.string.pin_category),
+                                getString(R.string.unpin_category),
+                                getString(R.string.remove_category),
                         };
                         popupItemsIcon = new Drawable[]{
                                 popupItemsIconCategory,
@@ -128,9 +128,9 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                     case FunctionsClass.DisplaySection.TopRight:
                         popupItems = new String[]{
-                                getString(R.string.pin),
-                                getString(R.string.unpin),
-                                getString(R.string.remove_cat) + " " + categoryName,
+                                getString(R.string.pin_category),
+                                getString(R.string.unpin_category),
+                                getString(R.string.remove_category),
                         };
                         popupItemsIcon = new Drawable[]{
                                 popupItemsIconCategory,
@@ -144,9 +144,9 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                     case FunctionsClass.DisplaySection.BottomLeft:
                         popupItems = new String[]{
-                                getString(R.string.remove_cat) + " " + categoryName,
-                                getString(R.string.unpin),
-                                getString(R.string.pin),
+                                getString(R.string.remove_category),
+                                getString(R.string.unpin_category),
+                                getString(R.string.pin_category),
                         };
                         popupItemsIcon = new Drawable[]{
                                 popupItemsIconCategory,
@@ -160,9 +160,9 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                     case FunctionsClass.DisplaySection.BottomRight:
                         popupItems = new String[]{
-                                getString(R.string.remove_cat) + " " + categoryName,
-                                getString(R.string.unpin),
-                                getString(R.string.pin),
+                                getString(R.string.remove_category),
+                                getString(R.string.unpin_category),
+                                getString(R.string.pin_category),
                         };
                         popupItemsIcon = new Drawable[]{
                                 popupItemsIconCategory,
@@ -176,9 +176,9 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                     default:
                         popupItems = new String[]{
-                                getString(R.string.pin),
-                                getString(R.string.unpin),
-                                getString(R.string.remove_cat) + " " + categoryName,
+                                getString(R.string.pin_category),
+                                getString(R.string.unpin_category),
+                                getString(R.string.remove_category),
                         };
                         popupItemsIcon = new Drawable[]{
                                 popupItemsIconCategory,
