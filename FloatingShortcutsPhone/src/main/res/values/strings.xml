@@ -153,8 +153,9 @@
     <string name="createAlias">Create App Drawer Shortcuts</string>
     <string name="deleteAlias">Remove App Drawer Shortcuts</string>
     <string name="group">Floating Categories</string>
-    <string name="floatCategory">Floating Categories</string>
+    <string name="floatingCategory">Floating Categories</string>
     <string name="categoryHint">Categories</string>
+    <string name="floatingWidget">Floating Widgets</string>
     <string name="shortcutHint">Apps</string>
     <string name="floatingHint">Floating Shortcuts</string>
     <string name="recov_cat">Recover Floating Categories</string>
@@ -252,7 +253,7 @@
     <string-array name="Boot">
         <item name="1">@string/boot_none</item>
         <item name="2">@string/shortcuts</item>
-        <item name="3">@string/floatCategory</item>
+        <item name="3">@string/floatingCategory</item>
         <item name="4">@string/boot_warning</item>
     </string-array>
 

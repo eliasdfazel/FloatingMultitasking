@@ -80,6 +80,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class CategoryHandler extends Activity implements View.OnClickListener, View.OnLongClickListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
     FunctionsClass functionsClass;
+
     RelativeLayout fullActionButton;
     ListView actionElementsList;
     RecyclerView categorylist;
@@ -649,7 +650,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                             } catch (Exception e) {
                                 e.printStackTrace();
                             } finally {
-                                functionsClass.IndexAppInfoCategory(appData[navItem] + " | " + getString(R.string.floatCategory));
+                                functionsClass.IndexAppInfoCategory(appData[navItem] + " | " + getString(R.string.floatingCategory));
                             }
                         }
                         navDrawerItems.add(new NavDrawerItem(getPackageName(), new String[]{getPackageName()}));

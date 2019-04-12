@@ -198,7 +198,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         } else if (b.equals("1")) {
             boot.setSummary(getString(R.string.shortcuts));
         } else if (b.equals("2")) {
-            boot.setSummary(getString(R.string.floatCategory));
+            boot.setSummary(getString(R.string.floatingCategory));
         } else if (b.equals("3")) {
             boot.setSummary(getString(R.string.boot_warning));
         }
@@ -426,7 +426,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                         } else if (b.equals("1")) {
                             boot.setSummary(getString(R.string.shortcuts));
                         } else if (b.equals("2")) {
-                            boot.setSummary(getString(R.string.floatCategory));
+                            boot.setSummary(getString(R.string.floatingCategory));
                         } else if (b.equals("3")) {
                             boot.setSummary(getString(R.string.boot_warning));
                         }

@@ -98,7 +98,7 @@ public class ActionListAdapter extends BaseAdapter {
                     /*if (!functionsClass.wallpaperStaticLive()) {
                         activity.finish();
                     }*/
-                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.floatCategory))) {
+                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.floatingCategory))) {
                     Intent intent = new Intent(context, CategoryHandler.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);

@@ -113,6 +113,15 @@
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper"
             android:windowSoftInputMode="adjustPan"/>
         <activity
+            android:name=".Widget.WidgetHandler"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:exported="true"
+            android:resizeableActivity="true"
+            android:screenOrientation="sensorPortrait"
+            android:supportsPictureInPicture="true"
+            android:theme="@android:style/Theme.DeviceDefault.Wallpaper"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
             android:name=".Category.AppSelectionList"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:resizeableActivity="true"
@@ -206,6 +215,7 @@
             android:icon="@drawable/draw_recovery"
             android:label="@string/recover_all"
             android:noHistory="true"
+            android:excludeFromRecents="true"
             android:theme="@style/Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT"/>
@@ -223,6 +233,8 @@
             android:exported="true"
             android:icon="@drawable/draw_widget_shortcuts"
             android:label="@string/shortcuts"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
             android:theme="@style/Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT"/>
@@ -235,7 +247,9 @@
             android:name=".Util.RemoteTask.RecoveryCategoryActivity"
             android:exported="true"
             android:icon="@drawable/draw_widget_categories"
-            android:label="@string/floatCategory"
+            android:excludeFromRecents="true"
+            android:label="@string/floatingCategory"
+            android:noHistory="true"
             android:theme="@style/Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT"/>
@@ -248,6 +262,8 @@
             android:name=".Util.RemoteTask.RemoteRecoveryActivity"
             android:exported="true"
             android:label="@string/recov_center"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
             android:theme="@style/Transparent">
             <intent-filter>
                 <action android:name="Remote_Single_Floating_Shortcuts"/>
@@ -259,12 +275,15 @@
             android:name=".Util.OpenApplications"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:noHistory="true"
+            android:excludeFromRecents="true"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
             android:theme="@style/Transparent"/>
         <activity
             android:name=".Util.RemoteTask.CreateFloatingShortcuts"
             android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
             android:theme="@style/Transparent">
             <intent-filter>
                 <action android:name="Create_Floating_Shortcuts"/>
@@ -277,8 +296,20 @@
             android:name=".Alias.CategoryHandler"
             android:enabled="false"
             android:icon="@drawable/alias_categories"
-            android:label="@string/floatCategory"
+            android:label="@string/floatingCategory"
             android:targetActivity=".Category.CategoryHandler">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".Alias.WidgetHandler"
+            android:enabled="false"
+            android:icon="@drawable/alias_categories"
+            android:label="@string/floatingWidget"
+            android:targetActivity=".Widget.WidgetHandler">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

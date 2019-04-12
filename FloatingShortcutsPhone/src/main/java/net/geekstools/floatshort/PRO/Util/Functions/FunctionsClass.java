@@ -415,7 +415,7 @@ public class FunctionsClass {
                         dynamicLabel = context.getString(R.string.shortcuts);
                     } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1").equals("2")) {
                         intent.setAction("Remote_Recover_Categories");
-                        dynamicLabel = context.getString(R.string.floatCategory);
+                        dynamicLabel = context.getString(R.string.floatingCategory);
                     } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1").equals("3")) {
                         intent.setAction("Remote_Recover_All");
                         dynamicLabel = context.getString(R.string.recover_all);
@@ -4793,7 +4793,7 @@ public class FunctionsClass {
 
         CharSequence[] charSequence = new CharSequence[]{
                 activity.getClass().getSimpleName().equals(AppAutoFeatures.class.getSimpleName()) || activity.getClass().getSimpleName().equals(CategoryAutoFeatures.class.getSimpleName())
-                        ? context.getString(R.string.floatCategory) : context.getString(R.string.automation),
+                        ? context.getString(R.string.floatingCategory) : context.getString(R.string.automation),
         };
         Drawable[] drawables = new Drawable[]{
                 drawFloating,

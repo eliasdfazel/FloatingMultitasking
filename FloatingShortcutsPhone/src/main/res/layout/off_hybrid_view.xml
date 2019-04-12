@@ -146,6 +146,12 @@
         </RelativeLayout>
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/floatingWidget"
+        android:layout_width="113dp"
+        android:layout_height="113dp"
+        android:onClick="floatingWidget"/>
+
     <RelativeLayout
         android:id="@+id/loadingSplash"
         android:layout_width="match_parent"

@@ -74,6 +74,7 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
+import net.geekstools.floatshort.PRO.Widget.WidgetHandler;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.io.File;
@@ -1054,5 +1055,11 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         protected void onPostExecute(final Void result) {
             super.onPostExecute(result);
         }
+    }
+
+    public void floatingWidget(View view) {
+
+        startActivity(new Intent(getApplicationContext(), WidgetHandler.class));
+
     }
 }
