@@ -66,7 +66,7 @@ import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Category.CategoryHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.CardHybridAdapter;
-import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.SectionedGridRecyclerViewAdapter;
+import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.HybridSectionedGridRecyclerViewAdapter;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
@@ -94,7 +94,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class HybridViewOff extends Activity implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
     Activity activity;
+
     FunctionsClass functionsClass;
+
     RecyclerView loadView;
     ScrollView nestedScrollView;
     ListView actionElementsList;
@@ -109,7 +111,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     ArrayList<NavDrawerItem> navDrawerItems;
 
     List<String> indexList;
-    List<SectionedGridRecyclerViewAdapter.Section> sections;
+    List<HybridSectionedGridRecyclerViewAdapter.Section> sections;
     RecyclerView.Adapter recyclerViewAdapter;
     GridLayoutManager recyclerViewLayoutManager;
 
@@ -126,9 +128,21 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     SimpleGestureFilterSwitch simpleGestureFilterSwitch;
 
     FirebaseRemoteConfig firebaseRemoteConfig;
+
     ProgressDialog progressDialog;
+
     LoadCustomIcons loadCustomIcons;
+
     private FirebaseAuth firebaseAuth;
+
+
+    public void floatingWidget(View view) {
+
+        startActivity(new Intent(getApplicationContext(), WidgetHandler.class));
+
+    }
+
+
 
     @Override
     protected void onCreate(Bundle Saved) {
@@ -152,7 +166,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         loadView.setLayoutManager(recyclerViewLayoutManager);
 
         indexList = new ArrayList<String>();
-        sections = new ArrayList<SectionedGridRecyclerViewAdapter.Section>();
+        sections = new ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>();
         indexItems = new TreeMap<String, Integer>();
 
         if (functionsClass.appThemeTransparent() == true) {
@@ -785,7 +799,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                             } else {
                                 String oldChar = functionsClass.appName(applicationInfoList.get(lastIntentItem).packageName).substring(0, 1).toUpperCase();
                                 if (!oldChar.equals(newChar)) {
-                                    sections.add(new SectionedGridRecyclerViewAdapter.Section(hybridItem, newChar));
+                                    sections.add(new HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar));
                                     indexList.add(newChar);
                                     itemOfIndex = 1;
                                 }
@@ -840,16 +854,16 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 nestedScrollView.setLayoutParams(params);
             }
             recyclerViewAdapter.notifyDataSetChanged();
-            SectionedGridRecyclerViewAdapter.Section[] sectionsData = new SectionedGridRecyclerViewAdapter.Section[sections.size()];
-            SectionedGridRecyclerViewAdapter mSectionedAdapter = new SectionedGridRecyclerViewAdapter(
+            HybridSectionedGridRecyclerViewAdapter.Section[] sectionsData = new HybridSectionedGridRecyclerViewAdapter.Section[sections.size()];
+            HybridSectionedGridRecyclerViewAdapter hybridSectionedGridRecyclerViewAdapter = new HybridSectionedGridRecyclerViewAdapter(
                     getApplicationContext(),
-                    R.layout.section,
+                    R.layout.hybrid_sections,
                     R.id.section_text,
                     loadView,
                     recyclerViewAdapter/*mAdapter*/
             );
-            mSectionedAdapter.setSections(sections.toArray(sectionsData));
-            loadView.setAdapter(mSectionedAdapter);
+            hybridSectionedGridRecyclerViewAdapter.setSections(sections.toArray(sectionsData));
+            loadView.setAdapter(hybridSectionedGridRecyclerViewAdapter);
 
             Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
             loadingSplash.startAnimation(anim);
@@ -895,7 +909,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                             } else {
                                 String oldChar = functionsClass.appName(applicationInfoList.get(lastIntentItem).packageName).substring(0, 1).toUpperCase();
                                 if (!oldChar.equals(newChar)) {
-                                    sections.add(new SectionedGridRecyclerViewAdapter.Section(hybridItem, newChar));
+                                    sections.add(new HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar));
                                     indexList.add(newChar);
                                     itemOfIndex = 1;
                                 }
@@ -930,10 +944,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             recyclerViewAdapter.notifyDataSetChanged();
-            SectionedGridRecyclerViewAdapter.Section[] dummy = new SectionedGridRecyclerViewAdapter.Section[sections.size()];
-            SectionedGridRecyclerViewAdapter mSectionedAdapter = new SectionedGridRecyclerViewAdapter(
+            HybridSectionedGridRecyclerViewAdapter.Section[] dummy = new HybridSectionedGridRecyclerViewAdapter.Section[sections.size()];
+            HybridSectionedGridRecyclerViewAdapter mSectionedAdapter = new HybridSectionedGridRecyclerViewAdapter(
                     getApplicationContext(),
-                    R.layout.section,
+                    R.layout.hybrid_sections,
                     R.id.section_text,
                     loadView,
                     recyclerViewAdapter
@@ -1055,11 +1069,5 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         protected void onPostExecute(final Void result) {
             super.onPostExecute(result);
         }
-    }
-
-    public void floatingWidget(View view) {
-
-        startActivity(new Intent(getApplicationContext(), WidgetHandler.class));
-
     }
 }

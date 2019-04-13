@@ -137,9 +137,9 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         }
 
         if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColorAuto(MainView, true);
+            functionsClass.setThemeColorAutomationFeature(MainView, true);
         } else {
-            functionsClass.setThemeColorAuto(MainView, false);
+            functionsClass.setThemeColorAutomationFeature(MainView, false);
         }
 
         if (functionsClass.loadCustomIcons()) {

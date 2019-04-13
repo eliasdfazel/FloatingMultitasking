@@ -119,7 +119,7 @@
             android:resizeableActivity="true"
             android:screenOrientation="sensorPortrait"
             android:supportsPictureInPicture="true"
-            android:theme="@android:style/Theme.DeviceDefault.Wallpaper"
+            android:theme="@android:style/Theme.DeviceDefault.Wallpaper.NoTitleBar"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".Category.AppSelectionList"
@@ -344,7 +344,7 @@
             android:name=".Alias.Recover.Categories"
             android:enabled="false"
             android:icon="@drawable/alias_categories_recovery"
-            android:label="@string/recov_cat"
+            android:label="@string/recover_category"
             android:targetActivity=".Util.RemoteTask.RecoveryCategoryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

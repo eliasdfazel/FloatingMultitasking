@@ -104,6 +104,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
     FirebaseRemoteConfig firebaseRemoteConfig;
 
     ProgressDialog progressDialog;
+
     private FirebaseAuth firebaseAuth;
 
     @Override

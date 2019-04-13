@@ -152,13 +152,13 @@
     <string name="createShortcut">Create Home Screen Shortcuts</string>
     <string name="createAlias">Create App Drawer Shortcuts</string>
     <string name="deleteAlias">Remove App Drawer Shortcuts</string>
-    <string name="group">Floating Categories</string>
     <string name="floatingCategory">Floating Categories</string>
-    <string name="categoryHint">Categories</string>
     <string name="floatingWidget">Floating Widgets</string>
     <string name="shortcutHint">Apps</string>
+    <string name="categoryHint">Categories</string>
+    <string name="widgetHint">Widgets</string>
     <string name="floatingHint">Floating Shortcuts</string>
-    <string name="recov_cat">Recover Floating Categories</string>
+    <string name="recover_category">Recover Floating Categories</string>
     <string name="categoryDesc">Please Write a Category Name</string>
     <string name="viewapps">App Drawer Style</string>
     <string name="colortext">App Theme</string>

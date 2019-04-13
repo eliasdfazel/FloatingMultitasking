@@ -6,9 +6,11 @@ import android.graphics.drawable.Drawable;
 public class NavDrawerItem {
 
     CharSequence charTitle;
-    String packageName, appName, category, times, notificationAppName, notificationTitle, notificationText, notificationId, notificationTime, notificationPackage;
+    String packageName, appName, category, times, widgetLabel,
+            notificationAppName, notificationTitle, notificationText, notificationId, notificationTime, notificationPackage;
     String[] packageNames;
-    Drawable appIcon, run, notificationAppIcon, notificationLargeIcon;
+    Drawable appIcon, run, widgetPreview,
+            notificationAppIcon, notificationLargeIcon;
     PendingIntent notificationIntent;
 
     public NavDrawerItem(String AppName, String PackageName, Drawable AppIcon) {
@@ -17,16 +19,16 @@ public class NavDrawerItem {
         this.appIcon = AppIcon;
     }
 
-    public NavDrawerItem(String title, String pack, Drawable icon, String times) {
-        this.appName = title;
-        this.packageName = pack;
+    public NavDrawerItem(String appName, String packageName, Drawable icon, String times) {
+        this.appName = appName;
+        this.packageName = packageName;
         this.appIcon = icon;
         this.times = times;
     }
 
-    public NavDrawerItem(String title, String desc) {
-        this.packageName = title;
-        this.appName = desc;
+    public NavDrawerItem(String packageName, String appName) {
+        this.packageName = packageName;
+        this.appName = appName;
     }
 
     public NavDrawerItem(CharSequence title, Drawable icon) {
@@ -34,8 +36,8 @@ public class NavDrawerItem {
         this.appIcon = icon;
     }
 
-    public NavDrawerItem(String title, Drawable icon) {
-        this.packageName = title;
+    public NavDrawerItem(String packageName, Drawable icon) {
+        this.packageName = packageName;
         this.appIcon = icon;
     }
 
@@ -48,6 +50,14 @@ public class NavDrawerItem {
         this.category = category;
         this.packageNames = packageNames;
         this.times = times;
+    }
+
+    public NavDrawerItem(String AppName, String PackageName, String widgetLabel, Drawable AppIcon, Drawable widgetPreview) {
+        this.appName = AppName;
+        this.packageName = PackageName;
+        this.widgetLabel = widgetLabel;
+        this.appIcon = AppIcon;
+        this.widgetPreview = widgetPreview;
     }
 
     public NavDrawerItem(String notificationTime, String notificationPackage,
@@ -107,12 +117,20 @@ public class NavDrawerItem {
         return this.notificationId;
     }
 
+    public String getWidgetLabel() {
+        return this.widgetLabel;
+    }
+
     public String[] getPackName() {
         return this.packageNames;
     }
 
     public Drawable getAppIcon() {
         return this.appIcon;
+    }
+
+    public Drawable getWidgetPreview() {
+        return this.widgetPreview;
     }
 
     public Drawable getRunIcon() {

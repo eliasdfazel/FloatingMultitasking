@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HybridSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int SECTION_TYPE = 0;
     private final Context mContext;
@@ -27,8 +27,8 @@ public class SectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     private RecyclerView mRecyclerView;
 
 
-    public SectionedGridRecyclerViewAdapter(Context context, int sectionResourceId, int textResourceId, RecyclerView recyclerView,
-                                            RecyclerView.Adapter baseAdapter) {
+    public HybridSectionedGridRecyclerViewAdapter(Context context, int sectionResourceId, int textResourceId, RecyclerView recyclerView,
+                                                  RecyclerView.Adapter baseAdapter) {
         this.mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSectionResourceId = sectionResourceId;
         mTextResourceId = textResourceId;
@@ -85,7 +85,7 @@ public class SectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder sectionViewHolder, int position) {
         if (isSectionHeaderPosition(position)) {
-            //(SectionViewHolder)sectionViewHolder).title.setText(mSections.get(position).title);
+            //((SectionViewHolder)sectionViewHolder).title.setText(mSections.get(position).title);
         } else {
             try {
                 mBaseAdapter.onBindViewHolder(sectionViewHolder, sectionedPositionToPosition(position));

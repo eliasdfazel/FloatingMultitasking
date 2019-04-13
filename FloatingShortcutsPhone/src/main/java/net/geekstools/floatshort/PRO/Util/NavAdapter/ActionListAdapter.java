@@ -108,7 +108,7 @@ public class ActionListAdapter extends BaseAdapter {
                     Intent intent = new Intent(context, RecoveryShortcuts.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(intent);
-                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recov_cat))) {
+                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recover_category))) {
                     Intent intent = new Intent(context, RecoveryCategory.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(intent);
@@ -130,12 +130,12 @@ public class ActionListAdapter extends BaseAdapter {
             public boolean onLongClick(View view) {
                 if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.automation))) {
                     functionsClass.ShortcutsDialogue(AppAutoFeatures.class, ".Alias.Automation", context.getString(R.string.automation), R.drawable.alias_auto);
-                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.group))) {
-                    functionsClass.ShortcutsDialogue(CategoryHandler.class, ".Alias.CategoryHandler", context.getString(R.string.group), R.drawable.alias_categories);
+                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.floatingCategory))) {
+                    functionsClass.ShortcutsDialogue(CategoryHandler.class, ".Alias.CategoryHandler", context.getString(R.string.floatingCategory), R.drawable.alias_categories);
                 } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recovery))) {
                     functionsClass.ShortcutsDialogue(RecoveryShortcutsActivity.class, ".Alias.Recover.Shortcuts", context.getString(R.string.recovery), R.drawable.alias_shortcuts_recovery);
-                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recov_cat))) {
-                    functionsClass.ShortcutsDialogue(RecoveryCategoryActivity.class, ".Alias.Recover.Categories", context.getString(R.string.recov_cat), R.drawable.alias_categories_recovery);
+                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recover_category))) {
+                    functionsClass.ShortcutsDialogue(RecoveryCategoryActivity.class, ".Alias.Recover.Categories", context.getString(R.string.recover_category), R.drawable.alias_categories_recovery);
                 }
                 return true;
             }

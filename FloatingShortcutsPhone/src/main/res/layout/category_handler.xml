@@ -132,7 +132,7 @@
             android:padding="7dp"
             android:shadowColor="@android:color/black"
             android:shadowRadius="25"
-            android:text="@string/group"
+            android:text="@string/floatingCategory"
             android:textColor="@color/default_color"
             android:textSize="53sp"/>
     </RelativeLayout>

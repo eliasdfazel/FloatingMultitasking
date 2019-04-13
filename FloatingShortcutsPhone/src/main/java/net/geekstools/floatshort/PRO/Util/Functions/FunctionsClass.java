@@ -3289,7 +3289,7 @@ public class FunctionsClass {
         }
     }
 
-    public void setThemeColorAuto(View view, boolean transparent) {
+    public void setThemeColorAutomationFeature(View view, boolean transparent) {
         if (transparent == true) {
             if (wallpaperStaticLive()) {
                 setBackgroundTheme();
@@ -5017,7 +5017,7 @@ public class FunctionsClass {
 
         CharSequence[] charSequence = new CharSequence[]{
                 context.getString(R.string.recovery),
-                context.getString(R.string.recov_cat),
+                context.getString(R.string.recover_category),
         };
         Drawable[] drawables = new Drawable[]{
                 drawRecovery,

@@ -44,7 +44,7 @@ public class RecoveryCategoryActivity extends Activity {
                 Intent setCategoryRecovery = new Intent(getApplicationContext(), RecoveryCategoryActivity.class);
                 Intent intent = new Intent();
                 intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, setCategoryRecovery);
-                intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.recov_cat));
+                intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.recover_category));
                 intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, shortcutApp);
                 setResult(RESULT_OK, intent);
             } else if (getIntent().getAction().equals(Intent.ACTION_MAIN) || getIntent().getAction().equals(Intent.ACTION_VIEW)

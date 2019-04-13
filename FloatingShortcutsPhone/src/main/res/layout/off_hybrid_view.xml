@@ -146,11 +146,16 @@
         </RelativeLayout>
     </RelativeLayout>
 
+
     <Button
         android:id="@+id/floatingWidget"
-        android:layout_width="113dp"
-        android:layout_height="113dp"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/draw_shortcuts"
+        android:text="@string/widgetHint"
         android:onClick="floatingWidget"/>
+
 
     <RelativeLayout
         android:id="@+id/loadingSplash"
