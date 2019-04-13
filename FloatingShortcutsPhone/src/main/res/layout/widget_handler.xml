@@ -8,24 +8,53 @@
     android:background="@color/transparent_dark_high"
     tools:context="net.geekstools.floatshort.PRO.Widget.WidgetHandler">
 
-    <Button
-        android:id="@+id/addWidget"
-        android:layout_width="77dp"
-        android:layout_height="77dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+    <ScrollView
+        android:id="@+id/configuredWidgetNestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="37dp"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none"
+        android:visibility="visible">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/configuredWidgetList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alwaysDrawnWithCache="true"
+                android:drawSelectorOnTop="true"
+                android:isScrollContainer="false"
+                android:listSelector="@color/transparent_default"
+                android:nestedScrollingEnabled="false"
+                android:paddingStart="3dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="27dp"
+                android:persistentDrawingCache="animation|scrolling"
+                android:saveEnabled="true"/>
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/widgetTemp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
 
     <ScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/addWidget"
         android:cacheColorHint="@android:color/transparent"
         android:fadingEdge="vertical"
         android:fadingEdgeLength="37dp"
         android:requiresFadingEdge="vertical"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:visibility="invisible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -48,6 +77,14 @@
         </RelativeLayout>
     </ScrollView>
 
+    <Button
+        android:id="@+id/addWidget"
+        android:layout_width="77dp"
+        android:layout_height="77dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="13dp"
+        android:background="@android:drawable/ic_menu_add"/>
 
     <RelativeLayout
         android:id="@+id/loadingSplash"
@@ -76,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="33dp"
+            android:layout_marginBottom="79dp"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
             android:padding="7dp"

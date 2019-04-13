@@ -1,6 +1,7 @@
 package net.geekstools.floatshort.PRO.Util.NavAdapter;
 
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetProviderInfo;
 import android.graphics.drawable.Drawable;
 
 public class NavDrawerItem {
@@ -8,10 +9,15 @@ public class NavDrawerItem {
     CharSequence charTitle;
     String packageName, appName, category, times, widgetLabel,
             notificationAppName, notificationTitle, notificationText, notificationId, notificationTime, notificationPackage;
+
     String[] packageNames;
+
     Drawable appIcon, run, widgetPreview,
             notificationAppIcon, notificationLargeIcon;
+
     PendingIntent notificationIntent;
+
+    AppWidgetProviderInfo appWidgetProviderInfo;
 
     public NavDrawerItem(String AppName, String PackageName, Drawable AppIcon) {
         this.appName = AppName;
@@ -52,12 +58,13 @@ public class NavDrawerItem {
         this.times = times;
     }
 
-    public NavDrawerItem(String AppName, String PackageName, String widgetLabel, Drawable AppIcon, Drawable widgetPreview) {
+    public NavDrawerItem(String AppName, String PackageName, String widgetLabel, Drawable AppIcon, Drawable widgetPreview, AppWidgetProviderInfo appWidgetProviderInfo) {
         this.appName = AppName;
         this.packageName = PackageName;
         this.widgetLabel = widgetLabel;
         this.appIcon = AppIcon;
         this.widgetPreview = widgetPreview;
+        this.appWidgetProviderInfo = appWidgetProviderInfo;
     }
 
     public NavDrawerItem(String notificationTime, String notificationPackage,
@@ -147,5 +154,9 @@ public class NavDrawerItem {
 
     public PendingIntent getNotificationIntent() {
         return this.notificationIntent;
+    }
+
+    public AppWidgetProviderInfo getAppWidgetProviderInfo() {
+        return this.appWidgetProviderInfo;
     }
 }

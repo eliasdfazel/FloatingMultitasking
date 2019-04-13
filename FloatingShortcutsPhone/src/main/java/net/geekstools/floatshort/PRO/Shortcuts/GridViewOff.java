@@ -73,6 +73,7 @@ import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
+import net.geekstools.floatshort.PRO.Widget.WidgetHandler;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.io.File;
@@ -117,6 +118,15 @@ public class GridViewOff extends Activity implements View.OnClickListener, View.
     ProgressDialog progressDialog;
     LoadCustomIcons loadCustomIcons;
     private FirebaseAuth firebaseAuth;
+
+
+    public void floatingWidget(View view) {
+
+        startActivity(new Intent(getApplicationContext(), WidgetHandler.class));
+
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -4691,6 +4691,11 @@ public class FunctionsClass {
         return LightDark;
     }
 
+    public void doVibrate(long millisecondVibrate) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(millisecondVibrate);
+    }
+
     /*Custom Icons*/
     public String customIconPackageName() {
         //com.Fraom.Smugy

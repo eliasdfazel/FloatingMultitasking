@@ -153,6 +153,8 @@
         android:layout_height="33dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/draw_shortcuts"
+        android:textAllCaps="false"
+        android:textStyle="normal"
         android:text="@string/widgetHint"
         android:onClick="floatingWidget"/>
 
