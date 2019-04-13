@@ -4,7 +4,7 @@
                 android:id="@+id/wholeCategory"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/trans_black_high"
+                android:background="@color/transparent_dark_high"
                 tools:context="net.geekstools.floatshort.PRO.Category.CategoryHandler">
 
     <ScrollView
@@ -20,7 +20,7 @@
         android:scrollbarFadeDuration="270"
         android:scrollbarSize="5dp"
         android:scrollbarStyle="outsideOverlay"
-        android:scrollbarThumbVertical="@color/trans_black"
+        android:scrollbarThumbVertical="@color/transparent_dark"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="defaultPosition">
 
@@ -68,7 +68,7 @@
         android:id="@+id/fullActionButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/trans_white"
+        android:background="@color/transparent_light"
         android:visibility="invisible">
 
         <ListView
@@ -79,7 +79,7 @@
             android:layout_alignParentEnd="true"
             android:divider="@drawable/draw_divider"
             android:dividerHeight="2dp"
-            android:listSelector="@color/trans_def"
+            android:listSelector="@color/transparent_default"
             android:saveEnabled="true"
             android:smoothScrollbar="true"/>
 

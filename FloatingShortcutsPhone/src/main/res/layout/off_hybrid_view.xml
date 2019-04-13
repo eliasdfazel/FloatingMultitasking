@@ -4,7 +4,7 @@
     android:id="@+id/MainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/trans_black_high">
+    android:background="@color/transparent_dark_high">
 
     <LinearLayout
         android:id="@+id/switchFloating"
@@ -46,7 +46,7 @@
         android:requiresFadingEdge="horizontal"
         android:scrollbarSize="2dp"
         android:scrollbarStyle="outsideOverlay"
-        android:scrollbarThumbHorizontal="@color/trans_black_high"
+        android:scrollbarThumbHorizontal="@color/transparent_dark_high"
         android:scrollbars="horizontal"
         android:smoothScrollbar="true"
         android:visibility="invisible">
@@ -84,7 +84,7 @@
                 android:alwaysDrawnWithCache="true"
                 android:drawSelectorOnTop="true"
                 android:isScrollContainer="false"
-                android:listSelector="@color/trans_def"
+                android:listSelector="@color/transparent_default"
                 android:nestedScrollingEnabled="false"
                 android:paddingStart="3dp"
                 android:paddingTop="5dp"
@@ -115,7 +115,7 @@
         android:id="@+id/fullActionButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/trans_white"
+        android:background="@color/transparent_light"
         android:visibility="invisible">
 
         <ListView
@@ -126,7 +126,7 @@
             android:layout_alignParentEnd="true"
             android:divider="@drawable/draw_divider"
             android:dividerHeight="2dp"
-            android:listSelector="@color/trans_def"
+            android:listSelector="@color/transparent_default"
             android:saveEnabled="true"
             android:smoothScrollbar="true"/>
 

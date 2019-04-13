@@ -4,7 +4,7 @@
     android:id="@+id/MainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/trans_black_high">
+    android:background="@color/transparent_dark_high">
 
     <ListView
         android:id="@+id/listFav"
@@ -15,7 +15,7 @@
         android:dividerHeight="2dp"
         android:fadingEdge="vertical"
         android:fadingEdgeLength="37dp"
-        android:listSelector="@color/trans_def"
+        android:listSelector="@color/transparent_default"
         android:paddingStart="9dp"
         android:paddingTop="113dp"
         android:paddingEnd="30dp"
@@ -107,7 +107,7 @@
         android:requiresFadingEdge="horizontal"
         android:scrollbarSize="2dp"
         android:scrollbarStyle="outsideOverlay"
-        android:scrollbarThumbHorizontal="@color/trans_black_high"
+        android:scrollbarThumbHorizontal="@color/transparent_dark_high"
         android:scrollbars="horizontal"
         android:smoothScrollbar="true"
         android:visibility="visible">
@@ -184,7 +184,7 @@
         android:id="@+id/fullActionButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/trans_white"
+        android:background="@color/transparent_light"
         android:visibility="invisible">
 
         <ListView
@@ -195,7 +195,7 @@
             android:layout_alignParentEnd="true"
             android:divider="@drawable/draw_divider"
             android:dividerHeight="2dp"
-            android:listSelector="@color/trans_def"
+            android:listSelector="@color/transparent_default"
             android:saveEnabled="true"
             android:smoothScrollbar="true"/>
 

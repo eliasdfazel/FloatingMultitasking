@@ -27,7 +27,7 @@
         android:paddingStart="2dp"
         android:paddingEnd="2dp"
         android:scrollHorizontally="true"
-        android:shadowColor="@color/trans_black"
+        android:shadowColor="@color/transparent_dark"
         android:shadowRadius="13"
         android:singleLine="true"
         android:text="@string/app_name"

@@ -8,7 +8,7 @@
 
     <style name="GeeksEmpire.Preference.Light" parent="@style/GeeksEmpire">
         <item name="android:textColorPrimary">@color/darker</item>
-        <item name="android:textColorSecondary">@color/trans_black</item>
+        <item name="android:textColorSecondary">@color/transparent_dark</item>
         <item name="android:alertDialogTheme">@style/GeeksEmpire.Dialogue.Light</item>
         <item name="android:colorAccent">@color/default_color</item>
 
@@ -19,7 +19,7 @@
 
     <style name="GeeksEmpire.Preference.Dark" parent="@style/GeeksEmpire">
         <item name="android:textColorPrimary">@color/light</item>
-        <item name="android:textColorSecondary">@color/light_trans</item>
+        <item name="android:textColorSecondary">@color/light_transparent</item>
         <item name="android:alertDialogTheme">@style/GeeksEmpire.Dialogue.Dark</item>
         <item name="android:colorAccent">@color/default_color</item>
 
