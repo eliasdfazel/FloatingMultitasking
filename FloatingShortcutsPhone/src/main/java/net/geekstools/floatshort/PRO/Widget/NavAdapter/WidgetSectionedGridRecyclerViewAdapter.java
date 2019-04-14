@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.util.Arrays;
@@ -90,6 +91,7 @@ public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder sectionViewHolder, int position) {
         if (isSectionHeaderPosition(position)) {
             ((SectionViewHolder) sectionViewHolder).appName.setText(sectionSparseArray.get(position).appName);
+            ((SectionViewHolder) sectionViewHolder).appName.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
             ((SectionViewHolder) sectionViewHolder).appIcon.setImageDrawable(sectionSparseArray.get(position).appIcon);
         } else {
             try {

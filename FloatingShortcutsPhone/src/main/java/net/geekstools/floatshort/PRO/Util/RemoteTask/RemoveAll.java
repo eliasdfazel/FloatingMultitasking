@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import net.geekstools.floatshort.PRO.Category_Unlimited_Floating;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 
@@ -39,7 +40,7 @@ public class RemoveAll extends Service {
         App_Unlimited_Time.putExtra("pack", getString(R.string.remove_all_shortcuts));
         startService(App_Unlimited_Time);
         /**/
-        Intent Category_Unlimited_Category = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Category_Unlimited_Category.class);
+        Intent Category_Unlimited_Category = new Intent(getApplicationContext(), Category_Unlimited_Floating.class);
         Category_Unlimited_Category.putExtra("categoryName", getString(R.string.remove_all_shortcuts));
         startService(Category_Unlimited_Category);
 

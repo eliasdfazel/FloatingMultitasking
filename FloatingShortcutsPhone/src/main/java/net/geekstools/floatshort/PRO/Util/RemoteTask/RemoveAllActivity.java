@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import net.geekstools.floatshort.PRO.Category_Unlimited_Floating;
 import net.geekstools.floatshort.PRO.R;
 
 public class RemoveAllActivity extends Activity {
@@ -36,7 +37,7 @@ public class RemoveAllActivity extends Activity {
         App_Unlimited_Time.putExtra("pack", getString(R.string.remove_all_shortcuts));
         startService(App_Unlimited_Time);
         /**/
-        Intent Category_Unlimited_Category = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Category_Unlimited_Category.class);
+        Intent Category_Unlimited_Category = new Intent(getApplicationContext(), Category_Unlimited_Floating.class);
         Category_Unlimited_Category.putExtra("categoryName", getString(R.string.remove_all_shortcuts));
         startService(Category_Unlimited_Category);
 

@@ -123,7 +123,7 @@ import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Category.CategoryHandler;
 import net.geekstools.floatshort.PRO.Category_Unlimited_Bluetooth;
-import net.geekstools.floatshort.PRO.Category_Unlimited_Category;
+import net.geekstools.floatshort.PRO.Category_Unlimited_Floating;
 import net.geekstools.floatshort.PRO.Category_Unlimited_Gps;
 import net.geekstools.floatshort.PRO.Category_Unlimited_Nfc;
 import net.geekstools.floatshort.PRO.Category_Unlimited_Time;
@@ -748,7 +748,7 @@ public class FunctionsClass {
             PublicVariable.FloatingCategories.add(PublicVariable.categoriesCounter, categoryName);
         }
 
-        Intent c = new Intent(context, Category_Unlimited_Category.class);
+        Intent c = new Intent(context, Category_Unlimited_Floating.class);
         c.putExtra("categoryName", categoryName);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);

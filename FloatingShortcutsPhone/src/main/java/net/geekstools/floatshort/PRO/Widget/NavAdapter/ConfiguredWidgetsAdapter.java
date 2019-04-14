@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Widget.WidgetHandler;
 
@@ -50,7 +51,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
 
     @Override
     public ConfiguredWidgetsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(context).inflate(R.layout.configured_widget_items, parent, false);
+        view = LayoutInflater.from(context).inflate(R.layout.widget_configured_items, parent, false);
         viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -60,11 +61,12 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
         AppWidgetProviderInfo appWidgetProviderInfo = navDrawerItems.get(position).getAppWidgetProviderInfo();
         int appWidgetId = navDrawerItems.get(position).getAppWidgetId();
 
-        WidgetHandler.createWidget(activity, viewHolder.widgetItem,
+        WidgetHandler.createWidget(activity, viewHolder.widgetPreview,
                 appWidgetManager, appWidgetHost,
                 appWidgetProviderInfo, appWidgetId);
 
         viewHolder.widgetLabel.setText(navDrawerItems.get(position).getWidgetLabel());
+        viewHolder.widgetLabel.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
 
         viewHolder.floatTheWidget.setOnClickListener(new View.OnClickListener() {
             @Override

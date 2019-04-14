@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,12 +94,16 @@ public class WidgetHandler extends Activity {
 
         addWidget = (Button) findViewById(R.id.addWidget);
 
+        TextView widgetPickerTitle = (TextView) findViewById(R.id.widgetPickerTitle);
+        widgetPickerTitle.setText(Html.fromHtml(getString(R.string.widgetPickerTitle)));
+        widgetPickerTitle.setTextColor(PublicVariable.themeLightDark ? getColor(R.color.dark) : getColor(R.color.light));
+
         installedWidgetsRecyclerViewLayoutManager = new RecycleViewSmoothLayoutGrid(getApplicationContext(), functionsClass.columnCount(190), OrientationHelper.VERTICAL, false);
         installedWidgetsLoadView.setLayoutManager(installedWidgetsRecyclerViewLayoutManager);
 
         installedWidgetsSections = new ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>();
 
-        configuredWidgetsRecyclerViewLayoutManager = new RecycleViewSmoothLayoutGrid(getApplicationContext(), functionsClass.columnCount(195), OrientationHelper.VERTICAL, false);
+        configuredWidgetsRecyclerViewLayoutManager = new RecycleViewSmoothLayoutGrid(getApplicationContext(), functionsClass.columnCount(190), OrientationHelper.VERTICAL, false);
         configuredWidgetsLoadView.setLayoutManager(configuredWidgetsRecyclerViewLayoutManager);
 
         configuredWidgetsSections = new ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>();
@@ -378,6 +383,8 @@ public class WidgetHandler extends Activity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    configuredWidgetsNestedScrollView.smoothScrollTo(0, 0);
+
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                     loadingSplash.setVisibility(View.INVISIBLE);
                     loadingSplash.startAnimation(animation);
@@ -392,6 +399,8 @@ public class WidgetHandler extends Activity {
             super.onPreExecute();
             installedWidgetsNavDrawerItems.clear();
             installedWidgetsSections.clear();
+
+            installedWidgetsNestedScrollView.setBackgroundColor(PublicVariable.themeLightDark ? getColor(R.color.transparent_light_high_twice) : getColor(R.color.transparent_dark_high_twice));
         }
 
         @Override
@@ -518,19 +527,21 @@ public class WidgetHandler extends Activity {
             AppWidgetHostView hostView = appWidgetHost.createView(context, widgetId, appWidgetProviderInfo);
             hostView.setAppWidget(widgetId, appWidgetProviderInfo);
 
-            int widgetWidth = 199, widgetHeight = 159;
+            int widgetWidth = 213, widgetHeight = 213;
 
             hostView.setMinimumWidth(widgetWidth);
             hostView.setMinimumHeight(widgetHeight);
 
-            widgetView.addView(hostView);
-
             Bundle bundle = new Bundle();
-            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 199);
-            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 159);
+            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, widgetWidth);
+            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, widgetHeight);
             bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, functionsClass.displayX());
             bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, functionsClass.displayY());
             appWidgetManager.bindAppWidgetIdIfAllowed(widgetId, appWidgetProviderInfo.provider, bundle);
+
+            widgetView.addView(hostView);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

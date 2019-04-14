@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
 
     @Override
     public InstalledWidgetsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(context).inflate(R.layout.installed_widget_items, parent, false);
+        view = LayoutInflater.from(context).inflate(R.layout.widget_installed_items, parent, false);
         viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -65,6 +66,7 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
 
         viewHolder.widgetPreview.setImageDrawable(navDrawerItems.get(position).getWidgetPreview());
         viewHolder.widgetLabel.setText(navDrawerItems.get(position).getWidgetLabel());
+        viewHolder.widgetLabel.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
 
         viewHolder.widgetitem.setOnClickListener(new View.OnClickListener() {
             @Override

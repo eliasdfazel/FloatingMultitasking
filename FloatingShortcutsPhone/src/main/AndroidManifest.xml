@@ -394,12 +394,13 @@
         <service android:name=".App_Unlimited_Gps"/>
         <service android:name=".App_Unlimited_Nfc"/>
         <service android:name=".App_Unlimited_Time"/>
-        <service android:name=".Category_Unlimited_Category"/>
+        <service android:name=".Category_Unlimited_Floating"/>
         <service android:name=".Category_Unlimited_Wifi"/>
         <service android:name=".Category_Unlimited_Bluetooth"/>
         <service android:name=".Category_Unlimited_Gps"/>
         <service android:name=".Category_Unlimited_Nfc"/>
         <service android:name=".Category_Unlimited_Time"/>
+        <service android:name=".Widget_Unlimited_Floating"/>
         <service android:name=".App_Unlimited_HIS"/>
         <service android:name=".Util.CloudNotificationHandler">
             <intent-filter>

@@ -157,6 +157,12 @@
     <string name="shortcutHint">Apps</string>
     <string name="categoryHint">Categories</string>
     <string name="widgetHint">Floating Widgets ᵦₑₜₐ</string>
+    <string name="widgetPickerTitle">
+        <![CDATA[
+            Choose Widgets To Configure<br/>
+            <small>Press & Hold</small>
+        ]]>
+    </string>
     <string name="floatingHint">Floating Shortcuts</string>
     <string name="recover_category">Recover Floating Categories</string>
     <string name="categoryDesc">Please Write a Category Name</string>

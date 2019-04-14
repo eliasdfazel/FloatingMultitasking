@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/widgetSectionITem"
                 android:layout_width="match_parent"
-                android:layout_height="88dp"
-                android:padding="13dp">
+                android:layout_height="63dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="13dp">
 
     <net.geekstools.imageview.customshapes.ShapesImage
         android:id="@+id/appIcon"

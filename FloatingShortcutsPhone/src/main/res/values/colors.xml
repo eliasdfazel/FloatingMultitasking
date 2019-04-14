@@ -15,6 +15,7 @@
     <color name="lighter">#fafbff</color>
     <color name="light_transparent">#b7f2f7ff</color>
     <color name="light_transparent_high">#0ff2f7ff</color>
+    <color name="transparent_light_high_twice">#8BFAFBFF</color>
 
     <color name="dark">#0a0f18</color>
     <color name="darker">#070b12</color>

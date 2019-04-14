@@ -27,23 +27,17 @@
                 android:id="@+id/configuredWidgetList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="7dp"
+                android:layout_marginStart="3dp"
                 android:alwaysDrawnWithCache="true"
                 android:drawSelectorOnTop="true"
                 android:isScrollContainer="false"
                 android:listSelector="@color/transparent_default"
                 android:nestedScrollingEnabled="false"
-                android:paddingStart="3dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="27dp"
                 android:persistentDrawingCache="animation|scrolling"
                 android:saveEnabled="true"/>
         </RelativeLayout>
     </ScrollView>
-
-    <RelativeLayout
-        android:id="@+id/widgetTemp"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"/>
 
     <ScrollView
         android:id="@+id/nestedScrollView"
@@ -61,18 +55,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/widgetPickerTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="17dp"
+                android:gravity="center_vertical"
+                android:textSize="19sp"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@id/widgetPickerTitle"
                 android:alwaysDrawnWithCache="true"
                 android:drawSelectorOnTop="true"
                 android:isScrollContainer="false"
                 android:listSelector="@color/transparent_default"
                 android:nestedScrollingEnabled="false"
-                android:paddingStart="3dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="27dp"
                 android:persistentDrawingCache="animation|scrolling"
                 android:saveEnabled="true"/>
         </RelativeLayout>
