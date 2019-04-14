@@ -24,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataInterface;
+import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataModel;
 import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -31,15 +33,20 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
+import net.geekstools.floatshort.PRO.Widget.NavAdapter.ConfiguredWidgetsAdapter;
+import net.geekstools.floatshort.PRO.Widget.NavAdapter.InstalledWidgetsAdapter;
 import net.geekstools.floatshort.PRO.Widget.NavAdapter.WidgetSectionedGridRecyclerViewAdapter;
-import net.geekstools.floatshort.PRO.Widget.NavAdapter.WidgetsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public class WidgetHandler extends Activity {
 
@@ -47,12 +54,13 @@ public class WidgetHandler extends Activity {
 
     RelativeLayout wholeWidget;
 
-    RecyclerView loadView;
-    ScrollView nestedScrollView;
+    RecyclerView installedWidgetsLoadView, configuredWidgetsLoadView;
+    ScrollView installedWidgetsNestedScrollView, configuredWidgetsNestedScrollView;
 
-    List<WidgetSectionedGridRecyclerViewAdapter.Section> sections;
-    RecyclerView.Adapter recyclerViewAdapter;
-    GridLayoutManager recyclerViewLayoutManager;
+    List<WidgetSectionedGridRecyclerViewAdapter.Section> installedWidgetsSections, configuredWidgetsSections;
+    RecyclerView.Adapter installedWidgetsRecyclerViewAdapter, configuredWidgetsRecyclerViewAdapter;
+    WidgetSectionedGridRecyclerViewAdapter configuredWidgetsSectionedGridRecyclerViewAdapter;
+    GridLayoutManager installedWidgetsRecyclerViewLayoutManager, configuredWidgetsRecyclerViewLayoutManager;
 
     RelativeLayout loadingSplash;
     ProgressBar loadingBarLTR;
@@ -61,32 +69,25 @@ public class WidgetHandler extends Activity {
     Button addWidget;
 
     List<AppWidgetProviderInfo> widgetProviderInfoList;
-    ArrayList<NavDrawerItem> navDrawerItems;
+    ArrayList<NavDrawerItem> installedWidgetsNavDrawerItems, configuredWidgetsNavDrawerItems;
 
-    public static final int WIDGET_CREATING_REQUEST = 333;
     AppWidgetManager appWidgetManager;
-    AppWidgetHost appWidgetHostView;
-
-    public static final int WIDGET_CONFIGURATION_REQUEST = 666;
-    AppWidgetProviderInfo pickedAppWidgetProviderInfo;
-
-    int pickedWidgetId = -1;
+    AppWidgetHost appWidgetHost;
 
     LoadCustomIcons loadCustomIcons;
 
-    public static void createWidget(Context context, ViewGroup widgetView, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHostView, AppWidgetProviderInfo appWidgetProviderInfo, int widgetId) {
+    public static void createWidget(Context context, ViewGroup widgetView, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost, AppWidgetProviderInfo appWidgetProviderInfo, int widgetId) {
         try {
             widgetView.removeAllViews();
 
-            appWidgetHostView.startListening();
+            FunctionsClass functionsClass = new FunctionsClass(context);
 
-            AppWidgetHostView hostView = appWidgetHostView.createView(context, widgetId, appWidgetProviderInfo);
+            appWidgetHost.startListening();
+
+            AppWidgetHostView hostView = appWidgetHost.createView(context, widgetId, appWidgetProviderInfo);
             hostView.setAppWidget(widgetId, appWidgetProviderInfo);
 
-            int widgetWidth = 0, widgetHeight = 0;
-
-            widgetWidth = appWidgetProviderInfo.minWidth;
-            widgetHeight = appWidgetProviderInfo.minHeight;
+            int widgetWidth = 199, widgetHeight = 159;
 
             hostView.setMinimumWidth(widgetWidth);
             hostView.setMinimumHeight(widgetHeight);
@@ -94,64 +95,13 @@ public class WidgetHandler extends Activity {
             widgetView.addView(hostView);
 
             Bundle bundle = new Bundle();
+            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 199);
+            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 159);
+            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, functionsClass.displayX());
+            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, functionsClass.displayY());
             appWidgetManager.bindAppWidgetIdIfAllowed(widgetId, appWidgetProviderInfo.provider, bundle);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        setContentView(R.layout.widget_handler);
-
-        functionsClass = new FunctionsClass(getApplicationContext(), WidgetHandler.this);
-
-        wholeWidget = (RelativeLayout) findViewById(R.id.wholeWidget);
-        nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
-        loadView = (RecyclerView) findViewById(R.id.list);
-
-        addWidget = (Button) findViewById(R.id.addWidget);
-
-        recyclerViewLayoutManager = new RecycleViewSmoothLayoutGrid(getApplicationContext(), functionsClass.columnCount(190), OrientationHelper.VERTICAL, false);
-        loadView.setLayoutManager(recyclerViewLayoutManager);
-
-        sections = new ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>();
-
-
-        if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColorAutomationFeature(wholeWidget, true);
-        } else {
-            functionsClass.setThemeColorAutomationFeature(wholeWidget, false);
-        }
-
-        appWidgetManager = AppWidgetManager.getInstance(this);
-        appWidgetHostView = new AppWidgetHost(getApplicationContext(), (int) System.currentTimeMillis());
-
-        navDrawerItems = new ArrayList<NavDrawerItem>();
-
-        if (functionsClass.loadCustomIcons()) {
-            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
-        }
-
-        loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
-        if (functionsClass.appThemeTransparent() == true) {
-            loadingSplash.setBackgroundColor(Color.TRANSPARENT);
-        } else {
-            loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
-        }
-
-        loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
-        gx = (TextView) findViewById(R.id.gx);
-        Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
-        gx.setTypeface(face);
-
-        if (PublicVariable.themeLightDark) {
-            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-            gx.setTextColor(getResources().getColor(R.color.dark));
-        } else if (!PublicVariable.themeLightDark) {
-            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-            gx.setTextColor(getResources().getColor(R.color.light));
         }
     }
 
@@ -166,8 +116,77 @@ public class WidgetHandler extends Activity {
     }
 
     @Override
-    public void onBackPressed() {
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        setContentView(R.layout.widget_handler);
 
+        functionsClass = new FunctionsClass(getApplicationContext(), WidgetHandler.this);
+
+        wholeWidget = (RelativeLayout) findViewById(R.id.wholeWidget);
+
+        installedWidgetsNestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
+        installedWidgetsLoadView = (RecyclerView) findViewById(R.id.list);
+
+        configuredWidgetsNestedScrollView = (ScrollView) findViewById(R.id.configuredWidgetNestedScrollView);
+        configuredWidgetsLoadView = (RecyclerView) findViewById(R.id.configuredWidgetList);
+
+        addWidget = (Button) findViewById(R.id.addWidget);
+
+        installedWidgetsRecyclerViewLayoutManager = new RecycleViewSmoothLayoutGrid(getApplicationContext(), functionsClass.columnCount(190), OrientationHelper.VERTICAL, false);
+        installedWidgetsLoadView.setLayoutManager(installedWidgetsRecyclerViewLayoutManager);
+
+        installedWidgetsSections = new ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>();
+
+        configuredWidgetsRecyclerViewLayoutManager = new RecycleViewSmoothLayoutGrid(getApplicationContext(), functionsClass.columnCount(195), OrientationHelper.VERTICAL, false);
+        configuredWidgetsLoadView.setLayoutManager(configuredWidgetsRecyclerViewLayoutManager);
+
+        configuredWidgetsSections = new ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>();
+
+        if (functionsClass.appThemeTransparent() == true) {
+            functionsClass.setThemeColorAutomationFeature(wholeWidget, true);
+        } else {
+            functionsClass.setThemeColorAutomationFeature(wholeWidget, false);
+        }
+
+        appWidgetManager = AppWidgetManager.getInstance(this);
+        appWidgetHost = new AppWidgetHost(getApplicationContext(), (int) System.currentTimeMillis());
+
+        installedWidgetsNavDrawerItems = new ArrayList<NavDrawerItem>();
+        configuredWidgetsNavDrawerItems = new ArrayList<NavDrawerItem>();
+
+        if (functionsClass.loadCustomIcons()) {
+            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
+        }
+
+        if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+            LoadConfiguredWidgets loadConfiguredWidgets = new LoadConfiguredWidgets();
+            loadConfiguredWidgets.execute();
+        } else {
+            loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
+            if (functionsClass.appThemeTransparent() == true) {
+                loadingSplash.setBackgroundColor(Color.TRANSPARENT);
+            } else {
+                loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
+            }
+
+            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
+            gx = (TextView) findViewById(R.id.gx);
+            Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
+            gx.setTypeface(face);
+
+            if (PublicVariable.themeLightDark) {
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                gx.setTextColor(getResources().getColor(R.color.dark));
+            } else if (!PublicVariable.themeLightDark) {
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                gx.setTextColor(getResources().getColor(R.color.light));
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     @Override
@@ -178,10 +197,10 @@ public class WidgetHandler extends Activity {
             @Override
             public void onClick(View view) {
 
-                if (nestedScrollView.isShown()) {
+                if (installedWidgetsNestedScrollView.isShown()) {
 
-                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.go_down);
-                    nestedScrollView.startAnimation(animation);
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+                    installedWidgetsNestedScrollView.startAnimation(animation);
                     animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
@@ -190,7 +209,7 @@ public class WidgetHandler extends Activity {
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            nestedScrollView.setVisibility(View.INVISIBLE);
+                            installedWidgetsNestedScrollView.setVisibility(View.INVISIBLE);
                         }
 
                         @Override
@@ -201,8 +220,8 @@ public class WidgetHandler extends Activity {
 
                 } else {
 
-                    LoadConfiguredWidgets loadConfiguredWidgets = new LoadConfiguredWidgets();
-                    loadConfiguredWidgets.execute();
+                    LoadInstalledWidgets loadInstalledWidgets = new LoadInstalledWidgets();
+                    loadInstalledWidgets.execute();
 
                 }
             }
@@ -211,17 +230,52 @@ public class WidgetHandler extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case WidgetsAdapter.WIDGET_CONFIGURATION_REQUEST: {
+                case InstalledWidgetsAdapter.WIDGET_CONFIGURATION_REQUEST: {
 
                     Bundle dataExtras = data.getExtras();
                     int appWidgetId = dataExtras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
 
-                    System.out.println(">>> onActivityResult WIDGET_CONFIGURATION_REQUEST <<< " + appWidgetId);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                    createWidget(getApplicationContext(), ((RelativeLayout) findViewById(R.id.widgetTemp)), appWidgetManager, appWidgetHostView, WidgetsAdapter.pickedAppWidgetProviderInfo, appWidgetId);
+                            WidgetDataModel widgetDataModel = new WidgetDataModel(
+                                    appWidgetId,
+                                    InstalledWidgetsAdapter.pickedWidgetPackageName,
+                                    functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName),
+                                    InstalledWidgetsAdapter.pickedWidgetLabel
+                            );
+
+                            String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
+
+                            WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                    .fallbackToDestructiveMigration()
+                                    .addCallback(new RoomDatabase.Callback() {
+                                        @Override
+                                        public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                            super.onCreate(supportSQLiteDatabase);
+                                        }
+
+                                        @Override
+                                        public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                            super.onOpen(supportSQLiteDatabase);
+
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    LoadConfiguredWidgets loadConfiguredWidgets = new LoadConfiguredWidgets();
+                                                    loadConfiguredWidgets.execute();
+                                                }
+                                            });
+                                        }
+                                    })
+                                    .build();
+                            widgetDataInterface.initDataAccessObject().insertNewWidgetData(widgetDataModel);
+                            widgetDataInterface.close();
+                        }
+                    }).start();
 
                     break;
                 }
@@ -231,33 +285,142 @@ public class WidgetHandler extends Activity {
     }
 
     public class LoadConfiguredWidgets extends AsyncTask<Void, Void, Void> {
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            navDrawerItems.clear();
-            sections.clear();
+            configuredWidgetsNavDrawerItems.clear();
+            configuredWidgetsSections.clear();
 
+            loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
+            if (functionsClass.appThemeTransparent() == true) {
+                loadingSplash.setBackgroundColor(Color.TRANSPARENT);
+            } else {
+                loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
+            }
 
-            /*loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
-                if (functionsClass.appThemeTransparent() == true) {
-                    loadingSplash.setBackgroundColor(Color.TRANSPARENT);
-                } else {
-                    loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
+            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
+            gx = (TextView) findViewById(R.id.gx);
+            Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
+            gx.setTypeface(face);
+
+            if (PublicVariable.themeLightDark) {
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                gx.setTextColor(getResources().getColor(R.color.dark));
+            } else if (!PublicVariable.themeLightDark) {
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                gx.setTextColor(getResources().getColor(R.color.light));
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            try {
+
+                WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                        .fallbackToDestructiveMigration()
+                        .addCallback(new RoomDatabase.Callback() {
+                            @Override
+                            public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                super.onCreate(supportSQLiteDatabase);
+                            }
+
+                            @Override
+                            public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                super.onOpen(supportSQLiteDatabase);
+
+                            }
+                        })
+                        .build();
+
+                List<WidgetDataModel> widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetData();
+
+                String oldAppName = "";
+                int widgetIndex = 0;
+                for (WidgetDataModel widgetDataModel : widgetDataModels) {
+
+                    try {
+                        int appWidgetId = widgetDataModel.getWidgetId();
+
+                        AppWidgetProviderInfo appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
+                        String packageName = widgetDataModel.getPackageName();
+                        String newAppName = functionsClass.appName(packageName);
+                        Drawable appIcon = functionsClass.shapedAppIcon(packageName);
+
+                        if (widgetIndex == 0) {
+                            configuredWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, appIcon));
+                        } else {
+                            if (!oldAppName.equals(newAppName)) {
+                                configuredWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, appIcon));
+                            }
+                        }
+
+                        oldAppName = functionsClass.appName(packageName);
+
+                        configuredWidgetsNavDrawerItems.add(new NavDrawerItem(
+                                newAppName,
+                                packageName,
+                                (appWidgetProviderInfo.loadLabel(getPackageManager()) != null) ? appWidgetProviderInfo.loadLabel(getPackageManager()) : newAppName,
+                                appIcon,
+                                appWidgetProviderInfo,
+                                appWidgetId
+                        ));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    widgetIndex++;
                 }
 
-                loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
-                gx = (TextView) findViewById(R.id.gx);
-                Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
-                gx.setTypeface(face);
 
-                if (PublicVariable.themeLightDark) {
-                    loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                    gx.setTextColor(getResources().getColor(R.color.dark));
-                } else if (!PublicVariable.themeLightDark) {
-                    loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                    gx.setTextColor(getResources().getColor(R.color.light));
-                }*/
+                for (int i = widgetIndex; i < (widgetIndex + 1); i++) {
+                    configuredWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(i, "", null));
+                }
 
+                configuredWidgetsRecyclerViewAdapter = new ConfiguredWidgetsAdapter(WidgetHandler.this, getApplicationContext(), configuredWidgetsNavDrawerItems, appWidgetManager, appWidgetHost);
+
+                widgetDataInterface.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged();
+            WidgetSectionedGridRecyclerViewAdapter.Section[] sectionsData = new WidgetSectionedGridRecyclerViewAdapter.Section[configuredWidgetsSections.size()];
+            configuredWidgetsSectionedGridRecyclerViewAdapter = new WidgetSectionedGridRecyclerViewAdapter(
+                    getApplicationContext(),
+                    R.layout.widgets_sections,
+                    configuredWidgetsLoadView,
+                    configuredWidgetsRecyclerViewAdapter
+            );
+            configuredWidgetsSectionedGridRecyclerViewAdapter.setSections(configuredWidgetsSections.toArray(sectionsData));
+            configuredWidgetsSectionedGridRecyclerViewAdapter.notifyDataSetChanged();
+            configuredWidgetsLoadView.setAdapter(configuredWidgetsSectionedGridRecyclerViewAdapter);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+                    loadingSplash.setVisibility(View.INVISIBLE);
+                    loadingSplash.startAnimation(animation);
+                }
+            }, 200);
+        }
+    }
+
+    public class LoadInstalledWidgets extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            installedWidgetsNavDrawerItems.clear();
+            installedWidgetsSections.clear();
         }
 
         @Override
@@ -281,12 +444,12 @@ public class WidgetHandler extends Activity {
                         Drawable newAppIcon = functionsClass.shapedAppIcon(appWidgetProviderInfo.provider.getPackageName());
 
                         if (widgetIndex == 0) {
-                            sections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
+                            installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
 
                         } else {
                             if (!oldAppName.equals(newAppName)) {
 
-                                sections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
+                                installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
 
                             }
                         }
@@ -296,7 +459,7 @@ public class WidgetHandler extends Activity {
                         Drawable widgetPreviewDrawable = appWidgetProviderInfo.loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_HIGH);
                         String widgetLabel = appWidgetProviderInfo.loadLabel(getPackageManager());
 
-                        navDrawerItems.add(new NavDrawerItem(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
+                        installedWidgetsNavDrawerItems.add(new NavDrawerItem(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
                                 appWidgetProviderInfo.provider.getPackageName(),
                                 (widgetLabel != null) ? widgetLabel : newAppName,
                                 newAppIcon,
@@ -311,10 +474,10 @@ public class WidgetHandler extends Activity {
                 }
 
                 for (int i = widgetIndex; i < (widgetIndex + 1); i++) {
-                    sections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(i, "", null));
+                    installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(i, "", null));
                 }
 
-                recyclerViewAdapter = new WidgetsAdapter(WidgetHandler.this, getApplicationContext(), navDrawerItems, appWidgetHostView);
+                installedWidgetsRecyclerViewAdapter = new InstalledWidgetsAdapter(WidgetHandler.this, getApplicationContext(), installedWidgetsNavDrawerItems, appWidgetHost);
 
 
             } catch (Exception e) {
@@ -329,8 +492,8 @@ public class WidgetHandler extends Activity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.go_up);
-            nestedScrollView.startAnimation(animation);
+            Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+            installedWidgetsNestedScrollView.startAnimation(animation);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -339,7 +502,7 @@ public class WidgetHandler extends Activity {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    nestedScrollView.setVisibility(View.VISIBLE);
+                    installedWidgetsNestedScrollView.setVisibility(View.VISIBLE);
                 }
 
                 @Override
@@ -348,26 +511,28 @@ public class WidgetHandler extends Activity {
                 }
             });
 
-            recyclerViewAdapter.notifyDataSetChanged();
-            WidgetSectionedGridRecyclerViewAdapter.Section[] sectionsData = new WidgetSectionedGridRecyclerViewAdapter.Section[sections.size()];
+            installedWidgetsRecyclerViewAdapter.notifyDataSetChanged();
+            WidgetSectionedGridRecyclerViewAdapter.Section[] sectionsData = new WidgetSectionedGridRecyclerViewAdapter.Section[installedWidgetsSections.size()];
             WidgetSectionedGridRecyclerViewAdapter widgetSectionedGridRecyclerViewAdapter = new WidgetSectionedGridRecyclerViewAdapter(
                     getApplicationContext(),
                     R.layout.widgets_sections,
-                    loadView,
-                    recyclerViewAdapter
+                    installedWidgetsLoadView,
+                    installedWidgetsRecyclerViewAdapter
             );
-            widgetSectionedGridRecyclerViewAdapter.setSections(sections.toArray(sectionsData));
-            loadView.setAdapter(widgetSectionedGridRecyclerViewAdapter);
+            widgetSectionedGridRecyclerViewAdapter.setSections(installedWidgetsSections.toArray(sectionsData));
+            widgetSectionedGridRecyclerViewAdapter.notifyDataSetChanged();
+            installedWidgetsLoadView.setAdapter(widgetSectionedGridRecyclerViewAdapter);
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    loadingSplash.setVisibility(View.INVISIBLE);
-                    loadingSplash.startAnimation(animation);
-                }
-            }, 200);
-
+            if (!getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+                        loadingSplash.setVisibility(View.INVISIBLE);
+                        loadingSplash.startAnimation(animation);
+                    }
+                }, 200);
+            }
         }
     }
 }

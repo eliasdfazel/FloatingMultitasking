@@ -54,6 +54,7 @@
         android:fadingEdgeLength="37dp"
         android:requiresFadingEdge="vertical"
         android:scrollbars="none"
+        android:background="@color/transparent_dark_high_twice"
         android:visibility="invisible">
 
         <RelativeLayout
@@ -84,6 +85,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="13dp"
+        android:backgroundTint="@color/default_color_light"
         android:background="@android:drawable/ic_menu_add"/>
 
     <RelativeLayout

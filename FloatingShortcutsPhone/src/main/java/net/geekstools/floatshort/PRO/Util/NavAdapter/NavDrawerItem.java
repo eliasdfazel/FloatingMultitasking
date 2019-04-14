@@ -12,6 +12,8 @@ public class NavDrawerItem {
 
     String[] packageNames;
 
+    int appWidgetId;
+
     Drawable appIcon, run, widgetPreview,
             notificationAppIcon, notificationLargeIcon;
 
@@ -65,6 +67,15 @@ public class NavDrawerItem {
         this.appIcon = AppIcon;
         this.widgetPreview = widgetPreview;
         this.appWidgetProviderInfo = appWidgetProviderInfo;
+    }
+
+    public NavDrawerItem(String AppName, String PackageName, String widgetLabel, Drawable AppIcon, AppWidgetProviderInfo appWidgetProviderInfo, int appWidgetId) {
+        this.appName = AppName;
+        this.packageName = PackageName;
+        this.widgetLabel = widgetLabel;
+        this.appIcon = AppIcon;
+        this.appWidgetProviderInfo = appWidgetProviderInfo;
+        this.appWidgetId = appWidgetId;
     }
 
     public NavDrawerItem(String notificationTime, String notificationPackage,
@@ -130,6 +141,10 @@ public class NavDrawerItem {
 
     public String[] getPackName() {
         return this.packageNames;
+    }
+
+    public int getAppWidgetId() {
+        return this.appWidgetId;
     }
 
     public Drawable getAppIcon() {

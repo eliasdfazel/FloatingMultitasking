@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class WidgetsAdapter extends RecyclerView.Adapter<WidgetsAdapter.ViewHolder> {
+public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidgetsAdapter.ViewHolder> {
 
     Activity activity;
     Context context;
@@ -34,10 +34,15 @@ public class WidgetsAdapter extends RecyclerView.Adapter<WidgetsAdapter.ViewHold
     ViewHolder viewHolder;
 
     public static final int WIDGET_CONFIGURATION_REQUEST = 666;
+
+    public static String pickedWidgetPackageName;
     public static AppWidgetProviderInfo pickedAppWidgetProviderInfo;
+    public static int pickedWidgetId;
+    public static String pickedWidgetLabel;
+
     AppWidgetHost appWidgetHost;
 
-    public WidgetsAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems, AppWidgetHost appWidgetHost) {
+    public InstalledWidgetsAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems, AppWidgetHost appWidgetHost) {
         this.context = context;
         this.activity = activity;
 
@@ -49,8 +54,8 @@ public class WidgetsAdapter extends RecyclerView.Adapter<WidgetsAdapter.ViewHold
     }
 
     @Override
-    public WidgetsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(context).inflate(R.layout.widget_items, parent, false);
+    public InstalledWidgetsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        view = LayoutInflater.from(context).inflate(R.layout.installed_widget_items, parent, false);
         viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -72,8 +77,10 @@ public class WidgetsAdapter extends RecyclerView.Adapter<WidgetsAdapter.ViewHold
             public boolean onLongClick(View view) {
                 functionsClass.doVibrate(77);
 
+                pickedWidgetPackageName = navDrawerItems.get(position).getPackageName();
                 pickedAppWidgetProviderInfo = navDrawerItems.get(position).getAppWidgetProviderInfo();
-                int pickedWidgetId = appWidgetHost.allocateAppWidgetId();
+                pickedWidgetId = appWidgetHost.allocateAppWidgetId();
+                pickedWidgetLabel = navDrawerItems.get(position).getWidgetLabel();
 
                 Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId);
@@ -91,7 +98,6 @@ public class WidgetsAdapter extends RecyclerView.Adapter<WidgetsAdapter.ViewHold
                     intentWidgetConfiguration.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivityForResult(intentWidgetConfiguration, WIDGET_CONFIGURATION_REQUEST);
                 }
-
 
                 return false;
             }

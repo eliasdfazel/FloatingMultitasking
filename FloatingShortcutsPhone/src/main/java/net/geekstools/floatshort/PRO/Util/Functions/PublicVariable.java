@@ -49,6 +49,7 @@ public class PublicVariable {
     public static String splitSinglePackage;
     public static String splitSingleClassName;
     public static String previousDuplicated;
+    public static final String WIDGET_DATA_DATABASE_NAME = "WidgetData";
 
     public static String[] freqApps;
 
