@@ -76,45 +76,6 @@ public class WidgetHandler extends Activity {
 
     LoadCustomIcons loadCustomIcons;
 
-    public static void createWidget(Context context, ViewGroup widgetView, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost, AppWidgetProviderInfo appWidgetProviderInfo, int widgetId) {
-        try {
-            widgetView.removeAllViews();
-
-            FunctionsClass functionsClass = new FunctionsClass(context);
-
-            appWidgetHost.startListening();
-
-            AppWidgetHostView hostView = appWidgetHost.createView(context, widgetId, appWidgetProviderInfo);
-            hostView.setAppWidget(widgetId, appWidgetProviderInfo);
-
-            int widgetWidth = 199, widgetHeight = 159;
-
-            hostView.setMinimumWidth(widgetWidth);
-            hostView.setMinimumHeight(widgetHeight);
-
-            widgetView.addView(hostView);
-
-            Bundle bundle = new Bundle();
-            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 199);
-            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 159);
-            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, functionsClass.displayX());
-            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, functionsClass.displayY());
-            appWidgetManager.bindAppWidgetIdIfAllowed(widgetId, appWidgetProviderInfo.provider, bundle);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -185,11 +146,6 @@ public class WidgetHandler extends Activity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
 
@@ -226,6 +182,21 @@ public class WidgetHandler extends Activity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     @Override
@@ -533,6 +504,35 @@ public class WidgetHandler extends Activity {
                     }
                 }, 200);
             }
+        }
+    }
+
+    public static void createWidget(Context context, ViewGroup widgetView, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost, AppWidgetProviderInfo appWidgetProviderInfo, int widgetId) {
+        try {
+            widgetView.removeAllViews();
+
+            FunctionsClass functionsClass = new FunctionsClass(context);
+
+            appWidgetHost.startListening();
+
+            AppWidgetHostView hostView = appWidgetHost.createView(context, widgetId, appWidgetProviderInfo);
+            hostView.setAppWidget(widgetId, appWidgetProviderInfo);
+
+            int widgetWidth = 199, widgetHeight = 159;
+
+            hostView.setMinimumWidth(widgetWidth);
+            hostView.setMinimumHeight(widgetHeight);
+
+            widgetView.addView(hostView);
+
+            Bundle bundle = new Bundle();
+            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 199);
+            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 159);
+            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, functionsClass.displayX());
+            bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, functionsClass.displayY());
+            appWidgetManager.bindAppWidgetIdIfAllowed(widgetId, appWidgetProviderInfo.provider, bundle);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
