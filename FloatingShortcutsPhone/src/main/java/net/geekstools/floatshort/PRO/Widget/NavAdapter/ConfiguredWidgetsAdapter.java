@@ -16,7 +16,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
-import net.geekstools.floatshort.PRO.Widget.WidgetHandler;
+import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.util.ArrayList;
 
@@ -61,7 +61,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
         AppWidgetProviderInfo appWidgetProviderInfo = navDrawerItems.get(position).getAppWidgetProviderInfo();
         int appWidgetId = navDrawerItems.get(position).getAppWidgetId();
 
-        WidgetHandler.createWidget(activity, viewHolder.widgetPreview,
+        WidgetConfigurations.createWidget(activity, viewHolder.widgetPreview,
                 appWidgetManager, appWidgetHost,
                 appWidgetProviderInfo, appWidgetId);
 

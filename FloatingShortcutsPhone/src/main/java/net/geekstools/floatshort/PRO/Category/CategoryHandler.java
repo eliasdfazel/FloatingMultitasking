@@ -1,6 +1,7 @@
 package net.geekstools.floatshort.PRO.Category;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -67,6 +68,7 @@ import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
+import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -106,6 +108,12 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
     ProgressDialog progressDialog;
 
     private FirebaseAuth firebaseAuth;
+
+    public void floatingWidget(View view) {
+
+        startActivity(new Intent(getApplicationContext(), WidgetConfigurations.class), ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -74,7 +74,7 @@ import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
-import net.geekstools.floatshort.PRO.Widget.WidgetHandler;
+import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.io.File;
@@ -122,7 +122,7 @@ public class ListViewOff extends Activity implements View.OnClickListener, View.
 
     public void floatingWidget(View view) {
 
-        startActivity(new Intent(getApplicationContext(), WidgetHandler.class));
+        startActivity(new Intent(getApplicationContext(), WidgetConfigurations.class), ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
 
     }
 

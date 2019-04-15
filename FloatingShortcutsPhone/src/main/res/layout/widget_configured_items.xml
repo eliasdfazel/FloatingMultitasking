@@ -33,6 +33,8 @@
         android:layout_height="213dp"
         android:layout_below="@id/widgetLabel"
         android:layout_centerHorizontal="true"
-        android:background="@color/red_transparent"/>
+        android:padding="13dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/draw_open"/>
 
 </RelativeLayout>

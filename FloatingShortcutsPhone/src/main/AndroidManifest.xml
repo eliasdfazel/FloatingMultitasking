@@ -113,7 +113,7 @@
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".Widget.WidgetHandler"
+            android:name=".Widget.WidgetConfigurations"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="true"
             android:resizeableActivity="true"
@@ -309,7 +309,7 @@
             android:enabled="false"
             android:icon="@drawable/alias_categories"
             android:label="@string/floatingWidget"
-            android:targetActivity=".Widget.WidgetHandler">
+            android:targetActivity=".Widget.WidgetConfigurations">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,7 +51,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-public class WidgetHandler extends Activity {
+public class WidgetConfigurations extends Activity {
 
     FunctionsClass functionsClass;
 
@@ -82,7 +84,7 @@ public class WidgetHandler extends Activity {
         super.onCreate(bundle);
         setContentView(R.layout.widget_handler);
 
-        functionsClass = new FunctionsClass(getApplicationContext(), WidgetHandler.this);
+        functionsClass = new FunctionsClass(getApplicationContext(), WidgetConfigurations.this);
 
         wholeWidget = (RelativeLayout) findViewById(R.id.wholeWidget);
 
@@ -159,8 +161,14 @@ public class WidgetHandler extends Activity {
             public void onClick(View view) {
 
                 if (installedWidgetsNestedScrollView.isShown()) {
+                    ViewCompat.animate(addWidget)
+                            .rotation(0.0F)
+                            .withLayer()
+                            .setDuration(300L)
+                            .setInterpolator(new OvershootInterpolator(3.0f))
+                            .start();
 
-                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.go_down);
                     installedWidgetsNestedScrollView.startAnimation(animation);
                     animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
@@ -170,6 +178,9 @@ public class WidgetHandler extends Activity {
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
+//                            addWidget.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_90));
+
+
                             installedWidgetsNestedScrollView.setVisibility(View.INVISIBLE);
                         }
 
@@ -202,6 +213,7 @@ public class WidgetHandler extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        overridePendingTransition(android.R.anim.fade_in, R.anim.go_down);
     }
 
     @Override
@@ -355,7 +367,7 @@ public class WidgetHandler extends Activity {
                     configuredWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(i, "", null));
                 }
 
-                configuredWidgetsRecyclerViewAdapter = new ConfiguredWidgetsAdapter(WidgetHandler.this, getApplicationContext(), configuredWidgetsNavDrawerItems, appWidgetManager, appWidgetHost);
+                configuredWidgetsRecyclerViewAdapter = new ConfiguredWidgetsAdapter(WidgetConfigurations.this, getApplicationContext(), configuredWidgetsNavDrawerItems, appWidgetManager, appWidgetHost);
 
                 widgetDataInterface.close();
             } catch (Exception e) {
@@ -457,7 +469,7 @@ public class WidgetHandler extends Activity {
                     installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(i, "", null));
                 }
 
-                installedWidgetsRecyclerViewAdapter = new InstalledWidgetsAdapter(WidgetHandler.this, getApplicationContext(), installedWidgetsNavDrawerItems, appWidgetHost);
+                installedWidgetsRecyclerViewAdapter = new InstalledWidgetsAdapter(WidgetConfigurations.this, getApplicationContext(), installedWidgetsNavDrawerItems, appWidgetHost);
 
 
             } catch (Exception e) {
@@ -472,7 +484,14 @@ public class WidgetHandler extends Activity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+            ViewCompat.animate(addWidget)
+                    .rotation(135.0F)
+                    .withLayer()
+                    .setDuration(300L)
+                    .setInterpolator(new OvershootInterpolator(3.0f))
+                    .start();
+
+            Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.down_up);
             installedWidgetsNestedScrollView.startAnimation(animation);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override

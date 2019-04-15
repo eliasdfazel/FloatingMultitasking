@@ -61,7 +61,10 @@ public class Widget_Unlimited_Floating extends Service {
             return START_NOT_STICKY;
         }
         appWidgetId[startId] = intent.getIntExtra("WidgetId", -1);
+
         appWidgetProviderInfo[startId] = appWidgetManager.getAppWidgetInfo(appWidgetId[startId]);
+        appWidgetHosts[startId] = new AppWidgetHost(this, (int) System.currentTimeMillis());
+        appWidgetHosts[startId].startListening();
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_widgets, null, false);
@@ -91,8 +94,6 @@ public class Widget_Unlimited_Floating extends Service {
         widgetMoveButton[startId].setBackground(getDrawable(R.drawable.draw_move));
         widgetCloseButton[startId].setBackground(getDrawable(R.drawable.draw_close_service));
 
-        appWidgetHosts[startId] = new AppWidgetHost(this, (int) System.currentTimeMillis());
-        appWidgetHosts[startId].startListening();
 
         appWidgetHostView[startId] = appWidgetHosts[startId].createView(this, appWidgetId[startId], appWidgetProviderInfo[startId]);
 
@@ -109,13 +110,13 @@ public class Widget_Unlimited_Floating extends Service {
         appWidgetHostView[startId].setAppWidget(appWidgetId[startId], appWidgetProviderInfo[startId]);
         appWidgetHostView[startId].setMinimumHeight(H);
         appWidgetHostView[startId].setMinimumWidth(W);
+        widgetLayout[startId].addView(appWidgetHostView[startId]);
 
         final RelativeLayout.LayoutParams widgetRelativeLayout = new RelativeLayout.LayoutParams(W, H);
         wholeViewWidget[startId].setElevation(19);
         wholeViewWidget[startId].setLayoutParams(widgetRelativeLayout);
         wholeViewWidget[startId].requestLayout();
 
-        widgetLayout[startId].addView(appWidgetHostView[startId]);
 
         xInit = xInit + 13;
         yInit = yInit + 13;
@@ -127,8 +128,8 @@ public class Widget_Unlimited_Floating extends Service {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
         layoutParams[startId].gravity = Gravity.TOP | Gravity.START;
-        layoutParams[startId].x = xPos;
-        layoutParams[startId].y = yPos;
+        layoutParams[startId].x = xInit;
+        layoutParams[startId].y = yInit;
         layoutParams[startId].windowAnimations = android.R.style.Animation_Dialog;
 
         windowManager.addView(floatingView[startId], layoutParams[startId]);
