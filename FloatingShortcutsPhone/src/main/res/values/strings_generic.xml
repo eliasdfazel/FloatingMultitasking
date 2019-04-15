@@ -54,13 +54,11 @@
     <string name="whatsnew" translatable="false">What\'s New…</string>
     <string name="changelog" translatable="false">
         <![CDATA[
+        🔵 <b><big>Floating Widgets</big></b> 🔳 🔲 <br/>
+        &bull; First Select & Setup Widgets<br/>
+        &bull; then, Click on ✔ to Create Floating Widget<br/>
         🔵 <b>Optimizing Apps Opening Process</b> | <small>To Open Apps Even Faster ⚡⚡⚡ </small><br/>
         🔵 <b>Orientation Change Handler</b> | <small>Optimized Position of Floating Shortcuts on Landscape/Portrait Change</small><br/>
-        🔵 <b>Float It</b> 🎈<br/>
-        &bull; Open All Apps in Floating View (FreeForm)<br/>
-        🔵 <b>Theme of Icons (Package of Icons)</b> ✨ <br/>
-        🔵 <b>Lite Preferences</b> ⚡<br/>
-        &bull; An Option to Set Preferences to Minimum for Better Performance (<small>Highly Recommended for Mid-Range & Low-End Smartphones</small>)<br/>
         <br/><br/>
         /* <b>Explore More Options in Preferences  ⚙️  </b>*/ <br/>
         /* <b>Please, Go to App Page for More Details</b> ⭐👍 */
