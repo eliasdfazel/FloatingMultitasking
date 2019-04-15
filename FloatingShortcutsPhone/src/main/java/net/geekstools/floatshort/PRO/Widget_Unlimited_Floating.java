@@ -1,106 +1,52 @@
 package net.geekstools.floatshort.PRO;
 
 import android.app.Service;
-import android.content.BroadcastReceiver;
+import android.appwidget.AppWidgetHost;
+import android.appwidget.AppWidgetHostView;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
-import net.geekstools.imageview.customshapes.ShapesImage;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class Widget_Unlimited_Floating extends Service {
 
     FunctionsClass functionsClass;
+
     WindowManager windowManager;
     WindowManager.LayoutParams[] layoutParams;
-    WindowManager.LayoutParams[] StickyEdgeParams;
 
-    ViewGroup[] floatingView;
-    RelativeLayout wholeCategoryFloating;
-    ShapesImage one, two, three, four;
-    ShapesImage[] pin, notificationDot;
+    ViewGroup[] floatingView, widgetLayout;
+    RelativeLayout[] wholeViewWidget;
+    TextView[] widgetLabel;
+    ImageView[] widgetMoveButton, widgetCloseButton;
 
-    int xPos, yPos, xInit = 19, yInit = 19, xMove, yMove;
+    AppWidgetManager appWidgetManager;
+    AppWidgetProviderInfo[] appWidgetProviderInfo;
+    AppWidgetHost[] appWidgetHosts;
+    AppWidgetHostView[] appWidgetHostView;
 
-    int array, categorySize;
-    String[] categoryName;
-    boolean[] allowMove, touchingDelay, trans, StickyEdge, openIt;
+    int xPos, yPos, xInit = 19, yInit = 19;
 
-    String notificationPackage;
-    boolean showNotificationDot = false;
-
-    BroadcastReceiver broadcastReceiver;
-    SharedPreferences sharedPrefPosition;
-
-    Map<String, String> mapContentCategoryName;
-    Map<String, Integer> mapCategoryNameStartId;
-
-    Runnable runnablePressHold = null;
-    Handler handlerPressHold = new Handler();
-
-    LoadCustomIcons loadCustomIcons;
-
-    int startIdCounter = 1;
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        switch (newConfig.orientation) {
-            case Configuration.ORIENTATION_PORTRAIT: {
-                for (int J = 1; J <= startIdCounter; J++) {
-                    try {
-                        if (floatingView != null) {
-                            if (floatingView[J].isShown()) {
-                                layoutParams[J] = functionsClass.handleOrientationPortrait(categoryName[J], layoutParams[J].height);
-                                windowManager.updateViewLayout(floatingView[J], layoutParams[J]);
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                break;
-            }
-            case Configuration.ORIENTATION_LANDSCAPE: {
-                for (int J = 1; J <= startIdCounter; J++) {
-                    try {
-                        if (floatingView != null) {
-                            if (floatingView[J].isShown()) {
-                                layoutParams[J] = functionsClass.handleOrientationLandscape(categoryName[J], layoutParams[J].height);
-                                windowManager.updateViewLayout(floatingView[J], layoutParams[J]);
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                break;
-            }
-            default: {
-
-                break;
-            }
-        }
-    }
+    int array;
+    int[] appWidgetId, widgetColor;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -109,299 +55,199 @@ public class Widget_Unlimited_Floating extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
-        System.out.println(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
-        startIdCounter = startId;
-
-        if (functionsClass.loadCustomIcons()) {
-            if (loadCustomIcons == null) {
-                loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
-            }
+        System.out.println("StartID ::: " + startId);
+        if (startId >= array) {
+            return START_NOT_STICKY;
         }
-
-        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        try {
-            categoryName[startId] = intent.getStringExtra("categoryName");
-
-            touchingDelay[startId] = false;
-            StickyEdge[startId] = false;
-            allowMove[startId] = true;
-            openIt[startId] = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Service.START_NOT_STICKY;
-        }
+        appWidgetId[startId] = intent.getIntExtra("WidgetId", -1);
+        appWidgetProviderInfo[startId] = appWidgetManager.getAppWidgetInfo(appWidgetId[startId]);
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_medium, null, false);
-        if (PublicVariable.size == 13 || PublicVariable.size == 26) {
-            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_small, null, false);
-            categorySize = 24;
-        } else if (PublicVariable.size == 39 || PublicVariable.size == 52) {
-            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_medium, null, false);
-            categorySize = 36;
-        } else if (PublicVariable.size == 65 || PublicVariable.size == 78) {
-            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_large, null, false);
-            categorySize = 48;
-        }
+        floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_widgets, null, false);
 
-        wholeCategoryFloating = floatingView[startId].findViewById(R.id.wholeCategoryFloating);
-        one = functionsClass.initShapesImage(floatingView[startId], R.id.one);
-        two = functionsClass.initShapesImage(floatingView[startId], R.id.two);
-        three = functionsClass.initShapesImage(floatingView[startId], R.id.three);
-        four = functionsClass.initShapesImage(floatingView[startId], R.id.four);
-        pin[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.pin);
-        notificationDot[startId] = functionsClass.initShapesImage(floatingView[startId],
-                functionsClass.checkStickyEdge() ? R.id.notificationDotEnd : R.id.notificationDotStart);
+        widgetLayout[startId] = (ViewGroup) floatingView[startId].findViewById(R.id.widgetViewGroup);
+        wholeViewWidget[startId] = (RelativeLayout) floatingView[startId].findViewById(R.id.whole_widget_view);
+        widgetLabel[startId] = (TextView) floatingView[startId].findViewById(R.id.widgetLabel);
+        widgetMoveButton[startId] = (ImageView) floatingView[startId].findViewById(R.id.widgetMoveButton);
+        widgetCloseButton[startId] = (ImageView) floatingView[startId].findViewById(R.id.widgetCloseButton);
 
-        Drawable drawableBack = null;
-        switch (functionsClass.shapesImageId()) {
-            case 1:
-                drawableBack = getDrawable(R.drawable.category_droplet_icon);
-                break;
-            case 2:
-                drawableBack = getDrawable(R.drawable.category_circle_icon);
-                break;
-            case 3:
-                drawableBack = getDrawable(R.drawable.category_square_icon);
-                break;
-            case 4:
-                drawableBack = getDrawable(R.drawable.category_squircle_icon);
-                break;
-            case 0:
-                drawableBack = null;
-                break;
-        }
-        if (drawableBack != null) {
-            drawableBack.setTint(PublicVariable.primaryColor);
-            drawableBack.setAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
-        }
-        wholeCategoryFloating.setBackground(drawableBack);
+        widgetColor[startId] = functionsClass.extractVibrantColor(appWidgetProviderInfo[startId].loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_LOW));
 
-        if (categoryName[startId].equals(getString(R.string.remove_all_shortcuts))) {
-            for (int r = 1; r < startId; r++) {
-                try {
-                    if (floatingView != null) {
-                        if (floatingView[r].isShown()) {
-                            try {
-                                windowManager.removeView(floatingView[r]);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            } finally {
-                                PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+        String widgetLabelText =
+                appWidgetProviderInfo[startId].loadLabel(getPackageManager()) == null ?
+                        getString(R.string.widgetHint) : appWidgetProviderInfo[startId].loadLabel(getPackageManager());
+        widgetLabel[startId].setText(widgetLabelText);
+        widgetLabel[startId].setTextColor(widgetColor[startId]);
 
-                                if (PublicVariable.floatingCounter == 0) {
-                                    if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                            .getBoolean("stable", true) == false) {
-                                        stopService(new Intent(getApplicationContext(), BindServices.class));
-                                    }
-                                }
-                            }
-                        } else if (PublicVariable.floatingCounter == 0) {
-                            if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                    .getBoolean("stable", true) == false) {
-                                stopService(new Intent(getApplicationContext(), BindServices.class));
-                            }
+        LayerDrawable moveLayerDrawable = (LayerDrawable) getResources().getDrawable(R.drawable.draw_move);
+        GradientDrawable moveBackgroundLayerDrawable = (GradientDrawable) moveLayerDrawable.findDrawableByLayerId(R.id.backtemp);
+        moveBackgroundLayerDrawable.setColor(widgetColor[startId]);
+
+        LayerDrawable closeLayerDrawable = (LayerDrawable) getResources().getDrawable(R.drawable.draw_close_service);
+        GradientDrawable closeBackgroundLayerDrawable = (GradientDrawable) closeLayerDrawable.findDrawableByLayerId(R.id.backtemp);
+        closeBackgroundLayerDrawable.setColor(widgetColor[startId]);
+
+        widgetMoveButton[startId].setBackground(getDrawable(R.drawable.draw_move));
+        widgetCloseButton[startId].setBackground(getDrawable(R.drawable.draw_close_service));
+
+        appWidgetHosts[startId] = new AppWidgetHost(this, (int) System.currentTimeMillis());
+        appWidgetHosts[startId].startListening();
+
+        appWidgetHostView[startId] = appWidgetHosts[startId].createView(this, appWidgetId[startId], appWidgetProviderInfo[startId]);
+
+        int H = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, this.getResources().getDisplayMetrics());
+        int W = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, this.getResources().getDisplayMetrics());
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, W);
+        bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, H);
+        bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, functionsClass.displayX() / 2);
+        bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, functionsClass.displayY() / 2);
+        appWidgetManager.bindAppWidgetIdIfAllowed(appWidgetId[startId], appWidgetProviderInfo[startId].provider, bundle);
+
+        appWidgetHostView[startId].setAppWidget(appWidgetId[startId], appWidgetProviderInfo[startId]);
+        appWidgetHostView[startId].setMinimumHeight(H);
+        appWidgetHostView[startId].setMinimumWidth(W);
+
+        final RelativeLayout.LayoutParams widgetRelativeLayout = new RelativeLayout.LayoutParams(W, H);
+        wholeViewWidget[startId].setElevation(19);
+        wholeViewWidget[startId].setLayoutParams(widgetRelativeLayout);
+        wholeViewWidget[startId].requestLayout();
+
+        widgetLayout[startId].addView(appWidgetHostView[startId]);
+
+        xInit = xInit + 13;
+        yInit = yInit + 13;
+        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        layoutParams[startId] = new WindowManager.LayoutParams(
+                W,
+                H,
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT);
+        layoutParams[startId].gravity = Gravity.TOP | Gravity.START;
+        layoutParams[startId].x = xPos;
+        layoutParams[startId].y = yPos;
+        layoutParams[startId].windowAnimations = android.R.style.Animation_Dialog;
+
+        windowManager.addView(floatingView[startId], layoutParams[startId]);
+
+        widgetLabel[startId].setOnTouchListener(new View.OnTouchListener() {
+            WindowManager.LayoutParams layoutParamsTouch = layoutParams[startId];
+            int initialX;
+            int initialY;
+            float initialTouchX;
+            float initialTouchY;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        initialX = layoutParamsTouch.x;
+                        initialY = layoutParamsTouch.y;
+                        initialTouchX = event.getRawX();
+                        initialTouchY = event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        layoutParamsTouch.x = initialX + (int) (event.getRawX() - initialTouchX);
+                        layoutParamsTouch.y = initialY + (int) (event.getRawY() - initialTouchY);
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        layoutParamsTouch.x = initialX + (int) (event.getRawX() - initialTouchX);
+                        layoutParamsTouch.y = initialY + (int) (event.getRawY() - initialTouchY);
+                        windowManager.updateViewLayout(floatingView[startId], layoutParamsTouch);
+
+                        break;
+                }
+                return false;
+            }
+        });
+        widgetLabel[startId].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        widgetMoveButton[startId].setOnTouchListener(new View.OnTouchListener() {
+            WindowManager.LayoutParams layoutParamsTouch = layoutParams[startId];
+            int initialX;
+            int initialY;
+            float initialTouchX;
+            float initialTouchY;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        initialX = layoutParamsTouch.x;
+                        initialY = layoutParamsTouch.y;
+                        initialTouchX = event.getRawX();
+                        initialTouchY = event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        layoutParamsTouch.x = initialX + (int) (event.getRawX() - initialTouchX);
+                        layoutParamsTouch.y = initialY + (int) (event.getRawY() - initialTouchY);
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        layoutParamsTouch.x = initialX + (int) (event.getRawX() - initialTouchX);
+                        layoutParamsTouch.y = initialY + (int) (event.getRawY() - initialTouchY);
+                        try {
+                            windowManager.updateViewLayout(floatingView[startId], layoutParamsTouch);
+                        } catch (IllegalArgumentException e) {
+                            windowManager.addView(floatingView[startId], layoutParamsTouch);
                         }
-                    }
+
+                        break;
+                }
+                return false;
+            }
+        });
+        widgetMoveButton[startId].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        widgetCloseButton[startId].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try {
+
+                    windowManager.removeView(floatingView[startId]);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            PublicVariable.FloatingCategories.clear();
-            PublicVariable.categoriesCounter = -1;
-            try {
-                if (broadcastReceiver != null) {
-                    try {
-                        unregisterReceiver(broadcastReceiver);
-                    } catch (IllegalArgumentException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            stopSelf();
-            return START_NOT_STICKY;
-        }
-        mapCategoryNameStartId.put(categoryName[startId], startId);
-        String[] categoryApps = functionsClass.readFileLine(categoryName[startId]);
-        if (categoryApps != null) {
-            if (categoryApps.length > 0) {
-                for (int i = 0; i < categoryApps.length; i++) {
-                    mapContentCategoryName.put(categoryApps[i], categoryName[startId]);
-                    if (getFileStreamPath(categoryApps[i] + "_" + "Notification" + "Package").exists()) {
-                        showNotificationDot = true;
-                        notificationPackage = categoryApps[i];
-                    }
-                }
-            }
-            try {
-                one.setImageDrawable(functionsClass.loadCustomIcons() ?
-                        loadCustomIcons.getDrawableIconForPackage(categoryApps[0], functionsClass.shapedAppIcon(categoryApps[0]))
-                        :
-                        functionsClass.shapedAppIcon(categoryApps[0]));
-                one.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
-            } catch (Exception e) {
-                one.setImageDrawable(null);
-            }
-            try {
-                two.setImageDrawable(functionsClass.loadCustomIcons() ?
-                        loadCustomIcons.getDrawableIconForPackage(categoryApps[1], functionsClass.shapedAppIcon(categoryApps[1]))
-                        :
-                        functionsClass.shapedAppIcon(categoryApps[1]));
-                two.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
-            } catch (Exception e) {
-                two.setImageDrawable(null);
-            }
-            try {
-                three.setImageDrawable(functionsClass.loadCustomIcons() ?
-                        loadCustomIcons.getDrawableIconForPackage(categoryApps[2], functionsClass.shapedAppIcon(categoryApps[2]))
-                        :
-                        functionsClass.shapedAppIcon(categoryApps[2]));
-                three.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
-            } catch (Exception e) {
-                three.setImageDrawable(null);
-            }
-            try {
-                four.setImageDrawable(functionsClass.loadCustomIcons() ?
-                        loadCustomIcons.getDrawableIconForPackage(categoryApps[3], functionsClass.shapedAppIcon(categoryApps[3]))
-                        :
-                        functionsClass.shapedAppIcon(categoryApps[3]));
-                four.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
-            } catch (Exception e) {
-                four.setImageDrawable(null);
-            }
-        }
 
-        int HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, categorySize * 2, this.getResources().getDisplayMetrics());
-        String nameForPosition = categoryName[startId];
-        sharedPrefPosition = getSharedPreferences(nameForPosition, MODE_PRIVATE);
-        xInit = xInit + 13;
-        yInit = yInit + 13;
-        xPos = sharedPrefPosition.getInt("X", xInit);
-        yPos = sharedPrefPosition.getInt("Y", yInit);
-
-        layoutParams[startId] = functionsClass.normalLayoutParams(HW, xPos, yPos);
-        windowManager.addView(floatingView[startId], layoutParams[startId]);
-
-        final String className = Widget_Unlimited_Floating.class.getSimpleName();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("Split_Apps_Pair_" + className);
-        intentFilter.addAction("Split_Apps_Single_" + className);
-        intentFilter.addAction("Pin_App_" + className);
-        intentFilter.addAction("Unpin_App_" + className);
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals("Pin_App_" + className)) {
-                    allowMove[intent.getIntExtra("startId", 1)] = false;
-                    Drawable drawableBack = null;
-                    switch (functionsClass.shapesImageId()) {
-                        case 1:
-                            drawableBack = getDrawable(R.drawable.pin_droplet_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_transparent));
-                            break;
-                        case 2:
-                            drawableBack = getDrawable(R.drawable.pin_circle_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_transparent));
-                            break;
-                        case 3:
-                            drawableBack = getDrawable(R.drawable.pin_square_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_transparent));
-                            break;
-                        case 4:
-                            drawableBack = getDrawable(R.drawable.pin_squircle_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_transparent));
-                            break;
-                        case 0:
-                            drawableBack = getDrawable(R.drawable.pin_noshap);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_transparent));
-                            break;
-                    }
-                    pin[intent.getIntExtra("startId", 1)].setImageDrawable(drawableBack);
-                } else if (intent.getAction().equals("Unpin_App_" + className)) {
-                    allowMove[intent.getIntExtra("startId", 1)] = true;
-                    pin[intent.getIntExtra("startId", 1)].setImageDrawable(null);
-                } else if (intent.getAction().equals("Sticky_Edge")) {
-                    for (int r = 1; r <= startId; r++) {
-                        try {
-                            if (floatingView != null) {
-                                if (floatingView[r].isShown()) {
-                                    try {
-                                        StickyEdge[r] = true;
-                                        StickyEdgeParams[r] = functionsClass.moveToEdge(categoryName[r], layoutParams[r].height);
-                                        windowManager.updateViewLayout(floatingView[r], StickyEdgeParams[r]);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else if (intent.getAction().equals("Sticky_Edge_No")) {
-                    for (int r = 1; r <= startId; r++) {
-                        try {
-                            if (floatingView != null) {
-                                if (floatingView[r].isShown()) {
-                                    try {
-                                        try {
-                                            sharedPrefPosition = getSharedPreferences((categoryName[r]), MODE_PRIVATE);
-
-                                            StickyEdge[r] = false;
-                                            xPos = sharedPrefPosition.getInt("X", xInit);
-                                            yPos = sharedPrefPosition.getInt("Y", yInit);
-                                            windowManager.updateViewLayout(floatingView[r], functionsClass.backFromEdge(layoutParams[r].height, xPos, yPos));
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
             }
-        };
-        registerReceiver(broadcastReceiver, intentFilter);
-
+        });
 
         return functionsClass.serviceMode();
     }
-
     @Override
     public void onCreate() {
         super.onCreate();
         functionsClass = new FunctionsClass(getApplicationContext());
 
+        appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+
         array = getApplicationContext().getPackageManager().getInstalledApplications(0).size() * 2;
         layoutParams = new WindowManager.LayoutParams[array];
-        StickyEdgeParams = new WindowManager.LayoutParams[array];
+        appWidgetHosts = new AppWidgetHost[array];
+        appWidgetHostView = new AppWidgetHostView[array];
+        appWidgetProviderInfo = new AppWidgetProviderInfo[array];
         floatingView = new ViewGroup[array];
-        categoryName = new String[array];
-        pin = new ShapesImage[array];
-        notificationDot = new ShapesImage[array];
-        allowMove = new boolean[array];
-        touchingDelay = new boolean[array];
-        trans = new boolean[array];
-        StickyEdge = new boolean[array];
-        openIt = new boolean[array];
-
-        mapContentCategoryName = new LinkedHashMap<String, String>();
-        mapCategoryNameStartId = new LinkedHashMap<String, Integer>();
-
-        if (functionsClass.loadCustomIcons()) {
-            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+        widgetLayout = new ViewGroup[array];
+        wholeViewWidget = new RelativeLayout[array];
+        widgetLabel = new TextView[array];
+        widgetMoveButton = new ImageView[array];
+        widgetCloseButton = new ImageView[array];
+        appWidgetId = new int[array];
+        widgetColor = new int[array];
     }
 }

@@ -72,6 +72,8 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
             @Override
             public void onClick(View view) {
 
+                functionsClass.runUnlimitedWidgetService(navDrawerItems.get(position).getAppWidgetId());
+
             }
         });
         viewHolder.floatTheWidget.setOnLongClickListener(new View.OnLongClickListener() {

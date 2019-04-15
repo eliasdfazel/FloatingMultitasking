@@ -25,6 +25,8 @@ public class PublicVariable {
     public static int floatingCategoryCounter_nfc = 0;
     public static int floatingCategoryCounter_time = 0;
     public static int categoriesCounter = -1;
+    public static int floatingWidgetsCounter_Widgets = 0;
+    public static int widgetsCounter = -1;
     public static int HW = 0;
     public static int size;
     public static int actionBarHeight;
@@ -70,6 +72,7 @@ public class PublicVariable {
     public static ArrayList<String> FloatingShortcuts = new ArrayList<String>();
     public static ArrayList<String> RecoveryShortcuts = new ArrayList<String>();
     public static ArrayList<String> FloatingCategories = new ArrayList<String>();
+    public static ArrayList<Integer> FloatingWidgets = new ArrayList<Integer>();
 
     public static List<String> customIconsPackages = new ArrayList<String>();
 

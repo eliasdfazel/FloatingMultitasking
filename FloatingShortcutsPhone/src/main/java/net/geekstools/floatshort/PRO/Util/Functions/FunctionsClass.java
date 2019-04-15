@@ -148,6 +148,7 @@ import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingCategory;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingShortcuts;
+import net.geekstools.floatshort.PRO.Widget_Unlimited_Floating;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.io.BufferedReader;
@@ -471,7 +472,7 @@ public class FunctionsClass {
         }
     }
 
-    /*Unlimited Shortcuts*/
+    /*Unlimited Shortcuts Function*/
     public void runUnlimitedShortcutsService(String packageName) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
@@ -954,6 +955,41 @@ public class FunctionsClass {
             context.registerReceiver(counterReceiver, intentFilter);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /*Floating Widgets Function*/
+    public void runUnlimitedWidgetService(int WidgetId) {
+        if (API > 22) {
+            if (!Settings.canDrawOverlays(context)) {
+                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                return;
+            }
+        }
+        try {
+            PublicVariable.floatingCounter++;
+            PublicVariable.floatingWidgetsCounter_Widgets++;
+            PublicVariable.widgetsCounter++;
+            PublicVariable.FloatingWidgets.add(PublicVariable.widgetsCounter, WidgetId);
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+
+            PublicVariable.floatingCounter = PublicVariable.floatingCounter + 1;
+            PublicVariable.floatingWidgetsCounter_Widgets = PublicVariable.floatingWidgetsCounter_Widgets + 1;
+            PublicVariable.widgetsCounter = PublicVariable.widgetsCounter + 1;
+            PublicVariable.FloatingWidgets.add(PublicVariable.widgetsCounter, WidgetId);
+        }
+
+        Intent w = new Intent(context, Widget_Unlimited_Floating.class);
+        w.putExtra("WidgetId", WidgetId);
+        w.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startService(w);
+        if (PublicVariable.floatingCounter == 1) {
+            if (API < 26) {
+                context.startService(new Intent(context, BindServices.class));
+            } else {
+                context.startForegroundService(new Intent(context, BindServices.class));
+            }
         }
     }
 
