@@ -43,9 +43,10 @@ public class Widget_Unlimited_Floating extends Service {
     AppWidgetHost[] appWidgetHosts;
     AppWidgetHostView[] appWidgetHostView;
 
-    int xPos, yPos, xInit = 19, yInit = 19;
+    int array,
+            xPos, yPos,
+            xInit = 19, yInit = 19;
 
-    int array;
     int[] appWidgetId, widgetColor;
 
     @Override
