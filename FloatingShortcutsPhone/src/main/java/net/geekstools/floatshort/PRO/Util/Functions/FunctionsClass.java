@@ -3560,6 +3560,7 @@ public class FunctionsClass {
         layoutParams.x = X;
         layoutParams.y = Y;
         layoutParams.windowAnimations = android.R.style.Animation_Dialog;
+
         return layoutParams;
     }
 
@@ -3647,7 +3648,6 @@ public class FunctionsClass {
         }
 
         layoutParams.gravity = Gravity.TOP | Gravity.START;
-        //sharedPrefPosition.getInt("X", 0)
         if (PreferenceManager.getDefaultSharedPreferences(context).getString("stick", "1").equals("1")) {//Left
             layoutParams.x = -(HW / 2);
         } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("stick", "1").equals("2")) {//Right
@@ -3729,6 +3729,63 @@ public class FunctionsClass {
         editor.apply();
 
         layoutParams.windowAnimations = android.R.style.Animation_Dialog;
+        return layoutParams;
+    }
+
+    public WindowManager.LayoutParams normalWidgetLayoutParams(String packageName, int widgetId, int widgetWidth, int widgetHeight) {
+        WindowManager.LayoutParams layoutParams = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    PixelFormat.TRANSLUCENT);
+        } else {
+            layoutParams = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    PixelFormat.TRANSLUCENT);
+        }
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(widgetId + packageName, Context.MODE_PRIVATE);
+
+        layoutParams.gravity = Gravity.TOP | Gravity.START;
+        layoutParams.width = sharedPreferences.getInt("WidgetWidth", widgetWidth);
+        layoutParams.height = sharedPreferences.getInt("WidgetHeight", widgetHeight);
+        layoutParams.x = sharedPreferences.getInt("X", 19);
+        layoutParams.y = sharedPreferences.getInt("Y", 19);
+        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
+
+        return layoutParams;
+    }
+
+    public WindowManager.LayoutParams moveWidgetsToEdge(String packageName, int widgetId, int widgetMinimizeWH) {
+        WindowManager.LayoutParams layoutParams = null;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    PixelFormat.TRANSLUCENT);
+        } else {
+            layoutParams = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    PixelFormat.TRANSLUCENT);
+        }
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(widgetId + packageName, Context.MODE_PRIVATE);
+
+        layoutParams.gravity = Gravity.TOP | Gravity.START;
+        layoutParams.width = widgetMinimizeWH;
+        layoutParams.height = widgetMinimizeWH;
+        if (PreferenceManager.getDefaultSharedPreferences(context).getString("stick", "1").equals("1")) {//Left
+            layoutParams.x = -(widgetMinimizeWH / 2);
+        } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("stick", "1").equals("2")) {//Right
+            layoutParams.x = displayX() - (widgetMinimizeWH / 2);
+        }
+        layoutParams.y = sharedPreferences.getInt("Y", 19);
+        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
+
         return layoutParams;
     }
 

@@ -7,7 +7,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -131,16 +130,15 @@ public class Widget_Unlimited_Floating extends Service {
         GradientDrawable moveBackgroundLayerDrawable = (GradientDrawable) moveLayerDrawable.findDrawableByLayerId(R.id.backtemp);
         moveBackgroundLayerDrawable.setColor(widgetColor[startId]);
 
-        LayerDrawable resizeLayerDrawable = (LayerDrawable) getResources().getDrawable(R.drawable.draw_resize);
-        GradientDrawable resizeBackgroundLayerDrawable = (GradientDrawable) resizeLayerDrawable.findDrawableByLayerId(R.id.backtemp);
-        resizeBackgroundLayerDrawable.setColor(widgetColor[startId]);
-
         LayerDrawable closeLayerDrawable = (LayerDrawable) getResources().getDrawable(R.drawable.draw_close_service);
         GradientDrawable closeBackgroundLayerDrawable = (GradientDrawable) closeLayerDrawable.findDrawableByLayerId(R.id.backtemp);
         closeBackgroundLayerDrawable.setColor(widgetColor[startId]);
 
+        Drawable resizeDrawable = getDrawable(R.drawable.w_resize).mutate();
+        resizeDrawable.setTint(widgetColor[startId]);
+
         widgetMoveButton[startId].setBackground(moveLayerDrawable);
-        widgetResizeControl[startId].setBackground(resizeLayerDrawable);
+        widgetResizeControl[startId].setBackground(resizeDrawable);
         widgetCloseButton[startId].setBackground(closeLayerDrawable);
 
         appWidgetHostView[startId] = appWidgetHosts[startId].createView(this, appWidgetId[startId], appWidgetProviderInfo[startId]);
@@ -168,16 +166,9 @@ public class Widget_Unlimited_Floating extends Service {
 
         xInit = xInit + 13;
         yInit = yInit + 13;
-        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        layoutParams[startId] = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
-        layoutParams[startId].gravity = Gravity.TOP | Gravity.START;
-        layoutParams[startId].x = xInit;
-        layoutParams[startId].y = yInit;
-        layoutParams[startId].height = initHeight;
-        layoutParams[startId].width = initWidth;
+        layoutParams[startId] = functionsClass.normalWidgetLayoutParams(appWidgetProviderInfo[startId].provider.getPackageName(),
+                appWidgetId[startId],
+                initWidth, initHeight);
         layoutParams[startId].windowAnimations = android.R.style.Animation_Dialog;
 
         windowManager.addView(floatingView[startId], layoutParams[startId]);
@@ -186,6 +177,7 @@ public class Widget_Unlimited_Floating extends Service {
             WindowManager.LayoutParams layoutParamsTouch = layoutParams[startId];
             int initialX;
             int initialY;
+
             float initialTouchX;
             float initialTouchY;
 
@@ -195,12 +187,19 @@ public class Widget_Unlimited_Floating extends Service {
                     case MotionEvent.ACTION_DOWN:
                         initialX = layoutParamsTouch.x;
                         initialY = layoutParamsTouch.y;
+
                         initialTouchX = event.getRawX();
                         initialTouchY = event.getRawY();
+
                         break;
                     case MotionEvent.ACTION_UP:
                         layoutParamsTouch.x = initialX + (int) (event.getRawX() - initialTouchX);
                         layoutParamsTouch.y = initialY + (int) (event.getRawY() - initialTouchY);
+
+                        functionsClass.savePreference(appWidgetId[startId] + appWidgetProviderInfo[startId].provider.getPackageName(),
+                                "X", layoutParamsTouch.x);
+                        functionsClass.savePreference(appWidgetId[startId] + appWidgetProviderInfo[startId].provider.getPackageName(),
+                                "Y", layoutParamsTouch.y);
 
                         break;
                     case MotionEvent.ACTION_MOVE:
@@ -228,6 +227,7 @@ public class Widget_Unlimited_Floating extends Service {
             WindowManager.LayoutParams layoutParamsTouch = layoutParams[startId];
             int initialX;
             int initialY;
+
             float initialTouchX;
             float initialTouchY;
 
@@ -237,12 +237,19 @@ public class Widget_Unlimited_Floating extends Service {
                     case MotionEvent.ACTION_DOWN:
                         initialX = layoutParamsTouch.x;
                         initialY = layoutParamsTouch.y;
+
                         initialTouchX = event.getRawX();
                         initialTouchY = event.getRawY();
+
                         break;
                     case MotionEvent.ACTION_UP:
                         layoutParamsTouch.x = initialX + (int) (event.getRawX() - initialTouchX);
                         layoutParamsTouch.y = initialY + (int) (event.getRawY() - initialTouchY);
+
+                        functionsClass.savePreference(appWidgetId[startId] + appWidgetProviderInfo[startId].provider.getPackageName(),
+                                "X", layoutParamsTouch.x);
+                        functionsClass.savePreference(appWidgetId[startId] + appWidgetProviderInfo[startId].provider.getPackageName(),
+                                "Y", layoutParamsTouch.y);
 
                         break;
                     case MotionEvent.ACTION_MOVE:
@@ -311,37 +318,21 @@ public class Widget_Unlimited_Floating extends Service {
 
                         break;
                     case MotionEvent.ACTION_UP:
-                        layoutParamsTouch.x = initialWidth + (int) (event.getRawX() - initialTouchX);
-                        layoutParamsTouch.y = initialHeight + (int) (event.getRawY() - initialTouchY);
+
+                        functionsClass.savePreference(appWidgetId[startId] + appWidgetProviderInfo[startId].provider.getPackageName(),
+                                "WidgetWidth", layoutParamsTouch.width);
+                        functionsClass.savePreference(appWidgetId[startId] + appWidgetProviderInfo[startId].provider.getPackageName(),
+                                "WidgetHeight", layoutParamsTouch.height);
 
                         break;
                     case MotionEvent.ACTION_MOVE:
                         int xMove = initialWidth + (int) (event.getRawX() - initialTouchX);
                         int yMove = initialHeight + (int) (event.getRawY() - initialTouchY);
 
+                        layoutParamsTouch.width = xMove;
+                        layoutParamsTouch.height = yMove;
 
-                        layoutParamsTouch.width += 1;
-                        layoutParamsTouch.height += 1;
-
-                        if ((xMove > initialTouchX) && (yMove > initialTouchY)) {
-
-                            System.out.println(">>> XY Increase <<<");
-
-                        } else if ((xMove < initialTouchX) && (yMove > initialTouchY)) {
-
-                            System.out.println(">>> X Decrease --- Y Increase <<<");
-
-                        } else if ((xMove > initialTouchX) && (yMove < initialTouchY)) {
-
-                            System.out.println(">>> X Increase --- Y Decrese <<<");
-
-                        } else if ((xMove < initialTouchX) && (yMove < initialTouchY)) {
-
-                            System.out.println(">>> XY Decrease <<<");
-
-                        }
-
-
+                        appWidgetHostView[startId].updateAppWidgetSize(new Bundle(), layoutParamsTouch.width, layoutParamsTouch.height, layoutParamsTouch.width, layoutParamsTouch.height);
                         windowManager.updateViewLayout(floatingView[startId], layoutParamsTouch);
 
                         break;
@@ -357,6 +348,7 @@ public class Widget_Unlimited_Floating extends Service {
         super.onCreate();
         functionsClass = new FunctionsClass(getApplicationContext());
 
+        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
 
         array = getApplicationContext().getPackageManager().getInstalledApplications(0).size() * 2;
