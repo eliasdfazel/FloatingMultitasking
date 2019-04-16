@@ -191,7 +191,7 @@
     <string name="shortcuts">Floating Shortcuts</string>
     <string name="boot_warning">All</string>
     <string name="boot_none">None</string>
-    <string name="remove_all_shortcuts">REMOVE ALL</string>
+    <string name="remove_all_floatings">REMOVE ALL</string>
     <string name="remove_all">❌ Remove All</string>
     <string name="recover_all">✔️ Recover All</string>
     <string name="moveEdgeLeft">⬅️️ Move To Edge</string>

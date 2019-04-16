@@ -183,7 +183,7 @@ public class Category_Unlimited_Bluetooth extends Service {
         }
         wholeCategoryFloating.setBackground(drawableBack);
 
-        if (categoryName[startId].equals(getString(R.string.remove_all_shortcuts))) {
+        if (categoryName[startId].equals(getString(R.string.remove_all_floatings))) {
             for (int r = 1; r < startId; r++) {
                 try {
                     if (floatingView != null) {

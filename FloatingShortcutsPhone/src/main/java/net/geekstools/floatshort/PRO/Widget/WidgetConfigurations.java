@@ -17,6 +17,7 @@ import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
@@ -484,12 +485,12 @@ public class WidgetConfigurations extends Activity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            ViewCompat.animate(addWidget)
+            ViewPropertyAnimator viewPropertyAnimator = addWidget.animate()
                     .rotation(135.0F)
                     .withLayer()
-                    .setDuration(300L)
-                    .setInterpolator(new OvershootInterpolator(3.0f))
-                    .start();
+                    .setDuration(500L)
+                    .setInterpolator(new OvershootInterpolator(13.0f));
+            viewPropertyAnimator.start();
 
             Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.down_up);
             installedWidgetsNestedScrollView.startAnimation(animation);

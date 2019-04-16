@@ -39,12 +39,12 @@ public class ReceiverGPS extends BroadcastReceiver {
                 PublicVariable.receiverGPS = true;
             } else if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
                 Intent w = new Intent(context, App_Unlimited_Gps.class);
-                w.putExtra("pack", context.getString(R.string.remove_all_shortcuts));
+                w.putExtra("pack", context.getString(R.string.remove_all_floatings));
                 w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(w);
 
                 Intent c = new Intent(context, Category_Unlimited_Gps.class);
-                c.putExtra("categoryName", context.getString(R.string.remove_all_shortcuts));
+                c.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                 c.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(c);
 

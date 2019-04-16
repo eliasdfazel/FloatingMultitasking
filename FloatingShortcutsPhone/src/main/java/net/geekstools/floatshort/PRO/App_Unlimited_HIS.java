@@ -139,7 +139,7 @@ public class App_Unlimited_HIS extends Service {
         try {
             allowMove[startId] = true;
             packageNames[startId] = intent.getStringExtra("packageName");
-            if (!packageNames[startId].equals(getString(R.string.remove_all_shortcuts))) {
+            if (!packageNames[startId].equals(getString(R.string.remove_all_floatings))) {
                 classNames[startId] = intent.getStringExtra("className");
 
                 componentName[startId] = new ComponentName(packageNames[startId], classNames[startId]);
@@ -160,7 +160,7 @@ public class App_Unlimited_HIS extends Service {
             return Service.START_NOT_STICKY;
         }
 
-        if (packageNames[startId].equals(getString(R.string.remove_all_shortcuts))) {
+        if (packageNames[startId].equals(getString(R.string.remove_all_floatings))) {
             for (int r = 1; r < startId; r++) {
                 try {
                     if (floatingView != null) {

@@ -39,12 +39,12 @@ public class ReceiverBluetooth extends BroadcastReceiver {
                 PublicVariable.receiveBluetooth = true;
             } else if (bluetoothAdapter.isEnabled() == false) {
                 Intent w = new Intent(context, App_Unlimited_Bluetooth.class);
-                w.putExtra("pack", context.getString(R.string.remove_all_shortcuts));
+                w.putExtra("pack", context.getString(R.string.remove_all_floatings));
                 w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(w);
 
                 Intent c = new Intent(context, Category_Unlimited_Bluetooth.class);
-                c.putExtra("categoryName", context.getString(R.string.remove_all_shortcuts));
+                c.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                 c.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(c);
 

@@ -98,12 +98,12 @@ public class BindServices extends Service {
                                 } else if (wifiManager.isWifiEnabled() == false) {
                                     if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
                                         Intent wifiShortcutsRemove = new Intent(context, App_Unlimited_Wifi.class);
-                                        wifiShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_shortcuts));
+                                        wifiShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_floatings));
                                         wifiShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         context.startService(wifiShortcutsRemove);
 
                                         Intent wifiCategoryRemove = new Intent(context, Category_Unlimited_Wifi.class);
-                                        wifiCategoryRemove.putExtra("categoryName", context.getString(R.string.remove_all_shortcuts));
+                                        wifiCategoryRemove.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                                         wifiCategoryRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         context.startService(wifiCategoryRemove);
 
@@ -124,12 +124,12 @@ public class BindServices extends Service {
                                     PublicVariable.receiverGPS = true;
                                 } else if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
                                     Intent gpsShortcutsRemove = new Intent(context, App_Unlimited_Gps.class);
-                                    gpsShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_shortcuts));
+                                    gpsShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_floatings));
                                     gpsShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(gpsShortcutsRemove);
 
                                     Intent gpsCategoryRemove = new Intent(context, Category_Unlimited_Gps.class);
-                                    gpsCategoryRemove.putExtra("categoryName", context.getString(R.string.remove_all_shortcuts));
+                                    gpsCategoryRemove.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                                     gpsCategoryRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(gpsCategoryRemove);
 
@@ -149,12 +149,12 @@ public class BindServices extends Service {
                                     PublicVariable.receiverNFC = true;
                                 } else if (nfcManager.getDefaultAdapter().isEnabled() == false) {
                                     Intent nfcShortcutsRemove = new Intent(context, App_Unlimited_Nfc.class);
-                                    nfcShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_shortcuts));
+                                    nfcShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_floatings));
                                     nfcShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(nfcShortcutsRemove);
 
                                     Intent nfcCategoryRemove = new Intent(context, Category_Unlimited_Nfc.class);
-                                    nfcCategoryRemove.putExtra("categoryName", context.getString(R.string.remove_all_shortcuts));
+                                    nfcCategoryRemove.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                                     nfcCategoryRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(nfcCategoryRemove);
 

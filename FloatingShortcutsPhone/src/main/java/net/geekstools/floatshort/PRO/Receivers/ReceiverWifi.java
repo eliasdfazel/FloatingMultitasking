@@ -42,12 +42,12 @@ public class ReceiverWifi extends BroadcastReceiver {
             } else if (wifiManager.isWifiEnabled() == false) {
                 if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
                     Intent w = new Intent(context, App_Unlimited_Wifi.class);
-                    w.putExtra("pack", context.getString(R.string.remove_all_shortcuts));
+                    w.putExtra("pack", context.getString(R.string.remove_all_floatings));
                     w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(w);
 
                     Intent c = new Intent(context, Category_Unlimited_Wifi.class);
-                    c.putExtra("categoryName", context.getString(R.string.remove_all_shortcuts));
+                    c.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                     c.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(c);
 

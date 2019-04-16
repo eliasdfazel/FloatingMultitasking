@@ -144,7 +144,7 @@ public class App_Unlimited_Wifi extends Service {
             return Service.START_NOT_STICKY;
         }
 
-        if (packages[startId].equals(getString(R.string.remove_all_shortcuts))) {
+        if (packages[startId].equals(getString(R.string.remove_all_floatings))) {
             for (int r = 1; r < startId; r++) {
                 try {
                     if (floatingView != null) {
