@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:id="@+id/backgroundFull"
+             android:background="@color/light">
+
+    <include layout="@layout/iap_loading_indicator"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="51dp"
+        android:gravity="center"
+        android:requiresFadingEdge="vertical"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="37dp"
+        android:cacheColorHint="@android:color/transparent"
+        android:smoothScrollbar="true"
+        android:scrollbars="none"/>
+
+</FrameLayout>

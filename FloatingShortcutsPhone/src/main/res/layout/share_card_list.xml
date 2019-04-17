@@ -15,7 +15,7 @@
         android:src="@drawable/ic_launcher"/>
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/purchaseItemName"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"

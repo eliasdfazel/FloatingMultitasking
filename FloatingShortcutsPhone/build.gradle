@@ -15,8 +15,8 @@ android {
         minSdkVersion 23
         targetSdkVersion 28
 
-        versionCode 408
-        versionName "14.000.000.408_"
+        versionCode 410
+        versionName "14.000.000.410_"
 
         wearAppUnbundled true
     }
@@ -54,12 +54,13 @@ dependencies {
     implementation project(path: ':LicenseLibrary', configuration: 'default')
     implementation project(path: ':ShapesCustomImageViewLibrary', configuration: 'default')
 
-    implementation 'com.android.billingclient:billing:1.1'
+    implementation 'com.android.billingclient:billing:1.2.2'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.palette:palette:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
+    implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha05'
 
     implementation 'com.google.android.gms:play-services-auth:16.0.1'

@@ -5769,4 +5769,10 @@ public class FunctionsClass {
             this.viewToBeat.animate().scaleXBy(0.33f).scaleYBy(0.33f).setDuration(233).setListener(scaleUpListener);
         }
     }
+
+    /*In-App Purchase*/
+    public boolean floatingWidgetsPurchased() {
+
+        return readPreference(".PurchasedItem", "FloatingWidgets", false);
+    }
 }

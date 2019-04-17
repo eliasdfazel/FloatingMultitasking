@@ -69,6 +69,7 @@ import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.CardHybridAdapter;
 import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.HybridSectionedGridRecyclerViewAdapter;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
@@ -137,9 +138,14 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
 
     public void floatingWidget(View view) {
-
-        startActivity(new Intent(getApplicationContext(), WidgetConfigurations.class), ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
-
+        if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
+            startActivity(new Intent(getApplicationContext(), WidgetConfigurations.class),
+                    ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+        } else {
+            startActivity(new Intent(getApplicationContext(), InAppBilling.class)
+                            .putExtra("UserEmailAddress", functionsClass.readPreference(".BETA", "testerEmail", null)),
+                    ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+        }
     }
 
 

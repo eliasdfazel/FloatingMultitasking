@@ -64,6 +64,7 @@ import net.geekstools.floatshort.PRO.Category.NavAdapter.CategoryListAdapter;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
@@ -111,7 +112,14 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
 
     public void floatingWidget(View view) {
 
-        startActivity(new Intent(getApplicationContext(), WidgetConfigurations.class), ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+        if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
+            startActivity(new Intent(getApplicationContext(), WidgetConfigurations.class),
+                    ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+        } else {
+            startActivity(new Intent(getApplicationContext(), InAppBilling.class)
+                            .putExtra("UserEmailAddress", functionsClass.readPreference(".BETA", "testerEmail", null)),
+                    ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+        }
 
     }
 

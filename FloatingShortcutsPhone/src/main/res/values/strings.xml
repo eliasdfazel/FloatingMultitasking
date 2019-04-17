@@ -224,7 +224,8 @@
         ]]>
     </string>
 
-    <!--Permissions-->
+    <string name="purchase">Purchase 💸</string>
+    <string name="restorePurchase">ℹ Click To Restore The Item ℹ</string>
 
     <string-array name="ContextMenu">
         <item name="1">Small</item>

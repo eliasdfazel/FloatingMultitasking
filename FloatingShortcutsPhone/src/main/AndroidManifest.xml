@@ -291,6 +291,15 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Util.IAP.InAppBilling"
+            android:theme="@style/GeeksEmpire.Material">
+            <intent-filter>
+                <action android:name="RESPONSE_OWNED"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <activity-alias
             android:name=".Alias.CategoryHandler"

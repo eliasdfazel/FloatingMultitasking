@@ -61,7 +61,7 @@ public class ShareListAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
             viewHolder.imgIcon = (ImageView) convertView.findViewById(R.id.icon);
-            viewHolder.txtTitle = (TextView) convertView.findViewById(R.id.title);
+            viewHolder.txtTitle = (TextView) convertView.findViewById(R.id.purchaseItemName);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
