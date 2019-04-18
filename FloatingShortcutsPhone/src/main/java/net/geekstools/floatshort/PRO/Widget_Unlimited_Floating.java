@@ -46,9 +46,7 @@ public class Widget_Unlimited_Floating extends Service {
     AppWidgetHost[] appWidgetHosts;
     AppWidgetHostView[] appWidgetHostView;
 
-    int array,
-            xPos, yPos,
-            xInit = 19, yInit = 19;
+    int array;
 
     int[] appWidgetId, widgetColor;
 
@@ -175,9 +173,6 @@ public class Widget_Unlimited_Floating extends Service {
         wholeViewWidget[startId].setLayoutParams(widgetRelativeLayout);
         wholeViewWidget[startId].requestLayout();
 
-
-        xInit = xInit + 13;
-        yInit = yInit + 13;
         layoutParams[startId] = functionsClass.normalWidgetLayoutParams(appWidgetProviderInfo[startId].provider.getPackageName(),
                 appWidgetId[startId],
                 initWidth, initHeight);
@@ -355,6 +350,7 @@ public class Widget_Unlimited_Floating extends Service {
 
         return functionsClass.serviceMode();
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
