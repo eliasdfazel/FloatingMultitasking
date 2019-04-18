@@ -95,6 +95,13 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.graphics.ColorUtils;
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
+import androidx.palette.graphics.Palette;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -174,13 +181,6 @@ import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.graphics.ColorUtils;
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
-import androidx.palette.graphics.Palette;
 
 import static android.content.Context.ACCESSIBILITY_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
@@ -4027,9 +4027,9 @@ public class FunctionsClass {
                 backToast.setColor(context.getResources().getColor(R.color.light_transparent));
                 textView.setBackground(drawToast);
                 textView.setTextColor(context.getResources().getColor(R.color.dark));
-                textView.setShadowLayer(0.02f, 2, 2, context.getResources().getColor(R.color.transparent_dark_high));
+                textView.setShadowLayer(0.02f, 2, 2, context.getResources().getColor(R.color.dark_transparent_high));
             } else if (!PublicVariable.themeLightDark) {
-                backToast.setColor(context.getResources().getColor(R.color.transparent_dark));
+                backToast.setColor(context.getResources().getColor(R.color.dark_transparent));
                 textView.setBackground(drawToast);
                 textView.setTextColor(context.getResources().getColor(R.color.light));
                 textView.setShadowLayer(0.02f, 2, 2, context.getResources().getColor(R.color.light_transparent_high));
@@ -4038,7 +4038,7 @@ public class FunctionsClass {
             backToast.setColor(context.getResources().getColor(R.color.light_transparent));
             textView.setBackground(drawToast);
             textView.setTextColor(context.getResources().getColor(R.color.dark));
-            textView.setShadowLayer(0.02f, 2, 2, context.getResources().getColor(R.color.transparent_dark_high));
+            textView.setShadowLayer(0.02f, 2, 2, context.getResources().getColor(R.color.dark_transparent_high));
         }
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.FILL_HORIZONTAL | toastGravity, 0, 0);
@@ -4066,7 +4066,7 @@ public class FunctionsClass {
             if (PublicVariable.themeLightDark) {
                 textView.setBackground(drawToast);
                 textView.setTextColor(context.getResources().getColor(R.color.dark));
-                textView.setShadowLayer(0.02f, 2, 2, context.getResources().getColor(R.color.transparent_dark_high));
+                textView.setShadowLayer(0.02f, 2, 2, context.getResources().getColor(R.color.dark_transparent_high));
             } else if (!PublicVariable.themeLightDark) {
                 textView.setBackground(drawToast);
                 textView.setTextColor(context.getResources().getColor(R.color.light));
@@ -4076,7 +4076,7 @@ public class FunctionsClass {
             backToast.setColor(context.getResources().getColor(R.color.light_transparent));
             textView.setBackground(drawToast);
             textView.setTextColor(context.getResources().getColor(R.color.dark));
-            textView.setShadowLayer(0.02f, 2, 2, context.getResources().getColor(R.color.transparent_dark_high));
+            textView.setShadowLayer(0.02f, 2, 2, context.getResources().getColor(R.color.dark_transparent_high));
         }
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.FILL_HORIZONTAL | toastGravity, 0, 0);
@@ -4931,7 +4931,7 @@ public class FunctionsClass {
                 });
                 colorAnimation.start();
             } else if (!PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.transparent_dark)));
+                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.dark_transparent)));
 
                 final Window window = activity.getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -4968,7 +4968,7 @@ public class FunctionsClass {
                 });
                 colorAnimation.start();
             } else if (!PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.transparent_dark)));
+                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.dark_transparent)));
 
                 ValueAnimator colorAnimation = ValueAnimator
                         .ofArgb(activity.getWindow().getNavigationBarColor(), mixColors(context.getResources().getColor(R.color.dark), activity.getWindow().getNavigationBarColor(), 0.70f));
@@ -5157,7 +5157,7 @@ public class FunctionsClass {
                 });
                 colorAnimation.start();
             } else if (!PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.transparent_dark)));
+                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.dark_transparent)));
 
                 final Window window = activity.getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -5194,7 +5194,7 @@ public class FunctionsClass {
                 });
                 colorAnimation.start();
             } else if (!PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.transparent_dark)));
+                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.dark_transparent)));
 
                 ValueAnimator colorAnimation = ValueAnimator
                         .ofArgb(activity.getWindow().getNavigationBarColor(), mixColors(context.getResources().getColor(R.color.dark), activity.getWindow().getNavigationBarColor(), 0.70f));

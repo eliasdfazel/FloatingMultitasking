@@ -19,8 +19,8 @@
 
     <color name="dark">#0a0f18</color>
     <color name="darker">#070b12</color>
-    <color name="transparent_dark">#b30a0f18</color>
-    <color name="transparent_dark_high">#4b0a0f18</color>
+    <color name="dark_transparent">#b30a0f18</color>
+    <color name="dark_transparent_high">#4b0a0f18</color>
     <color name="transparent_dark_high_twice">#c80a0f18</color>
 
 </resources>

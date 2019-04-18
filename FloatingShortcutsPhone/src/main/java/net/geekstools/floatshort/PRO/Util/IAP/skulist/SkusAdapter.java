@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.billingclient.api.BillingClient;
 
 import net.geekstools.floatshort.PRO.R;
@@ -13,8 +15,6 @@ import net.geekstools.floatshort.PRO.Util.IAP.skulist.row.RowViewHolder;
 import net.geekstools.floatshort.PRO.Util.IAP.skulist.row.SkuRowData;
 
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements RowViewHolder.OnButtonClickListener {
 
@@ -57,7 +57,7 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
         }
         switch (skuRowData.getSku()) {
             case "floating.widgets":
-                rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.ic_launcher);
+                rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.ic_floating_widgets);
                 rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
 
                 break;

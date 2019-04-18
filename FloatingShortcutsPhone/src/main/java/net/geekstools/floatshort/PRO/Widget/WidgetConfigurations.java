@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,10 +24,20 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataInterface;
 import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataModel;
@@ -42,15 +54,6 @@ import net.geekstools.floatshort.PRO.Widget.NavAdapter.WidgetSectionedGridRecycl
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public class WidgetConfigurations extends Activity {
 
@@ -145,12 +148,18 @@ public class WidgetConfigurations extends Activity {
 
             if (PublicVariable.themeLightDark) {
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                gx.setTextColor(getResources().getColor(R.color.dark));
+                gx.setTextColor(getColor(R.color.dark));
             } else if (!PublicVariable.themeLightDark) {
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                gx.setTextColor(getResources().getColor(R.color.light));
+                gx.setTextColor(getColor(R.color.light));
             }
         }
+
+        ImageView floatingLogo = (ImageView) findViewById(R.id.loadLogo);
+        LayerDrawable drawFloatingLogo = (LayerDrawable) getResources().getDrawable(R.drawable.draw_floating_widgets);
+        GradientDrawable backFloatingLogo = (GradientDrawable) drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
+        backFloatingLogo.setColor(PublicVariable.primaryColorOpposite);
+        floatingLogo.setImageDrawable(drawFloatingLogo);
     }
 
     @Override

@@ -40,7 +40,7 @@
         android:padding="5dp"
         android:singleLine="true"
         android:textColor="@color/dark"
-        android:textColorHint="@color/transparent_dark_high"
+        android:textColorHint="@color/dark_transparent_high"
         android:textCursorDrawable="@drawable/draw_cursoer"
         android:textSize="17sp"
         android:typeface="sans"/>

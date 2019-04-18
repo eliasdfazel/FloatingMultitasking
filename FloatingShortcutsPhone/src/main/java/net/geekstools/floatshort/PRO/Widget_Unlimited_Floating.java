@@ -73,7 +73,7 @@ public class Widget_Unlimited_Floating extends Service {
         floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_widgets, null, false);
 
         widgetLayout[startId] = (ViewGroup) floatingView[startId].findViewById(R.id.widgetViewGroup);
-        wholeViewWidget[startId] = (RelativeLayout) floatingView[startId].findViewById(R.id.whole_widget_view);
+        wholeViewWidget[startId] = (RelativeLayout) floatingView[startId].findViewById(R.id.wholeViewWidget);
         widgetLabel[startId] = (TextView) floatingView[startId].findViewById(R.id.widgetLabel);
         widgetMoveButton[startId] = (ImageView) floatingView[startId].findViewById(R.id.widgetMoveButton);
         widgetCloseButton[startId] = (ImageView) floatingView[startId].findViewById(R.id.widgetCloseButton);
@@ -118,6 +118,18 @@ public class Widget_Unlimited_Floating extends Service {
             }
         }
 
+        if (PublicVariable.themeLightDark) {
+            wholeViewWidget[startId].setBackgroundColor(getColor(R.color.light_transparent));
+            widgetLabel[startId].setBackgroundColor(getColor(R.color.light_transparent_high));
+
+            widgetLabel[startId].setTextColor(getColor(R.color.dark));
+        } else if (!PublicVariable.themeLightDark) {
+            wholeViewWidget[startId].setBackgroundColor(getColor(R.color.dark_transparent));
+            widgetLabel[startId].setBackgroundColor(getColor(R.color.dark_transparent_high));
+
+            widgetLabel[startId].setTextColor(getColor(R.color.light));
+        }
+
         widgetColor[startId] = functionsClass.extractVibrantColor(appWidgetProviderInfo[startId].loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_LOW));
 
         String widgetLabelText =
@@ -137,9 +149,9 @@ public class Widget_Unlimited_Floating extends Service {
         Drawable resizeDrawable = getDrawable(R.drawable.w_resize).mutate();
         resizeDrawable.setTint(widgetColor[startId]);
 
-        widgetMoveButton[startId].setBackground(moveLayerDrawable);
+        widgetMoveButton[startId].setImageDrawable(moveLayerDrawable);
+        widgetCloseButton[startId].setImageDrawable(closeLayerDrawable);
         widgetResizeControl[startId].setBackground(resizeDrawable);
-        widgetCloseButton[startId].setBackground(closeLayerDrawable);
 
         appWidgetHostView[startId] = appWidgetHosts[startId].createView(this, appWidgetId[startId], appWidgetProviderInfo[startId]);
 

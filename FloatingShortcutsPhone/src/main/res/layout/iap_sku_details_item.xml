@@ -72,7 +72,7 @@
             android:ellipsize="end"
             android:scrollHorizontally="true"
             android:text="@string/app_name"
-            android:textColor="@color/transparent_dark"
+            android:textColor="@color/dark_transparent"
             android:textSize="13sp"
             android:typeface="monospace"
             android:background="@android:color/transparent"/>
@@ -100,7 +100,7 @@
             android:layout_margin="3dp"
             android:text="@string/restorePurchase"
             android:textSize="12sp"
-            android:textColor="@color/transparent_dark_high"
+            android:textColor="@color/dark_transparent_high"
             android:visibility="invisible"/>
 
     </RelativeLayout>

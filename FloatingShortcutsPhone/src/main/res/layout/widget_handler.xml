@@ -5,7 +5,7 @@
     android:id="@+id/wholeWidget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent_dark_high"
+    android:background="@color/dark_transparent_high"
     tools:context="net.geekstools.floatshort.PRO.Widget.WidgetConfigurations">
 
     <ScrollView
@@ -98,7 +98,7 @@
             android:layout_width="170dp"
             android:layout_height="170dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/draw_floating_logo"/>
+            android:src="@drawable/draw_floating_widgets" />
 
         <ProgressBar
             android:id="@+id/loadingProgressltr"

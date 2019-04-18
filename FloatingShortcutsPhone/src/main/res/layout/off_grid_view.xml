@@ -4,7 +4,7 @@
     android:id="@+id/MainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent_dark_high">
+    android:background="@color/dark_transparent_high">
 
     <LinearLayout
         android:id="@+id/switchFloating"
@@ -46,7 +46,7 @@
         android:requiresFadingEdge="horizontal"
         android:scrollbarSize="2dp"
         android:scrollbarStyle="outsideOverlay"
-        android:scrollbarThumbHorizontal="@color/transparent_dark_high"
+        android:scrollbarThumbHorizontal="@color/dark_transparent_high"
         android:scrollbars="horizontal"
         android:smoothScrollbar="true"
         android:visibility="invisible">
