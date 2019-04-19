@@ -97,7 +97,7 @@
             android:gravity="center"
             android:text="@string/auto_apps"
             android:textColor="@color/light"
-            android:textSize="13sp"/>
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/autoCategories"
@@ -107,7 +107,7 @@
             android:gravity="center"
             android:text="@string/auto_categories"
             android:textColor="@color/light"
-            android:textSize="13sp"/>
+            android:textSize="12sp" />
     </LinearLayout>
 
     <HorizontalScrollView

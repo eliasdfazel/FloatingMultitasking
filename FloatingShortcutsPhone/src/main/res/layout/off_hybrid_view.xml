@@ -7,7 +7,7 @@
     android:background="@color/dark_transparent_high">
 
     <HorizontalScrollView
-        android:id="@+id/freqlist"
+        android:id="@+id/freqList"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="-3.5dp"
@@ -40,7 +40,7 @@
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/freqlist"
+        android:layout_below="@id/freqList"
         android:cacheColorHint="@android:color/transparent"
         android:fadingEdge="vertical"
         android:fadingEdgeLength="37dp"
@@ -50,7 +50,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="27dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
@@ -72,7 +73,7 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_below="@id/freqlist"
+        android:layout_below="@id/freqList"
         android:layout_alignEnd="@id/nestedScrollView"
         android:foregroundGravity="center_vertical">
 
@@ -170,6 +171,16 @@
                 android:visibility="invisible"/>
         </RelativeLayout>
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/actionButton"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="27dp"
+        android:src="@drawable/draw_pref_action" />
 
     <RelativeLayout
         android:id="@+id/loadingSplash"

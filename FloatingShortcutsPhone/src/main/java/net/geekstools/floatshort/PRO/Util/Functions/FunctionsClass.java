@@ -3292,7 +3292,7 @@ public class FunctionsClass {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
-            window.setStatusBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), 130));
+            window.setStatusBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
             window.setNavigationBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
         } else if (transparent == false) {
             view.setBackgroundColor(PublicVariable.colorLightDark);
@@ -3305,7 +3305,7 @@ public class FunctionsClass {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
-            window.setStatusBarColor(PublicVariable.primaryColor);
+            window.setStatusBarColor(PublicVariable.colorLightDark);
             window.setNavigationBarColor(PublicVariable.colorLightDark);
         }
     }
@@ -4849,10 +4849,10 @@ public class FunctionsClass {
         });
     }
 
-    public void menuOption(final View fullActionElements, final ListView elementsList, boolean startAnimation) {
+    public void openActionMenuOption(final View fullActionElements, View actionButton, final ListView elementsList, boolean startAnimation) {
         if (startAnimation == false) {
-            int xPosition = displayX() - DpToInteger(23);
-            int yPosition = -(PublicVariable.actionBarHeight / 2);
+            int xPosition = (int) (actionButton.getX() + (actionButton.getWidth() / 2));
+            int yPosition = (int) (actionButton.getY() + (actionButton.getHeight() / 2));
 
             int startRadius = 0;
             int endRadius = (int) Math.hypot(displayX(), displayY());
@@ -4866,7 +4866,7 @@ public class FunctionsClass {
         fullActionElements.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closeMenuOption(fullActionElements, elementsList);
+                closeActionMenuOption(fullActionElements, actionButton, elementsList);
             }
         });
 
@@ -4911,7 +4911,6 @@ public class FunctionsClass {
                     public void onAnimationUpdate(ValueAnimator animator) {
                         window.setStatusBarColor((Integer) animator.getAnimatedValue());
                         window.setNavigationBarColor((Integer) animator.getAnimatedValue());
-                        activity.getActionBar().setBackgroundDrawable(new ColorDrawable((Integer) animator.getAnimatedValue()));
                     }
                 });
                 colorAnimation.start();
@@ -4929,7 +4928,6 @@ public class FunctionsClass {
                     public void onAnimationUpdate(ValueAnimator animator) {
                         window.setStatusBarColor((Integer) animator.getAnimatedValue());
                         window.setNavigationBarColor((Integer) animator.getAnimatedValue());
-                        activity.getActionBar().setBackgroundDrawable(new ColorDrawable((Integer) animator.getAnimatedValue()));
                     }
                 });
                 colorAnimation.start();
@@ -4981,7 +4979,7 @@ public class FunctionsClass {
         PublicVariable.actionCenter = true;
     }
 
-    public void closeMenuOption(final View fullActionElements, final ListView elementsList) {
+    public void closeActionMenuOption(final View fullActionElements, View actionButton, final ListView elementsList) {
         if (appThemeTransparent() == true) {
             final Window window = activity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -4993,35 +4991,16 @@ public class FunctionsClass {
                 }
             }
 
-            ValueAnimator colorAnimationActionBar = ValueAnimator
-                    .ofArgb(activity.getWindow().getNavigationBarColor(), setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), 130));
-            colorAnimationActionBar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    activity.getActionBar().setBackgroundDrawable(new ColorDrawable((Integer) animator.getAnimatedValue()));
-                }
-            });
-            colorAnimationActionBar.start();
-
-            ValueAnimator colorAnimationStatusBar = ValueAnimator
-                    .ofArgb(activity.getWindow().getNavigationBarColor(), setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), 130));
-            colorAnimationStatusBar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            ValueAnimator valueAnimator = ValueAnimator
+                    .ofArgb(activity.getWindow().getNavigationBarColor(), setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animator) {
                     window.setStatusBarColor((Integer) animator.getAnimatedValue());
-                }
-            });
-            colorAnimationStatusBar.start();
-
-            ValueAnimator colorAnimationNavigationBar = ValueAnimator
-                    .ofArgb(activity.getWindow().getNavigationBarColor(), setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
-            colorAnimationNavigationBar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
                     window.setNavigationBarColor((Integer) animator.getAnimatedValue());
                 }
             });
-            colorAnimationNavigationBar.start();
+            valueAnimator.start();
         } else {
             if (PublicVariable.themeLightDark) {
                 if (API > 25) {
@@ -5040,8 +5019,8 @@ public class FunctionsClass {
             colorAnimation.start();
         }
 
-        int xPosition = displayX() - DpToInteger(23);
-        int yPosition = -(PublicVariable.actionBarHeight / 2);
+        int xPosition = (int) (actionButton.getX() + (actionButton.getWidth() / 2));
+        int yPosition = (int) (actionButton.getY() + (actionButton.getHeight() / 2));
 
         int startRadius = (int) Math.hypot(displayX(), displayY());
         int endRadius = 0;
@@ -5071,232 +5050,6 @@ public class FunctionsClass {
         });
 
         PublicVariable.actionCenter = false;
-    }
-
-    public void recoveryOption(final View fullActionElements, final ListView elementsList, boolean startAnimation) {
-        if (startAnimation == false) {
-            int xPosition = displayX() - DpToInteger(73);
-            int yPosition = -(PublicVariable.actionBarHeight / 2);
-
-            int startRadius = 0;
-            int endRadius = (int) Math.hypot(displayX(), displayY());
-
-            Animator animator = ViewAnimationUtils.createCircularReveal(fullActionElements, xPosition, yPosition, startRadius, endRadius);
-            animator.setDuration(555);
-            animator.start();
-        }
-
-        fullActionElements.setVisibility(View.VISIBLE);
-        fullActionElements.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeRecoveryMenuOption(fullActionElements, elementsList);
-            }
-        });
-
-        LayerDrawable drawRecovery = (LayerDrawable) context.getDrawable(R.drawable.draw_recovery);
-        GradientDrawable backRecovery = (GradientDrawable) drawRecovery.findDrawableByLayerId(R.id.backtemp);
-        backRecovery.setColor(PublicVariable.primaryColor);
-
-        CharSequence[] charSequence = new CharSequence[]{
-                context.getString(R.string.recovery),
-                context.getString(R.string.recover_category),
-        };
-        Drawable[] drawables = new Drawable[]{
-                drawRecovery,
-                drawRecovery,
-        };
-
-        navDrawerItems = new ArrayList<NavDrawerItem>();
-        for (int navItem = 0; navItem < charSequence.length; navItem++) {
-            CharSequence itemText = charSequence[navItem];
-            Drawable itemIcon = drawables[navItem];
-
-            navDrawerItems.add(new NavDrawerItem(itemText, itemIcon));
-        }
-        actionListAdapter = new ActionListAdapter(activity, context, navDrawerItems);
-
-        if (appThemeTransparent() == true) {
-            if (PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.transparent_light)));
-
-                final Window window = activity.getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                if (PublicVariable.themeLightDark) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    if (API > 25) {
-                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                    }
-                }
-
-                ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(activity.getWindow().getNavigationBarColor(), context.getResources().getColor(R.color.fifty_light_twice));
-                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        window.setStatusBarColor((Integer) animator.getAnimatedValue());
-                        window.setNavigationBarColor((Integer) animator.getAnimatedValue());
-                        activity.getActionBar().setBackgroundDrawable(new ColorDrawable((Integer) animator.getAnimatedValue()));
-                    }
-                });
-                colorAnimation.start();
-            } else if (!PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.dark_transparent)));
-
-                final Window window = activity.getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-                ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(activity.getWindow().getNavigationBarColor(), context.getResources().getColor(R.color.transparent_dark_high_twice));
-                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        window.setStatusBarColor((Integer) animator.getAnimatedValue());
-                        window.setNavigationBarColor((Integer) animator.getAnimatedValue());
-                        activity.getActionBar().setBackgroundDrawable(new ColorDrawable((Integer) animator.getAnimatedValue()));
-                    }
-                });
-                colorAnimation.start();
-            }
-        } else {
-            if (PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.transparent_light)));
-                if (PublicVariable.themeLightDark) {
-                    if (API > 25) {
-                        activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                    }
-                }
-
-                ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(activity.getWindow().getNavigationBarColor(), mixColors(context.getResources().getColor(R.color.light), activity.getWindow().getNavigationBarColor(), 0.70f));
-                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        activity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
-                    }
-                });
-                colorAnimation.start();
-            } else if (!PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getResources().getColor(R.color.dark_transparent)));
-
-                ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(activity.getWindow().getNavigationBarColor(), mixColors(context.getResources().getColor(R.color.dark), activity.getWindow().getNavigationBarColor(), 0.70f));
-                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        activity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
-                    }
-                });
-                colorAnimation.start();
-            }
-        }
-
-        Animation elementsAnim = AnimationUtils.loadAnimation(context, R.anim.up_down);
-        LayoutAnimationController itemController = new LayoutAnimationController(elementsAnim, 0.777f);
-        elementsList.setAdapter(actionListAdapter);
-        elementsList.setLayoutAnimation(itemController);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Preferences(true);
-            }
-        }, 222);
-        PublicVariable.recoveryCenter = true;
-    }
-
-    public void closeRecoveryMenuOption(final View fullActionElements, final ListView elementsList) {
-        if (appThemeTransparent() == true) {
-            final Window window = activity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (PublicVariable.themeLightDark) {
-                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (API > 25) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                }
-            }
-
-            ValueAnimator colorAnimationActionBar = ValueAnimator
-                    .ofArgb(activity.getWindow().getNavigationBarColor(), setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), 130));
-            colorAnimationActionBar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    activity.getActionBar().setBackgroundDrawable(new ColorDrawable((Integer) animator.getAnimatedValue()));
-                }
-            });
-            colorAnimationActionBar.start();
-
-            ValueAnimator colorAnimationStatusBar = ValueAnimator
-                    .ofArgb(activity.getWindow().getNavigationBarColor(), setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), 130));
-            colorAnimationStatusBar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    window.setStatusBarColor((Integer) animator.getAnimatedValue());
-                }
-            });
-            colorAnimationStatusBar.start();
-
-            ValueAnimator colorAnimationNavigationBar = ValueAnimator
-                    .ofArgb(activity.getWindow().getNavigationBarColor(), setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
-            colorAnimationNavigationBar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    window.setNavigationBarColor((Integer) animator.getAnimatedValue());
-                }
-            });
-            colorAnimationNavigationBar.start();
-        } else {
-            if (PublicVariable.themeLightDark) {
-                if (API > 25) {
-                    activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                }
-            }
-
-            ValueAnimator colorAnimation = ValueAnimator
-                    .ofArgb(activity.getWindow().getNavigationBarColor(), PublicVariable.colorLightDark);
-            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    activity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
-                }
-            });
-            colorAnimation.start();
-        }
-
-        int xPosition = displayX() - DpToInteger(73);
-        int yPosition = -(PublicVariable.actionBarHeight / 2);
-
-        int startRadius = (int) Math.hypot(displayX(), displayY());
-        int endRadius = 0;
-
-        Animator animator = ViewAnimationUtils.createCircularReveal(fullActionElements, xPosition, yPosition, startRadius, endRadius);
-        animator.setDuration(555);
-        animator.start();
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                fullActionElements.setVisibility(View.INVISIBLE);
-                Preferences(false);
-                elementsList.setAdapter(null);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-        });
-
-        PublicVariable.recoveryCenter = false;
     }
 
     public void notificationCreator(String titleText, String contentText, int notificationId) {

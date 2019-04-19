@@ -24,9 +24,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -105,7 +102,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     RelativeLayout fullActionButton, MainView, loadingSplash;
     LinearLayout indexView, freqView;
     ProgressBar loadingBarLTR;
-    ImageView loadLogo;
+    ImageView loadLogo, actionButton;
+    MaterialButton switchWidgets, switchCategories;
 
     List<ApplicationInfo> applicationInfoList;
     Map<String, Integer> mapIndex;
@@ -180,22 +178,38 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         LoadApplicationsOffLimited loadApplicationsOffLimited = new LoadApplicationsOffLimited();
         loadApplicationsOffLimited.execute();
 
-        MaterialButton switchWidgets = (MaterialButton) findViewById(R.id.switchWidgets);
-        MaterialButton switchCategories = (MaterialButton) findViewById(R.id.switchCategories);
+        actionButton = (ImageView) findViewById(R.id.actionButton);
+        switchWidgets = (MaterialButton) findViewById(R.id.switchWidgets);
+        switchCategories = (MaterialButton) findViewById(R.id.switchCategories);
 
-        switchWidgets.setTextColor(getResources().getColor(R.color.light));
-        switchCategories.setTextColor(getResources().getColor(R.color.light));
+        LayerDrawable drawPreferenceAction = (LayerDrawable) getDrawable(R.drawable.draw_pref_action);
+        GradientDrawable backPreferenceAction = (GradientDrawable) drawPreferenceAction.findDrawableByLayerId(R.id.backtemp);
+        backPreferenceAction.setColor(PublicVariable.primaryColorOpposite);
+        actionButton.setImageDrawable(drawPreferenceAction);
+
+        switchWidgets.setTextColor(getColor(R.color.light));
+        switchCategories.setTextColor(getColor(R.color.light));
         if (PublicVariable.themeLightDark /*light*/ && functionsClass.appThemeTransparent() /*transparent*/) {
             switchWidgets.setTextColor(getResources().getColor(R.color.dark));
             switchCategories.setTextColor(getResources().getColor(R.color.dark));
         }
 
-        switchCategories.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite);
-        switchCategories.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor));
+        switchCategories.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+        switchCategories.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite));
 
-        switchWidgets.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite);
-        switchWidgets.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor));
+        switchWidgets.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+        switchWidgets.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite));
 
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (PublicVariable.actionCenter == false) {
+                    functionsClass.openActionMenuOption(fullActionButton, actionButton, actionElementsList, fullActionButton.isShown());
+                } else {
+                    functionsClass.closeActionMenuOption(fullActionButton, actionButton, actionElementsList);
+                }
+            }
+        });
         switchCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -388,10 +402,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         functionsClass.addAppShortcuts();
         functionsClass.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition());
         if (PublicVariable.actionCenter == true) {
-            functionsClass.closeMenuOption(fullActionButton, actionElementsList);
-        }
-        if (PublicVariable.recoveryCenter == true) {
-            functionsClass.closeRecoveryMenuOption(fullActionButton, actionElementsList);
+            functionsClass.closeActionMenuOption(fullActionButton, actionButton, actionElementsList);
         }
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
         functionsClass.CheckSystemRAM(HybridViewOff.this);
@@ -452,7 +463,12 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     public void onSwipe(int direction) {
         switch (direction) {
             case SimpleGestureFilterSwitch.SWIPE_RIGHT: {
-
+                try {
+                    functionsClass.navigateToClass(WidgetConfigurations.class,
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             }
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
@@ -469,73 +485,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent me) {
-        this.simpleGestureFilterSwitch.onTouchEvent(me);
+    public boolean dispatchTouchEvent(MotionEvent motionEvent) {
+        this.simpleGestureFilterSwitch.onTouchEvent(motionEvent);
 
-        return super.dispatchTouchEvent(me);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_scope, menu);
-        MenuItem floating = menu.findItem(R.id.floating);
-        MenuItem recovery = menu.findItem(R.id.recov);
-
-        LayerDrawable drawFloating = (LayerDrawable) getResources().getDrawable(R.drawable.draw_floating);
-        LayerDrawable drawRecov = (LayerDrawable) getResources().getDrawable(R.drawable.draw_recovery);
-
-        GradientDrawable backFloating = (GradientDrawable) drawFloating.findDrawableByLayerId(R.id.backtemp);
-        GradientDrawable backRecov = (GradientDrawable) drawRecov.findDrawableByLayerId(R.id.backtemp);
-
-        backFloating.setColor(functionsClass.optionMenuColor());
-        backRecov.setColor(functionsClass.optionMenuColor());
-
-        floating.setIcon(drawFloating);
-        recovery.setIcon(drawRecov);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.floating: {
-                if (fullActionButton.isShown()) {
-                    PublicVariable.recoveryCenter = false;
-                }
-                if (PublicVariable.actionCenter == false) {
-                    functionsClass.menuOption(fullActionButton, actionElementsList, fullActionButton.isShown());
-                } else {
-                    functionsClass.closeMenuOption(fullActionButton, actionElementsList);
-                }
-                break;
-            }
-            case R.id.recov: {
-                if (fullActionButton.isShown()) {
-                    PublicVariable.actionCenter = false;
-                }
-                if (PublicVariable.recoveryCenter == false) {
-                    functionsClass.recoveryOption(fullActionButton, actionElementsList, fullActionButton.isShown());
-                } else {
-                    functionsClass.closeRecoveryMenuOption(fullActionButton, actionElementsList);
-                }
-                break;
-            }
-            case android.R.id.home: {
-                functionsClass.upcomingChangeLog(
-                        HybridViewOff.this,
-                        firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
-                        String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
-                );
-                break;
-            }
-        }
-        return super.onOptionsItemSelected(item);
+        return super.dispatchTouchEvent(motionEvent);
     }
 
     @Override
@@ -629,7 +582,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             }
             functionsClass.saveFileAppendLine(".categoryInfo", "Frequently");
 
-            freqlist = (HorizontalScrollView) findViewById(R.id.freqlist);
+            freqlist = (HorizontalScrollView) findViewById(R.id.freqList);
             LayerDrawable drawFreq = (LayerDrawable) getResources().getDrawable(R.drawable.layer_freq);
             GradientDrawable backFreq = (GradientDrawable) drawFreq.findDrawableByLayerId(R.id.backtemp);
             backFreq.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, 155));
@@ -764,6 +717,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                         try {
                             String newChar = functionsClass.appName(applicationInfoList.get(appInfo).packageName).substring(0, 1).toUpperCase();
                             if (appInfo == 0) {
+                                sections.add(new HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar));
                             } else {
                                 String oldChar = functionsClass.appName(applicationInfoList.get(lastIntentItem).packageName).substring(0, 1).toUpperCase();
                                 if (!oldChar.equals(newChar)) {
@@ -812,7 +766,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             if (loadFreq == false) {
-                freqlist = (HorizontalScrollView) findViewById(R.id.freqlist);
+                freqlist = (HorizontalScrollView) findViewById(R.id.freqList);
                 MainView.removeView(freqlist);
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.MATCH_PARENT,

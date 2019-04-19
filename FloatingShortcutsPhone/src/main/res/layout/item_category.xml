@@ -46,7 +46,7 @@
         android:typeface="sans"/>
 
     <HorizontalScrollView
-        android:id="@+id/freqlist"
+        android:id="@+id/freqList"
         android:layout_width="match_parent"
         android:layout_height="57dp"
         android:layout_below="@id/categoryName"

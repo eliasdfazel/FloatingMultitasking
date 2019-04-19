@@ -26,9 +26,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -398,10 +395,7 @@ public class ListViewOff extends Activity implements View.OnClickListener, View.
         functionsClass.addAppShortcuts();
         functionsClass.savePreference("LoadView", "LoadViewPosition", loadView.getFirstVisiblePosition());
         if (PublicVariable.actionCenter == true) {
-            functionsClass.closeMenuOption(fullActionButton, actionElementsList);
-        }
-        if (PublicVariable.recoveryCenter == true) {
-            functionsClass.closeRecoveryMenuOption(fullActionButton, actionElementsList);
+            functionsClass.closeActionMenuOption(fullActionButton, null, actionElementsList);
         }
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
         functionsClass.CheckSystemRAM(ListViewOff.this);
@@ -485,70 +479,6 @@ public class ListViewOff extends Activity implements View.OnClickListener, View.
     public boolean dispatchTouchEvent(MotionEvent motionEvent) {
         ListViewOff.this.simpleGestureFilterSwitch.onTouchEvent(motionEvent);
         return super.dispatchTouchEvent(motionEvent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_scope, menu);
-        MenuItem floating = menu.findItem(R.id.floating);
-        MenuItem recovery = menu.findItem(R.id.recov);
-
-        LayerDrawable drawFloating = (LayerDrawable) getResources().getDrawable(R.drawable.draw_floating);
-        GradientDrawable backFloating = (GradientDrawable) drawFloating.findDrawableByLayerId(R.id.backtemp);
-
-        LayerDrawable drawRecov = (LayerDrawable) getResources().getDrawable(R.drawable.draw_recovery);
-        GradientDrawable backRecov = (GradientDrawable) drawRecov.findDrawableByLayerId(R.id.backtemp);
-
-        backFloating.setColor(functionsClass.optionMenuColor());
-        backRecov.setColor(functionsClass.optionMenuColor());
-
-        floating.setIcon(drawFloating);
-        recovery.setIcon(drawRecov);
-
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.floating: {
-                if (fullActionButton.isShown()) {
-                    PublicVariable.recoveryCenter = false;
-                }
-                if (PublicVariable.actionCenter == false) {
-                    functionsClass.menuOption(fullActionButton, actionElementsList, fullActionButton.isShown());
-                } else {
-                    functionsClass.closeMenuOption(fullActionButton, actionElementsList);
-                }
-                break;
-            }
-            case R.id.recov: {
-                if (fullActionButton.isShown()) {
-                    PublicVariable.actionCenter = false;
-                }
-                if (PublicVariable.recoveryCenter == false) {
-                    functionsClass.recoveryOption(fullActionButton, actionElementsList, fullActionButton.isShown());
-                } else {
-                    functionsClass.closeRecoveryMenuOption(fullActionButton, actionElementsList);
-                }
-                break;
-            }
-            case android.R.id.home: {
-                functionsClass.upcomingChangeLog(
-                        ListViewOff.this,
-                        firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
-                        String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
-                );
-                break;
-            }
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -644,7 +574,7 @@ public class ListViewOff extends Activity implements View.OnClickListener, View.
             }
             functionsClass.saveFileAppendLine(".categoryInfo", "Frequently");
 
-            freqlist = (HorizontalScrollView) findViewById(R.id.freqlist);
+            freqlist = (HorizontalScrollView) findViewById(R.id.freqList);
             LayerDrawable drawFreq = (LayerDrawable) getResources().getDrawable(R.drawable.layer_freq);
             GradientDrawable backFreq = (GradientDrawable) drawFreq.findDrawableByLayerId(R.id.backtemp);
             backFreq.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, 155));
@@ -811,7 +741,7 @@ public class ListViewOff extends Activity implements View.OnClickListener, View.
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             if (loadFreq == false) {
-                freqlist = (HorizontalScrollView) findViewById(R.id.freqlist);
+                freqlist = (HorizontalScrollView) findViewById(R.id.freqList);
                 MainView.removeView(freqlist);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.MATCH_PARENT,

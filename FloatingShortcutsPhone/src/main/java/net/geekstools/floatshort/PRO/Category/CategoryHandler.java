@@ -24,9 +24,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -395,11 +392,9 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
     public void onPause() {
         super.onPause();
         if (PublicVariable.actionCenter == true) {
-            functionsClass.closeMenuOption(fullActionButton, actionElementsList);
+            functionsClass.closeActionMenuOption(fullActionButton, null, actionElementsList);
         }
-        if (PublicVariable.recoveryCenter == true) {
-            functionsClass.closeRecoveryMenuOption(fullActionButton, actionElementsList);
-        }
+
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
         functionsClass.CheckSystemRAM(CategoryHandler.this);
     }
@@ -424,71 +419,6 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
         homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(homeScreen);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_scope, menu);
-
-        MenuItem floating = menu.findItem(R.id.floating);
-        MenuItem recovery = menu.findItem(R.id.recov);
-
-        LayerDrawable drawFloating = (LayerDrawable) getResources().getDrawable(R.drawable.draw_floating);
-        GradientDrawable backFloating = (GradientDrawable) drawFloating.findDrawableByLayerId(R.id.backtemp);
-
-        LayerDrawable drawRecov = (LayerDrawable) getResources().getDrawable(R.drawable.draw_recovery);
-        GradientDrawable backRecov = (GradientDrawable) drawRecov.findDrawableByLayerId(R.id.backtemp);
-
-        backFloating.setColor(functionsClass.optionMenuColor());
-        backRecov.setColor(functionsClass.optionMenuColor());
-
-        floating.setIcon(drawFloating);
-        recovery.setIcon(drawRecov);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.floating: {
-                if (fullActionButton.isShown()) {
-                    PublicVariable.recoveryCenter = false;
-                }
-                if (PublicVariable.actionCenter == false) {
-                    functionsClass.menuOption(fullActionButton, actionElementsList, fullActionButton.isShown());
-                } else {
-                    functionsClass.closeMenuOption(fullActionButton, actionElementsList);
-                }
-                break;
-            }
-            case R.id.recov: {
-                if (fullActionButton.isShown()) {
-                    PublicVariable.actionCenter = false;
-                }
-                if (PublicVariable.recoveryCenter == false) {
-                    functionsClass.recoveryOption(fullActionButton, actionElementsList, fullActionButton.isShown());
-                } else {
-                    functionsClass.closeRecoveryMenuOption(fullActionButton, actionElementsList);
-                }
-                break;
-            }
-            case android.R.id.home: {
-                try {
-                    functionsClass.overrideBackPressToShortcuts(CategoryHandler.this);
-                    overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -523,10 +453,10 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent me) {
-        this.simpleGestureFilterSwitch.onTouchEvent(me);
+    public boolean dispatchTouchEvent(MotionEvent motionEvent) {
+        this.simpleGestureFilterSwitch.onTouchEvent(motionEvent);
 
-        return super.dispatchTouchEvent(me);
+        return super.dispatchTouchEvent(motionEvent);
     }
 
     @Override
