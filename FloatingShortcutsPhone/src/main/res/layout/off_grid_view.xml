@@ -137,7 +137,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/floatingWidget"
+        android:id="@+id/switchWidgets"
         android:layout_width="match_parent"
         android:layout_height="33dp"
         android:layout_alignParentBottom="true"

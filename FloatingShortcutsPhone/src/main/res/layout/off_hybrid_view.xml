@@ -1,40 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/MainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_transparent_high">
 
-    <LinearLayout
-        android:id="@+id/switchFloating"
-        android:layout_width="match_parent"
-        android:layout_height="33dp"
-        android:visibility="invisible"
-        android:weightSum="2">
-
-        <Button
-            android:id="@+id/switchShortcuts"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/draw_shortcuts"
-            android:text="@string/shortcutHint"/>
-
-        <Button
-            android:id="@+id/switchCategories"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/draw_categories"
-            android:text="@string/categoryHint"/>
-    </LinearLayout>
-
     <HorizontalScrollView
         android:id="@+id/freqlist"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/switchFloating"
         android:layout_marginTop="-3.5dp"
         android:background="@drawable/layer_freq"
         android:cacheColorHint="@android:color/transparent"
@@ -111,6 +86,56 @@
             android:orientation="vertical"/>
     </ScrollView>
 
+
+    <LinearLayout
+        android:id="@+id/switchFloating"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_alignParentBottom="true"
+        android:paddingStart="5dp"
+        android:paddingEnd="29dp"
+        android:visibility="invisible"
+        android:background="@android:color/transparent"
+        android:weightSum="2">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/switchWidgets"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:background="@drawable/draw_shortcuts"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            android:text="@string/widgetHint"
+            app:elevation="7dp"
+            app:cornerRadius="7dp"
+            app:backgroundTint="@color/default_color" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/switchCategories"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:background="@drawable/draw_categories"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            android:text="@string/categoryHint"
+            app:elevation="7dp"
+            app:cornerRadius="7dp"
+            app:backgroundTint="@color/default_color" />
+    </LinearLayout>
+
+
     <RelativeLayout
         android:id="@+id/fullActionButton"
         android:layout_width="match_parent"
@@ -145,19 +170,6 @@
                 android:visibility="invisible"/>
         </RelativeLayout>
     </RelativeLayout>
-
-
-    <Button
-        android:id="@+id/floatingWidget"
-        android:layout_width="match_parent"
-        android:layout_height="33dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/draw_shortcuts"
-        android:textAllCaps="false"
-        android:textStyle="normal"
-        android:text="@string/widgetHint"
-        android:onClick="floatingWidget"/>
-
 
     <RelativeLayout
         android:id="@+id/loadingSplash"

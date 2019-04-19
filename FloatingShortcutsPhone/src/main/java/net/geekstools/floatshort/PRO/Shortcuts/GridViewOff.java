@@ -42,6 +42,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -84,8 +86,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-
 public class GridViewOff extends Activity implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
     Activity activity;
@@ -120,7 +120,6 @@ public class GridViewOff extends Activity implements View.OnClickListener, View.
     LoadCustomIcons loadCustomIcons;
     private FirebaseAuth firebaseAuth;
 
-
     public void floatingWidget(View view) {
 
         if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
@@ -133,8 +132,6 @@ public class GridViewOff extends Activity implements View.OnClickListener, View.
         }
 
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,9 +151,9 @@ public class GridViewOff extends Activity implements View.OnClickListener, View.
         activity = this;
 
         if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColor(MainView, true, getString(R.string.floatingHint), "");
+            functionsClass.setThemeColorFloating(MainView, true);
         } else {
-            functionsClass.setThemeColor(MainView, false, getString(R.string.floatingHint), "");
+            functionsClass.setThemeColorFloating(MainView, false);
         }
 
         navDrawerItemsInit = new ArrayList<NavDrawerItem>();
@@ -228,7 +225,7 @@ public class GridViewOff extends Activity implements View.OnClickListener, View.
             @Override
             public void onClick(View view) {
                 try {
-                    functionsClass.overrideBackPressToClass(CategoryHandler.class,
+                    functionsClass.navigateToClass(CategoryHandler.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -474,7 +471,7 @@ public class GridViewOff extends Activity implements View.OnClickListener, View.
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
                 System.out.println("Swipe Left");
                 try {
-                    functionsClass.overrideBackPressToClass(CategoryHandler.class,
+                    functionsClass.navigateToClass(CategoryHandler.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -676,13 +673,12 @@ public class GridViewOff extends Activity implements View.OnClickListener, View.
             functionsClass.addAppShortcuts();
 
             if (functionsClass.appThemeTransparent()) {
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.MATCH_PARENT,
                         functionsClass.DpToInteger(50)
                 );
-                params.topMargin = 0;
-                params.addRule(RelativeLayout.BELOW, R.id.switchFloating);
-                freqlist.setLayoutParams(params);
+                layoutParams.topMargin = 0;
+                freqlist.setLayoutParams(layoutParams);
 
                 Button switchShortcuts = (Button) findViewById(R.id.switchShortcuts);
                 Button switchCategories = (Button) findViewById(R.id.switchCategories);
@@ -822,7 +818,6 @@ public class GridViewOff extends Activity implements View.OnClickListener, View.
                         RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.MATCH_PARENT
                 );
-                params.addRule(RelativeLayout.BELOW, R.id.switchFloating);
                 loadView.setLayoutParams(params);
             }
             cardGridAdapter.notifyDataSetChanged();

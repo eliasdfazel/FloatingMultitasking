@@ -29,6 +29,10 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import net.geekstools.floatshort.PRO.Category.NavAdapter.AppSavedListAdapter;
 import net.geekstools.floatshort.PRO.Category.NavAdapter.AppSelectionListAdapter;
 import net.geekstools.floatshort.PRO.R;
@@ -43,10 +47,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class AppSelectionList extends Activity implements View.OnClickListener {
 
@@ -108,9 +108,9 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         confirmLayout.bringToFront();
 
         if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColor(wholeAuto, true, PublicVariable.categoryName, "");
+            functionsClass.setThemeColorFloating(wholeAuto, true);
         } else {
-            functionsClass.setThemeColor(wholeAuto, false, PublicVariable.categoryName, "");
+            functionsClass.setThemeColorFloating(wholeAuto, false);
         }
 
         recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);
@@ -374,7 +374,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
     public void onBackPressed() {
         super.onBackPressed();
         try {
-            functionsClass.overrideBackPressToClass(CategoryHandler.class, AppSelectionList.this);
+            functionsClass.navigateToClass(CategoryHandler.class, AppSelectionList.this);
         } catch (Exception e) {
             e.printStackTrace();
         }

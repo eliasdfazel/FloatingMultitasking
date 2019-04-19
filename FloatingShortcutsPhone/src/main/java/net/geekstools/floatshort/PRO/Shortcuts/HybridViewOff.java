@@ -41,6 +41,11 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -50,6 +55,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,11 +92,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class HybridViewOff extends Activity implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
@@ -136,23 +137,11 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
     private FirebaseAuth firebaseAuth;
 
-
-    public void floatingWidget(View view) {
-        if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
-            startActivity(new Intent(getApplicationContext(), WidgetConfigurations.class),
-                    ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
-        } else {
-            startActivity(new Intent(getApplicationContext(), InAppBilling.class)
-                            .putExtra("UserEmailAddress", functionsClass.readPreference(".BETA", "testerEmail", null)),
-                    ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
-        }
-    }
-
-
     @Override
-    protected void onCreate(Bundle Saved) {
-        super.onCreate(Saved);
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
         setContentView(R.layout.off_hybrid_view);
+
         nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
         loadView = (RecyclerView) findViewById(R.id.list);
         indexView = (LinearLayout) findViewById(R.id.side_index);
@@ -175,9 +164,9 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         indexItems = new TreeMap<String, Integer>();
 
         if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColor(MainView, true, getString(R.string.floatingHint), "");
+            functionsClass.setThemeColorFloating(MainView, true);
         } else {
-            functionsClass.setThemeColor(MainView, false, getString(R.string.floatingHint), "");
+            functionsClass.setThemeColorFloating(MainView, false);
         }
 
         applicationInfoList = new ArrayList<ApplicationInfo>();
@@ -191,68 +180,43 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         LoadApplicationsOffLimited loadApplicationsOffLimited = new LoadApplicationsOffLimited();
         loadApplicationsOffLimited.execute();
 
-        Button switchShortcuts = (Button) findViewById(R.id.switchShortcuts);
-        Button switchCategories = (Button) findViewById(R.id.switchCategories);
+        MaterialButton switchWidgets = (MaterialButton) findViewById(R.id.switchWidgets);
+        MaterialButton switchCategories = (MaterialButton) findViewById(R.id.switchCategories);
 
-        switchShortcuts.setTextColor(getResources().getColor(R.color.light));
+        switchWidgets.setTextColor(getResources().getColor(R.color.light));
         switchCategories.setTextColor(getResources().getColor(R.color.light));
         if (PublicVariable.themeLightDark /*light*/ && functionsClass.appThemeTransparent() /*transparent*/) {
-            switchShortcuts.setTextColor(getResources().getColor(R.color.dark));
+            switchWidgets.setTextColor(getResources().getColor(R.color.dark));
             switchCategories.setTextColor(getResources().getColor(R.color.dark));
         }
 
-        RippleDrawable rippleDrawableShortcuts = (RippleDrawable) getResources().getDrawable(R.drawable.draw_shortcuts);
-        GradientDrawable gradientDrawableShortcutsForeground = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(R.id.foregroundItem);
-        GradientDrawable gradientDrawableShortcutsBackground = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(R.id.backgroundItem);
-        GradientDrawable gradientDrawableMaskShortcuts = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(android.R.id.mask);
+        switchCategories.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite);
+        switchCategories.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor));
 
-        if (functionsClass.appThemeTransparent()) {
-            rippleDrawableShortcuts.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
-            gradientDrawableShortcutsForeground.setColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 255));
-            if (functionsClass.returnAPI() > 21) {
-                gradientDrawableShortcutsBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, 155));
-            } else {
-                gradientDrawableShortcutsBackground.setColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 155));
-            }
-            gradientDrawableMaskShortcuts.setColor(PublicVariable.primaryColorOpposite);
-        } else {
-            rippleDrawableShortcuts.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
-            gradientDrawableShortcutsForeground.setColor(PublicVariable.primaryColor);
-            gradientDrawableShortcutsBackground.setTint(PublicVariable.primaryColor);
-            gradientDrawableMaskShortcuts.setColor(PublicVariable.primaryColorOpposite);
-        }
+        switchWidgets.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite);
+        switchWidgets.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor));
 
-        RippleDrawable rippleDrawableCategories = (RippleDrawable) getResources().getDrawable(R.drawable.draw_categories);
-        GradientDrawable gradientDrawableCategoriesForeground = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(R.id.foregroundItem);
-        GradientDrawable gradientDrawableCategoriesBackground = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(R.id.backgroundItem);
-        GradientDrawable gradientDrawableMaskCategories = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(android.R.id.mask);
-
-        if (functionsClass.appThemeTransparent()) {
-            rippleDrawableCategories.setColor(ColorStateList.valueOf(PublicVariable.primaryColor));
-            gradientDrawableCategoriesForeground.setColor(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 255));
-            if (functionsClass.returnAPI() > 21) {
-                gradientDrawableCategoriesBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
-            } else {
-                gradientDrawableShortcutsBackground.setColor(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
-            }
-            gradientDrawableMaskCategories.setColor(PublicVariable.primaryColor);
-        } else {
-            rippleDrawableCategories.setColor(ColorStateList.valueOf(PublicVariable.primaryColor));
-            gradientDrawableCategoriesForeground.setColor(PublicVariable.primaryColorOpposite);
-            gradientDrawableCategoriesBackground.setTint(PublicVariable.primaryColorOpposite);
-            gradientDrawableMaskCategories.setColor(PublicVariable.primaryColor);
-        }
-
-        switchShortcuts.setBackground(rippleDrawableShortcuts);
-        switchCategories.setBackground(rippleDrawableCategories);
         switchCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    functionsClass.overrideBackPressToClass(CategoryHandler.class,
+                    functionsClass.navigateToClass(CategoryHandler.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+        });
+        switchWidgets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
+                    startActivity(new Intent(getApplicationContext(), WidgetConfigurations.class),
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+                } else {
+                    startActivity(new Intent(getApplicationContext(), InAppBilling.class)
+                                    .putExtra("UserEmailAddress", functionsClass.readPreference(".BETA", "testerEmail", null)),
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
                 }
             }
         });
@@ -493,7 +457,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             }
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
                 try {
-                    functionsClass.overrideBackPressToClass(CategoryHandler.class,
+                    functionsClass.navigateToClass(CategoryHandler.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -697,7 +661,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                         functionsClass.DpToInteger(50)
                 );
                 params.topMargin = 0;
-                params.addRule(RelativeLayout.BELOW, R.id.switchFloating);
                 freqlist.setLayoutParams(params);
 
                 Button switchShortcuts = (Button) findViewById(R.id.switchShortcuts);
@@ -851,12 +814,11 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             if (loadFreq == false) {
                 freqlist = (HorizontalScrollView) findViewById(R.id.freqlist);
                 MainView.removeView(freqlist);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.MATCH_PARENT
                 );
-                params.addRule(RelativeLayout.BELOW, R.id.switchFloating);
-                nestedScrollView.setLayoutParams(params);
+                nestedScrollView.setLayoutParams(layoutParams);
             }
             recyclerViewAdapter.notifyDataSetChanged();
             HybridSectionedGridRecyclerViewAdapter.Section[] sectionsData = new HybridSectionedGridRecyclerViewAdapter.Section[sections.size()];
@@ -936,6 +898,11 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                         }
                     }
                 }
+
+                for (int i = hybridItem; i < (hybridItem + 2); i++) {
+                    sections.add(new HybridSectionedGridRecyclerViewAdapter.Section(i, ""));
+                }
+
                 recyclerViewAdapter = new CardHybridAdapter(activity, getApplicationContext(), navDrawerItems);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -949,7 +916,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             recyclerViewAdapter.notifyDataSetChanged();
-            HybridSectionedGridRecyclerViewAdapter.Section[] dummy = new HybridSectionedGridRecyclerViewAdapter.Section[sections.size()];
+            HybridSectionedGridRecyclerViewAdapter.Section[] sections = new HybridSectionedGridRecyclerViewAdapter.Section[HybridViewOff.this.sections.size()];
             HybridSectionedGridRecyclerViewAdapter mSectionedAdapter = new HybridSectionedGridRecyclerViewAdapter(
                     getApplicationContext(),
                     R.layout.hybrid_sections,
@@ -957,7 +924,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     loadView,
                     recyclerViewAdapter
             );
-            mSectionedAdapter.setSections(sections.toArray(dummy));
+            mSectionedAdapter.setSections(HybridViewOff.this.sections.toArray(sections));
             loadView.setAdapter(mSectionedAdapter);
 
             if (loadViewPosition == 0) {

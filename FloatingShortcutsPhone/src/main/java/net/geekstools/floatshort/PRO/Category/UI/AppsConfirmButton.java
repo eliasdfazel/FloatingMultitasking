@@ -136,7 +136,7 @@ public class AppsConfirmButton extends Button
     @Override
     public void onSingleTapUp() {
         try {
-            functionsClass.overrideBackPressToClass(CategoryHandler.class, activity);
+            functionsClass.navigateToClass(CategoryHandler.class, activity);
         } catch (Exception e) {
             e.printStackTrace();
         }

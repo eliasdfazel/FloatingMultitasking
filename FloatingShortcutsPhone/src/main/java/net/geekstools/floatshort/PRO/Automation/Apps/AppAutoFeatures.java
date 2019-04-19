@@ -31,6 +31,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import net.geekstools.floatshort.PRO.Automation.Categories.CategoryAutoFeatures;
@@ -48,8 +50,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class AppAutoFeatures extends AppCompatActivity implements View.OnClickListener, SimpleGestureFilterFull.SimpleGestureListener {
 
@@ -232,7 +232,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             public void onClick(View view) {
                 PublicVariable.autoID = null;
                 try {
-                    functionsClass.overrideBackPressToClass(CategoryAutoFeatures.class,
+                    functionsClass.navigateToClass(CategoryAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     finish();
                 } catch (Exception e) {
@@ -543,7 +543,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             case SimpleGestureFilterFull.SWIPE_LEFT: {
                 System.out.println("Swipe Left");
                 try {
-                    functionsClass.overrideBackPressToClass(CategoryAutoFeatures.class,
+                    functionsClass.navigateToClass(CategoryAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     finish();
                 } catch (Exception e) {

@@ -11,8 +11,7 @@
         android:id="@+id/icon"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_launcher"/>
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/desc"
@@ -24,7 +23,6 @@
         android:maxLines="2"
         android:paddingStart="7dp"
         android:paddingEnd="7dp"
-        android:text="@string/app_name"
         android:textColor="@color/dark"
         android:textSize="12sp"
         android:textStyle="normal"/>

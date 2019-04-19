@@ -29,6 +29,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
@@ -44,11 +49,6 @@ import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterFull;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryAutoFeatures extends AppCompatActivity implements View.OnClickListener, SimpleGestureFilterFull.SimpleGestureListener {
 
@@ -228,7 +228,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
             public void onClick(View view) {
                 PublicVariable.autoID = null;
                 try {
-                    functionsClass.overrideBackPressToClass(AppAutoFeatures.class,
+                    functionsClass.navigateToClass(AppAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                     finish();
                 } catch (Exception e) {
@@ -529,7 +529,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
             case SimpleGestureFilterFull.SWIPE_LEFT: {
                 System.out.println("Swipe Left");
                 try {
-                    functionsClass.overrideBackPressToClass(CategoryAutoFeatures.class,
+                    functionsClass.navigateToClass(CategoryAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     finish();
                 } catch (Exception e) {

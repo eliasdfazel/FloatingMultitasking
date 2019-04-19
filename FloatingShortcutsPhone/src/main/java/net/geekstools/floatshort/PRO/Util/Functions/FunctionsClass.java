@@ -1931,7 +1931,7 @@ public class FunctionsClass {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public void overrideBackPressToClass(Class returnClass, final Activity activityToFinish) throws Exception {
+    public void navigateToClass(Class returnClass, final Activity activityToFinish) throws Exception {
         context.startActivity(new Intent(context, returnClass).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -1941,7 +1941,7 @@ public class FunctionsClass {
         }, 313);
     }
 
-    public void overrideBackPressToClass(Class returnClass, ActivityOptions activityOptions) throws Exception {
+    public void navigateToClass(Class returnClass, ActivityOptions activityOptions) throws Exception {
         Intent intentOverride = new Intent(context, returnClass);
         activity.startActivity(intentOverride, activityOptions.toBundle());
     }
@@ -3276,22 +3276,12 @@ public class FunctionsClass {
     }
 
     /*App GUI Functions*/
-    public void setThemeColor(View view, boolean transparent, String title, String subTitle) {
+    public void setThemeColorFloating(View view, boolean transparent) {
         if (transparent == true) {
             if (wallpaperStaticLive()) {
                 setBackgroundTheme();
             }
             view.setBackgroundColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
-
-            ActionBar actionBar = activity.getActionBar();
-            actionBar.setBackgroundDrawable(new ColorDrawable(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), 130)));
-            if (PublicVariable.themeLightDark) {
-                actionBar.setTitle(Html.fromHtml("<font color='" + context.getResources().getColor(R.color.dark) + "'>" + title + "</font>"));
-                actionBar.setSubtitle(Html.fromHtml("<small><font color='" + context.getResources().getColor(R.color.dark) + "'>" + subTitle + "</font></small>"));
-            } else {
-                actionBar.setTitle(Html.fromHtml("<font color='" + context.getResources().getColor(R.color.light) + "'>" + title + "</font>"));
-                actionBar.setSubtitle(Html.fromHtml("<small><font color='" + context.getResources().getColor(R.color.light) + "'>" + subTitle + "</font></small>"));
-            }
 
             Window window = activity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -3306,11 +3296,6 @@ public class FunctionsClass {
             window.setNavigationBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
         } else if (transparent == false) {
             view.setBackgroundColor(PublicVariable.colorLightDark);
-
-            ActionBar actionBar = activity.getActionBar();
-            actionBar.setBackgroundDrawable(new ColorDrawable(PublicVariable.primaryColor));
-            actionBar.setTitle(Html.fromHtml("<font color='" + context.getResources().getColor(R.color.light) + "'>" + title + "</font>"));
-            actionBar.setSubtitle(Html.fromHtml("<small><font color='" + context.getResources().getColor(R.color.light) + "'>" + subTitle + "</font></small>"));
 
             Window window = activity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

@@ -38,6 +38,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -74,11 +79,6 @@ import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryHandler extends Activity implements View.OnClickListener, View.OnLongClickListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
@@ -143,9 +143,9 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
         functionsClass.ChangeLog(CategoryHandler.this, false);
 
         if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColor(wholeCategory, true, getResources().getString(R.string.floatingHint), "");
+            functionsClass.setThemeColorFloating(wholeCategory, true);
         } else {
-            functionsClass.setThemeColor(wholeCategory, false, getResources().getString(R.string.floatingHint), "");
+            functionsClass.setThemeColorFloating(wholeCategory, false);
         }
         navDrawerItems = new ArrayList<NavDrawerItem>();
 
