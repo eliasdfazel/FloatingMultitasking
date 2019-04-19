@@ -144,32 +144,14 @@
         android:background="@color/transparent_light"
         android:visibility="invisible">
 
-        <ListView
-            android:id="@+id/acttionElementsList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:divider="@drawable/draw_divider"
-            android:dividerHeight="2dp"
-            android:listSelector="@color/transparent_default"
-            android:saveEnabled="true"
-            android:smoothScrollbar="true"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <Button
+            android:id="@+id/preferences"
+            android:layout_width="87dp"
+            android:layout_height="87dp"
             android:layout_centerInParent="true"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/preferences"
-                android:layout_width="87dp"
-                android:layout_height="87dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/draw_pref_action"
-                android:visibility="invisible"/>
-        </RelativeLayout>
+            android:background="@drawable/draw_pref_action"
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <ImageView

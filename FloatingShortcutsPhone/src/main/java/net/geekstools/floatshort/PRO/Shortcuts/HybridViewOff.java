@@ -32,13 +32,13 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -76,6 +76,8 @@ import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
+import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
+import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
@@ -98,7 +100,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
     RecyclerView loadView;
     ScrollView nestedScrollView;
-    ListView actionElementsList;
     RelativeLayout fullActionButton, MainView, loadingSplash;
     LinearLayout indexView, freqView;
     ProgressBar loadingBarLTR;
@@ -147,7 +148,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         MainView = (RelativeLayout) findViewById(R.id.MainView);
         fullActionButton = (RelativeLayout) findViewById(R.id.fullActionButton);
         loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
-        actionElementsList = (ListView) findViewById(R.id.acttionElementsList);
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
         functionsClass = new FunctionsClass(getApplicationContext(), this);
@@ -204,9 +204,9 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             @Override
             public void onClick(View view) {
                 if (PublicVariable.actionCenter == false) {
-                    functionsClass.openActionMenuOption(fullActionButton, actionButton, actionElementsList, fullActionButton.isShown());
+                    functionsClass.openActionMenuOption(fullActionButton, actionButton, fullActionButton.isShown());
                 } else {
-                    functionsClass.closeActionMenuOption(fullActionButton, actionButton, actionElementsList);
+                    functionsClass.closeActionMenuOption(fullActionButton, actionButton);
                 }
             }
         });
@@ -232,6 +232,29 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                     .putExtra("UserEmailAddress", functionsClass.readPreference(".BETA", "testerEmail", null)),
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
                 }
+            }
+        });
+
+        actionButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ActivityOptionsCompat options = ActivityOptionsCompat.
+                                makeSceneTransitionAnimation(activity, actionButton, "transition");
+                        Intent intent = new Intent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        if (PublicVariable.themeLightDark) {
+                            intent.setClass(activity, SettingGUILight.class);
+                        } else if (!PublicVariable.themeLightDark) {
+                            intent.setClass(activity, SettingGUIDark.class);
+                        }
+                        activity.startActivity(intent, options.toBundle());
+                    }
+                }, 113);
+
+                return false;
             }
         });
 
@@ -402,7 +425,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         functionsClass.addAppShortcuts();
         functionsClass.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition());
         if (PublicVariable.actionCenter == true) {
-            functionsClass.closeActionMenuOption(fullActionButton, actionButton, actionElementsList);
+            functionsClass.closeActionMenuOption(fullActionButton, actionButton);
         }
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
         functionsClass.CheckSystemRAM(HybridViewOff.this);

@@ -88,7 +88,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.ListPopupWindow;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RemoteViews;
@@ -4849,7 +4848,7 @@ public class FunctionsClass {
         });
     }
 
-    public void openActionMenuOption(final View fullActionElements, View actionButton, final ListView elementsList, boolean startAnimation) {
+    public void openActionMenuOption(final View fullActionElements, View actionButton, boolean startAnimation) {
         if (startAnimation == false) {
             int xPosition = (int) (actionButton.getX() + (actionButton.getWidth() / 2));
             int yPosition = (int) (actionButton.getY() + (actionButton.getHeight() / 2));
@@ -4866,7 +4865,7 @@ public class FunctionsClass {
         fullActionElements.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closeActionMenuOption(fullActionElements, actionButton, elementsList);
+                closeActionMenuOption(fullActionElements, actionButton);
             }
         });
 
@@ -4967,8 +4966,6 @@ public class FunctionsClass {
 
         Animation elementsAnim = AnimationUtils.loadAnimation(context, R.anim.up_down);
         LayoutAnimationController itemController = new LayoutAnimationController(elementsAnim, 0.777f);
-        elementsList.setAdapter(actionListAdapter);
-        elementsList.setLayoutAnimation(itemController);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -4979,7 +4976,7 @@ public class FunctionsClass {
         PublicVariable.actionCenter = true;
     }
 
-    public void closeActionMenuOption(final View fullActionElements, View actionButton, final ListView elementsList) {
+    public void closeActionMenuOption(final View fullActionElements, View actionButton) {
         if (appThemeTransparent() == true) {
             final Window window = activity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -5037,7 +5034,6 @@ public class FunctionsClass {
             public void onAnimationEnd(Animator animation) {
                 fullActionElements.setVisibility(View.INVISIBLE);
                 Preferences(false);
-                elementsList.setAdapter(null);
             }
 
             @Override

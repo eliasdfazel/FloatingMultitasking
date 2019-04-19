@@ -392,7 +392,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
     public void onPause() {
         super.onPause();
         if (PublicVariable.actionCenter == true) {
-            functionsClass.closeActionMenuOption(fullActionButton, null, actionElementsList);
+            functionsClass.closeActionMenuOption(fullActionButton, null);
         }
 
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());

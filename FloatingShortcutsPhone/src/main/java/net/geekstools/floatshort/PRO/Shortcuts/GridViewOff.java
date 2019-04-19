@@ -396,7 +396,7 @@ public class GridViewOff extends Activity implements View.OnClickListener, View.
         functionsClass.addAppShortcuts();
         functionsClass.savePreference("LoadView", "LoadViewPosition", loadView.getFirstVisiblePosition());
         if (PublicVariable.actionCenter == true) {
-            functionsClass.closeActionMenuOption(fullActionButton, null, actionElementsList);
+            functionsClass.closeActionMenuOption(fullActionButton, null);
         }
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
         functionsClass.CheckSystemRAM(GridViewOff.this);
