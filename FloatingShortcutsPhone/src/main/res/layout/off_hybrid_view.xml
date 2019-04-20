@@ -10,20 +10,16 @@
         android:id="@+id/freqList"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="-3.5dp"
-        android:background="@drawable/layer_freq"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="55dp"
+        android:paddingStart="11dp"
+        android:paddingEnd="23dp"
         android:cacheColorHint="@android:color/transparent"
         android:fadeScrollbars="true"
         android:fadingEdge="horizontal"
-        android:fadingEdgeLength="37dp"
-        android:paddingStart="9dp"
-        android:paddingEnd="9dp"
+        android:fadingEdgeLength="39dp"
         android:requiresFadingEdge="horizontal"
-        android:scrollbarSize="2dp"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbarThumbHorizontal="@color/dark_transparent_high"
-        android:scrollbars="horizontal"
-        android:smoothScrollbar="true"
+        android:scrollbars="none"
         android:visibility="invisible">
 
         <LinearLayout
@@ -40,7 +36,6 @@
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/freqList"
         android:cacheColorHint="@android:color/transparent"
         android:fadingEdge="vertical"
         android:fadingEdgeLength="37dp"
@@ -49,9 +44,11 @@
         android:smoothScrollbar="true">
 
         <RelativeLayout
+            android:id="@+id/scrollRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="31dp">
+            android:paddingTop="31dp"
+            android:paddingBottom="41dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
@@ -66,14 +63,14 @@
                 android:paddingTop="5dp"
                 android:paddingEnd="27dp"
                 android:persistentDrawingCache="animation|scrolling"
-                android:saveEnabled="true"/>
+                android:saveEnabled="true" />
         </RelativeLayout>
     </ScrollView>
 
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_below="@id/freqList"
+        android:layout_above="@id/freqList"
         android:layout_alignEnd="@id/nestedScrollView"
         android:foregroundGravity="center_vertical">
 
@@ -94,7 +91,7 @@
         android:layout_height="53dp"
         android:layout_alignParentBottom="true"
         android:paddingStart="5dp"
-        android:paddingEnd="29dp"
+        android:paddingEnd="23dp"
         android:visibility="invisible"
         android:background="@android:color/transparent"
         android:weightSum="2">
@@ -109,7 +106,7 @@
             android:gravity="center"
             android:background="@drawable/draw_shortcuts"
             android:ellipsize="end"
-            android:textSize="12sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
             android:textAllCaps="false"
             android:textStyle="normal"
             android:text="@string/widgetHint"
@@ -127,13 +124,14 @@
             android:gravity="center"
             android:background="@drawable/draw_categories"
             android:ellipsize="end"
-            android:textSize="12sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
             android:textAllCaps="false"
             android:textStyle="normal"
             android:text="@string/categoryHint"
             app:elevation="7dp"
             app:cornerRadius="7dp"
             app:backgroundTint="@color/default_color" />
+
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton

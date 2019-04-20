@@ -18,7 +18,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -80,6 +78,7 @@ import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryCategory;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
@@ -105,7 +104,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
     RecyclerView loadView;
     ScrollView nestedScrollView;
-    RelativeLayout fullActionViews, MainView, loadingSplash;
+    RelativeLayout scrollRelativeLayout, fullActionViews, MainView, loadingSplash;
     LinearLayout indexView, freqView;
     ProgressBar loadingBarLTR;
     ImageView loadLogo, actionButton;
@@ -147,10 +146,12 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         setContentView(R.layout.off_hybrid_view);
 
         nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
+        scrollRelativeLayout = (RelativeLayout) findViewById(R.id.scrollRelativeLayout);
         loadView = (RecyclerView) findViewById(R.id.list);
         indexView = (LinearLayout) findViewById(R.id.side_index);
         freqView = (LinearLayout) findViewById(R.id.freqItem);
         MainView = (RelativeLayout) findViewById(R.id.MainView);
+        freqlist = (HorizontalScrollView) findViewById(R.id.freqList);
         fullActionViews = (RelativeLayout) findViewById(R.id.fullActionViews);
         loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
 
@@ -341,6 +342,23 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                         activity.startActivity(intent, options.toBundle());
                     }
                 }, 113);
+
+                return false;
+            }
+        });
+        switchCategories.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RecoveryCategory.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
+
+                return false;
+            }
+        });
+        switchWidgets.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
 
                 return false;
             }
@@ -693,11 +711,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             }
             functionsClass.saveFileAppendLine(".categoryInfo", "Frequently");
 
-            freqlist = (HorizontalScrollView) findViewById(R.id.freqList);
-            LayerDrawable drawFreq = (LayerDrawable) getResources().getDrawable(R.drawable.layer_freq);
-            GradientDrawable backFreq = (GradientDrawable) drawFreq.findDrawableByLayerId(R.id.backtemp);
-            backFreq.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, 155));
-            freqlist.setBackground(drawFreq);
             freqlist.setVisibility(View.VISIBLE);
 
             ShapesImage shapesImage;
@@ -718,63 +731,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 functionsClass.saveFile(freqApps[i] + "Frequently", freqApps[i]);
             }
             functionsClass.addAppShortcuts();
-
-            if (functionsClass.appThemeTransparent()) {
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        functionsClass.DpToInteger(50)
-                );
-                params.topMargin = 0;
-                freqlist.setLayoutParams(params);
-
-                Button switchShortcuts = (Button) findViewById(R.id.switchShortcuts);
-                Button switchCategories = (Button) findViewById(R.id.switchCategories);
-
-                RippleDrawable rippleDrawableShortcuts = (RippleDrawable) getResources().getDrawable(R.drawable.draw_shortcuts_no_gradiant);
-                GradientDrawable gradientDrawableShortcutsForeground = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(R.id.foregroundItem);
-                GradientDrawable gradientDrawableShortcutsBackground = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(R.id.backgroundItem);
-                GradientDrawable gradientDrawableMaskShortcuts = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(android.R.id.mask);
-
-                if (functionsClass.appThemeTransparent()) {
-                    rippleDrawableShortcuts.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
-                    gradientDrawableShortcutsForeground.setColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 255));
-                    if (functionsClass.returnAPI() > 21) {
-                        gradientDrawableShortcutsBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, 155));
-                    } else {
-                        gradientDrawableShortcutsBackground.setColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 155));
-                    }
-                    gradientDrawableMaskShortcuts.setColor(PublicVariable.primaryColorOpposite);
-                } else {
-                    rippleDrawableShortcuts.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
-                    gradientDrawableShortcutsForeground.setColor(PublicVariable.primaryColor);
-                    gradientDrawableShortcutsBackground.setTint(PublicVariable.primaryColor);
-                    gradientDrawableMaskShortcuts.setColor(PublicVariable.primaryColorOpposite);
-                }
-
-                RippleDrawable rippleDrawableCategories = (RippleDrawable) getResources().getDrawable(R.drawable.draw_categories_no_gradiant);
-                GradientDrawable gradientDrawableCategoriesForeground = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(R.id.foregroundItem);
-                GradientDrawable gradientDrawableCategoriesBackground = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(R.id.backgroundItem);
-                GradientDrawable gradientDrawableMaskCategories = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(android.R.id.mask);
-
-                if (functionsClass.appThemeTransparent()) {
-                    rippleDrawableCategories.setColor(ColorStateList.valueOf(PublicVariable.primaryColor));
-                    gradientDrawableCategoriesForeground.setColor(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 255));
-                    if (functionsClass.returnAPI() > 21) {
-                        gradientDrawableCategoriesBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
-                    } else {
-                        gradientDrawableShortcutsBackground.setColor(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
-                    }
-                    gradientDrawableMaskCategories.setColor(PublicVariable.primaryColor);
-                } else {
-                    rippleDrawableCategories.setColor(ColorStateList.valueOf(PublicVariable.primaryColor));
-                    gradientDrawableCategoriesForeground.setColor(PublicVariable.primaryColorOpposite);
-                    gradientDrawableCategoriesBackground.setTint(PublicVariable.primaryColorOpposite);
-                    gradientDrawableMaskCategories.setColor(PublicVariable.primaryColor);
-                }
-
-                switchShortcuts.setBackground(rippleDrawableShortcuts);
-                switchCategories.setBackground(rippleDrawableCategories);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -876,14 +832,21 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (loadFreq == false) {
-                freqlist = (HorizontalScrollView) findViewById(R.id.freqList);
+            if (!loadFreq) {
                 MainView.removeView(freqlist);
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.MATCH_PARENT
                 );
                 nestedScrollView.setLayoutParams(layoutParams);
+            } else {
+                RelativeLayout.LayoutParams layoutParamsIcon = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.MATCH_PARENT
+                );
+                layoutParamsIcon.addRule(RelativeLayout.ABOVE, R.id.freqList);
+                scrollRelativeLayout.setPadding(0, scrollRelativeLayout.getPaddingTop(), 0, 0);
+                nestedScrollView.setLayoutParams(layoutParamsIcon);
             }
             recyclerViewAdapter.notifyDataSetChanged();
             HybridSectionedGridRecyclerViewAdapter.Section[] sectionsData = new HybridSectionedGridRecyclerViewAdapter.Section[sections.size()];
@@ -964,8 +927,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     }
                 }
 
-                for (int i = hybridItem; i < (hybridItem + 2); i++) {
-                    sections.add(new HybridSectionedGridRecyclerViewAdapter.Section(i, ""));
+                if (loadFreq == false) {
+                    for (int i = hybridItem; i < (hybridItem + 2); i++) {
+                        //    sections.add(new HybridSectionedGridRecyclerViewAdapter.Section(i, ""));
+                    }
                 }
 
                 recyclerViewAdapter = new CardHybridAdapter(activity, getApplicationContext(), navDrawerItems);

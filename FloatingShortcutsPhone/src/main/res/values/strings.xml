@@ -156,7 +156,7 @@
     <string name="floatingWidget">Floating Widgets</string>
     <string name="shortcutHint">Apps</string>
     <string name="categoryHint">Floating Categories</string>
-    <string name="widgetHint">Floating Widgets ᵦₑₜₐ</string>
+    <string name="widgetHint">Floating Widgets</string>
     <string name="widgetPickerTitle">
         <![CDATA[
             Choose Widgets To Configure<br/>
