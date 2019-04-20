@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -23,8 +25,6 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
-
-import androidx.annotation.NonNull;
 
 public class RecoveryShortcutsActivity extends Activity {
 
@@ -59,7 +59,7 @@ public class RecoveryShortcutsActivity extends Activity {
                 Intent setCategoryRecovery = new Intent(getApplicationContext(), RecoveryShortcutsActivity.class);
                 Intent intent = new Intent();
                 intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, setCategoryRecovery);
-                intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.recovery));
+                intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.recoveryShortcuts));
                 intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, shortcutApp);
                 setResult(RESULT_OK, intent);
             } else if (getIntent().getAction().equals(Intent.ACTION_MAIN) || getIntent().getAction().equals(Intent.ACTION_VIEW)

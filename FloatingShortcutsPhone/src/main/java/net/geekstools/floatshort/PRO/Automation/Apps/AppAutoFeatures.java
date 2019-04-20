@@ -89,7 +89,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         autoIdentifier = (LinearLayout) findViewById(R.id.autoid);
         autoIdentifier.bringToFront();
         MainView = (RelativeLayout) findViewById(R.id.MainView);
-        fullActionButton = (RelativeLayout) findViewById(R.id.fullActionButton);
+        fullActionButton = (RelativeLayout) findViewById(R.id.fullActionViews);
         acttionElementsList = (ListView) findViewById(R.id.acttionElementsList);
         autoApps = (Button) findViewById(R.id.autoApps);
         autoApps.bringToFront();

@@ -83,7 +83,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         autoIdentifier = (LinearLayout) findViewById(R.id.autoid);
         autoIdentifier.bringToFront();
         MainView = (RelativeLayout) findViewById(R.id.MainView);
-        fullActionButton = (RelativeLayout) findViewById(R.id.fullActionButton);
+        fullActionButton = (RelativeLayout) findViewById(R.id.fullActionViews);
         actionElementsList = (ListView) findViewById(R.id.acttionElementsList);
         autoApps = (Button) findViewById(R.id.autoApps);
         autoApps.bringToFront();

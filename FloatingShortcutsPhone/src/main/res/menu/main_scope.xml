@@ -5,7 +5,7 @@
         android:icon="@drawable/w_recovery"
         android:orderInCategory="0"
         android:showAsAction="always"
-        android:title="@string/recov_center"/>
+        android:title="@string/recovery_center" />
 
     <item
         android:id="@+id/floating"

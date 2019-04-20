@@ -2,10 +2,10 @@
 <resources>
 
     <string name="act_center">Floating Center</string>
-    <string name="recov_center">Recovery Center</string>
+    <string name="recovery_center">Recovery Center</string>
     <string name="settingTitle">Preferences</string>
-    <string name="recovery">Recover Floating Shortcuts</string>
-    <string name="overlayset">Turn On Permission, Please!</string>
+    <string name="recoveryShortcuts">Recover Floating Shortcuts</string>
+    <string name="overlayPermission">Turn On Permission, Please!</string>
     <string name="bindDesc">Swipe Down To See More Options</string>
     <string name="dark">Dark</string>
     <string name="light">Light</string>

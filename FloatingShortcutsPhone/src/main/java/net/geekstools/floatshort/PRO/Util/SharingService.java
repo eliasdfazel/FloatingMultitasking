@@ -74,7 +74,7 @@ public class SharingService extends Service {
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         vG = (ViewGroup) layoutInflater.inflate(R.layout.share_rate, null, false);
-        fullActionButton = (RelativeLayout) vG.findViewById(R.id.fullActionButton);
+        fullActionButton = (RelativeLayout) vG.findViewById(R.id.fullActionViews);
         listView = (ListView) vG.findViewById(R.id.shareElementsList);
 
         vG.setBackgroundColor(functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), 77));

@@ -83,6 +83,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -143,7 +144,6 @@ import net.geekstools.floatshort.PRO.Shortcuts.GridViewOff;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Shortcuts.ListViewOff;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.ActionListAdapter;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.OpenApplications;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RemoteController;
@@ -189,7 +189,6 @@ public class FunctionsClass {
     Activity activity;
     Context context;
     ArrayList<NavDrawerItem> navDrawerItems;
-    ActionListAdapter actionListAdapter;
 
     public FunctionsClass(Context context) {
         this.context = context;
@@ -3300,8 +3299,9 @@ public class FunctionsClass {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
+                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 if (API > 25) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
             window.setStatusBarColor(PublicVariable.colorLightDark);
@@ -3325,12 +3325,7 @@ public class FunctionsClass {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
-            window.setStatusBarColor(
-                    setColorAlpha(
-                            mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark,
-                                    wallpaperStaticLive() ? 0.75f : 0.65f),
-                            wallpaperStaticLive() ? 113 : 30)
-            );
+            window.setStatusBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
             window.setNavigationBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
         } else if (transparent == false) {
             view.setBackgroundColor(PublicVariable.colorLightDark);
@@ -3339,11 +3334,12 @@ public class FunctionsClass {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
+                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 if (API > 25) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
-            window.setStatusBarColor(PublicVariable.primaryColor);
+            window.setStatusBarColor(PublicVariable.colorLightDark);
             window.setNavigationBarColor(PublicVariable.colorLightDark);
         }
     }
@@ -3392,8 +3388,9 @@ public class FunctionsClass {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
+                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 if (API > 25) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
             window.setStatusBarColor(PublicVariable.primaryColor);
@@ -4865,6 +4862,35 @@ public class FunctionsClass {
         fullActionElements.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                activity.findViewById(R.id.recoveryAction).setVisibility(View.VISIBLE);
+
+                int finalRadius = (int) Math.hypot(displayX(), displayY());
+                Animator circularReveal = ViewAnimationUtils.createCircularReveal(activity.findViewById(R.id.recoveryAction), (int) actionButton.getX(), (int) actionButton.getY(), DpToInteger(13), finalRadius);
+                circularReveal.setDuration(1300);
+                circularReveal.setInterpolator(new AccelerateInterpolator());
+                circularReveal.start();
+                circularReveal.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        activity.findViewById(R.id.recoveryAction).setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+
                 closeActionMenuOption(fullActionElements, actionButton);
             }
         });
@@ -4888,7 +4914,6 @@ public class FunctionsClass {
 
             navDrawerItems.add(new NavDrawerItem(itemText, itemIcon));
         }
-        actionListAdapter = new ActionListAdapter(activity, context, navDrawerItems);
 
         if (appThemeTransparent() == true) {
             if (PublicVariable.themeLightDark) {
@@ -4946,6 +4971,7 @@ public class FunctionsClass {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animator) {
                         activity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                        activity.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
                     }
                 });
                 colorAnimation.start();
@@ -4958,6 +4984,7 @@ public class FunctionsClass {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animator) {
                         activity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                        activity.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
                     }
                 });
                 colorAnimation.start();
@@ -5011,6 +5038,7 @@ public class FunctionsClass {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animator) {
                     activity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                    activity.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
                 }
             });
             colorAnimation.start();

@@ -51,7 +51,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="27dp">
+            android:paddingTop="31dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
@@ -136,14 +136,58 @@
             app:backgroundTint="@color/default_color" />
     </LinearLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/recoveryAction"
+        android:layout_width="237dp"
+        android:layout_height="43dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="67dp"
+        android:gravity="center"
+        android:ellipsize="end"
+        android:text="@string/recoveryShortcuts"
+        android:textSize="12sp"
+        android:textAllCaps="false"
+        android:textColor="@color/light"
+        app:elevation="3dp"
+        app:backgroundTint="@color/default_color"
+        app:rippleColor="@color/light"
+        app:cornerRadius="57dp"
+        app:icon="@drawable/w_recovery"
+        app:iconGravity="start"
+        app:iconSize="31dp"
+        app:iconPadding="1dp" />
 
     <RelativeLayout
-        android:id="@+id/fullActionButton"
+        android:id="@+id/fullActionViews"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent_light"
         android:visibility="invisible">
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/automationAction"
+            android:layout_width="237dp"
+            android:layout_height="43dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="67dp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:text="@string/automation"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:textColor="@color/light"
+            app:elevation="3dp"
+            app:backgroundTint="@color/default_color"
+            app:rippleColor="@color/light"
+            app:cornerRadius="57dp"
+            app:icon="@drawable/w_floating"
+            app:iconGravity="start"
+            app:iconSize="31dp"
+            app:iconPadding="1dp" />
 
         <Button
             android:id="@+id/preferences"
@@ -152,6 +196,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/draw_pref_action"
             android:visibility="invisible" />
+
     </RelativeLayout>
 
     <ImageView

@@ -120,7 +120,7 @@ public class CheckPoint extends Activity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.overlayset), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.overlayPermission), Toast.LENGTH_LONG).show();
 
                 finish();
                 dialog.dismiss();

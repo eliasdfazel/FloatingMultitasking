@@ -1,5 +1,6 @@
 package net.geekstools.floatshort.PRO.Shortcuts;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
@@ -26,6 +27,8 @@ import android.text.Html;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -64,6 +67,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Category.CategoryHandler;
@@ -76,6 +80,7 @@ import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
@@ -100,11 +105,11 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
     RecyclerView loadView;
     ScrollView nestedScrollView;
-    RelativeLayout fullActionButton, MainView, loadingSplash;
+    RelativeLayout fullActionViews, MainView, loadingSplash;
     LinearLayout indexView, freqView;
     ProgressBar loadingBarLTR;
     ImageView loadLogo, actionButton;
-    MaterialButton switchWidgets, switchCategories;
+    MaterialButton switchWidgets, switchCategories, recoveryAction, automationAction;
 
     List<ApplicationInfo> applicationInfoList;
     Map<String, Integer> mapIndex;
@@ -146,13 +151,19 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         indexView = (LinearLayout) findViewById(R.id.side_index);
         freqView = (LinearLayout) findViewById(R.id.freqItem);
         MainView = (RelativeLayout) findViewById(R.id.MainView);
-        fullActionButton = (RelativeLayout) findViewById(R.id.fullActionButton);
+        fullActionViews = (RelativeLayout) findViewById(R.id.fullActionViews);
         loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
+
+        actionButton = (ImageView) findViewById(R.id.actionButton);
+        switchWidgets = (MaterialButton) findViewById(R.id.switchWidgets);
+        switchCategories = (MaterialButton) findViewById(R.id.switchCategories);
+        recoveryAction = (MaterialButton) findViewById(R.id.recoveryAction);
+        automationAction = (MaterialButton) findViewById(R.id.automationAction);
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClass.ChangeLog(HybridViewOff.this, false);
-        activity = this;
+        activity = HybridViewOff.this;
 
         recyclerViewLayoutManager = new RecycleViewSmoothLayoutGrid(getApplicationContext(), functionsClass.columnCount(105), OrientationHelper.VERTICAL, false);
         loadView.setLayoutManager(recyclerViewLayoutManager);
@@ -178,10 +189,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         LoadApplicationsOffLimited loadApplicationsOffLimited = new LoadApplicationsOffLimited();
         loadApplicationsOffLimited.execute();
 
-        actionButton = (ImageView) findViewById(R.id.actionButton);
-        switchWidgets = (MaterialButton) findViewById(R.id.switchWidgets);
-        switchCategories = (MaterialButton) findViewById(R.id.switchCategories);
-
         LayerDrawable drawPreferenceAction = (LayerDrawable) getDrawable(R.drawable.draw_pref_action);
         GradientDrawable backPreferenceAction = (GradientDrawable) drawPreferenceAction.findDrawableByLayerId(R.id.backtemp);
         backPreferenceAction.setColor(PublicVariable.primaryColorOpposite);
@@ -200,13 +207,78 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         switchWidgets.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
         switchWidgets.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite));
 
+        recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite);
+        recoveryAction.setRippleColor(ColorStateList.valueOf(PublicVariable.primaryColor));
+
+        automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite);
+        automationAction.setRippleColor(ColorStateList.valueOf(PublicVariable.primaryColor));
+
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                functionsClass.doVibrate(33);
+
                 if (PublicVariable.actionCenter == false) {
-                    functionsClass.openActionMenuOption(fullActionButton, actionButton, fullActionButton.isShown());
+
+                    int finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
+                    Animator circularReveal = ViewAnimationUtils.createCircularReveal(recoveryAction, (int) actionButton.getX(), (int) actionButton.getY(), finalRadius, functionsClass.DpToInteger(13));
+                    circularReveal.setDuration(777);
+                    circularReveal.setInterpolator(new AccelerateInterpolator());
+                    circularReveal.start();
+                    circularReveal.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            recoveryAction.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+
+                    functionsClass.openActionMenuOption(fullActionViews, actionButton, fullActionViews.isShown());
                 } else {
-                    functionsClass.closeActionMenuOption(fullActionButton, actionButton);
+                    recoveryAction.setVisibility(View.VISIBLE);
+
+                    int finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
+                    Animator circularReveal = ViewAnimationUtils.createCircularReveal(recoveryAction, (int) actionButton.getX(), (int) actionButton.getY(), functionsClass.DpToInteger(13), finalRadius);
+                    circularReveal.setDuration(1300);
+                    circularReveal.setInterpolator(new AccelerateInterpolator());
+                    circularReveal.start();
+                    circularReveal.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            recoveryAction.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+
+                    functionsClass.closeActionMenuOption(fullActionViews, actionButton);
                 }
             }
         });
@@ -232,6 +304,22 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                     .putExtra("UserEmailAddress", functionsClass.readPreference(".BETA", "testerEmail", null)),
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
                 }
+            }
+        });
+        automationAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AppAutoFeatures.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent, ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.up_down, android.R.anim.fade_out).toBundle());
+            }
+        });
+        recoveryAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RecoveryShortcuts.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
             }
         });
 
@@ -425,7 +513,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         functionsClass.addAppShortcuts();
         functionsClass.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition());
         if (PublicVariable.actionCenter == true) {
-            functionsClass.closeActionMenuOption(fullActionButton, actionButton);
+            functionsClass.closeActionMenuOption(fullActionViews, actionButton);
         }
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
         functionsClass.CheckSystemRAM(HybridViewOff.this);

@@ -138,7 +138,7 @@ public class ListViewOff extends Activity implements View.OnClickListener, View.
         indexView = (LinearLayout) findViewById(R.id.side_index);
         freqView = (LinearLayout) findViewById(R.id.freqItem);
         MainView = (RelativeLayout) findViewById(R.id.MainView);
-        fullActionButton = (RelativeLayout) findViewById(R.id.fullActionButton);
+        fullActionButton = (RelativeLayout) findViewById(R.id.fullActionViews);
         loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
         actionElementsList = (ListView) findViewById(R.id.acttionElementsList);
 

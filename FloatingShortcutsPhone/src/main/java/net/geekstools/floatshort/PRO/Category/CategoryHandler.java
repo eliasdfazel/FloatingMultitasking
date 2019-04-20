@@ -132,7 +132,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
 
         wholeCategory = (RelativeLayout) findViewById(R.id.wholeCategory);
         categorylist = (RecyclerView) findViewById(R.id.categorylist);
-        fullActionButton = (RelativeLayout) findViewById(R.id.fullActionButton);
+        fullActionButton = (RelativeLayout) findViewById(R.id.fullActionViews);
         actionElementsList = (ListView) findViewById(R.id.actionElementsList);
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);

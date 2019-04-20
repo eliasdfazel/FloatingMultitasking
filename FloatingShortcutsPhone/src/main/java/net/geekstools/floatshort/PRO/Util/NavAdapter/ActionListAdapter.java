@@ -104,7 +104,7 @@ public class ActionListAdapter extends BaseAdapter {
                     context.startActivity(intent);
                     activity.overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
                     activity.finish();
-                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recovery))) {
+                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recoveryShortcuts))) {
                     Intent intent = new Intent(context, RecoveryShortcuts.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(intent);
@@ -132,8 +132,8 @@ public class ActionListAdapter extends BaseAdapter {
                     functionsClass.ShortcutsDialogue(AppAutoFeatures.class, ".Alias.Automation", context.getString(R.string.automation), R.drawable.alias_auto);
                 } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.floatingCategory))) {
                     functionsClass.ShortcutsDialogue(CategoryHandler.class, ".Alias.CategoryHandler", context.getString(R.string.floatingCategory), R.drawable.alias_categories);
-                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recovery))) {
-                    functionsClass.ShortcutsDialogue(RecoveryShortcutsActivity.class, ".Alias.Recover.Shortcuts", context.getString(R.string.recovery), R.drawable.alias_shortcuts_recovery);
+                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recoveryShortcuts))) {
+                    functionsClass.ShortcutsDialogue(RecoveryShortcutsActivity.class, ".Alias.Recover.Shortcuts", context.getString(R.string.recoveryShortcuts), R.drawable.alias_shortcuts_recovery);
                 } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recover_category))) {
                     functionsClass.ShortcutsDialogue(RecoveryCategoryActivity.class, ".Alias.Recover.Categories", context.getString(R.string.recover_category), R.drawable.alias_categories_recovery);
                 }
