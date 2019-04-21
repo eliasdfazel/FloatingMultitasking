@@ -156,7 +156,7 @@ public class WidgetConfigurations extends Activity {
         }
 
         ImageView floatingLogo = (ImageView) findViewById(R.id.loadLogo);
-        LayerDrawable drawFloatingLogo = (LayerDrawable) getResources().getDrawable(R.drawable.draw_floating_widgets);
+        LayerDrawable drawFloatingLogo = (LayerDrawable) getDrawable(R.drawable.draw_floating_widgets);
         GradientDrawable backFloatingLogo = (GradientDrawable) drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
         backFloatingLogo.setColor(PublicVariable.primaryColorOpposite);
         floatingLogo.setImageDrawable(drawFloatingLogo);

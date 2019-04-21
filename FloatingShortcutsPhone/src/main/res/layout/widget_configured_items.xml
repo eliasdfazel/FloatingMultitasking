@@ -33,7 +33,7 @@
         android:layout_height="213dp"
         android:layout_below="@id/widgetLabel"
         android:layout_centerHorizontal="true"
-        android:padding="13dp"
+        android:padding="3dp"
         android:scaleType="fitCenter"
         android:src="@drawable/draw_open"/>
 

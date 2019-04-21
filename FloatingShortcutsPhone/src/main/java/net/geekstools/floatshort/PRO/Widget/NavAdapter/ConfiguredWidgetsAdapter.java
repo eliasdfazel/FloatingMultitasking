@@ -5,12 +5,16 @@ import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -19,8 +23,6 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.util.ArrayList;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder> {
 
@@ -68,6 +70,11 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
         viewHolder.widgetLabel.setText(navDrawerItems.get(position).getWidgetLabel());
         viewHolder.widgetLabel.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
 
+        LayerDrawable drawFloatTheWidget = (LayerDrawable) context.getDrawable(R.drawable.draw_open);
+        GradientDrawable backFloatTheWidget = (GradientDrawable) drawFloatTheWidget.findDrawableByLayerId(R.id.backtemp);
+        backFloatTheWidget.setTint(functionsClass.extractDominantColor(functionsClass.appIcon(navDrawerItems.get(position).getPackageName())));
+        viewHolder.floatTheWidget.setImageDrawable(drawFloatTheWidget);
+
         viewHolder.floatTheWidget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,8 +108,8 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
             super(view);
             widgetItem = (RelativeLayout) view.findViewById(R.id.widgetItem);
             widgetPreview = (RelativeLayout) view.findViewById(R.id.widgetPreview);
-            floatTheWidget = (ImageView) view.findViewById(R.id.floatTheWidget);
             widgetLabel = (TextView) view.findViewById(R.id.widgetLabel);
+            floatTheWidget = (ImageView) view.findViewById(R.id.floatTheWidget);
         }
     }
 }
