@@ -26,10 +26,11 @@
             android:id="@+id/freqItem"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
+            android:padding="3dp"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="3dp"/>
+            android:background="@android:color/transparent" />
     </HorizontalScrollView>
 
     <ScrollView
@@ -84,6 +85,31 @@
             android:orientation="vertical"/>
     </ScrollView>
 
+    <net.geekstools.imageview.customshapes.ShapesImage
+        app:shapeDrawable="@drawable/ic_bulb"
+        android:id="@+id/recoverFloatingCategories"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="43dp"
+        android:layout_marginEnd="28dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/draw_recovery"
+        android:visibility="gone" />
+
+    <net.geekstools.imageview.customshapes.ShapesImage
+        app:shapeDrawable="@drawable/ic_bulb"
+        android:id="@+id/recoverFloatingWidgets"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="43dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/draw_recovery_widgets"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/switchFloating"

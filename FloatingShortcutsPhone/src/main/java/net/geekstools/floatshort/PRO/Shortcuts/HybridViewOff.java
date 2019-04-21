@@ -107,7 +107,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     RelativeLayout scrollRelativeLayout, fullActionViews, MainView, loadingSplash;
     LinearLayout indexView, freqView;
     ProgressBar loadingBarLTR;
-    ImageView loadLogo, actionButton;
+    ImageView loadLogo, actionButton, recoverFloatingCategories, recoverFloatingWidgets;
     MaterialButton switchWidgets, switchCategories, recoveryAction, automationAction;
 
     List<ApplicationInfo> applicationInfoList;
@@ -160,6 +160,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         switchCategories = (MaterialButton) findViewById(R.id.switchCategories);
         recoveryAction = (MaterialButton) findViewById(R.id.recoveryAction);
         automationAction = (MaterialButton) findViewById(R.id.automationAction);
+        recoverFloatingCategories = (ImageView) findViewById(R.id.recoverFloatingCategories);
+        recoverFloatingWidgets = (ImageView) findViewById(R.id.recoverFloatingWidgets);
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
         functionsClass = new FunctionsClass(getApplicationContext(), this);
@@ -213,6 +215,17 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
         automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite);
         automationAction.setRippleColor(ColorStateList.valueOf(PublicVariable.primaryColor));
+
+        LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
+        GradientDrawable backRecoverFloatingCategories = (GradientDrawable) drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
+        backRecoverFloatingCategories.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+
+        LayerDrawable drawRecoverFloatingWidgets = (LayerDrawable) getDrawable(R.drawable.draw_recovery_widgets).mutate();
+        GradientDrawable backRecoverFloatingWidgets = (GradientDrawable) drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backtemp).mutate();
+        backRecoverFloatingWidgets.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+
+        recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories);
+        recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets);
 
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -297,7 +310,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         switchWidgets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
+                if (functionsClass.floatingWidgetsPurchased() /*|| functionsClass.appVersionName(getPackageName()).contains("[BETA]")*/) {
                     startActivity(new Intent(getApplicationContext(), WidgetConfigurations.class),
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
                 } else {
@@ -310,6 +323,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         automationAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                functionsClass.doVibrate(50);
+
                 Intent intent = new Intent(getApplicationContext(), AppAutoFeatures.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent, ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.up_down, android.R.anim.fade_out).toBundle());
@@ -323,6 +338,39 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 startService(intent);
             }
         });
+        recoverFloatingCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RecoveryCategory.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
+
+                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.recovery_actions_hide);
+                recoverFloatingCategories.startAnimation(animation);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        recoverFloatingCategories.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+            }
+        });
+        recoverFloatingWidgets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         actionButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -330,7 +378,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ActivityOptionsCompat options = ActivityOptionsCompat.
+                        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.
                                 makeSceneTransitionAnimation(activity, actionButton, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -339,28 +387,61 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                         } else if (!PublicVariable.themeLightDark) {
                             intent.setClass(activity, SettingGUIDark.class);
                         }
-                        activity.startActivity(intent, options.toBundle());
+                        activity.startActivity(intent, activityOptionsCompat.toBundle());
                     }
                 }, 113);
 
-                return false;
+                return true;
             }
         });
         switchCategories.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RecoveryCategory.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startService(intent);
+                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.recovery_actions_show);
+                recoverFloatingCategories.startAnimation(animation);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
 
-                return false;
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        recoverFloatingCategories.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+                return true;
             }
         });
         switchWidgets.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                /*Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.recovery_actions_show);
+                recoverFloatingWidgets.startAnimation(animation);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
 
-                return false;
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        recoverFloatingWidgets.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });*/
+
+                return true;
             }
         });
 

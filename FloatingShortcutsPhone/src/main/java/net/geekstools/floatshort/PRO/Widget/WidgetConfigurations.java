@@ -188,9 +188,6 @@ public class WidgetConfigurations extends Activity {
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-//                            addWidget.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_90));
-
-
                             installedWidgetsNestedScrollView.setVisibility(View.INVISIBLE);
                         }
 
@@ -313,6 +310,7 @@ public class WidgetConfigurations extends Activity {
 
         @Override
         protected Void doInBackground(Void... voids) {
+
 
             try {
 
