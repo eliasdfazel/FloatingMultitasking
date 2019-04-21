@@ -165,6 +165,7 @@
     </string>
     <string name="floatingHint">Floating Shortcuts</string>
     <string name="recover_category">Recover Floating Categories</string>
+    <string name="recover_widgets">Recover Floating Widgets</string>
     <string name="categoryDesc">Please Write a Category Name</string>
     <string name="viewapps">App Drawer Style</string>
     <string name="colortext">App Theme</string>

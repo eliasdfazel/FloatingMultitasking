@@ -96,7 +96,8 @@
         android:layout_marginEnd="28dp"
         android:scaleType="centerCrop"
         android:src="@drawable/draw_recovery"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:contentDescription="@string/recover_category" />
 
     <net.geekstools.imageview.customshapes.ShapesImage
         app:shapeDrawable="@drawable/ic_bulb"
@@ -109,7 +110,8 @@
         android:layout_marginStart="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/draw_recovery_widgets"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:contentDescription="@string/recover_widgets" />
 
     <LinearLayout
         android:id="@+id/switchFloating"
