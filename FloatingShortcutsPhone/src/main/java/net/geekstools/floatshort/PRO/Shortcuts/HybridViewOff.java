@@ -311,8 +311,12 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             @Override
             public void onClick(View view) {
                 if (functionsClass.floatingWidgetsPurchased() /*|| functionsClass.appVersionName(getPackageName()).contains("[BETA]")*/) {
-                    startActivity(new Intent(getApplicationContext(), WidgetConfigurations.class),
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+                    try {
+                        functionsClass.navigateToClass(WidgetConfigurations.class,
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     startActivity(new Intent(getApplicationContext(), InAppBilling.class)
                                     .putExtra("UserEmailAddress", functionsClass.readPreference(".BETA", "testerEmail", null)),

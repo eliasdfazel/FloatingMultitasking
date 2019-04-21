@@ -164,6 +164,7 @@
         ]]>
     </string>
     <string name="floatingHint">Floating Shortcuts</string>
+    <string name="recover_apps">Recover Floating Shortcuts</string>
     <string name="recover_category">Recover Floating Categories</string>
     <string name="recover_widgets">Recover Floating Widgets</string>
     <string name="categoryDesc">Please Write a Category Name</string>

@@ -1,12 +1,15 @@
 package net.geekstools.floatshort.PRO.Widget;
 
+import android.animation.Animator;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -18,19 +21,22 @@ import android.os.Handler;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
@@ -39,14 +45,23 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.google.android.material.button.MaterialButton;
+
 import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataInterface;
 import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataModel;
+import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.BuildConfig;
+import net.geekstools.floatshort.PRO.Category.CategoryHandler;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryCategory;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
+import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
+import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Widget.NavAdapter.ConfiguredWidgetsAdapter;
 import net.geekstools.floatshort.PRO.Widget.NavAdapter.InstalledWidgetsAdapter;
@@ -59,7 +74,10 @@ public class WidgetConfigurations extends Activity {
 
     FunctionsClass functionsClass;
 
-    RelativeLayout wholeWidget;
+    RelativeLayout wholeWidget, fullActionViews;
+    ImageView addWidget,
+            actionButton, recoverFloatingCategories, recoverFloatingApps;
+    MaterialButton switchApps, switchCategories, recoveryAction, automationAction;
 
     RecyclerView installedWidgetsLoadView, configuredWidgetsLoadView;
     ScrollView installedWidgetsNestedScrollView, configuredWidgetsNestedScrollView;
@@ -73,7 +91,6 @@ public class WidgetConfigurations extends Activity {
     ProgressBar loadingBarLTR;
     TextView gx;
 
-    Button addWidget;
 
     List<AppWidgetProviderInfo> widgetProviderInfoList;
     ArrayList<NavDrawerItem> installedWidgetsNavDrawerItems, configuredWidgetsNavDrawerItems;
@@ -91,6 +108,7 @@ public class WidgetConfigurations extends Activity {
         functionsClass = new FunctionsClass(getApplicationContext(), WidgetConfigurations.this);
 
         wholeWidget = (RelativeLayout) findViewById(R.id.wholeWidget);
+        fullActionViews = (RelativeLayout) findViewById(R.id.fullActionViews);
 
         installedWidgetsNestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
         installedWidgetsLoadView = (RecyclerView) findViewById(R.id.list);
@@ -98,7 +116,14 @@ public class WidgetConfigurations extends Activity {
         configuredWidgetsNestedScrollView = (ScrollView) findViewById(R.id.configuredWidgetNestedScrollView);
         configuredWidgetsLoadView = (RecyclerView) findViewById(R.id.configuredWidgetList);
 
-        addWidget = (Button) findViewById(R.id.addWidget);
+        addWidget = (ImageView) findViewById(R.id.addWidget);
+        actionButton = (ImageView) findViewById(R.id.actionButton);
+        switchApps = (MaterialButton) findViewById(R.id.switchApps);
+        switchCategories = (MaterialButton) findViewById(R.id.switchCategories);
+        recoveryAction = (MaterialButton) findViewById(R.id.recoveryAction);
+        automationAction = (MaterialButton) findViewById(R.id.automationAction);
+        recoverFloatingCategories = (ImageView) findViewById(R.id.recoverFloatingCategories);
+        recoverFloatingApps = (ImageView) findViewById(R.id.recoverFloatingApps);
 
         TextView widgetPickerTitle = (TextView) findViewById(R.id.widgetPickerTitle);
         widgetPickerTitle.setText(Html.fromHtml(getString(R.string.widgetPickerTitle)));
@@ -155,6 +180,346 @@ public class WidgetConfigurations extends Activity {
             }
         }
 
+        LayerDrawable drawAddWidget = (LayerDrawable) getDrawable(R.drawable.draw_pref_add_widget);
+        GradientDrawable backAddWidget = (GradientDrawable) drawAddWidget.findDrawableByLayerId(R.id.backtemp);
+        Drawable frontAddWidget = drawAddWidget.findDrawableByLayerId(R.id.frontTemp).mutate();
+        backAddWidget.setColor(PublicVariable.primaryColor);
+        frontAddWidget.setTint(Color.WHITE);
+        addWidget.setImageDrawable(drawAddWidget);
+
+        LayerDrawable drawPreferenceAction = (LayerDrawable) getDrawable(R.drawable.draw_pref_action);
+        GradientDrawable backPreferenceAction = (GradientDrawable) drawPreferenceAction.findDrawableByLayerId(R.id.backtemp);
+        backPreferenceAction.setColor(PublicVariable.primaryColorOpposite);
+        actionButton.setImageDrawable(drawPreferenceAction);
+
+        switchApps.setTextColor(getColor(R.color.light));
+        switchCategories.setTextColor(getColor(R.color.light));
+        if (PublicVariable.themeLightDark /*light*/ && functionsClass.appThemeTransparent() /*transparent*/) {
+            switchApps.setTextColor(getResources().getColor(R.color.dark));
+            switchCategories.setTextColor(getResources().getColor(R.color.dark));
+        }
+
+        switchCategories.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+        switchCategories.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite));
+
+        switchApps.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+        switchApps.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite));
+
+        recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite);
+        recoveryAction.setRippleColor(ColorStateList.valueOf(PublicVariable.primaryColor));
+
+        automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite);
+        automationAction.setRippleColor(ColorStateList.valueOf(PublicVariable.primaryColor));
+
+        LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
+        GradientDrawable backRecoverFloatingCategories = (GradientDrawable) drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
+        backRecoverFloatingCategories.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+
+        recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories);
+        recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories);
+
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                functionsClass.doVibrate(33);
+
+                if (PublicVariable.actionCenter == false) {
+                    if (installedWidgetsNestedScrollView.isShown()) {
+                        ViewCompat.animate(addWidget)
+                                .rotation(0.0F)
+                                .withLayer()
+                                .setDuration(300L)
+                                .setInterpolator(new OvershootInterpolator(3.0f))
+                                .start();
+
+                        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.go_down);
+                        installedWidgetsNestedScrollView.startAnimation(animation);
+                        animation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                installedWidgetsNestedScrollView.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                    }
+
+                    int finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
+                    Animator circularReveal = ViewAnimationUtils.createCircularReveal(recoveryAction, (int) actionButton.getX(), (int) actionButton.getY(), finalRadius, functionsClass.DpToInteger(13));
+                    circularReveal.setDuration(777);
+                    circularReveal.setInterpolator(new AccelerateInterpolator());
+                    circularReveal.start();
+                    circularReveal.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            recoveryAction.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+
+                    functionsClass.openActionMenuOption(fullActionViews, actionButton, fullActionViews.isShown());
+                } else {
+                    recoveryAction.setVisibility(View.VISIBLE);
+
+                    int finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
+                    Animator circularReveal = ViewAnimationUtils.createCircularReveal(recoveryAction, (int) actionButton.getX(), (int) actionButton.getY(), functionsClass.DpToInteger(13), finalRadius);
+                    circularReveal.setDuration(1300);
+                    circularReveal.setInterpolator(new AccelerateInterpolator());
+                    circularReveal.start();
+                    circularReveal.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            recoveryAction.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+
+                    functionsClass.closeActionMenuOption(fullActionViews, actionButton);
+                }
+            }
+        });
+        switchCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    functionsClass.navigateToClass(CategoryHandler.class,
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        switchApps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), HybridViewOff.class),
+                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+            }
+        });
+        automationAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                functionsClass.doVibrate(50);
+
+                Intent intent = new Intent(getApplicationContext(), AppAutoFeatures.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent, ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.up_down, android.R.anim.fade_out).toBundle());
+            }
+        });
+        recoveryAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RecoveryShortcuts.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
+            }
+        });
+        recoverFloatingCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RecoveryCategory.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
+
+                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.recovery_actions_hide);
+                recoverFloatingCategories.startAnimation(animation);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        recoverFloatingCategories.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+            }
+        });
+        recoverFloatingApps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RecoveryShortcuts.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
+
+                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.recovery_actions_hide);
+                recoverFloatingApps.startAnimation(animation);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        recoverFloatingApps.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+            }
+        });
+
+        actionButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.
+                                makeSceneTransitionAnimation(WidgetConfigurations.this, actionButton, "transition");
+                        Intent intent = new Intent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        if (PublicVariable.themeLightDark) {
+                            intent.setClass(WidgetConfigurations.this, SettingGUILight.class);
+                        } else if (!PublicVariable.themeLightDark) {
+                            intent.setClass(WidgetConfigurations.this, SettingGUIDark.class);
+                        }
+                        startActivity(intent, activityOptionsCompat.toBundle());
+                    }
+                }, 113);
+
+                return true;
+            }
+        });
+        switchCategories.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (!recoverFloatingCategories.isShown()) {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.recovery_actions_show);
+                    recoverFloatingCategories.startAnimation(animation);
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            recoverFloatingCategories.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                } else {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.recovery_actions_hide);
+                    recoverFloatingCategories.startAnimation(animation);
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            recoverFloatingCategories.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                }
+
+                return true;
+            }
+        });
+        switchApps.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (!recoverFloatingApps.isShown()) {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.recovery_actions_show);
+                    recoverFloatingApps.startAnimation(animation);
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            recoverFloatingApps.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                } else {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.recovery_actions_hide);
+                    recoverFloatingApps.startAnimation(animation);
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            recoverFloatingApps.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                }
+
+                return true;
+            }
+        });
+
         ImageView floatingLogo = (ImageView) findViewById(R.id.loadLogo);
         LayerDrawable drawFloatingLogo = (LayerDrawable) getDrawable(R.drawable.draw_floating_widgets);
         GradientDrawable backFloatingLogo = (GradientDrawable) drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
@@ -169,6 +534,7 @@ public class WidgetConfigurations extends Activity {
         addWidget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                functionsClass.doVibrate(77);
 
                 if (installedWidgetsNestedScrollView.isShown()) {
                     ViewCompat.animate(addWidget)
@@ -370,11 +736,6 @@ public class WidgetConfigurations extends Activity {
                     widgetIndex++;
                 }
 
-
-                for (int i = widgetIndex; i < (widgetIndex + 1); i++) {
-                    configuredWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(i, "", null));
-                }
-
                 configuredWidgetsRecyclerViewAdapter = new ConfiguredWidgetsAdapter(WidgetConfigurations.this, getApplicationContext(), configuredWidgetsNavDrawerItems, appWidgetManager, appWidgetHost);
 
                 widgetDataInterface.close();
@@ -403,7 +764,7 @@ public class WidgetConfigurations extends Activity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    configuredWidgetsNestedScrollView.smoothScrollTo(0, 0);
+                    configuredWidgetsNestedScrollView.scrollTo(0, 0);
 
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                     loadingSplash.setVisibility(View.INVISIBLE);
@@ -473,13 +834,7 @@ public class WidgetConfigurations extends Activity {
                     widgetIndex++;
                 }
 
-                for (int i = widgetIndex; i < (widgetIndex + 1); i++) {
-                    installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(i, "", null));
-                }
-
                 installedWidgetsRecyclerViewAdapter = new InstalledWidgetsAdapter(WidgetConfigurations.this, getApplicationContext(), installedWidgetsNavDrawerItems, appWidgetHost);
-
-
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -537,6 +892,22 @@ public class WidgetConfigurations extends Activity {
                         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                         loadingSplash.setVisibility(View.INVISIBLE);
                         loadingSplash.startAnimation(animation);
+                        animation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                ((LinearLayout) findViewById(R.id.switchFloating)).setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
                     }
                 }, 200);
             }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/wholeWidget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,13 +20,17 @@
         android:visibility="visible">
 
         <RelativeLayout
+            android:id="@+id/scrollRelativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="31dp"
+            android:paddingBottom="51dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/configuredWidgetList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingTop="5dp"
                 android:layout_marginTop="7dp"
                 android:layout_marginStart="3dp"
                 android:alwaysDrawnWithCache="true"
@@ -38,6 +42,107 @@
                 android:saveEnabled="true"/>
         </RelativeLayout>
     </ScrollView>
+
+    <net.geekstools.imageview.customshapes.ShapesImage
+        app:shapeDrawable="@drawable/ic_bulb"
+        android:id="@+id/recoverFloatingCategories"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="37dp"
+        android:layout_marginEnd="28dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/draw_recovery"
+        android:visibility="gone"
+        android:contentDescription="@string/recover_category" />
+
+    <net.geekstools.imageview.customshapes.ShapesImage
+        app:shapeDrawable="@drawable/ic_bulb"
+        android:id="@+id/recoverFloatingApps"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="37dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/draw_recovery"
+        android:visibility="gone"
+        android:contentDescription="@string/recover_apps" />
+
+    <LinearLayout
+        android:id="@+id/switchFloating"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_alignParentBottom="true"
+        android:paddingStart="5dp"
+        android:paddingEnd="23dp"
+        android:visibility="visible"
+        android:background="@android:color/transparent"
+        android:weightSum="2">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/switchApps"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:background="@drawable/draw_shortcuts"
+            android:ellipsize="end"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            android:text="@string/app_name"
+            app:elevation="7dp"
+            app:cornerRadius="7dp"
+            app:backgroundTint="@color/default_color" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/switchCategories"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:background="@drawable/draw_categories"
+            android:ellipsize="end"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            android:text="@string/categoryHint"
+            app:elevation="7dp"
+            app:cornerRadius="7dp"
+            app:backgroundTint="@color/default_color" />
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/recoveryAction"
+        android:layout_width="237dp"
+        android:layout_height="43dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="67dp"
+        android:gravity="center"
+        android:ellipsize="end"
+        android:text="@string/recover_widgets"
+        android:textSize="12sp"
+        android:textAllCaps="false"
+        android:textColor="@color/light"
+        app:elevation="3dp"
+        app:backgroundTint="@color/default_color"
+        app:rippleColor="@color/light"
+        app:cornerRadius="57dp"
+        app:icon="@drawable/w_recovery"
+        app:iconGravity="start"
+        app:iconSize="31dp"
+        app:iconPadding="1dp" />
+
 
     <ScrollView
         android:id="@+id/nestedScrollView"
@@ -52,8 +157,11 @@
         android:visibility="invisible">
 
         <RelativeLayout
+            android:id="@+id/scrollRelativeLayoutInstalled"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="35dp"
+            android:paddingBottom="51dp">
 
             <TextView
                 android:id="@+id/widgetPickerTitle"
@@ -78,15 +186,65 @@
         </RelativeLayout>
     </ScrollView>
 
-    <Button
+    <ImageView
         android:id="@+id/addWidget"
-        android:layout_width="71dp"
-        android:layout_height="71dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="13dp"
-        android:backgroundTint="@color/default_color_light"
-        android:background="@drawable/add_quick_app"/>
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginStart="13dp"
+        android:src="@drawable/draw_pref_add_widget" />
+
+    <RelativeLayout
+        android:id="@+id/fullActionViews"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_light"
+        android:visibility="invisible">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/automationAction"
+            android:layout_width="237dp"
+            android:layout_height="43dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="67dp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:text="@string/automation"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:textColor="@color/light"
+            app:elevation="3dp"
+            app:backgroundTint="@color/default_color"
+            app:rippleColor="@color/light"
+            app:cornerRadius="57dp"
+            app:icon="@drawable/w_floating"
+            app:iconGravity="start"
+            app:iconSize="31dp"
+            app:iconPadding="1dp" />
+
+        <Button
+            android:id="@+id/preferences"
+            android:layout_width="87dp"
+            android:layout_height="87dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/draw_pref_action"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/actionButton"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="27dp"
+        android:src="@drawable/draw_pref_action" />
 
     <RelativeLayout
         android:id="@+id/loadingSplash"
