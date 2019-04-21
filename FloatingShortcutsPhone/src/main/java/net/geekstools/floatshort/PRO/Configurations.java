@@ -17,9 +17,7 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.firebase.FirebaseApp;
 
 import net.geekstools.floatshort.PRO.Category.CategoryHandler;
-import net.geekstools.floatshort.PRO.Shortcuts.GridViewOff;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
-import net.geekstools.floatshort.PRO.Shortcuts.ListViewOff;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryAll;
@@ -231,16 +229,7 @@ public class Configurations extends Activity {
                 }
             }
 
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            String style = sharedPref.getString("apps", "3");
             Intent AppIntent = new Intent(getApplicationContext(), HybridViewOff.class);
-            if (style.equals("1")) {
-                AppIntent = new Intent(getApplicationContext(), ListViewOff.class);
-            } else if (style.equals("2")) {
-                AppIntent = new Intent(getApplicationContext(), GridViewOff.class);
-            } else if (style.equals("3")) {
-                AppIntent = new Intent(getApplicationContext(), HybridViewOff.class);
-            }
             try {
                 Intent goHome = getIntent();
                 if (goHome.hasExtra("goHome")) {

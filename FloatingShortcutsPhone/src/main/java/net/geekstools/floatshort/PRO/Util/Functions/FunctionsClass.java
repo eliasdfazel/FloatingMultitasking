@@ -140,9 +140,7 @@ import net.geekstools.floatshort.PRO.Configurations;
 import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.GridViewOff;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
-import net.geekstools.floatshort.PRO.Shortcuts.ListViewOff;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.OpenApplications;
@@ -1949,76 +1947,6 @@ public class FunctionsClass {
             Intent categoryInten = new Intent(context, CategoryHandler.class);
             activity.startActivity(categoryInten);
         } else {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            String style = sharedPreferences.getString("apps", "3");
-            if (style.equals("1")) {
-                Intent listViewOff = new Intent(context, ListViewOff.class);
-                listViewOff.putExtra("freq", PublicVariable.freqApps);
-                listViewOff.putExtra("num", PublicVariable.freqLength);
-                listViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
-                activity.startActivity(listViewOff);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        activityToFinish.finish();
-                    }
-                }, 313);
-            } else if (style.equals("2")) {
-                Intent gridViewOff = new Intent(context, GridViewOff.class);
-                gridViewOff.putExtra("freq", PublicVariable.freqApps);
-                gridViewOff.putExtra("num", PublicVariable.freqLength);
-                gridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
-                activity.startActivity(gridViewOff);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        activityToFinish.finish();
-                    }
-                }, 313);
-            } else if (style.equals("3")) {
-                Intent hybridViewOff = new Intent(context, HybridViewOff.class);
-                hybridViewOff.putExtra("freq", PublicVariable.freqApps);
-                hybridViewOff.putExtra("num", PublicVariable.freqLength);
-                hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
-                activity.startActivity(hybridViewOff);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        activityToFinish.finish();
-                    }
-                }, 313);
-            }
-        }
-    }
-
-    public void overrideBackPressToShortcuts(final Activity activityToFinish) throws Exception {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String style = sharedPreferences.getString("apps", "3");
-        if (style.equals("1")) {
-            Intent listViewOff = new Intent(context, ListViewOff.class);
-            listViewOff.putExtra("freq", PublicVariable.freqApps);
-            listViewOff.putExtra("num", PublicVariable.freqLength);
-            listViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
-            activity.startActivity(listViewOff);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    activityToFinish.finish();
-                }
-            }, 313);
-        } else if (style.equals("2")) {
-            Intent gridViewOff = new Intent(context, GridViewOff.class);
-            gridViewOff.putExtra("freq", PublicVariable.freqApps);
-            gridViewOff.putExtra("num", PublicVariable.freqLength);
-            gridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
-            activity.startActivity(gridViewOff);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    activityToFinish.finish();
-                }
-            }, 313);
-        } else if (style.equals("3")) {
             Intent hybridViewOff = new Intent(context, HybridViewOff.class);
             hybridViewOff.putExtra("freq", PublicVariable.freqApps);
             hybridViewOff.putExtra("num", PublicVariable.freqLength);
@@ -2031,6 +1959,20 @@ public class FunctionsClass {
                 }
             }, 313);
         }
+    }
+
+    public void overrideBackPressToShortcuts(final Activity activityToFinish) throws Exception {
+        Intent hybridViewOff = new Intent(context, HybridViewOff.class);
+        hybridViewOff.putExtra("freq", PublicVariable.freqApps);
+        hybridViewOff.putExtra("num", PublicVariable.freqLength);
+        hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+        activity.startActivity(hybridViewOff);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                activityToFinish.finish();
+            }
+        }, 313);
     }
 
     public String appName(String packageName) {
@@ -5210,9 +5152,6 @@ public class FunctionsClass {
         /*OFF Control Panel*/
         defaultSharedPreferencesEditor.putBoolean("stable", false);
         context.stopService(new Intent(context, BindServices.class));
-
-        /*List Drawer Style*/
-        defaultSharedPreferencesEditor.putString("apps", "1");
 
         /*Dark App Theme*/
         defaultSharedPreferencesEditor.putString("themeColor", "2");

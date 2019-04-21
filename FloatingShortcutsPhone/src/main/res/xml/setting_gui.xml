@@ -81,13 +81,6 @@
             android:icon="@drawable/draw_pref"
             android:key="themeColor"
             android:title="@string/colortext"/>
-        <ListPreference
-            android:defaultValue="3"
-            android:entries="@array/View"
-            android:entryValues="@array/ViewValues"
-            android:icon="@drawable/draw_pref"
-            android:key="apps"
-            android:title="@string/viewapps"/>
     </PreferenceCategory>
 
     <PreferenceCategory

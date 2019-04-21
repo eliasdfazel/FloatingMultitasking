@@ -936,7 +936,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     R.layout.hybrid_sections,
                     R.id.section_text,
                     loadView,
-                    recyclerViewAdapter/*mAdapter*/
+                    recyclerViewAdapter
             );
             hybridSectionedGridRecyclerViewAdapter.setSections(sections.toArray(sectionsData));
             loadView.setAdapter(hybridSectionedGridRecyclerViewAdapter);
@@ -1027,16 +1027,16 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             recyclerViewAdapter.notifyDataSetChanged();
-            HybridSectionedGridRecyclerViewAdapter.Section[] sections = new HybridSectionedGridRecyclerViewAdapter.Section[HybridViewOff.this.sections.size()];
-            HybridSectionedGridRecyclerViewAdapter mSectionedAdapter = new HybridSectionedGridRecyclerViewAdapter(
+            HybridSectionedGridRecyclerViewAdapter.Section[] sectionsData = new HybridSectionedGridRecyclerViewAdapter.Section[HybridViewOff.this.sections.size()];
+            HybridSectionedGridRecyclerViewAdapter hybridSectionedGridRecyclerViewAdapter = new HybridSectionedGridRecyclerViewAdapter(
                     getApplicationContext(),
                     R.layout.hybrid_sections,
                     R.id.section_text,
                     loadView,
                     recyclerViewAdapter
             );
-            mSectionedAdapter.setSections(HybridViewOff.this.sections.toArray(sections));
-            loadView.setAdapter(mSectionedAdapter);
+            hybridSectionedGridRecyclerViewAdapter.setSections(HybridViewOff.this.sections.toArray(sectionsData));
+            loadView.setAdapter(hybridSectionedGridRecyclerViewAdapter);
 
             if (loadViewPosition == 0) {
                 recyclerViewLayoutManager.scrollToPosition(getSharedPreferences("LoadView", Context.MODE_PRIVATE).getInt("LoadViewPosition", 0));

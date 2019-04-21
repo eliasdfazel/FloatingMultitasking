@@ -49,6 +49,10 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -67,14 +71,10 @@ import net.geekstools.floatshort.PRO.Util.SharingService;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.OrientationHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class SettingGUILight extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
     FunctionsClass functionsClass;
-    ListPreference style, themeColor, stick;
+    ListPreference themeColor, stick;
     SharedPreferences sharedPreferences;
     SwitchPreference stable, cache, themeTrans, smart, blur, observe, notification, floatingSplash, freeForm;
     Preference shapes, autotrans, sizes, delayPressHold, boot, lite, support, whatsnew, adApp;
@@ -179,16 +179,6 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             stick.setSummary(getString(R.string.leftEdge));
         } else if (sticky.equals("2")) {
             stick.setSummary(getString(R.string.rightEdge));
-        }
-
-        style = (ListPreference) findPreference("apps");
-        String t = sharedPreferences.getString("apps", "1");
-        if (t.equals("1")) {
-            style.setSummary(getString(R.string.list));
-        } else if (t.equals("2")) {
-            style.setSummary(getString(R.string.grid));
-        } else if (t.equals("3")) {
-            style.setSummary(getString(R.string.hybrid));
         }
 
         String b = sharedPreferences.getString("boot", "1");
@@ -899,7 +889,6 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         cache.setIcon(drawPref);
         autotrans.setIcon(drawPrefAutoTrans);
         floatingSplash.setIcon(drawPref);
-        style.setIcon(drawPref);
         themeColor.setIcon(drawPref);
         sizes.setIcon(drawPref);
         delayPressHold.setIcon(drawPref);
@@ -1129,16 +1118,6 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        style = (ListPreference) findPreference("apps");
-        String t = sharedPreferences.getString("apps", "1");
-        if (t.equals("1")) {
-            style.setSummary(getString(R.string.list));
-        } else if (t.equals("2")) {
-            style.setSummary(getString(R.string.grid));
-        } else if (t.equals("3")) {
-            style.setSummary(getString(R.string.hybrid));
-        }
-
         String sticky = sharedPreferences.getString("stick", "1");
         stick = (ListPreference) findPreference("stick");
         if (sticky.equals("1")) {
