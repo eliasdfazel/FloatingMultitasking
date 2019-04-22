@@ -128,7 +128,12 @@ public class Widget_Unlimited_Floating extends Service {
             widgetLabel[startId].setTextColor(getColor(R.color.light));
         }
 
-        widgetColor[startId] = functionsClass.extractVibrantColor(appWidgetProviderInfo[startId].loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_LOW));
+        try {
+            widgetColor[startId] = functionsClass.extractVibrantColor(appWidgetProviderInfo[startId].loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_LOW));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            widgetColor[startId] = functionsClass.extractVibrantColor(appWidgetProviderInfo[startId].loadIcon(getApplicationContext(), DisplayMetrics.DENSITY_LOW));
+        }
 
         String widgetLabelText =
                 appWidgetProviderInfo[startId].loadLabel(getPackageManager()) == null ?

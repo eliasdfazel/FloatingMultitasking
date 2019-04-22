@@ -124,11 +124,6 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_handler);
-        try {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         wholeCategory = (RelativeLayout) findViewById(R.id.wholeCategory);
         categorylist = (RecyclerView) findViewById(R.id.categorylist);
@@ -263,7 +258,6 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                         if (task.isSuccessful()) {
                             firebaseRemoteConfig.activateFetched();
                             if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(getPackageName())) {
-                                getActionBar().setDisplayHomeAsUpEnabled(true);
                                 LayerDrawable layerDrawableNewUpdate = (LayerDrawable) getDrawable(R.drawable.ic_update);
                                 BitmapDrawable gradientDrawableNewUpdate = (BitmapDrawable) layerDrawableNewUpdate.findDrawableByLayerId(R.id.ic_launcher_back_layer);
                                 gradientDrawableNewUpdate.setTint(PublicVariable.primaryColor);
@@ -271,7 +265,6 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                                 Bitmap tempBitmap = functionsClass.drawableToBitmap(layerDrawableNewUpdate);
                                 Bitmap scaleBitmap = Bitmap.createScaledBitmap(tempBitmap, tempBitmap.getWidth() / 4, tempBitmap.getHeight() / 4, false);
                                 Drawable logoDrawable = new BitmapDrawable(getResources(), scaleBitmap);
-                                getActionBar().setHomeAsUpIndicator(logoDrawable);
 
                                 functionsClass.notificationCreator(
                                         getString(R.string.updateAvailable),

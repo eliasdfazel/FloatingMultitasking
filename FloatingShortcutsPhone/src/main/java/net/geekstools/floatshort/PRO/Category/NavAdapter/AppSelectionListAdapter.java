@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -26,8 +28,6 @@ import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionListAdapter.ViewHolder> {
 
@@ -55,7 +55,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         dpHeight = displayMetrics.heightPixels;
         dpWidth = displayMetrics.widthPixels;
-        systemUiHeight = activity.getActionBar().getHeight();
+        systemUiHeight = PublicVariable.actionBarHeight;
         fromX = toX = PublicVariable.confirmButtonX;
         toY = PublicVariable.confirmButtonY;
         animationType = Animation.ABSOLUTE;

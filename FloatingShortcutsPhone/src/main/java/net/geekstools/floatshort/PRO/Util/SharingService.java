@@ -124,7 +124,7 @@ public class SharingService extends Service {
                     PixelFormat.TRANSLUCENT);
         }
 
-        params.gravity = Gravity.TOP;
+        params.gravity = Gravity.TOP | Gravity.START;
         params.x = 0;
         params.y = PublicVariable.activityStatic.getActionBar().getHeight();
         windowManager.addView(vG, params);

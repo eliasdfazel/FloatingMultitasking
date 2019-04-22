@@ -4707,6 +4707,19 @@ public class FunctionsClass {
         return LightDark;
     }
 
+    public boolean isDrawableLightDark(Drawable drawable) {
+        boolean isLightDark = false;
+
+        double calculateLuminance = ColorUtils.calculateLuminance(extractDominantColor(drawable));
+        if (calculateLuminance > 0.66) {//light
+            isLightDark = true;
+        } else if (calculateLuminance <= 0.50) {//dark
+            isLightDark = false;
+        }
+
+        return isLightDark;
+    }
+
     public void doVibrate(long millisecondVibrate) {
         Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(millisecondVibrate);
@@ -4969,8 +4982,14 @@ public class FunctionsClass {
             valueAnimator.start();
         } else {
             if (PublicVariable.themeLightDark) {
-                if (API > 25) {
-                    activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                final Window window = activity.getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                if (PublicVariable.themeLightDark) {
+                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    if (API > 25) {
+                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                    }
                 }
             }
 

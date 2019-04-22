@@ -49,7 +49,6 @@ public class Configurations extends Activity {
 
         functionsClass = new FunctionsClass(getApplicationContext(), Configurations.this);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        PublicVariable.activityStatic = Configurations.this;
 
         try {
             if (!BuildConfig.DEBUG) {

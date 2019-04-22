@@ -12,7 +12,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -98,8 +97,6 @@ import java.util.TreeMap;
 
 public class HybridViewOff extends Activity implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
-    Activity activity;
-
     FunctionsClass functionsClass;
 
     RecyclerView loadView;
@@ -166,7 +163,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClass.ChangeLog(HybridViewOff.this, false);
-        activity = HybridViewOff.this;
 
         recyclerViewLayoutManager = new RecycleViewSmoothLayoutGrid(getApplicationContext(), functionsClass.columnCount(105), OrientationHelper.VERTICAL, false);
         loadView.setLayoutManager(recyclerViewLayoutManager);
@@ -310,7 +306,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         switchWidgets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (functionsClass.floatingWidgetsPurchased() /*|| functionsClass.appVersionName(getPackageName()).contains("[BETA]")*/) {
+                if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
                     try {
                         functionsClass.navigateToClass(WidgetConfigurations.class,
                                 ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
@@ -383,15 +379,15 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     @Override
                     public void run() {
                         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.
-                                makeSceneTransitionAnimation(activity, actionButton, "transition");
+                                makeSceneTransitionAnimation(HybridViewOff.this, actionButton, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         if (PublicVariable.themeLightDark) {
-                            intent.setClass(activity, SettingGUILight.class);
+                            intent.setClass(HybridViewOff.this, SettingGUILight.class);
                         } else if (!PublicVariable.themeLightDark) {
-                            intent.setClass(activity, SettingGUIDark.class);
+                            intent.setClass(HybridViewOff.this, SettingGUIDark.class);
                         }
-                        activity.startActivity(intent, activityOptionsCompat.toBundle());
+                        startActivity(intent, activityOptionsCompat.toBundle());
                     }
                 }, 113);
 
@@ -589,7 +585,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     Intent signInIntent = googleSignInClient.getSignInIntent();
                     startActivityForResult(signInIntent, 666);
 
-                    progressDialog = new ProgressDialog(activity,
+                    progressDialog = new ProgressDialog(HybridViewOff.this,
                             PublicVariable.themeLightDark ? R.style.GeeksEmpire_Dialogue_Light : R.style.GeeksEmpire_Dialogue_Dark);
                     progressDialog.setMessage(Html.fromHtml(
                             "<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.signinTitle) + "</font></big>"
@@ -620,26 +616,41 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            firebaseRemoteConfig.activateFetched();
-                            if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(getPackageName())) {
-                                getActionBar().setDisplayHomeAsUpEnabled(true);
-                                LayerDrawable layerDrawableNewUpdate = (LayerDrawable) getDrawable(R.drawable.ic_update);
-                                BitmapDrawable gradientDrawableNewUpdate = (BitmapDrawable) layerDrawableNewUpdate.findDrawableByLayerId(R.id.ic_launcher_back_layer);
-                                gradientDrawableNewUpdate.setTint(PublicVariable.primaryColor);
+                            firebaseRemoteConfig.activate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
+                                @Override
+                                public void onSuccess(Boolean aBoolean) {
+                                    if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(getPackageName())) {
+                                        LayerDrawable layerDrawableNewUpdate = (LayerDrawable) getDrawable(R.drawable.ic_update);
+                                        BitmapDrawable gradientDrawableNewUpdate = (BitmapDrawable) layerDrawableNewUpdate.findDrawableByLayerId(R.id.ic_launcher_back_layer);
+                                        gradientDrawableNewUpdate.setTint(PublicVariable.primaryColor);
 
-                                Bitmap tempBitmap = functionsClass.drawableToBitmap(layerDrawableNewUpdate);
-                                Bitmap scaleBitmap = Bitmap.createScaledBitmap(tempBitmap, tempBitmap.getWidth() / 4, tempBitmap.getHeight() / 4, false);
-                                Drawable logoDrawable = new BitmapDrawable(getResources(), scaleBitmap);
-                                activity.getActionBar().setHomeAsUpIndicator(logoDrawable);
+                                        ImageView newUpdate = (ImageView) findViewById(R.id.newUpdate);
+                                        newUpdate.setImageDrawable(layerDrawableNewUpdate);
+                                        newUpdate.setVisibility(View.VISIBLE);
+                                        newUpdate.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                functionsClass.upcomingChangeLog(
+                                                        HybridViewOff.this,
+                                                        firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
+                                                        String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
+                                                );
 
-                                functionsClass.notificationCreator(
-                                        getString(R.string.updateAvailable),
-                                        firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogSummaryConfigKey()),
-                                        (int) firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())
-                                );
-                            } else {
-                            }
+                                            }
+                                        });
+
+                                        functionsClass.notificationCreator(
+                                                getString(R.string.updateAvailable),
+                                                firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogSummaryConfigKey()),
+                                                (int) firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())
+                                        );
+                                    } else {
+
+                                    }
+                                }
+                            });
                         } else {
+
                         }
                     }
                 });
@@ -681,7 +692,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         homeScreen.addCategory(Intent.CATEGORY_HOME);
         homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(homeScreen);
-        activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override
@@ -937,7 +948,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                         }
                     }
                 }
-                recyclerViewAdapter = new CardHybridAdapter(activity, getApplicationContext(), navDrawerItems);
+                recyclerViewAdapter = new CardHybridAdapter(HybridViewOff.this, getApplicationContext(), navDrawerItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -1060,7 +1071,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     }
                 }
 
-                recyclerViewAdapter = new CardHybridAdapter(activity, getApplicationContext(), navDrawerItems);
+                recyclerViewAdapter = new CardHybridAdapter(HybridViewOff.this, getApplicationContext(), navDrawerItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
