@@ -95,7 +95,7 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
             android:textAllCaps="false"
             android:textStyle="normal"
-            android:text="@string/app_name"
+            android:text="@string/floatingHint"
             app:elevation="7dp"
             app:cornerRadius="7dp"
             app:backgroundTint="@color/default_color" />
@@ -157,7 +157,6 @@
         android:visibility="invisible">
 
         <RelativeLayout
-            android:id="@+id/scrollRelativeLayoutInstalled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="35dp"

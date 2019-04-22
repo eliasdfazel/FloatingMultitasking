@@ -6,8 +6,6 @@
     <string name="recoveryEmoji"> 🔄 </string>
 
     <string name="integerVersionCodeNewUpdateWear" translatable="false">integer_version_code_new_update_wear</string>
-    <string name="stringVersionNameNewUpdateWear" translatable="false">string_version_name_new_update_wear</string>
-    <string name="stringUpcomingChangeLogWear" translatable="false">string_upcoming_change_log_wear</string>
 
     <string name="BETAintegerVersionCodeNewUpdateWear" translatable="false">beta_integer_version_code_new_update_wear</string>
 

@@ -40,15 +40,8 @@
     <string name="unpin">Unpin Shortcut</string>
     <string name="pin_category">Pin Category</string>
     <string name="unpin_category">Unpin Category</string>
-    <string name="app_info">App Info</string>
-    <string name="open">Open App</string>
     <string name="remove">Remove Shortcut</string>
     <string name="remove_category">Remove Category</string>
     <string name="edit_category">Edit </string>
-    <string name="recoveryShortText">
-        <![CDATA[
-            <small>Floating Recovery</small>
-        ]]>
-    </string>
 
 </resources>
