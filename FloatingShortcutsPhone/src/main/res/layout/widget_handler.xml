@@ -138,7 +138,7 @@
         app:backgroundTint="@color/default_color"
         app:rippleColor="@color/light"
         app:cornerRadius="57dp"
-        app:icon="@drawable/w_recovery"
+        app:icon="@drawable/w_recovery_widgets"
         app:iconGravity="start"
         app:iconSize="31dp"
         app:iconPadding="1dp" />

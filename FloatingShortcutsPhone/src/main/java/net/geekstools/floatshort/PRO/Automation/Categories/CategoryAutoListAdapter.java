@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import net.geekstools.floatshort.PRO.Automation.Alarms.TimeDialogue;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -27,8 +29,6 @@ import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoListAdapter.ViewHolder> {
 
@@ -95,14 +95,15 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
         autoChoice[position] = viewHolderBinder.autoChoice;
 
         categoryName[position].setTextColor(PublicVariable.colorLightDarkOpposite);
+        categoryName[position].setHintTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175));
+
         autoChoice[position].setButtonTintList(ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite));
 
         final String nameCategory = navDrawerItems.get(position).getCategory();
         final String[] categoryPackages = navDrawerItems.get(position).getPackName();
 
         categoryName[position].setText(navDrawerItems.get(position).getCategory());
-        timeView[position].setText(String.valueOf(nameCategory.charAt(0)));
-        timeView[position].setTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 77));
+        timeView[position].setText(String.valueOf(nameCategory.charAt(0)).toUpperCase());
 
         if (nameCategory.equals(context.getPackageName())) {
             try {
@@ -182,7 +183,7 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
                             functionsClass.removeLine(".times.clocks", navDrawerItems.get(position).getTimes());
                             autoChoice[position].setChecked(false);
                             timeView[position].setTextSize(50);
-                            timeView[position].setText(String.valueOf(navDrawerItems.get(position).getCategory().charAt(0)));
+                            timeView[position].setText(String.valueOf(navDrawerItems.get(position).getCategory().charAt(0)).toUpperCase());
                         } else {
                             autoChoice[position].setChecked(true);
                             context.startActivity(

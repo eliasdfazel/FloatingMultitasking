@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/wholeAuto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                tools:context=".Category.AppSelectionList">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/wholeAuto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".Category.AppSelectionList">
 
     <ScrollView
         android:id="@+id/nestedScrollView"
@@ -29,7 +30,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="61dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listFav"
@@ -37,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:divider="@drawable/draw_divider"
                 android:dividerHeight="3dp"
-
                 android:isScrollContainer="false"
                 android:nestedScrollingEnabled="false"/>
         </RelativeLayout>
@@ -107,6 +108,26 @@
             android:background="@drawable/draw_saved_show"
             android:visibility="invisible"/>
     </RelativeLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/categoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="13dp"
+        android:layout_marginEnd="113dp"
+        android:padding="3dp"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:ellipsize="end"
+        android:textSize="15sp"
+        android:textColor="@color/light"
+        android:visibility="invisible"
+        app:cornerRadius="57dp"
+        app:elevation="13dp"
+        app:backgroundTint="@color/default_color"
+        app:rippleColor="@color/light" />
 
     <TextView
         android:id="@+id/counter"

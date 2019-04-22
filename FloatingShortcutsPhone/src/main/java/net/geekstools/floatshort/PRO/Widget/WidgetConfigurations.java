@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -1028,16 +1029,51 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-            ValueAnimator colorAnimation = ValueAnimator
-                    .ofArgb(getWindow().getNavigationBarColor(), PublicVariable.themeLightDark ? getColor(R.color.fifty_light_twice) : getColor(R.color.transparent_dark_high_twice));
-            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    window.setStatusBarColor((Integer) animator.getAnimatedValue());
-                    window.setNavigationBarColor((Integer) animator.getAnimatedValue());
+            if (functionsClass.appThemeTransparent()) {
+                ValueAnimator colorAnimation = ValueAnimator
+                        .ofArgb(getWindow().getNavigationBarColor(), PublicVariable.themeLightDark ? getColor(R.color.fifty_light_twice) : getColor(R.color.transparent_dark_high_twice));
+                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animator) {
+                        window.setStatusBarColor((Integer) animator.getAnimatedValue());
+                        window.setNavigationBarColor((Integer) animator.getAnimatedValue());
+                    }
+                });
+                colorAnimation.start();
+            } else {
+                if (PublicVariable.themeLightDark) {
+                    installedWidgetsNestedScrollView.setBackground(new ColorDrawable(getColor(R.color.transparent_light)));
+                    if (PublicVariable.themeLightDark) {
+                        if (functionsClass.returnAPI() > 25) {
+                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                        }
+                    }
+
+                    ValueAnimator colorAnimation = ValueAnimator
+                            .ofArgb(getWindow().getNavigationBarColor(), functionsClass.mixColors(getColor(R.color.light), getWindow().getNavigationBarColor(), 0.70f));
+                    colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animator) {
+                            getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                            getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
+                        }
+                    });
+                    colorAnimation.start();
+                } else if (!PublicVariable.themeLightDark) {
+                    installedWidgetsNestedScrollView.setBackground(new ColorDrawable(getColor(R.color.dark_transparent)));
+
+                    ValueAnimator colorAnimation = ValueAnimator
+                            .ofArgb(getWindow().getNavigationBarColor(), functionsClass.mixColors(getColor(R.color.dark), getWindow().getNavigationBarColor(), 0.70f));
+                    colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animator) {
+                            getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                            getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
+                        }
+                    });
+                    colorAnimation.start();
                 }
-            });
-            colorAnimation.start();
+            }
 
             installedWidgetsRecyclerViewAdapter.notifyDataSetChanged();
             WidgetSectionedGridRecyclerViewAdapter.Section[] sectionsData = new WidgetSectionedGridRecyclerViewAdapter.Section[installedWidgetsSections.size()];

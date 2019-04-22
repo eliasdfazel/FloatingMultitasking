@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -33,6 +34,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
+
 import net.geekstools.floatshort.PRO.Category.NavAdapter.AppSavedListAdapter;
 import net.geekstools.floatshort.PRO.Category.NavAdapter.AppSelectionListAdapter;
 import net.geekstools.floatshort.PRO.R;
@@ -50,8 +53,6 @@ import java.util.Map;
 
 public class AppSelectionList extends Activity implements View.OnClickListener {
 
-    Activity activity;
-    Context context;
     FunctionsClass functionsClass;
 
     ListPopupWindow listPopupWindow;
@@ -64,6 +65,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
     TextView desc, counterView, splitHint;
     ImageView loadIcon;
     ShapesImage tempIcon, one, two;
+    MaterialButton categoryName;
 
     List<ApplicationInfo> applicationInfoList;
     Map<String, Integer> mapIndex;
@@ -85,10 +87,8 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         setContentView(R.layout.advance_app_selection_list);
 
         functionsClass = new FunctionsClass(getApplicationContext(), this);
-        context = getApplicationContext();
-        activity = this;
 
-        listPopupWindow = new ListPopupWindow(activity);
+        listPopupWindow = new ListPopupWindow(AppSelectionList.this);
         desc = (TextView) findViewById(R.id.desc);
         counterView = (TextView) findViewById(R.id.counter);
         loadIcon = (ImageView) findViewById(R.id.loadLogo);
@@ -106,6 +106,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         splitHint = (TextView) findViewById(R.id.splitHint);
         confirmLayout = (RelativeLayout) findViewById(R.id.confirmLayout);
         confirmLayout.bringToFront();
+        categoryName = (MaterialButton) findViewById(R.id.categoryName);
 
         if (functionsClass.appThemeTransparent() == true) {
             functionsClass.setThemeColorFloating(wholeAuto, true);
@@ -126,6 +127,15 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         counterView.setTypeface(face);
         counterView.bringToFront();
 
+        if (functionsClass.loadRecoveryIndicatorCategory(PublicVariable.categoryName)) {
+            categoryName.setText(PublicVariable.categoryName + " " + "\uD83D\uDD04");
+        } else {
+            categoryName.setText(PublicVariable.categoryName);
+        }
+
+        categoryName.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+        categoryName.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite));
+
         LayerDrawable layerDrawableLoadLogo = (LayerDrawable) getDrawable(R.drawable.ic_launcher_layer);
         BitmapDrawable gradientDrawableLoadLogo = (BitmapDrawable) layerDrawableLoadLogo.findDrawableByLayerId(R.id.ic_launcher_back_layer);
         gradientDrawableLoadLogo.setTint(PublicVariable.primaryColor);
@@ -135,11 +145,11 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         loadingBarLTR.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.dark), PorterDuff.Mode.MULTIPLY);
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(context.getString(R.string.counterActionAdvance));
-        intentFilter.addAction(context.getString(R.string.savedActionAdvance));
-        intentFilter.addAction(context.getString(R.string.savedActionHideAdvance));
-        intentFilter.addAction(context.getString(R.string.checkboxActionAdvance));
-        intentFilter.addAction(context.getString(R.string.splitActionAdvance));
+        intentFilter.addAction(getString(R.string.counterActionAdvance));
+        intentFilter.addAction(getString(R.string.savedActionAdvance));
+        intentFilter.addAction(getString(R.string.savedActionHideAdvance));
+        intentFilter.addAction(getString(R.string.checkboxActionAdvance));
+        intentFilter.addAction(getString(R.string.splitActionAdvance));
         BroadcastReceiver counterReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -158,8 +168,8 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                                             :
                                             functionsClass.shapedAppIcon(aSavedLine)));
                         }
-                        advanceSavedListAdapter = new AppSavedListAdapter(activity, context, navDrawerItemsSaved, 1);
-                        listPopupWindow = new ListPopupWindow(activity);
+                        advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), navDrawerItemsSaved, 1);
+                        listPopupWindow = new ListPopupWindow(AppSelectionList.this);
                         listPopupWindow.setAdapter(advanceSavedListAdapter);
                         listPopupWindow.setAnchorView(popupAnchorView);
                         listPopupWindow.setWidth(ListPopupWindow.WRAP_CONTENT);
@@ -219,7 +229,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                 }
             }
         };
-        context.registerReceiver(counterReceiver, intentFilter);
+        registerReceiver(counterReceiver, intentFilter);
 
         loadDataOff();
     }
@@ -288,8 +298,8 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                                             :
                                             functionsClass.shapedAppIcon(aSavedLine)));
                         }
-                        advanceSavedListAdapter = new AppSavedListAdapter(activity, context, navDrawerItemsSaved, 1);
-                        listPopupWindow = new ListPopupWindow(activity);
+                        advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), navDrawerItemsSaved, 1);
+                        listPopupWindow = new ListPopupWindow(AppSelectionList.this);
                         listPopupWindow.setAdapter(advanceSavedListAdapter);
                         listPopupWindow.setAnchorView(popupAnchorView);
                         listPopupWindow.setWidth(ListPopupWindow.WRAP_CONTENT);
@@ -327,8 +337,8 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                                             :
                                             functionsClass.shapedAppIcon(aSavedLine)));
                         }
-                        advanceSavedListAdapter = new AppSavedListAdapter(activity, context, navDrawerItemsSaved, 2);
-                        listPopupWindow = new ListPopupWindow(activity);
+                        advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), navDrawerItemsSaved, 2);
+                        listPopupWindow = new ListPopupWindow(AppSelectionList.this);
                         listPopupWindow.setAdapter(advanceSavedListAdapter);
                         listPopupWindow.setAnchorView(popupAnchorView);
                         listPopupWindow.setWidth(ListPopupWindow.WRAP_CONTENT);
@@ -428,7 +438,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                         }
                     }
                 }
-                appSelectionListAdapter = new AppSelectionListAdapter(activity, context, navDrawerItems);
+                appSelectionListAdapter = new AppSelectionListAdapter(AppSelectionList.this, getApplicationContext(), navDrawerItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -445,14 +455,16 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Animation anim = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
+                    categoryName.setVisibility(View.VISIBLE);
+
+                    Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                     loadingSplash.setVisibility(View.INVISIBLE);
                     if (resetAdapter == false) {
                         loadingSplash.startAnimation(anim);
                     }
-                    context.sendBroadcast(new Intent(context.getString(R.string.visibilityActionAdvance)));
+                    sendBroadcast(new Intent(getString(R.string.visibilityActionAdvance)));
 
-                    Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
                     counterView.startAnimation(animation);
                     animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override

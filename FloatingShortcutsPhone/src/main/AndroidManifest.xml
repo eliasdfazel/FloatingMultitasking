@@ -109,7 +109,7 @@
             android:resizeableActivity="true"
             android:screenOrientation="sensorPortrait"
             android:supportsPictureInPicture="true"
-            android:theme="@android:style/Theme.DeviceDefault.Wallpaper"/>
+            android:theme="@style/GeeksEmpire.Material" />
         <activity
             android:name=".Automation.Apps.AppAutoFeatures"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
