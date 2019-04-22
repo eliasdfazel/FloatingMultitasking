@@ -1019,6 +1019,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {
+
                 }
             });
         }

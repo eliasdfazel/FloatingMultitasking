@@ -150,7 +150,6 @@
     <string name="deleteAlias">Remove App Drawer Shortcuts</string>
     <string name="floatingCategory">Floating Categories</string>
     <string name="floatingWidget">Floating Widgets</string>
-    <string name="shortcutHint">Apps</string>
     <string name="categoryHint">Floating Categories</string>
     <string name="widgetHint">Floating Widgets</string>
     <string name="widgetPickerTitle">

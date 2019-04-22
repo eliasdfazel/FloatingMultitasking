@@ -683,6 +683,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     @Override
     public void onPause() {
         super.onPause();
+        if (PublicVariable.actionCenter == true) {
+            functionsClass.closeActionMenuOption(fullActionViews, actionButton);
+        }
     }
 
     @Override
