@@ -8,8 +8,10 @@ import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -539,6 +541,19 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         GradientDrawable backFloatingLogo = (GradientDrawable) drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
         backFloatingLogo.setColor(PublicVariable.primaryColorOpposite);
         floatingLogo.setImageDrawable(drawFloatingLogo);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("FORCE_RELOAD");
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals("FORCE_RELOAD")) {
+                    LoadConfiguredWidgets loadConfiguredWidgets = new LoadConfiguredWidgets();
+                    loadConfiguredWidgets.execute();
+                }
+            }
+        };
+        registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override
@@ -988,7 +1003,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 (appWidgetProviderInfo.loadLabel(getPackageManager()) != null) ? appWidgetProviderInfo.loadLabel(getPackageManager()) : newAppName,
                                 appIcon,
                                 appWidgetProviderInfo,
-                                appWidgetId
+                                appWidgetId,
+                                widgetDataModel.getRecovery()
                         ));
 
                     } catch (Exception e) {

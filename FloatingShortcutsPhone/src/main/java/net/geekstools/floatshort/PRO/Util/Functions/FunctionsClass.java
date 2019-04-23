@@ -101,6 +101,9 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.palette.graphics.Palette;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -115,6 +118,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.App_Unlimited_Bluetooth;
 import net.geekstools.floatshort.PRO.App_Unlimited_Gps;
 import net.geekstools.floatshort.PRO.App_Unlimited_HIS;
@@ -144,6 +148,7 @@ import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.OpenApplications;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.FloatingWidgetHomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RemoteController;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
@@ -3158,6 +3163,14 @@ public class FunctionsClass {
         return bitmap;
     }
 
+    public Bitmap genericDrawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth() / 2, drawable.getIntrinsicHeight() / 2, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
     public Drawable bitmapToDrawable(Bitmap bitmap) {
         return new BitmapDrawable(context.getResources(), bitmap);
     }
@@ -3916,33 +3929,28 @@ public class FunctionsClass {
                         context.sendBroadcast(new Intent("Category_Reload"));
                     }
                 }
-                updateRecoverShortcuts();
                 return true;
             }
         });
         popupMenu.show();
     }
 
-    public void popupOptionWidget(final Context context, View anchorView, final String categoryName, final int indicatorPosition) {
+    public void popupOptionWidget(final Context context, View anchorView, String packageName, final int appWidgetId, String widgetLabel, Drawable widgetPreview, boolean addedWidgetRecovery) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Light);
-            }
+            popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Light);
         } else if (PublicVariable.themeLightDark == false) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Dark);
-            }
+            popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Dark);
         }
         String[] menuItems;
-        if (loadRecoveryIndicatorCategory(categoryName)) {
-            menuItems = context.getResources().getStringArray(R.array.ContextMenuCategoryRemove);
+        if (addedWidgetRecovery) {
+            menuItems = context.getResources().getStringArray(R.array.ContextMenuWidgetRemove);
         } else {
-            menuItems = context.getResources().getStringArray(R.array.ContextMenuCategory);
+            menuItems = context.getResources().getStringArray(R.array.ContextMenuWidget);
         }
 
         Drawable popupItemIcon = returnAPI() >= 28 ? resizeDrawable(context.getDrawable(R.drawable.w_pref_popup), 100, 100) : context.getDrawable(R.drawable.w_pref_popup);
-        popupItemIcon.setTint(PublicVariable.primaryColorOpposite);
+        popupItemIcon.setTint(extractVibrantColor(appIcon(packageName)));
 
         for (int itemId = 0; itemId < menuItems.length; itemId++) {
             popupMenu.getMenu()
@@ -3971,59 +3979,67 @@ public class FunctionsClass {
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == 0) {
-                    PublicVariable.size = 26;
-                    runUnlimitedCategoryService(categoryName);
+                switch (item.getItemId()) {
+                    case 0: {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                WidgetDataInterface widgetDataInterface = Room.databaseBuilder(context, WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                        .fallbackToDestructiveMigration()
+                                        .addCallback(new RoomDatabase.Callback() {
+                                            @Override
+                                            public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                                super.onCreate(supportSQLiteDatabase);
+                                            }
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            setSizeBack();
-                        }
-                    }, 100);
-                } else if (item.getItemId() == 1) {
-                    PublicVariable.size = 52;
-                    runUnlimitedCategoryService(categoryName);
+                                            @Override
+                                            public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                                super.onOpen(supportSQLiteDatabase);
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            setSizeBack();
-                        }
-                    }, 100);
-                } else if (item.getItemId() == 2) {
-                    PublicVariable.size = 78;
-                    runUnlimitedCategoryService(categoryName);
+                                            }
+                                        })
+                                        .build();
+                                widgetDataInterface.initDataAccessObject().deleteByWidgetId(appWidgetId);
+                                widgetDataInterface.close();
+                            }
+                        }).start();
+                        context.sendBroadcast(new Intent("FORCE_RELOAD"));
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            setSizeBack();
-                        }
-                    }, 100);
-                } else if (item.getItemId() == 3) {
-                    if (!loadRecoveryIndicatorCategory(categoryName)) {
-                        saveFileAppendLine(".uCategory", categoryName);
-                    } else {
-                        removeLine(".uCategory", categoryName);
+                        break;
                     }
-                    context.sendBroadcast(new Intent("Category_Reload"));
-                } else if (item.getItemId() == 4) {
-                    try {
-                        String[] categoryContent = readFileLine(categoryName);
-                        for (String packageName : categoryContent) {
-                            context.deleteFile(packageName + categoryName);
-                        }
-                        removeLine(".categoryInfo", categoryName);
-                        removeLine(".uCategory", categoryName);
-                        context.deleteFile(categoryName);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        context.sendBroadcast(new Intent("Category_Reload"));
+                    case 1: {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                WidgetDataInterface widgetDataInterface = Room.databaseBuilder(context, WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                        .fallbackToDestructiveMigration()
+                                        .addCallback(new RoomDatabase.Callback() {
+                                            @Override
+                                            public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                                super.onCreate(supportSQLiteDatabase);
+                                            }
+
+                                            @Override
+                                            public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                                super.onOpen(supportSQLiteDatabase);
+
+                                            }
+                                        })
+                                        .build();
+                                widgetDataInterface.initDataAccessObject().updateRecoveryByWidgetId(appWidgetId, !addedWidgetRecovery);
+                                widgetDataInterface.close();
+                            }
+                        }).start();
+                        context.sendBroadcast(new Intent("FORCE_RELOAD"));
+
+                        break;
+                    }
+                    case 2: {
+                        appToDesktop(FloatingWidgetHomeScreenShortcuts.class, widgetLabel, widgetPreview, appWidgetId);
+
+                        break;
                     }
                 }
-                updateRecoverShortcuts();
                 return true;
             }
         });
@@ -4215,16 +4231,17 @@ public class FunctionsClass {
         return (int) (displayX() / DpToPixel(itemWidth));
     }
 
-    public void appToDesktop(Class className, String shortcutName, int drawableId) {
+    public void appToDesktop(Class className, String shortcutName, Drawable drawableIcon, int shortcutId) {
         Intent differentIntent = new Intent(context, className);
         differentIntent.setAction(Intent.ACTION_MAIN);
         differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        differentIntent.putExtra("AppWidgetId", shortcutId);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, shortcutName)
+            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, String.valueOf(shortcutId))
                     .setShortLabel(shortcutName)
                     .setLongLabel(shortcutName)
-                    .setIcon(Icon.createWithResource(context, drawableId))
+                    .setIcon(Icon.createWithBitmap(genericDrawableToBitmap(drawableIcon)))
                     .setIntent(differentIntent)
                     .build();
             context.getSystemService(ShortcutManager.class).requestPinShortcut(shortcutInfo, null);
@@ -4232,7 +4249,7 @@ public class FunctionsClass {
             Intent addIntent = new Intent();
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent);
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName);
-            addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context, drawableId));
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, genericDrawableToBitmap(drawableIcon));
             addIntent.putExtra("duplicate", true);
             addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
             context.sendBroadcast(addIntent);
@@ -4262,18 +4279,18 @@ public class FunctionsClass {
                 int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                 switch (selectedPosition) {
                     case 0:
-                        appToDesktop(className, shortcutName, drawableId);
+//                        appToDesktop(className, shortcutName, drawableId);
                         break;
                     case 1:
-                        if (aliasButton.equals(context.getString(R.string.deleteAlias))) {
-                            context.getPackageManager().setComponentEnabledSetting(
-                                    new ComponentName(context.getPackageName(), context.getPackageName() + activityAlias),
-                                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-                        } else if (aliasButton.equals(context.getString(R.string.createAlias))) {
-                            context.getPackageManager().setComponentEnabledSetting(
-                                    new ComponentName(context.getPackageName(), context.getPackageName() + activityAlias),
-                                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                        }
+//                        if (aliasButton.equals(context.getString(R.string.deleteAlias))) {
+//                            context.getPackageManager().setComponentEnabledSetting(
+//                                    new ComponentName(context.getPackageName(), context.getPackageName() + activityAlias),
+//                                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+//                        } else if (aliasButton.equals(context.getString(R.string.createAlias))) {
+//                            context.getPackageManager().setComponentEnabledSetting(
+//                                    new ComponentName(context.getPackageName(), context.getPackageName() + activityAlias),
+//                                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+//                        }
                         break;
                 }
                 dialog.dismiss();

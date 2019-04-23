@@ -19,4 +19,10 @@ interface WidgetDataDAO {
 
     @Query("SELECT * FROM WidgetData WHERE WidgetId IN (:WidgetId)")
     fun loadWidgetById(WidgetId: Int): WidgetDataModel
+
+    @Query("UPDATE WidgetData SET Recovery = :AddedWidgetRecovery WHERE WidgetId = :WidgetId")
+    fun updateRecoveryByWidgetId(WidgetId: Int, AddedWidgetRecovery: Boolean): Int
+
+    @Query("DELETE FROM WidgetData WHERE WidgetId = :WidgetId")
+    fun deleteByWidgetId(WidgetId: Int)
 }

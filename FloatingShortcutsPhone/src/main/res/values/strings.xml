@@ -244,6 +244,17 @@
         <item name="5">@string/deleteCategory</item>
     </string-array>
 
+    <string-array name="ContextMenuWidget">
+        <item name="1">@string/deleteCategory</item>
+        <item name="2">@string/addRecovery</item>
+        <item name="3">@string/createShortcut</item>
+    </string-array>
+    <string-array name="ContextMenuWidgetRemove">
+        <item name="1">@string/deleteCategory</item>
+        <item name="2">@string/removeRecovery</item>
+        <item name="3">@string/createShortcut</item>
+    </string-array>
+
     <string-array name="STICK">
         <item name="1">@string/leftEdge</item>
         <item name="2">@string/rightEdge</item>

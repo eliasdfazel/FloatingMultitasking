@@ -270,6 +270,17 @@
             <intent-filter>
                 <action android:name="Create_Floating_Shortcuts"/>
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Util.RemoteTask.FloatingWidgetHomeScreenShortcuts"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/Transparent">
+            <intent-filter>
+                <action android:name="CREATE_FLOATING_WIDGET_HOME_SCREEN_SHORTCUTS" />
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

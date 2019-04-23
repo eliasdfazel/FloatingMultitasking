@@ -18,9 +18,7 @@ import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryCategory;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryCategoryActivity;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcutsActivity;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
 
@@ -128,7 +126,7 @@ public class ActionListAdapter extends BaseAdapter {
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.automation))) {
+                /*if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.automation))) {
                     functionsClass.ShortcutsDialogue(AppAutoFeatures.class, ".Alias.Automation", context.getString(R.string.automation), R.drawable.alias_auto);
                 } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.floatingCategory))) {
                     functionsClass.ShortcutsDialogue(CategoryHandler.class, ".Alias.CategoryHandler", context.getString(R.string.floatingCategory), R.drawable.alias_categories);
@@ -136,7 +134,7 @@ public class ActionListAdapter extends BaseAdapter {
                     functionsClass.ShortcutsDialogue(RecoveryShortcutsActivity.class, ".Alias.Recover.Shortcuts", context.getString(R.string.recoveryShortcuts), R.drawable.alias_shortcuts_recovery);
                 } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recover_category))) {
                     functionsClass.ShortcutsDialogue(RecoveryCategoryActivity.class, ".Alias.Recover.Categories", context.getString(R.string.recover_category), R.drawable.alias_categories_recovery);
-                }
+                }*/
                 return true;
             }
         });

@@ -17,6 +17,8 @@ public class NavDrawerItem {
     Drawable appIcon, run, widgetPreview,
             notificationAppIcon, notificationLargeIcon;
 
+    boolean addedWidgetRecovery;
+
     PendingIntent notificationIntent;
 
     AppWidgetProviderInfo appWidgetProviderInfo;
@@ -69,13 +71,14 @@ public class NavDrawerItem {
         this.appWidgetProviderInfo = appWidgetProviderInfo;
     }
 
-    public NavDrawerItem(String AppName, String PackageName, String widgetLabel, Drawable AppIcon, AppWidgetProviderInfo appWidgetProviderInfo, int appWidgetId) {
+    public NavDrawerItem(String AppName, String PackageName, String widgetLabel, Drawable AppIcon, AppWidgetProviderInfo appWidgetProviderInfo, int appWidgetId, boolean addedWidgetRecovery) {
         this.appName = AppName;
         this.packageName = PackageName;
         this.widgetLabel = widgetLabel;
         this.appIcon = AppIcon;
         this.appWidgetProviderInfo = appWidgetProviderInfo;
         this.appWidgetId = appWidgetId;
+        this.addedWidgetRecovery = addedWidgetRecovery;
     }
 
     public NavDrawerItem(String notificationTime, String notificationPackage,
@@ -165,6 +168,10 @@ public class NavDrawerItem {
 
     public Drawable getNotificationLargeIcon() {
         return this.notificationLargeIcon;
+    }
+
+    public boolean getAddedWidgetRecovery() {
+        return this.addedWidgetRecovery;
     }
 
     public PendingIntent getNotificationIntent() {

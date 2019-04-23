@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +68,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
                 appWidgetManager, appWidgetHost,
                 appWidgetProviderInfo, appWidgetId);
 
-        viewHolder.widgetLabel.setText(navDrawerItems.get(position).getWidgetLabel());
+        viewHolder.widgetLabel.setText(navDrawerItems.get(position).getAddedWidgetRecovery() ? navDrawerItems.get(position).getWidgetLabel() + " " + "\uD83D\uDD04" : navDrawerItems.get(position).getWidgetLabel());
         viewHolder.widgetLabel.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
 
         LayerDrawable drawFloatTheWidget = (LayerDrawable) context.getDrawable(R.drawable.draw_open);
@@ -86,8 +87,12 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
             public boolean onLongClick(View view) {
                 functionsClass.doVibrate(77);
 
-//                functionsClass.popupOptionWidget();
-
+                functionsClass.popupOptionWidget(context, view,
+                        navDrawerItems.get(position).getPackageName(),
+                        navDrawerItems.get(position).getAppWidgetId(),
+                        navDrawerItems.get(position).getWidgetLabel(),
+                        appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) != null ? appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) : appWidgetProviderInfo.loadIcon(context, DisplayMetrics.DENSITY_LOW),
+                        navDrawerItems.get(position).getAddedWidgetRecovery());
 
                 return false;
             }
