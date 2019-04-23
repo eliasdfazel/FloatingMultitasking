@@ -296,7 +296,7 @@
             </intent-filter>
         </activity-alias>
         <activity-alias
-            android:name=".Alias.WidgetHandler"
+            android:name=".Alias.WidgetConfigurations"
             android:enabled="false"
             android:icon="@drawable/alias_categories"
             android:label="@string/floatingWidget"

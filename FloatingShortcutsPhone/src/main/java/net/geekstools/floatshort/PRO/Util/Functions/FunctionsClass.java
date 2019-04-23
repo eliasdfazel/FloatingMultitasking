@@ -4112,7 +4112,15 @@ public class FunctionsClass {
         differentIntent.setAction(Intent.ACTION_MAIN);
         differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        if (returnAPI() < 26) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, shortcutName)
+                    .setShortLabel(shortcutName)
+                    .setLongLabel(shortcutName)
+                    .setIcon(Icon.createWithResource(context, drawableId))
+                    .setIntent(differentIntent)
+                    .build();
+            context.getSystemService(ShortcutManager.class).requestPinShortcut(shortcutInfo, null);
+        } else {
             Intent addIntent = new Intent();
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent);
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName);
@@ -4120,15 +4128,6 @@ public class FunctionsClass {
             addIntent.putExtra("duplicate", true);
             addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
             context.sendBroadcast(addIntent);
-        } else {
-            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, shortcutName)
-                    .setShortLabel(shortcutName)
-                    .setLongLabel(shortcutName)
-                    .setIcon(Icon.createWithResource(context, drawableId))
-                    .setIntent(differentIntent)
-                    .build();
-
-            context.getSystemService(ShortcutManager.class).requestPinShortcut(shortcutInfo, null);
         }
     }
 

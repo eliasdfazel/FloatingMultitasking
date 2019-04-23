@@ -691,7 +691,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        WidgetConfigurations.this.finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
