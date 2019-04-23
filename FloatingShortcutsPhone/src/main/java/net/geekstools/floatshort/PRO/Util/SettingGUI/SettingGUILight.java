@@ -69,6 +69,7 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.CustomIconsThemeAdapter;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutList;
 import net.geekstools.floatshort.PRO.Util.SharingService;
+import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.util.ArrayList;
 
@@ -82,7 +83,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
     Runnable runnablePressHold = null;
     Handler handlerPressHold = new Handler();
-    boolean touchingDelay = false;
+    boolean touchingDelay = false, FromWidgetsConfigurations = false;
 
     View rootLayout;
 
@@ -111,6 +112,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         this.getListView().setScrollBarSize(0);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        FromWidgetsConfigurations = getIntent().hasExtra("FromWidgetsConfigurations") ? getIntent().getBooleanExtra("FromWidgetsConfigurations", false) : false;
 
         if (functionsClass.appThemeTransparent() == true) {
             functionsClass.setThemeColorPreferences(this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
@@ -1008,7 +1010,12 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
     @Override
     public void onBackPressed() {
         try {
-            functionsClass.overrideBackPress(SettingGUILight.this);
+            if (FromWidgetsConfigurations) {
+                Intent intent = new Intent(getApplicationContext(), WidgetConfigurations.class);
+                startActivity(intent);
+            } else {
+                functionsClass.overrideBackPress(SettingGUILight.this);
+            }
 
             float finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
             Animator circularReveal = ViewAnimationUtils.createCircularReveal(

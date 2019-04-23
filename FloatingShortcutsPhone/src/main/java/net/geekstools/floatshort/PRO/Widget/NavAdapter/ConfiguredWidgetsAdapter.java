@@ -78,15 +78,16 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
         viewHolder.floatTheWidget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 functionsClass.runUnlimitedWidgetService(navDrawerItems.get(position).getAppWidgetId());
-
             }
         });
         viewHolder.floatTheWidget.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 functionsClass.doVibrate(77);
+
+//                functionsClass.popupOptionWidget();
+
 
                 return false;
             }

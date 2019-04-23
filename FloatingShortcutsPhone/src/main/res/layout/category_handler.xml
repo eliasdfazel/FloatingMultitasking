@@ -168,7 +168,7 @@
             android:maxLines="1"
             android:text="@string/automation"
             android:textStyle="bold"
-            android:textSize="12sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
             android:textAllCaps="false"
             android:textColor="@color/light"
             app:elevation="3dp"

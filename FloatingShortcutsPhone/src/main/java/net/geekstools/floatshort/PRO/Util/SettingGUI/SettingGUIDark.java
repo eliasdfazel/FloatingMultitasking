@@ -69,6 +69,7 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.CustomIconsThemeAdapter;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutList;
 import net.geekstools.floatshort.PRO.Util.SharingService;
+import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.util.ArrayList;
 
@@ -82,7 +83,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
 
     Runnable runnablePressHold = null;
     Handler handlerPressHold = new Handler();
-    boolean touchingDelay = false;
+    boolean touchingDelay = false, FromWidgetsConfigurations = false;
 
     View rootLayout;
 
@@ -111,6 +112,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         this.getListView().setScrollBarSize(0);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        FromWidgetsConfigurations = getIntent().hasExtra("FromWidgetsConfigurations") ? getIntent().getBooleanExtra("FromWidgetsConfigurations", false) : false;
 
         if (functionsClass.appThemeTransparent() == true) {
             functionsClass.setThemeColorPreferences(this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
@@ -1009,7 +1011,12 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
     @Override
     public void onBackPressed() {
         try {
-            functionsClass.overrideBackPress(SettingGUIDark.this);
+            if (FromWidgetsConfigurations) {
+                Intent intent = new Intent(getApplicationContext(), WidgetConfigurations.class);
+                startActivity(intent);
+            } else {
+                functionsClass.overrideBackPress(SettingGUIDark.this);
+            }
 
             float finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
             Animator circularReveal = ViewAnimationUtils.createCircularReveal(
@@ -1035,6 +1042,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 SettingGUIDark.this.finish();
             }
         }, 700);
+
     }
 
     @Override

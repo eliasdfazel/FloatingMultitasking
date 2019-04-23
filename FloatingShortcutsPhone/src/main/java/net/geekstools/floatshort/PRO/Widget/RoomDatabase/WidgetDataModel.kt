@@ -12,5 +12,6 @@ data class WidgetDataModel(
 
         @NonNull @ColumnInfo(name = "PackageName") var PackageName: String,
         @NonNull @ColumnInfo(name = "AppName") var AppName: String,
-        @ColumnInfo(name = "WidgetLabel") var WidgetLabel: String
+        @ColumnInfo(name = "WidgetLabel") var WidgetLabel: String,
+        @ColumnInfo(name = "Recovery") var Recovery: Boolean
 )

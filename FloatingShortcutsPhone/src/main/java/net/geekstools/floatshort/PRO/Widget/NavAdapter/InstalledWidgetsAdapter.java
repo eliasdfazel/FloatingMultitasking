@@ -35,6 +35,8 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
     ViewHolder viewHolder;
 
     public static final int WIDGET_CONFIGURATION_REQUEST = 666;
+    public static final int SYSTEM_WIDGET_PICKER = 333;
+    public static final int SYSTEM_WIDGET_PICKER_CONFIGURATION = 111;
 
     public static String pickedWidgetPackageName;
     public static AppWidgetProviderInfo pickedAppWidgetProviderInfo;

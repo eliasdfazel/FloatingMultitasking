@@ -117,22 +117,21 @@ public class Widget_Unlimited_Floating extends Service {
         }
 
         if (PublicVariable.themeLightDark) {
-            wholeViewWidget[startId].setBackgroundColor(getColor(R.color.light_transparent));
+            wholeViewWidget[startId].setBackgroundColor(functionsClass.appThemeTransparent() ? getColor(R.color.light_transparent) : getColor(R.color.light));
             widgetLabel[startId].setBackgroundColor(getColor(R.color.light_transparent_high));
 
             widgetLabel[startId].setTextColor(getColor(R.color.dark));
         } else if (!PublicVariable.themeLightDark) {
-            wholeViewWidget[startId].setBackgroundColor(getColor(R.color.dark_transparent));
+            wholeViewWidget[startId].setBackgroundColor(functionsClass.appThemeTransparent() ? getColor(R.color.dark_transparent) : getColor(R.color.dark));
             widgetLabel[startId].setBackgroundColor(getColor(R.color.dark_transparent_high));
 
             widgetLabel[startId].setTextColor(getColor(R.color.light));
         }
 
         try {
-            widgetColor[startId] = functionsClass.extractVibrantColor(appWidgetProviderInfo[startId].loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_LOW));
+            widgetColor[startId] = functionsClass.extractVibrantColor(appWidgetProviderInfo[startId].loadIcon(getApplicationContext(), DisplayMetrics.DENSITY_LOW));
         } catch (NullPointerException e) {
             e.printStackTrace();
-            widgetColor[startId] = functionsClass.extractVibrantColor(appWidgetProviderInfo[startId].loadIcon(getApplicationContext(), DisplayMetrics.DENSITY_LOW));
         }
 
         String widgetLabelText =

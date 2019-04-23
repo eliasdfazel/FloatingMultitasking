@@ -152,6 +152,7 @@ import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingCategory;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingShortcuts;
+import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 import net.geekstools.floatshort.PRO.Widget_Unlimited_Floating;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -1952,13 +1953,13 @@ public class FunctionsClass {
             hybridViewOff.putExtra("num", PublicVariable.freqLength);
             hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
             activity.startActivity(hybridViewOff);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    activityToFinish.finish();
-                }
-            }, 313);
         }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                activityToFinish.finish();
+            }
+        }, 313);
     }
 
     public void overrideBackPressToShortcuts(final Activity activityToFinish) throws Exception {
@@ -3922,6 +3923,113 @@ public class FunctionsClass {
         popupMenu.show();
     }
 
+    public void popupOptionWidget(final Context context, View anchorView, final String categoryName, final int indicatorPosition) {
+        PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
+        if (PublicVariable.themeLightDark == true) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Light);
+            }
+        } else if (PublicVariable.themeLightDark == false) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Dark);
+            }
+        }
+        String[] menuItems;
+        if (loadRecoveryIndicatorCategory(categoryName)) {
+            menuItems = context.getResources().getStringArray(R.array.ContextMenuCategoryRemove);
+        } else {
+            menuItems = context.getResources().getStringArray(R.array.ContextMenuCategory);
+        }
+
+        Drawable popupItemIcon = returnAPI() >= 28 ? resizeDrawable(context.getDrawable(R.drawable.w_pref_popup), 100, 100) : context.getDrawable(R.drawable.w_pref_popup);
+        popupItemIcon.setTint(PublicVariable.primaryColorOpposite);
+
+        for (int itemId = 0; itemId < menuItems.length; itemId++) {
+            popupMenu.getMenu()
+                    .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>"))
+                    .setIcon(popupItemIcon);
+        }
+
+        try {
+            Field[] fields = popupMenu.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                if ("mPopup".equals(field.getName())) {
+                    field.setAccessible(true);
+                    Object menuPopupHelper = field.get(popupMenu);
+                    Class<?> classPopupHelper = Class.forName(menuPopupHelper
+                            .getClass().getName());
+                    Method setForceIcons = classPopupHelper.getMethod(
+                            "setForceShowIcon", boolean.class);
+                    setForceIcons.invoke(menuPopupHelper, true);
+                    break;
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == 0) {
+                    PublicVariable.size = 26;
+                    runUnlimitedCategoryService(categoryName);
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setSizeBack();
+                        }
+                    }, 100);
+                } else if (item.getItemId() == 1) {
+                    PublicVariable.size = 52;
+                    runUnlimitedCategoryService(categoryName);
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setSizeBack();
+                        }
+                    }, 100);
+                } else if (item.getItemId() == 2) {
+                    PublicVariable.size = 78;
+                    runUnlimitedCategoryService(categoryName);
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setSizeBack();
+                        }
+                    }, 100);
+                } else if (item.getItemId() == 3) {
+                    if (!loadRecoveryIndicatorCategory(categoryName)) {
+                        saveFileAppendLine(".uCategory", categoryName);
+                    } else {
+                        removeLine(".uCategory", categoryName);
+                    }
+                    context.sendBroadcast(new Intent("Category_Reload"));
+                } else if (item.getItemId() == 4) {
+                    try {
+                        String[] categoryContent = readFileLine(categoryName);
+                        for (String packageName : categoryContent) {
+                            context.deleteFile(packageName + categoryName);
+                        }
+                        removeLine(".categoryInfo", categoryName);
+                        removeLine(".uCategory", categoryName);
+                        context.deleteFile(categoryName);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        context.sendBroadcast(new Intent("Category_Reload"));
+                    }
+                }
+                updateRecoverShortcuts();
+                return true;
+            }
+        });
+        popupMenu.show();
+    }
+
     public void setSizeBack() {
         PublicVariable.size = readDefaultPreference("floatingSize", 39);
         PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
@@ -4791,6 +4899,11 @@ public class FunctionsClass {
                             intent.setClass(activity, SettingGUILight.class);
                         } else if (!PublicVariable.themeLightDark) {
                             intent.setClass(activity, SettingGUIDark.class);
+                        }
+                        if (activity != null) {
+                            if (activity.getClass().getSimpleName().equals(WidgetConfigurations.class.getSimpleName())) {
+                                intent.putExtra("FromWidgetsConfigurations", true);
+                            }
                         }
                         activity.startActivity(intent, options.toBundle());
                     }

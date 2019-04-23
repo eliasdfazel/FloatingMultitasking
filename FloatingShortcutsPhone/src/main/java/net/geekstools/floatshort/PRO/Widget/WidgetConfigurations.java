@@ -643,6 +643,23 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 }
             }
         });
+
+        addWidget.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                int appWidgetId = appWidgetHost.allocateAppWidgetId();
+                Intent pickIntent = new Intent(AppWidgetManager.ACTION_APPWIDGET_PICK);
+                pickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                ArrayList<AppWidgetProviderInfo> appWidgetProviderInfos = new ArrayList<AppWidgetProviderInfo>();
+                pickIntent.putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_INFO, appWidgetProviderInfos);
+                ArrayList<Bundle> bundleArrayList = new ArrayList<Bundle>();
+                pickIntent.putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_EXTRAS, bundleArrayList);
+                startActivityForResult(pickIntent, InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER);
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -691,8 +708,11 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     @Override
     public void onBackPressed() {
-        WidgetConfigurations.this.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        try {
+            functionsClass.overrideBackPress(WidgetConfigurations.this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -744,7 +764,112 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                     appWidgetId,
                                     InstalledWidgetsAdapter.pickedWidgetPackageName,
                                     functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName),
-                                    InstalledWidgetsAdapter.pickedWidgetLabel
+                                    InstalledWidgetsAdapter.pickedWidgetLabel,
+                                    false
+                            );
+
+                            String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
+
+                            WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                    .fallbackToDestructiveMigration()
+                                    .addCallback(new RoomDatabase.Callback() {
+                                        @Override
+                                        public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                            super.onCreate(supportSQLiteDatabase);
+                                        }
+
+                                        @Override
+                                        public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                            super.onOpen(supportSQLiteDatabase);
+
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    LoadConfiguredWidgets loadConfiguredWidgets = new LoadConfiguredWidgets();
+                                                    loadConfiguredWidgets.execute();
+                                                }
+                                            });
+                                        }
+                                    })
+                                    .build();
+                            widgetDataInterface.initDataAccessObject().insertNewWidgetData(widgetDataModel);
+                            widgetDataInterface.close();
+                        }
+                    }).start();
+
+                    break;
+                }
+                case InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER: {
+
+                    Bundle extras = data.getExtras();
+                    int appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+                    AppWidgetProviderInfo appWidgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
+                    if (appWidgetInfo.configure != null) {
+
+                        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
+                        intent.setComponent(appWidgetInfo.configure);
+                        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                        startActivityForResult(intent, InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER_CONFIGURATION);
+
+                    } else {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                WidgetDataModel widgetDataModel = new WidgetDataModel(
+                                        appWidgetId,
+                                        InstalledWidgetsAdapter.pickedWidgetPackageName,
+                                        functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName),
+                                        InstalledWidgetsAdapter.pickedWidgetLabel,
+                                        false
+                                );
+
+                                String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
+
+                                WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                        .fallbackToDestructiveMigration()
+                                        .addCallback(new RoomDatabase.Callback() {
+                                            @Override
+                                            public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                                super.onCreate(supportSQLiteDatabase);
+                                            }
+
+                                            @Override
+                                            public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                                super.onOpen(supportSQLiteDatabase);
+
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        LoadConfiguredWidgets loadConfiguredWidgets = new LoadConfiguredWidgets();
+                                                        loadConfiguredWidgets.execute();
+                                                    }
+                                                });
+                                            }
+                                        })
+                                        .build();
+                                widgetDataInterface.initDataAccessObject().insertNewWidgetData(widgetDataModel);
+                                widgetDataInterface.close();
+                            }
+                        }).start();
+                    }
+
+                    break;
+                }
+                case InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER_CONFIGURATION: {
+                    Bundle extras = data.getExtras();
+                    int appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            WidgetDataModel widgetDataModel = new WidgetDataModel(
+                                    appWidgetId,
+                                    InstalledWidgetsAdapter.pickedWidgetPackageName,
+                                    functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName),
+                                    InstalledWidgetsAdapter.pickedWidgetLabel,
+                                    false
                             );
 
                             String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
@@ -839,7 +964,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 String oldAppName = "";
                 int widgetIndex = 0;
                 for (WidgetDataModel widgetDataModel : widgetDataModels) {
-
                     try {
                         int appWidgetId = widgetDataModel.getWidgetId();
 
