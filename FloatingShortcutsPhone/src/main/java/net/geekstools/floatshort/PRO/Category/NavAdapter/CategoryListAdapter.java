@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import net.geekstools.floatshort.PRO.Category.AppSelectionList;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -30,8 +32,6 @@ import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
 
@@ -146,7 +146,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    PublicVariable.categoryName = textView.getText().toString();
+                    PublicVariable.categoryName = textView.getText().toString().replace(" \uD83D\uDD04", "");
 
                     File file = context.getFileStreamPath(navDrawerItems.get(position).getCategory());
                     if (file.exists() && file.isFile()) {//edit
@@ -162,6 +162,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                                 context.deleteFile(appContent + navDrawerItems.get(position).getCategory());
                                 functionsClass.saveFileAppendLine(PublicVariable.categoryName, appContent);
                                 functionsClass.saveFile(appContent + PublicVariable.categoryName, appContent);
+                            }
+                            if (functionsClass.loadRecoveryIndicatorCategory(nameCategory)) {
+                                functionsClass.removeLine(".uCategory", nameCategory);
+
+                                functionsClass.saveFileAppendLine(".uCategory", PublicVariable.categoryName);
                             }
                             functionsClass.removeLine(".categoryInfo", navDrawerItems.get(position).getCategory());
                             functionsClass.saveFileAppendLine(".categoryInfo", PublicVariable.categoryName);
