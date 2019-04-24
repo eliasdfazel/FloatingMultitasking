@@ -152,6 +152,7 @@
     <string name="floatingWidget">Floating Widgets</string>
     <string name="categoryHint">Floating Categories</string>
     <string name="widgetHint">Floating Widgets</string>
+    <string name="widgetLabelHint">Type A Widget Label</string>
     <string name="widgetPickerTitle">
         <![CDATA[
             Choose Widgets To Configure<br/>

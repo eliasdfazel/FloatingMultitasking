@@ -8,15 +8,25 @@ import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.google.android.material.textfield.TextInputEditText;
+
+import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataDAO;
+import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -79,7 +89,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
         viewHolder.floatTheWidget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                functionsClass.runUnlimitedWidgetService(navDrawerItems.get(position).getAppWidgetId());
+                functionsClass.runUnlimitedWidgetService(navDrawerItems.get(position).getAppWidgetId(), navDrawerItems.get(position).getWidgetLabel());
             }
         });
         viewHolder.floatTheWidget.setOnLongClickListener(new View.OnLongClickListener() {
@@ -97,6 +107,43 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
                 return false;
             }
         });
+
+        viewHolder.widgetLabel.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    FunctionsClass.println(">>> Action Done >>> " + textView.getText().toString());
+
+                    if (textView.length() > 0) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                WidgetDataInterface widgetDataInterface = Room.databaseBuilder(context, WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                        .fallbackToDestructiveMigration()
+                                        .addCallback(new RoomDatabase.Callback() {
+                                            @Override
+                                            public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                                super.onCreate(supportSQLiteDatabase);
+                                            }
+
+                                            @Override
+                                            public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                                super.onOpen(supportSQLiteDatabase);
+
+                                            }
+                                        })
+                                        .build();
+                                WidgetDataDAO widgetDataDAO = widgetDataInterface.initDataAccessObject();
+                                widgetDataDAO.updateWidgetLabelByWidgetId(navDrawerItems.get(position).getAppWidgetId(), textView.getText().toString().replace("\uD83D\uDD04", ""));
+                                widgetDataInterface.close();
+                            }
+                        }).start();
+                    }
+
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -108,13 +155,13 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
 
         RelativeLayout widgetItem, widgetPreview;
         ImageView floatTheWidget;
-        TextView widgetLabel;
+        TextInputEditText widgetLabel;
 
         public ViewHolder(View view) {
             super(view);
             widgetItem = (RelativeLayout) view.findViewById(R.id.widgetItem);
             widgetPreview = (RelativeLayout) view.findViewById(R.id.widgetPreview);
-            widgetLabel = (TextView) view.findViewById(R.id.widgetLabel);
+            widgetLabel = (TextInputEditText) view.findViewById(R.id.widgetLabel);
             floatTheWidget = (ImageView) view.findViewById(R.id.floatTheWidget);
         }
     }

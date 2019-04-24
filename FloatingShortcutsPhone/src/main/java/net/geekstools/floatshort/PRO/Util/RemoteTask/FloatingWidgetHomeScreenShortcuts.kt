@@ -12,7 +12,8 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
         super.onCreate(savedInstanceState)
         functionsClass = FunctionsClass(applicationContext, this@FloatingWidgetHomeScreenShortcuts)
         val appWidgetId = intent.getIntExtra("ShortcutsId", -1)
-        functionsClass.runUnlimitedWidgetService(appWidgetId)
+        val widgetLabel = intent.getStringExtra("ShortcutLabel");
+        functionsClass.runUnlimitedWidgetService(appWidgetId, widgetLabel)
         finish()
     }
 }

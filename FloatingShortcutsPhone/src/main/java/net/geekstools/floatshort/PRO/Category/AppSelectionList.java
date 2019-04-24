@@ -123,6 +123,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
 
         Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
         desc.setTypeface(face);
+        desc.setTextColor(PublicVariable.colorLightDarkOpposite);
         desc.setText(PublicVariable.categoryName);
         counterView.setTypeface(face);
         counterView.bringToFront();

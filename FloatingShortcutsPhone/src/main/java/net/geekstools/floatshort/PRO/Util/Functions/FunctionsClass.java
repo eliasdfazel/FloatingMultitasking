@@ -961,7 +961,7 @@ public class FunctionsClass {
     }
 
     /*Floating Widgets Function*/
-    public void runUnlimitedWidgetService(int WidgetId) {
+    public void runUnlimitedWidgetService(int WidgetId, String widgetLabel) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -984,6 +984,7 @@ public class FunctionsClass {
 
         Intent w = new Intent(context, Widget_Unlimited_Floating.class);
         w.putExtra("WidgetId", WidgetId);
+        w.putExtra("WidgetLabel", widgetLabel);
         w.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(w);
         if (PublicVariable.floatingCounter == 1) {
@@ -4270,6 +4271,7 @@ public class FunctionsClass {
         differentIntent.setAction(Intent.ACTION_MAIN);
         differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         differentIntent.putExtra("ShortcutsId", shortcutId);
+        differentIntent.putExtra("ShortcutLabel", shortcutName);
 
         Drawable forNull = context.getDrawable(R.drawable.ic_launcher);
         forNull.setAlpha(0);
@@ -4279,7 +4281,6 @@ public class FunctionsClass {
         } catch (Exception e) {
             widgetShortcutIcon.setDrawableByLayerId(R.id.one, forNull);
         }
-
         try {
             widgetShortcutIcon.setDrawableByLayerId(R.id.two, getAppIconDrawableCustomIcon(packageName));
         } catch (Exception e) {

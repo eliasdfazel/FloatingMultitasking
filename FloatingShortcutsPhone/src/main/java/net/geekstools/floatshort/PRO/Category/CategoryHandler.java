@@ -804,10 +804,10 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
 
             if (PublicVariable.themeLightDark) {
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                gx.setTextColor(getResources().getColor(R.color.dark));
-            } else if (!PublicVariable.themeLightDark) {
+                gx.setTextColor(getColor(R.color.dark));
+            } else {
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                gx.setTextColor(getResources().getColor(R.color.light));
+                gx.setTextColor(getColor(R.color.light));
             }
             if (!getFileStreamPath(".categoryInfo").exists()) {
                 new Handler().postDelayed(new Runnable() {

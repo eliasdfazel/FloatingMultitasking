@@ -112,7 +112,7 @@
     </style>
 
     <!-- IAP -->
-    <style name="GeeksEmpire.Material.IAP" parent="Theme.MaterialComponents.DayNight">
+    <style name="GeeksEmpire.Material.IAP" parent="Theme.MaterialComponents">
         <item name="android:colorPrimary">@color/default_color</item>
         <item name="android:colorPrimaryDark">@color/default_color_darker</item>
         <item name="android:colorAccent">@color/default_color_light</item>
@@ -171,6 +171,15 @@
 
     <style name="PopupTextColor.Dark" parent="@android:style/TextAppearance.Widget.PopupMenu.Small">
         <item name="android:textColor">@color/light</item>
+    </style>
+
+    <style name="GeeksEmpire.TextInputEditText" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/default_color</item>
+        <item name="colorPrimaryDark">@color/default_color_darker</item>
+        <item name="colorAccent">@color/default_color_light</item>
+        <item name="colorSecondary" tools:targetApi="n_mr1">@color/default_color_light</item>
+        <item name="colorControlNormal">@color/default_color_light</item>
+        <item name="colorControlActivated">@color/default_color_light</item>
     </style>
 
 </resources>

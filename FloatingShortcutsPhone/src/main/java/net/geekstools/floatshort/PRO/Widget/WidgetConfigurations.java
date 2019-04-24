@@ -1004,7 +1004,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         configuredWidgetsNavDrawerItems.add(new NavDrawerItem(
                                 newAppName,
                                 packageName,
-                                (appWidgetProviderInfo.loadLabel(getPackageManager()) != null) ? appWidgetProviderInfo.loadLabel(getPackageManager()) : newAppName,
+                                widgetDataModel.getWidgetLabel(),
                                 appIcon,
                                 appWidgetProviderInfo,
                                 appWidgetId,

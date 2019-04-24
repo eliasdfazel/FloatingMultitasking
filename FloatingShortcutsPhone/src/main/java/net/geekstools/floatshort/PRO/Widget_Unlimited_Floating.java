@@ -134,10 +134,15 @@ public class Widget_Unlimited_Floating extends Service {
             e.printStackTrace();
         }
 
-        String widgetLabelText =
-                appWidgetProviderInfo[startId].loadLabel(getPackageManager()) == null ?
-                        getString(R.string.widgetHint) : appWidgetProviderInfo[startId].loadLabel(getPackageManager());
-        widgetLabel[startId].setText(widgetLabelText);
+        if (intent.hasExtra("WidgetLabel")) {
+            String widgetLabelText = intent.getStringExtra("WidgetLabel");
+            widgetLabel[startId].setText(widgetLabelText);
+        } else {
+            String widgetLabelText =
+                    appWidgetProviderInfo[startId].loadLabel(getPackageManager()) == null ?
+                            getString(R.string.widgetHint) : appWidgetProviderInfo[startId].loadLabel(getPackageManager());
+            widgetLabel[startId].setText(widgetLabelText);
+        }
         widgetLabel[startId].setTextColor(widgetColor[startId]);
 
         LayerDrawable moveLayerDrawable = (LayerDrawable) getResources().getDrawable(R.drawable.draw_move);
