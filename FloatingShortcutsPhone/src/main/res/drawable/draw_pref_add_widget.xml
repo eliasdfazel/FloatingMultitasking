@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/backtemp"
-        android:bottom="1dp"
-        android:left="1dp"
-        android:right="1dp"
-        android:top="1dp">
+    <item android:id="@+id/backtemp">
         <shape android:shape="oval">
             <solid android:color="@color/default_color" />
         </shape>
@@ -13,10 +8,6 @@
 
     <item
         android:id="@+id/frontTemp"
-        android:bottom="5dp"
-        android:left="5dp"
-        android:right="5dp"
-        android:top="5dp"
         android:width="23dp"
         android:height="23dp"
         android:gravity="center">

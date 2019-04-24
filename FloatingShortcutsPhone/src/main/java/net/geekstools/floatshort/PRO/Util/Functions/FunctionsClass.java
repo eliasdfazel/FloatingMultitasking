@@ -3171,6 +3171,15 @@ public class FunctionsClass {
         return bitmap;
     }
 
+    public Bitmap layerDrawableToBitmap(LayerDrawable layerDrawable) {
+        Bitmap bitmap = Bitmap.createBitmap(layerDrawable.getIntrinsicWidth() / 2, layerDrawable.getIntrinsicHeight() / 2, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        layerDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        layerDrawable.draw(canvas);
+
+        return bitmap;
+    }
+
     public Drawable bitmapToDrawable(Bitmap bitmap) {
         return new BitmapDrawable(context.getResources(), bitmap);
     }
@@ -4035,7 +4044,7 @@ public class FunctionsClass {
                         break;
                     }
                     case 2: {
-                        appToDesktop(FloatingWidgetHomeScreenShortcuts.class, widgetLabel, widgetPreview, appWidgetId);
+                        widgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, appWidgetId);
 
                         break;
                     }
@@ -4231,11 +4240,11 @@ public class FunctionsClass {
         return (int) (displayX() / DpToPixel(itemWidth));
     }
 
-    public void appToDesktop(Class className, String shortcutName, Drawable drawableIcon, int shortcutId) {
+    public void shortcutToHomeScreen(Class className, String shortcutName, Drawable drawableIcon, int shortcutId) {
         Intent differentIntent = new Intent(context, className);
         differentIntent.setAction(Intent.ACTION_MAIN);
         differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        differentIntent.putExtra("AppWidgetId", shortcutId);
+        differentIntent.putExtra("ShortcutsId", shortcutId);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, String.valueOf(shortcutId))
@@ -4250,6 +4259,46 @@ public class FunctionsClass {
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent);
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName);
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, genericDrawableToBitmap(drawableIcon));
+            addIntent.putExtra("duplicate", true);
+            addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+            context.sendBroadcast(addIntent);
+        }
+    }
+
+    public void widgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, int shortcutId) {
+        Intent differentIntent = new Intent(context, className);
+        differentIntent.setAction(Intent.ACTION_MAIN);
+        differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        differentIntent.putExtra("ShortcutsId", shortcutId);
+
+        Drawable forNull = context.getDrawable(R.drawable.ic_launcher);
+        forNull.setAlpha(0);
+        LayerDrawable widgetShortcutIcon = (LayerDrawable) context.getDrawable(R.drawable.widget_home_screen_shortcuts);
+        try {
+            widgetShortcutIcon.setDrawableByLayerId(R.id.one, widgetPreviewDrawable);
+        } catch (Exception e) {
+            widgetShortcutIcon.setDrawableByLayerId(R.id.one, forNull);
+        }
+
+        try {
+            widgetShortcutIcon.setDrawableByLayerId(R.id.two, getAppIconDrawableCustomIcon(packageName));
+        } catch (Exception e) {
+            widgetShortcutIcon.setDrawableByLayerId(R.id.two, forNull);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, String.valueOf(shortcutId))
+                    .setShortLabel(shortcutName)
+                    .setLongLabel(shortcutName)
+                    .setIcon(Icon.createWithBitmap(layerDrawableToBitmap(widgetShortcutIcon)))
+                    .setIntent(differentIntent)
+                    .build();
+            context.getSystemService(ShortcutManager.class).requestPinShortcut(shortcutInfo, null);
+        } else {
+            Intent addIntent = new Intent();
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent);
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName);
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, layerDrawableToBitmap(widgetShortcutIcon));
             addIntent.putExtra("duplicate", true);
             addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
             context.sendBroadcast(addIntent);

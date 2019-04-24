@@ -202,7 +202,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         GradientDrawable backAddWidget = (GradientDrawable) drawAddWidget.findDrawableByLayerId(R.id.backtemp);
         Drawable frontAddWidget = drawAddWidget.findDrawableByLayerId(R.id.frontTemp).mutate();
         backAddWidget.setColor(PublicVariable.primaryColor);
-        frontAddWidget.setTint(Color.WHITE);
+        frontAddWidget.setTint(getColor(R.color.light));
         addWidget.setImageDrawable(drawAddWidget);
 
         LayerDrawable drawPreferenceAction = (LayerDrawable) getDrawable(R.drawable.draw_pref_action);
@@ -954,9 +954,13 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         @Override
         protected Void doInBackground(Void... voids) {
-
-
             try {
+                if (functionsClass.loadCustomIcons()) {
+                    loadCustomIcons.load();
+                    if (BuildConfig.DEBUG) {
+                        System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
+                    }
+                }
 
                 WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                         .fallbackToDestructiveMigration()
@@ -985,7 +989,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         AppWidgetProviderInfo appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
                         String packageName = widgetDataModel.getPackageName();
                         String newAppName = functionsClass.appName(packageName);
-                        Drawable appIcon = functionsClass.shapedAppIcon(packageName);
+                        Drawable appIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
 
                         if (widgetIndex == 0) {
                             configuredWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, appIcon));
@@ -1077,10 +1081,10 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 String oldAppName = "";
                 int widgetIndex = 0;
                 for (AppWidgetProviderInfo appWidgetProviderInfo : widgetProviderInfoList) {
-
                     try {
-                        String newAppName = functionsClass.appName(appWidgetProviderInfo.provider.getPackageName());
-                        Drawable newAppIcon = functionsClass.shapedAppIcon(appWidgetProviderInfo.provider.getPackageName());
+                        String packageName = appWidgetProviderInfo.provider.getPackageName();
+                        String newAppName = functionsClass.appName(packageName);
+                        Drawable newAppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
 
                         if (widgetIndex == 0) {
                             installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));

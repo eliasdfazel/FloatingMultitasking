@@ -11,7 +11,7 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         functionsClass = FunctionsClass(applicationContext, this@FloatingWidgetHomeScreenShortcuts)
-        val appWidgetId = intent.getIntExtra("AppWidgetId", -1)
+        val appWidgetId = intent.getIntExtra("ShortcutsId", -1)
         functionsClass.runUnlimitedWidgetService(appWidgetId)
         finish()
     }
