@@ -335,21 +335,29 @@ public class Widget_Unlimited_Floating extends Service {
                         break;
                     case MotionEvent.ACTION_UP:
 
-                        functionsClass.savePreference(appWidgetId[startId] + appWidgetProviderInfo[startId].provider.getPackageName(),
-                                "WidgetWidth", layoutParamsTouch.width);
-                        functionsClass.savePreference(appWidgetId[startId] + appWidgetProviderInfo[startId].provider.getPackageName(),
-                                "WidgetHeight", layoutParamsTouch.height);
+                        if (layoutParamsTouch.width < initWidth || layoutParamsTouch.height < initHeight) {
+
+                        } else {
+                            functionsClass.savePreference(appWidgetId[startId] + appWidgetProviderInfo[startId].provider.getPackageName(),
+                                    "WidgetWidth", layoutParamsTouch.width);
+                            functionsClass.savePreference(appWidgetId[startId] + appWidgetProviderInfo[startId].provider.getPackageName(),
+                                    "WidgetHeight", layoutParamsTouch.height);
+                        }
 
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        int xMove = initialWidth + (int) (event.getRawX() - initialTouchX);
-                        int yMove = initialHeight + (int) (event.getRawY() - initialTouchY);
+                        int xWidthMove = initialWidth + (int) (event.getRawX() - initialTouchX);
+                        int yHeightMove = initialHeight + (int) (event.getRawY() - initialTouchY);
 
-                        layoutParamsTouch.width = xMove;
-                        layoutParamsTouch.height = yMove;
+                        layoutParamsTouch.width = xWidthMove;
+                        layoutParamsTouch.height = yHeightMove;
 
-                        appWidgetHostView[startId].updateAppWidgetSize(new Bundle(), layoutParamsTouch.width, layoutParamsTouch.height, layoutParamsTouch.width, layoutParamsTouch.height);
-                        windowManager.updateViewLayout(floatingView[startId], layoutParamsTouch);
+                        if (xWidthMove < initWidth || yHeightMove < initHeight) {
+
+                        } else {
+                            appWidgetHostView[startId].updateAppWidgetSize(new Bundle(), layoutParamsTouch.width, layoutParamsTouch.height, layoutParamsTouch.width, layoutParamsTouch.height);
+                            windowManager.updateViewLayout(floatingView[startId], layoutParamsTouch);
+                        }
 
                         break;
                 }

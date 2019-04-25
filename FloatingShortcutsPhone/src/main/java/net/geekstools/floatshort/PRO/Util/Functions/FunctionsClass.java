@@ -4013,6 +4013,9 @@ public class FunctionsClass {
                                 widgetDataInterface.close();
                             }
                         }).start();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            context.deleteSharedPreferences(appWidgetId + packageName);
+                        }
                         context.sendBroadcast(new Intent("FORCE_RELOAD"));
 
                         break;

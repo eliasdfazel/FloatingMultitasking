@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.BuildConfig;
@@ -13,14 +16,12 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
-import androidx.annotation.Nullable;
-
 public class RecoveryCategory extends Service {
 
     FunctionsClass functionsClass;
 
-    String categoryName, categoryRecoveryFile;
-    String[] appData;
+    String categoryName;
+    String[] categoryData;
 
     boolean runService = true;
 
@@ -29,13 +30,12 @@ public class RecoveryCategory extends Service {
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
         PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());
 
-        if (getApplicationContext().getFileStreamPath(".uCategory").exists()) {
-            categoryRecoveryFile = ".uCategory";
-        } else if (getApplicationContext().getFileStreamPath(".categoryInfo").exists()) {
-            categoryRecoveryFile = ".categoryInfo";
+        if (!getApplicationContext().getFileStreamPath(".uCategory").exists()) {
+            Toast.makeText(getApplicationContext(), "Press & Hold ", Toast.LENGTH_LONG).show();
+            return START_NOT_STICKY;
         }
         try {
-            appData = functionsClass.readFileLine(categoryRecoveryFile);
+            categoryData = functionsClass.readFileLine(".uCategory");
 
             if (functionsClass.loadCustomIcons()) {
                 LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
@@ -45,11 +45,11 @@ public class RecoveryCategory extends Service {
                 }
             }
 
-            for (String anAppData : appData) {
+            for (String aCategoryData : categoryData) {
                 runService = true;
                 if (PublicVariable.FloatingCategories != null) {
                     for (int check = 0; check < PublicVariable.FloatingCategories.size(); check++) {
-                        if (anAppData.equals(PublicVariable.FloatingCategories.get(check))) {
+                        if (aCategoryData.equals(PublicVariable.FloatingCategories.get(check))) {
                             runService = false;
                         }
                     }
@@ -57,7 +57,7 @@ public class RecoveryCategory extends Service {
 
                 if (runService == true) {
                     try {
-                        categoryName = anAppData;
+                        categoryName = aCategoryData;
                         functionsClass.runUnlimitedCategoryService(categoryName);
                     } catch (Exception e) {
                         e.printStackTrace();

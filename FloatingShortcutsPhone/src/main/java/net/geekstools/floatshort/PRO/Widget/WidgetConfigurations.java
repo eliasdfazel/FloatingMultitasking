@@ -72,6 +72,7 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryCategory;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
@@ -363,7 +364,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         recoveryAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /**/
+                Intent intent = new Intent(getApplicationContext(), RecoveryWidgets.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
             }
         });
         recoverFloatingCategories.setOnClickListener(new View.OnClickListener() {

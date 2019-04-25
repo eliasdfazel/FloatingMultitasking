@@ -4,9 +4,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-
 import androidx.annotation.Nullable;
+
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 
 public class RecoveryAll extends Service {
 
@@ -16,6 +16,7 @@ public class RecoveryAll extends Service {
     public int onStartCommand(Intent intent, int flags, final int startId) {
         startService(new Intent(getApplicationContext(), RecoveryShortcuts.class));
         startService(new Intent(getApplicationContext(), RecoveryCategory.class));
+        startService(new Intent(getApplicationContext(), RecoveryWidgets.class));
 
         stopSelf();
         return functionsClass.serviceMode();

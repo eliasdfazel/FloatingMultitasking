@@ -74,6 +74,7 @@ import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryCategory;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
@@ -351,7 +352,28 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
         recoverFloatingWidgets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RecoveryWidgets.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
 
+                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.recovery_actions_hide);
+                recoverFloatingWidgets.startAnimation(animation);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        recoverFloatingWidgets.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
             }
         });
 
@@ -426,7 +448,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
         switchWidgets.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                /*if (!recoverFloatingWidgets.isShown()) {
+                if (!recoverFloatingWidgets.isShown()) {
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.recovery_actions_show);
                     recoverFloatingWidgets.startAnimation(animation);
                     animation.setAnimationListener(new Animation.AnimationListener() {
@@ -464,7 +486,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
 
                         }
                     });
-                }*/
+                }
 
                 return true;
             }

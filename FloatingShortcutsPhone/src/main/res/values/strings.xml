@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="recoveryErrorCategory">Press &amp; Hold on a Category to Add It in Recovery 🔁</string>
+    <string name="recoveryErrorWidget">Press &amp; Hold on a Widget to Add It in Recovery 🔁</string>
     <string name="recovery_center">Recovery Center</string>
     <string name="settingTitle">Preferences</string>
     <string name="recoveryShortcuts">Recover Floating Shortcuts</string>
