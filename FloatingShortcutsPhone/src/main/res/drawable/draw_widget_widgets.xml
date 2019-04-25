@@ -6,7 +6,5 @@
         </shape>
     </item>
 
-    <item
-        android:id="@+id/fronttemp"
-        android:drawable="@drawable/w_recovery_widgets" />
+    <item android:drawable="@drawable/widget_widgets_recovery"></item>
 </layer-list>

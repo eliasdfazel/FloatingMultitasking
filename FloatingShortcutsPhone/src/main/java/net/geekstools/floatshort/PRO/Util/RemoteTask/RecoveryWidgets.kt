@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.preference.PreferenceManager
+import android.widget.Toast
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -11,6 +12,7 @@ import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.Wid
 import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataModel
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.BuildConfig
+import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons
@@ -19,12 +21,13 @@ class RecoveryWidgets : Service() {
 
     lateinit var functionsClass: FunctionsClass
 
+    var noRecovery = false
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
         Thread(Runnable {
             try {
                 if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
@@ -53,6 +56,8 @@ class RecoveryWidgets : Service() {
 
                     AllWidgetData@ for (widgetDataModel in widgetDataModels) {
                         if (widgetDataModel.Recovery) {
+                            noRecovery = false
+
                             FloatingWidgetCheck@ for (floatingWidgetCheck in PublicVariable.FloatingWidgets) {
                                 if (widgetDataModel.WidgetId == floatingWidgetCheck) {
                                     continue@AllWidgetData
@@ -64,8 +69,15 @@ class RecoveryWidgets : Service() {
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
+                        } else {
+                            noRecovery = true
                         }
                     }
+
+                    if (noRecovery) {
+                        Toast.makeText(applicationContext, getString(R.string.recoveryErrorWidget), Toast.LENGTH_LONG).show()
+                    }
+
                     widgetDataInterface.close()
                 }
             } catch (e: Exception) {

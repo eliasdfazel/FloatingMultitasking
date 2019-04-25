@@ -237,6 +237,21 @@
                 <action android:name="android.intent.action.CREATE_SHORTCUT"/>
                 <action android:name="Remote_Recover_Categories"/>
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Util.RemoteTask.RecoveryWidgetActivity"
+            android:exported="true"
+            android:icon="@drawable/draw_widget_widgets"
+            android:excludeFromRecents="true"
+            android:label="@string/floatingWidget"
+            android:noHistory="true"
+            android:theme="@style/Transparent">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <action android:name="Remote_Recover_Widgets" />
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

@@ -18,7 +18,7 @@ import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 public class RecoveryCategoryActivity extends Activity {
 
-    String categoryName, categoryRecoveryFile;
+    String categoryName;
     String[] appData;
 
     boolean runService = true;
@@ -42,6 +42,8 @@ public class RecoveryCategoryActivity extends Activity {
                 drawCategory.draw(new Canvas(shortcutApp));
 
                 Intent setCategoryRecovery = new Intent(getApplicationContext(), RecoveryCategoryActivity.class);
+                setCategoryRecovery.setAction("Remote_Recover_Categories");
+                setCategoryRecovery.addCategory(Intent.CATEGORY_DEFAULT);
                 Intent intent = new Intent();
                 intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, setCategoryRecovery);
                 intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.recover_category));
@@ -54,13 +56,8 @@ public class RecoveryCategoryActivity extends Activity {
                 PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
                 PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());
 
-                if (getApplicationContext().getFileStreamPath(".uCategory").exists()) {
-                    categoryRecoveryFile = ".uCategory";
-                } else if (getApplicationContext().getFileStreamPath(".categoryInfo").exists()) {
-                    categoryRecoveryFile = ".categoryInfo";
-                }
                 try {
-                    appData = functionsClass.readFileLine(categoryRecoveryFile);
+                    appData = functionsClass.readFileLine(".uCategory");
 
                     if (functionsClass.loadCustomIcons()) {
                         LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
@@ -100,13 +97,8 @@ public class RecoveryCategoryActivity extends Activity {
             PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
             PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());
 
-            if (getApplicationContext().getFileStreamPath(".uCategory").exists()) {
-                categoryRecoveryFile = ".uCategory";
-            } else if (getApplicationContext().getFileStreamPath(".categoryInfo").exists()) {
-                categoryRecoveryFile = ".categoryInfo";
-            }
             try {
-                appData = functionsClass.readFileLine(categoryRecoveryFile);
+                appData = functionsClass.readFileLine(".uCategory");
 
                 if (functionsClass.loadCustomIcons()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());

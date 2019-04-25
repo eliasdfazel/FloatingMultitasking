@@ -33,6 +33,8 @@ public class RecoveryAllActivity extends Activity {
                 drawCategory.draw(new Canvas(shortcutApp));
 
                 Intent setRecoveryAll = new Intent(getApplicationContext(), RecoveryAllActivity.class);
+                setRecoveryAll.setAction("Remote_Recover_All");
+                setRecoveryAll.addCategory(Intent.CATEGORY_DEFAULT);
                 Intent intent = new Intent();
                 intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, setRecoveryAll);
                 intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.recover_all));
@@ -42,11 +44,13 @@ public class RecoveryAllActivity extends Activity {
                     || getIntent().getAction().equals("Remote_Recover_All")) {
                 startActivity(new Intent(getApplicationContext(), RecoveryShortcutsActivity.class));
                 startActivity(new Intent(getApplicationContext(), RecoveryCategoryActivity.class));
+                startService(new Intent(getApplicationContext(), RecoveryWidgets.class));
             }
         } catch (Exception e) {
             e.printStackTrace();
             startActivity(new Intent(getApplicationContext(), RecoveryShortcutsActivity.class));
             startActivity(new Intent(getApplicationContext(), RecoveryCategoryActivity.class));
+            startService(new Intent(getApplicationContext(), RecoveryWidgets.class));
         }
 
         finish();

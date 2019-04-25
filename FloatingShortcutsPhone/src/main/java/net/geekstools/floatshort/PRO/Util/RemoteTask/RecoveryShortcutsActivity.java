@@ -57,6 +57,8 @@ public class RecoveryShortcutsActivity extends Activity {
                 drawCategory.draw(new Canvas(shortcutApp));
 
                 Intent setCategoryRecovery = new Intent(getApplicationContext(), RecoveryShortcutsActivity.class);
+                setCategoryRecovery.setAction("Remote_Recover_Shortcuts");
+                setCategoryRecovery.addCategory(Intent.CATEGORY_DEFAULT);
                 Intent intent = new Intent();
                 intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, setCategoryRecovery);
                 intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.recoveryShortcuts));
