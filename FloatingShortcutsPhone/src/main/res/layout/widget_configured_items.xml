@@ -57,7 +57,7 @@
         android:layout_below="@id/widgetLabelInput"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_margin="5dp"
+        android:padding="19dp"
         android:background="@android:color/transparent"/>
 
     <ImageView

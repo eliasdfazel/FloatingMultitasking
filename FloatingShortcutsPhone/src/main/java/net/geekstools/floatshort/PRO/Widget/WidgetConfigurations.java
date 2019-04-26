@@ -182,6 +182,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             LoadConfiguredWidgets loadConfiguredWidgets = new LoadConfiguredWidgets();
             loadConfiguredWidgets.execute();
         } else {
+            actionButton.bringToFront();
+            addWidget.bringToFront();
+
             addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
 
             loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
@@ -250,6 +253,12 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                 if (PublicVariable.actionCenter == false) {
                     if (installedWidgetsNestedScrollView.isShown()) {
+                        functionsClass.doVibrate(77);
+
+                        if (!configuredWidgetAvailable) {
+                            addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
+                        }
+
                         ViewCompat.animate(addWidget)
                                 .rotation(0.0F)
                                 .withLayer()
@@ -257,24 +266,80 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 .setInterpolator(new OvershootInterpolator(3.0f))
                                 .start();
 
-                        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.go_down);
-                        installedWidgetsNestedScrollView.startAnimation(animation);
-                        animation.setAnimationListener(new Animation.AnimationListener() {
+                        int xPosition = (int) (addWidget.getX() + (addWidget.getWidth() / 2));
+                        int yPosition = (int) (addWidget.getY() + (addWidget.getHeight() / 2));
+
+                        int startRadius = 0;
+                        int endRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
+
+                        Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedWidgetsNestedScrollView, xPosition, yPosition, endRadius, startRadius);
+                        circularReveal.setDuration(864);
+                        circularReveal.start();
+                        circularReveal.addListener(new Animator.AnimatorListener() {
                             @Override
-                            public void onAnimationStart(Animation animation) {
+                            public void onAnimationStart(Animator animator) {
 
                             }
 
                             @Override
-                            public void onAnimationEnd(Animation animation) {
+                            public void onAnimationEnd(Animator animator) {
                                 installedWidgetsNestedScrollView.setVisibility(View.INVISIBLE);
                             }
 
                             @Override
-                            public void onAnimationRepeat(Animation animation) {
+                            public void onAnimationCancel(Animator animator) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animator) {
 
                             }
                         });
+
+                        if (functionsClass.appThemeTransparent() == true) {
+                            final Window window = getWindow();
+                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                            if (PublicVariable.themeLightDark) {
+                                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                                if (functionsClass.returnAPI() > 25) {
+                                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                                }
+                            }
+
+                            ValueAnimator valueAnimator = ValueAnimator
+                                    .ofArgb(getWindow().getNavigationBarColor(), functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
+                            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animator) {
+                                    window.setStatusBarColor((Integer) animator.getAnimatedValue());
+                                    window.setNavigationBarColor((Integer) animator.getAnimatedValue());
+                                }
+                            });
+                            valueAnimator.start();
+                        } else {
+                            final Window window = getWindow();
+                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                            if (PublicVariable.themeLightDark) {
+                                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                                if (functionsClass.returnAPI() > 25) {
+                                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                                }
+                            }
+
+                            ValueAnimator colorAnimation = ValueAnimator
+                                    .ofArgb(getWindow().getNavigationBarColor(), PublicVariable.colorLightDark);
+                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animator) {
+                                    getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                                    getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
+                                }
+                            });
+                            colorAnimation.start();
+                        }
                     }
 
                     int finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
@@ -668,6 +733,39 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         colorAnimation.start();
                     }
                 } else {
+                    if (PublicVariable.actionCenter) {
+                        recoveryAction.setVisibility(View.VISIBLE);
+
+                        int finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
+                        Animator circularReveal = ViewAnimationUtils.createCircularReveal(recoveryAction, (int) actionButton.getX(), (int) actionButton.getY(), functionsClass.DpToInteger(13), finalRadius);
+                        circularReveal.setDuration(1300);
+                        circularReveal.setInterpolator(new AccelerateInterpolator());
+                        circularReveal.start();
+                        circularReveal.addListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                recoveryAction.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        });
+
+                        functionsClass.closeActionMenuOption(fullActionViews, actionButton);
+                    }
+
                     LoadInstalledWidgets loadInstalledWidgets = new LoadInstalledWidgets();
                     loadInstalledWidgets.execute();
                 }

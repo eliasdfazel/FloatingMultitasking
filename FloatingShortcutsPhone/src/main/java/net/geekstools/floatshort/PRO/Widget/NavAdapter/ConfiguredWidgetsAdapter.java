@@ -101,7 +101,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
                         navDrawerItems.get(position).getPackageName(),
                         navDrawerItems.get(position).getAppWidgetId(),
                         navDrawerItems.get(position).getWidgetLabel(),
-                        appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) != null ? appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) : appWidgetProviderInfo.loadIcon(context, DisplayMetrics.DENSITY_LOW),
+                        appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) != null ? appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_HIGH) : appWidgetProviderInfo.loadIcon(context, DisplayMetrics.DENSITY_LOW),
                         navDrawerItems.get(position).getAddedWidgetRecovery());
 
                 return false;

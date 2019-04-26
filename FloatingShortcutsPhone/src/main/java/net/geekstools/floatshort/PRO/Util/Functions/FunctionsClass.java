@@ -3295,8 +3295,6 @@ public class FunctionsClass {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
-            //window.setStatusBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
-
             window.setStatusBarColor(
                     setColorAlpha(
                             mixColors(
@@ -4297,7 +4295,11 @@ public class FunctionsClass {
             widgetShortcutIcon.setDrawableByLayerId(R.id.one, forNull);
         }
         try {
-            widgetShortcutIcon.setDrawableByLayerId(R.id.two, getAppIconDrawableCustomIcon(packageName));
+            if (widgetPreviewDrawable.getIntrinsicHeight() < DpToInteger(52)) {
+
+            } else {
+                widgetShortcutIcon.setDrawableByLayerId(R.id.two, getAppIconDrawableCustomIcon(packageName));
+            }
         } catch (Exception e) {
             widgetShortcutIcon.setDrawableByLayerId(R.id.two, forNull);
         }
