@@ -32,7 +32,8 @@
                 android:layout_height="match_parent"
                 android:paddingTop="5dp"
                 android:layout_marginTop="7dp"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="13dp"
                 android:alwaysDrawnWithCache="true"
                 android:drawSelectorOnTop="true"
                 android:isScrollContainer="false"
@@ -164,7 +165,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="35dp"
-            android:paddingBottom="51dp">
+            android:paddingBottom="13dp">
 
             <TextView
                 android:id="@+id/widgetPickerTitle"
@@ -179,6 +180,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/widgetPickerTitle"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="13dp"
                 android:alwaysDrawnWithCache="true"
                 android:drawSelectorOnTop="true"
                 android:isScrollContainer="false"

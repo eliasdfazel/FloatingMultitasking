@@ -607,7 +607,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         }
                     });
 
-
                     if (functionsClass.appThemeTransparent() == true) {
                         final Window window = getWindow();
                         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -651,8 +650,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         });
                         colorAnimation.start();
                     }
-
-
                 } else {
 
                     LoadInstalledWidgets loadInstalledWidgets = new LoadInstalledWidgets();
@@ -726,10 +723,96 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     @Override
     public void onBackPressed() {
-        try {
-            functionsClass.overrideBackPressToMain(WidgetConfigurations.this);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (installedWidgetsNestedScrollView.isShown()) {
+            functionsClass.doVibrate(77);
+
+            ViewCompat.animate(addWidget)
+                    .rotation(0.0F)
+                    .withLayer()
+                    .setDuration(300L)
+                    .setInterpolator(new OvershootInterpolator(3.0f))
+                    .start();
+
+            int xPosition = (int) (addWidget.getX() + (addWidget.getWidth() / 2));
+            int yPosition = (int) (addWidget.getY() + (addWidget.getHeight() / 2));
+
+            int startRadius = 0;
+            int endRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
+
+            Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedWidgetsNestedScrollView, xPosition, yPosition, endRadius, startRadius);
+            circularReveal.setDuration(864);
+            circularReveal.start();
+            circularReveal.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    installedWidgetsNestedScrollView.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+
+            if (functionsClass.appThemeTransparent() == true) {
+                final Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                if (PublicVariable.themeLightDark) {
+                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    if (functionsClass.returnAPI() > 25) {
+                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                    }
+                }
+
+                ValueAnimator valueAnimator = ValueAnimator
+                        .ofArgb(getWindow().getNavigationBarColor(), functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
+                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animator) {
+                        window.setStatusBarColor((Integer) animator.getAnimatedValue());
+                        window.setNavigationBarColor((Integer) animator.getAnimatedValue());
+                    }
+                });
+                valueAnimator.start();
+            } else {
+                final Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                if (PublicVariable.themeLightDark) {
+                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    if (functionsClass.returnAPI() > 25) {
+                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                    }
+                }
+
+                ValueAnimator colorAnimation = ValueAnimator
+                        .ofArgb(getWindow().getNavigationBarColor(), PublicVariable.colorLightDark);
+                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animator) {
+                        getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                        getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
+                    }
+                });
+                colorAnimation.start();
+            }
+        } else {
+            try {
+                functionsClass.overrideBackPressToMain(WidgetConfigurations.this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -1063,8 +1146,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            installedWidgetsNavDrawerItems.clear();
-            installedWidgetsSections.clear();
 
             installedWidgetsNestedScrollView.setBackgroundColor(PublicVariable.themeLightDark ? getColor(R.color.transparent_light_high_twice) : getColor(R.color.transparent_dark_high_twice));
         }
@@ -1072,6 +1153,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         @Override
         protected Void doInBackground(Void... params) {
             try {
+                installedWidgetsNavDrawerItems.clear();
+                installedWidgetsSections.clear();
+
                 widgetProviderInfoList = appWidgetManager.getInstalledProviders();
 
                 if (functionsClass.loadCustomIcons()) {
