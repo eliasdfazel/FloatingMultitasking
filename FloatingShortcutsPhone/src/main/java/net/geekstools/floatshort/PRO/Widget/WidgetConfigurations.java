@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -82,6 +83,7 @@ import net.geekstools.floatshort.PRO.Widget.NavAdapter.InstalledWidgetsAdapter;
 import net.geekstools.floatshort.PRO.Widget.NavAdapter.WidgetSectionedGridRecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class WidgetConfigurations extends Activity implements SimpleGestureFilterSwitch.SimpleGestureListener {
@@ -1157,6 +1159,15 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 installedWidgetsSections.clear();
 
                 widgetProviderInfoList = appWidgetManager.getInstalledProviders();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    widgetProviderInfoList.sort(new Comparator<AppWidgetProviderInfo>() {
+                        @Override
+                        public int compare(AppWidgetProviderInfo appWidgetProviderInfoLeft, AppWidgetProviderInfo appWidgetProviderInfoRight) {
+                            return functionsClass.appName(appWidgetProviderInfoLeft.provider.getPackageName())
+                                    .compareTo(functionsClass.appName(appWidgetProviderInfoRight.provider.getPackageName()));
+                        }
+                    });
+                }
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
