@@ -7,5 +7,5 @@
         android:id="@+id/two"
 
         android:drawable="@drawable/ic_launcher"
-        android:gravity="bottom|right" />
+        android:gravity="bottom|left" />
 </layer-list>

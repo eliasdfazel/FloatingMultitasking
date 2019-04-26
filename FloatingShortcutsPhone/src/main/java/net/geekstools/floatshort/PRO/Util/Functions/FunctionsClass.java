@@ -4016,6 +4016,14 @@ public class FunctionsClass {
                                             public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
                                                 super.onOpen(supportSQLiteDatabase);
 
+                                                activity.runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        context.sendBroadcast(new Intent("FORCE_RELOAD"));
+
+                                                        removeWidgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, appWidgetId);
+                                                    }
+                                                });
                                             }
                                         })
                                         .build();
@@ -4026,7 +4034,6 @@ public class FunctionsClass {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             context.deleteSharedPreferences(appWidgetId + packageName);
                         }
-                        context.sendBroadcast(new Intent("FORCE_RELOAD"));
 
                         break;
                     }
@@ -4295,7 +4302,7 @@ public class FunctionsClass {
             widgetShortcutIcon.setDrawableByLayerId(R.id.one, forNull);
         }
         try {
-            if (widgetPreviewDrawable.getIntrinsicHeight() < DpToInteger(52)) {
+            if (widgetPreviewDrawable.getIntrinsicHeight() < DpToInteger(77)) {
 
             } else {
                 widgetShortcutIcon.setDrawableByLayerId(R.id.two, getAppIconDrawableCustomIcon(packageName));
@@ -4320,6 +4327,47 @@ public class FunctionsClass {
             addIntent.putExtra("duplicate", true);
             addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
             context.sendBroadcast(addIntent);
+        }
+    }
+
+    public void removeWidgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, int shortcutId) {
+        Intent differentIntent = new Intent(context, className);
+        differentIntent.setAction(Intent.ACTION_MAIN);
+        differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        differentIntent.putExtra("ShortcutsId", shortcutId);
+        differentIntent.putExtra("ShortcutLabel", shortcutName);
+
+        Drawable forNull = context.getDrawable(R.drawable.ic_launcher);
+        forNull.setAlpha(0);
+        LayerDrawable widgetShortcutIcon = (LayerDrawable) context.getDrawable(R.drawable.widget_home_screen_shortcuts);
+        try {
+            widgetShortcutIcon.setDrawableByLayerId(R.id.one, widgetPreviewDrawable);
+        } catch (Exception e) {
+            widgetShortcutIcon.setDrawableByLayerId(R.id.one, forNull);
+        }
+        try {
+            if (widgetPreviewDrawable.getIntrinsicHeight() < DpToInteger(52)) {
+
+            } else {
+                widgetShortcutIcon.setDrawableByLayerId(R.id.two, getAppIconDrawableCustomIcon(packageName));
+            }
+        } catch (Exception e) {
+            widgetShortcutIcon.setDrawableByLayerId(R.id.two, forNull);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            List<String> shortcutToDelete = new ArrayList<String>();
+            shortcutToDelete.add(String.valueOf(shortcutId));
+
+            context.getSystemService(ShortcutManager.class).disableShortcuts(shortcutToDelete);
+        } else {
+            Intent removeIntent = new Intent();
+            removeIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent);
+            removeIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName);
+            removeIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, layerDrawableToBitmap(widgetShortcutIcon));
+            removeIntent.putExtra("duplicate", true);
+            removeIntent.setAction("com.android.launcher.action.UNINSTALL_SHORTCUT");
+            context.sendBroadcast(removeIntent);
         }
     }
 

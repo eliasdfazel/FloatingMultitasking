@@ -101,7 +101,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
                         navDrawerItems.get(position).getPackageName(),
                         navDrawerItems.get(position).getAppWidgetId(),
                         navDrawerItems.get(position).getWidgetLabel(),
-                        appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) != null ? appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_HIGH) : appWidgetProviderInfo.loadIcon(context, DisplayMetrics.DENSITY_LOW),
+                        appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) != null ? appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_HIGH) : appWidgetProviderInfo.loadIcon(context, DisplayMetrics.DENSITY_HIGH),
                         navDrawerItems.get(position).getAddedWidgetRecovery());
 
                 return false;
@@ -112,8 +112,6 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    FunctionsClass.println(">>> Action Done >>> " + textView.getText().toString());
-
                     if (textView.length() > 0) {
                         new Thread(new Runnable() {
                             @Override
