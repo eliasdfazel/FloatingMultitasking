@@ -3295,7 +3295,15 @@ public class FunctionsClass {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
-            window.setStatusBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
+            //window.setStatusBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
+
+            window.setStatusBarColor(
+                    setColorAlpha(
+                            mixColors(
+                                    PublicVariable.primaryColor, PublicVariable.colorLightDark,
+                                    0.75f), wallpaperStaticLive() ? 245 : 113)
+            );
+
             window.setNavigationBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
         } else if (transparent == false) {
             view.setBackgroundColor(PublicVariable.colorLightDark);
@@ -3309,7 +3317,7 @@ public class FunctionsClass {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
-            window.setStatusBarColor(PublicVariable.colorLightDark);
+            window.setStatusBarColor(PublicVariable.primaryColor);
             window.setNavigationBarColor(PublicVariable.colorLightDark);
         }
     }
@@ -4384,6 +4392,174 @@ public class FunctionsClass {
             stickyEdge = false;
         }
         return stickyEdge;
+    }
+
+    public static class WindowMode {
+        static final int WINDOWING_MODE_FREEFORM = 5;
+        private static final int FREEFORM_WORKSPACE_STACK_ID = 2;
+    }
+
+    public static class DisplaySection {
+        public static final int TopLeft = 1;
+        public static final int TopRight = 2;
+        public static final int BottomLeft = 3;
+        public static final int BottomRight = 4;
+    }
+
+    public class HeartBeat {
+        String packageName;
+        View viewToBeat;
+        boolean getFirstApp = false;
+        Animator.AnimatorListener scaleDownListener = new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                viewToBeat.animate().scaleXBy(0.33f).scaleYBy(0.33f).setDuration(233).setListener(scaleUpListener);
+                if (PublicVariable.hearBeatCheckPoint) {
+                    if (getFirstApp) {
+                        try {
+                            UsageStatsManager mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+                            List<UsageStats> queryUsageStats = mUsageStatsManager
+                                    .queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
+                                            System.currentTimeMillis() - 1000 * 60,            //begin
+                                            System.currentTimeMillis());                            //end
+                            Collections.sort(queryUsageStats, new Comparator<UsageStats>() {
+                                @Override
+                                public int compare(UsageStats left, UsageStats right) {
+                                    return Long.compare(right.getLastTimeUsed(), left.getLastTimeUsed());
+                                }
+                            });
+                            String inFrontPackageName = queryUsageStats.get(0).getPackageName();
+                            String secondPackageName = queryUsageStats.get(1).getPackageName();
+                            if (inFrontPackageName.contains(packageName) || secondPackageName.contains(packageName)) {
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        context.stopService(new Intent(context, FloatingSplash.class));
+                                    }
+                                }, 133);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+        };
+        Animator.AnimatorListener scaleUpListener = new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                viewToBeat.animate().scaleXBy(-0.33f).scaleYBy(-0.33f).setDuration(333).setListener(scaleDownListener);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+        };
+
+        public HeartBeat(String packageName, View viewToBeat) {
+            this.packageName = packageName;
+            this.viewToBeat = viewToBeat;
+            this.viewToBeat.animate().scaleXBy(0.33f).scaleYBy(0.33f).setDuration(233).setListener(scaleUpListener);
+
+            AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+            int mode = appOps.checkOp("android:get_usage_stats", android.os.Process.myUid(), context.getPackageName());
+            if (mode == AppOpsManager.MODE_ALLOWED) {
+                getFirstApp = true;
+            }
+        }
+    }
+
+    public class HeartBeatClose {
+        String packageName;
+        View viewToBeat;
+        Animator.AnimatorListener scaleDownListener = new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                viewToBeat.animate().scaleXBy(0.33f).scaleYBy(0.33f).setDuration(233).setListener(scaleUpListener);
+
+                try {
+                    UsageStatsManager mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+                    List<UsageStats> queryUsageStats = mUsageStatsManager
+                            .queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
+                                    System.currentTimeMillis() - 1000 * 60,            //begin
+                                    System.currentTimeMillis());                    //end
+                    Collections.sort(queryUsageStats, new Comparator<UsageStats>() {
+                        @Override
+                        public int compare(UsageStats left, UsageStats right) {
+                            return Long.compare(right.getLastTimeUsed(), left.getLastTimeUsed());
+                        }
+                    });
+                    String inFrontPackageName = queryUsageStats.get(0).getPackageName();
+
+                    PackageManager localPackageManager = context.getPackageManager();
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    String defaultLauncher = localPackageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName;
+                    if (inFrontPackageName.contains(defaultLauncher)) {
+                        context.stopService(new Intent(context, FloatingSplash.class));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    context.stopService(new Intent(context, FloatingSplash.class));
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+        };
+        Animator.AnimatorListener scaleUpListener = new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                viewToBeat.animate().scaleXBy(-0.33f).scaleYBy(-0.33f).setDuration(333).setListener(scaleDownListener);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+        };
+
+        public HeartBeatClose(String packageName, View viewToBeat) {
+            this.packageName = packageName;
+            this.viewToBeat = viewToBeat;
+            this.viewToBeat.animate().scaleXBy(0.33f).scaleYBy(0.33f).setDuration(233).setListener(scaleUpListener);
+        }
     }
 
     /*Floating Splash*/
@@ -5506,174 +5682,6 @@ public class FunctionsClass {
             versionCodeKey = context.getString(R.string.stringUpcomingChangeLogSummaryPhone);
         }
         return versionCodeKey;
-    }
-
-    public static class WindowMode {
-        static final int WINDOWING_MODE_FREEFORM = 5;
-        private static final int FREEFORM_WORKSPACE_STACK_ID = 2;
-    }
-
-    public static class DisplaySection {
-        public static final int TopLeft = 1;
-        public static final int TopRight = 2;
-        public static final int BottomLeft = 3;
-        public static final int BottomRight = 4;
-    }
-
-    public class HeartBeat {
-        String packageName;
-        View viewToBeat;
-        boolean getFirstApp = false;
-        Animator.AnimatorListener scaleDownListener = new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                viewToBeat.animate().scaleXBy(0.33f).scaleYBy(0.33f).setDuration(233).setListener(scaleUpListener);
-                if (PublicVariable.hearBeatCheckPoint) {
-                    if (getFirstApp) {
-                        try {
-                            UsageStatsManager mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
-                            List<UsageStats> queryUsageStats = mUsageStatsManager
-                                    .queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
-                                            System.currentTimeMillis() - 1000 * 60,            //begin
-                                            System.currentTimeMillis());                            //end
-                            Collections.sort(queryUsageStats, new Comparator<UsageStats>() {
-                                @Override
-                                public int compare(UsageStats left, UsageStats right) {
-                                    return Long.compare(right.getLastTimeUsed(), left.getLastTimeUsed());
-                                }
-                            });
-                            String inFrontPackageName = queryUsageStats.get(0).getPackageName();
-                            String secondPackageName = queryUsageStats.get(1).getPackageName();
-                            if (inFrontPackageName.contains(packageName) || secondPackageName.contains(packageName)) {
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        context.stopService(new Intent(context, FloatingSplash.class));
-                                    }
-                                }, 133);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-        };
-        Animator.AnimatorListener scaleUpListener = new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                viewToBeat.animate().scaleXBy(-0.33f).scaleYBy(-0.33f).setDuration(333).setListener(scaleDownListener);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-        };
-
-        public HeartBeat(String packageName, View viewToBeat) {
-            this.packageName = packageName;
-            this.viewToBeat = viewToBeat;
-            this.viewToBeat.animate().scaleXBy(0.33f).scaleYBy(0.33f).setDuration(233).setListener(scaleUpListener);
-
-            AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            int mode = appOps.checkOp("android:get_usage_stats", android.os.Process.myUid(), context.getPackageName());
-            if (mode == AppOpsManager.MODE_ALLOWED) {
-                getFirstApp = true;
-            }
-        }
-    }
-
-    public class HeartBeatClose {
-        String packageName;
-        View viewToBeat;
-        Animator.AnimatorListener scaleDownListener = new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                viewToBeat.animate().scaleXBy(0.33f).scaleYBy(0.33f).setDuration(233).setListener(scaleUpListener);
-
-                try {
-                    UsageStatsManager mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
-                    List<UsageStats> queryUsageStats = mUsageStatsManager
-                            .queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
-                                    System.currentTimeMillis() - 1000 * 60,            //begin
-                                    System.currentTimeMillis());                    //end
-                    Collections.sort(queryUsageStats, new Comparator<UsageStats>() {
-                        @Override
-                        public int compare(UsageStats left, UsageStats right) {
-                            return Long.compare(right.getLastTimeUsed(), left.getLastTimeUsed());
-                        }
-                    });
-                    String inFrontPackageName = queryUsageStats.get(0).getPackageName();
-
-                    PackageManager localPackageManager = context.getPackageManager();
-                    Intent intent = new Intent(Intent.ACTION_MAIN);
-                    intent.addCategory(Intent.CATEGORY_HOME);
-                    String defaultLauncher = localPackageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName;
-                    if (inFrontPackageName.contains(defaultLauncher)) {
-                        context.stopService(new Intent(context, FloatingSplash.class));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    context.stopService(new Intent(context, FloatingSplash.class));
-                }
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-        };
-        Animator.AnimatorListener scaleUpListener = new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                viewToBeat.animate().scaleXBy(-0.33f).scaleYBy(-0.33f).setDuration(333).setListener(scaleDownListener);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-        };
-
-        public HeartBeatClose(String packageName, View viewToBeat) {
-            this.packageName = packageName;
-            this.viewToBeat = viewToBeat;
-            this.viewToBeat.animate().scaleXBy(0.33f).scaleYBy(0.33f).setDuration(233).setListener(scaleUpListener);
-        }
     }
 
     /*In-App Purchase*/

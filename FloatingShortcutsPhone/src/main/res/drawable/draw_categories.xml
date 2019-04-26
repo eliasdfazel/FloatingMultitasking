@@ -8,13 +8,14 @@
             <gradient
                 android:angle="270"
                 android:centerColor="@color/darker"
-                android:centerY="0.83"
+                android:centerY="0.50"
                 android:startColor="@color/darker"/>
         </shape>
     </item>
     <item
         android:id="@+id/foregroundItem"
-        android:bottom="3dp">
+        android:bottom="3dp"
+        android:top="3dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/default_color"/>
         </shape>

@@ -119,6 +119,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     FirebaseRemoteConfig firebaseRemoteConfig;
 
+    boolean installedWidgetsLoaded = false, configuredWidgetAvailable = false;
+
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -180,6 +182,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             LoadConfiguredWidgets loadConfiguredWidgets = new LoadConfiguredWidgets();
             loadConfiguredWidgets.execute();
         } else {
+            addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
+
             loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
             if (functionsClass.appThemeTransparent() == true) {
                 loadingSplash.setBackgroundColor(Color.TRANSPARENT);
@@ -553,6 +557,13 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("FORCE_RELOAD")) {
+                    try {
+                        configuredWidgetsNavDrawerItems.clear();
+                        configuredWidgetsSections.clear();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     LoadConfiguredWidgets loadConfiguredWidgets = new LoadConfiguredWidgets();
                     loadConfiguredWidgets.execute();
                 }
@@ -571,6 +582,10 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 functionsClass.doVibrate(77);
 
                 if (installedWidgetsNestedScrollView.isShown()) {
+                    if (!configuredWidgetAvailable) {
+                        addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
+                    }
+
                     ViewCompat.animate(addWidget)
                             .rotation(0.0F)
                             .withLayer()
@@ -653,10 +668,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         colorAnimation.start();
                     }
                 } else {
-
                     LoadInstalledWidgets loadInstalledWidgets = new LoadInstalledWidgets();
                     loadInstalledWidgets.execute();
-
                 }
             }
         });
@@ -727,6 +740,10 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     public void onBackPressed() {
         if (installedWidgetsNestedScrollView.isShown()) {
             functionsClass.doVibrate(77);
+
+            if (!configuredWidgetAvailable) {
+                addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
+            }
 
             ViewCompat.animate(addWidget)
                     .rotation(0.0F)
@@ -1011,14 +1028,11 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     }
 
-    public class LoadConfiguredWidgets extends AsyncTask<Void, Void, Void> {
+    public class LoadConfiguredWidgets extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            configuredWidgetsNavDrawerItems.clear();
-            configuredWidgetsSections.clear();
-
             loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
             if (functionsClass.appThemeTransparent() == true) {
                 loadingSplash.setBackgroundColor(Color.TRANSPARENT);
@@ -1041,7 +1055,11 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Boolean doInBackground(Void... voids) {
+            configuredWidgetsNavDrawerItems.clear();
+            configuredWidgetsSections.clear();
+
+            configuredWidgetAvailable = false;
             try {
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
@@ -1067,6 +1085,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         .build();
 
                 List<WidgetDataModel> widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetData();
+                if (widgetDataModels.size() > 0) {
+                    configuredWidgetAvailable = true;
+                }
 
                 String oldAppName = "";
                 int widgetIndex = 0;
@@ -1113,38 +1134,42 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 e.printStackTrace();
             }
 
-            return null;
+            return configuredWidgetAvailable;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged();
-            WidgetSectionedGridRecyclerViewAdapter.Section[] sectionsData = new WidgetSectionedGridRecyclerViewAdapter.Section[configuredWidgetsSections.size()];
-            configuredWidgetsSectionedGridRecyclerViewAdapter = new WidgetSectionedGridRecyclerViewAdapter(
-                    getApplicationContext(),
-                    R.layout.widgets_sections,
-                    configuredWidgetsLoadView,
-                    configuredWidgetsRecyclerViewAdapter
-            );
-            configuredWidgetsSectionedGridRecyclerViewAdapter.setSections(configuredWidgetsSections.toArray(sectionsData));
-            configuredWidgetsSectionedGridRecyclerViewAdapter.notifyDataSetChanged();
-            configuredWidgetsLoadView.setAdapter(configuredWidgetsSectionedGridRecyclerViewAdapter);
+            if (result) {
+                configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged();
+                WidgetSectionedGridRecyclerViewAdapter.Section[] sectionsData = new WidgetSectionedGridRecyclerViewAdapter.Section[configuredWidgetsSections.size()];
+                configuredWidgetsSectionedGridRecyclerViewAdapter = new WidgetSectionedGridRecyclerViewAdapter(
+                        getApplicationContext(),
+                        R.layout.widgets_sections,
+                        configuredWidgetsLoadView,
+                        configuredWidgetsRecyclerViewAdapter
+                );
+                configuredWidgetsSectionedGridRecyclerViewAdapter.setSections(configuredWidgetsSections.toArray(sectionsData));
+                configuredWidgetsSectionedGridRecyclerViewAdapter.notifyDataSetChanged();
+                configuredWidgetsLoadView.setAdapter(configuredWidgetsSectionedGridRecyclerViewAdapter);
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    configuredWidgetsNestedScrollView.scrollTo(0, 0);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        configuredWidgetsNestedScrollView.scrollTo(0, 0);
 
-                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    loadingSplash.setVisibility(View.INVISIBLE);
-                    loadingSplash.startAnimation(animation);
-                }
-            }, 333);
+                        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+                        loadingSplash.setVisibility(View.INVISIBLE);
+                        loadingSplash.startAnimation(animation);
+                    }
+                }, 333);
+            } else {
+                addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
+            }
         }
     }
 
-    public class LoadInstalledWidgets extends AsyncTask<Void, Void, Void> {
+    public class LoadInstalledWidgets extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -1153,11 +1178,11 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                installedWidgetsNavDrawerItems.clear();
-                installedWidgetsSections.clear();
+        protected Boolean doInBackground(Void... params) {
+            installedWidgetsNavDrawerItems.clear();
+            installedWidgetsSections.clear();
 
+            try {
                 widgetProviderInfoList = appWidgetManager.getInstalledProviders();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     widgetProviderInfoList.sort(new Comparator<AppWidgetProviderInfo>() {
@@ -1168,6 +1193,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         }
                     });
                 }
+
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
@@ -1220,12 +1246,13 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 this.cancel(true);
             }
 
-            return null;
+            return configuredWidgetAvailable;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
+            installedWidgetsLoaded = true;
 
             ViewPropertyAnimator viewPropertyAnimator = addWidget.animate()
                     .rotation(135.0F)
@@ -1329,7 +1356,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             widgetSectionedGridRecyclerViewAdapter.notifyDataSetChanged();
             installedWidgetsLoadView.setAdapter(widgetSectionedGridRecyclerViewAdapter);
 
-            if (!getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+            if (!getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists() || !result) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -1388,4 +1415,50 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             e.printStackTrace();
         }
     }
+
+    Animator.AnimatorListener scaleDownListener = new Animator.AnimatorListener() {
+        @Override
+        public void onAnimationStart(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            if (!installedWidgetsLoaded) {
+                addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
+            }
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+
+        }
+    };
+
+    Animator.AnimatorListener scaleUpListener = new Animator.AnimatorListener() {
+        @Override
+        public void onAnimationStart(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            addWidget.animate().scaleXBy(-0.23f).scaleYBy(-0.23f).setDuration(323).setListener(scaleDownListener);
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+
+        }
+    };
 }
