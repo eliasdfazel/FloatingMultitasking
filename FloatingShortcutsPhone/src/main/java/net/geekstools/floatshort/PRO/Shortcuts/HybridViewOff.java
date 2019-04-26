@@ -101,7 +101,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     FunctionsClass functionsClass;
 
     RecyclerView loadView;
-    ScrollView nestedScrollView;
+    ScrollView nestedScrollView, nestedIndexScrollView;
     RelativeLayout scrollRelativeLayout, fullActionViews, MainView, loadingSplash;
     LinearLayout indexView, freqView;
     ProgressBar loadingBarLTR;
@@ -144,6 +144,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         setContentView(R.layout.off_hybrid_view);
 
         nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
+        nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
         scrollRelativeLayout = (RelativeLayout) findViewById(R.id.scrollRelativeLayout);
         loadView = (RecyclerView) findViewById(R.id.list);
         indexView = (LinearLayout) findViewById(R.id.side_index);
@@ -713,8 +714,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         Intent homeScreen = new Intent(Intent.ACTION_MAIN);
         homeScreen.addCategory(Intent.CATEGORY_HOME);
         homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(homeScreen);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        startActivity(homeScreen, ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
     }
 
     @Override
@@ -1007,6 +1007,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 layoutParamsIcon.addRule(RelativeLayout.ABOVE, R.id.freqList);
                 scrollRelativeLayout.setPadding(0, scrollRelativeLayout.getPaddingTop(), 0, 0);
                 nestedScrollView.setLayoutParams(layoutParamsIcon);
+
+                nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(93));
             }
             recyclerViewAdapter.notifyDataSetChanged();
             HybridSectionedGridRecyclerViewAdapter.Section[] sectionsData = new HybridSectionedGridRecyclerViewAdapter.Section[sections.size()];

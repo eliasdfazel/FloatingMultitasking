@@ -1014,7 +1014,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 Intent intent = new Intent(getApplicationContext(), WidgetConfigurations.class);
                 startActivity(intent);
             } else {
-                functionsClass.overrideBackPress(SettingGUILight.this);
+                functionsClass.overrideBackPressToMain(SettingGUILight.this);
             }
 
             float finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
@@ -1091,7 +1091,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             }
             case android.R.id.home: {
                 try {
-                    functionsClass.overrideBackPress(SettingGUILight.this);
+                    functionsClass.overrideBackPressToMain(SettingGUILight.this);
 
                     float finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
                     Animator circularReveal = ViewAnimationUtils.createCircularReveal(

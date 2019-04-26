@@ -1946,10 +1946,14 @@ public class FunctionsClass {
 
     public void navigateToClass(Class returnClass, ActivityOptions activityOptions) throws Exception {
         Intent intentOverride = new Intent(context, returnClass);
+        if (returnClass.getSimpleName().equals(HybridViewOff.class.getSimpleName())) {
+            intentOverride.putExtra("freq", PublicVariable.freqApps);
+            intentOverride.putExtra("num", PublicVariable.freqLength);
+        }
         activity.startActivity(intentOverride, activityOptions.toBundle());
     }
 
-    public void overrideBackPress(final Activity activityToFinish) throws Exception {
+    public void overrideBackPressToMain(final Activity activityToFinish) throws Exception {
         if (readPreference("OpenMode", "openClassName", HybridViewOff.class.getSimpleName()).equals(CategoryHandler.class.getSimpleName())) {
             Intent categoryInten = new Intent(context, CategoryHandler.class);
             activity.startActivity(categoryInten);

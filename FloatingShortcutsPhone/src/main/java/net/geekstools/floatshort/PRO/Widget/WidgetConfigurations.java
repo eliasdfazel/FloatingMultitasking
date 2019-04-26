@@ -348,7 +348,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), HybridViewOff.class),
-                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right).toBundle());
             }
         });
         automationAction.setOnClickListener(new View.OnClickListener() {
@@ -727,7 +727,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     @Override
     public void onBackPressed() {
         try {
-            functionsClass.overrideBackPress(WidgetConfigurations.this);
+            functionsClass.overrideBackPressToMain(WidgetConfigurations.this);
         } catch (Exception e) {
             e.printStackTrace();
         }

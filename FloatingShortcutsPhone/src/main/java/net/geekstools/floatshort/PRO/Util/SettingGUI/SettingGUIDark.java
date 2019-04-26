@@ -1015,7 +1015,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 Intent intent = new Intent(getApplicationContext(), WidgetConfigurations.class);
                 startActivity(intent);
             } else {
-                functionsClass.overrideBackPress(SettingGUIDark.this);
+                functionsClass.overrideBackPressToMain(SettingGUIDark.this);
             }
 
             float finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
@@ -1092,7 +1092,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
             }
             case android.R.id.home: {
                 try {
-                    functionsClass.overrideBackPress(SettingGUIDark.this);
+                    functionsClass.overrideBackPressToMain(SettingGUIDark.this);
 
                     float finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
                     Animator circularReveal = ViewAnimationUtils.createCircularReveal(

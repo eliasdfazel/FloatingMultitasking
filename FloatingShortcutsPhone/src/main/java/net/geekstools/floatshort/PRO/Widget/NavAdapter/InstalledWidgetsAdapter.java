@@ -99,7 +99,7 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
                     intentWidgetConfiguration.setComponent(pickedAppWidgetProviderInfo.configure);
                     intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId);
                     intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, pickedAppWidgetProviderInfo.provider);
-                    intentWidgetConfiguration.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentWidgetConfiguration.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                     activity.startActivityForResult(intentWidgetConfiguration, WIDGET_CONFIGURATION_REQUEST);
                 }
 

@@ -507,7 +507,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
     @Override
     public void onBackPressed() {
         try {
-            functionsClass.overrideBackPress(CategoryAutoFeatures.this);
+            functionsClass.overrideBackPressToMain(CategoryAutoFeatures.this);
             overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
         } catch (Exception e) {
             e.printStackTrace();
@@ -543,7 +543,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
                 try {
                     if (recyclerViewLayoutManager.findLastCompletelyVisibleItemPosition() == (categorylist.getAdapter().getItemCount() - 1)) {
                         try {
-                            functionsClass.overrideBackPress(CategoryAutoFeatures.this);
+                            functionsClass.overrideBackPressToMain(CategoryAutoFeatures.this);
                             overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -551,7 +551,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
                     }
                 } catch (Exception e) {
                     try {
-                        functionsClass.overrideBackPress(CategoryAutoFeatures.this);
+                        functionsClass.overrideBackPressToMain(CategoryAutoFeatures.this);
                         overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
                     } catch (Exception e1) {
                         e1.printStackTrace();

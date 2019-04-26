@@ -511,7 +511,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         try {
-            functionsClass.overrideBackPress(AppAutoFeatures.this);
+            functionsClass.overrideBackPressToMain(AppAutoFeatures.this);
             overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
         } catch (Exception e) {
             e.printStackTrace();
@@ -557,7 +557,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                 try {
                     if (listView.getLastVisiblePosition() == (listView.getAdapter().getCount() - 1)) {
                         try {
-                            functionsClass.overrideBackPress(AppAutoFeatures.this);
+                            functionsClass.overrideBackPressToMain(AppAutoFeatures.this);
                             overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -565,7 +565,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                     }
                 } catch (Exception e) {
                     try {
-                        functionsClass.overrideBackPress(AppAutoFeatures.this);
+                        functionsClass.overrideBackPressToMain(AppAutoFeatures.this);
                         overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
                     } catch (Exception e1) {
                         e1.printStackTrace();

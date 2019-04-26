@@ -78,7 +78,7 @@
         android:layout_height="43dp"
         android:layout_alignParentBottom="true"
         android:paddingStart="5dp"
-        android:paddingEnd="23dp"
+        android:paddingEnd="5dp"
         android:visibility="invisible"
         android:background="@android:color/transparent"
         android:weightSum="2">
@@ -125,12 +125,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/recoveryAction"
-        android:layout_width="237dp"
+        android:layout_width="247dp"
         android:layout_height="43dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="6dp"
-        android:layout_marginEnd="67dp"
+        android:layout_marginEnd="53dp"
         android:gravity="center"
         android:ellipsize="end"
         android:maxLines="1"
@@ -157,12 +157,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/automationAction"
-            android:layout_width="237dp"
+            android:layout_width="247dp"
             android:layout_height="43dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="6dp"
-            android:layout_marginEnd="67dp"
+            android:layout_marginEnd="53dp"
             android:gravity="center"
             android:ellipsize="end"
             android:maxLines="1"
@@ -197,7 +197,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="11dp"
-        android:layout_marginEnd="27dp"
+        android:layout_marginEnd="10dp"
         android:src="@drawable/draw_pref_action" />
 
     <ImageView
@@ -207,7 +207,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="11dp"
-        android:layout_marginStart="13dp"
+        android:layout_marginStart="10dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_update"
         android:visibility="invisible" />
