@@ -1131,6 +1131,14 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            try {
+                configuredWidgetsNavDrawerItems.clear();
+                configuredWidgetsSections.clear();
+                configuredWidgetsLoadView.removeAllViews();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
             if (functionsClass.appThemeTransparent() == true) {
                 loadingSplash.setBackgroundColor(Color.TRANSPARENT);
@@ -1185,6 +1193,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 List<WidgetDataModel> widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetData();
                 if (widgetDataModels.size() > 0) {
                     configuredWidgetAvailable = true;
+                } else {
+                    return false;
                 }
 
                 String oldAppName = "";
@@ -1263,6 +1273,13 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 }, 333);
             } else {
                 addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
+                loadingSplash.setVisibility(View.VISIBLE);
+                try {
+                    configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged();
+                    configuredWidgetsSectionedGridRecyclerViewAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

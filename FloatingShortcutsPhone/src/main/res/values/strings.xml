@@ -157,8 +157,8 @@
     <string name="widgetLabelHint">Type A Widget Label</string>
     <string name="widgetPickerTitle">
         <![CDATA[
-            Choose Widgets To Configure<br/>
-            <small>Press & Hold</small>
+            <small>Choose Widgets To Configure</small><br/>
+            <big>Press & Hold</big>
         ]]>
     </string>
     <string name="floatingHint">Floating Shortcuts</string>

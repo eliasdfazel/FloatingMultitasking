@@ -5452,14 +5452,14 @@ public class FunctionsClass {
     public void notificationCreator(String titleText, String contentText, int notificationId) {
         try {
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification.Builder mBuilder = new Notification.Builder(context);
-            mBuilder.setContentTitle(Html.fromHtml("<b><font color='" + PublicVariable.primaryColorOpposite + "'>" + titleText + "</font></b>"));
-            mBuilder.setContentText(Html.fromHtml("<font color='" + PublicVariable.primaryColor + "'>" + contentText + "</font>"));
-            mBuilder.setTicker(context.getResources().getString(R.string.app_name));
-            mBuilder.setSmallIcon(R.drawable.ic_notification);
-            mBuilder.setAutoCancel(true);
-            mBuilder.setColor(context.getColor(R.color.default_color));
-            mBuilder.setPriority(Notification.PRIORITY_HIGH);
+            Notification.Builder notificationBuilder = new Notification.Builder(context);
+            notificationBuilder.setContentTitle(Html.fromHtml("<b><font color='" + PublicVariable.primaryColorOpposite + "'>" + titleText + "</font></b>"));
+            notificationBuilder.setContentText(Html.fromHtml("<font color='" + PublicVariable.primaryColor + "'>" + contentText + "</font>"));
+            notificationBuilder.setTicker(context.getResources().getString(R.string.app_name));
+            notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+            notificationBuilder.setAutoCancel(true);
+            notificationBuilder.setColor(context.getColor(R.color.default_color));
+            notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
 
             Intent newUpdate = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()));
             PendingIntent newUpdatePendingIntent = PendingIntent.getActivity(context, 5, newUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -5467,7 +5467,7 @@ public class FunctionsClass {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel notificationChannel = new NotificationChannel(context.getPackageName(), context.getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
                 notificationManager.createNotificationChannel(notificationChannel);
-                mBuilder.setChannelId(context.getPackageName());
+                notificationBuilder.setChannelId(context.getPackageName());
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -5476,10 +5476,10 @@ public class FunctionsClass {
                         context.getString(R.string.rate),
                         newUpdatePendingIntent
                 );
-                mBuilder.addAction(builderActionNotification.build());
+                notificationBuilder.addAction(builderActionNotification.build());
             }
-            mBuilder.setContentIntent(newUpdatePendingIntent);
-            notificationManager.notify(notificationId, mBuilder.build());
+            notificationBuilder.setContentIntent(newUpdatePendingIntent);
+            notificationManager.notify(notificationId, notificationBuilder.build());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1000,15 +1000,15 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 );
                 nestedScrollView.setLayoutParams(layoutParams);
             } else {
-                RelativeLayout.LayoutParams layoutParamsIcon = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.MATCH_PARENT
                 );
-                layoutParamsIcon.addRule(RelativeLayout.ABOVE, R.id.freqList);
+                layoutParams.addRule(RelativeLayout.ABOVE, R.id.freqList);
                 scrollRelativeLayout.setPadding(0, scrollRelativeLayout.getPaddingTop(), 0, 0);
-                nestedScrollView.setLayoutParams(layoutParamsIcon);
+                nestedScrollView.setLayoutParams(layoutParams);
 
-                nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(93));
+                nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(99));
             }
             recyclerViewAdapter.notifyDataSetChanged();
             HybridSectionedGridRecyclerViewAdapter.Section[] sectionsData = new HybridSectionedGridRecyclerViewAdapter.Section[sections.size()];
