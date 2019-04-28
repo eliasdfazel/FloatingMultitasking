@@ -36,6 +36,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
@@ -308,17 +309,25 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         switchWidgets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (functionsClass.floatingWidgetsPurchased() /*|| functionsClass.appVersionName(getPackageName()).contains("[BETA]")*/) {
-                    try {
-                        functionsClass.navigateToClass(WidgetConfigurations.class,
-                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                try {
+                    if (functionsClass.networkConnection()) {
+                        if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
+                            try {
+                                functionsClass.navigateToClass(WidgetConfigurations.class,
+                                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), InAppBilling.class)
+                                            .putExtra("UserEmailAddress", functionsClass.readPreference(".BETA", "testerEmail", null)),
+                                    ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.internetError), Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    startActivity(new Intent(getApplicationContext(), InAppBilling.class)
-                                    .putExtra("UserEmailAddress", functionsClass.readPreference(".BETA", "testerEmail", null)),
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -849,6 +858,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                         }, 333);
                                     }
                                 } else {
+
                                 }
                             }
                         });

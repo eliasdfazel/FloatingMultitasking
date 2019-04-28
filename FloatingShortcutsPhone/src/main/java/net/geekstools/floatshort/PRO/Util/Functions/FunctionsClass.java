@@ -4021,7 +4021,11 @@ public class FunctionsClass {
                                                     public void run() {
                                                         context.sendBroadcast(new Intent("FORCE_RELOAD"));
 
-                                                        removeWidgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, appWidgetId);
+                                                        try {
+                                                            removeWidgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, appWidgetId);
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
                                                     }
                                                 });
                                             }
@@ -4065,7 +4069,11 @@ public class FunctionsClass {
                         break;
                     }
                     case 2: {
-                        widgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, appWidgetId);
+                        try {
+                            widgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, appWidgetId);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
                         break;
                     }
@@ -4286,7 +4294,7 @@ public class FunctionsClass {
         }
     }
 
-    public void widgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, int shortcutId) {
+    public void widgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, int shortcutId) throws Exception {
         Intent differentIntent = new Intent(context, className);
         differentIntent.setAction(Intent.ACTION_MAIN);
         differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -4330,7 +4338,7 @@ public class FunctionsClass {
         }
     }
 
-    public void removeWidgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, int shortcutId) {
+    public void removeWidgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, int shortcutId) throws Exception {
         Intent differentIntent = new Intent(context, className);
         differentIntent.setAction(Intent.ACTION_MAIN);
         differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);

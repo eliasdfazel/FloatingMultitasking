@@ -2,6 +2,7 @@ package net.geekstools.floatshort.PRO.Util.IAP.skulist;
 
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,7 +30,13 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -38,7 +46,7 @@ import net.geekstools.floatshort.PRO.Util.IAP.skulist.row.SkuRowData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AcquireFragment extends DialogFragment {
+public class AcquireFragment extends DialogFragment implements View.OnClickListener {
 
     FunctionsClass functionsClass;
 
@@ -81,28 +89,53 @@ public class AcquireFragment extends DialogFragment {
         floatingWidgetDemoDescription.setText(Html.fromHtml(getString(R.string.floatingWidgetsDemoDescriptions)));
         floatingWidgetDemoDescription.setTextColor(PublicVariable.themeLightDark ? getContext().getColor(R.color.dark) : getContext().getColor(R.color.light));
 
-        for (int i = 0; i < 3; i++) {
-            RelativeLayout demoLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.demo_item, null);
-            ImageView demoItem = (ImageView) demoLayout.findViewById(R.id.demoItem);
 
-            Glide.with(getContext())
-                    .load(Uri.parse("https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/57154177_350550235575129_842545654306701312_n.jpg?_nc_cat=107&_nc_ht=scontent-lga3-1.xx&oh=68ce76e5f263114ef8d09ecf2088278a&oe=5D365890"))
-//                    .into(demoItem)
-                    .addListener(new RequestListener<Drawable>() {
+        FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        firebaseRemoteConfig.setConfigSettings(configSettings);
+        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
+        firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean aBoolean) {
+                int screenshotsNumber = (int) firebaseRemoteConfig.getLong("floating_widgets_demo_screenshots");
+                for (int i = 1; i <= screenshotsNumber; i++) {
+                    String sceenshotFileName = "FloatingWidgetsDemo" + i + ".png";
+                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                    StorageReference firebaseStorageReference = firebaseStorage.getReference();
+                    StorageReference storageReference = firebaseStorageReference
+                            //gs://floating-shortcuts-pro.appspot.com/Assets/Images/Screenshots/FloatingWidgets/IAP.Demo
+                            .child("Assets/Images/Screenshots/FloatingWidgets/IAP.Demo/" + sceenshotFileName);
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            return false;
-                        }
+                        public void onSuccess(Uri screenshotURI) {
+                            RelativeLayout demoLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.floating_widgets_demo_item, null);
+                            ImageView floatingWidgetsDemoItem = (ImageView) demoLayout.findViewById(R.id.floatingWidgetsDemoItem);
 
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            demoItem.setImageDrawable(resource);
-                            floatingWidgetDemoList.addView(demoLayout);
-                            return false;
+                            Glide.with(getContext())
+                                    .load(screenshotURI)
+                                    .addListener(new RequestListener<Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                            floatingWidgetsDemoItem.setImageDrawable(resource);
+                                            floatingWidgetsDemoItem.setOnClickListener(AcquireFragment.this);
+                                            floatingWidgetsDemoItem.setTag(screenshotURI);
+                                            floatingWidgetDemoList.addView(demoLayout);
+                                            return false;
+                                        }
+                                    })
+                                    .submit();
                         }
-                    })
-                    .submit();
-        }
+                    });
+                }
+            }
+        });
 
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
@@ -115,6 +148,17 @@ public class AcquireFragment extends DialogFragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view instanceof ImageView) {
+            String screenshotURI = view.getTag().toString();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(screenshotURI));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
     }
 
     public void refreshUI() {
@@ -159,7 +203,7 @@ public class AcquireFragment extends DialogFragment {
                                 );
                             }
                             if (skuRowDataList.size() == 0) {
-                                displayAnErrorIfNeeded();
+                                displayError();
                             } else {
                                 skusAdapter.updateData(skuRowDataList);
                                 progressBar.setVisibility(View.INVISIBLE);
@@ -167,14 +211,10 @@ public class AcquireFragment extends DialogFragment {
                         }
                     }
                 });
-        displayAnErrorIfNeeded();
     }
 
-    private void displayAnErrorIfNeeded() {
-        if (getActivity() == null || getActivity().isFinishing()) {
-
-            return;
-        }
+    private void displayError() {
+        Toast.makeText(getContext(), getString(R.string.error), Toast.LENGTH_LONG).show();
     }
 }
 

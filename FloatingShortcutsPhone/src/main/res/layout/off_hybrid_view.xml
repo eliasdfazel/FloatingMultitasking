@@ -187,7 +187,7 @@
         app:cornerRadius="57dp"
         app:icon="@drawable/w_recovery"
         app:iconGravity="start"
-        app:iconSize="31dp"
+        app:iconSize="29dp"
         app:iconPadding="1dp" />
 
     <RelativeLayout
@@ -219,7 +219,7 @@
             app:cornerRadius="57dp"
             app:icon="@drawable/w_floating"
             app:iconGravity="start"
-            app:iconSize="31dp"
+            app:iconSize="29dp"
             app:iconPadding="1dp" />
 
         <Button

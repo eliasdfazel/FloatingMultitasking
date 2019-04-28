@@ -1272,6 +1272,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     }
                 }, 333);
             } else {
+                installedWidgetsLoaded = false;
                 addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
                 loadingSplash.setVisibility(View.VISIBLE);
                 try {
