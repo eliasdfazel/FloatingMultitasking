@@ -11,8 +11,8 @@ android {
         minSdkVersion 25
         targetSdkVersion 28
 
-        versionCode 403
-        versionName "14.000.000.403_"
+        versionCode 419
+        versionName "14.000.000.419_"
     }
 
     buildTypes {

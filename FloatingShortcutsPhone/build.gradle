@@ -15,8 +15,8 @@ android {
         minSdkVersion 23
         targetSdkVersion 28
 
-        versionCode 418
-        versionName "14.000.000.418_"
+        versionCode 420
+        versionName "14.000.000.420_"
 
         wearAppUnbundled true
     }
