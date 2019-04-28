@@ -352,12 +352,14 @@ public class Widget_Unlimited_Floating extends Service {
                         layoutParamsTouch.width = xWidthMove;
                         layoutParamsTouch.height = yHeightMove;
 
-                        if (xWidthMove < initWidth || yHeightMove < initHeight) {
+                        /*if (xWidthMove < initWidth || yHeightMove < initHeight) {
 
                         } else {
-                            appWidgetHostView[startId].updateAppWidgetSize(new Bundle(), layoutParamsTouch.width, layoutParamsTouch.height, layoutParamsTouch.width, layoutParamsTouch.height);
-                            windowManager.updateViewLayout(floatingView[startId], layoutParamsTouch);
-                        }
+
+                        }*/
+
+                        appWidgetHostView[startId].updateAppWidgetSize(new Bundle(), layoutParamsTouch.width, layoutParamsTouch.height, layoutParamsTouch.width, layoutParamsTouch.height);
+                        windowManager.updateViewLayout(floatingView[startId], layoutParamsTouch);
 
                         break;
                 }
