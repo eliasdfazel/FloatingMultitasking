@@ -255,7 +255,9 @@ public class FunctionsClass {
 
     /*Debugging Functions*/
     public static void println(Object aValue) {
-        System.out.println(aValue);
+        if (BuildConfig.DEBUG) {
+            System.out.println(aValue);
+        }
     }
 
     /*Database & Indexing*/

@@ -1,11 +1,15 @@
 package net.geekstools.floatshort.PRO.Util.IAP.skulist;
 
 import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +49,7 @@ import net.geekstools.floatshort.PRO.Util.IAP.skulist.row.SkuRowData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 public class AcquireFragment extends DialogFragment implements View.OnClickListener {
 
@@ -60,6 +65,11 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
     private SkusAdapter skusAdapter;
 
     private BillingProvider billingProvider;
+
+    TreeMap<Integer, Drawable> mapIndexDrawable = new TreeMap<Integer, Drawable>();
+    TreeMap<Integer, Uri> mapIndexURI = new TreeMap<Integer, Uri>();
+
+    int screenshotsNumber = 6;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,20 +109,17 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
         firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
             @Override
             public void onSuccess(Boolean aBoolean) {
-                int screenshotsNumber = (int) firebaseRemoteConfig.getLong("floating_widgets_demo_screenshots");
+                screenshotsNumber = (int) firebaseRemoteConfig.getLong("floating_widgets_demo_screenshots");
                 for (int i = 1; i <= screenshotsNumber; i++) {
                     String sceenshotFileName = "FloatingWidgetsDemo" + i + ".png";
                     FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
                     StorageReference firebaseStorageReference = firebaseStorage.getReference();
                     StorageReference storageReference = firebaseStorageReference
-                            //gs://floating-shortcuts-pro.appspot.com/Assets/Images/Screenshots/FloatingWidgets/IAP.Demo
+                            //gs://floating-shortcuts-pro.appspot.com/Assets/Images/Screenshots/FloatingWidgets/IAP.Demo/FloatingWidgetsDemo1.png
                             .child("Assets/Images/Screenshots/FloatingWidgets/IAP.Demo/" + sceenshotFileName);
                     storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri screenshotURI) {
-                            RelativeLayout demoLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.floating_widgets_demo_item, null);
-                            ImageView floatingWidgetsDemoItem = (ImageView) demoLayout.findViewById(R.id.floatingWidgetsDemoItem);
-
                             Glide.with(getContext())
                                     .load(screenshotURI)
                                     .addListener(new RequestListener<Drawable>() {
@@ -123,10 +130,23 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
 
                                         @Override
                                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                            floatingWidgetsDemoItem.setImageDrawable(resource);
-                                            floatingWidgetsDemoItem.setOnClickListener(AcquireFragment.this);
-                                            floatingWidgetsDemoItem.setTag(screenshotURI);
-                                            floatingWidgetDemoList.addView(demoLayout);
+                                            FunctionsClass.println("*** " + screenshotURI + " ***");
+
+                                            String beforeToken = screenshotURI.toString().split("\\?alt=media&token=")[0];
+                                            int drawableIndex = Integer.parseInt(String.valueOf(beforeToken.charAt(beforeToken.length() - 5)));
+
+                                            mapIndexDrawable.put(drawableIndex, resource);
+                                            mapIndexURI.put(drawableIndex, screenshotURI);
+
+                                            if (drawableIndex == screenshotsNumber) {
+                                                new Handler().postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        getContext().sendBroadcast(new Intent("LOAD_SCREENSHOTS"));
+                                                    }
+                                                }, 113);
+                                            }
+
                                             return false;
                                         }
                                     })
@@ -136,6 +156,28 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                 }
             }
         });
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("LOAD_SCREENSHOTS");
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals("LOAD_SCREENSHOTS")) {
+                    for (int i = 1; i <= screenshotsNumber; i++) {
+                        FunctionsClass.println(">>> " + mapIndexURI.get(i) + " <<<");
+
+                        RelativeLayout demoLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.floating_widgets_demo_item, null);
+                        ImageView floatingWidgetsDemoItem = (ImageView) demoLayout.findViewById(R.id.floatingWidgetsDemoItem);
+
+                        floatingWidgetsDemoItem.setImageDrawable(mapIndexDrawable.get(i));
+                        floatingWidgetsDemoItem.setOnClickListener(AcquireFragment.this);
+                        floatingWidgetsDemoItem.setTag(mapIndexURI.get(i));
+                        floatingWidgetDemoList.addView(demoLayout);
+                    }
+                }
+            }
+        };
+        getContext().registerReceiver(broadcastReceiver, intentFilter);
 
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
