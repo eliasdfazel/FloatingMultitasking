@@ -225,6 +225,14 @@
 
     <string name="purchase">Purchase 💸</string>
     <string name="restorePurchase">ℹ Click To Restore The Item ℹ</string>
+    <string name="floatingWidgetsDemoDescriptions">
+        <![CDATA[
+            🔵 <b><big>Floating Widgets</big></b> 🔳 🔲 | Open Floating Widgets Directly from Home Screen <br/>
+            &bull; First Select & Setup Widgets<br/>
+            &bull; then, Click on ✔ to Create Floating Widget<br/>
+            &bull; Press & Hold on ✔ to See More Options & Create Shortcuts of Floating Widgets on Home Screen<br/>
+        ]]>
+    </string>
 
     <string-array name="ContextMenu">
         <item name="1">Small</item>

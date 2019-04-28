@@ -3,12 +3,12 @@ package net.geekstools.floatshort.PRO.Util.IAP;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.fragment.app.FragmentActivity;
+
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingProvider;
 import net.geekstools.floatshort.PRO.Util.IAP.skulist.AcquireFragment;
-
-import androidx.fragment.app.FragmentActivity;
 
 public class InAppBilling extends FragmentActivity implements BillingProvider {
 
@@ -41,9 +41,9 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                onPurchaseButtonClicked();
+                proceedToPurchaseFragment();
             }
-        }, 500);
+        }, 777);
 
         showRefreshedUi();
     }
@@ -53,7 +53,7 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
         return billingManager;
     }
 
-    public void onPurchaseButtonClicked() {
+    public void proceedToPurchaseFragment() {
         if (acquireFragment == null) {
             acquireFragment = new AcquireFragment();
         }

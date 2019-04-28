@@ -2,14 +2,32 @@ package net.geekstools.floatshort.PRO.Util.IAP.skulist;
 
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsResponseListener;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -20,17 +38,19 @@ import net.geekstools.floatshort.PRO.Util.IAP.skulist.row.SkuRowData;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class AcquireFragment extends DialogFragment {
 
     FunctionsClass functionsClass;
 
     private RecyclerView recyclerView;
+    ProgressBar progressBar;
+
+    HorizontalScrollView floatingWidgetDemo;
+    LinearLayout floatingWidgetDemoList;
+    TextView floatingWidgetDemoDescription;
+
     private SkusAdapter skusAdapter;
-    private View loadingView;
+
     private BillingProvider billingProvider;
 
     @Override
@@ -49,12 +69,40 @@ public class AcquireFragment extends DialogFragment {
         View root = inflater.inflate(R.layout.iap_fragment, container, false);
 
         recyclerView = (RecyclerView) root.findViewById(R.id.list);
-        loadingView = root.findViewById(R.id.screen_wait);
+        progressBar = (ProgressBar) root.findViewById(R.id.progress_circular);
+        floatingWidgetDemo = (HorizontalScrollView) root.findViewById(R.id.floatingWidgetDemo);
+        floatingWidgetDemoList = (LinearLayout) root.findViewById(R.id.floatingWidgetDemoList);
+        floatingWidgetDemoDescription = (TextView) root.findViewById(R.id.floatingWidgetDemoDescription);
 
         root.findViewById(R.id.backgroundFull).setBackgroundColor(PublicVariable.themeLightDark ? getContext().getColor(R.color.light) : getContext().getColor(R.color.dark));
 
-        setWaitScreen(true);
         onManagerReady((BillingProvider) getActivity());
+
+        floatingWidgetDemoDescription.setText(Html.fromHtml(getString(R.string.floatingWidgetsDemoDescriptions)));
+        floatingWidgetDemoDescription.setTextColor(PublicVariable.themeLightDark ? getContext().getColor(R.color.dark) : getContext().getColor(R.color.light));
+
+        for (int i = 0; i < 3; i++) {
+            RelativeLayout demoLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.demo_item, null);
+            ImageView demoItem = (ImageView) demoLayout.findViewById(R.id.demoItem);
+
+            Glide.with(getContext())
+                    .load(Uri.parse("https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/57154177_350550235575129_842545654306701312_n.jpg?_nc_cat=107&_nc_ht=scontent-lga3-1.xx&oh=68ce76e5f263114ef8d09ecf2088278a&oe=5D365890"))
+//                    .into(demoItem)
+                    .addListener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            demoItem.setImageDrawable(resource);
+                            floatingWidgetDemoList.addView(demoLayout);
+                            return false;
+                        }
+                    })
+                    .submit();
+        }
 
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
@@ -87,11 +135,6 @@ public class AcquireFragment extends DialogFragment {
         }
     }
 
-    private void setWaitScreen(boolean set) {
-        recyclerView.setVisibility(set ? View.GONE : View.VISIBLE);
-        loadingView.setVisibility(set ? View.VISIBLE : View.GONE);
-    }
-
     private void handleManagerAndUiReady() {
         List<String> inAppSkus = billingProvider.getBillingManager().getSkus(BillingClient.SkuType.INAPP);
         billingProvider.getBillingManager().querySkuDetailsAsync(BillingClient.SkuType.INAPP,
@@ -116,12 +159,10 @@ public class AcquireFragment extends DialogFragment {
                                 );
                             }
                             if (skuRowDataList.size() == 0) {
-
                                 displayAnErrorIfNeeded();
                             } else {
-
                                 skusAdapter.updateData(skuRowDataList);
-                                setWaitScreen(false);
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
                         }
                     }
@@ -134,8 +175,6 @@ public class AcquireFragment extends DialogFragment {
 
             return;
         }
-
-        loadingView.setVisibility(View.GONE);
     }
 }
 
