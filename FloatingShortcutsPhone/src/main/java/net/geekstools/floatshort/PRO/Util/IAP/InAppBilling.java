@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentActivity;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingProvider;
-import net.geekstools.floatshort.PRO.Util.IAP.skulist.AcquireFragment;
 
 public class InAppBilling extends FragmentActivity implements BillingProvider {
 

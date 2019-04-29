@@ -20,15 +20,15 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
 
     Activity activity;
 
-    private List<SkuRowData> rowDataList;
-    private BillingProvider billingProvider;
+    List<SkuRowData> rowDataList;
+    BillingProvider billingProvider;
 
     public SkusAdapter(BillingProvider billingProvider, Activity activity) {
         this.billingProvider = billingProvider;
         this.activity = activity;
     }
 
-    void updateData(List<SkuRowData> skuRowData) {
+    public void updateData(List<SkuRowData> skuRowData) {
         rowDataList = skuRowData;
 
         notifyDataSetChanged();
@@ -76,7 +76,7 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
 
     }
 
-    private SkuRowData getData(int position) {
+    public SkuRowData getData(int position) {
         return rowDataList == null ? null : rowDataList.get(position);
     }
 }

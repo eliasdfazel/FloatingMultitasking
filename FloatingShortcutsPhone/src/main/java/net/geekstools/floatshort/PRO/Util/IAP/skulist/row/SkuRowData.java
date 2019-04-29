@@ -19,7 +19,7 @@ package net.geekstools.floatshort.PRO.Util.IAP.skulist.row;
  * A model for SkusAdapter's row which holds all the data to render UI
  */
 public class SkuRowData {
-    private final String sku, title, price, description, billingType;
+    final String sku, title, price, description, billingType;
 
     public SkuRowData(String sku, String title, String price, String description, String type) {
         this.sku = sku;

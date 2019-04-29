@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Util.IAP.skulist;
+package net.geekstools.floatshort.PRO.Util.IAP;
 
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
@@ -45,6 +45,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingProvider;
+import net.geekstools.floatshort.PRO.Util.IAP.skulist.SkusAdapter;
 import net.geekstools.floatshort.PRO.Util.IAP.skulist.row.SkuRowData;
 
 import java.util.ArrayList;
@@ -55,21 +56,21 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
 
     FunctionsClass functionsClass;
 
-    private RecyclerView recyclerView;
+    RecyclerView recyclerView;
     ProgressBar progressBar;
 
     HorizontalScrollView floatingWidgetDemo;
     LinearLayout floatingWidgetDemoList;
     TextView floatingWidgetDemoDescription;
 
-    private SkusAdapter skusAdapter;
+    SkusAdapter skusAdapter;
 
-    private BillingProvider billingProvider;
+    BillingProvider billingProvider;
 
     TreeMap<Integer, Drawable> mapIndexDrawable = new TreeMap<Integer, Drawable>();
     TreeMap<Integer, Uri> mapIndexURI = new TreeMap<Integer, Uri>();
 
-    int screenshotsNumber = 6;
+    int screenshotsNumber = 6, glideLoadCounter = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,6 +111,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
             @Override
             public void onSuccess(Boolean aBoolean) {
                 screenshotsNumber = (int) firebaseRemoteConfig.getLong("floating_widgets_demo_screenshots");
+
                 for (int i = 1; i <= screenshotsNumber; i++) {
                     String sceenshotFileName = "FloatingWidgetsDemo" + i + ".png";
                     FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
@@ -130,7 +132,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
 
                                         @Override
                                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                            FunctionsClass.println("*** " + screenshotURI + " ***");
+                                            glideLoadCounter++;
 
                                             String beforeToken = screenshotURI.toString().split("\\?alt=media&token=")[0];
                                             int drawableIndex = Integer.parseInt(String.valueOf(beforeToken.charAt(beforeToken.length() - 5)));
@@ -138,7 +140,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                             mapIndexDrawable.put(drawableIndex, resource);
                                             mapIndexURI.put(drawableIndex, screenshotURI);
 
-                                            if (drawableIndex == screenshotsNumber) {
+                                            if (screenshotsNumber == glideLoadCounter) {
                                                 new Handler().postDelayed(new Runnable() {
                                                     @Override
                                                     public void run() {
