@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="recoveryErrorCategory">Press &amp; Hold on a Category to Add It in Recovery 🔁</string>
+    <string name="recoveryErrorCategory">Press &amp; Hold on a Folder to Add It in Recovery 🔁</string>
     <string name="recoveryErrorWidget">Press &amp; Hold on a Widget to Add It in Recovery 🔁</string>
     <string name="recovery_center">Recovery Center</string>
     <string name="settingTitle">Preferences</string>
@@ -100,12 +100,12 @@
     <string name="nfc">Apps for NFC</string>
     <string name="time">Apps for Time</string>
     <string name="auto_apps">Auto Applications</string>
-    <string name="wifi_category">Categories for WiFi</string>
-    <string name="bluetooth_category">Categories for Bluetooth</string>
-    <string name="gps_category">Categories for GPS</string>
-    <string name="nfc_category">Categories for NFC</string>
-    <string name="time_category">Categories for Time</string>
-    <string name="auto_categories">Auto Categories</string>
+    <string name="wifi_category">Folders for WiFi</string>
+    <string name="bluetooth_category">Folders for Bluetooth</string>
+    <string name="gps_category">Folders for GPS</string>
+    <string name="nfc_category">Folders for NFC</string>
+    <string name="time_category">Folders for Time</string>
+    <string name="auto_categories">Auto Folders</string>
     <string name="retry">Please Select a Feature</string>
     <string name="wait">Please, Be Patient!</string>
     <string name="stable">Control Panel</string>
@@ -118,7 +118,7 @@
             <br/>
             This Permission Allows Me to Get List of <b>Frequently Used Application</b> to Set Quick Bar.<br/><br/>
             Also, It is Essential for<br/>
-            1. <b>🔄 Remote Recovery of Floating Shortcuts/Categories</b> to Recognize Command…<br/>
+            1. <b>🔄 Remote Recovery of Floating Shortcuts/Folders</b> to Recognize Command…<br/>
             2. <b>🆗 Google! Open Floating Shortcuts</b><br/>
             3. <b>🕐 Optimizing Floating Splash</b><br/>
         ]]>
@@ -128,7 +128,7 @@
     <string name="bootPermission">
         <![CDATA[
             <br/>
-            <big>Recover Floating Shortcuts/Categories When</big>…<br/>
+            <big>Recover Floating Shortcuts/Folders When</big>…<br/>
             1. <b>Saying \'🆗 Google Open Floating Shortcuts\'</b><br/>
             2. <b>Using Popup AppShortcuts</b> | Press & Hold ⏺ on App Shortcut on Home Screen (Android 7.1.1 & Higher)<br/>
             3. <b>Turning On 🔄 your Device</b><br/>
@@ -150,9 +150,9 @@
     <string name="createShortcut">Create Home Screen Shortcuts</string>
     <string name="createAlias">Create App Drawer Shortcuts</string>
     <string name="deleteAlias">Remove App Drawer Shortcuts</string>
-    <string name="floatingCategory">Floating Categories</string>
+    <string name="floatingCategory">Floating Folders</string>
     <string name="floatingWidget">Floating Widgets</string>
-    <string name="categoryHint">Floating Categories</string>
+    <string name="categoryHint">Floating Folders</string>
     <string name="widgetHint">Floating Widgets</string>
     <string name="widgetLabelHint">Type A Widget Label</string>
     <string name="widgetPickerTitle">
@@ -163,9 +163,9 @@
     </string>
     <string name="floatingHint">Floating Shortcuts</string>
     <string name="recover_apps">Recover Floating Shortcuts</string>
-    <string name="recover_category">Recover Floating Categories</string>
+    <string name="recover_category">Recover Floating Folders</string>
     <string name="recover_widgets">Recover Floating Widgets</string>
-    <string name="categoryDesc">Please Write a Category Name</string>
+    <string name="categoryDesc">Please Write a Folder Name</string>
     <string name="colortext">App Theme</string>
     <string name="themeTrans">Transparent Theme</string>
     <string name="blurryTitle">Blurry Theme</string>
@@ -201,8 +201,8 @@
     <string name="unpin">Unpin Shortcut</string>
     <string name="close">Minimize It</string>
     <string name="remove">Remove Shortcut</string>
-    <string name="pin_category">Pin Category</string>
-    <string name="unpin_category">Unpin Category</string>
+    <string name="pin_category">Pin Folder</string>
+    <string name="unpin_category">Unpin Folder</string>
     <string name="remove_category">Remove</string>
     <string name="floatIt">Float It</string>
     <string name="splitIt">Split It</string>

@@ -28,7 +28,7 @@
     <string name="grant">Grant</string>
     <string name="read">Read More</string>
     <string name="later">Later Setup</string>
-    <string name="group">Floating Categories</string>
+    <string name="group">Floating Folders</string>
     <string name="themeTrans">Transparent Theme</string>
     <string name="autotrans">Floating Transparency</string>
     <string name="splashTitle">Floating Splash</string>
@@ -38,10 +38,10 @@
     <string name="remove_all_shortcuts">REMOVE ALL</string>
     <string name="pin">Pin Shortcut</string>
     <string name="unpin">Unpin Shortcut</string>
-    <string name="pin_category">Pin Category</string>
-    <string name="unpin_category">Unpin Category</string>
+    <string name="pin_category">Pin Folder</string>
+    <string name="unpin_category">Unpin Folder</string>
     <string name="remove">Remove Shortcut</string>
-    <string name="remove_category">Remove Category</string>
+    <string name="remove_category">Remove Folder</string>
     <string name="edit_category">Edit </string>
 
 </resources>
