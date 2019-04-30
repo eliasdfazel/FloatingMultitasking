@@ -299,7 +299,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                     }
                 } else {
                     startActivity(new Intent(getApplicationContext(), InAppBilling.class)
-                                    .putExtra("UserEmailAddress", functionsClass.readPreference(".BETA", "testerEmail", null)),
+                                    .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
                 }
             }
@@ -603,7 +603,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
                                     if (user == null) {
-                                        functionsClass.savePreference(".BETA", "testerEmail", null);
+                                        functionsClass.savePreference(".UserInformation", "userEmail", null);
                                     } else {
 
                                     }
@@ -617,8 +617,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                     e.printStackTrace();
                 }
 
-                if (functionsClass.readPreference(".BETA", "isBetaTester", false)
-                        && functionsClass.readPreference(".BETA", "testerEmail", null) == null) {
+                if (functionsClass.readPreference(".UserInformation", "userEmail", null) == null) {
                     GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                             .requestIdToken(getString(R.string.webClientId))
                             .requestEmail()
@@ -744,18 +743,18 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                                 if (task.isSuccessful()) {
                                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                                     if (firebaseUser != null) {
-                                        functionsClass.savePreference(".BETA", "testerEmail", firebaseUser.getEmail());
+                                        functionsClass.savePreference(".UserInformation", "userEmail", firebaseUser.getEmail());
 
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
                                                 try {
-                                                    File betaFile = new File("/data/data/" + getPackageName() + "/shared_prefs/.BETA.xml");
+                                                    File betaFile = new File("/data/data/" + getPackageName() + "/shared_prefs/.UserInformation.xml");
                                                     Uri uriBetaFile = Uri.fromFile(betaFile);
                                                     FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
-                                                    StorageReference storageReference = firebaseStorage.getReference("/betaTesters/" + "API" + functionsClass.returnAPI() + "/" +
-                                                            functionsClass.readPreference(".BETA", "testerEmail", null));
+                                                    StorageReference storageReference = firebaseStorage.getReference("/Users/" + "API" + functionsClass.returnAPI() + "/" +
+                                                            functionsClass.readPreference(".UserInformation", "userEmail", null));
                                                     UploadTask uploadTask = storageReference.putFile(uriBetaFile);
 
                                                     uploadTask.addOnFailureListener(new OnFailureListener() {

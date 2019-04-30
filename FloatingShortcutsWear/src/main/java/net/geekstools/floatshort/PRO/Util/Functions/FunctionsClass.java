@@ -48,6 +48,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
+import androidx.palette.graphics.Palette;
+
 import net.geekstools.floatshort.PRO.App_Unlimited_HIS;
 import net.geekstools.floatshort.PRO.App_Unlimited_Shortcuts;
 import net.geekstools.floatshort.PRO.BindServices;
@@ -69,9 +72,6 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
-import androidx.palette.graphics.Palette;
 
 public class FunctionsClass {
     int API;
@@ -637,6 +637,13 @@ public class FunctionsClass {
         editorSharedPreferences.apply();
     }
 
+    public void saveDefaultPreference(String KEY, boolean VALUE) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
+        editorSharedPreferences.putBoolean(KEY, VALUE);
+        editorSharedPreferences.apply();
+    }
+
     public String readPreference(String PreferenceName, String KEY, String defaultVALUE) {
         return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getString(KEY, defaultVALUE);
     }
@@ -647,6 +654,10 @@ public class FunctionsClass {
 
     public boolean readPreference(String PreferenceName, String KEY, boolean defaultVALUE) {
         return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getBoolean(KEY, defaultVALUE);
+    }
+
+    public boolean readDefaultPreference(String KEY, boolean defaultVALUE) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY, defaultVALUE);
     }
 
     /*CheckPoint*/
@@ -1578,17 +1589,6 @@ public class FunctionsClass {
         return icon;
     }
 
-    /*Firebase Remote Config*/
-    public String versionCodeRemoteConfigKey() {
-        String versionCodeKey = null;
-        if (readPreference(".BETA", "isBetaTester", false)) {
-            versionCodeKey = context.getString(R.string.BETAintegerVersionCodeNewUpdateWear);
-        } else {
-            versionCodeKey = context.getString(R.string.integerVersionCodeNewUpdateWear);
-        }
-        return versionCodeKey;
-    }
-
     public static class DisplaySection {
         public static final int TopLeft = 1;
         public static final int TopRight = 2;
@@ -1641,5 +1641,16 @@ public class FunctionsClass {
             this.viewToBeat = viewToBeat;
             this.viewToBeat.animate().scaleXBy(0.33f).scaleYBy(0.33f).setDuration(133).setListener(scaleUpListener);
         }
+    }
+
+    /*Firebase Remote Config*/
+    public String versionCodeRemoteConfigKey() {
+        String versionCodeKey = null;
+        if (readDefaultPreference("JoinedBetaProgrammer", false)) {
+            versionCodeKey = context.getString(R.string.BETAintegerVersionCodeNewUpdateWear);
+        } else {
+            versionCodeKey = context.getString(R.string.integerVersionCodeNewUpdateWear);
+        }
+        return versionCodeKey;
     }
 }

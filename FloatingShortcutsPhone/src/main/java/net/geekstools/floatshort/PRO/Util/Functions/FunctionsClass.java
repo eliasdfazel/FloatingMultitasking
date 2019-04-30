@@ -1563,26 +1563,26 @@ public class FunctionsClass {
                 if (appVersionCode(context.getPackageName()) > Integer.parseInt(readFile(".Updated"))) {
                     alertDialog.show();
 
-                    if (!BuildConfig.DEBUG && networkConnection() && readPreference(".BETA", "isBetaTester", false)) {
+                    if (!BuildConfig.DEBUG && networkConnection()) {
                         FirebaseAuth.getInstance().addAuthStateListener(
                                 new FirebaseAuth.AuthStateListener() {
                                     @Override
                                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                                         FirebaseUser user = firebaseAuth.getCurrentUser();
                                         if (user == null) {
-                                            savePreference(".BETA", "testerEmail", null);
+                                            savePreference(".UserInformation", "userEmail", null);
 
                                         } else {
                                             new Handler().postDelayed(new Runnable() {
                                                 @Override
                                                 public void run() {
                                                     try {
-                                                        File betaFile = new File("/data/data/" + context.getPackageName() + "/shared_prefs/.BETA.xml");
+                                                        File betaFile = new File("/data/data/" + context.getPackageName() + "/shared_prefs/.UserInformation.xml");
                                                         Uri uriBetaFile = Uri.fromFile(betaFile);
                                                         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
-                                                        StorageReference storageReference = firebaseStorage.getReference("/betaTesters/" + "API" + returnAPI() + "/" +
-                                                                readPreference(".BETA", "testerEmail", null));
+                                                        StorageReference storageReference = firebaseStorage.getReference("/Users/" + "API" + returnAPI() + "/" +
+                                                                readPreference(".UserInformation", "userEmail", null));
                                                         UploadTask uploadTask = storageReference.putFile(uriBetaFile);
 
                                                         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -1669,26 +1669,26 @@ public class FunctionsClass {
                 if (appVersionCode(context.getPackageName()) > Integer.parseInt(readFile(".Updated"))) {
                     alertDialog.show();
 
-                    if (!BuildConfig.DEBUG && networkConnection() && readPreference(".BETA", "isBetaTester", false)) {
+                    if (!BuildConfig.DEBUG && networkConnection()) {
                         FirebaseAuth.getInstance().addAuthStateListener(
                                 new FirebaseAuth.AuthStateListener() {
                                     @Override
                                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                                         FirebaseUser user = firebaseAuth.getCurrentUser();
                                         if (user == null) {
-                                            savePreference(".BETA", "testerEmail", null);
+                                            savePreference(".UserInformation", "userEmail", null);
 
                                         } else {
                                             new Handler().postDelayed(new Runnable() {
                                                 @Override
                                                 public void run() {
                                                     try {
-                                                        File betaFile = new File("/data/data/" + context.getPackageName() + "/shared_prefs/.BETA.xml");
+                                                        File betaFile = new File("/data/data/" + context.getPackageName() + "/shared_prefs/.UserInformation.xml");
                                                         Uri uriBetaFile = Uri.fromFile(betaFile);
                                                         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
-                                                        StorageReference storageReference = firebaseStorage.getReference("/betaTesters/" + "API" + returnAPI() + "/" +
-                                                                readPreference(".BETA", "testerEmail", null));
+                                                        StorageReference storageReference = firebaseStorage.getReference("/Users/" + "API" + returnAPI() + "/" +
+                                                                readPreference(".UserInformation", "userEmail", null));
                                                         UploadTask uploadTask = storageReference.putFile(uriBetaFile);
 
                                                         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -5700,13 +5700,13 @@ public class FunctionsClass {
     }
 
     /*Firebase Remote Config*/
-    public boolean isBetaTester() {
-        return readPreference(".BETA", "isBetaTester", false);
+    public boolean joinedBetaProgram() {
+        return readDefaultPreference("JoinedBetaProgrammer", false);
     }
 
     public String versionCodeRemoteConfigKey() {
         String versionCodeKey = null;
-        if (readPreference(".BETA", "isBetaTester", false)) {
+        if (joinedBetaProgram()) {
             versionCodeKey = context.getString(R.string.BETAintegerVersionCodeNewUpdatePhone);
         } else {
             versionCodeKey = context.getString(R.string.integerVersionCodeNewUpdatePhone);
@@ -5716,7 +5716,7 @@ public class FunctionsClass {
 
     public String versionNameRemoteConfigKey() {
         String versionCodeKey = null;
-        if (readPreference(".BETA", "isBetaTester", false)) {
+        if (joinedBetaProgram()) {
             versionCodeKey = context.getString(R.string.BETAstringVersionNameNewUpdatePhone);
         } else {
             versionCodeKey = context.getString(R.string.stringVersionNameNewUpdatePhone);
@@ -5726,7 +5726,7 @@ public class FunctionsClass {
 
     public String upcomingChangeLogRemoteConfigKey() {
         String versionCodeKey = null;
-        if (readPreference(".BETA", "isBetaTester", false)) {
+        if (joinedBetaProgram()) {
             versionCodeKey = context.getString(R.string.BETAstringUpcomingChangeLogPhone);
         } else {
             versionCodeKey = context.getString(R.string.stringUpcomingChangeLogPhone);
@@ -5736,7 +5736,7 @@ public class FunctionsClass {
 
     public String upcomingChangeLogSummaryConfigKey() {
         String versionCodeKey = null;
-        if (readPreference(".BETA", "isBetaTester", false)) {
+        if (joinedBetaProgram()) {
             versionCodeKey = context.getString(R.string.BETAstringUpcomingChangeLogSummaryPhone);
         } else {
             versionCodeKey = context.getString(R.string.stringUpcomingChangeLogSummaryPhone);
