@@ -52,13 +52,13 @@ public class Configurations extends Activity {
 
         try {
             if (!BuildConfig.DEBUG) {
-                functionsClass.savePreference(".UserInformation", "isBetaTester", functionsClass.appVersionName(getPackageName()).equals("[BETA]") ? true : false);
+                functionsClass.savePreference(".UserInformation", "isBetaTester", functionsClass.appVersionName(getPackageName()).contains("[BETA]") ? true : false);
                 functionsClass.savePreference(".UserInformation", "installedVersionCode", functionsClass.appVersionCode(getPackageName()));
                 functionsClass.savePreference(".UserInformation", "installedVersionName", functionsClass.appVersionName(getPackageName()));
                 functionsClass.savePreference(".UserInformation", "deviceModel", functionsClass.getDeviceName());
                 functionsClass.savePreference(".UserInformation", "userRegion", functionsClass.getCountryIso());
 
-                if (functionsClass.appVersionName(getPackageName()).equals("[BETA]")) {
+                if (functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
                     functionsClass.saveDefaultPreference("JoinedBetaProgrammer", true);
                 }
             }

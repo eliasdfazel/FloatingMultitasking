@@ -107,6 +107,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     LinearLayout indexView, freqView;
     ProgressBar loadingBarLTR;
     ImageView loadLogo, actionButton, recoverFloatingCategories, recoverFloatingWidgets;
+    TextView popupIndex;
     MaterialButton switchWidgets, switchCategories, recoveryAction, automationAction;
 
     List<ApplicationInfo> applicationInfoList;
@@ -125,7 +126,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
     HorizontalScrollView freqlist;
     String[] freqApps;
-    int limitedCountLine, loadViewPosition = 0, hybridItem = 0, lastIntentItem = 0;
+    int limitedCountLine, hybridItem = 0, lastIntentItem = 0;
     int[] counter;
     boolean loadFreq = false;
 
@@ -162,6 +163,11 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         automationAction = (MaterialButton) findViewById(R.id.automationAction);
         recoverFloatingCategories = (ImageView) findViewById(R.id.recoverFloatingCategories);
         recoverFloatingWidgets = (ImageView) findViewById(R.id.recoverFloatingWidgets);
+        popupIndex = (TextView) findViewById(R.id.popupIndex);
+
+        Drawable popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon).mutate();
+        popupIndexBackground.setTint(PublicVariable.primaryColorOpposite);
+        popupIndex.setBackground(popupIndexBackground);
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
         functionsClass = new FunctionsClass(getApplicationContext(), this);
@@ -519,6 +525,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             }
         });
 
+        indexView.setOnTouchListener(HybridViewOff.this);
+
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
@@ -556,19 +564,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        loadView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                loadViewPosition = recyclerViewLayoutManager.findFirstVisibleItemPosition();
-            }
-        });
 
         if (functionsClass.SystemCache()) {
             startService(new Intent(getApplicationContext(), BindServices.class));
@@ -705,7 +700,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
         functionsClass.CheckSystemRAM(HybridViewOff.this);
 
-
         if (functionsClass.SystemCache() || functionsClass.automationFeatureEnable()) {
             startService(new Intent(getApplicationContext(), BindServices.class));
         }
@@ -745,13 +739,30 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     }
 
     @Override
-    public boolean onTouch(View view, MotionEvent event) {
+    public boolean onTouch(View view, MotionEvent motionEvent) {
         if (view instanceof TextView) {
             final TextView selectedIndex = (TextView) view;
             nestedScrollView.smoothScrollTo(
                     0,
                     ((int) loadView.getChildAt(mapIndex.get(selectedIndex.getText().toString())).getY())
             );
+
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN: {
+                    popupIndex.setY(selectedIndex.getY() + functionsClass.DpToInteger(loadFreq ? 0 : 33));
+                    popupIndex.setText(selectedIndex.getText().toString());
+                    popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                    popupIndex.setVisibility(View.VISIBLE);
+
+                    break;
+                }
+                case MotionEvent.ACTION_UP: {
+                    popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                    popupIndex.setVisibility(View.INVISIBLE);
+
+                    break;
+                }
+            }
         }
         return true;
     }
@@ -1017,7 +1028,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 scrollRelativeLayout.setPadding(0, scrollRelativeLayout.getPaddingTop(), 0, 0);
                 nestedScrollView.setLayoutParams(layoutParams);
 
-                nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(99));
+                nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(66));
             }
             recyclerViewAdapter.notifyDataSetChanged();
             HybridSectionedGridRecyclerViewAdapter.Section[] sectionsData = new HybridSectionedGridRecyclerViewAdapter.Section[sections.size()];
@@ -1129,11 +1140,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             hybridSectionedGridRecyclerViewAdapter.setSections(HybridViewOff.this.sections.toArray(sectionsData));
             loadView.setAdapter(hybridSectionedGridRecyclerViewAdapter);
 
-            if (loadViewPosition == 0) {
-                recyclerViewLayoutManager.scrollToPosition(getSharedPreferences("LoadView", Context.MODE_PRIVATE).getInt("LoadViewPosition", 0));
-            } else {
-                recyclerViewLayoutManager.scrollToPosition(loadViewPosition);
-            }
+            recyclerViewLayoutManager.scrollToPosition(0);
+            nestedScrollView.scrollTo(0, 0);
 
             LoadApplicationsIndex loadApplicationsIndex = new LoadApplicationsIndex();
             loadApplicationsIndex.execute();
@@ -1171,6 +1179,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     if (mapIndex.get(indexText) == null/*avoid duplication*/) {
                         mapIndex.put(indexText, navItem);
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1181,13 +1190,13 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            LayerDrawable drawIndex = (LayerDrawable) getResources().getDrawable(R.drawable.draw_index);
+            LayerDrawable drawIndex = (LayerDrawable) getDrawable(R.drawable.draw_index);
             GradientDrawable backIndex = (GradientDrawable) drawIndex.findDrawableByLayerId(R.id.backtemp);
             backIndex.setColor(Color.TRANSPARENT);
 
             TextView textView = null;
-            List<String> indexList = new ArrayList<String>(mapIndex.keySet());
-            for (String index : indexList) {
+            List<String> indexListFinal = new ArrayList<String>(mapIndex.keySet());
+            for (String index : indexListFinal) {
                 textView = (TextView) getLayoutInflater()
                         .inflate(R.layout.side_index_item, null);
                 textView.setBackground(drawIndex);
