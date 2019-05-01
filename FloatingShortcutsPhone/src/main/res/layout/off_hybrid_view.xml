@@ -82,9 +82,9 @@
             android:id="@+id/side_index"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@android:color/transparent"
+            android:layout_gravity="center"
             android:gravity="center"
+            android:background="@android:color/transparent"
             android:orientation="vertical"/>
     </ScrollView>
 

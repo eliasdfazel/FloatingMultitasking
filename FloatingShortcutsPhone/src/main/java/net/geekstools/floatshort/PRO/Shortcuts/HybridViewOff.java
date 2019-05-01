@@ -22,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
+import android.util.Range;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -111,7 +112,9 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     MaterialButton switchWidgets, switchCategories, recoveryAction, automationAction;
 
     List<ApplicationInfo> applicationInfoList;
-    Map<String, Integer> mapIndex;
+    Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
+    Map<Float, String> mapRangeIndex;
+    Map<Range<Float>, String> indexItemsRange;
     NavigableMap<String, Integer> indexItems;
     ArrayList<NavDrawerItem> navDrawerItems;
 
@@ -188,7 +191,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
         applicationInfoList = new ArrayList<ApplicationInfo>();
         navDrawerItems = new ArrayList<NavDrawerItem>();
-        mapIndex = new LinkedHashMap<String, Integer>();
+        mapIndexFirstItem = new LinkedHashMap<String, Integer>();
+        mapIndexLastItem = new LinkedHashMap<String, Integer>();
+        mapRangeIndex = new LinkedHashMap<Float, String>();
+        indexItemsRange = new LinkedHashMap<Range<Float>, String>();
 
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
@@ -682,6 +688,58 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 });
 
         functionsClass.addAppShortcuts();
+
+
+        indexView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+
+                        popupIndex.setY(motionEvent.getRawY());
+                        popupIndex.setText(mapRangeIndex.get(motionEvent.getRawY()));
+//                        popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                        popupIndex.setVisibility(View.VISIBLE);
+
+                        FunctionsClass.println(">>> DOWN " +
+                                motionEvent.getRawY() + " == "
+                                + mapRangeIndex.get(motionEvent.getRawY())
+                        );
+
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        popupIndex.setVisibility(View.INVISIBLE);
+
+                        FunctionsClass.println(">>> UP " +
+                                motionEvent.getRawY() + " == "
+                                + mapRangeIndex.get(motionEvent.getRawY())
+                        );
+
+                        break;
+                    }
+                    case MotionEvent.ACTION_MOVE: {
+                        popupIndex.setY(motionEvent.getRawY());
+                        popupIndex.setText(mapRangeIndex.get(motionEvent.getRawY()));
+//                        popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                        popupIndex.setVisibility(View.VISIBLE);
+
+                        FunctionsClass.println(">>> MOVE " +
+                                motionEvent.getRawY() + " == "
+                                + mapRangeIndex.get(motionEvent.getRawY())
+                        );
+
+                        break;
+                    }
+                }
+
+                return true;
+            }
+        });
+
+
+
     }
 
     @Override
@@ -742,9 +800,17 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (view instanceof TextView) {
             final TextView selectedIndex = (TextView) view;
+
+
             nestedScrollView.smoothScrollTo(
                     0,
-                    ((int) loadView.getChildAt(mapIndex.get(selectedIndex.getText().toString())).getY())
+                    ((int) loadView.getChildAt(mapIndexFirstItem.get(selectedIndex.getText().toString())).getY())
+            );
+
+            FunctionsClass.println(">>> " +
+                    "Y == " +
+                    selectedIndex.getY() + " === " + mapIndexFirstItem.get(selectedIndex.getText().toString())
+                    + " --- childY == " + ((int) loadView.getChildAt(mapIndexFirstItem.get(selectedIndex.getText().toString())).getY())
             );
 
             switch (motionEvent.getAction()) {
@@ -1176,14 +1242,17 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             for (int navItem = 0; navItem < indexCount; navItem++) {
                 try {
                     String indexText = indexList.get(navItem);
-                    if (mapIndex.get(indexText) == null/*avoid duplication*/) {
-                        mapIndex.put(indexText, navItem);
+                    if (mapIndexFirstItem.get(indexText) == null/*avoid duplication*/) {
+                        mapIndexFirstItem.put(indexText, navItem);
                     }
+
+                    mapIndexLastItem.put(indexText, navItem);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+
             return null;
         }
 
@@ -1195,15 +1264,51 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             backIndex.setColor(Color.TRANSPARENT);
 
             TextView textView = null;
-            List<String> indexListFinal = new ArrayList<String>(mapIndex.keySet());
+            List<String> indexListFinal = new ArrayList<String>(mapIndexFirstItem.keySet());
             for (String index : indexListFinal) {
                 textView = (TextView) getLayoutInflater()
                         .inflate(R.layout.side_index_item, null);
                 textView.setBackground(drawIndex);
                 textView.setText(index.toUpperCase());
                 textView.setTextColor(PublicVariable.colorLightDarkOpposite);
-                textView.setOnTouchListener(HybridViewOff.this);
+//                textView.setOnTouchListener(HybridViewOff.this);
                 indexView.addView(textView);
+            }
+
+//            ((int) loadView.getChildAt(mapIndex.get(/* Text Of Index */)).getY())
+//            FunctionsClass.println(">>> " + mapIndex.size());
+//            FunctionsClass.println(">>> " + indexList.size());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    FunctionsClass.println(">>>>> == " + indexView.getY());
+
+                    float oldNumber = (int) indexView.getY();
+                    for (int i = 0; i < indexView.getChildCount(); i++) {
+                        FunctionsClass.println("===== " /*+ ((TextView) indexView.getChildAt(i)).getY() + " - "*/ + (((TextView) indexView.getChildAt(i)).getY() + indexView.getY())
+                                + " >>> " + ((TextView) indexView.getChildAt(i)).getText());
+
+                        String text = ((TextView) indexView.getChildAt(i)).getText().toString();
+                        for (float j = oldNumber; j < (indexView.getChildAt(i).getY() + indexView.getY() + 53); j++) {
+
+
+                            mapRangeIndex.put(j, text);
+
+
+                        }
+                        oldNumber = indexView.getChildAt(i).getY() + indexView.getY() + 53;
+                    }
+                }
+            }, 500);
+            for (int i = 0; i < indexList.size(); i++) {
+                float lowRange = loadView.getChildAt(mapIndexFirstItem.get(indexList.get(i))).getY();
+                float upRange = loadView.getChildAt(mapIndexLastItem.get(indexList.get(i))).getY();
+
+                FunctionsClass.println(">>> " + lowRange + " >>><<< " + indexList.get(i));
+                FunctionsClass.println(">>> " + upRange + " >>><<< " + indexList.get(i));
+
+
+                indexItemsRange.put(new Range<>(lowRange, upRange), indexList.get(i));
             }
 
             LoadInstalledCustomIcons loadInstalledCustomIcons = new LoadInstalledCustomIcons();
