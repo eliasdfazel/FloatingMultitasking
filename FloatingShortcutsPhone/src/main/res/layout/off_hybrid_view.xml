@@ -73,10 +73,10 @@
         android:id="@+id/nestedIndexScrollView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:paddingTop="35dp"
-        android:paddingBottom="43dp"
         android:layout_alignEnd="@id/nestedScrollView"
-        android:foregroundGravity="center_vertical">
+        android:foregroundGravity="center_vertical"
+        android:background="@android:color/holo_green_light"
+        android:visibility="invisible">
 
         <LinearLayout
             android:id="@+id/side_index"
@@ -84,7 +84,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:background="@android:color/transparent"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:background="@android:color/holo_orange_dark"
             android:orientation="vertical"/>
     </ScrollView>
 

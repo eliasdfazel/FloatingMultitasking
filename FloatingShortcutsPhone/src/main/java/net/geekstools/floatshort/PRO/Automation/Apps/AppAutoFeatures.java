@@ -773,16 +773,11 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            LayerDrawable drawIndex = (LayerDrawable) getResources().getDrawable(R.drawable.draw_index);
-            GradientDrawable backIndex = (GradientDrawable) drawIndex.findDrawableByLayerId(R.id.backtemp);
-            backIndex.setColor(Color.TRANSPARENT);
-
             TextView textView = null;
             List<String> indexList = new ArrayList<String>(mapIndex.keySet());
             for (String index : indexList) {
                 textView = (TextView) getLayoutInflater()
                         .inflate(R.layout.side_index_item, null);
-                textView.setBackground(drawIndex);
                 textView.setText(index.toUpperCase());
                 textView.setTextColor(PublicVariable.colorLightDarkOpposite);
                 textView.setOnClickListener(AppAutoFeatures.this);
