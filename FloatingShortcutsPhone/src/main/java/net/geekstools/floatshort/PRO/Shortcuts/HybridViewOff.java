@@ -1174,6 +1174,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             TextView textView = null;
             List<String> indexListFinal = new ArrayList<String>(mapIndexFirstItem.keySet());
             for (String index : indexListFinal) {
+                FunctionsClass.println("----- " + index + " >>><<< " + mapIndexFirstItem.get(index) + " == " + mapIndexLastItem.get(index));
+
                 textView = (TextView) getLayoutInflater()
                         .inflate(R.layout.side_index_item, null);
                 textView.setText(index.toUpperCase());
@@ -1189,8 +1191,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     for (int i = 0; i < indexView.getChildCount(); i++) {
                         String indexText = ((TextView) indexView.getChildAt(i)).getText().toString();
                         float indexRange = (indexView.getChildAt(i).getY() + indexView.getY() + finalTextView.getHeight());
-                        for (float j = upperRange; j <= (indexRange); j++) {
-                            mapRangeIndex.put(j, indexText);
+                        for (float jRange = upperRange; jRange <= (indexRange); jRange++) {
+                            mapRangeIndex.put(jRange, indexText);
                         }
 
                         upperRange = indexRange;
@@ -1253,14 +1255,13 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
         nestedIndexScrollView.setVisibility(View.VISIBLE);
 
-        float popupIndexOffsetY = indexView.getY() - PublicVariable.statusBarHeight;
-        indexView.setOnTouchListener(new View.OnTouchListener() {
+        float popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (functionsClass.UsageStatsEnabled() ? functionsClass.DpToInteger(7) : functionsClass.DpToInteger(7));
+        nestedIndexScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        String indexText = mapRangeIndex.get(motionEvent.getRawY());
+                        String indexText = mapRangeIndex.get(motionEvent.getY());
 
                         if (indexText != null) {
                             popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
@@ -1269,38 +1270,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                             popupIndex.setVisibility(View.VISIBLE);
                         }
 
-                        FunctionsClass.println(">>> DOWN " +
-                                motionEvent.getRawY() + " == "
-                                + mapRangeIndex.get(motionEvent.getRawY())
-                        );
-
-
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP: {
-                        if (popupIndex.isShown()) {
-                            try {
-                                nestedScrollView.smoothScrollTo(
-                                        0,
-                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getRawY()))).getY())
-                                );
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
-                            popupIndex.setVisibility(View.INVISIBLE);
-                        }
-
-                        FunctionsClass.println(">>> UP " +
-                                motionEvent.getRawY() + " == "
-                                + mapRangeIndex.get(motionEvent.getRawY())
-                        );
-
                         break;
                     }
                     case MotionEvent.ACTION_MOVE: {
-                        String indexText = mapRangeIndex.get(motionEvent.getRawY());
+                        String indexText = mapRangeIndex.get(motionEvent.getY());
 
                         if (indexText != null) {
                             if (!popupIndex.isShown()) {
@@ -1313,7 +1286,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                             try {
                                 nestedScrollView.smoothScrollTo(
                                         0,
-                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getRawY()))).getY())
+                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getY()))).getY())
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -1325,16 +1298,26 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                             }
                         }
 
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        if (popupIndex.isShown()) {
+                            try {
+                                nestedScrollView.smoothScrollTo(
+                                        0,
+                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getY()))).getY())
+                                );
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
-//                        FunctionsClass.println(">>> MOVE " +
-//                                motionEvent.getRawY() + " == "
-//                                + mapRangeIndex.get(motionEvent.getRawY())
-//                        );
+                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                            popupIndex.setVisibility(View.INVISIBLE);
+                        }
 
                         break;
                     }
                 }
-
                 return true;
             }
         });

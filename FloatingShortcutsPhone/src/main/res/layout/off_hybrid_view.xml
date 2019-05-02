@@ -75,7 +75,7 @@
         android:layout_height="match_parent"
         android:layout_alignEnd="@id/nestedScrollView"
         android:foregroundGravity="center_vertical"
-        android:background="@android:color/holo_green_light"
+        android:background="@android:color/transparent"
         android:visibility="invisible">
 
         <LinearLayout
@@ -86,7 +86,7 @@
             android:gravity="center"
             android:paddingTop="7dp"
             android:paddingBottom="7dp"
-            android:background="@android:color/holo_orange_dark"
+            android:background="@android:color/transparent"
             android:orientation="vertical"/>
     </ScrollView>
 
