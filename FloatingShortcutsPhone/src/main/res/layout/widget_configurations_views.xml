@@ -43,6 +43,27 @@
         </RelativeLayout>
     </ScrollView>
 
+    <ScrollView
+        android:id="@+id/nestedIndexScrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignEnd="@id/configuredWidgetNestedScrollView"
+        android:foregroundGravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:id="@+id/side_index"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:background="@android:color/transparent"
+            android:orientation="vertical" />
+    </ScrollView>
+
     <net.geekstools.imageview.customshapes.ShapesImage
         app:shapeDrawable="@drawable/ic_bulb"
         android:id="@+id/recoverFloatingCategories"
@@ -147,7 +168,7 @@
 
 
     <ScrollView
-        android:id="@+id/nestedScrollView"
+        android:id="@+id/installedNestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
@@ -173,7 +194,7 @@
                 android:textSize="19sp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list"
+                android:id="@+id/installedWidgetList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/widgetPickerTitle"
@@ -187,6 +208,27 @@
                 android:persistentDrawingCache="animation|scrolling"
                 android:saveEnabled="true"/>
         </RelativeLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/installedNestedIndexScrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignEnd="@id/installedNestedScrollView"
+        android:foregroundGravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:id="@+id/installed_side_index"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:background="@android:color/transparent"
+            android:orientation="vertical" />
     </ScrollView>
 
     <ImageView
@@ -252,6 +294,18 @@
         android:layout_marginTop="11dp"
         android:layout_marginEnd="10dp"
         android:src="@drawable/draw_pref_action" />
+
+    <TextView
+        android:id="@+id/popupIndex"
+        android:layout_width="77dp"
+        android:layout_height="77dp"
+        android:layout_toStartOf="@id/nestedIndexScrollView"
+        android:gravity="center"
+        android:textColor="@color/light"
+        android:textSize="29sp"
+        android:typeface="monospace"
+        android:background="@drawable/ic_launcher_balloon"
+        android:visibility="invisible" />
 
     <RelativeLayout
         android:id="@+id/loadingSplash"

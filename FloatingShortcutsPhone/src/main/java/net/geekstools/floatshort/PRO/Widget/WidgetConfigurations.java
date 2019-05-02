@@ -2,6 +2,7 @@ package net.geekstools.floatshort.PRO.Widget;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.appwidget.AppWidgetHost;
@@ -84,7 +85,11 @@ import net.geekstools.floatshort.PRO.Widget.NavAdapter.WidgetSectionedGridRecycl
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 public class WidgetConfigurations extends Activity implements SimpleGestureFilterSwitch.SimpleGestureListener {
 
@@ -96,7 +101,17 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     MaterialButton switchApps, switchCategories, recoveryAction, automationAction;
 
     RecyclerView installedWidgetsLoadView, configuredWidgetsLoadView;
-    ScrollView installedWidgetsNestedScrollView, configuredWidgetsNestedScrollView;
+    ScrollView installedWidgetsNestedScrollView, configuredWidgetsNestedScrollView,
+            nestedIndexScrollView, installedNestedIndexScrollView;
+
+    LinearLayout indexView, indexViewInstalled;
+    TextView popupIndex;
+
+    Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
+    Map<Float, String> mapRangeIndex;
+    NavigableMap<String, Integer> indexItems;
+    List<String> indexListConfigured;
+
 
     List<WidgetSectionedGridRecyclerViewAdapter.Section> installedWidgetsSections, configuredWidgetsSections;
     RecyclerView.Adapter installedWidgetsRecyclerViewAdapter, configuredWidgetsRecyclerViewAdapter;
@@ -124,18 +139,20 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(R.layout.widget_handler);
+        setContentView(R.layout.widget_configurations_views);
 
         functionsClass = new FunctionsClass(getApplicationContext(), WidgetConfigurations.this);
 
         wholeWidget = (RelativeLayout) findViewById(R.id.wholeWidget);
         fullActionViews = (RelativeLayout) findViewById(R.id.fullActionViews);
 
-        installedWidgetsNestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
-        installedWidgetsLoadView = (RecyclerView) findViewById(R.id.list);
+        installedWidgetsNestedScrollView = (ScrollView) findViewById(R.id.installedNestedScrollView);
+        installedWidgetsLoadView = (RecyclerView) findViewById(R.id.installedWidgetList);
 
         configuredWidgetsNestedScrollView = (ScrollView) findViewById(R.id.configuredWidgetNestedScrollView);
         configuredWidgetsLoadView = (RecyclerView) findViewById(R.id.configuredWidgetList);
+
+        popupIndex = (TextView) findViewById(R.id.popupIndex);
 
         addWidget = (ImageView) findViewById(R.id.addWidget);
         actionButton = (ImageView) findViewById(R.id.actionButton);
@@ -145,6 +162,12 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         automationAction = (MaterialButton) findViewById(R.id.automationAction);
         recoverFloatingCategories = (ImageView) findViewById(R.id.recoverFloatingCategories);
         recoverFloatingApps = (ImageView) findViewById(R.id.recoverFloatingApps);
+
+        nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
+        installedNestedIndexScrollView = (ScrollView) findViewById(R.id.installedNestedIndexScrollView);
+
+        indexView = (LinearLayout) findViewById(R.id.side_index);
+        indexViewInstalled = (LinearLayout) findViewById(R.id.installed_side_index);
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
 
@@ -173,6 +196,12 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         installedWidgetsNavDrawerItems = new ArrayList<NavDrawerItem>();
         configuredWidgetsNavDrawerItems = new ArrayList<NavDrawerItem>();
+
+        indexListConfigured = new ArrayList<String>();
+        mapIndexFirstItem = new LinkedHashMap<String, Integer>();
+        mapIndexLastItem = new LinkedHashMap<String, Integer>();
+        mapRangeIndex = new LinkedHashMap<Float, String>();
+        indexItems = new TreeMap<String, Integer>();
 
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
@@ -986,7 +1015,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                     false
                             );
 
-                            String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
+                            //String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
 
                             WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                                     .fallbackToDestructiveMigration()
@@ -1042,7 +1071,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                         false
                                 );
 
-                                String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
+                                //String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
 
                                 WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                                         .fallbackToDestructiveMigration()
@@ -1090,7 +1119,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                     false
                             );
 
-                            String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
+                            //String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
 
                             WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                                     .fallbackToDestructiveMigration()
@@ -1208,14 +1237,17 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                         if (widgetIndex == 0) {
                             configuredWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, appIcon));
+                            indexListConfigured.add(newAppName.substring(0, 1).toUpperCase());
                         } else {
                             if (!oldAppName.equals(newAppName)) {
                                 configuredWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, appIcon));
+                                indexListConfigured.add(newAppName.substring(0, 1).toUpperCase());
                             }
                         }
 
                         oldAppName = functionsClass.appName(packageName);
 
+                        indexListConfigured.add(newAppName.substring(0, 1).toUpperCase());
                         configuredWidgetsNavDrawerItems.add(new NavDrawerItem(
                                 newAppName,
                                 packageName,
@@ -1280,6 +1312,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     e.printStackTrace();
                 }
             }
+
+            LoadApplicationsIndexConfigured loadApplicationsIndexConfigured = new LoadApplicationsIndexConfigured();
+            loadApplicationsIndexConfigured.execute();
         }
     }
 
@@ -1497,6 +1532,67 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         }
     }
 
+    private class LoadApplicationsIndexConfigured extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            indexView.removeAllViews();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            int indexCount = indexListConfigured.size();
+            for (int navItem = 0; navItem < indexCount; navItem++) {
+                try {
+                    String indexText = indexListConfigured.get(navItem);
+                    if (mapIndexFirstItem.get(indexText) == null/*avoid duplication*/) {
+                        mapIndexFirstItem.put(indexText, navItem);
+                    }
+
+                    mapIndexLastItem.put(indexText, navItem);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            TextView textView = null;
+            List<String> indexListFinal = new ArrayList<String>(mapIndexFirstItem.keySet());
+            for (String index : indexListFinal) {
+                textView = (TextView) getLayoutInflater()
+                        .inflate(R.layout.side_index_item, null);
+                textView.setText(index.toUpperCase());
+                textView.setTextColor(PublicVariable.colorLightDarkOpposite);
+                indexView.addView(textView);
+            }
+
+            TextView finalTextView = textView;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    float upperRange = indexView.getY() - finalTextView.getHeight();
+                    for (int i = 0; i < indexView.getChildCount(); i++) {
+                        String indexText = ((TextView) indexView.getChildAt(i)).getText().toString();
+                        float indexRange = (indexView.getChildAt(i).getY() + indexView.getY() + finalTextView.getHeight());
+                        for (float jRange = upperRange; jRange <= (indexRange); jRange++) {
+                            mapRangeIndex.put(jRange, indexText);
+                        }
+
+                        upperRange = indexRange;
+                    }
+
+                    setupFastScrollingIndexingConfigured();
+                }
+            }, 700);
+        }
+    }
+
     public static void createWidget(Context context, ViewGroup widgetView, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost, AppWidgetProviderInfo appWidgetProviderInfo, int widgetId) {
         try {
             widgetView.removeAllViews();
@@ -1573,4 +1669,81 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         }
     };
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void setupFastScrollingIndexingConfigured() {
+        Drawable popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon).mutate();
+        popupIndexBackground.setTint(PublicVariable.primaryColorOpposite);
+        popupIndex.setBackground(popupIndexBackground);
+
+        nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+        nestedIndexScrollView.setVisibility(View.VISIBLE);
+
+        float popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (functionsClass.UsageStatsEnabled() ? functionsClass.DpToInteger(7) : functionsClass.DpToInteger(7));
+        nestedIndexScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        String indexText = mapRangeIndex.get(motionEvent.getY());
+
+                        if (indexText != null) {
+                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                            popupIndex.setText(indexText);
+                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                            popupIndex.setVisibility(View.VISIBLE);
+                        }
+
+                        break;
+                    }
+                    case MotionEvent.ACTION_MOVE: {
+                        String indexText = mapRangeIndex.get(motionEvent.getY());
+
+                        if (indexText != null) {
+                            if (!popupIndex.isShown()) {
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                popupIndex.setVisibility(View.VISIBLE);
+                            }
+                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                            popupIndex.setText(indexText);
+
+                            try {
+                                configuredWidgetsNestedScrollView.smoothScrollTo(
+                                        0,
+                                        ((int) configuredWidgetsLoadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getY()))).getY())
+                                );
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            if (popupIndex.isShown()) {
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                                popupIndex.setVisibility(View.INVISIBLE);
+                            }
+                        }
+
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        if (popupIndex.isShown()) {
+                            try {
+                                configuredWidgetsNestedScrollView.smoothScrollTo(
+                                        0,
+                                        ((int) configuredWidgetsLoadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getY()))).getY())
+                                );
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                            popupIndex.setVisibility(View.INVISIBLE);
+                        }
+
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+    }
 }
