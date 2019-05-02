@@ -1165,7 +1165,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            TextView textView = null;
+            TextView textView = (TextView) getLayoutInflater()
+                    .inflate(R.layout.side_index_item, null);
             List<String> indexListFinal = new ArrayList<String>(mapIndexFirstItem.keySet());
             for (String index : indexListFinal) {
                 textView = (TextView) getLayoutInflater()

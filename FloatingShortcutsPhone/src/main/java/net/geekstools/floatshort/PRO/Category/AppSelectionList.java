@@ -518,7 +518,8 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            TextView textView = null;
+            TextView textView = (TextView) getLayoutInflater()
+                    .inflate(R.layout.side_index_item, null);
             List<String> indexList = new ArrayList<String>(mapIndexFirstItem.keySet());
             for (String index : indexList) {
                 textView = (TextView) getLayoutInflater()

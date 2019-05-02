@@ -107,10 +107,12 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     LinearLayout indexView, indexViewInstalled;
     TextView popupIndex;
 
-    Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
-    Map<Float, String> mapRangeIndex;
-    NavigableMap<String, Integer> indexItems;
-    List<String> indexListConfigured;
+    Map<String, Integer> mapIndexFirstItem, mapIndexLastItem,
+            mapIndexFirstItemInstalled, mapIndexLastItemInstalled;
+    Map<Float, String> mapRangeIndex,
+            mapRangeIndexInstalled;
+    NavigableMap<String, Integer> indexItems, indexItemsInstalled;
+    List<String> indexListConfigured, indexListInstalled;
 
 
     List<WidgetSectionedGridRecyclerViewAdapter.Section> installedWidgetsSections, configuredWidgetsSections;
@@ -196,12 +198,16 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         installedWidgetsNavDrawerItems = new ArrayList<NavDrawerItem>();
         configuredWidgetsNavDrawerItems = new ArrayList<NavDrawerItem>();
-
         indexListConfigured = new ArrayList<String>();
+        indexListInstalled = new ArrayList<String>();
         mapIndexFirstItem = new LinkedHashMap<String, Integer>();
+        mapIndexFirstItemInstalled = new LinkedHashMap<String, Integer>();
         mapIndexLastItem = new LinkedHashMap<String, Integer>();
+        mapIndexLastItemInstalled = new LinkedHashMap<String, Integer>();
         mapRangeIndex = new LinkedHashMap<Float, String>();
+        mapRangeIndexInstalled = new LinkedHashMap<Float, String>();
         indexItems = new TreeMap<String, Integer>();
+        indexItemsInstalled = new TreeMap<String, Integer>();
 
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
@@ -1359,12 +1365,11 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                         if (widgetIndex == 0) {
                             installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
-
+                            indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
                         } else {
                             if (!oldAppName.equals(newAppName)) {
-
                                 installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
-
+                                indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
                             }
                         }
 
@@ -1373,6 +1378,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         Drawable widgetPreviewDrawable = appWidgetProviderInfo.loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_HIGH);
                         String widgetLabel = appWidgetProviderInfo.loadLabel(getPackageManager());
 
+                        indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
                         installedWidgetsNavDrawerItems.add(new NavDrawerItem(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
                                 appWidgetProviderInfo.provider.getPackageName(),
                                 (widgetLabel != null) ? widgetLabel : newAppName,
@@ -1529,6 +1535,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     }
                 }, 200);
             }
+
+            LoadApplicationsIndexInstalled loadApplicationsIndexInstalled = new LoadApplicationsIndexInstalled();
+            loadApplicationsIndexInstalled.execute();
         }
     }
 
@@ -1562,7 +1571,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            TextView textView = null;
+            TextView textView = (TextView) getLayoutInflater()
+                    .inflate(R.layout.side_index_item, null);
             List<String> indexListFinal = new ArrayList<String>(mapIndexFirstItem.keySet());
             for (String index : indexListFinal) {
                 textView = (TextView) getLayoutInflater()
@@ -1588,6 +1598,68 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     }
 
                     setupFastScrollingIndexingConfigured();
+                }
+            }, 700);
+        }
+    }
+
+    private class LoadApplicationsIndexInstalled extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            indexViewInstalled.removeAllViews();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            int indexCount = indexListInstalled.size();
+            for (int navItem = 0; navItem < indexCount; navItem++) {
+                try {
+                    String indexText = indexListInstalled.get(navItem);
+                    if (mapIndexFirstItemInstalled.get(indexText) == null/*avoid duplication*/) {
+                        mapIndexFirstItemInstalled.put(indexText, navItem);
+                    }
+
+                    mapIndexLastItemInstalled.put(indexText, navItem);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            TextView textView = (TextView) getLayoutInflater()
+                    .inflate(R.layout.side_index_item, null);
+            List<String> indexListFinal = new ArrayList<String>(mapIndexFirstItemInstalled.keySet());
+            for (String index : indexListFinal) {
+                textView = (TextView) getLayoutInflater()
+                        .inflate(R.layout.side_index_item, null);
+                textView.setText(index.toUpperCase());
+                textView.setTextColor(PublicVariable.colorLightDarkOpposite);
+                indexViewInstalled.addView(textView);
+            }
+
+            TextView finalTextView = textView;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    float upperRange = indexViewInstalled.getY() - finalTextView.getHeight();
+                    for (int i = 0; i < indexViewInstalled.getChildCount(); i++) {
+                        String indexText = ((TextView) indexViewInstalled.getChildAt(i)).getText().toString();
+                        float indexRange = (indexViewInstalled.getChildAt(i).getY() + indexViewInstalled.getY() + finalTextView.getHeight());
+                        for (float jRange = upperRange; jRange <= (indexRange); jRange++) {
+                            mapRangeIndexInstalled.put(jRange, indexText);
+                        }
+
+                        upperRange = indexRange;
+                    }
+
+                    setupFastScrollingIndexingInstalled();
                 }
             }, 700);
         }
@@ -1730,6 +1802,83 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 configuredWidgetsNestedScrollView.smoothScrollTo(
                                         0,
                                         ((int) configuredWidgetsLoadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getY()))).getY())
+                                );
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                            popupIndex.setVisibility(View.INVISIBLE);
+                        }
+
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void setupFastScrollingIndexingInstalled() {
+        Drawable popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon).mutate();
+        popupIndexBackground.setTint(PublicVariable.primaryColorOpposite);
+        popupIndex.setBackground(popupIndexBackground);
+
+        installedNestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+        installedNestedIndexScrollView.setVisibility(View.VISIBLE);
+
+        float popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (functionsClass.UsageStatsEnabled() ? functionsClass.DpToInteger(7) : functionsClass.DpToInteger(7));
+        installedNestedIndexScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        String indexText = mapRangeIndexInstalled.get(motionEvent.getY());
+
+                        if (indexText != null) {
+                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                            popupIndex.setText(indexText);
+                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                            popupIndex.setVisibility(View.VISIBLE);
+                        }
+
+                        break;
+                    }
+                    case MotionEvent.ACTION_MOVE: {
+                        String indexText = mapRangeIndexInstalled.get(motionEvent.getY());
+
+                        if (indexText != null) {
+                            if (!popupIndex.isShown()) {
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                popupIndex.setVisibility(View.VISIBLE);
+                            }
+                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                            popupIndex.setText(indexText);
+
+                            try {
+                                installedWidgetsNestedScrollView.smoothScrollTo(
+                                        0,
+                                        ((int) installedWidgetsLoadView.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(motionEvent.getY()))).getY())
+                                );
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            if (popupIndex.isShown()) {
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                                popupIndex.setVisibility(View.INVISIBLE);
+                            }
+                        }
+
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        if (popupIndex.isShown()) {
+                            try {
+                                installedWidgetsNestedScrollView.smoothScrollTo(
+                                        0,
+                                        ((int) installedWidgetsLoadView.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(motionEvent.getY()))).getY())
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();
