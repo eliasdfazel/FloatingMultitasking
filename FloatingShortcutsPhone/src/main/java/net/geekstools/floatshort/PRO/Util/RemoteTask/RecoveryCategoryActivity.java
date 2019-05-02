@@ -10,7 +10,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.util.TypedValue;
 
-import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -62,9 +61,7 @@ public class RecoveryCategoryActivity extends Activity {
                     if (functionsClass.loadCustomIcons()) {
                         LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
                         loadCustomIcons.load();
-                        if (BuildConfig.DEBUG) {
-                            System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                        }
+                        FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                     }
 
                     for (String anAppData : appData) {
@@ -103,9 +100,7 @@ public class RecoveryCategoryActivity extends Activity {
                 if (functionsClass.loadCustomIcons()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
                     loadCustomIcons.load();
-                    if (BuildConfig.DEBUG) {
-                        System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                    }
+                    FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                 }
 
                 for (String anAppData : appData) {

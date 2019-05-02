@@ -1169,9 +1169,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             try {
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
-                    if (BuildConfig.DEBUG) {
-                        System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                    }
+                    FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                 }
 
                 WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
@@ -1313,9 +1311,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
-                    if (BuildConfig.DEBUG) {
-                        System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                    }
+                    FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                 }
 
                 String oldAppName = "";

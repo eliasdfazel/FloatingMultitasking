@@ -167,10 +167,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         recoverFloatingWidgets = (ImageView) findViewById(R.id.recoverFloatingWidgets);
         popupIndex = (TextView) findViewById(R.id.popupIndex);
 
-        Drawable popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon).mutate();
-        popupIndexBackground.setTint(PublicVariable.primaryColorOpposite);
-        popupIndex.setBackground(popupIndexBackground);
-
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClass.ChangeLog(HybridViewOff.this, false);
@@ -830,7 +826,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                         @Override
                                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                            System.out.println("Firebase Activities Done Successfully");
+                                                            FunctionsClass.println("Firebase Activities Done Successfully");
                                                             functionsClass.Toast(getString(R.string.signinFinished), Gravity.TOP);
                                                             try {
                                                                 progressDialog.dismiss();
@@ -931,9 +927,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
-                    if (BuildConfig.DEBUG) {
-                        System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                    }
+                    FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                 }
 
                 int itemOfIndex = 1;
@@ -1174,8 +1168,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             TextView textView = null;
             List<String> indexListFinal = new ArrayList<String>(mapIndexFirstItem.keySet());
             for (String index : indexListFinal) {
-                FunctionsClass.println("----- " + index + " >>><<< " + mapIndexFirstItem.get(index) + " == " + mapIndexLastItem.get(index));
-
                 textView = (TextView) getLayoutInflater()
                         .inflate(R.layout.side_index_item, null);
                 textView.setText(index.toUpperCase());
@@ -1230,9 +1222,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     e.printStackTrace();
                 }
                 for (ResolveInfo resolveInfo : resolveInfos) {
-                    if (BuildConfig.DEBUG) {
-                        System.out.println("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName);
-                    }
+                    FunctionsClass.println("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName);
+
                     PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName);
                 }
 
@@ -1252,6 +1243,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
     @SuppressLint("ClickableViewAccessibility")
     public void setupFastScrollingIndexing() {
+        Drawable popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon).mutate();
+        popupIndexBackground.setTint(PublicVariable.primaryColorOpposite);
+        popupIndex.setBackground(popupIndexBackground);
+
         nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
         nestedIndexScrollView.setVisibility(View.VISIBLE);
 

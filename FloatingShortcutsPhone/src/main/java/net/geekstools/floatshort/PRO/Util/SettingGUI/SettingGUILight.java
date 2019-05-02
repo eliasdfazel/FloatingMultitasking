@@ -765,7 +765,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                                             /*
                                              *
                                              */
-                                            System.out.println("*** millis delay ::: " + functionsClass.readDefaultPreference("delayPressHold", 333));
+                                            FunctionsClass.println("*** millis delay ::: " + functionsClass.readDefaultPreference("delayPressHold", 333));
                                         }
                                     }
                                 };

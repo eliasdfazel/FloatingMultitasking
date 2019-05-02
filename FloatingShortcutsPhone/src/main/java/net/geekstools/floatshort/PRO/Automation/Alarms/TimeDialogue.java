@@ -38,7 +38,7 @@ public class TimeDialogue extends Activity {
                         newAlarmTime.set(Calendar.SECOND, 13);
 
                         String setTime = hours + ":" + minutes;
-                        System.out.println("*** " + setTime);
+                        FunctionsClass.println("*** " + setTime);
                         functionsClass.saveFile(
                                 content + ".Time",
                                 setTime);

@@ -7,7 +7,6 @@ import android.net.wifi.WifiManager;
 
 import net.geekstools.floatshort.PRO.App_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.Automation.RecoveryWifi;
-import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Category_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -26,9 +25,7 @@ public class ReceiverWifi extends BroadcastReceiver {
             if (functionsClass.loadCustomIcons()) {
                 LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
                 loadCustomIcons.load();
-                if (BuildConfig.DEBUG) {
-                    System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                }
+                FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
             }
 
             WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);

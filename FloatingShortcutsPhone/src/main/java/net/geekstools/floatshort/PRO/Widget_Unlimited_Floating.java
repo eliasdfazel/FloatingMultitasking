@@ -57,7 +57,7 @@ public class Widget_Unlimited_Floating extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
-        System.out.println("StartID ::: " + startId);
+        FunctionsClass.println("StartID ::: " + startId);
         if (startId >= array) {
             return START_NOT_STICKY;
         }

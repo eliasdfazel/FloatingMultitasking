@@ -25,7 +25,7 @@ public class DeepLinkedCategory extends Activity {
 
         try {
             String incomingURI = getIntent().getDataString();
-            System.out.println("URI >> " + incomingURI);
+            FunctionsClass.println("URI >> " + incomingURI);
             CategoryName = incomingURI.substring(incomingURI.lastIndexOf(htmlSymbol) + 1);
             CategoryName = CategoryName.replace(htmlSymbolDelete, "");
 

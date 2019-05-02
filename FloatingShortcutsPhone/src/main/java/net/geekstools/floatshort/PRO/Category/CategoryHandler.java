@@ -780,7 +780,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                                                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                         @Override
                                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                            System.out.println("Firebase Activities Done Successfully");
+                                                            FunctionsClass.println("Firebase Activities Done Successfully");
                                                             functionsClass.Toast(getString(R.string.signinFinished), Gravity.TOP);
                                                             try {
                                                                 progressDialog.dismiss();
@@ -848,9 +848,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
-                    if (BuildConfig.DEBUG) {
-                        System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                    }
+                    FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                 }
 
                 if (getFileStreamPath(".categoryInfo").exists() && functionsClass.countLineInnerFile(".categoryInfo") > 0) {
@@ -947,9 +945,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                     e.printStackTrace();
                 }
                 for (ResolveInfo resolveInfo : resolveInfos) {
-                    if (BuildConfig.DEBUG) {
-                        System.out.println("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName);
-                    }
+                    FunctionsClass.println("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName);
                     PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName);
                 }
 

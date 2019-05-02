@@ -11,7 +11,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataInterface
 import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataModel
 import net.geekstools.floatshort.PRO.BindServices
-import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
@@ -35,9 +34,7 @@ class RecoveryWidgets : Service() {
                     if (functionsClass.loadCustomIcons()) {
                         val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
                         loadCustomIcons.load()
-                        if (BuildConfig.DEBUG) {
-                            println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons())
-                        }
+                        println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons())
                     }
 
                     val widgetDataInterface: WidgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)

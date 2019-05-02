@@ -37,7 +37,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import net.geekstools.floatshort.PRO.Automation.Categories.CategoryAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -536,12 +535,12 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
     public void onSwipe(int direction) {
         switch (direction) {
             case SimpleGestureFilterFull.SWIPE_RIGHT: {
-                System.out.println("Swipe Right");
+                FunctionsClass.println("Swipe Right");
 
                 break;
             }
             case SimpleGestureFilterFull.SWIPE_LEFT: {
-                System.out.println("Swipe Left");
+                FunctionsClass.println("Swipe Left");
                 try {
                     functionsClass.navigateToClass(CategoryAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
@@ -553,7 +552,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                 break;
             }
             case SimpleGestureFilterFull.SWIPE_UP: {
-                System.out.println("SWIPE UP");
+                FunctionsClass.println("SWIPE UP");
                 try {
                     if (listView.getLastVisiblePosition() == (listView.getAdapter().getCount() - 1)) {
                         try {
@@ -691,9 +690,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
-                    if (BuildConfig.DEBUG) {
-                        System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                    }
+                    FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                 }
 
                 for (int appInfo = 0; appInfo < applicationInfoList.size(); appInfo++) {

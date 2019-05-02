@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryCategory;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
@@ -35,9 +34,7 @@ public class BootRecoverReceiver extends BroadcastReceiver {
                 if (functionsClass.loadCustomIcons()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
                     loadCustomIcons.load();
-                    if (BuildConfig.DEBUG) {
-                        System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                    }
+                    FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                 }
 
                 SharedPreferences sharedPrefBoot = PreferenceManager.getDefaultSharedPreferences(context);

@@ -13,7 +13,7 @@ public class ColorReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context colorContext, Intent intent) {
         context = colorContext;
-        System.out.println("Wallpaper Changed".toUpperCase());
+        FunctionsClass.println("Wallpaper Changed".toUpperCase());
 
         new ExtractColor().execute();
     }

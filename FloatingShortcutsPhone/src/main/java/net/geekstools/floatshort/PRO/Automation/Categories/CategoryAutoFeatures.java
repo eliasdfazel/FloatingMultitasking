@@ -38,7 +38,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Category.CategoryHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -522,12 +521,12 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
     public void onSwipe(int direction) {
         switch (direction) {
             case SimpleGestureFilterFull.SWIPE_RIGHT: {
-                System.out.println("Swipe Right");
+                FunctionsClass.println("Swipe Right");
 
                 break;
             }
             case SimpleGestureFilterFull.SWIPE_LEFT: {
-                System.out.println("Swipe Left");
+                FunctionsClass.println("Swipe Left");
                 try {
                     functionsClass.navigateToClass(CategoryAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
@@ -539,7 +538,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
                 break;
             }
             case SimpleGestureFilterFull.SWIPE_UP: {
-                System.out.println("Swipe UP");
+                FunctionsClass.println("Swipe UP");
                 try {
                     if (recyclerViewLayoutManager.findLastCompletelyVisibleItemPosition() == (categorylist.getAdapter().getItemCount() - 1)) {
                         try {
@@ -676,9 +675,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
-                    if (BuildConfig.DEBUG) {
-                        System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                    }
+                    FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                 }
 
                 navDrawerItems = new ArrayList<NavDrawerItem>();

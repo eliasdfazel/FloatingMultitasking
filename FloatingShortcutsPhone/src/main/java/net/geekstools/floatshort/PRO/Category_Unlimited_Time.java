@@ -115,7 +115,7 @@ public class Category_Unlimited_Time extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
-        System.out.println(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
+        FunctionsClass.println(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
         startIdCounter = startId;
 
         if (functionsClass.loadCustomIcons()) {
@@ -305,7 +305,7 @@ public class Category_Unlimited_Time extends Service {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("Split_Apps_Pair_" + className) && PublicVariable.splitScreen == true) {
-                    System.out.println("Split Apps Pair");
+                    FunctionsClass.println("Split Apps Pair");
                     PublicVariable.splitScreen = false;
 
                     final String packageNameSplitOne, packageNameSplitTwo;
@@ -357,7 +357,7 @@ public class Category_Unlimited_Time extends Service {
                         }
                     }, 700);
                 } else if (intent.getAction().equals("Split_Apps_Single_" + className) && PublicVariable.splitScreen == true) {
-                    System.out.println("Split Apps Single");
+                    FunctionsClass.println("Split Apps Single");
                     PublicVariable.splitScreen = false;
 
                     new Handler().postDelayed(new Runnable() {
@@ -598,7 +598,7 @@ public class Category_Unlimited_Time extends Service {
                         if (allowMove[startId] == true) {
                             paramsF.x = initialX + (int) (event.getRawX() - initialTouchX);
                             paramsF.y = initialY + (int) (event.getRawY() - initialTouchY);
-                            System.out.println("X :: " + paramsF.x + "\n" + " Y :: " + paramsF.y);
+                            FunctionsClass.println("X :: " + paramsF.x + "\n" + " Y :: " + paramsF.y);
 
                             String nameForPosition = categoryName[startId];
                             SharedPreferences sharedPrefPosition = getSharedPreferences(nameForPosition, MODE_PRIVATE);

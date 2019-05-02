@@ -1593,7 +1593,7 @@ public class FunctionsClass {
                                                         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                             @Override
                                                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                                System.out.println("Firebase Activities Done Successfully");
+                                                                FunctionsClass.println("Firebase Activities Done Successfully");
                                                             }
                                                         });
 
@@ -1699,7 +1699,7 @@ public class FunctionsClass {
                                                         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                             @Override
                                                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                                System.out.println("Firebase Activities Done Successfully");
+                                                                FunctionsClass.println("Firebase Activities Done Successfully");
                                                             }
                                                         });
 
@@ -2426,7 +2426,7 @@ public class FunctionsClass {
                     }
                     switch (displaySection(leftPositionX, topPositionY)) {
                         case DisplaySection.TopLeft: {
-                            System.out.println("***** DisplaySection.TopLeft");
+                            FunctionsClass.println("***** DisplaySection.TopLeft");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX,
@@ -2437,7 +2437,7 @@ public class FunctionsClass {
                             break;
                         }
                         case DisplaySection.TopRight: {
-                            System.out.println("***** DisplaySection.TopRight");
+                            FunctionsClass.println("***** DisplaySection.TopRight");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX - (displayX() / 2),
@@ -2448,7 +2448,7 @@ public class FunctionsClass {
                             break;
                         }
                         case DisplaySection.BottomRight: {
-                            System.out.println("***** DisplaySection.BottomRight");
+                            FunctionsClass.println("***** DisplaySection.BottomRight");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX - (displayX() / 2),
@@ -2459,7 +2459,7 @@ public class FunctionsClass {
                             break;
                         }
                         case DisplaySection.BottomLeft: {
-                            System.out.println("***** DisplaySection.BottomLeft");
+                            FunctionsClass.println("***** DisplaySection.BottomLeft");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX,
@@ -2470,7 +2470,7 @@ public class FunctionsClass {
                             break;
                         }
                         default: {
-                            System.out.println("***** DisplaySection.Not.Supported");
+                            FunctionsClass.println("***** DisplaySection.Not.Supported");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             displayX() / 4,
@@ -2507,7 +2507,7 @@ public class FunctionsClass {
             }
             switch (displaySection(leftPositionX, topPositionY)) {
                 case DisplaySection.TopLeft: {
-                    System.out.println("***** DisplaySection.TopLeft");
+                    FunctionsClass.println("***** DisplaySection.TopLeft");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX,
@@ -2518,7 +2518,7 @@ public class FunctionsClass {
                     break;
                 }
                 case DisplaySection.TopRight: {
-                    System.out.println("***** DisplaySection.TopRight");
+                    FunctionsClass.println("***** DisplaySection.TopRight");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX - (displayX() / 2),
@@ -2529,7 +2529,7 @@ public class FunctionsClass {
                     break;
                 }
                 case DisplaySection.BottomRight: {
-                    System.out.println("***** DisplaySection.BottomRight");
+                    FunctionsClass.println("***** DisplaySection.BottomRight");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX - (displayX() / 2),
@@ -2540,7 +2540,7 @@ public class FunctionsClass {
                     break;
                 }
                 case DisplaySection.BottomLeft: {
-                    System.out.println("***** DisplaySection.BottomLeft");
+                    FunctionsClass.println("***** DisplaySection.BottomLeft");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX,
@@ -2551,7 +2551,7 @@ public class FunctionsClass {
                     break;
                 }
                 default: {
-                    System.out.println("***** DisplaySection.Not.Supported");
+                    FunctionsClass.println("***** DisplaySection.Not.Supported");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     displayX() / 4,
@@ -2831,18 +2831,15 @@ public class FunctionsClass {
             String autoFileName = null;
             File[] files = context.getFileStreamPath("").listFiles();
             for (File afile : files) {
-                if (BuildConfig.DEBUG) {
-                    System.out.println("*** " + afile.getAbsolutePath());
-                }
+                FunctionsClass.println("*** " + afile.getAbsolutePath());
                 if (afile.getName().contains(".auto")) {
                     autoFileName = afile.getName();
                     break;
                 }
             }
             if (countLineInnerFile(autoFileName) > 0) {
-                if (BuildConfig.DEBUG) {
-                    System.out.println("*** " + countLineInnerFile(autoFileName) + ". " + autoFileName + " | " + readFileLine(autoFileName));
-                }
+                FunctionsClass.println("*** " + countLineInnerFile(autoFileName) + ". " + autoFileName + " | " + readFileLine(autoFileName));
+
                 automationEnabled = true;
 
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -3635,9 +3632,8 @@ public class FunctionsClass {
                     PixelFormat.TRANSLUCENT);
         }
 
-        if (BuildConfig.DEBUG) {
-            System.out.println(packageName);
-        }
+        FunctionsClass.println(packageName);
+
 
         SharedPreferences sharedPrefPosition = context.getSharedPreferences(packageName, Context.MODE_PRIVATE);
 
@@ -3672,9 +3668,7 @@ public class FunctionsClass {
                     PixelFormat.TRANSLUCENT);
         }
 
-        if (BuildConfig.DEBUG) {
-            System.out.println(packageName);
-        }
+        FunctionsClass.println(packageName);
 
         SharedPreferences sharedPrefPosition = context.getSharedPreferences(packageName, Context.MODE_PRIVATE);
 
@@ -5103,14 +5097,12 @@ public class FunctionsClass {
             int initMix = mixColors(vibrantColor, darkMutedColor, 0.50f);
             int finalMix = mixColors(dominantColor, initMix, 0.50f);
 
-            if (BuildConfig.DEBUG) {
-                System.out.println("*** Vibrant ::: " + vibrantColor + " >>> " + ColorUtils.calculateLuminance(vibrantColor));
-                System.out.println("*** Dark ::: " + darkMutedColor + " >>> " + ColorUtils.calculateLuminance(darkMutedColor));
-                System.out.println("*** Dominant ::: " + dominantColor + " >>> " + ColorUtils.calculateLuminance(dominantColor));
+            FunctionsClass.println("*** Vibrant ::: " + vibrantColor + " >>> " + ColorUtils.calculateLuminance(vibrantColor));
+            FunctionsClass.println("*** Dark ::: " + darkMutedColor + " >>> " + ColorUtils.calculateLuminance(darkMutedColor));
+            FunctionsClass.println("*** Dominant ::: " + dominantColor + " >>> " + ColorUtils.calculateLuminance(dominantColor));
 
-                System.out.println("*** initMix ::: " + initMix + " >>> " + ColorUtils.calculateLuminance(initMix));
-                System.out.println("*** finalMix ::: " + finalMix + " >>> " + ColorUtils.calculateLuminance(finalMix));
-            }
+            FunctionsClass.println("*** initMix ::: " + initMix + " >>> " + ColorUtils.calculateLuminance(initMix));
+            FunctionsClass.println("*** finalMix ::: " + finalMix + " >>> " + ColorUtils.calculateLuminance(finalMix));
 
             double calculateLuminance = ColorUtils.calculateLuminance(dominantColor);
             if (calculateLuminance > 0.50) {//light
@@ -5642,9 +5634,9 @@ public class FunctionsClass {
                 newAlarmTime.getTimeInMillis(),
                 /*AlarmManager.INTERVAL_DAY*/86400000,
                 pendingIntent);
-        if (BuildConfig.DEBUG) {
-            System.out.println("*** " + newAlarmTime.getTime());
-        }
+
+        FunctionsClass.println("*** " + newAlarmTime.getTime());
+
         context.stopService(new Intent(context, SetupAlarms.class));
     }
 

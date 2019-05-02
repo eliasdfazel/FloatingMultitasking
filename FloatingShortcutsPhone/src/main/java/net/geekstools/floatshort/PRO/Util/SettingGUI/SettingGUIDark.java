@@ -767,7 +767,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                                             /*
                                              *
                                              */
-                                            System.out.println("*** millis delay ::: " + functionsClass.readDefaultPreference("delayPressHold", 333));
+                                            FunctionsClass.println("*** millis delay ::: " + functionsClass.readDefaultPreference("delayPressHold", 333));
                                         }
                                     }
                                 };

@@ -7,7 +7,6 @@ import android.content.Intent;
 
 import net.geekstools.floatshort.PRO.App_Unlimited_Bluetooth;
 import net.geekstools.floatshort.PRO.Automation.RecoveryBluetooth;
-import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Category_Unlimited_Bluetooth;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -26,9 +25,7 @@ public class ReceiverBluetooth extends BroadcastReceiver {
             if (functionsClass.loadCustomIcons()) {
                 LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
                 loadCustomIcons.load();
-                if (BuildConfig.DEBUG) {
-                    System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                }
+                FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
             }
 
             final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();

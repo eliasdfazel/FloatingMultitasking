@@ -115,7 +115,7 @@ public class App_Unlimited_Time extends Service {
 
     @Override
     public int onStartCommand(final Intent intent, final int flags, final int startId) {
-        System.out.println(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
+        FunctionsClass.println(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
         startIdCounter = startId;
 
         if (functionsClass.loadCustomIcons()) {
@@ -307,7 +307,7 @@ public class App_Unlimited_Time extends Service {
                         if (allowMove[startId] == true) {
                             paramsF.x = initialX + (int) (event.getRawX() - initialTouchX);
                             paramsF.y = initialY + (int) (event.getRawY() - initialTouchY);
-                            System.out.println("X :: " + paramsF.x + "\n" + " Y :: " + paramsF.y);
+                            FunctionsClass.println("X :: " + paramsF.x + "\n" + " Y :: " + paramsF.y);
 
                             SharedPreferences sharedPrefPosition = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                             try {
@@ -466,7 +466,7 @@ public class App_Unlimited_Time extends Service {
             @Override
             public void onReceive(Context context, final Intent intent) {
                 if (intent.getAction().equals("Split_Apps_Single_" + className) && PublicVariable.splitScreen == true) {
-                    System.out.println("Split Apps Single");
+                    FunctionsClass.println("Split Apps Single");
                     PublicVariable.splitScreen = false;
 
                     new Handler().postDelayed(new Runnable() {
@@ -488,7 +488,7 @@ public class App_Unlimited_Time extends Service {
                         }
                     }, 200);
                 } else if (intent.getAction().equals("Pin_App_" + className)) {
-                    System.out.println(functionsClass.appName(packages[intent.getIntExtra("startId", 1)]));
+                    FunctionsClass.println(functionsClass.appName(packages[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = false;
 
                     Drawable pinDrawable = null;
@@ -523,7 +523,7 @@ public class App_Unlimited_Time extends Service {
                     }
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable);
                 } else if (intent.getAction().equals("Unpin_App_" + className)) {
-                    System.out.println(functionsClass.appName(packages[intent.getIntExtra("startId", 1)]));
+                    FunctionsClass.println(functionsClass.appName(packages[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = true;
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(null);
                 } else if (intent.getAction().equals("Float_It_" + className)) {

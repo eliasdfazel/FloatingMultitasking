@@ -1,5 +1,6 @@
 package net.geekstools.floatshort.PRO.Category;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -55,18 +57,19 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
 
     ListPopupWindow listPopupWindow;
     RelativeLayout popupAnchorView;
-    ScrollView nestedScrollView;
+    ScrollView nestedScrollView, nestedIndexScrollView;
     RecyclerView loadView;
     RelativeLayout wholeAuto, confirmLayout;
     LinearLayout indexView, splitView;
     RelativeLayout loadingSplash;
-    TextView desc, counterView, splitHint;
+    TextView desc, popupIndex, counterView, splitHint;
     ImageView loadIcon;
     ShapesImage tempIcon, one, two;
     MaterialButton categoryName;
 
     List<ApplicationInfo> applicationInfoList;
-    Map<String, Integer> mapIndex;
+    Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
+    Map<Float, String> mapRangeIndex;
     ArrayList<NavDrawerItem> navDrawerItems, navDrawerItemsSaved;
     RecyclerView.Adapter appSelectionListAdapter;
     LinearLayoutManager recyclerViewLayoutManager;
@@ -91,6 +94,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         counterView = (TextView) findViewById(R.id.counter);
         loadIcon = (ImageView) findViewById(R.id.loadLogo);
         nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
+        nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
         loadView = (RecyclerView) findViewById(R.id.listFav);
         popupAnchorView = (RelativeLayout) findViewById(R.id.popupAnchorView);
         indexView = (LinearLayout) findViewById(R.id.side_index);
@@ -105,6 +109,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         confirmLayout = (RelativeLayout) findViewById(R.id.confirmLayout);
         confirmLayout.bringToFront();
         categoryName = (MaterialButton) findViewById(R.id.categoryName);
+        popupIndex = (TextView) findViewById(R.id.popupIndex);
 
         if (functionsClass.appThemeTransparent() == true) {
             functionsClass.setThemeColorFloating(wholeAuto, true);
@@ -117,7 +122,9 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
 
         navDrawerItems = new ArrayList<NavDrawerItem>();
         navDrawerItemsSaved = new ArrayList<NavDrawerItem>();
-        mapIndex = new LinkedHashMap<String, Integer>();
+        mapIndexFirstItem = new LinkedHashMap<String, Integer>();
+        mapIndexLastItem = new LinkedHashMap<String, Integer>();
+        mapRangeIndex = new LinkedHashMap<Float, String>();
 
         Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
         desc.setTypeface(face);
@@ -391,13 +398,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (view instanceof TextView) {
-            final TextView selectedIndex = (TextView) view;
-            nestedScrollView.smoothScrollTo(
-                    0,
-                    ((int) loadView.getChildAt(mapIndex.get(selectedIndex.getText().toString())).getY())
-            );
-        }
+
     }
 
     public void loadDataOff() {
@@ -501,9 +502,11 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
             for (int itemCount = 0; itemCount < navDrawerItems.size(); itemCount++) {
                 try {
                     String index = (navDrawerItems.get(itemCount).getAppName()).substring(0, 1).toUpperCase();
-                    if (mapIndex.get(index) == null) {
-                        mapIndex.put(index, itemCount);
+                    if (mapIndexFirstItem.get(index) == null) {
+                        mapIndexFirstItem.put(index, itemCount);
                     }
+
+                    mapIndexLastItem.put(index, itemCount);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -516,15 +519,110 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             TextView textView = null;
-            List<String> indexList = new ArrayList<String>(mapIndex.keySet());
+            List<String> indexList = new ArrayList<String>(mapIndexFirstItem.keySet());
             for (String index : indexList) {
                 textView = (TextView) getLayoutInflater()
                         .inflate(R.layout.side_index_item, null);
                 textView.setText(index.toUpperCase());
                 textView.setTextColor(PublicVariable.colorLightDarkOpposite);
-                textView.setOnClickListener(AppSelectionList.this);
                 indexView.addView(textView);
             }
+
+            TextView finalTextView = textView;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    float upperRange = indexView.getY() - finalTextView.getHeight();
+                    for (int i = 0; i < indexView.getChildCount(); i++) {
+                        String indexText = ((TextView) indexView.getChildAt(i)).getText().toString();
+                        float indexRange = (indexView.getChildAt(i).getY() + indexView.getY() + finalTextView.getHeight());
+                        for (float jRange = upperRange; jRange <= (indexRange); jRange++) {
+                            mapRangeIndex.put(jRange, indexText);
+                        }
+
+                        upperRange = indexRange;
+                    }
+
+                    setupFastScrollingIndexing();
+                }
+            }, 700);
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void setupFastScrollingIndexing() {
+        Drawable popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon).mutate();
+        popupIndexBackground.setTint(PublicVariable.primaryColorOpposite);
+        popupIndex.setBackground(popupIndexBackground);
+
+        nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+        nestedIndexScrollView.setVisibility(View.VISIBLE);
+
+        float popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (functionsClass.UsageStatsEnabled() ? functionsClass.DpToInteger(7) : functionsClass.DpToInteger(7));
+        nestedIndexScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        String indexText = mapRangeIndex.get(motionEvent.getY());
+
+                        if (indexText != null) {
+                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                            popupIndex.setText(indexText);
+                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                            popupIndex.setVisibility(View.VISIBLE);
+                        }
+
+                        break;
+                    }
+                    case MotionEvent.ACTION_MOVE: {
+                        String indexText = mapRangeIndex.get(motionEvent.getY());
+
+                        if (indexText != null) {
+                            if (!popupIndex.isShown()) {
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                popupIndex.setVisibility(View.VISIBLE);
+                            }
+                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                            popupIndex.setText(indexText);
+
+                            try {
+                                nestedScrollView.smoothScrollTo(
+                                        0,
+                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getY()))).getY())
+                                );
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            if (popupIndex.isShown()) {
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                                popupIndex.setVisibility(View.INVISIBLE);
+                            }
+                        }
+
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        if (popupIndex.isShown()) {
+                            try {
+                                nestedScrollView.smoothScrollTo(
+                                        0,
+                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getY()))).getY())
+                                );
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                            popupIndex.setVisibility(View.INVISIBLE);
+                        }
+
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
     }
 }

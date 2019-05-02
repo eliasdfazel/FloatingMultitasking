@@ -20,7 +20,6 @@ import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Actions;
 
-import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -79,9 +78,7 @@ public class RecoveryShortcutsActivity extends Activity {
                         if (functionsClass.loadCustomIcons()) {
                             LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
                             loadCustomIcons.load();
-                            if (BuildConfig.DEBUG) {
-                                System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                            }
+                            FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                         }
 
                         for (String anAppData : appData) {
@@ -131,9 +128,7 @@ public class RecoveryShortcutsActivity extends Activity {
                     if (functionsClass.loadCustomIcons()) {
                         LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
                         loadCustomIcons.load();
-                        if (BuildConfig.DEBUG) {
-                            System.out.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                        }
+                        FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                     }
 
                     for (String anAppData : appData) {
