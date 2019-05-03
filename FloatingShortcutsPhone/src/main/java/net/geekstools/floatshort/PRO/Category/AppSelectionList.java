@@ -148,7 +148,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         loadIcon.setImageDrawable(layerDrawableLoadLogo);
 
         ProgressBar loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
-        loadingBarLTR.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.dark), PorterDuff.Mode.MULTIPLY);
+        loadingBarLTR.getIndeterminateDrawable().setColorFilter(getColor(R.color.dark), PorterDuff.Mode.MULTIPLY);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(getString(R.string.counterActionAdvance));

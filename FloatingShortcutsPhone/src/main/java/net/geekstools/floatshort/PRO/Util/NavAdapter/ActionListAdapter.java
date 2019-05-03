@@ -70,9 +70,9 @@ public class ActionListAdapter extends BaseAdapter {
         }
 
         if (PublicVariable.themeLightDark) {
-            viewHolder.txtTitle.setTextColor(context.getResources().getColor(R.color.dark));
+            viewHolder.txtTitle.setTextColor(context.getColor(R.color.dark));
         } else if (!PublicVariable.themeLightDark) {
-            viewHolder.txtTitle.setTextColor(context.getResources().getColor(R.color.light));
+            viewHolder.txtTitle.setTextColor(context.getColor(R.color.light));
         }
 
         viewHolder.imgIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());

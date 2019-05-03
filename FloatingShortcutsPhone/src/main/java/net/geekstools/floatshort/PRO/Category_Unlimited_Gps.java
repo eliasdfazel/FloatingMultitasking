@@ -388,23 +388,23 @@ public class Category_Unlimited_Gps extends Service {
                     switch (functionsClass.shapesImageId()) {
                         case 1:
                             drawableBack = getDrawable(R.drawable.pin_droplet_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_transparent));
+                            drawableBack.setTint(context.getColor(R.color.red_transparent));
                             break;
                         case 2:
                             drawableBack = getDrawable(R.drawable.pin_circle_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_transparent));
+                            drawableBack.setTint(context.getColor(R.color.red_transparent));
                             break;
                         case 3:
                             drawableBack = getDrawable(R.drawable.pin_square_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_transparent));
+                            drawableBack.setTint(context.getColor(R.color.red_transparent));
                             break;
                         case 4:
                             drawableBack = getDrawable(R.drawable.pin_squircle_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_transparent));
+                            drawableBack.setTint(context.getColor(R.color.red_transparent));
                             break;
                         case 0:
                             drawableBack = getDrawable(R.drawable.pin_noshap);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_transparent));
+                            drawableBack.setTint(context.getColor(R.color.red_transparent));
                             break;
                     }
                     pin[intent.getIntExtra("startId", 1)].setImageDrawable(drawableBack);

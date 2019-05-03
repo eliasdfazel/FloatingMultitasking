@@ -107,10 +107,10 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
         }
 
         if (PublicVariable.themeLightDark) {
-            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.dark)));
+            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.dark)));
         } else if (!PublicVariable.themeLightDark) {
-            viewHolder.appName.setTextColor(context.getResources().getColor(R.color.light));
-            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.light)));
+            viewHolder.appName.setTextColor(context.getColor(R.color.light));
+            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.light)));
         }
 
         viewHolder.appIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());

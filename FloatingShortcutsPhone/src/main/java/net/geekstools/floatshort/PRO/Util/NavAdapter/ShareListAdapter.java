@@ -68,9 +68,9 @@ public class ShareListAdapter extends BaseAdapter {
         }
 
         if (PublicVariable.themeLightDark == true) {
-            viewHolder.txtTitle.setTextColor(context.getResources().getColor(R.color.dark));
+            viewHolder.txtTitle.setTextColor(context.getColor(R.color.dark));
         } else if (PublicVariable.themeLightDark == false) {
-            viewHolder.txtTitle.setTextColor(context.getResources().getColor(R.color.light));
+            viewHolder.txtTitle.setTextColor(context.getColor(R.color.light));
         }
         viewHolder.imgIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
         viewHolder.txtTitle.setText(navDrawerItems.get(position).getCharTitle());

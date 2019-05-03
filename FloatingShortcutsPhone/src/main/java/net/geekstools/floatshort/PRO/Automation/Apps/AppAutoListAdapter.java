@@ -114,10 +114,10 @@ public class AppAutoListAdapter extends BaseAdapter {
         autoChoice[position] = (CheckBox) convertView.findViewById(R.id.autoChoice);
 
         if (PublicVariable.themeLightDark) {
-            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.dark)));
+            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.dark)));
         } else if (!PublicVariable.themeLightDark) {
-            viewHolder.txtDesc.setTextColor(context.getResources().getColor(R.color.light));
-            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.light)));
+            viewHolder.txtDesc.setTextColor(context.getColor(R.color.light));
+            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.light)));
         }
 
         viewHolder.imgIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());

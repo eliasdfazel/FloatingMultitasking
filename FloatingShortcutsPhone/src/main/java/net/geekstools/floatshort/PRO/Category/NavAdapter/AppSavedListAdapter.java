@@ -99,7 +99,7 @@ public class AppSavedListAdapter extends BaseAdapter {
         GradientDrawable backConfirm = (GradientDrawable) drawConfirm.findDrawableByLayerId(R.id.backtemp);
         backConfirm.setColor(PublicVariable.primaryColorOpposite);
         viewHolder.confirmItem.setBackground(drawConfirm);
-        viewHolder.textAppName.setTextColor(context.getResources().getColor(R.color.light));
+        viewHolder.textAppName.setTextColor(context.getColor(R.color.light));
 
         viewHolder.imgIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
         viewHolder.textAppName.setText(navDrawerItems.get(position).getAppName());

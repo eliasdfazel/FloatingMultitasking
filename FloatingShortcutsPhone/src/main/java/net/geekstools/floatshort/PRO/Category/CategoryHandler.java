@@ -180,8 +180,8 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
         switchWidgets.setTextColor(getColor(R.color.light));
         switchApps.setTextColor(getColor(R.color.light));
         if (PublicVariable.themeLightDark /*light*/ && functionsClass.appThemeTransparent() /*transparent*/) {
-            switchWidgets.setTextColor(getResources().getColor(R.color.dark));
-            switchApps.setTextColor(getResources().getColor(R.color.dark));
+            switchWidgets.setTextColor(getColor(R.color.dark));
+            switchApps.setTextColor(getColor(R.color.dark));
         }
 
         switchApps.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);

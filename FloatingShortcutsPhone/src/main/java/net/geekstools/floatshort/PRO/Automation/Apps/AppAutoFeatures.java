@@ -1,6 +1,7 @@
 package net.geekstools.floatshort.PRO.Automation.Apps;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -29,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,11 +61,15 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
     LinearLayout indexView, autoIdentifier;
     RelativeLayout loadingSplash;
     ProgressBar loadingBarLTR;
-    TextView desc;
+    TextView desc, popupIndex;
     Button wifi, bluetooth, gps, nfc, time, autoApps, autoCategories;
 
+    ScrollView nestedIndexScrollView;
+
     List<ApplicationInfo> applicationInfoList;
-    Map<String, Integer> mapIndex;
+    Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
+    Map<Integer, String> mapRangeIndex;
+
     ArrayList<NavDrawerItem> navDrawerItems;
     AppAutoListAdapter adapter;
 
@@ -100,6 +106,9 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         nfc = (Button) findViewById(R.id.nfc);
         time = (Button) findViewById(R.id.time);
 
+        popupIndex = (TextView) findViewById(R.id.popupIndex);
+        nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
+
         simpleGestureFilterFull = new SimpleGestureFilterFull(getApplicationContext(), this);
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         activity = this;
@@ -118,7 +127,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                             }
                         });
                 snackbar.setActionTextColor(PublicVariable.colorLightDarkOpposite);
-                snackbar.setActionTextColor(getResources().getColor(R.color.red));
+                snackbar.setActionTextColor(getColor(R.color.red));
 
                 GradientDrawable gradientDrawable = new GradientDrawable(
                         GradientDrawable.Orientation.BOTTOM_TOP,
@@ -146,13 +155,15 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         }
 
         navDrawerItems = new ArrayList<NavDrawerItem>();
-        mapIndex = new LinkedHashMap<String, Integer>();
+        mapIndexFirstItem = new LinkedHashMap<String, Integer>();
+        mapIndexLastItem = new LinkedHashMap<String, Integer>();
+        mapRangeIndex = new LinkedHashMap<Integer, String>();
 
-        autoApps.setTextColor(getResources().getColor(R.color.light));
-        autoCategories.setTextColor(getResources().getColor(R.color.light));
+        autoApps.setTextColor(getColor(R.color.light));
+        autoCategories.setTextColor(getColor(R.color.light));
         if (PublicVariable.themeLightDark /*light*/ && functionsClass.appThemeTransparent() /*transparent*/) {
-            autoApps.setTextColor(getResources().getColor(R.color.dark));
-            autoCategories.setTextColor(getResources().getColor(R.color.dark));
+            autoApps.setTextColor(getColor(R.color.dark));
+            autoCategories.setTextColor(getColor(R.color.dark));
         }
 
         RippleDrawable rippleDrawableShortcuts = (RippleDrawable) getResources().getDrawable(R.drawable.draw_shortcuts);
@@ -220,10 +231,10 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
         if (PublicVariable.themeLightDark) {
             loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-            desc.setTextColor(getResources().getColor(R.color.dark));
+            desc.setTextColor(getColor(R.color.dark));
         } else if (!PublicVariable.themeLightDark) {
             loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-            desc.setTextColor(getResources().getColor(R.color.light));
+            desc.setTextColor(getColor(R.color.light));
         }
 
         autoCategories.setOnClickListener(new View.OnClickListener() {
@@ -519,16 +530,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (view instanceof TextView) {
-            final TextView selectedIndex = (TextView) view;
-            listView.post(new Runnable() {
-                @Override
-                public void run() {
-                    listView.smoothScrollToPositionFromTop(mapIndex.get(selectedIndex.getText().toString()), 0, 200);
 
-                }
-            });
-        }
     }
 
     @Override
@@ -686,7 +688,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                 Collections.sort(applicationInfoList, new ApplicationInfo.DisplayNameComparator(getPackageManager()));
 
                 navDrawerItems = new ArrayList<NavDrawerItem>();
-                mapIndex = new LinkedHashMap<String, Integer>();
+                mapIndexFirstItem = new LinkedHashMap<String, Integer>();
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
@@ -756,8 +758,8 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             for (int itemCount = 0; itemCount < navDrawerItems.size(); itemCount++) {
                 try {
                     String index = (navDrawerItems.get(itemCount).getAppName()).substring(0, 1).toUpperCase();
-                    if (mapIndex.get(index) == null) {
-                        mapIndex.put(index, itemCount);
+                    if (mapIndexFirstItem.get(index) == null) {
+                        mapIndexFirstItem.put(index, itemCount);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -770,16 +772,120 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            TextView textView = null;
-            List<String> indexList = new ArrayList<String>(mapIndex.keySet());
+            TextView textView = (TextView) getLayoutInflater()
+                    .inflate(R.layout.side_index_item, null);
+            List<String> indexList = new ArrayList<String>(mapIndexFirstItem.keySet());
             for (String index : indexList) {
                 textView = (TextView) getLayoutInflater()
                         .inflate(R.layout.side_index_item, null);
                 textView.setText(index.toUpperCase());
                 textView.setTextColor(PublicVariable.colorLightDarkOpposite);
-                textView.setOnClickListener(AppAutoFeatures.this);
                 indexView.addView(textView);
             }
+
+            TextView finalTextView = textView;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    int upperRange = (int) (indexView.getY() - finalTextView.getHeight());
+                    for (int i = 0; i < indexView.getChildCount(); i++) {
+                        String indexText = ((TextView) indexView.getChildAt(i)).getText().toString();
+                        int indexRange = (int) (indexView.getChildAt(i).getY() + indexView.getY() + finalTextView.getHeight());
+                        for (int jRange = upperRange; jRange <= (indexRange); jRange++) {
+                            mapRangeIndex.put(jRange, indexText);
+                        }
+
+                        upperRange = indexRange;
+                    }
+
+                    setupFastScrollingIndexing();
+                }
+            }, 700);
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void setupFastScrollingIndexing() {
+        Drawable popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon).mutate();
+        popupIndexBackground.setTint(PublicVariable.primaryColorOpposite);
+        popupIndex.setBackground(popupIndexBackground);
+
+        nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+        nestedIndexScrollView.setVisibility(View.VISIBLE);
+
+        float popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (functionsClass.UsageStatsEnabled() ? functionsClass.DpToInteger(7) : functionsClass.DpToInteger(7));
+        nestedIndexScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        String indexText = mapRangeIndex.get((((int) motionEvent.getY())));
+
+                        if (indexText != null) {
+                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                            popupIndex.setText(indexText);
+                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                            popupIndex.setVisibility(View.VISIBLE);
+                        }
+
+                        break;
+                    }
+                    case MotionEvent.ACTION_MOVE: {
+                        String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
+
+                        if (indexText != null) {
+                            if (!popupIndex.isShown()) {
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                popupIndex.setVisibility(View.VISIBLE);
+                            }
+                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                            popupIndex.setText(indexText);
+
+                            try {
+//                                nestedScrollView.smoothScrollTo(
+//                                        0,
+//                                        ((int) loadView.getChildAt(
+//                                                mapIndexFirstItem.get( mapRangeIndex.get(((int) motionEvent.getY())) )
+//                                        ).getY())
+//                                );
+
+                                listView.smoothScrollToPositionFromTop(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY()))), 0, 200);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            if (popupIndex.isShown()) {
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                                popupIndex.setVisibility(View.INVISIBLE);
+                            }
+                        }
+
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        if (popupIndex.isShown()) {
+                            try {
+//                                nestedScrollView.smoothScrollTo(
+//                                        0,
+//                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+//                                );
+
+                                listView.smoothScrollToPositionFromTop(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY()))), 0, 200);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                            popupIndex.setVisibility(View.INVISIBLE);
+                        }
+
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
     }
 }

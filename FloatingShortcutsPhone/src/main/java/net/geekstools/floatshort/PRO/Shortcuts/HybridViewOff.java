@@ -205,8 +205,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         switchWidgets.setTextColor(getColor(R.color.light));
         switchCategories.setTextColor(getColor(R.color.light));
         if (PublicVariable.themeLightDark /*light*/ && functionsClass.appThemeTransparent() /*transparent*/) {
-            switchWidgets.setTextColor(getResources().getColor(R.color.dark));
-            switchCategories.setTextColor(getResources().getColor(R.color.dark));
+            switchWidgets.setTextColor(getColor(R.color.dark));
+            switchCategories.setTextColor(getColor(R.color.dark));
         }
 
         switchCategories.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);

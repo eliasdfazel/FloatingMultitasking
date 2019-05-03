@@ -258,8 +258,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         switchApps.setTextColor(getColor(R.color.light));
         switchCategories.setTextColor(getColor(R.color.light));
         if (PublicVariable.themeLightDark /*light*/ && functionsClass.appThemeTransparent() /*transparent*/) {
-            switchApps.setTextColor(getResources().getColor(R.color.dark));
-            switchCategories.setTextColor(getResources().getColor(R.color.dark));
+            switchApps.setTextColor(getColor(R.color.dark));
+            switchCategories.setTextColor(getColor(R.color.dark));
         }
 
         switchCategories.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
@@ -1191,10 +1191,10 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
             if (PublicVariable.themeLightDark) {
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                gx.setTextColor(getResources().getColor(R.color.dark));
+                gx.setTextColor(getColor(R.color.dark));
             } else if (!PublicVariable.themeLightDark) {
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                gx.setTextColor(getResources().getColor(R.color.light));
+                gx.setTextColor(getColor(R.color.light));
             }
         }
 

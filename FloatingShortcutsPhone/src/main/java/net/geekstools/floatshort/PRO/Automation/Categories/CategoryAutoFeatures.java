@@ -112,7 +112,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
                             }
                         });
                 snackbar.setActionTextColor(PublicVariable.colorLightDarkOpposite);
-                snackbar.setActionTextColor(getResources().getColor(R.color.red));
+                snackbar.setActionTextColor(getColor(R.color.red));
 
                 GradientDrawable gradientDrawable = new GradientDrawable(
                         GradientDrawable.Orientation.BOTTOM_TOP,
@@ -144,11 +144,11 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);
         categorylist.setLayoutManager(recyclerViewLayoutManager);
 
-        autoApps.setTextColor(getResources().getColor(R.color.light));
-        autoCategories.setTextColor(getResources().getColor(R.color.light));
+        autoApps.setTextColor(getColor(R.color.light));
+        autoCategories.setTextColor(getColor(R.color.light));
         if (PublicVariable.themeLightDark && functionsClass.appThemeTransparent()) {
-            autoApps.setTextColor(getResources().getColor(R.color.dark));
-            autoCategories.setTextColor(getResources().getColor(R.color.dark));
+            autoApps.setTextColor(getColor(R.color.dark));
+            autoCategories.setTextColor(getColor(R.color.dark));
         }
 
         RippleDrawable rippleDrawableShortcuts = (RippleDrawable) getResources().getDrawable(R.drawable.draw_shortcuts);
@@ -216,10 +216,10 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
 
         if (PublicVariable.themeLightDark) {
             loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-            desc.setTextColor(getResources().getColor(R.color.dark));
+            desc.setTextColor(getColor(R.color.dark));
         } else if (!PublicVariable.themeLightDark) {
             loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-            desc.setTextColor(getResources().getColor(R.color.light));
+            desc.setTextColor(getColor(R.color.light));
         }
 
         autoApps.setOnClickListener(new View.OnClickListener() {
