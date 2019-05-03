@@ -109,7 +109,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     Map<String, Integer> mapIndexFirstItem, mapIndexLastItem,
             mapIndexFirstItemInstalled, mapIndexLastItemInstalled;
-    Map<Float, String> mapRangeIndex,
+    Map<Integer, String> mapRangeIndex,
             mapRangeIndexInstalled;
     NavigableMap<String, Integer> indexItems, indexItemsInstalled;
     List<String> indexListConfigured, indexListInstalled;
@@ -204,8 +204,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         mapIndexFirstItemInstalled = new LinkedHashMap<String, Integer>();
         mapIndexLastItem = new LinkedHashMap<String, Integer>();
         mapIndexLastItemInstalled = new LinkedHashMap<String, Integer>();
-        mapRangeIndex = new LinkedHashMap<Float, String>();
-        mapRangeIndexInstalled = new LinkedHashMap<Float, String>();
+        mapRangeIndex = new LinkedHashMap<Integer, String>();
+        mapRangeIndexInstalled = new LinkedHashMap<Integer, String>();
         indexItems = new TreeMap<String, Integer>();
         indexItemsInstalled = new TreeMap<String, Integer>();
 
@@ -288,7 +288,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                 if (PublicVariable.actionCenter == false) {
                     if (installedWidgetsNestedScrollView.isShown()) {
-                        functionsClass.doVibrate(77);
+                        installedNestedIndexScrollView.setVisibility(View.INVISIBLE);
 
                         if (!configuredWidgetAvailable) {
                             addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
@@ -682,6 +682,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 functionsClass.doVibrate(77);
 
                 if (installedWidgetsNestedScrollView.isShown()) {
+                    installedNestedIndexScrollView.setVisibility(View.INVISIBLE);
+
                     if (!configuredWidgetAvailable) {
                         addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
                     }
@@ -873,6 +875,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     public void onBackPressed() {
         if (installedWidgetsNestedScrollView.isShown()) {
             functionsClass.doVibrate(77);
+            installedNestedIndexScrollView.setVisibility(View.INVISIBLE);
 
             if (!configuredWidgetAvailable) {
                 addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
@@ -1586,11 +1589,11 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    float upperRange = indexView.getY() - finalTextView.getHeight();
+                    int upperRange = (int) (indexView.getY() - finalTextView.getHeight());
                     for (int i = 0; i < indexView.getChildCount(); i++) {
                         String indexText = ((TextView) indexView.getChildAt(i)).getText().toString();
-                        float indexRange = (indexView.getChildAt(i).getY() + indexView.getY() + finalTextView.getHeight());
-                        for (float jRange = upperRange; jRange <= (indexRange); jRange++) {
+                        int indexRange = (int) (indexView.getChildAt(i).getY() + indexView.getY() + finalTextView.getHeight());
+                        for (int jRange = upperRange; jRange <= (indexRange); jRange++) {
                             mapRangeIndex.put(jRange, indexText);
                         }
 
@@ -1648,11 +1651,11 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    float upperRange = indexViewInstalled.getY() - finalTextView.getHeight();
+                    int upperRange = (int) (indexViewInstalled.getY() - finalTextView.getHeight());
                     for (int i = 0; i < indexViewInstalled.getChildCount(); i++) {
                         String indexText = ((TextView) indexViewInstalled.getChildAt(i)).getText().toString();
-                        float indexRange = (indexViewInstalled.getChildAt(i).getY() + indexViewInstalled.getY() + finalTextView.getHeight());
-                        for (float jRange = upperRange; jRange <= (indexRange); jRange++) {
+                        int indexRange = (int) (indexViewInstalled.getChildAt(i).getY() + indexViewInstalled.getY() + finalTextView.getHeight());
+                        for (int jRange = upperRange; jRange <= (indexRange); jRange++) {
                             mapRangeIndexInstalled.put(jRange, indexText);
                         }
 
@@ -1757,7 +1760,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        String indexText = mapRangeIndex.get(motionEvent.getY());
+                        String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
 
                         if (indexText != null) {
                             popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
@@ -1769,7 +1772,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         break;
                     }
                     case MotionEvent.ACTION_MOVE: {
-                        String indexText = mapRangeIndex.get(motionEvent.getY());
+                        String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
 
                         if (indexText != null) {
                             if (!popupIndex.isShown()) {
@@ -1782,7 +1785,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                             try {
                                 configuredWidgetsNestedScrollView.smoothScrollTo(
                                         0,
-                                        ((int) configuredWidgetsLoadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getY()))).getY())
+                                        ((int) configuredWidgetsLoadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -1801,7 +1804,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                             try {
                                 configuredWidgetsNestedScrollView.smoothScrollTo(
                                         0,
-                                        ((int) configuredWidgetsLoadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getY()))).getY())
+                                        ((int) configuredWidgetsLoadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -1834,7 +1837,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        String indexText = mapRangeIndexInstalled.get(motionEvent.getY());
+                        String indexText = mapRangeIndexInstalled.get(((int) motionEvent.getY()));
 
                         if (indexText != null) {
                             popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
@@ -1846,7 +1849,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         break;
                     }
                     case MotionEvent.ACTION_MOVE: {
-                        String indexText = mapRangeIndexInstalled.get(motionEvent.getY());
+                        String indexText = mapRangeIndexInstalled.get(((int) motionEvent.getY()));
 
                         if (indexText != null) {
                             if (!popupIndex.isShown()) {
@@ -1859,7 +1862,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                             try {
                                 installedWidgetsNestedScrollView.smoothScrollTo(
                                         0,
-                                        ((int) installedWidgetsLoadView.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(motionEvent.getY()))).getY())
+                                        ((int) installedWidgetsLoadView.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(((int) motionEvent.getY())))).getY())
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -1878,7 +1881,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                             try {
                                 installedWidgetsNestedScrollView.smoothScrollTo(
                                         0,
-                                        ((int) installedWidgetsLoadView.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(motionEvent.getY()))).getY())
+                                        ((int) installedWidgetsLoadView.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(((int) motionEvent.getY())))).getY())
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();

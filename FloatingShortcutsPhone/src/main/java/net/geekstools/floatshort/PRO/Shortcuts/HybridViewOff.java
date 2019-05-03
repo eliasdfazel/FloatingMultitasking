@@ -113,7 +113,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
     List<ApplicationInfo> applicationInfoList;
     Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
-    Map<Float, String> mapRangeIndex;
+    Map<Integer, String> mapRangeIndex;
     NavigableMap<String, Integer> indexItems;
     ArrayList<NavDrawerItem> navDrawerItems;
 
@@ -188,7 +188,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         navDrawerItems = new ArrayList<NavDrawerItem>();
         mapIndexFirstItem = new LinkedHashMap<String, Integer>();
         mapIndexLastItem = new LinkedHashMap<String, Integer>();
-        mapRangeIndex = new LinkedHashMap<Float, String>();
+        mapRangeIndex = new LinkedHashMap<Integer, String>();
 
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
@@ -1180,11 +1180,11 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    float upperRange = indexView.getY() - finalTextView.getHeight();
+                    int upperRange = (int) (indexView.getY() - finalTextView.getHeight());
                     for (int i = 0; i < indexView.getChildCount(); i++) {
                         String indexText = ((TextView) indexView.getChildAt(i)).getText().toString();
-                        float indexRange = (indexView.getChildAt(i).getY() + indexView.getY() + finalTextView.getHeight());
-                        for (float jRange = upperRange; jRange <= (indexRange); jRange++) {
+                        int indexRange = (int) (indexView.getChildAt(i).getY() + indexView.getY() + finalTextView.getHeight());
+                        for (int jRange = upperRange; jRange <= (indexRange); jRange++) {
                             mapRangeIndex.put(jRange, indexText);
                         }
 
@@ -1257,7 +1257,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        String indexText = mapRangeIndex.get(motionEvent.getY());
+                        String indexText = mapRangeIndex.get((((int) motionEvent.getY())));
 
                         if (indexText != null) {
                             popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
@@ -1269,7 +1269,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                         break;
                     }
                     case MotionEvent.ACTION_MOVE: {
-                        String indexText = mapRangeIndex.get(motionEvent.getY());
+                        String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
 
                         if (indexText != null) {
                             if (!popupIndex.isShown()) {
@@ -1282,7 +1282,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                             try {
                                 nestedScrollView.smoothScrollTo(
                                         0,
-                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getY()))).getY())
+                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -1301,7 +1301,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                             try {
                                 nestedScrollView.smoothScrollTo(
                                         0,
-                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(motionEvent.getY()))).getY())
+                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();
