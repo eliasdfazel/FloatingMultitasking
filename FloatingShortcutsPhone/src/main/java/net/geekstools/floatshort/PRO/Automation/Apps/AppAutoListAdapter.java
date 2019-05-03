@@ -258,7 +258,7 @@ public class AppAutoListAdapter extends BaseAdapter {
             }
         });
 
-        RippleDrawable drawItem = (RippleDrawable) context.getResources().getDrawable(R.drawable.ripple_effect);
+        RippleDrawable drawItem = (RippleDrawable) context.getDrawable(R.drawable.ripple_effect);
         GradientDrawable gradientDrawable = (GradientDrawable) drawItem.findDrawableByLayerId(android.R.id.mask);
         gradientDrawable.setColor(PublicVariable.primaryColorOpposite);
         drawItem.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));

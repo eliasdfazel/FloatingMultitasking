@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -117,12 +118,12 @@ public class Widget_Unlimited_Floating extends Service {
         }
 
         if (PublicVariable.themeLightDark) {
-            wholeViewWidget[startId].setBackgroundColor(functionsClass.appThemeTransparent() ? getColor(R.color.light_transparent) : getColor(R.color.light));
+            wholeViewWidget[startId].setBackgroundTintList(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? getColor(R.color.light_transparent) : getColor(R.color.light)));
             widgetLabel[startId].setBackgroundColor(getColor(R.color.light_transparent_high));
 
             widgetLabel[startId].setTextColor(getColor(R.color.dark));
         } else if (!PublicVariable.themeLightDark) {
-            wholeViewWidget[startId].setBackgroundColor(functionsClass.appThemeTransparent() ? getColor(R.color.dark_transparent) : getColor(R.color.dark));
+            wholeViewWidget[startId].setBackgroundTintList(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? getColor(R.color.dark_transparent) : getColor(R.color.dark)));
             widgetLabel[startId].setBackgroundColor(getColor(R.color.dark_transparent_high));
 
             widgetLabel[startId].setTextColor(getColor(R.color.light));
@@ -145,11 +146,11 @@ public class Widget_Unlimited_Floating extends Service {
         }
         widgetLabel[startId].setTextColor(widgetColor[startId]);
 
-        LayerDrawable moveLayerDrawable = (LayerDrawable) getResources().getDrawable(R.drawable.draw_move);
+        LayerDrawable moveLayerDrawable = (LayerDrawable) getDrawable(R.drawable.draw_move);
         GradientDrawable moveBackgroundLayerDrawable = (GradientDrawable) moveLayerDrawable.findDrawableByLayerId(R.id.backtemp);
         moveBackgroundLayerDrawable.setColor(widgetColor[startId]);
 
-        LayerDrawable closeLayerDrawable = (LayerDrawable) getResources().getDrawable(R.drawable.draw_close_service);
+        LayerDrawable closeLayerDrawable = (LayerDrawable) getDrawable(R.drawable.draw_close_service);
         GradientDrawable closeBackgroundLayerDrawable = (GradientDrawable) closeLayerDrawable.findDrawableByLayerId(R.id.backtemp);
         closeBackgroundLayerDrawable.setColor(widgetColor[startId]);
 

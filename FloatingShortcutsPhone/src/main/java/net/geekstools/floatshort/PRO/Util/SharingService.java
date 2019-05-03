@@ -79,7 +79,7 @@ public class SharingService extends Service {
 
         vG.setBackgroundColor(functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), 77));
 
-        LayerDrawable drawShareMenu = (LayerDrawable) getResources().getDrawable(R.drawable.draw_share_menu);
+        LayerDrawable drawShareMenu = (LayerDrawable) getDrawable(R.drawable.draw_share_menu);
         GradientDrawable backShareMenu = (GradientDrawable) drawShareMenu.findDrawableByLayerId(R.id.backtemp);
         backShareMenu.setColor(PublicVariable.primaryColorOpposite);
 
@@ -91,10 +91,10 @@ public class SharingService extends Service {
                 Html.fromHtml("<big><b><font>" + getString(R.string.rate) + "</font></b></big>")
         };
         Drawable[] drawables = new Drawable[]{
-                getResources().getDrawable(R.drawable.ic_share_fb),
-                getResources().getDrawable(R.drawable.ic_share_twitter),
-                getResources().getDrawable(R.drawable.ic_share_full),
-                getResources().getDrawable(R.drawable.ic_share_mail),
+                getDrawable(R.drawable.ic_share_fb),
+                getDrawable(R.drawable.ic_share_twitter),
+                getDrawable(R.drawable.ic_share_full),
+                getDrawable(R.drawable.ic_share_mail),
                 drawShareMenu,
         };
 

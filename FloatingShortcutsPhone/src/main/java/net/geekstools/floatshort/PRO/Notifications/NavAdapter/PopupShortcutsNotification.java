@@ -103,7 +103,7 @@ public class PopupShortcutsNotification extends BaseAdapter {
         } else {
             itemBackground = PublicVariable.colorLightDark;
         }
-        LayerDrawable drawPopupShortcut = (LayerDrawable) context.getResources().getDrawable(R.drawable.popup_shortcut_whole);
+        LayerDrawable drawPopupShortcut = (LayerDrawable) context.getDrawable(R.drawable.popup_shortcut_whole);
         GradientDrawable backPopupShortcut = (GradientDrawable) drawPopupShortcut.findDrawableByLayerId(R.id.backtemp);
         backPopupShortcut.setColor(itemBackground);
         viewHolder.notificationItem.setBackground(drawPopupShortcut);

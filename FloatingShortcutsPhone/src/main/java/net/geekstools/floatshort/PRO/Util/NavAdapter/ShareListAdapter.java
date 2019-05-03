@@ -151,7 +151,7 @@ public class ShareListAdapter extends BaseAdapter {
                 functionsClass.Toast(context.getString(R.string.thanks), Gravity.BOTTOM);
             }
         });
-        RippleDrawable drawItem = (RippleDrawable) context.getResources().getDrawable(R.drawable.ripple_effect);
+        RippleDrawable drawItem = (RippleDrawable) context.getDrawable(R.drawable.ripple_effect);
         GradientDrawable gradientDrawable = (GradientDrawable) drawItem.findDrawableByLayerId(android.R.id.mask);
         gradientDrawable.setColor(PublicVariable.primaryColorOpposite);
         drawItem.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));

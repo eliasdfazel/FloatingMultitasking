@@ -561,7 +561,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-                        LayerDrawable drawPrefAutoTrans = (LayerDrawable) getResources().getDrawable(R.drawable.draw_pref).mutate();
+                        LayerDrawable drawPrefAutoTrans = (LayerDrawable) getDrawable(R.drawable.draw_pref).mutate();
                         GradientDrawable backPrefAutoTrans = (GradientDrawable) drawPrefAutoTrans.findDrawableByLayerId(R.id.backtemp).mutate();
                         backPrefAutoTrans.setColor(PublicVariable.primaryColor);
                         backPrefAutoTrans.setAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
@@ -863,26 +863,26 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         super.onResume();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
-        LayerDrawable drawSmart = (LayerDrawable) getResources().getDrawable(R.drawable.draw_smart);
+        LayerDrawable drawSmart = (LayerDrawable) getDrawable(R.drawable.draw_smart);
         GradientDrawable backSmart = (GradientDrawable) drawSmart.findDrawableByLayerId(R.id.backtemp);
 
-        LayerDrawable drawPref = (LayerDrawable) getResources().getDrawable(R.drawable.draw_pref);
+        LayerDrawable drawPref = (LayerDrawable) getDrawable(R.drawable.draw_pref);
         GradientDrawable backPref = (GradientDrawable) drawPref.findDrawableByLayerId(R.id.backtemp);
 
-        LayerDrawable drawPrefAutoTrans = (LayerDrawable) getResources().getDrawable(R.drawable.draw_pref).mutate();
+        LayerDrawable drawPrefAutoTrans = (LayerDrawable) getDrawable(R.drawable.draw_pref).mutate();
         GradientDrawable backPrefAutoTrans = (GradientDrawable) drawPrefAutoTrans.findDrawableByLayerId(R.id.backtemp).mutate();
 
-        LayerDrawable drawPrefLite = (LayerDrawable) getResources().getDrawable(R.drawable.draw_pref).mutate();
+        LayerDrawable drawPrefLite = (LayerDrawable) getDrawable(R.drawable.draw_pref).mutate();
         GradientDrawable backPrefLite = (GradientDrawable) drawPrefLite.findDrawableByLayerId(R.id.backtemp).mutate();
         Drawable drawablePrefLite = drawPrefLite.findDrawableByLayerId(R.id.wPref);
         backPrefLite.setColor(getColor(R.color.light));
         drawablePrefLite.setTint(getColor(R.color.dark));
         lite.setIcon(drawPrefLite);
 
-        LayerDrawable drawFloatIt = (LayerDrawable) getResources().getDrawable(R.drawable.draw_floatit);
+        LayerDrawable drawFloatIt = (LayerDrawable) getDrawable(R.drawable.draw_floatit);
         GradientDrawable backFloatIt = (GradientDrawable) drawFloatIt.findDrawableByLayerId(R.id.backtemp);
 
-        LayerDrawable drawSupport = (LayerDrawable) getResources().getDrawable(R.drawable.draw_support);
+        LayerDrawable drawSupport = (LayerDrawable) getDrawable(R.drawable.draw_support);
         GradientDrawable backSupport = (GradientDrawable) drawSupport.findDrawableByLayerId(R.id.backtemp);
 
         backSmart.setColor(PublicVariable.primaryColor);
@@ -1053,10 +1053,10 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         MenuItem osp = menu.findItem(R.id.facebook);
         MenuItem share = menu.findItem(R.id.share);
 
-        LayerDrawable drawOSP = (LayerDrawable) getResources().getDrawable(R.drawable.draw_facebook);
+        LayerDrawable drawOSP = (LayerDrawable) getDrawable(R.drawable.draw_facebook);
         GradientDrawable backOSP = (GradientDrawable) drawOSP.findDrawableByLayerId(R.id.backtemp);
 
-        LayerDrawable drawShare = (LayerDrawable) getResources().getDrawable(R.drawable.draw_share);
+        LayerDrawable drawShare = (LayerDrawable) getDrawable(R.drawable.draw_share);
         GradientDrawable backShare = (GradientDrawable) drawShare.findDrawableByLayerId(R.id.backtemp);
 
         backOSP.setColor(PublicVariable.primaryColorOpposite);

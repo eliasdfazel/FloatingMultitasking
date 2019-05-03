@@ -214,7 +214,7 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
             }
         });
 
-        RippleDrawable drawItem = (RippleDrawable) context.getResources().getDrawable(R.drawable.ripple_effect_category_logo);
+        RippleDrawable drawItem = (RippleDrawable) context.getDrawable(R.drawable.ripple_effect_category_logo);
         drawItem.setDrawableByLayerId(R.id.category_logo_layer, functionsClass.shapesDrawablesCategory(timeView[position]));
         drawItem.setDrawableByLayerId(android.R.id.mask, functionsClass.shapesDrawablesCategory(timeView[position]));
         Drawable categoryLogoLayer = (Drawable) drawItem.findDrawableByLayerId(R.id.category_logo_layer);
@@ -223,7 +223,7 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
         categoryMask.setTint(PublicVariable.primaryColor);
         timeView[position].setBackground(drawItem);
 
-        RippleDrawable drawCategories = (RippleDrawable) context.getResources().getDrawable(R.drawable.auto_category);
+        RippleDrawable drawCategories = (RippleDrawable) context.getDrawable(R.drawable.auto_category);
         GradientDrawable backCategories = (GradientDrawable) drawCategories.findDrawableByLayerId(R.id.category_item);
         GradientDrawable backCategoriesRipple = (GradientDrawable) drawCategories.findDrawableByLayerId(android.R.id.mask);
         backCategories.setColor(PublicVariable.colorLightDark);

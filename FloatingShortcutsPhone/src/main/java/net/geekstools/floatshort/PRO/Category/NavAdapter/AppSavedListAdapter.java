@@ -95,7 +95,7 @@ public class AppSavedListAdapter extends BaseAdapter {
             viewHolder.confirmItem.setVisibility(View.INVISIBLE);
         }
 
-        LayerDrawable drawConfirm = (LayerDrawable) context.getResources().getDrawable(R.drawable.ripple_effect_confirm);
+        LayerDrawable drawConfirm = (LayerDrawable) context.getDrawable(R.drawable.ripple_effect_confirm);
         GradientDrawable backConfirm = (GradientDrawable) drawConfirm.findDrawableByLayerId(R.id.backtemp);
         backConfirm.setColor(PublicVariable.primaryColorOpposite);
         viewHolder.confirmItem.setBackground(drawConfirm);

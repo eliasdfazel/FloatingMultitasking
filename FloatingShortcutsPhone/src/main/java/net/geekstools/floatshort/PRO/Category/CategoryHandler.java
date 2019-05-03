@@ -147,7 +147,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
         categorylist.setLayoutManager(recyclerViewLayoutManager);
 
         ImageView floatingLogo = (ImageView) findViewById(R.id.loadLogo);
-        LayerDrawable drawFloatingLogo = (LayerDrawable) getResources().getDrawable(R.drawable.draw_floating_logo);
+        LayerDrawable drawFloatingLogo = (LayerDrawable) getDrawable(R.drawable.draw_floating_logo);
         GradientDrawable backFloatingLogo = (GradientDrawable) drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
         backFloatingLogo.setColor(PublicVariable.primaryColorOpposite);
         floatingLogo.setImageDrawable(drawFloatingLogo);

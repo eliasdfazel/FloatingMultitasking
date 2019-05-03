@@ -256,7 +256,7 @@ public class App_Unlimited_Shortcuts extends Service {
                             public void run() {
                                 if (touchingDelay[startId] == true) {
                                     remove[startId] = true;
-                                    LayerDrawable drawClose = (LayerDrawable) getResources().getDrawable(R.drawable.draw_close_service);
+                                    LayerDrawable drawClose = (LayerDrawable) getDrawable(R.drawable.draw_close_service);
                                     GradientDrawable backPref = (GradientDrawable) drawClose.findDrawableByLayerId(R.id.backtemp);
                                     backPref.setColor(iconColor[startId]);
                                     controlIcon[startId].setImageDrawable(drawClose);

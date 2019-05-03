@@ -90,7 +90,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         addApps[position] = viewHolderBinder.addApp;
         runCategories[position] = viewHolderBinder.runCategory;
 
-        LayerDrawable drawCardCategory = (LayerDrawable) context.getResources().getDrawable(R.drawable.card_category);
+        LayerDrawable drawCardCategory = (LayerDrawable) context.getDrawable(R.drawable.card_category);
         GradientDrawable backCardCategory = (GradientDrawable) drawCardCategory.findDrawableByLayerId(R.id.category_item);
         backCardCategory.setColor(PublicVariable.colorLightDark);
         drawCardCategory.setAlpha(7);
@@ -287,7 +287,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             }
         });
 
-        RippleDrawable drawItem = (RippleDrawable) context.getResources().getDrawable(R.drawable.ripple_effect_category_logo);
+        RippleDrawable drawItem = (RippleDrawable) context.getDrawable(R.drawable.ripple_effect_category_logo);
         drawItem.setDrawableByLayerId(R.id.category_logo_layer, functionsClass.shapesDrawablesCategory(runCategories[position]));
         drawItem.setDrawableByLayerId(android.R.id.mask, functionsClass.shapesDrawablesCategory(runCategories[position]));
         Drawable categoryLogoLayer = (Drawable) drawItem.findDrawableByLayerId(R.id.category_logo_layer);

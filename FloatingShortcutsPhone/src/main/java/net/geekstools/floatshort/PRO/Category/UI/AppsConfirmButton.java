@@ -46,11 +46,11 @@ public class AppsConfirmButton extends Button
     public void initConfirmButton() {
         detector = new SimpleGestureFilterAdvance(context, this);
 
-        drawShow = (LayerDrawable) getResources().getDrawable(R.drawable.draw_saved_show);
+        drawShow = (LayerDrawable) context.getDrawable(R.drawable.draw_saved_show);
         GradientDrawable backShow = (GradientDrawable) drawShow.findDrawableByLayerId(R.id.backtemp);
         backShow.setColor(PublicVariable.primaryColorOpposite);
 
-        drawDismiss = (LayerDrawable) getResources().getDrawable(R.drawable.draw_saved_dismiss);
+        drawDismiss = (LayerDrawable) context.getDrawable(R.drawable.draw_saved_dismiss);
         GradientDrawable backDismiss = (GradientDrawable) drawDismiss.findDrawableByLayerId(R.id.backtemp);
         backDismiss.setColor(PublicVariable.primaryColor);
 

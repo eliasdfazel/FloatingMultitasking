@@ -1775,7 +1775,7 @@ public class FunctionsClass {
         } else if (PublicVariable.themeLightDark == false) {
             builder = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
         }
-        LayerDrawable drawSupport = (LayerDrawable) context.getResources().getDrawable(R.drawable.draw_support);
+        LayerDrawable drawSupport = (LayerDrawable) context.getDrawable(R.drawable.draw_support);
         GradientDrawable backSupport = (GradientDrawable) drawSupport.findDrawableByLayerId(R.id.backtemp);
         backSupport.setColor(PublicVariable.themeTextColor);
         builder.setIcon(drawSupport);
@@ -1833,7 +1833,7 @@ public class FunctionsClass {
         alertDialog.setTitle(Html.fromHtml("<small>" + context.getString(R.string.liteTitle) + "</small>"));
         alertDialog.setMessage(Html.fromHtml(context.getString(R.string.liteDesc)));
 
-        LayerDrawable drawPrefLite = (LayerDrawable) context.getResources().getDrawable(R.drawable.draw_pref).mutate();
+        LayerDrawable drawPrefLite = (LayerDrawable) context.getDrawable(R.drawable.draw_pref).mutate();
         GradientDrawable backPrefLite = (GradientDrawable) drawPrefLite.findDrawableByLayerId(R.id.backtemp).mutate();
         Drawable drawablePrefLite = drawPrefLite.findDrawableByLayerId(R.id.wPref);
         if (PublicVariable.themeLightDark == true) {
@@ -4095,9 +4095,9 @@ public class FunctionsClass {
 
         LayerDrawable drawToast = null;
         if (toastGravity == Gravity.TOP) {
-            drawToast = (LayerDrawable) context.getResources().getDrawable(R.drawable.toast_background_top);
+            drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_top);
         } else if (toastGravity == Gravity.BOTTOM) {
-            drawToast = (LayerDrawable) context.getResources().getDrawable(R.drawable.toast_background_bottom);
+            drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_bottom);
         }
         GradientDrawable backToast = (GradientDrawable) drawToast.findDrawableByLayerId(R.id.backtemp);
 
@@ -4134,9 +4134,9 @@ public class FunctionsClass {
 
         LayerDrawable drawToast = null;
         if (toastGravity == Gravity.TOP) {
-            drawToast = (LayerDrawable) context.getResources().getDrawable(R.drawable.toast_background_top);
+            drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_top);
         } else if (toastGravity == Gravity.BOTTOM) {
-            drawToast = (LayerDrawable) context.getResources().getDrawable(R.drawable.toast_background_bottom);
+            drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_bottom);
         }
         GradientDrawable backToast = (GradientDrawable) drawToast.findDrawableByLayerId(R.id.backtemp);
         backToast.setColor(toastColor);
@@ -5172,7 +5172,7 @@ public class FunctionsClass {
     public void Preferences(boolean visibility) {
         final Button preferencesView = activity.findViewById(R.id.preferences);
         if (visibility == true && !preferencesView.isShown()) {
-            LayerDrawable drawPrefAction = (LayerDrawable) context.getResources().getDrawable(R.drawable.draw_pref_action);
+            LayerDrawable drawPrefAction = (LayerDrawable) context.getDrawable(R.drawable.draw_pref_action);
             GradientDrawable backPrefAction = (GradientDrawable) drawPrefAction.findDrawableByLayerId(R.id.backtemp);
             backPrefAction.setColor(PublicVariable.primaryColorOpposite);
             preferencesView.setBackground(drawPrefAction);
@@ -5264,7 +5264,7 @@ public class FunctionsClass {
             }
         });
 
-        LayerDrawable drawFloating = (LayerDrawable) context.getResources().getDrawable(R.drawable.draw_floating);
+        LayerDrawable drawFloating = (LayerDrawable) context.getDrawable(R.drawable.draw_floating);
         GradientDrawable backFloating = (GradientDrawable) drawFloating.findDrawableByLayerId(R.id.backtemp);
         backFloating.setColor(PublicVariable.primaryColor);
 

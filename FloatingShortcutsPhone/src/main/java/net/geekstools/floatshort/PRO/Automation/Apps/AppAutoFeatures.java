@@ -166,7 +166,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             autoCategories.setTextColor(getColor(R.color.dark));
         }
 
-        RippleDrawable rippleDrawableShortcuts = (RippleDrawable) getResources().getDrawable(R.drawable.draw_shortcuts);
+        RippleDrawable rippleDrawableShortcuts = (RippleDrawable) getDrawable(R.drawable.draw_shortcuts);
         GradientDrawable gradientDrawableShortcutsForeground = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(R.id.foregroundItem);
         GradientDrawable gradientDrawableShortcutsBackground = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(R.id.backgroundItem);
         GradientDrawable gradientDrawableMaskShortcuts = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(android.R.id.mask);
@@ -189,7 +189,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         }
         autoApps.setBackground(rippleDrawableShortcuts);
 
-        RippleDrawable rippleDrawableCategories = (RippleDrawable) getResources().getDrawable(R.drawable.draw_categories);
+        RippleDrawable rippleDrawableCategories = (RippleDrawable) getDrawable(R.drawable.draw_categories);
         GradientDrawable gradientDrawableCategoriesForeground = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(R.id.foregroundItem);
         GradientDrawable gradientDrawableCategoriesBackground = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(R.id.backgroundItem);
         GradientDrawable gradientDrawableMaskCategories = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(android.R.id.mask);
@@ -212,7 +212,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         autoCategories.setBackground(rippleDrawableCategories);
 
         ImageView floatingLogo = (ImageView) findViewById(R.id.loadLogo);
-        LayerDrawable drawFloatingLogo = (LayerDrawable) getResources().getDrawable(R.drawable.draw_floating_logo);
+        LayerDrawable drawFloatingLogo = (LayerDrawable) getDrawable(R.drawable.draw_floating_logo);
         GradientDrawable backFloatingLogo = (GradientDrawable) drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
         backFloatingLogo.setColor(PublicVariable.primaryColorOpposite);
         floatingLogo.setImageDrawable(drawFloatingLogo);
@@ -265,19 +265,19 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         }
 
         if (PublicVariable.autoID != null) {
-            final LayerDrawable drawWifi = (LayerDrawable) getResources().getDrawable(R.drawable.draw_wifi);
+            final LayerDrawable drawWifi = (LayerDrawable) getDrawable(R.drawable.draw_wifi);
             final GradientDrawable backWifi = (GradientDrawable) drawWifi.findDrawableByLayerId(R.id.backtemp);
 
-            final LayerDrawable drawBluetooth = (LayerDrawable) getResources().getDrawable(R.drawable.draw_bluetooth);
+            final LayerDrawable drawBluetooth = (LayerDrawable) getDrawable(R.drawable.draw_bluetooth);
             final GradientDrawable backBluetooth = (GradientDrawable) drawBluetooth.findDrawableByLayerId(R.id.backtemp);
 
-            final LayerDrawable drawGPS = (LayerDrawable) getResources().getDrawable(R.drawable.draw_gps);
+            final LayerDrawable drawGPS = (LayerDrawable) getDrawable(R.drawable.draw_gps);
             final GradientDrawable backGPS = (GradientDrawable) drawGPS.findDrawableByLayerId(R.id.backtemp);
 
-            final LayerDrawable drawNfc = (LayerDrawable) getResources().getDrawable(R.drawable.draw_nfc);
+            final LayerDrawable drawNfc = (LayerDrawable) getDrawable(R.drawable.draw_nfc);
             final GradientDrawable backNfc = (GradientDrawable) drawNfc.findDrawableByLayerId(R.id.backtemp);
 
-            final LayerDrawable drawTime = (LayerDrawable) getResources().getDrawable(R.drawable.draw_time);
+            final LayerDrawable drawTime = (LayerDrawable) getDrawable(R.drawable.draw_time);
             final GradientDrawable backTime = (GradientDrawable) drawTime.findDrawableByLayerId(R.id.backtemp);
 
             wifi.setBackground(drawWifi);
@@ -369,19 +369,19 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
     public void onStart() {
         super.onStart();
 
-        final LayerDrawable drawWifi = (LayerDrawable) getResources().getDrawable(R.drawable.draw_wifi);
+        final LayerDrawable drawWifi = (LayerDrawable) getDrawable(R.drawable.draw_wifi);
         final GradientDrawable backWifi = (GradientDrawable) drawWifi.findDrawableByLayerId(R.id.backtemp);
 
-        final LayerDrawable drawBluetooth = (LayerDrawable) getResources().getDrawable(R.drawable.draw_bluetooth);
+        final LayerDrawable drawBluetooth = (LayerDrawable) getDrawable(R.drawable.draw_bluetooth);
         final GradientDrawable backBluetooth = (GradientDrawable) drawBluetooth.findDrawableByLayerId(R.id.backtemp);
 
-        final LayerDrawable drawGPS = (LayerDrawable) getResources().getDrawable(R.drawable.draw_gps);
+        final LayerDrawable drawGPS = (LayerDrawable) getDrawable(R.drawable.draw_gps);
         final GradientDrawable backGPS = (GradientDrawable) drawGPS.findDrawableByLayerId(R.id.backtemp);
 
-        final LayerDrawable drawNfc = (LayerDrawable) getResources().getDrawable(R.drawable.draw_nfc);
+        final LayerDrawable drawNfc = (LayerDrawable) getDrawable(R.drawable.draw_nfc);
         final GradientDrawable backNfc = (GradientDrawable) drawNfc.findDrawableByLayerId(R.id.backtemp);
 
-        final LayerDrawable drawTime = (LayerDrawable) getResources().getDrawable(R.drawable.draw_time);
+        final LayerDrawable drawTime = (LayerDrawable) getDrawable(R.drawable.draw_time);
         final GradientDrawable backTime = (GradientDrawable) drawTime.findDrawableByLayerId(R.id.backtemp);
 
         if (PublicVariable.themeLightDark) {

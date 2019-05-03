@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -22,8 +24,6 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.util.ArrayList;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.ViewHolder> {
 
@@ -87,7 +87,7 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
-        final LayerDrawable drawIndicator = (LayerDrawable) context.getResources().getDrawable(R.drawable.draw_recovery_indicator);
+        final LayerDrawable drawIndicator = (LayerDrawable) context.getDrawable(R.drawable.draw_recovery_indicator);
         final GradientDrawable backIndicator = (GradientDrawable) drawIndicator.findDrawableByLayerId(R.id.backtemp);
         backIndicator.setColor(PublicVariable.primaryColor);
 
@@ -95,7 +95,7 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
         viewHolderBinder.appName.setText(navDrawerItems.get(position).getAppName());
         viewHolderBinder.appName.setTextColor(PublicVariable.colorLightDarkOpposite);
 
-        RippleDrawable drawItemRippleDrawable = (RippleDrawable) context.getResources().getDrawable(idRippleShape);
+        RippleDrawable drawItemRippleDrawable = (RippleDrawable) context.getDrawable(idRippleShape);
         drawItemRippleDrawable.setColor(ColorStateList.valueOf(functionsClass.extractDominantColor(navDrawerItems.get(position).getAppIcon())));
         viewHolderBinder.item.setBackground(drawItemRippleDrawable);
 
