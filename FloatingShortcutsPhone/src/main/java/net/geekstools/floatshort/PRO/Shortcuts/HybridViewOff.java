@@ -316,8 +316,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             @Override
             public void onClick(View view) {
                 try {
-                    if (functionsClass.networkConnection()) {
-                        if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
+                    if (functionsClass.networkConnection() && firebaseAuth.getCurrentUser() != null) {
+                        if (functionsClass.floatingWidgetsPurchased() /*|| functionsClass.appVersionName(getPackageName()).contains("[BETA]")*/) {
                             try {
                                 functionsClass.navigateToClass(WidgetConfigurations.class,
                                         ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
@@ -331,6 +331,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.internetError), Toast.LENGTH_LONG).show();
+
+                        if (firebaseAuth.getCurrentUser() == null) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.authError), Toast.LENGTH_LONG).show();
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

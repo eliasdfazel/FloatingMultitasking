@@ -49,6 +49,7 @@
     <string name="license" translatable="false">LICENSE</string>
     <string name="error" translatable="false">Error Occurred</string>
     <string name="internetError" translatable="false">⚠ Internet Connection Problem ⚠</string>
+    <string name="authError" translatable="false">⚠ Authentication Required | Reopen App ⚠</string>
 
     <string name="betaUpdateAvailable">Update Available in βeta Stage</string>
     <string name="betaUpdate">βeta Change Log</string>
@@ -59,6 +60,7 @@
             &bull; First Select & Setup Widgets<br/>
             &bull; then, Click on ✔ to Create Floating Widget<br/>
             &bull; Press & Hold on ✔ to See More Options<br/>
+            🔵 <b>Press & Hold on Floating Widgets/Folders/Shortcuts Buttons to See Recovery Option</b><br/>
             🔵 <b>New User Interface For Better User Experience</b> ✨⚡ <br/>
             &bull; <small>Press & Hold on Bottom Action Buttons to See Recovery</small><br/>
             🔵 <b>Optimizing Apps Opening Process</b> | <small>To Open Apps Even Faster ⚡⚡⚡ </small><br/>

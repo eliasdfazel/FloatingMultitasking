@@ -110,6 +110,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
         firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
             @Override
             public void onSuccess(Boolean aBoolean) {
+                floatingWidgetDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("floating_widgets_description")));
                 screenshotsNumber = (int) firebaseRemoteConfig.getLong("floating_widgets_demo_screenshots");
 
                 for (int i = 1; i <= screenshotsNumber; i++) {
@@ -240,7 +241,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
 
                                 skuRowDataList.add(new SkuRowData(
                                         skuDetails.getSku(),
-                                        skuDetails.getTitle().replace("(Floating Shortcuts ᴾᴿᴼ)", ""),
+                                        skuDetails.getTitle(),
                                         skuDetails.getPrice(),
                                         skuDetails.getDescription(),
                                         skuDetails.getType())

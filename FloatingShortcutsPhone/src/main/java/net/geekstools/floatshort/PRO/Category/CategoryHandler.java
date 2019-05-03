@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
@@ -290,17 +291,29 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
         switchWidgets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
-                    try {
-                        functionsClass.navigateToClass(WidgetConfigurations.class,
-                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                try {
+                    if (functionsClass.networkConnection() && firebaseAuth.getCurrentUser() != null) {
+                        if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
+                            try {
+                                functionsClass.navigateToClass(WidgetConfigurations.class,
+                                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), InAppBilling.class)
+                                            .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
+                                    ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.internetError), Toast.LENGTH_LONG).show();
+
+                        if (firebaseAuth.getCurrentUser() == null) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.authError), Toast.LENGTH_LONG).show();
+                        }
                     }
-                } else {
-                    startActivity(new Intent(getApplicationContext(), InAppBilling.class)
-                                    .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -496,63 +509,6 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        PublicVariable.inMemory = true;
-
-        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build();
-        firebaseRemoteConfig.setConfigSettings(configSettings);
-        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
-
-        firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener(CategoryHandler.this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            firebaseRemoteConfig.activate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
-                                @Override
-                                public void onSuccess(Boolean aBoolean) {
-                                    if (((int) firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())) > functionsClass.appVersionCode(getPackageName())) {
-                                        LayerDrawable layerDrawableNewUpdate = (LayerDrawable) getDrawable(R.drawable.ic_update);
-                                        BitmapDrawable gradientDrawableNewUpdate = (BitmapDrawable) layerDrawableNewUpdate.findDrawableByLayerId(R.id.ic_launcher_back_layer);
-                                        gradientDrawableNewUpdate.setTint(PublicVariable.primaryColor);
-
-                                        ImageView newUpdate = (ImageView) findViewById(R.id.newUpdate);
-                                        newUpdate.setImageDrawable(layerDrawableNewUpdate);
-                                        newUpdate.setVisibility(View.VISIBLE);
-                                        newUpdate.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                functionsClass.upcomingChangeLog(
-                                                        CategoryHandler.this,
-                                                        firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
-                                                        String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
-                                                );
-
-                                            }
-                                        });
-
-                                        functionsClass.notificationCreator(
-                                                getString(R.string.updateAvailable),
-                                                firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogSummaryConfigKey()),
-                                                (int) firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())
-                                        );
-                                    } else {
-
-                                    }
-                                }
-                            });
-                        } else {
-
-                        }
-                    }
-                });
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         IntentFilter intentFilter = new IntentFilter();
@@ -646,6 +602,63 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PublicVariable.inMemory = true;
+
+        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        firebaseRemoteConfig.setConfigSettings(configSettings);
+        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
+
+        firebaseRemoteConfig.fetch(0)
+                .addOnCompleteListener(CategoryHandler.this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            firebaseRemoteConfig.activate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
+                                @Override
+                                public void onSuccess(Boolean aBoolean) {
+                                    if (((int) firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())) > functionsClass.appVersionCode(getPackageName())) {
+                                        LayerDrawable layerDrawableNewUpdate = (LayerDrawable) getDrawable(R.drawable.ic_update);
+                                        BitmapDrawable gradientDrawableNewUpdate = (BitmapDrawable) layerDrawableNewUpdate.findDrawableByLayerId(R.id.ic_launcher_back_layer);
+                                        gradientDrawableNewUpdate.setTint(PublicVariable.primaryColor);
+
+                                        ImageView newUpdate = (ImageView) findViewById(R.id.newUpdate);
+                                        newUpdate.setImageDrawable(layerDrawableNewUpdate);
+                                        newUpdate.setVisibility(View.VISIBLE);
+                                        newUpdate.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                functionsClass.upcomingChangeLog(
+                                                        CategoryHandler.this,
+                                                        firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
+                                                        String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
+                                                );
+
+                                            }
+                                        });
+
+                                        functionsClass.notificationCreator(
+                                                getString(R.string.updateAvailable),
+                                                firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogSummaryConfigKey()),
+                                                (int) firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())
+                                        );
+                                    } else {
+
+                                    }
+                                }
+                            });
+                        } else {
+
+                        }
+                    }
+                });
     }
 
     @Override

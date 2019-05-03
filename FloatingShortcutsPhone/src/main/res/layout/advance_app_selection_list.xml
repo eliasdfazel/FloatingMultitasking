@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/draw_divider"
-                android:dividerHeight="3dp"
+                android:dividerHeight="7dp"
                 android:isScrollContainer="false"
                 android:nestedScrollingEnabled="false"/>
         </RelativeLayout>

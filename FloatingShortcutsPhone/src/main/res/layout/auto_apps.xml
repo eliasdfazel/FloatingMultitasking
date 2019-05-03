@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@drawable/draw_divider"
-        android:dividerHeight="2dp"
+        android:dividerHeight="5dp"
         android:fadingEdge="vertical"
         android:fadingEdgeLength="37dp"
         android:listSelector="@color/transparent_default"
