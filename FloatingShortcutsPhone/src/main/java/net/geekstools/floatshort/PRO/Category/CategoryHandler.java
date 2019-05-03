@@ -548,7 +548,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
         }
 
         try {
-            if (!BuildConfig.DEBUG && functionsClass.networkConnection()) {
+            if (functionsClass.networkConnection()) {
                 try {
                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                     firebaseUser.reload().addOnCompleteListener(new OnCompleteListener<Void>() {

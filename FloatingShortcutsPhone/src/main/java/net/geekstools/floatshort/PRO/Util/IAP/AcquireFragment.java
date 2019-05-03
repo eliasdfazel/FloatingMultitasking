@@ -240,6 +240,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                 }
 
                                 skuRowDataList.add(new SkuRowData(
+                                        skuDetails,
                                         skuDetails.getSku(),
                                         skuDetails.getTitle(),
                                         skuDetails.getPrice(),

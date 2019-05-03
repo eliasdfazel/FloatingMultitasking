@@ -51,16 +51,14 @@ public class Configurations extends Activity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         try {
-            if (!BuildConfig.DEBUG) {
-                functionsClass.savePreference(".UserInformation", "isBetaTester", functionsClass.appVersionName(getPackageName()).contains("[BETA]") ? true : false);
-                functionsClass.savePreference(".UserInformation", "installedVersionCode", functionsClass.appVersionCode(getPackageName()));
-                functionsClass.savePreference(".UserInformation", "installedVersionName", functionsClass.appVersionName(getPackageName()));
-                functionsClass.savePreference(".UserInformation", "deviceModel", functionsClass.getDeviceName());
-                functionsClass.savePreference(".UserInformation", "userRegion", functionsClass.getCountryIso());
+            functionsClass.savePreference(".UserInformation", "isBetaTester", functionsClass.appVersionName(getPackageName()).contains("[BETA]") ? true : false);
+            functionsClass.savePreference(".UserInformation", "installedVersionCode", functionsClass.appVersionCode(getPackageName()));
+            functionsClass.savePreference(".UserInformation", "installedVersionName", functionsClass.appVersionName(getPackageName()));
+            functionsClass.savePreference(".UserInformation", "deviceModel", functionsClass.getDeviceName());
+            functionsClass.savePreference(".UserInformation", "userRegion", functionsClass.getCountryIso());
 
-                if (functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
-                    functionsClass.saveDefaultPreference("JoinedBetaProgrammer", true);
-                }
+            if (functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
+                functionsClass.saveDefaultPreference("JoinedBetaProgrammer", true);
             }
         } catch (Exception e) {
             e.printStackTrace();

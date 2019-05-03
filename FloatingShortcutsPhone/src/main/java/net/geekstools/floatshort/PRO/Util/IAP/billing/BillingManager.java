@@ -19,6 +19,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
@@ -34,8 +36,6 @@ import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import androidx.annotation.Nullable;
 
 public class BillingManager implements PurchasesUpdatedListener {
 
@@ -84,10 +84,9 @@ public class BillingManager implements PurchasesUpdatedListener {
         });
     }
 
-    public int startPurchaseFlow(String skuId, String billingType) {
+    public int startPurchaseFlow(SkuDetails skuDetails, String skuId, String billingType) {
         BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-                .setType(billingType)
-                .setSku(skuId)
+                .setSkuDetails(skuDetails)
                 .setAccountId(UserEmailAddress)
                 .build();
 
