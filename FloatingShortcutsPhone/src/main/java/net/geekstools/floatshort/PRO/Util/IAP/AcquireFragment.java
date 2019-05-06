@@ -1,5 +1,6 @@
 package net.geekstools.floatshort.PRO.Util.IAP;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,6 +31,7 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -54,6 +56,9 @@ import java.util.TreeMap;
 
 public class AcquireFragment extends DialogFragment implements View.OnClickListener {
 
+    Activity activity;
+    Context context;
+
     FunctionsClass functionsClass;
 
     RecyclerView recyclerView;
@@ -70,12 +75,20 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
     TreeMap<Integer, Drawable> mapIndexDrawable = new TreeMap<Integer, Drawable>();
     TreeMap<Integer, Uri> mapIndexURI = new TreeMap<Integer, Uri>();
 
+    RequestManager requestManager;
+
     int screenshotsNumber = 6, glideLoadCounter = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        functionsClass = new FunctionsClass(getContext(), getActivity());
+
+        this.activity = getActivity();
+        this.context = getContext();
+
+        functionsClass = new FunctionsClass(context, activity);
+        requestManager = Glide.with(context);
+
         if (PublicVariable.themeLightDark) {
             setStyle(DialogFragment.STYLE_NORMAL, R.style.AppThemeLight);
         } else {
@@ -93,12 +106,12 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
         floatingWidgetDemoList = (LinearLayout) root.findViewById(R.id.floatingWidgetDemoList);
         floatingWidgetDemoDescription = (TextView) root.findViewById(R.id.floatingWidgetDemoDescription);
 
-        root.findViewById(R.id.backgroundFull).setBackgroundColor(PublicVariable.themeLightDark ? getContext().getColor(R.color.light) : getContext().getColor(R.color.dark));
+        root.findViewById(R.id.backgroundFull).setBackgroundColor(PublicVariable.themeLightDark ? context.getColor(R.color.light) : context.getColor(R.color.dark));
 
-        onManagerReady((BillingProvider) getActivity());
+        onManagerReady((BillingProvider) activity);
 
         floatingWidgetDemoDescription.setText(Html.fromHtml(getString(R.string.floatingWidgetsDemoDescriptions)));
-        floatingWidgetDemoDescription.setTextColor(PublicVariable.themeLightDark ? getContext().getColor(R.color.dark) : getContext().getColor(R.color.light));
+        floatingWidgetDemoDescription.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
 
 
         FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -123,8 +136,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                     storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri screenshotURI) {
-                            Glide.with(getContext())
-                                    .load(screenshotURI)
+                            requestManager.load(screenshotURI)
                                     .addListener(new RequestListener<Drawable>() {
                                         @Override
                                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -145,7 +157,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                                 new Handler().postDelayed(new Runnable() {
                                                     @Override
                                                     public void run() {
-                                                        getContext().sendBroadcast(new Intent("LOAD_SCREENSHOTS"));
+                                                        context.sendBroadcast(new Intent("LOAD_SCREENSHOTS"));
                                                     }
                                                 }, 113);
                                             }
@@ -169,7 +181,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                     for (int i = 1; i <= screenshotsNumber; i++) {
                         FunctionsClass.println(">>> " + mapIndexURI.get(i) + " <<<");
 
-                        RelativeLayout demoLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.floating_widgets_demo_item, null);
+                        RelativeLayout demoLayout = (RelativeLayout) activity.getLayoutInflater().inflate(R.layout.floating_widgets_demo_item, null);
                         ImageView floatingWidgetsDemoItem = (ImageView) demoLayout.findViewById(R.id.floatingWidgetsDemoItem);
 
                         floatingWidgetsDemoItem.setImageDrawable(mapIndexDrawable.get(i));
@@ -180,13 +192,14 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                 }
             }
         };
-        getContext().registerReceiver(broadcastReceiver, intentFilter);
+        context.registerReceiver(broadcastReceiver, intentFilter);
 
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, android.view.KeyEvent event) {
                 if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
-                    getActivity().finish();
+                    requestManager.pauseAllRequests();
+                    activity.finish();
                 }
                 return true;
             }
@@ -196,13 +209,33 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            requestManager.resumeRequests();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            requestManager.pauseAllRequests();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         if (view instanceof ImageView) {
             String screenshotURI = view.getTag().toString();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(screenshotURI));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+            context.startActivity(intent);
         }
     }
 
@@ -215,10 +248,10 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
     public void onManagerReady(BillingProvider billingProvider) {
         this.billingProvider = billingProvider;
         if (recyclerView != null) {
-            skusAdapter = new SkusAdapter(this.billingProvider, getActivity());
+            skusAdapter = new SkusAdapter(this.billingProvider, activity);
             if (recyclerView.getAdapter() == null) {
                 recyclerView.setAdapter(skusAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.setLayoutManager(new LinearLayoutManager(activity));
             }
             handleManagerAndUiReady();
         }
@@ -260,7 +293,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
     }
 
     private void displayError() {
-        Toast.makeText(getContext(), getString(R.string.error), Toast.LENGTH_LONG).show();
+        Toast.makeText(context, getString(R.string.error), Toast.LENGTH_LONG).show();
     }
 }
 

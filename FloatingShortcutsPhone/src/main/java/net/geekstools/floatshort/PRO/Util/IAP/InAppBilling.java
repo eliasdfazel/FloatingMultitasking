@@ -5,7 +5,9 @@ import android.os.Handler;
 
 import androidx.fragment.app.FragmentActivity;
 
+import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingProvider;
 
@@ -20,15 +22,15 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
     private AcquireFragment acquireFragment;
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        finish();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (PublicVariable.themeLightDark) {
+            setTheme(R.style.GeeksEmpire_Material_IAP_LIGHT);
+        } else {
+            setTheme(R.style.GeeksEmpire_Material_IAP_DARK);
+        }
+
         functionsClass = new FunctionsClass(getApplicationContext(), InAppBilling.this);
 
         if (savedInstanceState != null) {
@@ -60,6 +62,13 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
         if (!isAcquireFragmentShown()) {
             acquireFragment.show(getFragmentManager(), DIALOG_TAG);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        finish();
     }
 
     public void showRefreshedUi() {

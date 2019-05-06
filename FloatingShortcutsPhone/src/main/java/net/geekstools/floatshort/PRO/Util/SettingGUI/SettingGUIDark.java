@@ -462,6 +462,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 setupShapes();
+
                 return true;
             }
         });
@@ -566,6 +567,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                         backPrefAutoTrans.setColor(PublicVariable.primaryColor);
                         backPrefAutoTrans.setAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
                         autotrans.setIcon(drawPrefAutoTrans);
+
+                        PublicVariable.forceReload = false;
 
                         dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                     }
@@ -678,6 +681,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
+                        PublicVariable.forceReload = false;
+
                         dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                     }
                 });
@@ -815,6 +820,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
                         delayPressHold.setSummary(functionsClass.readDefaultPreference("delayPressHold", 333) + " " + getString(R.string.millis));
+
+                        PublicVariable.forceReload = false;
 
                         dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                     }
@@ -1015,7 +1022,10 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 Intent intent = new Intent(getApplicationContext(), WidgetConfigurations.class);
                 startActivity(intent);
             } else {
-                functionsClass.overrideBackPressToMain(SettingGUIDark.this);
+                if (PublicVariable.forceReload) {
+                    PublicVariable.forceReload = false;
+                    functionsClass.overrideBackPressToMain(SettingGUIDark.this);
+                }
             }
 
             float finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
@@ -1092,7 +1102,10 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
             }
             case android.R.id.home: {
                 try {
-                    functionsClass.overrideBackPressToMain(SettingGUIDark.this);
+                    if (PublicVariable.forceReload) {
+                        PublicVariable.forceReload = false;
+                        functionsClass.overrideBackPressToMain(SettingGUIDark.this);
+                    }
 
                     float finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
                     Animator circularReveal = ViewAnimationUtils.createCircularReveal(
@@ -1130,11 +1143,15 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        PublicVariable.forceReload = true;
+
         String sticky = sharedPreferences.getString("stick", "1");
         stick = (ListPreference) findPreference("stick");
         if (sticky.equals("1")) {
+            PublicVariable.forceReload = false;
             stick.setSummary(getString(R.string.leftEdge));
         } else if (sticky.equals("2")) {
+            PublicVariable.forceReload = false;
             stick.setSummary(getString(R.string.rightEdge));
         }
 
@@ -1171,6 +1188,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
 
     /*Custom Package of Shapes/Icons*/
     public void setupShapes() {
+        int currentShape = sharedPreferences.getInt("iconShape", 0);
+
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 377, getResources().getDisplayMetrics());
         int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 387, getResources().getDisplayMetrics());
@@ -1328,6 +1347,10 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
             public void onDismiss(DialogInterface dialogInterface) {
                 functionsClass.addAppShortcuts();
 
+                if (currentShape != sharedPreferences.getInt("iconShape", 0)) {
+                    PublicVariable.forceReload = true;
+                }
+
                 dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }
         });
@@ -1335,6 +1358,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
     }
 
     public void listCustomIconPack() {
+        String currentCustomIconPack = sharedPreferences.getString("customIcon", getPackageName());
+
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 377, getResources().getDisplayMetrics());
 
@@ -1393,6 +1418,10 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 navDrawerItems.clear();
+
+                if (!currentCustomIconPack.equals(sharedPreferences.getString("customIcon", getPackageName()))) {
+                    PublicVariable.forceReload = true;
+                }
 
                 dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }

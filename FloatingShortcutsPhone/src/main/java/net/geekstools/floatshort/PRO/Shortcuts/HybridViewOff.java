@@ -40,11 +40,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -528,6 +533,41 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 return true;
             }
         });
+
+        if (!functionsClass.floatingWidgetsPurchased()) {
+            BillingClient billingClient = BillingClient.newBuilder(HybridViewOff.this).setListener(new PurchasesUpdatedListener() {
+                @Override
+                public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+                    if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
+
+                    } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
+
+                    } else {
+
+                    }
+
+                }
+            }).build();
+            billingClient.startConnection(new BillingClientStateListener() {
+                @Override
+                public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
+                    if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                        List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
+                        for (Purchase purchase : purchases) {
+                            FunctionsClass.println("*** Purchased Item: " + purchase + " ***");
+                            if (purchase.getSku().equals("floating.widgets")) {
+                                functionsClass.savePreference(".PurchasedItem", "FloatingWidgets", true);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onBillingServiceDisconnected() {
+
+                }
+            });
+        }
 
         firebaseAuth = FirebaseAuth.getInstance();
     }

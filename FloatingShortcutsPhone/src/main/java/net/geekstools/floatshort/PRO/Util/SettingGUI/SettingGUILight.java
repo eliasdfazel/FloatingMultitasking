@@ -565,6 +565,8 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                         backPrefAutoTrans.setAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
                         autotrans.setIcon(drawPrefAutoTrans);
 
+                        PublicVariable.forceReload = false;
+
                         dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                     }
                 });
@@ -676,6 +678,8 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
+                        PublicVariable.forceReload = false;
+
                         dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                     }
                 });
@@ -813,6 +817,8 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
                         delayPressHold.setSummary(functionsClass.readDefaultPreference("delayPressHold", 333) + " " + getString(R.string.millis));
+
+                        PublicVariable.forceReload = false;
 
                         dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                     }
@@ -1014,7 +1020,10 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 Intent intent = new Intent(getApplicationContext(), WidgetConfigurations.class);
                 startActivity(intent);
             } else {
-                functionsClass.overrideBackPressToMain(SettingGUILight.this);
+                if (PublicVariable.forceReload) {
+                    PublicVariable.forceReload = false;
+                    functionsClass.overrideBackPressToMain(SettingGUILight.this);
+                }
             }
 
             float finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
@@ -1091,7 +1100,10 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             }
             case android.R.id.home: {
                 try {
-                    functionsClass.overrideBackPressToMain(SettingGUILight.this);
+                    if (PublicVariable.forceReload) {
+                        PublicVariable.forceReload = false;
+                        functionsClass.overrideBackPressToMain(SettingGUILight.this);
+                    }
 
                     float finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
                     Animator circularReveal = ViewAnimationUtils.createCircularReveal(
@@ -1129,11 +1141,15 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        PublicVariable.forceReload = true;
+
         String sticky = sharedPreferences.getString("stick", "1");
         stick = (ListPreference) findPreference("stick");
         if (sticky.equals("1")) {
+            PublicVariable.forceReload = false;
             stick.setSummary(getString(R.string.leftEdge));
         } else if (sticky.equals("2")) {
+            PublicVariable.forceReload = false;
             stick.setSummary(getString(R.string.rightEdge));
         }
 
@@ -1170,6 +1186,8 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
     /*Custom Package of Shapes/Icons*/
     public void setupShapes() {
+        int currentShape = sharedPreferences.getInt("iconShape", 0);
+
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 377, getResources().getDisplayMetrics());
         int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 387, getResources().getDisplayMetrics());
@@ -1325,6 +1343,10 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             public void onDismiss(DialogInterface dialogInterface) {
                 functionsClass.addAppShortcuts();
 
+                if (currentShape != sharedPreferences.getInt("iconShape", 0)) {
+                    PublicVariable.forceReload = true;
+                }
+
                 dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }
         });
@@ -1332,6 +1354,8 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
     }
 
     public void listCustomIconPack() {
+        String currentCustomIconPack = sharedPreferences.getString("customIcon", getPackageName());
+
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 377, getResources().getDisplayMetrics());
 
@@ -1390,6 +1414,10 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 navDrawerItems.clear();
+
+                if (!currentCustomIconPack.equals(sharedPreferences.getString("customIcon", getPackageName()))) {
+                    PublicVariable.forceReload = true;
+                }
 
                 dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }

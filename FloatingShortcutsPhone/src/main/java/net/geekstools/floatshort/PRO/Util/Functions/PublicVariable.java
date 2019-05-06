@@ -68,6 +68,7 @@ public class PublicVariable {
     public static boolean receiverNFC = false;
     public static boolean splitScreen = true;
     public static boolean triggerWifiBroadcast = false;
+    public static boolean forceReload = false;
 
     public static ArrayList<String> FloatingShortcuts = new ArrayList<String>();
     public static ArrayList<String> RecoveryShortcuts = new ArrayList<String>();

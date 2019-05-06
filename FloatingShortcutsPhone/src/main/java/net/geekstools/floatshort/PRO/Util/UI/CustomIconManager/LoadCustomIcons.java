@@ -145,7 +145,7 @@ public class LoadCustomIcons {
     private Bitmap loadBitmap(String drawableName) {
         int id = iconPackres.getIdentifier(drawableName, "drawable", packageNameIconPack);
         if (id > 0) {
-            Drawable bitmap = iconPackres.getDrawable(id);
+            Drawable bitmap = iconPackres.getDrawable(id, iconPackres.newTheme());
             if (bitmap instanceof BitmapDrawable) {
                 return ((BitmapDrawable) bitmap).getBitmap();
             }
@@ -156,7 +156,7 @@ public class LoadCustomIcons {
     private Drawable loadDrawable(String appPackageName, String drawableName) {
         int id = iconPackres.getIdentifier(drawableName, "drawable", packageNameIconPack);
         if (id > 0) {
-            Drawable bitmap = iconPackres.getDrawable(id);
+            Drawable bitmap = iconPackres.getDrawable(id, iconPackres.newTheme());
             return bitmap;
         } else {
             try {
