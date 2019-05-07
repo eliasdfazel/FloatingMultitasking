@@ -1024,8 +1024,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                     false
                             );
 
-                            //String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
-
                             WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                                     .fallbackToDestructiveMigration()
                                     .addCallback(new RoomDatabase.Callback() {
@@ -1080,8 +1078,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                         false
                                 );
 
-                                //String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
-
                                 WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                                         .fallbackToDestructiveMigration()
                                         .addCallback(new RoomDatabase.Callback() {
@@ -1127,8 +1123,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                     InstalledWidgetsAdapter.pickedWidgetLabel,
                                     false
                             );
-
-                            //String newAppName = functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName);
 
                             WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                                     .fallbackToDestructiveMigration()

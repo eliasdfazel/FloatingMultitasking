@@ -1159,13 +1159,19 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         String appTheme = sharedPreferences.getString("themeColor", "2");
         themeColor = (ListPreference) findPreference("themeColor");
         if (appTheme.equals("1")) {
+            PublicVariable.forceReload = true;
+
             themeColor.setSummary(getString(R.string.light));
             PublicVariable.themeLightDark = true;
             startActivity(new Intent(getApplicationContext(), SettingGUILight.class));
         } else if (appTheme.equals("2")) {
+            PublicVariable.forceReload = true;
+
             themeColor.setSummary(getString(R.string.dark));
             PublicVariable.themeLightDark = false;
         } else if (appTheme.equals("3")) {
+            PublicVariable.forceReload = true;
+
             functionsClass.checkLightDarkTheme();
             themeColor.setSummary(getString(R.string.dynamic));
             if (PublicVariable.themeLightDark) {
