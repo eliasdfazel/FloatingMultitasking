@@ -57,10 +57,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -231,6 +229,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                         if (PublicVariable.floatingCounter == 0) {
                             stopService(new Intent(getApplicationContext(), BindServices.class));
                         }
+
+                        functionsClass.saveDefaultPreference("LitePreferences", false);
                     }
                 }
                 return false;
@@ -247,6 +247,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                     if (PublicVariable.floatingCounter == 0) {
                         stopService(new Intent(getApplicationContext(), BindServices.class));
                     }
+
+                    functionsClass.saveDefaultPreference("LitePreferences", false);
                 }
                 return false;
             }
@@ -259,6 +261,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 } else {
                     functionsClass.setThemeColorPreferences(SettingGUIDark.this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
                 }
+
+                functionsClass.saveDefaultPreference("LitePreferences", false);
                 return false;
             }
         });
@@ -270,6 +274,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 } else {
                     functionsClass.setThemeColorPreferences(SettingGUIDark.this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
                 }
+
+                functionsClass.saveDefaultPreference("LitePreferences", false);
                 return false;
             }
         });
@@ -289,10 +295,6 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         super.onStart();
 
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build();
-        firebaseRemoteConfig.setConfigSettings(configSettings);
         firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
         firebaseRemoteConfig.fetch(0)
                 .addOnCompleteListener(SettingGUIDark.this, new OnCompleteListener<Void>() {
@@ -1164,6 +1166,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
             themeColor.setSummary(getString(R.string.light));
             PublicVariable.themeLightDark = true;
             startActivity(new Intent(getApplicationContext(), SettingGUILight.class));
+
+            functionsClass.saveDefaultPreference("LitePreferences", false);
         } else if (appTheme.equals("2")) {
             PublicVariable.forceReload = true;
 
@@ -1186,6 +1190,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 blur.setChecked(false);
                 blur.setEnabled(false);
             }
+
+            functionsClass.saveDefaultPreference("LitePreferences", false);
         } else if (sharedPreferences.getBoolean("transparent", true) == false) {
             blur.setChecked(false);
             blur.setEnabled(false);
@@ -1269,6 +1275,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 shapes.setIcon(layerDrawable);
                 shapes.setSummary(getString(R.string.droplet));
 
+                functionsClass.saveDefaultPreference("LitePreferences", false);
                 dialog.dismiss();
             }
         });
@@ -1285,6 +1292,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 shapes.setIcon(layerDrawable);
                 shapes.setSummary(getString(R.string.circle));
 
+                functionsClass.saveDefaultPreference("LitePreferences", false);
                 dialog.dismiss();
             }
         });
@@ -1301,6 +1309,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 shapes.setIcon(layerDrawable);
                 shapes.setSummary(getString(R.string.square));
 
+                functionsClass.saveDefaultPreference("LitePreferences", false);
                 dialog.dismiss();
             }
         });
@@ -1317,6 +1326,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 shapes.setIcon(layerDrawable);
                 shapes.setSummary(getString(R.string.squircle));
 
+                functionsClass.saveDefaultPreference("LitePreferences", false);
                 dialog.dismiss();
             }
         });

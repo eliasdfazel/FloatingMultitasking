@@ -15,8 +15,8 @@ android {
         minSdkVersion 23
         targetSdkVersion 28
 
-        versionCode 632
-        versionName "14.000.000.632_"
+        versionCode 634
+        versionName "14.200.200.634_"
 
         wearAppUnbundled true
     }
@@ -64,11 +64,11 @@ dependencies {
     implementation 'com.android.billingclient:billing:1.2.2'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
+    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
     implementation 'androidx.palette:palette:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha05'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha06'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
 
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
@@ -79,11 +79,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.google.firebase:firebase-storage:17.0.0'
 
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
-    implementation 'androidx.room:room-runtime:2.1.0-beta01'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0-beta01'
-    kapt 'androidx.room:room-compiler:2.1.0-beta01'
+    implementation 'androidx.room:room-runtime:2.1.0-rc01'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-rc01'
+    kapt 'androidx.room:room-compiler:2.1.0-rc01'
 
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.31'
 

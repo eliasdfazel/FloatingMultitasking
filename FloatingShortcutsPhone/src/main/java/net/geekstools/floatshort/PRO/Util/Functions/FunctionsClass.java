@@ -5611,6 +5611,8 @@ public class FunctionsClass {
         /*Apply All Lite Preferences*/
         defaultSharedPreferencesEditor.apply();
 
+        saveDefaultPreference("LitePreferences", true);
+
         activity.finish();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -5619,6 +5621,10 @@ public class FunctionsClass {
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         }, 333);
+    }
+
+    public boolean litePreferencesEnabled() {
+        return readDefaultPreference("LitePreferences", false);
     }
 
     /*Time Functions*/

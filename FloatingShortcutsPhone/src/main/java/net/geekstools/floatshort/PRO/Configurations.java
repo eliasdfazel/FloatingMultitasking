@@ -74,6 +74,7 @@ public class Configurations extends Activity {
             result = getResources().getDimensionPixelSize(resourceId);
         }
         PublicVariable.statusBarHeight = result;
+        PublicVariable.navigationBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
 
         if (functionsClass.returnAPI() >= 26) {
             functionsClass.extractWallpaperColor();

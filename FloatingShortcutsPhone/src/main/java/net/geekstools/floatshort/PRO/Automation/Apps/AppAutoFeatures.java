@@ -819,66 +819,69 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        String indexText = mapRangeIndex.get((((int) motionEvent.getY())));
+                        if (functionsClass.litePreferencesEnabled()) {
 
-                        if (indexText != null) {
-                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
-                            popupIndex.setText(indexText);
-                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
-                            popupIndex.setVisibility(View.VISIBLE);
+                        } else {
+                            String indexText = mapRangeIndex.get((((int) motionEvent.getY())));
+
+                            if (indexText != null) {
+                                popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                                popupIndex.setText(indexText);
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                popupIndex.setVisibility(View.VISIBLE);
+                            }
                         }
 
                         break;
                     }
                     case MotionEvent.ACTION_MOVE: {
-                        String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
+                        if (functionsClass.litePreferencesEnabled()) {
 
-                        if (indexText != null) {
-                            if (!popupIndex.isShown()) {
-                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
-                                popupIndex.setVisibility(View.VISIBLE);
-                            }
-                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
-                            popupIndex.setText(indexText);
-
-                            try {
-//                                nestedScrollView.smoothScrollTo(
-//                                        0,
-//                                        ((int) loadView.getChildAt(
-//                                                mapIndexFirstItem.get( mapRangeIndex.get(((int) motionEvent.getY())) )
-//                                        ).getY())
-//                                );
-
-                                listView.smoothScrollToPositionFromTop(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY()))), 0, 200);
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
                         } else {
-                            if (popupIndex.isShown()) {
-                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
-                                popupIndex.setVisibility(View.INVISIBLE);
+                            String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
+
+                            if (indexText != null) {
+                                if (!popupIndex.isShown()) {
+                                    popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                    popupIndex.setVisibility(View.VISIBLE);
+                                }
+                                popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                                popupIndex.setText(indexText);
+
+                                try {
+                                    listView.smoothScrollToPositionFromTop(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY()))), 0, 200);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                if (popupIndex.isShown()) {
+                                    popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                                    popupIndex.setVisibility(View.INVISIBLE);
+                                }
                             }
                         }
 
                         break;
                     }
                     case MotionEvent.ACTION_UP: {
-                        if (popupIndex.isShown()) {
+                        if (functionsClass.litePreferencesEnabled()) {
                             try {
-//                                nestedScrollView.smoothScrollTo(
-//                                        0,
-//                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
-//                                );
-
                                 listView.smoothScrollToPositionFromTop(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY()))), 0, 200);
-
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                        } else {
+                            if (popupIndex.isShown()) {
+                                try {
+                                    listView.smoothScrollToPositionFromTop(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY()))), 0, 200);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
-                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
-                            popupIndex.setVisibility(View.INVISIBLE);
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                                popupIndex.setVisibility(View.INVISIBLE);
+                            }
                         }
 
                         break;

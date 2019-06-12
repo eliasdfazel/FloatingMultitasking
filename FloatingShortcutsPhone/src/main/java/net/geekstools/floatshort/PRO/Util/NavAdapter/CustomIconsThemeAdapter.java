@@ -11,14 +11,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 import java.util.ArrayList;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThemeAdapter.ViewHolder> {
 
@@ -57,11 +57,13 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
             public void onClick(View view) {
                 functionsClass.saveDefaultPreference("customIcon", navDrawerItems.get(position).getPackageName());
 
+                functionsClass.saveDefaultPreference("LitePreferences", false);
                 if (functionsClass.loadCustomIcons()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, navDrawerItems.get(position).getPackageName());
                     loadCustomIcons.load();
                 }
 
+                functionsClass.saveDefaultPreference("LitePreferences", false);
                 context.sendBroadcast(new Intent("CUSTOM_DIALOGUE_DISMISS"));
             }
         });

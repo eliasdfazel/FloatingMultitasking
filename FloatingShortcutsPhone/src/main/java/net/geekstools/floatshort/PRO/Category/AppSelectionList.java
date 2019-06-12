@@ -565,28 +565,55 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
+                        if (functionsClass.litePreferencesEnabled()) {
 
-                        if (indexText != null) {
-                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
-                            popupIndex.setText(indexText);
-                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
-                            popupIndex.setVisibility(View.VISIBLE);
+                        } else {
+                            String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
+
+                            if (indexText != null) {
+                                popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                                popupIndex.setText(indexText);
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                popupIndex.setVisibility(View.VISIBLE);
+                            }
                         }
 
                         break;
                     }
                     case MotionEvent.ACTION_MOVE: {
-                        String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
+                        if (functionsClass.litePreferencesEnabled()) {
 
-                        if (indexText != null) {
-                            if (!popupIndex.isShown()) {
-                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
-                                popupIndex.setVisibility(View.VISIBLE);
+                        } else {
+                            String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
+
+                            if (indexText != null) {
+                                if (!popupIndex.isShown()) {
+                                    popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                    popupIndex.setVisibility(View.VISIBLE);
+                                }
+                                popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                                popupIndex.setText(indexText);
+
+                                try {
+                                    nestedScrollView.smoothScrollTo(
+                                            0,
+                                            ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+                                    );
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                if (popupIndex.isShown()) {
+                                    popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                                    popupIndex.setVisibility(View.INVISIBLE);
+                                }
                             }
-                            popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
-                            popupIndex.setText(indexText);
+                        }
 
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        if (functionsClass.litePreferencesEnabled()) {
                             try {
                                 nestedScrollView.smoothScrollTo(
                                         0,
@@ -597,26 +624,18 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                             }
                         } else {
                             if (popupIndex.isShown()) {
+                                try {
+                                    nestedScrollView.smoothScrollTo(
+                                            0,
+                                            ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+                                    );
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
                                 popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
                                 popupIndex.setVisibility(View.INVISIBLE);
                             }
-                        }
-
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP: {
-                        if (popupIndex.isShown()) {
-                            try {
-                                nestedScrollView.smoothScrollTo(
-                                        0,
-                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
-                                );
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                            popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
-                            popupIndex.setVisibility(View.INVISIBLE);
                         }
 
                         break;

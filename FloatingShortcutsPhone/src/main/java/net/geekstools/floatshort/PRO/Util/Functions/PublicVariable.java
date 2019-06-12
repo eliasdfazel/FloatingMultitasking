@@ -31,6 +31,7 @@ public class PublicVariable {
     public static int size;
     public static int actionBarHeight;
     public static int statusBarHeight;
+    public static int navigationBarHeight;
     public static int primaryColor;
     public static int primaryColorOpposite;
     public static int colorLightDark;

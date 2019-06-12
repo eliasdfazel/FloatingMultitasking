@@ -44,6 +44,12 @@
 
     <!-- FLOATING WIDGETS -->
     <entry>
+        <key>floating_widgets_demo_screenshots</key>
+        <value>
+            6
+        </value>
+    </entry>
+    <entry>
         <key>floating_widgets_description</key>
         <value>
             <![CDATA[
