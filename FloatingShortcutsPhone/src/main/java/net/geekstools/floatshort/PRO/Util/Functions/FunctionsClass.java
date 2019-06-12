@@ -2773,6 +2773,13 @@ public class FunctionsClass {
         editorSharedPreferences.apply();
     }
 
+    public void savePreference(String PreferenceName, String KEY, long VALUE) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
+        editorSharedPreferences.putLong(KEY, VALUE);
+        editorSharedPreferences.apply();
+    }
+
     public void savePreference(String PreferenceName, String KEY, boolean VALUE) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
@@ -2807,6 +2814,10 @@ public class FunctionsClass {
 
     public int readPreference(String PreferenceName, String KEY, int defaultVALUE) {
         return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getInt(KEY, defaultVALUE);
+    }
+
+    public long readPreference(String PreferenceName, String KEY, long defaultVALUE) {
+        return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getLong(KEY, defaultVALUE);
     }
 
     public boolean readPreference(String PreferenceName, String KEY, boolean defaultVALUE) {

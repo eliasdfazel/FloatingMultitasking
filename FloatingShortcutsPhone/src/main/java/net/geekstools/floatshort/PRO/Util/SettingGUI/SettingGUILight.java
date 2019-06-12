@@ -50,9 +50,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -293,37 +299,6 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
     public void onStart() {
         super.onStart();
 
-        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
-        firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener(SettingGUILight.this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            firebaseRemoteConfig.activate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
-                                @Override
-                                public void onSuccess(Boolean aBoolean) {
-                                    if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(getPackageName())) {
-                                        functionsClass.upcomingChangeLog(
-                                                SettingGUILight.this,
-                                                firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
-                                                String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
-                                        );
-                                    }
-                                    if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClass.appVersionCode(getPackageName())) {
-                                        whatsnew.setSummary(getString(R.string.betaUpdateAvailable));
-
-                                        betaChangeLog = firebaseRemoteConfig.getString(getString(R.string.BETAstringUpcomingChangeLogPhone));
-                                        betaVersionCode = firebaseRemoteConfig.getString(getString(R.string.BETAintegerVersionCodeNewUpdatePhone));
-                                    }
-                                }
-                            });
-                        } else {
-
-                        }
-                    }
-                });
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -354,6 +329,8 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         BitmapDrawable gradientDrawableAdApp = (BitmapDrawable) layerDrawableAdApp.findDrawableByLayerId(R.id.ic_launcher_back_layer);
         gradientDrawableAdApp.setTint(PublicVariable.primaryColorOpposite);
         adApp.setIcon(layerDrawableAdApp);
+        adApp.setTitle(Html.fromHtml(getString(R.string.adApp)));
+        adApp.setSummary(Html.fromHtml(getString(R.string.adAppSummary)));
         adApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -863,6 +840,69 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 return true;
             }
         });
+
+        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
+        firebaseRemoteConfig.fetch(0)
+                .addOnCompleteListener(SettingGUILight.this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            firebaseRemoteConfig.activate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
+                                @Override
+                                public void onSuccess(Boolean aBoolean) {
+                                    if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(getPackageName())) {
+                                        functionsClass.upcomingChangeLog(
+                                                SettingGUILight.this,
+                                                firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
+                                                String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
+                                        );
+                                    }
+                                    if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClass.appVersionCode(getPackageName())) {
+                                        whatsnew.setSummary(getString(R.string.betaUpdateAvailable));
+
+                                        betaChangeLog = firebaseRemoteConfig.getString(getString(R.string.BETAstringUpcomingChangeLogPhone));
+                                        betaVersionCode = firebaseRemoteConfig.getString(getString(R.string.BETAintegerVersionCodeNewUpdatePhone));
+                                    }
+                                    if (firebaseRemoteConfig.getBoolean(getString(R.string.adAppForceLoad))) {
+                                        Glide.with(getApplicationContext())
+                                                .load(firebaseRemoteConfig.getString(getString(R.string.adAppIconLink)))
+                                                .addListener(new RequestListener<Drawable>() {
+                                                    @Override
+                                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                        return false;
+                                                    }
+
+                                                    @Override
+                                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                        adApp.setIcon(resource);
+
+                                                        return false;
+                                                    }
+                                                }).submit();
+                                        adApp.setTitle(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle))));
+                                        adApp.setSummary(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries))));
+                                        adApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                                            @Override
+                                            public boolean onPreferenceClick(Preference preference) {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(firebaseRemoteConfig.getString(getString(R.string.adAppLink)))));
+                                                return true;
+                                            }
+                                        });
+
+                                        FunctionsClass.println("*** " + firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) + " ***");
+                                        if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > functionsClass.readPreference(".AdApp", "FetchTime", Long.valueOf(0))) {
+                                            getListView().smoothScrollToPosition(getListView().getBottom());
+                                            functionsClass.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)));
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+
+                        }
+                    }
+                });
     }
 
     @Override

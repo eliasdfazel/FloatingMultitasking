@@ -20,6 +20,7 @@
             New Features Available | Click Here to See…!
         </value>
     </entry>
+
     <!-- BETA -->
     <entry>
         <key>beta_integer_version_code_new_update_phone</key>
@@ -58,6 +59,48 @@
                 &bull; then, Click on ✔ to Create Floating Widget<br/>
                 &bull; Press & Hold on ✔ to See More Options & Create Shortcuts of Floating Widgets on Home Screen<br/>
             ]]>
+        </value>
+    </entry>
+
+    <!-- Ad App -->
+    <entry>
+        <key>ad_app_force_load</key>
+        <value>
+            false
+        </value>
+    </entry>
+    <entry>
+        <key>ad_app_force_time</key>
+        <value>
+            0
+        </value>
+    </entry>
+    <entry>
+        <key>ad_app_title</key>
+        <value>
+            <![CDATA[
+                Super Shortcuts
+            ]]>
+        </value>
+    </entry>
+    <entry>
+        <key>ad_app_summaries</key>
+        <value>
+            <![CDATA[
+                One Shortcut To Rule Them All
+            ]]>
+        </value>
+    </entry>
+    <entry>
+        <key>ad_app_link</key>
+        <value>
+            https://play.google.com/store/apps/details?id=net.geekstools.supershortcuts.PRO
+        </value>
+    </entry>
+    <entry>
+        <key>ad_app_icon_link</key>
+        <value>
+            https://lh3.googleusercontent.com/AmmKC1aIYMA3rGjbtl0t3yketF3P_WN4JoPOylj0HFxs63QQ-7gvxg96A8ZPrs4oBKs=s180
         </value>
     </entry>
 </defaultsMap>
