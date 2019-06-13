@@ -62,9 +62,9 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
 
                 break;
             }
-            case "donate": {
+            case "donation": {
                 rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.android);
-                rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
+                rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.donate));
 
                 rowViewHolder.purchaseItemInfo.setVisibility(View.INVISIBLE);
 

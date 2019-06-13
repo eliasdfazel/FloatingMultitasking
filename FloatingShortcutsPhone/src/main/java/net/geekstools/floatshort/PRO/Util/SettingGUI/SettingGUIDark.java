@@ -68,11 +68,11 @@ import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.CustomIconsThemeAdapter;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutList;
-import net.geekstools.floatshort.PRO.Util.SharingService;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.util.ArrayList;
@@ -299,19 +299,6 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
     @Override
     public void onStart() {
         super.onStart();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!getFileStreamPath(".Updated").exists()) {
-                    startService(new Intent(getApplicationContext(), SharingService.class));
-                } else {
-                    if (functionsClass.appVersionCode(getPackageName()) > Integer.parseInt(functionsClass.readFile(".Updated"))) {
-                        startService(new Intent(getApplicationContext(), SharingService.class));
-                    }
-                }
-            }
-        }, 777);
 
         LayerDrawable layerDrawableLoadLogo = (LayerDrawable) getDrawable(R.drawable.ic_launcher_layer);
         BitmapDrawable gradientDrawableLoadLogo = (BitmapDrawable) layerDrawableLoadLogo.findDrawableByLayerId(R.id.ic_launcher_back_layer);
@@ -1043,9 +1030,6 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(this);
 
-        stopService(new Intent(getApplicationContext(), SharingService.class));
-        PublicVariable.showShare = false;
-
         functionsClass.CheckSystemRAM(SettingGUIDark.this);
     }
 
@@ -1086,8 +1070,6 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
             e.printStackTrace();
         }
 
-        stopService(new Intent(this, SharingService.class));
-        PublicVariable.showShare = false;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -1103,19 +1085,19 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         inflater.inflate(R.menu.menu, menu);
 
         MenuItem osp = menu.findItem(R.id.facebook);
-        MenuItem share = menu.findItem(R.id.share);
+        MenuItem share = menu.findItem(R.id.donate);
 
         LayerDrawable drawOSP = (LayerDrawable) getDrawable(R.drawable.draw_facebook);
         GradientDrawable backOSP = (GradientDrawable) drawOSP.findDrawableByLayerId(R.id.backtemp);
 
-        LayerDrawable drawShare = (LayerDrawable) getDrawable(R.drawable.draw_share);
-        GradientDrawable backShare = (GradientDrawable) drawShare.findDrawableByLayerId(R.id.backtemp);
+        LayerDrawable drawableDonate = (LayerDrawable) getDrawable(R.drawable.draw_gift);
+        GradientDrawable backgroundShare = (GradientDrawable) drawableDonate.findDrawableByLayerId(R.id.backtemp);
 
         backOSP.setColor(PublicVariable.primaryColorOpposite);
-        backShare.setColor(PublicVariable.primaryColorOpposite);
+        backgroundShare.setColor(PublicVariable.primaryColorOpposite);
 
         osp.setIcon(drawOSP);
-        share.setIcon(drawShare);
+        share.setIcon(drawableDonate);
 
         return true;
     }
@@ -1131,15 +1113,9 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
 
                 break;
             }
-            case R.id.share: {
-                PublicVariable.activityStatic = SettingGUIDark.this;
-                if (PublicVariable.showShare == false) {
-                    startService(new Intent(getApplicationContext(), SharingService.class));
-                    PublicVariable.showShare = true;
-                } else {
-                    stopService(new Intent(getApplicationContext(), SharingService.class));
-                    PublicVariable.showShare = false;
-                }
+            case R.id.donate: {
+                startActivity(new Intent(getApplicationContext(), InAppBilling.class));
+
                 break;
             }
             case android.R.id.home: {
@@ -1165,8 +1141,6 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                     e.printStackTrace();
                 }
 
-                stopService(new Intent(this, SharingService.class));
-                PublicVariable.showShare = false;
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

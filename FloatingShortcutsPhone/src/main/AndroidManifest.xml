@@ -442,7 +442,6 @@
         <service
             android:name=".Util.RemoteTask.RemoteController"
             android:theme="@android:style/Theme.NoDisplay"/>
-        <service android:name=".Util.SharingService"/>
         <service android:name=".BindServices"/>
         <service android:name=".Util.LicenseValidator"/>
         <service

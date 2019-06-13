@@ -10,9 +10,9 @@
         android:title="@string/like"/>
 
     <item
-        android:id="@+id/share"
-        android:icon="@drawable/w_share"
+        android:id="@+id/donate"
+        android:icon="@drawable/ic_gift"
         android:orderInCategory="1"
         android:showAsAction="always"
-        android:title="@string/share"/>
+        android:title="@string/donate" />
 </menu>

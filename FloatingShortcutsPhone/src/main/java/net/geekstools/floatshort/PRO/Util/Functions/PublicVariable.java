@@ -58,7 +58,6 @@ public class PublicVariable {
 
     public static boolean inMemory = false;
     public static boolean hearBeatCheckPoint = false;
-    public static boolean showShare = false;
     public static boolean themeLightDark = true;
     public static boolean Stable = false;
     public static boolean actionCenter = false;

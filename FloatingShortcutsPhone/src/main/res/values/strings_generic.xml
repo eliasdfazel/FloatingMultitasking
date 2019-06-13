@@ -26,11 +26,11 @@
 
     <string name="millis">Millisecond</string>
 
-    <string name="invitation_title" translatable="false">
-        *Install Floating Shortcuts App*
+    <string name="shareTitle" translatable="false">
+        #FloatIt To Become Master Of Multitasking ⚡
     </string>
-    <string name="appDesc" translatable="false">
-        Only One Click to Switch Between Apps by Floating Shortcuts &amp; Floating Folders #FloatIt
+    <string name="shareSummary" translatable="false">
+        Only One Click to Switch Apps by Floating Shortcuts, Floating Folders &amp; Floating Widgets
     </string>
 
     <string name="buy" translatable="false">Purchase</string>

@@ -152,7 +152,6 @@ import net.geekstools.floatshort.PRO.Util.RemoteTask.FloatingWidgetHomeScreenSho
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RemoteController;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
-import net.geekstools.floatshort.PRO.Util.SharingService;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingCategory;
@@ -1551,6 +1550,7 @@ public class FunctionsClass {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
                     saveFile(".Updated", String.valueOf(appVersionCode(context.getPackageName())));
+
                     dialog.dismiss();
                 }
             });
@@ -1657,6 +1657,7 @@ public class FunctionsClass {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
                     saveFile(".Updated", String.valueOf(appVersionCode(context.getPackageName())));
+
                     dialog.dismiss();
                 }
             });
@@ -1766,7 +1767,6 @@ public class FunctionsClass {
                 "Send an Email",
                 "Send a Message",
                 "Contact via Forum",
-                "Different Contact Options",
                 "Join Beta Program",
                 "Rate & Write Review"};
         AlertDialog.Builder builder = null;
@@ -1802,13 +1802,11 @@ public class FunctionsClass {
                     Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_xda)));
                     activity.startActivity(a);
                 } else if (selectedPosition == 3) {
-                    activity.startService(new Intent(context, SharingService.class));
-                } else if (selectedPosition == 4) {
                     Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_alpha) + context.getPackageName()));
                     activity.startActivity(a);
 
                     Toast(context.getResources().getString(R.string.alphaTitle), Gravity.BOTTOM);
-                } else if (selectedPosition == 5) {
+                } else if (selectedPosition == 4) {
                     Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()));
                     activity.startActivity(a);
 
@@ -5756,6 +5754,11 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean floatingWidgetsPurchased() {
 
-        return readPreference(".PurchasedItem", "FloatingWidgets", false);
+        return readPreference(".PurchasedItem", "floating.widgets", false);
+    }
+
+    public boolean alreadyDonated() {
+
+        return readPreference(".PurchasedItem", "donation", false);
     }
 }

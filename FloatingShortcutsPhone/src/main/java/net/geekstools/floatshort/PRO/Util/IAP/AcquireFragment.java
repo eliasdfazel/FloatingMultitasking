@@ -108,85 +108,86 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
 
         onManagerReady((BillingProvider) activity);
 
-        floatingWidgetDemoDescription.setText(Html.fromHtml(getString(R.string.floatingWidgetsDemoDescriptions)));
-        floatingWidgetDemoDescription.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
+        if (!functionsClass.floatingWidgetsPurchased()) {
+            floatingWidgetDemoDescription.setText(Html.fromHtml(getString(R.string.floatingWidgetsDemoDescriptions)));
+            floatingWidgetDemoDescription.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
 
+            FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+            firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
+            firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
+                @Override
+                public void onSuccess(Boolean aBoolean) {
+                    floatingWidgetDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("floating_widgets_description")));
+                    screenshotsNumber = (int) firebaseRemoteConfig.getLong("floating_widgets_demo_screenshots");
 
-        FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
-        firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
-            @Override
-            public void onSuccess(Boolean aBoolean) {
-                floatingWidgetDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("floating_widgets_description")));
-                screenshotsNumber = (int) firebaseRemoteConfig.getLong("floating_widgets_demo_screenshots");
-
-                for (int i = 1; i <= screenshotsNumber; i++) {
-                    String sceenshotFileName = "FloatingWidgetsDemo" + i + ".png";
-                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                    StorageReference firebaseStorageReference = firebaseStorage.getReference();
-                    StorageReference storageReference = firebaseStorageReference
-                            //gs://floating-shortcuts-pro.appspot.com/Assets/Images/Screenshots/FloatingWidgets/IAP.Demo/FloatingWidgetsDemo1.png
-                            .child("Assets/Images/Screenshots/FloatingWidgets/IAP.Demo/" + sceenshotFileName);
-                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri screenshotURI) {
-                            requestManager.load(screenshotURI)
-                                    .addListener(new RequestListener<Drawable>() {
-                                        @Override
-                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                            return false;
-                                        }
-
-                                        @Override
-                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                            glideLoadCounter++;
-
-                                            String beforeToken = screenshotURI.toString().split("\\?alt=media&token=")[0];
-                                            int drawableIndex = Integer.parseInt(String.valueOf(beforeToken.charAt(beforeToken.length() - 5)));
-
-                                            mapIndexDrawable.put(drawableIndex, resource);
-                                            mapIndexURI.put(drawableIndex, screenshotURI);
-
-                                            if (screenshotsNumber == glideLoadCounter) {
-                                                new Handler().postDelayed(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        context.sendBroadcast(new Intent("LOAD_SCREENSHOTS"));
-                                                    }
-                                                }, 113);
+                    for (int i = 1; i <= screenshotsNumber; i++) {
+                        String sceenshotFileName = "FloatingWidgetsDemo" + i + ".png";
+                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                        StorageReference firebaseStorageReference = firebaseStorage.getReference();
+                        StorageReference storageReference = firebaseStorageReference
+                                //gs://floating-shortcuts-pro.appspot.com/Assets/Images/Screenshots/FloatingWidgets/IAP.Demo/FloatingWidgetsDemo1.png
+                                .child("Assets/Images/Screenshots/FloatingWidgets/IAP.Demo/" + sceenshotFileName);
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri screenshotURI) {
+                                requestManager.load(screenshotURI)
+                                        .addListener(new RequestListener<Drawable>() {
+                                            @Override
+                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                return false;
                                             }
 
-                                            return false;
-                                        }
-                                    })
-                                    .submit();
-                        }
-                    });
-                }
-            }
-        });
+                                            @Override
+                                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                glideLoadCounter++;
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("LOAD_SCREENSHOTS");
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals("LOAD_SCREENSHOTS")) {
-                    for (int i = 1; i <= screenshotsNumber; i++) {
-                        FunctionsClass.println(">>> " + mapIndexURI.get(i) + " <<<");
+                                                String beforeToken = screenshotURI.toString().split("\\?alt=media&token=")[0];
+                                                int drawableIndex = Integer.parseInt(String.valueOf(beforeToken.charAt(beforeToken.length() - 5)));
 
-                        RelativeLayout demoLayout = (RelativeLayout) activity.getLayoutInflater().inflate(R.layout.floating_widgets_demo_item, null);
-                        ImageView floatingWidgetsDemoItem = (ImageView) demoLayout.findViewById(R.id.floatingWidgetsDemoItem);
+                                                mapIndexDrawable.put(drawableIndex, resource);
+                                                mapIndexURI.put(drawableIndex, screenshotURI);
 
-                        floatingWidgetsDemoItem.setImageDrawable(mapIndexDrawable.get(i));
-                        floatingWidgetsDemoItem.setOnClickListener(AcquireFragment.this);
-                        floatingWidgetsDemoItem.setTag(mapIndexURI.get(i));
-                        floatingWidgetDemoList.addView(demoLayout);
+                                                if (screenshotsNumber == glideLoadCounter) {
+                                                    new Handler().postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            context.sendBroadcast(new Intent("LOAD_SCREENSHOTS"));
+                                                        }
+                                                    }, 113);
+                                                }
+
+                                                return false;
+                                            }
+                                        })
+                                        .submit();
+                            }
+                        });
                     }
                 }
-            }
-        };
-        context.registerReceiver(broadcastReceiver, intentFilter);
+            });
+
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction("LOAD_SCREENSHOTS");
+            BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (intent.getAction().equals("LOAD_SCREENSHOTS")) {
+                        for (int i = 1; i <= screenshotsNumber; i++) {
+                            FunctionsClass.println(">>> " + mapIndexURI.get(i) + " <<<");
+
+                            RelativeLayout demoLayout = (RelativeLayout) activity.getLayoutInflater().inflate(R.layout.floating_widgets_demo_item, null);
+                            ImageView floatingWidgetsDemoItem = (ImageView) demoLayout.findViewById(R.id.floatingWidgetsDemoItem);
+
+                            floatingWidgetsDemoItem.setImageDrawable(mapIndexDrawable.get(i));
+                            floatingWidgetsDemoItem.setOnClickListener(AcquireFragment.this);
+                            floatingWidgetsDemoItem.setTag(mapIndexURI.get(i));
+                            floatingWidgetDemoList.addView(demoLayout);
+                        }
+                    }
+                }
+            };
+            context.registerReceiver(broadcastReceiver, intentFilter);
+        }
 
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
@@ -263,11 +264,14 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                             for (SkuDetails skuDetails : skuDetailsList) {
                                 FunctionsClass.println("*** " + skuDetails + " ***");
                                 if (skuDetails.getSku().equals("floating.widgets") && functionsClass.floatingWidgetsPurchased()) {
-
                                     floatingWidgetDemoList.setVisibility(View.INVISIBLE);
                                     floatingWidgetDemo.setVisibility(View.INVISIBLE);
                                     floatingWidgetDemoDescription.setVisibility(View.INVISIBLE);
 
+                                    continue;
+                                }
+
+                                if (skuDetails.getSku().equals("donation") && functionsClass.alreadyDonated()) {
                                     continue;
                                 }
 

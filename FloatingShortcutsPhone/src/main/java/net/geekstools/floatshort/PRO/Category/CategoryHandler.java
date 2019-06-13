@@ -531,7 +531,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                         for (Purchase purchase : purchases) {
                             FunctionsClass.println("*** Purchased Item: " + purchase + " ***");
                             if (purchase.getSku().equals("floating.widgets")) {
-                                functionsClass.savePreference(".PurchasedItem", "FloatingWidgets", true);
+                                functionsClass.savePreference(".PurchasedItem", purchase.getSku(), true);
                             }
                         }
                     }
@@ -641,6 +641,27 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        ImageView shareIt = (ImageView) findViewById(R.id.share);
+        LayerDrawable drawableShare = (LayerDrawable) getDrawable(R.drawable.draw_share);
+        GradientDrawable backgroundShare = (GradientDrawable) drawableShare.findDrawableByLayerId(R.id.backtemp);
+        backgroundShare.setColor(PublicVariable.primaryColor);
+        shareIt.setImageDrawable(drawableShare);
+        shareIt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String shareText =
+                        getString(R.string.shareTitle) +
+                                "\n" + getString(R.string.shareSummary) +
+                                "\n" + getString(R.string.play_store_link) + getPackageName();
+
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+                sharingIntent.setType("text/plain");
+                sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(sharingIntent);
+            }
+        });
     }
 
     @Override

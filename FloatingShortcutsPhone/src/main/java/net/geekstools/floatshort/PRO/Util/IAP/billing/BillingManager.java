@@ -52,7 +52,7 @@ public class BillingManager implements PurchasesUpdatedListener {
 
     static {
         SKUS = new HashMap<>();
-        SKUS.put(BillingClient.SkuType.INAPP, Arrays.asList("floating.widgets"));
+        SKUS.put(BillingClient.SkuType.INAPP, Arrays.asList("donation", "floating.widgets"));
     }
 
     public List<String> getSkus(@BillingClient.SkuType String type) {
@@ -101,10 +101,14 @@ public class BillingManager implements PurchasesUpdatedListener {
 
         if (responseCode == 7) {
             try {
-                functionsClass.savePreference(".PurchasedItem", "FloatingWidgets", true);
+                for (Purchase purchase : purchases) {
+                    functionsClass.savePreference(".PurchasedItem", purchase.getSku(), true);
+                }
 
-                activity.startActivity(new Intent(activity, WidgetConfigurations.class));
-                activity.finish();
+                if (functionsClass.floatingWidgetsPurchased()) {
+                    activity.startActivity(new Intent(activity, WidgetConfigurations.class));
+                    activity.finish();
+                }
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
