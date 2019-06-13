@@ -261,7 +261,12 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                         if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
                             List<SkuRowData> skuRowDataList = new ArrayList<>();
                             for (SkuDetails skuDetails : skuDetailsList) {
+                                FunctionsClass.println("*** " + skuDetails + " ***");
                                 if (skuDetails.getSku().equals("floating.widgets") && functionsClass.floatingWidgetsPurchased()) {
+
+                                    floatingWidgetDemoList.setVisibility(View.INVISIBLE);
+                                    floatingWidgetDemo.setVisibility(View.INVISIBLE);
+                                    floatingWidgetDemoDescription.setVisibility(View.INVISIBLE);
 
                                     continue;
                                 }

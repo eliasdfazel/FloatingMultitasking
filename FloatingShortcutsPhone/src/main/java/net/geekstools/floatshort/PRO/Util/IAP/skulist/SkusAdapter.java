@@ -56,11 +56,20 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
             }
         }
         switch (skuRowData.getSku()) {
-            case "floating.widgets":
+            case "floating.widgets": {
                 rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.ic_floating_widgets);
                 rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
 
                 break;
+            }
+            case "donate": {
+                rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.android);
+                rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
+
+                rowViewHolder.purchaseItemInfo.setVisibility(View.INVISIBLE);
+
+                break;
+            }
         }
     }
 

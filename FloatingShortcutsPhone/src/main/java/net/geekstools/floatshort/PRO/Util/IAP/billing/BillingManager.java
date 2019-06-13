@@ -90,17 +90,7 @@ public class BillingManager implements PurchasesUpdatedListener {
                 .setAccountId(UserEmailAddress)
                 .build();
 
-        int billingResponse = billingClient.launchBillingFlow(activity, billingFlowParams);
-        switch (billingResponse) {
-            case BillingClient.BillingResponse.ITEM_ALREADY_OWNED: {
-
-                functionsClass.savePreference(".PurchasedItem", "FloatingWidgets", true);
-
-                break;
-            }
-        }
-
-        return billingResponse;
+        return billingClient.launchBillingFlow(activity, billingFlowParams);
     }
 
     @Override
