@@ -37,6 +37,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -67,6 +68,8 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
     TextView floatingWidgetDemoDescription;
 
     SkusAdapter skusAdapter;
+
+    MaterialButton materialButtonShare;
 
     BillingProvider billingProvider;
 
@@ -103,6 +106,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
         floatingWidgetDemo = (HorizontalScrollView) root.findViewById(R.id.floatingWidgetDemo);
         floatingWidgetDemoList = (LinearLayout) root.findViewById(R.id.floatingWidgetDemoList);
         floatingWidgetDemoDescription = (TextView) root.findViewById(R.id.floatingWidgetDemoDescription);
+        materialButtonShare = (MaterialButton) root.findViewById(R.id.shareNow);
 
         root.findViewById(R.id.backgroundFull).setBackgroundColor(PublicVariable.themeLightDark ? context.getColor(R.color.light) : context.getColor(R.color.dark));
 
@@ -188,6 +192,22 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
             };
             context.registerReceiver(broadcastReceiver, intentFilter);
         }
+
+        materialButtonShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String shareText =
+                        getString(R.string.shareTitle) +
+                                "\n" + getString(R.string.shareSummary) +
+                                "\n" + getString(R.string.play_store_link) + getContext().getPackageName();
+
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+                sharingIntent.setType("text/plain");
+                sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(sharingIntent);
+            }
+        });
 
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override

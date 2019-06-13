@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="default_color">#237DAE</color>
+    <color name="default_color_game">#ae2357</color>
     <color name="default_color_transparent">#33237dae</color>
     <color name="default_color_light">#008dda</color>
     <color name="default_color_darker">#0a415e</color>

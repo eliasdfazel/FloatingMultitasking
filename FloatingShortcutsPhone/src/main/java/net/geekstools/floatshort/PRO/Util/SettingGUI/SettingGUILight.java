@@ -1081,21 +1081,22 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
 
-        MenuItem osp = menu.findItem(R.id.facebook);
-        MenuItem share = menu.findItem(R.id.donate);
-
+        MenuItem facebook = menu.findItem(R.id.facebook);
+        MenuItem gift = menu.findItem(R.id.donate);
 
         LayerDrawable drawOSP = (LayerDrawable) getDrawable(R.drawable.draw_facebook);
         GradientDrawable backOSP = (GradientDrawable) drawOSP.findDrawableByLayerId(R.id.backtemp);
+        backOSP.setColor(PublicVariable.primaryColorOpposite);
+        facebook.setIcon(drawOSP);
 
-        LayerDrawable drawableDonate = (LayerDrawable) getDrawable(R.drawable.draw_gift);
-        GradientDrawable backgroundShare = (GradientDrawable) drawableDonate.findDrawableByLayerId(R.id.backtemp);
-
-        backOSP.setColor(PublicVariable.themeTextColor);
-        backgroundShare.setColor(PublicVariable.themeTextColor);
-
-        osp.setIcon(drawOSP);
-        share.setIcon(drawableDonate);
+        if (!functionsClass.alreadyDonated()) {
+            LayerDrawable drawableDonate = (LayerDrawable) getDrawable(R.drawable.draw_gift);
+            GradientDrawable backgroundShare = (GradientDrawable) drawableDonate.findDrawableByLayerId(R.id.backtemp);
+            backgroundShare.setColor(PublicVariable.primaryColorOpposite);
+            gift.setIcon(drawableDonate);
+        } else {
+            gift.setEnabled(false);
+        }
 
         return true;
     }
