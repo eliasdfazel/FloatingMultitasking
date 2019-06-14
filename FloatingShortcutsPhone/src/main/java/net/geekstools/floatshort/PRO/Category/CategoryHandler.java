@@ -289,7 +289,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
             public void onClick(View view) {
                 try {
                     functionsClass.navigateToClass(HybridViewOff.class,
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -303,7 +303,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                         if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
                             try {
                                 functionsClass.navigateToClass(WidgetConfigurations.class,
-                                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
+                                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -771,7 +771,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
         switch (direction) {
             case SimpleGestureFilterSwitch.SWIPE_RIGHT: {
                 try {
-                    functionsClass.navigateToClass(WidgetConfigurations.class,
+                    functionsClass.navigateToClass(HybridViewOff.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -780,7 +780,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
             }
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
                 try {
-                    functionsClass.navigateToClass(HybridViewOff.class,
+                    functionsClass.navigateToClass(WidgetConfigurations.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();

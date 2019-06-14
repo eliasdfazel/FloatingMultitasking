@@ -7,6 +7,24 @@
     android:gravity="center"
     android:background="@drawable/floating_widgets_background">
 
+    <TextView
+        android:id="@+id/widgetLabel"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="13dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:paddingStart="13dp"
+        android:paddingEnd="13dp"
+        android:text="@string/app_name"
+        android:typeface="monospace"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:textColor="@android:color/black" />
+
     <ImageView
         android:id="@+id/widgetMoveButton"
         android:layout_width="25dp"
@@ -22,24 +40,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/draw_close_service" />
-
-    <TextView
-        android:id="@+id/widgetLabel"
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@id/widgetMoveButton"
-        android:layout_toStartOf="@id/widgetCloseButton"
-        android:gravity="center"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:paddingStart="7dp"
-        android:paddingEnd="7dp"
-        android:text="@string/app_name"
-        android:typeface="monospace"
-        android:textStyle="bold"
-        android:textSize="12sp"
-        android:textColor="@android:color/black"/>
 
     <RelativeLayout
         android:id="@+id/widgetViewGroup"

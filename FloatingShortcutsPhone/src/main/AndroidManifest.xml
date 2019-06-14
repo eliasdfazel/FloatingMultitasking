@@ -75,6 +75,8 @@
         </activity>
         <activity
             android:name=".CheckPoint"
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="true"
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper.NoTitleBar"/>
         <activity
             android:name=".Shortcuts.HybridViewOff"

@@ -446,7 +446,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             public void onClick(View view) {
                 try {
                     functionsClass.navigateToClass(CategoryHandler.class,
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -456,7 +456,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), HybridViewOff.class),
-                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right).toBundle());
+                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left).toBundle());
             }
         });
         automationAction.setOnClickListener(new View.OnClickListener() {
@@ -974,7 +974,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         switch (direction) {
             case SimpleGestureFilterSwitch.SWIPE_RIGHT: {
                 try {
-                    functionsClass.navigateToClass(HybridViewOff.class,
+                    functionsClass.navigateToClass(CategoryHandler.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -983,7 +983,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             }
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
                 try {
-                    functionsClass.navigateToClass(CategoryHandler.class,
+                    functionsClass.navigateToClass(HybridViewOff.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -84,24 +84,6 @@
         android:weightSum="2">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/switchWidgets"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:gravity="center"
-            android:ellipsize="start"
-            android:singleLine="true"
-            android:textAllCaps="false"
-            android:text="@string/widgetHint"
-            android:textSize="19sp"
-            android:fontFamily="@font/upcil"
-            app:elevation="7dp"
-            app:cornerRadius="7dp"
-            app:backgroundTint="@color/default_color" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/switchApps"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -113,6 +95,24 @@
             android:singleLine="true"
             android:textAllCaps="false"
             android:text="@string/floatingHint"
+            android:textSize="19sp"
+            android:fontFamily="@font/upcil"
+            app:elevation="7dp"
+            app:cornerRadius="7dp"
+            app:backgroundTint="@color/default_color" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/switchWidgets"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:ellipsize="start"
+            android:singleLine="true"
+            android:textAllCaps="false"
+            android:text="@string/widgetHint"
             android:textSize="19sp"
             android:fontFamily="@font/upcil"
             app:elevation="7dp"

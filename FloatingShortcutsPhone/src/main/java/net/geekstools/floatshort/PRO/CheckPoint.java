@@ -2,6 +2,7 @@ package net.geekstools.floatshort.PRO;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -97,6 +98,18 @@ public class CheckPoint extends Activity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 666) {
+            if (Settings.canDrawOverlays(getApplicationContext())) {
+                FunctionsClass.println("*** Overlay Permission Granted ***");
+
+                startActivity(new Intent(getApplicationContext(), Configurations.class),
+                        ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+            }
+        }
+    }
+
     public void canOverlyPermission() {
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.wait), Toast.LENGTH_LONG).show();
 
@@ -116,20 +129,18 @@ public class CheckPoint extends Activity {
                 try {
                     Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                             Uri.parse("package:" + getPackageName()));
-                    startActivity(intent);
+                    startActivityForResult(intent, 666);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.overlayPermission), Toast.LENGTH_LONG).show();
 
-                finish();
                 dialog.dismiss();
             }
         });
         alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                finish();
                 dialog.dismiss();
             }
         });
