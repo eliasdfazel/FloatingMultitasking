@@ -102,19 +102,19 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
             } else {
                 autoChoice[position].setChecked(false);
             }
+
+            if (PublicVariable.themeLightDark) {
+                autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.dark)));
+            } else if (!PublicVariable.themeLightDark) {
+                viewHolder.appName.setTextColor(context.getColor(R.color.light));
+                autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.light)));
+            }
+
+            viewHolder.appIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
+            viewHolder.appName.setText(navDrawerItems.get(position).getAppName());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        if (PublicVariable.themeLightDark) {
-            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.dark)));
-        } else if (!PublicVariable.themeLightDark) {
-            viewHolder.appName.setTextColor(context.getColor(R.color.light));
-            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.light)));
-        }
-
-        viewHolder.appIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
-        viewHolder.appName.setText(navDrawerItems.get(position).getAppName());
 
         viewHolderBinder.item.setOnTouchListener(new View.OnTouchListener() {
             @Override

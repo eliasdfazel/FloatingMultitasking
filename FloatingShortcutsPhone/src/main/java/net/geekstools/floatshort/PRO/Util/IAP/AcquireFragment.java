@@ -282,7 +282,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                         if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
                             List<SkuRowData> skuRowDataList = new ArrayList<>();
                             for (SkuDetails skuDetails : skuDetailsList) {
-                                FunctionsClass.println("*** " + skuDetails + " ***");
+                                FunctionsClass.println("*** SKU List ::: " + skuDetails + " ***");
                                 if (skuDetails.getSku().equals("floating.widgets") && functionsClass.floatingWidgetsPurchased()) {
                                     floatingWidgetDemoList.setVisibility(View.INVISIBLE);
                                     floatingWidgetDemo.setVisibility(View.INVISIBLE);
@@ -292,6 +292,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                 }
 
                                 if (skuDetails.getSku().equals("donation") && functionsClass.alreadyDonated()) {
+
                                     continue;
                                 }
 

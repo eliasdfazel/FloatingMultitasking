@@ -16,7 +16,6 @@
 package net.geekstools.floatshort.PRO.Util.IAP.billing;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -31,7 +30,6 @@ import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -71,9 +69,11 @@ public class BillingManager implements PurchasesUpdatedListener {
             @Override
             public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponse) {
                 if (billingResponse == BillingClient.BillingResponse.OK) {
-
-                } else {
-
+                    List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
+                    for (Purchase purchase : purchases) {
+                        FunctionsClass.println("*** Purchased Item: " + purchase + " ***");
+                        functionsClass.savePreference(".PurchasedItem", purchase.getSku(), true);
+                    }
                 }
             }
 
@@ -95,25 +95,12 @@ public class BillingManager implements PurchasesUpdatedListener {
 
     @Override
     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
-
         //ResponseCode 7 = Item Owned
         Log.d(TAG, "onPurchasesUpdated() Response: " + responseCode);
-
         if (responseCode == 7) {
-            try {
-                for (Purchase purchase : purchases) {
-                    functionsClass.savePreference(".PurchasedItem", purchase.getSku(), true);
-                }
 
-                if (functionsClass.floatingWidgetsPurchased()) {
-                    activity.startActivity(new Intent(activity, WidgetConfigurations.class));
-                    activity.finish();
-                }
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
         } else {
-            functionsClass.savePreference(".PurchasedItem", "FloatingWidgets", false);
+
         }
     }
 

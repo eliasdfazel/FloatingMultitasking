@@ -118,7 +118,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.App_Unlimited_Bluetooth;
 import net.geekstools.floatshort.PRO.App_Unlimited_Gps;
 import net.geekstools.floatshort.PRO.App_Unlimited_HIS;
@@ -156,6 +155,7 @@ import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingCategory;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingShortcuts;
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 import net.geekstools.floatshort.PRO.Widget_Unlimited_Floating;
 import net.geekstools.imageview.customshapes.ShapesImage;

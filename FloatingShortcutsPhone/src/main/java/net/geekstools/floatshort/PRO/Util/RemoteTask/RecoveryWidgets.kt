@@ -8,13 +8,13 @@ import android.widget.Toast
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataInterface
-import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataModel
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel
 
 class RecoveryWidgets : Service() {
 

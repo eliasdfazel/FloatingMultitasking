@@ -1098,7 +1098,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
             backgroundShare.setColor(PublicVariable.primaryColorOpposite);
             gift.setIcon(drawableDonate);
         } else {
-            gift.setEnabled(false);
+            gift.setVisible(false);
         }
 
         return true;

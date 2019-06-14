@@ -60,8 +60,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
-import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataInterface;
-import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataModel;
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Category.CategoryHandler;
 import net.geekstools.floatshort.PRO.R;
@@ -80,6 +78,8 @@ import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
 import net.geekstools.floatshort.PRO.Widget.NavAdapter.ConfiguredWidgetsAdapter;
 import net.geekstools.floatshort.PRO.Widget.NavAdapter.InstalledWidgetsAdapter;
 import net.geekstools.floatshort.PRO.Widget.NavAdapter.WidgetSectionedGridRecyclerViewAdapter;
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -272,12 +272,16 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite);
         automationAction.setRippleColor(ColorStateList.valueOf(PublicVariable.primaryColor));
 
-        LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
-        GradientDrawable backRecoverFloatingCategories = (GradientDrawable) drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
-        backRecoverFloatingCategories.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+        try {
+            LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
+            GradientDrawable backRecoverFloatingCategories = (GradientDrawable) drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
+            backRecoverFloatingCategories.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
 
-        recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories);
-        recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories);
+            recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories);
+            recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override

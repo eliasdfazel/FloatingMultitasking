@@ -96,7 +96,13 @@ class LicenseValidator {
                 sig.initVerify(publicKey);
                 sig.update(signedData.getBytes());
 
-                if (!sig.verify(Base64.decode(signature))) {
+                if (sig != null) {
+                    if (!sig.verify(Base64.decode(signature))) {
+                        Log.e(TAG, "Signature verification failed.");
+                        handleInvalidResponse();
+                        return;
+                    }
+                } else {
                     Log.e(TAG, "Signature verification failed.");
                     handleInvalidResponse();
                     return;

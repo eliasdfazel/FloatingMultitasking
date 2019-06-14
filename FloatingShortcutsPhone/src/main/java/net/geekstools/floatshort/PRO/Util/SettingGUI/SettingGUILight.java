@@ -1095,7 +1095,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             backgroundShare.setColor(PublicVariable.primaryColorOpposite);
             gift.setIcon(drawableDonate);
         } else {
-            gift.setEnabled(false);
+            gift.setVisible(false);
         }
 
         return true;

@@ -1,4 +1,4 @@
-package net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation
+package net.geekstools.floatshort.PRO.Widget.RoomDatabase
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

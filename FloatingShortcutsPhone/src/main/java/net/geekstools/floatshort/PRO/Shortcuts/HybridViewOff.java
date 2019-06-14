@@ -72,7 +72,6 @@ import com.google.firebase.storage.UploadTask;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Category.CategoryHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.CardHybridAdapter;
@@ -225,16 +224,20 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite);
         automationAction.setRippleColor(ColorStateList.valueOf(PublicVariable.primaryColor));
 
-        LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
-        GradientDrawable backRecoverFloatingCategories = (GradientDrawable) drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
-        backRecoverFloatingCategories.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+        try {
+            LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
+            GradientDrawable backRecoverFloatingCategories = (GradientDrawable) drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
+            backRecoverFloatingCategories.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
 
-        LayerDrawable drawRecoverFloatingWidgets = (LayerDrawable) getDrawable(R.drawable.draw_recovery_widgets).mutate();
-        GradientDrawable backRecoverFloatingWidgets = (GradientDrawable) drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backtemp).mutate();
-        backRecoverFloatingWidgets.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+            LayerDrawable drawRecoverFloatingWidgets = (LayerDrawable) getDrawable(R.drawable.draw_recovery_widgets).mutate();
+            GradientDrawable backRecoverFloatingWidgets = (GradientDrawable) drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backtemp).mutate();
+            backRecoverFloatingWidgets.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
 
-        recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories);
-        recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets);
+            recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories);
+            recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -533,7 +536,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             }
         });
 
-        if (!functionsClass.floatingWidgetsPurchased()) {
+        if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.alreadyDonated()) {
             BillingClient billingClient = BillingClient.newBuilder(HybridViewOff.this).setListener(new PurchasesUpdatedListener() {
                 @Override
                 public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
@@ -591,9 +594,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         registerReceiver(broadcastReceiver, intentFilter);
         try {
             if (!getFileStreamPath(".License").exists() && functionsClass.networkConnection() == true) {
-                if (!BuildConfig.DEBUG || !functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
-                    startService(new Intent(getApplicationContext(), LicenseValidator.class));
-                }
+                startService(new Intent(getApplicationContext(), LicenseValidator.class));
             } else {
                 try {
                     unregisterReceiver(broadcastReceiver);

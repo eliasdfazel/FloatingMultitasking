@@ -25,12 +25,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataDAO;
-import net.geeksempire.chat.vicinity.Util.RoomSqLiteDatabase.UserInformation.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataDAO;
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.util.ArrayList;

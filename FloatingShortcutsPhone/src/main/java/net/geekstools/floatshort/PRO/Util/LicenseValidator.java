@@ -88,40 +88,34 @@ public class LicenseValidator extends Service {
     }
 
     protected Notification bindServiceHigherAPI26() {
-        Notification.Builder mBuilder = new Notification.Builder(getApplicationContext());
+        Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext());
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             NotificationChannel notificationChannel = null;
-            notificationChannel = new NotificationChannel(getPackageName(), getString(R.string.app_name), NotificationManager.IMPORTANCE_MAX);
+            notificationChannel = new NotificationChannel(getPackageName(), getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(notificationChannel);
 
-            mBuilder.setColor(getColor(R.color.default_color));
-            mBuilder.setContentTitle(getString(R.string.license_info));
-            mBuilder.setContentText(getString(R.string.license_info_desc));
-            mBuilder.setContentTitle(Html.fromHtml("<b><font color='" + getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info) + "</font></b>"));
-            mBuilder.setContentText(Html.fromHtml("<font color='" + getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info_desc) + "</font>"));
-            mBuilder.setTicker(getResources().getString(R.string.updating_info));
-            mBuilder.setSmallIcon(R.drawable.ic_notification);
-            mBuilder.setAutoCancel(false);
-            mBuilder.setProgress(0, 0, true);
-            mBuilder.setChannelId(getPackageName());
+            notificationBuilder.setColor(getColor(R.color.default_color));
+            notificationBuilder.setContentTitle(Html.fromHtml("<small><font color='" + getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info_desc) + "</font></small>"));
+            notificationBuilder.setTicker(getResources().getString(R.string.updating_info));
+            notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+            notificationBuilder.setAutoCancel(false);
+            notificationBuilder.setProgress(0, 0, true);
+            notificationBuilder.setChannelId(getPackageName());
         }
 
-        return mBuilder.build();
+        return notificationBuilder.build();
     }
 
     protected Notification bindServiceLOW() {
-        Notification.Builder mBuilder = new Notification.Builder(getApplicationContext());
-        mBuilder.setColor(getColor(R.color.default_color));
-        mBuilder.setContentTitle(getString(R.string.license_info));
-        mBuilder.setContentText(getString(R.string.license_info_desc));
-        mBuilder.setContentTitle(Html.fromHtml("<b><font color='" + getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info) + "</font></b>"));
-        mBuilder.setContentText(Html.fromHtml("<font color='" + getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info_desc) + "</font>"));
-        mBuilder.setTicker(getResources().getString(R.string.updating_info));
-        mBuilder.setSmallIcon(R.drawable.ic_notification);
-        mBuilder.setAutoCancel(false);
-        mBuilder.setProgress(0, 0, true);
+        Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext());
+        notificationBuilder.setColor(getColor(R.color.default_color));
+        notificationBuilder.setContentTitle(Html.fromHtml("<small><font color='" + getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info_desc) + "</font></small>"));
+        notificationBuilder.setTicker(getResources().getString(R.string.updating_info));
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+        notificationBuilder.setAutoCancel(false);
+        notificationBuilder.setProgress(0, 0, true);
 
-        return mBuilder.build();
+        return notificationBuilder.build();
     }
 }

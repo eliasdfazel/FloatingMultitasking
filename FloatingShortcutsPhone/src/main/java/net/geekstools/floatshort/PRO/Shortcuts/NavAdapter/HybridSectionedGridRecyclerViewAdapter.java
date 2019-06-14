@@ -7,12 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class HybridSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -109,7 +109,13 @@ public class HybridSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
         Arrays.sort(sections, new Comparator<Section>() {
             @Override
             public int compare(Section o, Section o1) {
-                return Integer.compare(o.firstPosition, o1.firstPosition);
+                int comparison = 1;
+                try {
+                    comparison = Integer.compare(o.firstPosition, o1.firstPosition);
+                } catch (Exception e) {
+                    comparison = 0;
+                }
+                return comparison;
             }
         });
 
