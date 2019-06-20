@@ -171,6 +171,8 @@
     <string name="blurryTitle">Blurry Theme</string>
     <string name="autotrans">Floating Transparency</string>
     <string name="delayPressHold">Popup Menu Delay</string>
+    <string name="flingSensitivityTitle">Fling Sensitivity</string>
+    <string name="flingSensitivitySummary">Throw Floating Shortcuts Around</string>
     <string name="delayPressHoldExtraInfo">Press &amp; Hold on Icon to Test the Delay</string>
     <string name="revertDefault">Set Recommended Value</string>
     <string name="splashTitle">Floating Splash</string>

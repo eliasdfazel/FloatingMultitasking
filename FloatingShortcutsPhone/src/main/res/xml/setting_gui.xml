@@ -32,6 +32,12 @@
             android:icon="@drawable/draw_pref"
             android:key="delayPressHold"
             android:title="@string/delayPressHold"/>
+        <Preference
+            android:defaultValue="false"
+            android:icon="@drawable/draw_pref"
+            android:key="flingSensitivity"
+            android:title="@string/flingSensitivityTitle"
+            android:summary="@string/flingSensitivitySummary" />
         <SwitchPreference
             android:defaultValue="false"
             android:icon="@drawable/draw_pref"
