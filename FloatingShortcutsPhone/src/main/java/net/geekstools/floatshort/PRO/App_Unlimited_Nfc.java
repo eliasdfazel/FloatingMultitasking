@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,6 +23,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+
+import androidx.dynamicanimation.animation.DynamicAnimation;
+import androidx.dynamicanimation.animation.FlingAnimation;
+import androidx.dynamicanimation.animation.FloatValueHolder;
+import androidx.dynamicanimation.animation.SpringAnimation;
+import androidx.dynamicanimation.animation.SpringForce;
 
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -60,6 +67,13 @@ public class App_Unlimited_Nfc extends Service {
     SharedPreferences sharedPrefPosition;
 
     Map<String, Integer> mapPackageNameStartId;
+
+    GestureDetector.SimpleOnGestureListener[] simpleOnGestureListener;
+    GestureDetector[] gestureDetector;
+
+    FlingAnimation[] flingAnimationX, flingAnimationY;
+
+    float flingPositionX = 0, flingPositionY = 0;
 
     LoadCustomIcons loadCustomIcons;
 
@@ -215,9 +229,72 @@ public class App_Unlimited_Nfc extends Service {
 
         shapedIcon[startId].setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
 
+        if (!functionsClass.litePreferencesEnabled()) {
+            flingAnimationX[startId] = new FlingAnimation(new FloatValueHolder())
+                    .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
+            flingAnimationY[startId] = new FlingAnimation(new FloatValueHolder())
+                    .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
+
+            simpleOnGestureListener[startId] = new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onFling(MotionEvent motionEventFirst, MotionEvent motionEventLast, float velocityX, float velocityY) {
+
+                    if (allowMove[startId]) {
+                        flingAnimationX[startId].setStartVelocity(velocityX);
+                        flingAnimationY[startId].setStartVelocity(velocityY);
+
+                        flingAnimationX[startId].setStartValue(flingPositionX);
+                        flingAnimationY[startId].setStartValue(flingPositionY);
+
+                        try {
+                            flingAnimationX[startId].addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
+                                    layoutParams[startId].x = (int) value;     // X movePoint
+                                    windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
+                                }
+                            });
+                            flingAnimationY[startId].addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
+                                    layoutParams[startId].y = (int) value;     // Y movePoint
+                                    windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
+                                }
+                            });
+
+                            flingAnimationX[startId].start();
+                            flingAnimationY[startId].start();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        openIt[startId] = false;
+                    }
+
+                    return false;
+                }
+            };
+
+            flingAnimationX[startId].addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+                @Override
+                public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+                    openIt[startId] = true;
+                }
+            });
+
+            flingAnimationY[startId].addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+                @Override
+                public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+                    openIt[startId] = true;
+                }
+            });
+
+            gestureDetector[startId] = new GestureDetector(getApplicationContext(), simpleOnGestureListener[startId]);
+        }
+
         floatingView[startId].setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+            public void onFocusChange(View view, boolean hasFocus) {
             }
         });
         floatingView[startId].setOnTouchListener(new View.OnTouchListener() {
@@ -225,22 +302,30 @@ public class App_Unlimited_Nfc extends Service {
             float initialTouchX, initialTouchY;
 
             @Override
-            public boolean onTouch(final View view, MotionEvent event) {
-                WindowManager.LayoutParams paramsF;
-                if (StickyEdge[startId] == true) {
-                    paramsF = StickyEdgeParams[startId];
-                    paramsF.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-                } else {
-                    paramsF = layoutParams[startId];
+            public boolean onTouch(final View view, MotionEvent motionEvent) {
+                try {
+                    flingAnimationX[startId].cancel();
+                    flingAnimationY[startId].cancel();
+                    gestureDetector[startId].onTouchEvent(motionEvent);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        initialX = paramsF.x;
-                        initialY = paramsF.y;
+                WindowManager.LayoutParams layoutParamsOnTouch;
+                if (StickyEdge[startId] == true) {
+                    layoutParamsOnTouch = StickyEdgeParams[startId];
+                    layoutParamsOnTouch.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+                } else {
+                    layoutParamsOnTouch = layoutParams[startId];
+                }
 
-                        initialTouchX = event.getRawX();
-                        initialTouchY = event.getRawY();
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        initialX = layoutParamsOnTouch.x;
+                        initialY = layoutParamsOnTouch.y;
+
+                        initialTouchX = motionEvent.getRawX();
+                        initialTouchY = motionEvent.getRawY();
 
                         xMove = Math.round(initialTouchX);
                         yMove = Math.round(initialTouchY);
@@ -305,9 +390,9 @@ public class App_Unlimited_Nfc extends Service {
                         }, 113);
 
                         if (allowMove[startId] == true) {
-                            paramsF.x = initialX + (int) (event.getRawX() - initialTouchX);
-                            paramsF.y = initialY + (int) (event.getRawY() - initialTouchY);
-                            FunctionsClass.println("X :: " + paramsF.x + "\n" + " Y :: " + paramsF.y);
+                            layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);
+                            layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);
+                            FunctionsClass.println("X :: " + layoutParamsOnTouch.x + "\n" + " Y :: " + layoutParamsOnTouch.y);
 
                             SharedPreferences sharedPrefPosition = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                             try {
@@ -317,21 +402,80 @@ public class App_Unlimited_Nfc extends Service {
                             }
 
                             SharedPreferences.Editor editor = sharedPrefPosition.edit();
-                            editor.putInt("X", paramsF.x);
-                            editor.putInt("Y", paramsF.y);
+                            editor.putInt("X", layoutParamsOnTouch.x);
+                            editor.putInt("Y", layoutParamsOnTouch.y);
                             editor.apply();
+                        } else {
+                            if (!functionsClass.litePreferencesEnabled()) {
+                                float initialTouchXBoundBack = getSharedPreferences((packages[startId]), MODE_PRIVATE).getInt("X", 0);
+                                float initialTouchYBoundBack = getSharedPreferences((packages[startId]), MODE_PRIVATE).getInt("Y", 0);
+
+                                SpringForce springForceX = new SpringForce()
+                                        .setFinalPosition(initialTouchXBoundBack)
+                                        .setStiffness(SpringForce.STIFFNESS_MEDIUM)
+                                        .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
+
+                                SpringForce springForceY = new SpringForce()
+                                        .setFinalPosition(initialTouchYBoundBack)
+                                        .setStiffness(SpringForce.STIFFNESS_MEDIUM)
+                                        .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
+
+                                SpringAnimation springAnimationX = new SpringAnimation(new FloatValueHolder())
+                                        .setSpring(springForceX);
+                                SpringAnimation springAnimationY = new SpringAnimation(new FloatValueHolder())
+                                        .setSpring(springForceY);
+
+                                springAnimationX.setStartValue(motionEvent.getRawX());
+                                springAnimationX.setStartVelocity(-0f);
+                                springAnimationX.setMaxValue(functionsClass.displayX());
+                                springAnimationY.setStartValue(motionEvent.getRawY());
+                                springAnimationY.setStartVelocity(-0f);
+                                springAnimationY.setMaxValue(functionsClass.displayY());
+
+                                springAnimationX.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
+                                    @Override
+                                    public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
+                                        layoutParamsOnTouch.x = (int) value;     // X movePoint
+                                        windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
+                                    }
+                                });
+                                springAnimationY.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
+                                    @Override
+                                    public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
+                                        layoutParamsOnTouch.y = (int) value;     // Y movePoint
+                                        windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
+                                    }
+                                });
+
+                                springAnimationX.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+                                    @Override
+                                    public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+                                        openIt[startId] = true;
+                                    }
+                                });
+                                springAnimationY.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+                                    @Override
+                                    public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+                                        openIt[startId] = true;
+                                    }
+                                });
+
+                                springAnimationX.start();
+                                springAnimationY.start();
+                            }
                         }
-                        moveDetection = paramsF;
+
+                        moveDetection = layoutParamsOnTouch;
                         break;
                     case MotionEvent.ACTION_MOVE:
                         if (allowMove[startId] == true) {
-                            paramsF.x = initialX + (int) (event.getRawX() - initialTouchX);     // X movePoint
-                            paramsF.y = initialY + (int) (event.getRawY() - initialTouchY);     // Y movePoint
-                            windowManager.updateViewLayout(floatingView[startId], paramsF);
-                            moveDetection = paramsF;
+                            layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);     // X movePoint
+                            layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);     // Y movePoint
+                            windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
+                            moveDetection = layoutParamsOnTouch;
 
-                            int difMoveX = (int) (paramsF.x - initialTouchX);
-                            int difMoveY = (int) (paramsF.y - initialTouchY);
+                            int difMoveX = (int) (layoutParamsOnTouch.x - initialTouchX);
+                            int difMoveY = (int) (layoutParamsOnTouch.y - initialTouchY);
                             if (Math.abs(difMoveX) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))
                                     || Math.abs(difMoveY) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))) {
                                 sendBroadcast(new Intent("Hide_PopupListView_Shortcuts"));
@@ -340,6 +484,27 @@ public class App_Unlimited_Nfc extends Service {
                                 touchingDelay[startId] = false;
                                 delayHandler.removeCallbacks(delayRunnable);
                                 handlerPressHold.removeCallbacks(runnablePressHold);
+                            }
+
+                            flingPositionX = layoutParamsOnTouch.x;
+                            flingPositionY = layoutParamsOnTouch.y;
+                        } else {
+                            if (!functionsClass.litePreferencesEnabled()) {
+                                layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);     // X movePoint
+                                layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);     // Y movePoint
+                                windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
+
+                                int difMoveX = (int) (layoutParamsOnTouch.x - initialTouchX);
+                                int difMoveY = (int) (layoutParamsOnTouch.y - initialTouchY);
+                                if (Math.abs(difMoveX) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))
+                                        || Math.abs(difMoveY) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))) {
+                                    sendBroadcast(new Intent("Hide_PopupListView_Shortcuts"));
+
+                                    openIt[startId] = false;
+                                    touchingDelay[startId] = false;
+                                    delayHandler.removeCallbacks(delayRunnable);
+                                    handlerPressHold.removeCallbacks(runnablePressHold);
+                                }
                             }
                         }
                         break;
@@ -636,22 +801,26 @@ public class App_Unlimited_Nfc extends Service {
                             if (floatingView[StartIdNotification].isShown()) {
                                 /*add dot*/
                                 Drawable dotDrawable = null;
-                                switch (functionsClass.shapesImageId()) {
-                                    case 1:
-                                        dotDrawable = getDrawable(R.drawable.dot_droplet_icon);
-                                        break;
-                                    case 2:
-                                        dotDrawable = getDrawable(R.drawable.dot_circle_icon);
-                                        break;
-                                    case 3:
-                                        dotDrawable = getDrawable(R.drawable.dot_square_icon);
-                                        break;
-                                    case 4:
-                                        dotDrawable = getDrawable(R.drawable.dot_squircle_icon);
-                                        break;
-                                    case 0:
-                                        dotDrawable = functionsClass.appIcon(packages[StartIdNotification]).mutate();
-                                        break;
+                                if (functionsClass.loadCustomIcons()) {
+                                    dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packages[StartIdNotification]).mutate();
+                                } else {
+                                    switch (functionsClass.shapesImageId()) {
+                                        case 1:
+                                            dotDrawable = getDrawable(R.drawable.dot_droplet_icon);
+                                            break;
+                                        case 2:
+                                            dotDrawable = getDrawable(R.drawable.dot_circle_icon);
+                                            break;
+                                        case 3:
+                                            dotDrawable = getDrawable(R.drawable.dot_square_icon);
+                                            break;
+                                        case 4:
+                                            dotDrawable = getDrawable(R.drawable.dot_squircle_icon);
+                                            break;
+                                        case 0:
+                                            dotDrawable = functionsClass.appIcon(packages[StartIdNotification]).mutate();
+                                            break;
+                                    }
                                 }
                                 if (PublicVariable.themeLightDark) {
                                     dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packages[StartIdNotification])), 1.30f));
@@ -710,6 +879,13 @@ public class App_Unlimited_Nfc extends Service {
         touchingDelay = new boolean[array];
         StickyEdge = new boolean[array];
         openIt = new boolean[array];
+        if (!functionsClass.litePreferencesEnabled()) {
+            simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener[array];
+            gestureDetector = new GestureDetector[array];
+
+            flingAnimationX = new FlingAnimation[array];
+            flingAnimationY = new FlingAnimation[array];
+        }
 
         mapPackageNameStartId = new LinkedHashMap<String, Integer>();
 

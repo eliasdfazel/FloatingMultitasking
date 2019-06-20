@@ -236,9 +236,9 @@ public class App_Unlimited_Shortcuts extends Service {
 
         if (!functionsClass.litePreferencesEnabled()) {
             flingAnimationX[startId] = new FlingAnimation(new FloatValueHolder())
-                    .setFriction(3.0f);
+                    .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
             flingAnimationY[startId] = new FlingAnimation(new FloatValueHolder())
-                    .setFriction(3.0f);
+                    .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
 
             simpleOnGestureListener[startId] = new GestureDetector.SimpleOnGestureListener() {
                 @Override

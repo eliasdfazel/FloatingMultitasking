@@ -33,6 +33,7 @@ import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -51,6 +52,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.dynamicanimation.animation.DynamicAnimation;
+import androidx.dynamicanimation.animation.FlingAnimation;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,7 +86,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
     ListPreference themeColor, stick;
     SharedPreferences sharedPreferences;
     SwitchPreference stable, cache, themeTrans, smart, blur, observe, notification, floatingSplash, freeForm;
-    Preference shapes, autotrans, sizes, delayPressHold, boot, lite, support, whatsnew, adApp;
+    Preference shapes, autotrans, sizes, delayPressHold, flingSensitivity, boot, lite, support, whatsnew, adApp;
 
     Runnable runnablePressHold = null;
     Handler handlerPressHold = new Handler();
@@ -176,6 +179,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         shapes = (Preference) findPreference("shapes");
         autotrans = (Preference) findPreference("hide");
         sizes = (Preference) findPreference("sizes");
+        flingSensitivity = (Preference) findPreference("flingSensitivity");
         delayPressHold = (Preference) findPreference("delayPressHold");
         lite = (Preference) findPreference("lite");
         adApp = (Preference) findPreference("app");
@@ -793,6 +797,15 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                     }
                 });
                 dialog.show();
+
+                return true;
+            }
+        });
+
+        flingSensitivity.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                setupFlingSensitivity();
 
                 return true;
             }
@@ -1480,5 +1493,191 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
             }
         };
         registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    /*Fling Sensitivity*/
+    public void setupFlingSensitivity() {
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
+        int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 400, getResources().getDisplayMetrics());
+
+        layoutParams.width = dialogueWidth;
+        layoutParams.height = dialogueHeight;
+        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        layoutParams.dimAmount = 0.57f;
+
+        final Dialog dialog = new Dialog(SettingGUIDark.this);
+        dialog.setContentView(R.layout.seekbar_preferences_fling);
+        dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.flingSensitivityTitle) + "</font>"));
+        dialog.getWindow().setAttributes(layoutParams);
+        dialog.getWindow().getDecorView().setBackgroundColor(PublicVariable.colorLightDark);
+        dialog.setCancelable(true);
+
+        final ImageView flingingIcon = (ImageView) dialog.findViewById(R.id.transparentIcon);
+        final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);
+        TextView revertDefault = (TextView) dialog.findViewById(R.id.revertDefault);
+
+        seekBarPreferences.setThumbTintList(ColorStateList.valueOf(PublicVariable.primaryColor));
+        seekBarPreferences.setThumbTintMode(PorterDuff.Mode.SRC_IN);
+        seekBarPreferences.setProgressTintList(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
+        seekBarPreferences.setProgressTintMode(PorterDuff.Mode.SRC_IN);
+
+        seekBarPreferences.setMax(50);
+        seekBarPreferences.setProgress(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValueProgress", 30));
+
+        Drawable layerDrawableLoadLogo;
+        try {
+            Drawable backgroundDot = functionsClass.shapesDrawables().mutate();
+            backgroundDot.setTint(PublicVariable.primaryColorOpposite);
+            layerDrawableLoadLogo = new LayerDrawable(new Drawable[]{
+                    backgroundDot,
+                    getDrawable(R.drawable.ic_launcher_dots)
+            });
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            layerDrawableLoadLogo = getDrawable(R.drawable.ic_launcher);
+        }
+
+        int iconHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, functionsClass.readDefaultPreference("floatingSize", 39), getResources().getDisplayMetrics());
+        RelativeLayout.LayoutParams layoutParamsIcon = new RelativeLayout.LayoutParams(
+                iconHW,
+                iconHW
+        );
+        layoutParamsIcon.addRule(RelativeLayout.CENTER_HORIZONTAL, R.id.seekBarView);
+        flingingIcon.setLayoutParams(layoutParamsIcon);
+        flingingIcon.setImageDrawable(layerDrawableLoadLogo);
+
+        revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite);
+
+        FlingAnimation flingAnimationX = new FlingAnimation(flingingIcon, DynamicAnimation.TRANSLATION_X)
+                .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
+        FlingAnimation flingAnimationY = new FlingAnimation(flingingIcon, DynamicAnimation.TRANSLATION_Y)
+                .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
+
+        flingAnimationX.setMinValue(-functionsClass.DpToPixel(97));
+        flingAnimationX.setMaxValue(functionsClass.DpToPixel(97));
+
+        flingAnimationY.setMinValue(0);
+        flingAnimationY.setMaxValue(functionsClass.DpToPixel(197));
+
+        GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
+
+            @Override
+            public boolean onDown(MotionEvent motionEvent) {
+
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent motionEventFirst, MotionEvent motionEventLast, float velocityX, float velocityY) {
+
+                flingAnimationX.setStartVelocity(velocityX);
+                flingAnimationY.setStartVelocity(velocityY);
+
+                flingAnimationX.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
+
+                    }
+                });
+                flingAnimationY.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
+
+                    }
+                });
+
+                flingAnimationX.start();
+                flingAnimationY.start();
+
+                return false;
+            }
+        };
+
+        flingAnimationX.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+            @Override
+            public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+
+            }
+        });
+
+        flingAnimationY.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+            @Override
+            public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+
+            }
+        });
+
+        GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), simpleOnGestureListener);
+
+        flingingIcon.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                flingAnimationX.cancel();
+                flingAnimationY.cancel();
+
+                return gestureDetector.onTouchEvent(motionEvent);
+            }
+        });
+
+        seekBarPreferences.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValueProgress", progress);
+                if (progress <= 10) {
+                    seekBarPreferences.setProgressTintList(ColorStateList.valueOf(getColor(R.color.red)));
+
+                    functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValue", 0.5f);
+                    try {
+                        flingAnimationX.setFriction(0.5f);
+                        flingAnimationY.setFriction(0.5f);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    seekBarPreferences.setProgressTintList(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
+
+                    functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValue", (float) (progress / 10));
+                    try {
+                        flingAnimationX.setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
+                        flingAnimationY.setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        revertDefault.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValueProgress", 30);
+                functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValue", 3.0f);
+
+                seekBarPreferences.setProgress(30);
+                seekBarPreferences.setProgressTintList(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
+            }
+        });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+
+                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            }
+        });
+
+        dialog.show();
     }
 }

@@ -50,6 +50,7 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         this.startId = startId;
 
         functionsClass = new FunctionsClass(context);
+        FunctionsClass.println("*** Command ClassName ::: " + classNameCommand + " ***");
     }
 
     public PopupShortcutsOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems,
@@ -62,6 +63,7 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         this.startId = startId;
 
         functionsClass = new FunctionsClass(context);
+        FunctionsClass.println("*** Command ClassName ::: " + classNameCommand + " ***");
     }
 
     @Override
