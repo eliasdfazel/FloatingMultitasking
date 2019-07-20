@@ -874,11 +874,17 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
                                                     @Override
                                                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                                        adApp.setIcon(resource);
+                                                        runOnUiThread(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                SettingGUILight.this.adApp.setIcon(resource);
+                                                            }
+                                                        });
 
                                                         return false;
                                                     }
                                                 }).submit();
+
                                         adApp.setTitle(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle))));
                                         adApp.setSummary(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries))));
                                         adApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -891,7 +897,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
                                         FunctionsClass.println("*** " + firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) + " ***");
                                         if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > functionsClass.readPreference(".AdApp", "FetchTime", Long.valueOf(0))) {
-                                            getListView().smoothScrollToPosition(getListView().getBottom());
+                                            SettingGUILight.this.getListView().smoothScrollToPosition(SettingGUILight.this.getListView().getBottom());
                                             functionsClass.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)));
                                         }
                                     }

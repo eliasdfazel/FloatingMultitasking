@@ -877,14 +877,20 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
 
                                                     @Override
                                                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                                        adApp.setIcon(resource);
+                                                        runOnUiThread(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                SettingGUIDark.this.adApp.setIcon(resource);
+                                                            }
+                                                        });
 
                                                         return false;
                                                     }
                                                 }).submit();
-                                        adApp.setTitle(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle))));
-                                        adApp.setSummary(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries))));
-                                        adApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+                                        SettingGUIDark.this.adApp.setTitle(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle))));
+                                        SettingGUIDark.this.adApp.setSummary(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries))));
+                                        SettingGUIDark.this.adApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                                             @Override
                                             public boolean onPreferenceClick(Preference preference) {
                                                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(firebaseRemoteConfig.getString(getString(R.string.adAppLink)))));
@@ -894,7 +900,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
 
                                         FunctionsClass.println("*** " + firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) + " ***");
                                         if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > functionsClass.readPreference(".AdApp", "FetchTime", Long.valueOf(0))) {
-                                            getListView().smoothScrollToPosition(getListView().getBottom());
+                                            SettingGUIDark.this.getListView().smoothScrollToPosition(SettingGUIDark.this.getListView().getBottom());
                                             functionsClass.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)));
                                         }
                                     }
