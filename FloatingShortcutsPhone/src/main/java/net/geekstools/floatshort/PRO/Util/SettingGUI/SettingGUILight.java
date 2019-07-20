@@ -945,6 +945,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         themeColor.setIcon(drawPref);
         sizes.setIcon(drawPref);
         delayPressHold.setIcon(drawPref);
+        flingSensitivity.setIcon(drawPref);
         themeTrans.setIcon(drawPref);
         blur.setIcon(drawPref);
         stick.setIcon(drawPref);
