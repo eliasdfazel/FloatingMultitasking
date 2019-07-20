@@ -1170,7 +1170,6 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        PublicVariable.forceReload = true;
 
         String sticky = sharedPreferences.getString("stick", "1");
         stick = (ListPreference) findPreference("stick");

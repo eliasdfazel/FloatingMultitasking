@@ -1040,8 +1040,7 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
     public void onPause() {
         super.onPause();
         functionsClass.loadSavedColor();
-        getPreferenceScreen().getSharedPreferences()
-                .unregisterOnSharedPreferenceChangeListener(this);
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 
         functionsClass.CheckSystemRAM(SettingGUIDark.this);
     }
@@ -1174,7 +1173,6 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        PublicVariable.forceReload = true;
 
         String sticky = sharedPreferences.getString("stick", "1");
         stick = (ListPreference) findPreference("stick");
