@@ -44,6 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.ConsumeResponseListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -72,6 +73,7 @@ import net.geekstools.floatshort.PRO.Category.NavAdapter.CategoryListAdapter;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
@@ -512,6 +514,59 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
             }
         });
 
+        //Consume Donation
+        try {
+            if (functionsClass.alreadyDonated() && functionsClass.networkConnection()) {
+                BillingClient billingClient = BillingClient.newBuilder(CategoryHandler.this).setListener(new PurchasesUpdatedListener() {
+                    @Override
+                    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+                        if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
+
+                        } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
+
+                        } else {
+
+                        }
+
+                    }
+                }).build();
+                billingClient.startConnection(new BillingClientStateListener() {
+                    @Override
+                    public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
+                        if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                            List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
+                            for (Purchase purchase : purchases) {
+                                FunctionsClassDebug.Companion.PrintDebug("*** Purchased Item: " + purchase + " ***");
+
+
+                                if (purchase.getSku().equals("donation")) {
+                                    ConsumeResponseListener consumeResponseListener = new ConsumeResponseListener() {
+                                        @Override
+                                        public void onConsumeResponse(@BillingClient.BillingResponse int responseCode, String outToken) {
+                                            if (responseCode == BillingClient.BillingResponse.OK) {
+                                                FunctionsClassDebug.Companion.PrintDebug("*** Consumed Item: " + outToken + " ***");
+
+                                                functionsClass.savePreference(".PurchasedItem", purchase.getSku(), false);
+                                            }
+                                        }
+                                    };
+                                    billingClient.consumeAsync(purchase.getPurchaseToken(), consumeResponseListener);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onBillingServiceDisconnected() {
+
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Restore Purchased Item
         if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.alreadyDonated()) {
             BillingClient billingClient = BillingClient.newBuilder(CategoryHandler.this).setListener(new PurchasesUpdatedListener() {
                 @Override
@@ -533,10 +588,7 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
                         List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
                         for (Purchase purchase : purchases) {
                             FunctionsClass.println("*** Purchased Item: " + purchase + " ***");
-
-                            if (purchase.getSku().equals("floating.widgets")) {
-                                functionsClass.savePreference(".PurchasedItem", purchase.getSku(), true);
-                            }
+                            functionsClass.savePreference(".PurchasedItem", purchase.getSku(), true);
                         }
                     }
                 }
@@ -546,6 +598,46 @@ public class CategoryHandler extends Activity implements View.OnClickListener, V
 
                 }
             });
+        }
+
+        //Restore Subscribed Item
+        try {
+            if (functionsClass.networkConnection()) {
+                BillingClient billingClient = BillingClient.newBuilder(CategoryHandler.this).setListener(new PurchasesUpdatedListener() {
+                    @Override
+                    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+                        if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
+
+                        } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
+
+                        } else {
+
+                        }
+
+                    }
+                }).build();
+                billingClient.startConnection(new BillingClientStateListener() {
+                    @Override
+                    public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
+                        if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                            functionsClass.savePreference(".SubscribedItem", "security.services", false);
+
+                            List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.SUBS).getPurchasesList();
+                            for (Purchase purchase : purchases) {
+                                FunctionsClass.println("*** Subscribed Item: " + purchase + " ***");
+                                functionsClass.savePreference(".SubscribedItem", purchase.getSku(), true);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onBillingServiceDisconnected() {
+
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         firebaseAuth = FirebaseAuth.getInstance();

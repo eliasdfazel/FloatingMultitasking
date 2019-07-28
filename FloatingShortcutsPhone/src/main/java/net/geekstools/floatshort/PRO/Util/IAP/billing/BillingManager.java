@@ -16,6 +16,7 @@
 package net.geekstools.floatshort.PRO.Util.IAP.billing;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,6 +53,7 @@ public class BillingManager implements PurchasesUpdatedListener {
     static {
         SKUS = new HashMap<>();
         SKUS.put(BillingClient.SkuType.INAPP, Arrays.asList("donation", "floating.widgets"));
+        SKUS.put(BillingClient.SkuType.SUBS, Arrays.asList("security.services"));
     }
 
     public List<String> getSkus(@BillingClient.SkuType String type) {
@@ -69,10 +72,16 @@ public class BillingManager implements PurchasesUpdatedListener {
             @Override
             public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponse) {
                 if (billingResponse == BillingClient.BillingResponse.OK) {
-                    List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
-                    for (Purchase purchase : purchases) {
+                    List<Purchase> purchasesItems = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
+                    for (Purchase purchase : purchasesItems) {
                         FunctionsClass.println("*** Purchased Item: " + purchase + " ***");
                         functionsClass.savePreference(".PurchasedItem", purchase.getSku(), true);
+                    }
+
+                    List<Purchase> subscribedItem = billingClient.queryPurchases(BillingClient.SkuType.SUBS).getPurchasesList();
+                    for (Purchase purchase : subscribedItem) {
+                        FunctionsClass.println("*** Subscribed Item: " + purchase + " ***");
+                        functionsClass.savePreference(".SubscribedItem", purchase.getSku(), true);
                     }
                 }
             }
@@ -97,11 +106,9 @@ public class BillingManager implements PurchasesUpdatedListener {
     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
         //ResponseCode 7 = Item Owned
         Log.d(TAG, "onPurchasesUpdated() Response: " + responseCode);
-        if (responseCode == 7) {
 
-        } else {
-
-        }
+        activity.finish();
+        activity.startActivity(new Intent(activity.getApplicationContext(), InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     public void querySkuDetailsAsync(@BillingClient.SkuType final String itemType, final List<String> skuList, final SkuDetailsResponseListener listener) {

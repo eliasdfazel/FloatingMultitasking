@@ -5763,6 +5763,11 @@ public class FunctionsClass {
     }
 
     /*In-App Purchase*/
+    public boolean securityServicesSubscribed() {
+
+        return readPreference(".SubscribedItem", "security.services", false);
+    }
+
     public boolean floatingWidgetsPurchased() {
 
         return readPreference(".PurchasedItem", "floating.widgets", false);

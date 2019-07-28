@@ -309,8 +309,42 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                 displayError();
                             } else {
                                 skusAdapter.updateData(skuRowDataList);
-                                progressBar.setVisibility(View.INVISIBLE);
                             }
+
+                            List<String> subsSkus = billingProvider.getBillingManager().getSkus(BillingClient.SkuType.SUBS);
+                            billingProvider.getBillingManager().querySkuDetailsAsync(BillingClient.SkuType.SUBS,
+                                    subsSkus,
+                                    new SkuDetailsResponseListener() {
+                                        @Override
+                                        public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
+                                            if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
+                                                for (SkuDetails skuDetails : skuDetailsList) {
+                                                    FunctionsClass.println("*** SKU List ::: " + skuDetails + " ***");
+
+
+                                                    if (skuDetails.getSku().equals("security.services") && functionsClass.securityServicesSubscribed()) {
+
+                                                        continue;
+                                                    }
+
+                                                    skuRowDataList.add(new SkuRowData(
+                                                            skuDetails,
+                                                            skuDetails.getSku(),
+                                                            skuDetails.getTitle(),
+                                                            skuDetails.getIntroductoryPrice(),
+                                                            skuDetails.getDescription(),
+                                                            skuDetails.getType())
+                                                    );
+                                                }
+                                                if (skuRowDataList.size() == 0) {
+                                                    displayError();
+                                                } else {
+                                                    skusAdapter.updateData(skuRowDataList);
+                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                }
+                                            }
+                                        }
+                                    });
                         }
                     }
                 });
