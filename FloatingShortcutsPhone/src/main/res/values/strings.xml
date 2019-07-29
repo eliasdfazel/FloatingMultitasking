@@ -225,6 +225,13 @@
         ]]>
     </string>
 
+    <!-- Finger Print -->
+    <string name="authing">Fingerprint Authentication</string>
+    <string name="fingerprint_description">Confirm Your Fingerprint to Continue…</string>
+    <string name="fingerprint_hint">Touch Sensor</string>
+    <string name="fingerprint_not_recognized">Fingerprint Not Recognized.\nTry Again…</string>
+    <string name="fingerprint_success">Fingerprint Recognized</string>
+
     <string name="purchase"> Purchase 💸 </string>
     <string name="donate"> Send Gift 🎁 </string>
     <string name="restorePurchase">ℹ Click To Restore The Item ℹ</string>

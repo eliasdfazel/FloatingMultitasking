@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Html;
@@ -86,7 +87,10 @@ public class CheckPoint extends Activity {
             Permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
             Permissions.add(Manifest.permission.RECEIVE_BOOT_COMPLETED);
             Permissions.add(Manifest.permission.VIBRATE);
-            if (functionsClass.returnAPI() >= 26) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                Permissions.add(Manifest.permission.USE_BIOMETRIC);
+            }
+            if (functionsClass.returnAPI() >= Build.VERSION_CODES.O) {
                 Permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
                 Permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }

@@ -609,6 +609,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 @Override
                 public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
                     if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                        functionsClass.savePreference(".PurchasedItem", "floating.widgets", false);
+
                         List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
                         for (Purchase purchase : purchases) {
                             FunctionsClass.println("*** Purchased Item: " + purchase + " ***");

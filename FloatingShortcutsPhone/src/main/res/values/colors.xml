@@ -9,6 +9,10 @@
     <color name="red">#9b000e</color>
     <color name="red_transparent">#4d9b000e</color>
 
+    <color name="warning_color">#FE5475</color>
+    <color name="hint_color">#42000000</color>
+    <color name="success_color">#1FD4AF</color>
+
     <color name="transparent_light">#b3f2f7ff</color>
     <color name="fifty_light_twice">#c8f2f7ff</color>
 

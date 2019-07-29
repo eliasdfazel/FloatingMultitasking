@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fingerprint_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="23dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="23dp"
+    android:paddingBottom="13dp">
+
+    <TextView
+        android:id="@+id/fingerprint_status"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:padding="2dp"
+        android:text="@string/fingerprint_hint"
+        android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+        android:textColor="@color/hint_color"
+        android:textSize="15sp"
+        android:typeface="monospace" />
+
+    <ImageView
+        android:id="@+id/fingerprint_icon"
+        android:layout_width="213dp"
+        android:layout_height="213dp"
+        android:layout_below="@+id/fingerprint_status"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="3dp"
+        android:padding="3dp"
+        android:src="@drawable/draw_finger_print" />
+
+    <Button
+        android:id="@+id/cancelAuth"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_below="@id/fingerprint_icon"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/ripple_effect"
+        android:gravity="center"
+        android:text="@android:string/cancel"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:typeface="monospace" />
+
+</RelativeLayout>

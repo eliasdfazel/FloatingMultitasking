@@ -179,6 +179,14 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="AuthTransparent" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="PopupTextColor.Light" parent="@android:style/TextAppearance.Widget.PopupMenu.Small">
         <item name="android:textColor">@color/dark</item>
     </style>
