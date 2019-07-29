@@ -39,8 +39,7 @@ class FunctionsClassSecurity {
     val DEFAULT_KEY_NAME = "default_key"
 
     companion object AuthOpenAppValues {
-        var authPackageName: String? = null
-        var authClassName: String? = null
+        var authComponentName: String? = null
 
         var authOrderNumber: Int = 0
         var authPositionX: Int = 0
@@ -105,9 +104,9 @@ class FunctionsClassSecurity {
             FunctionsClassDebug.PrintDebug("*** Authentication Confirmed ***")
 
             if (AuthOpenAppValues.authUnlockIt) {
-                FunctionsClass(context).savePreference(".LockedApps", authPackageName, false);
+                FunctionsClass(context).savePreference(".LockedApps", authComponentName, false);
             } else {
-                FunctionsClass(context).appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.authPackageName)
+                FunctionsClass(context).appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.authComponentName)
 
             }
         } else {
@@ -160,7 +159,7 @@ class FunctionsClassSecurity {
 
     }
 
-    fun isAppLocked(PackageName: String): Boolean {
-        return FunctionsClass(context).readPreference(".LockedApps", PackageName, false)
+    fun isAppLocked(authComponentName: String): Boolean {
+        return FunctionsClass(context).readPreference(".LockedApps", authComponentName, false)
     }
 }

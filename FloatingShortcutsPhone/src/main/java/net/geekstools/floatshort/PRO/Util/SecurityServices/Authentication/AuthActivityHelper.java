@@ -49,22 +49,22 @@ public class AuthActivityHelper extends Activity {
 
         try {
             window.setStatusBarColor(
-                    functionsClass.setColorAlpha(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthPackageName())),
+                    functionsClass.setColorAlpha(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())),
                             0.50f)
             );
             window.setNavigationBarColor(
-                    functionsClass.setColorAlpha(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthPackageName())),
+                    functionsClass.setColorAlpha(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())),
                             0.50f)
             );
 
             authBackground.setBackgroundColor(
-                    functionsClass.setColorAlpha(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthPackageName())),
+                    functionsClass.setColorAlpha(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())),
                             0.50f)
             );
         } catch (Exception e) {
             e.printStackTrace();
             authBackground.setBackgroundColor(
-                    functionsClass.setColorAlpha(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthPackageName())),
+                    functionsClass.setColorAlpha(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())),
                             0.50f)
             );
         }

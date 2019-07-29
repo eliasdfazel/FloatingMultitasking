@@ -51,17 +51,18 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(PublicVariable.colorLightDark));
 
+        String dialogueTitle = functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()).equals("null") ? FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName() : functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
         try {
             getDialog().setTitle(Html.fromHtml("<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>"
                     +
-                    functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthPackageName()) + " 🔒 "
+                    dialogueTitle + " 🔒 "
                     +
                     "</font></big>"));
         } catch (Exception e) {
             e.printStackTrace();
             getDialog().setTitle(Html.fromHtml("<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>"
                     +
-                    functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthPackageName()) + " 🔒 "
+                    dialogueTitle + " 🔒 "
                     +
                     "</font></big>"));
         }
@@ -77,10 +78,10 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
         fingerprintHint = (TextView) viewContainer.findViewById(R.id.fingerprint_status);
 
         try {
-            fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthPackageName())));
+            fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
         } catch (Exception e) {
             e.printStackTrace();
-            fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthPackageName())));
+            fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
         }
         cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
 

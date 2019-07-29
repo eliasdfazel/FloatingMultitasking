@@ -1996,13 +1996,14 @@ public class FunctionsClass {
     }
 
     public String appName(String packageName) {
-        String Name = null;
+        String Name = "null";
         try {
             PackageManager packageManager = context.getPackageManager();
             ApplicationInfo app = context.getPackageManager().getApplicationInfo(packageName, 0);
             Name = packageManager.getApplicationLabel(app).toString();
         } catch (Exception e) {
             e.printStackTrace();
+            Name = "null";
         }
         return Name;
     }
@@ -3868,7 +3869,7 @@ public class FunctionsClass {
                     }, 50);
                 } else if (item.getItemId() == 3) {
                     if (functionsClassSecurity.isAppLocked(PackageName)) {
-                        FunctionsClassSecurity.AuthOpenAppValues.setAuthPackageName(PackageName);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(PackageName);
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthUnlockIt(true);
 
                         functionsClassSecurity.openAuthInvocation();
@@ -3907,6 +3908,15 @@ public class FunctionsClass {
         for (int itemId = 0; itemId < menuItems.length; itemId++) {
             popupMenu.getMenu()
                     .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>"))
+                    .setIcon(popupItemIcon);
+        }
+        if (functionsClassSecurity.isAppLocked(categoryName)) {
+            popupMenu.getMenu()
+                    .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.unLockIt) + "</font>"))
+                    .setIcon(popupItemIcon);
+        } else {
+            popupMenu.getMenu()
+                    .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.lockIt) + "</font>"))
                     .setIcon(popupItemIcon);
         }
 
@@ -3981,6 +3991,15 @@ public class FunctionsClass {
                         e.printStackTrace();
                     } finally {
                         context.sendBroadcast(new Intent("Category_Reload"));
+                    }
+                } else if (item.getItemId() == 5) {
+                    if (functionsClassSecurity.isAppLocked(categoryName)) {
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(categoryName);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthUnlockIt(true);
+
+                        functionsClassSecurity.openAuthInvocation();
+                    } else {
+                        savePreference(".LockedApps", categoryName, true);
                     }
                 }
                 return true;
