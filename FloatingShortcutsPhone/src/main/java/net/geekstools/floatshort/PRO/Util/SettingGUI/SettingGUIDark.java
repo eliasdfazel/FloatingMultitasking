@@ -1530,6 +1530,9 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
 
         seekBarPreferences.setMax(50);
         seekBarPreferences.setProgress(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValueProgress", 30));
+        if (seekBarPreferences.getProgress() <= 10) {
+            seekBarPreferences.setProgressTintList(ColorStateList.valueOf(getColor(R.color.red)));
+        }
 
         Drawable layerDrawableLoadLogo;
         try {

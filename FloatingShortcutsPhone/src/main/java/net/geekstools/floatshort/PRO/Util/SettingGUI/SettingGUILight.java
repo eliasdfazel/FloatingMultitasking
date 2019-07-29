@@ -1518,6 +1518,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         seekBarPreferences.setThumbTintMode(PorterDuff.Mode.SRC_IN);
         seekBarPreferences.setProgressTintList(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
         seekBarPreferences.setProgressTintMode(PorterDuff.Mode.SRC_IN);
+        if (seekBarPreferences.getProgress() <= 10) {
+            seekBarPreferences.setProgressTintList(ColorStateList.valueOf(getColor(R.color.red)));
+        }
 
         seekBarPreferences.setMax(50);
         seekBarPreferences.setProgress(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValueProgress", 30));
