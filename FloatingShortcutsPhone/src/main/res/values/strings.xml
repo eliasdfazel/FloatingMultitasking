@@ -244,10 +244,17 @@
         ]]>
     </string>
 
-    <string-array name="ContextMenu">
+    <string-array name="ContextMenuLock">
         <item name="1">Small</item>
         <item name="2">Medium</item>
         <item name="3">Large</item>
+        <item name="4">Lock It 🔒 </item>
+    </string-array>
+    <string-array name="ContextMenuUnlock">
+        <item name="1">Small</item>
+        <item name="2">Medium</item>
+        <item name="3">Large</item>
+        <item name="4">Unlock It 🔒 </item>
     </string-array>
 
     <string-array name="ContextMenuCategory">

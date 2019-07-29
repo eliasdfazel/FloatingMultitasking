@@ -556,7 +556,12 @@ public class App_Unlimited_Shortcuts extends Service {
                     }
                 } else {
                     if (openIt[startId]) {
-                        if (functionsClass.splashReveal()) {
+                        if (functionsClassSecurity.isAppLocked(packages[startId])) {
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPackageName(packages[startId]);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthUnlockIt(false);
+
+                            functionsClassSecurity.openAuthInvocation();
+                        } else if (functionsClass.splashReveal()) {
                             Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);
                             splashReveal.putExtra("packageName", packages[startId]);
                             if (moveDetection != null) {
@@ -577,20 +582,7 @@ public class App_Unlimited_Shortcuts extends Service {
                                         (functionsClass.displayY() / 2)
                                 );
                             } else {
-//                                functionsClass.appsLaunchPad(packages[startId]);
-
-
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPackageName(packages[startId]);
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(layoutParams[startId].x);
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(layoutParams[startId].y);
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthHW(layoutParams[startId].width);
-
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthUnlockIt(false);
-
-                                functionsClassSecurity.openAuthInvocation();
-
-
-
+                                functionsClass.appsLaunchPad(packages[startId]);
                             }
                         }
                     } else {

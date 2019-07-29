@@ -188,14 +188,21 @@ import static android.content.Context.ACCESSIBILITY_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
 
 public class FunctionsClass {
+
     int API;
+
     Activity activity;
     Context context;
+
+    FunctionsClassSecurity functionsClassSecurity;
+
     ArrayList<NavDrawerItem> navDrawerItems;
 
     public FunctionsClass(Context context) {
         this.context = context;
         API = Build.VERSION.SDK_INT;
+
+        functionsClassSecurity = new FunctionsClassSecurity(context);
 
         loadSavedColor();
         checkLightDarkTheme();
@@ -205,6 +212,8 @@ public class FunctionsClass {
         this.context = context;
         this.activity = activity;
         API = Build.VERSION.SDK_INT;
+
+        functionsClassSecurity = new FunctionsClassSecurity(activity, context);
 
         loadSavedColor();
         checkLightDarkTheme();
@@ -3774,7 +3783,7 @@ public class FunctionsClass {
             }
         }
 
-        String[] menuItems = context.getResources().getStringArray(R.array.ContextMenu);
+        String[] menuItems = functionsClassSecurity.isAppLocked(PackageName) ? context.getResources().getStringArray(R.array.ContextMenuUnlock) : context.getResources().getStringArray(R.array.ContextMenuLock);
         Drawable backgroundDrawable = shapesDrawables();
         Drawable foregroundDrawable = returnAPI() >= 28 ? resizeDrawable(context.getDrawable(R.drawable.w_pref_popup).mutate(), 100, 100) : context.getDrawable(R.drawable.w_pref_popup).mutate();
         if (shapesDrawables() == null) {
@@ -3857,6 +3866,15 @@ public class FunctionsClass {
                             setSizeBack();
                         }
                     }, 50);
+                } else if (item.getItemId() == 3) {
+                    if (functionsClassSecurity.isAppLocked(PackageName)) {
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthPackageName(PackageName);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthUnlockIt(true);
+
+                        functionsClassSecurity.openAuthInvocation();
+                    } else {
+                        savePreference(".LockedApps", PackageName, true);
+                    }
                 }
                 updateRecoverShortcuts();
                 return true;

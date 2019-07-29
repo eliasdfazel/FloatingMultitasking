@@ -9,7 +9,6 @@ import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
-import android.view.View
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthActivityHelper
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.FingerprintAuthenticationDialogFragment
 import java.io.IOException
@@ -49,8 +48,6 @@ class FunctionsClassSecurity {
         var authHW: Int = 0
 
         var authUnlockIt = false
-
-        var authAnchorView: View? = null
 
         var keyStore: KeyStore? = null
         var keyGenerator: KeyGenerator? = null
@@ -106,9 +103,11 @@ class FunctionsClassSecurity {
     fun authConfirmed(encrypted: ByteArray?) {
         if (encrypted != null) {
             FunctionsClassDebug.PrintDebug("*** Authentication Confirmed ***")
-            if (AuthOpenAppValues.authUnlockIt) {
 
+            if (AuthOpenAppValues.authUnlockIt) {
+                FunctionsClass(context).savePreference(".LockedApps", authPackageName, false);
             } else {
+                FunctionsClass(context).appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.authPackageName)
 
             }
         } else {
@@ -162,6 +161,6 @@ class FunctionsClassSecurity {
     }
 
     fun isAppLocked(PackageName: String): Boolean {
-        return context.getFileStreamPath("$PackageName.LOCKED").exists()
+        return FunctionsClass(context).readPreference(".LockedApps", PackageName, false)
     }
 }
