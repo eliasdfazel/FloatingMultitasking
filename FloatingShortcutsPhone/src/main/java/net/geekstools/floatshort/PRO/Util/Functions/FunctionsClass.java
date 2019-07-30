@@ -144,6 +144,7 @@ import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNoti
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
+import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.OpenApplications;
@@ -3874,7 +3875,12 @@ public class FunctionsClass {
 
                         functionsClassSecurity.openAuthInvocation();
                     } else {
-                        savePreference(".LockedApps", PackageName, true);
+                        if (securityServicesSubscribed() || BuildConfig.DEBUG) {
+                            savePreference(".LockedApps", PackageName, true);
+                        } else {
+                            context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                                    ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                        }
                     }
                 }
                 updateRecoverShortcuts();
@@ -3999,14 +4005,18 @@ public class FunctionsClass {
 
                         functionsClassSecurity.openAuthInvocation();
                     } else {
+                        if (securityServicesSubscribed() || BuildConfig.DEBUG) {
+                            if (context.getFileStreamPath(categoryName).exists() && context.getFileStreamPath(categoryName).isFile()) {
+                                savePreference(".LockedApps", categoryName, true);
 
-                        if (context.getFileStreamPath(categoryName).exists() && context.getFileStreamPath(categoryName).isFile()) {
-                            savePreference(".LockedApps", categoryName, true);
-
-                            String[] packageNames = readFileLine(categoryName);
-                            for (String packageName : packageNames) {
-                                savePreference(".LockedApps", packageName, true);
+                                String[] packageNames = readFileLine(categoryName);
+                                for (String packageName : packageNames) {
+                                    savePreference(".LockedApps", packageName, true);
+                                }
                             }
+                        } else {
+                            context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                                    ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                         }
                     }
                 }
