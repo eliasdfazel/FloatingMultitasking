@@ -7,7 +7,7 @@ import android.nfc.NfcManager;
 
 import net.geekstools.floatshort.PRO.App_Unlimited_Nfc;
 import net.geekstools.floatshort.PRO.Automation.RecoveryNfc;
-import net.geekstools.floatshort.PRO.Category_Unlimited_Nfc;
+import net.geekstools.floatshort.PRO.Folder_Unlimited_Nfc;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -40,7 +40,7 @@ public class ReceiverNFC extends BroadcastReceiver {
                 w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(w);
 
-                Intent c = new Intent(context, Category_Unlimited_Nfc.class);
+                Intent c = new Intent(context, Folder_Unlimited_Nfc.class);
                 c.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                 c.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(c);

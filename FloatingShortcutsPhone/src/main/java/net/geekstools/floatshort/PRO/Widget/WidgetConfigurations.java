@@ -61,14 +61,14 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
-import net.geekstools.floatshort.PRO.Category.CategoryHandler;
+import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryCategory;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
@@ -445,7 +445,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             @Override
             public void onClick(View view) {
                 try {
-                    functionsClass.navigateToClass(CategoryHandler.class,
+                    functionsClass.navigateToClass(FoldersHandler.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -480,7 +480,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         recoverFloatingCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RecoveryCategory.class);
+                Intent intent = new Intent(getApplicationContext(), RecoveryFolders.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startService(intent);
 
@@ -974,7 +974,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         switch (direction) {
             case SimpleGestureFilterSwitch.SWIPE_RIGHT: {
                 try {
-                    functionsClass.navigateToClass(CategoryHandler.class,
+                    functionsClass.navigateToClass(FoldersHandler.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();

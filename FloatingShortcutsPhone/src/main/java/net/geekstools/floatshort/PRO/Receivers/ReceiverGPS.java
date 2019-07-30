@@ -7,7 +7,7 @@ import android.location.LocationManager;
 
 import net.geekstools.floatshort.PRO.App_Unlimited_Gps;
 import net.geekstools.floatshort.PRO.Automation.RecoveryGps;
-import net.geekstools.floatshort.PRO.Category_Unlimited_Gps;
+import net.geekstools.floatshort.PRO.Folder_Unlimited_Gps;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -40,7 +40,7 @@ public class ReceiverGPS extends BroadcastReceiver {
                 w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(w);
 
-                Intent c = new Intent(context, Category_Unlimited_Gps.class);
+                Intent c = new Intent(context, Folder_Unlimited_Gps.class);
                 c.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                 c.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(c);

@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Category.NavAdapter;
+package net.geekstools.floatshort.PRO.Folders.NavAdapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import net.geekstools.floatshort.PRO.Category.AppSelectionList;
+import net.geekstools.floatshort.PRO.Folders.AppSelectionList;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -33,7 +33,7 @@ import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import java.io.File;
 import java.util.ArrayList;
 
-public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
+public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.ViewHolder> {
 
     FunctionsClass functionsClass;
     Context context;
@@ -55,7 +55,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     LoadCustomIcons loadCustomIcons;
 
-    public CategoryListAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems) {
+    public FoldersListAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems) {
         this.activity = activity;
         this.context = context;
         this.navDrawerItems = navDrawerItems;
@@ -75,7 +75,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     }
 
     @Override
-    public CategoryListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FoldersListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         view = LayoutInflater.from(context).inflate(R.layout.item_category, parent, false);
         viewHolder = new ViewHolder(view);
         return viewHolder;

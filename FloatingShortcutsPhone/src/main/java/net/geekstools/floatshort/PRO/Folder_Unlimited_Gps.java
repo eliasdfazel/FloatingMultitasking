@@ -38,7 +38,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Category_Unlimited_Gps extends Service {
+public class Folder_Unlimited_Gps extends Service {
 
     FunctionsClass functionsClass;
     WindowManager windowManager;
@@ -304,7 +304,7 @@ public class Category_Unlimited_Gps extends Service {
         layoutParams[startId] = functionsClass.normalLayoutParams(HW, xPos, yPos);
         windowManager.addView(floatingView[startId], layoutParams[startId]);
 
-        final String className = Category_Unlimited_Gps.class.getSimpleName();
+        final String className = Folder_Unlimited_Gps.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Pair_" + className);
         intentFilter.addAction("Split_Apps_Single_" + className);

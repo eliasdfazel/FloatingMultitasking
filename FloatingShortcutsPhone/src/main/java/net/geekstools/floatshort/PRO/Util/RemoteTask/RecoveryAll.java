@@ -15,7 +15,7 @@ public class RecoveryAll extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
         startService(new Intent(getApplicationContext(), RecoveryShortcuts.class));
-        startService(new Intent(getApplicationContext(), RecoveryCategory.class));
+        startService(new Intent(getApplicationContext(), RecoveryFolders.class));
         startService(new Intent(getApplicationContext(), RecoveryWidgets.class));
 
         stopSelf();

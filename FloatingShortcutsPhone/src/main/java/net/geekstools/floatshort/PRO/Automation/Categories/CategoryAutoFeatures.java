@@ -38,7 +38,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.Category.CategoryHandler;
+import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -701,7 +701,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
                 categoryAutoListAdapter = new CategoryAutoListAdapter(activity, getApplicationContext(), navDrawerItems);
             } catch (Exception e) {
                 e.printStackTrace();
-                startActivity(new Intent(getApplicationContext(), CategoryHandler.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                startActivity(new Intent(getApplicationContext(), FoldersHandler.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
 
             return null;

@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Category;
+package net.geekstools.floatshort.PRO.Folders;
 
 import android.content.Context;
 import android.view.GestureDetector;

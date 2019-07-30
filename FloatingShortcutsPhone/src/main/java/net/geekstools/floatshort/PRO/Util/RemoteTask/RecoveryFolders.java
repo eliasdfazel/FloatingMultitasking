@@ -15,7 +15,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
-public class RecoveryCategory extends Service {
+public class RecoveryFolders extends Service {
 
     FunctionsClass functionsClass;
 

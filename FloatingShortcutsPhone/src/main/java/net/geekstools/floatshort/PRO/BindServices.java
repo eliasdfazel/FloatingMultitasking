@@ -102,7 +102,7 @@ public class BindServices extends Service {
                                         wifiShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         context.startService(wifiShortcutsRemove);
 
-                                        Intent wifiCategoryRemove = new Intent(context, Category_Unlimited_Wifi.class);
+                                        Intent wifiCategoryRemove = new Intent(context, Folder_Unlimited_Wifi.class);
                                         wifiCategoryRemove.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                                         wifiCategoryRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         context.startService(wifiCategoryRemove);
@@ -128,7 +128,7 @@ public class BindServices extends Service {
                                     gpsShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(gpsShortcutsRemove);
 
-                                    Intent gpsCategoryRemove = new Intent(context, Category_Unlimited_Gps.class);
+                                    Intent gpsCategoryRemove = new Intent(context, Folder_Unlimited_Gps.class);
                                     gpsCategoryRemove.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                                     gpsCategoryRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(gpsCategoryRemove);
@@ -153,7 +153,7 @@ public class BindServices extends Service {
                                     nfcShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(nfcShortcutsRemove);
 
-                                    Intent nfcCategoryRemove = new Intent(context, Category_Unlimited_Nfc.class);
+                                    Intent nfcCategoryRemove = new Intent(context, Folder_Unlimited_Nfc.class);
                                     nfcCategoryRemove.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                                     nfcCategoryRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(nfcCategoryRemove);

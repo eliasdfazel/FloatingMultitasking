@@ -43,13 +43,13 @@ public class RecoveryAllActivity extends Activity {
             } else if (getIntent().getAction().equals(Intent.ACTION_MAIN) || getIntent().getAction().equals(Intent.ACTION_VIEW)
                     || getIntent().getAction().equals("Remote_Recover_All")) {
                 startActivity(new Intent(getApplicationContext(), RecoveryShortcutsActivity.class));
-                startActivity(new Intent(getApplicationContext(), RecoveryCategoryActivity.class));
+                startActivity(new Intent(getApplicationContext(), RecoveryFoldersActivity.class));
                 startService(new Intent(getApplicationContext(), RecoveryWidgets.class));
             }
         } catch (Exception e) {
             e.printStackTrace();
             startActivity(new Intent(getApplicationContext(), RecoveryShortcutsActivity.class));
-            startActivity(new Intent(getApplicationContext(), RecoveryCategoryActivity.class));
+            startActivity(new Intent(getApplicationContext(), RecoveryFoldersActivity.class));
             startService(new Intent(getApplicationContext(), RecoveryWidgets.class));
         }
 

@@ -38,7 +38,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Category_Unlimited_Wifi extends Service {
+public class Folder_Unlimited_Time extends Service {
 
     FunctionsClass functionsClass;
     WindowManager windowManager;
@@ -304,7 +304,7 @@ public class Category_Unlimited_Wifi extends Service {
         layoutParams[startId] = functionsClass.normalLayoutParams(HW, xPos, yPos);
         windowManager.addView(floatingView[startId], layoutParams[startId]);
 
-        final String className = Category_Unlimited_Wifi.class.getSimpleName();
+        final String className = Folder_Unlimited_Time.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Pair_" + className);
         intentFilter.addAction("Split_Apps_Single_" + className);
@@ -439,7 +439,7 @@ public class Category_Unlimited_Wifi extends Service {
                                 } finally {
                                     PublicVariable.FloatingCategories.remove(categoryName[intent.getIntExtra("startId", 1)]);
                                     PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
-                                    PublicVariable.floatingCategoryCounter_wifi = PublicVariable.floatingCategoryCounter_wifi - 1;
+                                    PublicVariable.floatingCategoryCounter_time = PublicVariable.floatingCategoryCounter_time - 1;
                                     PublicVariable.categoriesCounter = PublicVariable.categoriesCounter - 1;
 
                                     if (PublicVariable.floatingCounter == 0) {
@@ -448,7 +448,7 @@ public class Category_Unlimited_Wifi extends Service {
                                             stopService(new Intent(getApplicationContext(), BindServices.class));
                                         }
                                     }
-                                    if (PublicVariable.floatingCategoryCounter_wifi == 0) {
+                                    if (PublicVariable.floatingCategoryCounter_time == 0) {
                                         if (broadcastReceiver != null) {
                                             try {
                                                 unregisterReceiver(broadcastReceiver);

@@ -16,12 +16,12 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.firebase.FirebaseApp;
 
-import net.geekstools.floatshort.PRO.Category.CategoryHandler;
+import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryAll;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryCategory;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 
 import java.util.Collections;
@@ -139,7 +139,7 @@ public class Configurations extends Activity {
                             finish();
                             return;
                         } else if (sharedPreferences.getString("boot", "1").equals("2")) {
-                            Intent r = new Intent(getApplicationContext(), RecoveryCategory.class);
+                            Intent r = new Intent(getApplicationContext(), RecoveryFolders.class);
                             r.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startService(r);
                             finish();
@@ -198,7 +198,7 @@ public class Configurations extends Activity {
             }
         }
         functionsClass.updateRecoverShortcuts();
-        if (functionsClass.readPreference("OpenMode", "openClassName", HybridViewOff.class.getSimpleName()).equals(CategoryHandler.class.getSimpleName())) {
+        if (functionsClass.readPreference("OpenMode", "openClassName", HybridViewOff.class.getSimpleName()).equals(FoldersHandler.class.getSimpleName())) {
             try {
                 if (functionsClass.UsageStatsEnabled()) {
                     if (getFileStreamPath("Frequently").exists()) {
@@ -219,7 +219,7 @@ public class Configurations extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Intent categoryIntent = new Intent(getApplicationContext(), CategoryHandler.class);
+            Intent categoryIntent = new Intent(getApplicationContext(), FoldersHandler.class);
             startActivity(categoryIntent);
         } else {
             if (functionsClass.UsageStatsEnabled()) {

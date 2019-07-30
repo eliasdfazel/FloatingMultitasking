@@ -15,7 +15,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
-public class RecoveryCategoryActivity extends Activity {
+public class RecoveryFoldersActivity extends Activity {
 
     String categoryName;
     String[] appData;
@@ -40,7 +40,7 @@ public class RecoveryCategoryActivity extends Activity {
                 drawCategory.setBounds(0, 0, drawCategory.getIntrinsicWidth(), drawCategory.getIntrinsicHeight());
                 drawCategory.draw(new Canvas(shortcutApp));
 
-                Intent setCategoryRecovery = new Intent(getApplicationContext(), RecoveryCategoryActivity.class);
+                Intent setCategoryRecovery = new Intent(getApplicationContext(), RecoveryFoldersActivity.class);
                 setCategoryRecovery.setAction("Remote_Recover_Categories");
                 setCategoryRecovery.addCategory(Intent.CATEGORY_DEFAULT);
                 Intent intent = new Intent();

@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Category.NavAdapter;
+package net.geekstools.floatshort.PRO.Folders.NavAdapter;
 
 import android.app.Activity;
 import android.content.Context;

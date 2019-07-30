@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Category;
+package net.geekstools.floatshort.PRO.Folders;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 
 
-public class DeepLinkedCategory extends Activity {
+public class DeepLinkedFolders extends Activity {
 
     String CategoryName;
 
@@ -18,7 +18,7 @@ public class DeepLinkedCategory extends Activity {
     @Override
     protected void onCreate(Bundle Saved) {
         super.onCreate(Saved);
-        FunctionsClass functionsClass = new FunctionsClass(getApplicationContext(), DeepLinkedCategory.this);
+        FunctionsClass functionsClass = new FunctionsClass(getApplicationContext(), DeepLinkedFolders.this);
 
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
         PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());

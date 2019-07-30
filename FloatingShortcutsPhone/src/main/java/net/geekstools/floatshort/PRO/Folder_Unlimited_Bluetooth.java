@@ -38,7 +38,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Category_Unlimited_Floating extends Service {
+public class Folder_Unlimited_Bluetooth extends Service {
 
     FunctionsClass functionsClass;
     WindowManager windowManager;
@@ -304,7 +304,7 @@ public class Category_Unlimited_Floating extends Service {
         layoutParams[startId] = functionsClass.normalLayoutParams(HW, xPos, yPos);
         windowManager.addView(floatingView[startId], layoutParams[startId]);
 
-        final String className = Category_Unlimited_Floating.class.getSimpleName();
+        final String className = Folder_Unlimited_Bluetooth.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Pair_" + className);
         intentFilter.addAction("Split_Apps_Single_" + className);
@@ -439,7 +439,7 @@ public class Category_Unlimited_Floating extends Service {
                                 } finally {
                                     PublicVariable.FloatingCategories.remove(categoryName[intent.getIntExtra("startId", 1)]);
                                     PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
-                                    PublicVariable.floatingCategoryCounter_category = PublicVariable.floatingCategoryCounter_category - 1;
+                                    PublicVariable.floatingCategoryCounter_bluetooth = PublicVariable.floatingCategoryCounter_bluetooth - 1;
                                     PublicVariable.categoriesCounter = PublicVariable.categoriesCounter - 1;
 
                                     if (PublicVariable.floatingCounter == 0) {
@@ -448,7 +448,7 @@ public class Category_Unlimited_Floating extends Service {
                                             stopService(new Intent(getApplicationContext(), BindServices.class));
                                         }
                                     }
-                                    if (PublicVariable.floatingCategoryCounter_category == 0) {
+                                    if (PublicVariable.floatingCategoryCounter_bluetooth == 0) {
                                         if (broadcastReceiver != null) {
                                             try {
                                                 unregisterReceiver(broadcastReceiver);
@@ -647,8 +647,8 @@ public class Category_Unlimited_Floating extends Service {
                         initialTouchX = motionEvent.getRawX();
                         initialTouchY = motionEvent.getRawY();
 
-                        xMove = layoutParamsOnTouch.x;
-                        yMove = layoutParamsOnTouch.y;
+                        xMove = Math.round(initialTouchX);
+                        yMove = Math.round(initialTouchY);
 
                         touchingDelay[startId] = true;
                         runnablePressHold = new Runnable() {

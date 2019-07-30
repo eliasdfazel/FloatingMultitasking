@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Category.NavAdapter;
+package net.geekstools.floatshort.PRO.Folders.NavAdapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,8 +15,8 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import net.geekstools.floatshort.PRO.Category.CategoryHandler;
 import net.geekstools.floatshort.PRO.CheckPoint;
+import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -206,7 +206,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
             public void onClick(View view) {
                 try {
                     if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.edit_category))) {
-                        context.startActivity(new Intent(context, CategoryHandler.class)
+                        context.startActivity(new Intent(context, FoldersHandler.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.remove_category))) {
                         context.sendBroadcast(new Intent("Remove_Category_" + className).putExtra("startId", startId));

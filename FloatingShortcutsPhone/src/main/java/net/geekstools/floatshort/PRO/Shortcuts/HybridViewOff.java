@@ -73,7 +73,7 @@ import com.google.firebase.storage.UploadTask;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.Category.CategoryHandler;
+import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.CardHybridAdapter;
 import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.HybridSectionedGridRecyclerViewAdapter;
@@ -84,7 +84,7 @@ import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryCategory;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
@@ -314,7 +314,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             @Override
             public void onClick(View view) {
                 try {
-                    functionsClass.navigateToClass(CategoryHandler.class,
+                    functionsClass.navigateToClass(FoldersHandler.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -371,7 +371,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         recoverFloatingCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RecoveryCategory.class);
+                Intent intent = new Intent(getApplicationContext(), RecoveryFolders.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startService(intent);
 
@@ -911,7 +911,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             }
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
                 try {
-                    functionsClass.navigateToClass(CategoryHandler.class,
+                    functionsClass.navigateToClass(FoldersHandler.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();

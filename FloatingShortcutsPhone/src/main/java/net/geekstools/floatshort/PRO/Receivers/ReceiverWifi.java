@@ -7,7 +7,7 @@ import android.net.wifi.WifiManager;
 
 import net.geekstools.floatshort.PRO.App_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.Automation.RecoveryWifi;
-import net.geekstools.floatshort.PRO.Category_Unlimited_Wifi;
+import net.geekstools.floatshort.PRO.Folder_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -43,7 +43,7 @@ public class ReceiverWifi extends BroadcastReceiver {
                     w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(w);
 
-                    Intent c = new Intent(context, Category_Unlimited_Wifi.class);
+                    Intent c = new Intent(context, Folder_Unlimited_Wifi.class);
                     c.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                     c.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(c);

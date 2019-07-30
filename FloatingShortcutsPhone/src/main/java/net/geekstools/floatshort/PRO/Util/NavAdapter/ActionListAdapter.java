@@ -12,12 +12,12 @@ import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Automation.Categories.CategoryAutoFeatures;
-import net.geekstools.floatshort.PRO.Category.CategoryHandler;
+import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryCategory;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
@@ -83,7 +83,7 @@ public class ActionListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.automation))) {
                     if (functionsClass.readPreference("OpenMode", "openClassName", HybridViewOff.class.getSimpleName())
-                            .equals(CategoryHandler.class.getSimpleName())) {
+                            .equals(FoldersHandler.class.getSimpleName())) {
                         Intent intent = new Intent(context, CategoryAutoFeatures.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
@@ -97,7 +97,7 @@ public class ActionListAdapter extends BaseAdapter {
                         activity.finish();
                     }*/
                 } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.floatingCategory))) {
-                    Intent intent = new Intent(context, CategoryHandler.class);
+                    Intent intent = new Intent(context, FoldersHandler.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     activity.overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
@@ -107,7 +107,7 @@ public class ActionListAdapter extends BaseAdapter {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(intent);
                 } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recover_category))) {
-                    Intent intent = new Intent(context, RecoveryCategory.class);
+                    Intent intent = new Intent(context, RecoveryFolders.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(intent);
                 } else {
