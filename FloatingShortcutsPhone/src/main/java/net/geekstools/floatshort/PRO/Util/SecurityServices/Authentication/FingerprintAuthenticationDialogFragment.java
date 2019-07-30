@@ -1,5 +1,6 @@
 package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,6 +29,8 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
 
+    Dialog dialog;
+
     private Button cancelAuth;
     private TextView fingerprintHint;
     private View fingerprintContent;
@@ -43,33 +46,36 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
 
         setRetainInstance(true);
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Dialog);
+
+        dialog = getDialog();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         System.out.println("*** Reference Activity ::: " + getActivity().getClass().getSimpleName());
 
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(PublicVariable.colorLightDark));
+        dialog = getDialog();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(PublicVariable.colorLightDark));
 
         String dialogueTitle = functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()).equals("null") ? FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName() : functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
         try {
-            getDialog().setTitle(Html.fromHtml("<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>"
+            dialog.setTitle(Html.fromHtml("<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>"
                     +
                     dialogueTitle + " 🔒 "
                     +
                     "</font></big>"));
         } catch (Exception e) {
             e.printStackTrace();
-            getDialog().setTitle(Html.fromHtml("<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>"
+            dialog.setTitle(Html.fromHtml("<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>"
                     +
                     dialogueTitle + " 🔒 "
                     +
                     "</font></big>"));
         }
 
-        getDialog().setCancelable(false);
-        getDialog().setCanceledOnTouchOutside(false);
-        getDialog().getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
 
         View viewContainer = inflater.inflate(R.layout.fingerprint_dialog_container, container, false);
 
@@ -112,8 +118,8 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
         try {
             int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 333, getResources().getDisplayMetrics());
             int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 393, getResources().getDisplayMetrics());
-            getDialog().getWindow().setLayout(dialogueWidth, dialogueHeight);
-            getDialog().getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setLayout(dialogueWidth, dialogueHeight);
+            dialog.getWindow().setGravity(Gravity.CENTER);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -3999,7 +3999,15 @@ public class FunctionsClass {
 
                         functionsClassSecurity.openAuthInvocation();
                     } else {
-                        savePreference(".LockedApps", categoryName, true);
+
+                        if (context.getFileStreamPath(categoryName).exists() && context.getFileStreamPath(categoryName).isFile()) {
+                            savePreference(".LockedApps", categoryName, true);
+
+                            String[] packageNames = readFileLine(categoryName);
+                            for (String packageName : packageNames) {
+                                savePreference(".LockedApps", packageName, true);
+                            }
+                        }
                     }
                 }
                 return true;

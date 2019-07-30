@@ -104,10 +104,9 @@ class FunctionsClassSecurity {
             FunctionsClassDebug.PrintDebug("*** Authentication Confirmed ***")
 
             if (AuthOpenAppValues.authUnlockIt) {
-                FunctionsClass(context).savePreference(".LockedApps", authComponentName, false);
+                FunctionsClass(context).savePreference(".LockedApps", authComponentName, false)
             } else {
                 FunctionsClass(context).appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.authComponentName)
-
             }
         } else {
 

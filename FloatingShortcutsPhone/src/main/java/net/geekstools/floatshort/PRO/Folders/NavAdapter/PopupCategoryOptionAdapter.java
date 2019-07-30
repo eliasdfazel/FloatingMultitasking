@@ -19,6 +19,7 @@ import net.geekstools.floatshort.PRO.CheckPoint;
 import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
@@ -32,11 +33,16 @@ import static android.content.Context.ACCESSIBILITY_SERVICE;
 
 public class PopupCategoryOptionAdapter extends BaseAdapter {
 
+    private Context context;
+
     FunctionsClass functionsClass;
+    FunctionsClassSecurity functionsClassSecurity;
+
     Drawable splitOne = null, splitTwo = null;
     LoadCustomIcons loadCustomIcons;
-    private Context context;
+
     private ArrayList<NavDrawerItem> navDrawerItems;
+
     private String className;
     private int startId, layoutInflater, xPosition, yPosition, HW;
 
@@ -45,7 +51,9 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         this.navDrawerItems = navDrawerItems;
         this.className = className;
         this.startId = startId;
+
         functionsClass = new FunctionsClass(context);
+        functionsClassSecurity = new FunctionsClassSecurity(context);
 
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
 
@@ -81,7 +89,9 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.HW = HW;
+
         functionsClass = new FunctionsClass(context);
+        functionsClassSecurity = new FunctionsClassSecurity(context);
 
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
 
@@ -238,7 +248,12 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                             splashReveal.putExtra("HW", HW);
                             context.startService(splashReveal);
                         } else {
-                            if (functionsClass.FreeForm()) {
+                            if (functionsClassSecurity.isAppLocked(navDrawerItems.get(position).getPackageName())) {
+                                FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(navDrawerItems.get(position).getPackageName());
+                                FunctionsClassSecurity.AuthOpenAppValues.setAuthUnlockIt(false);
+
+                                functionsClassSecurity.openAuthInvocation();
+                            } else if (functionsClass.FreeForm()) {
                                 functionsClass.openApplicationFreeForm(navDrawerItems.get(position).getPackageName(),
                                         xPosition,
                                         (functionsClass.displayX() / 2),
