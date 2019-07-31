@@ -2,18 +2,24 @@ package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.ColorDrawable;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.TypedValue;
-import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,17 +29,21 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.UI.FingerprintUiHelper;
+import net.geekstools.imageview.customshapes.ShapesImage;
 
 public class FingerprintAuthenticationDialogFragment extends DialogFragment implements FingerprintUiHelper.Callback {
 
-    FunctionsClass functionsClass;
-    FunctionsClassSecurity functionsClassSecurity;
+    private FunctionsClass functionsClass;
+    private FunctionsClassSecurity functionsClassSecurity;
 
-    Dialog dialog;
+    private Dialog dialog;
 
-    private Button cancelAuth;
-    private TextView fingerprintHint;
     private View fingerprintContent;
+    private ShapesImage dialogueIcon;
+    private ImageView fingerprintIcon;
+    private TextView dialogueTitle, fingerprintHint;
+    private EditText password;
+    private Button cancelAuth;
 
     private FingerprintManager.CryptoObject cryptoObject;
     private FingerprintUiHelper fingerprintUiHelper;
@@ -41,6 +51,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         functionsClass = new FunctionsClass(getContext(), getActivity());
         functionsClassSecurity = new FunctionsClassSecurity(getActivity(), getContext());
 
@@ -52,59 +63,117 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("*** Reference Activity ::: " + getActivity().getClass().getSimpleName());
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
+        int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 420, getResources().getDisplayMetrics());
+
+        layoutParams.width = dialogueWidth;
+        layoutParams.height = dialogueHeight;
+        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        layoutParams.dimAmount = 0.57f;
 
         dialog = getDialog();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(PublicVariable.colorLightDark));
-
-        String dialogueTitle = functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()).equals("null") ? FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName() : functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
-        try {
-            dialog.setTitle(Html.fromHtml("<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>"
-                    +
-                    dialogueTitle + " 🔒 "
-                    +
-                    "</font></big>"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            dialog.setTitle(Html.fromHtml("<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>"
-                    +
-                    dialogueTitle + " 🔒 "
-                    +
-                    "</font></big>"));
-        }
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().getDecorView().setBackgroundColor(PublicVariable.colorLightDark);
+        dialog.getWindow().setAttributes(layoutParams);
 
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
 
-        View viewContainer = inflater.inflate(R.layout.fingerprint_dialog_container, container, false);
+        View viewContainer = inflater.inflate(R.layout.fingerprint_dialog_content, container, false);
 
         fingerprintContent = (RelativeLayout) viewContainer.findViewById(R.id.fingerprint_container);
-        cancelAuth = (Button) viewContainer.findViewById(R.id.cancelAuth);
+        dialogueIcon = (ShapesImage) viewContainer.findViewById(R.id.dialogueIcon);
+        fingerprintIcon = (ImageView) viewContainer.findViewById(R.id.fingerprint_icon);
+        dialogueTitle = (TextView) viewContainer.findViewById(R.id.dialogueTitle);
         fingerprintHint = (TextView) viewContainer.findViewById(R.id.fingerprint_status);
+        password = (EditText) viewContainer.findViewById(R.id.password);
+        cancelAuth = (Button) viewContainer.findViewById(R.id.cancelAuth);
 
-        try {
-            fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
-        } catch (Exception e) {
-            e.printStackTrace();
-            fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
-        }
+        String componentName = functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+
+        dialogueIcon.setShapeDrawable(functionsClass.shapesDrawables());
+        dialogueIcon.setImageDrawable(
+                componentName.equals("null") ?
+                        null : functionsClass.shapedAppIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())
+        );
+
+        String dialogueTitleText = componentName.equals("null") ?
+                FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName() : functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+        dialogueTitle.setText(Html.fromHtml("<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>"
+                +
+                dialogueTitleText + " 🔒 "
+                +
+                "</font></big>"));
+
+        dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
+        fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
+        password.setHintTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
+        password.setTextColor(PublicVariable.colorLightDarkOpposite);
         cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
+
+        password.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                    /*If Password Match Authed*/
+                    //
+//                    try {
+//                        functionsClassSecurity.encryptEncodedData(password.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getUid()).asList().toString()
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    try {
+//                        functionsClassSecurity.decryptEncodedData(functionsClassSecurity.rawStringToByteArray(password.getText().toString()), FirebaseAuth.getInstance().getCurrentUser().getUid());
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    functionsClass.appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+
+                    return true;
+                }
+                return false;
+            }
+        });
 
         fingerprintUiHelper = new FingerprintUiHelper(
                 getContext(),
                 getActivity().getSystemService(FingerprintManager.class),
-                (ImageView) viewContainer.findViewById(R.id.fingerprint_icon),
+                fingerprintIcon,
                 fingerprintHint,
+                password,
                 this);
 
-        cancelAuth.setOnLongClickListener(new View.OnLongClickListener() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("SHOW_PASSWORD");
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
-            public boolean onLongClick(View view) {
-                getActivity().finish();
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals("SHOW_PASSWORD")) {
+                    fingerprintHint.setText("");
 
-                return true;
+                    fingerprintIcon.setVisibility(View.INVISIBLE);
+                    password.setVisibility(View.VISIBLE);
+
+                    WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                    int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
+                    int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 255, getResources().getDisplayMetrics());
+
+                    layoutParams.width = dialogueWidth;
+                    layoutParams.height = dialogueHeight;
+                    dialog.getWindow().setAttributes(layoutParams);
+                }
             }
+        };
+        getContext().registerReceiver(broadcastReceiver, intentFilter);
+
+        cancelAuth.setOnLongClickListener(view -> {
+            getActivity().finish();
+
+            return true;
         });
 
         return viewContainer;
@@ -114,15 +183,6 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
     public void onResume() {
         super.onResume();
         fingerprintUiHelper.startListening(this.cryptoObject);
-
-        try {
-            int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 333, getResources().getDisplayMetrics());
-            int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 393, getResources().getDisplayMetrics());
-            dialog.getWindow().setLayout(dialogueWidth, dialogueHeight);
-            dialog.getWindow().setGravity(Gravity.CENTER);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

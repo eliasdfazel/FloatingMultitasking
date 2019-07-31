@@ -9,13 +9,16 @@ import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
+import android.util.Base64
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthActivityHelper
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.FingerprintAuthenticationDialogFragment
 import java.io.IOException
+import java.nio.charset.Charset
 import java.security.*
 import java.security.cert.CertificateException
 import javax.crypto.*
+import javax.crypto.spec.SecretKeySpec
 
 class FunctionsClassSecurity {
 
@@ -42,7 +45,6 @@ class FunctionsClassSecurity {
     companion object AuthOpenAppValues {
         var authComponentName: String? = null
 
-        var authOrderNumber: Int = 0
         var authPositionX: Int = 0
         var authPositionY: Int = 0
         var authHW: Int = 0
@@ -51,6 +53,19 @@ class FunctionsClassSecurity {
 
         var keyStore: KeyStore? = null
         var keyGenerator: KeyGenerator? = null
+    }
+
+    fun resetAuthAppValues() {
+        AuthOpenAppValues.authComponentName = null
+
+        AuthOpenAppValues.authPositionX = 0
+        AuthOpenAppValues.authPositionY = 0
+        AuthOpenAppValues.authHW = 0
+
+        AuthOpenAppValues.authUnlockIt = false
+
+        AuthOpenAppValues.keyStore = null
+        AuthOpenAppValues.keyGenerator = null
     }
 
     inner class InvokeAuth(internal var cipher: Cipher, internal var keyName: String) {
@@ -173,5 +188,79 @@ class FunctionsClassSecurity {
 
     fun isAppLocked(authComponentName: String): Boolean {
         return FunctionsClass(context).readPreference(".LockedApps", authComponentName, false)
+    }
+
+    /*(En/De)crypt Functions*/
+    @Throws(Exception::class)
+    fun generateEncryptionKey(passwordKey: String): SecretKeySpec {
+
+        return SecretKeySpec(passwordKey.toByteArray(), "AES")
+    }
+
+    fun generatePasswordKey(rawString: String): String {
+        val rawPasswordString = rawString + "0000000000000000"
+        val passwordKey: String = rawPasswordString.substring(0, 16)
+        return passwordKey
+    }
+
+    @Throws(Exception::class)
+    fun encryptEncodedData(plainText: String, rawString: String): ByteArray {
+        //First Encode
+        //Second Encrypt
+
+        val encodedText: String = encodeStringBase64(plainText)
+
+        var cipher: Cipher? = null
+        cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+        cipher!!.init(Cipher.ENCRYPT_MODE, generateEncryptionKey(generatePasswordKey(rawString)))
+
+        return cipher.doFinal(encodedText.toByteArray(Charset.defaultCharset()))
+    }
+
+    @Throws(Exception::class)
+    fun decryptEncodedData(encryptedByteArray: ByteArray, rawString: String): String? {
+        //First Decrypt
+        //Second Decode
+        var plainText: String? = null
+
+        try {
+            var cipherD: Cipher? = null
+            cipherD = Cipher.getInstance("AES/ECB/PKCS5Padding")
+            cipherD!!.init(Cipher.DECRYPT_MODE, generateEncryptionKey(generatePasswordKey(rawString)))
+            val decryptString = String(cipherD.doFinal(encryptedByteArray), Charset.defaultCharset())
+
+            plainText = decodeStringBase64(decryptString)
+        } catch (e: Exception) {
+            e.printStackTrace()
+
+            plainText = encryptedByteArray.toString()
+        }
+
+        return plainText
+    }
+
+    @Throws(Exception::class)
+    fun encodeStringBase64(plainText: String): String {
+        return Base64.encodeToString(plainText.toByteArray(), Base64.DEFAULT)
+    }
+
+    @Throws(Exception::class)
+    fun decodeStringBase64(encodedText: String): String {
+        return String(Base64.decode(encodedText, Base64.DEFAULT))
+    }
+
+    fun rawStringToByteArray(rawString: String): ByteArray {
+        var listOfRawString = rawString.replace("[", "").replace("]", "").split(",")
+
+        var resultByteArray = ByteArray(listOfRawString.size)
+        for (aByte in listOfRawString.withIndex()) {
+            try {
+                resultByteArray[aByte.index] = aByte.value.replace("\\s".toRegex(), "").toByte()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        return resultByteArray
     }
 }

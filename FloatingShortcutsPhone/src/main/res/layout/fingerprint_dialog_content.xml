@@ -1,23 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fingerprint_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingStart="23dp"
-    android:paddingTop="16dp"
-    android:paddingEnd="23dp"
-    android:paddingBottom="13dp">
+    android:layout_width="300dp"
+    android:layout_height="420dp"
+    android:paddingStart="3dp"
+    android:paddingEnd="3dp"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp">
 
+    <net.geekstools.imageview.customshapes.ShapesImage
+        android:id="@+id/dialogueIcon"
+        android:layout_width="49dp"
+        android:layout_height="49dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="3dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/dialogueTitle"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/dialogueIcon"
+        android:layout_margin="1dp"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:gravity="center_vertical"
+        android:text="@string/app_name"
+        android:textColor="@color/dark"
+        android:textSize="21sp" />
+
+    <!-- Auth Content -->
     <TextView
         android:id="@+id/fingerprint_status"
         android:layout_width="match_parent"
         android:layout_height="47dp"
-        android:padding="2dp"
-        android:text="@string/fingerprint_hint"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:layout_below="@id/dialogueTitle"
+        android:gravity="center_vertical"
+        android:text="@string/fingerprint_description"
         android:textAppearance="@android:style/TextAppearance.Material.Subhead"
         android:textColor="@color/hint_color"
         android:textSize="15sp"
-        android:typeface="monospace" />
+        android:typeface="monospace"
+        android:visibility="visible" />
 
     <ImageView
         android:id="@+id/fingerprint_icon"
@@ -27,15 +58,33 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="3dp"
         android:padding="3dp"
-        android:src="@drawable/draw_finger_print" />
+        android:src="@drawable/draw_finger_print"
+        android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_below="@+id/fingerprint_status"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="3dp"
+        android:padding="3dp"
+        android:gravity="center"
+        android:inputType="numberPassword"
+        android:imeOptions="actionDone"
+        android:hint="@string/passowrdHint"
+        android:textSize="19sp"
+        android:background="@android:color/transparent"
+        android:visibility="invisible" />
+    <!-- Auth Content -->
 
     <Button
         android:id="@+id/cancelAuth"
         android:layout_width="match_parent"
         android:layout_height="43dp"
-        android:layout_below="@id/fingerprint_icon"
-        android:layout_marginTop="11dp"
-        android:background="@drawable/ripple_effect"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/ripple_effect_cancel"
         android:gravity="center"
         android:text="@android:string/cancel"
         android:textSize="13sp"

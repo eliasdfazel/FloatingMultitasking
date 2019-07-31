@@ -233,6 +233,7 @@
     <string name="fingerprint_success">Fingerprint Recognized</string>
     <string name="lockIt">Lock It 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
+    <string name="passowrdHint">Enter Pin Password 🔑 </string>
     <!-- Finger Print -->
 
     <string name="purchase"> Purchase 💸 </string>
