@@ -33,7 +33,7 @@
 
     <uses-feature
         android:name="android.hardware.fingerprint"
-        android:required="true" />
+        android:required="false" />
 
     <application
         android:allowBackup="true"

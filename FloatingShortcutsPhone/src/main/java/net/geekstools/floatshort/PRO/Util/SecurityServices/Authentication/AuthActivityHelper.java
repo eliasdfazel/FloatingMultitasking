@@ -63,10 +63,6 @@ public class AuthActivityHelper extends Activity {
             );
         } catch (Exception e) {
             e.printStackTrace();
-            authBackground.setBackgroundColor(
-                    functionsClass.setColorAlpha(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())),
-                            0.50f)
-            );
         }
 
         /*Finger-Print Authentication Invocation*/
