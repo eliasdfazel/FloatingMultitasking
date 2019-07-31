@@ -86,12 +86,8 @@ public class AuthActivityHelper extends Activity {
                             throw new RuntimeException("Failed to get an instance of KeyGenerator", e);
                         }
                         final Cipher defaultCipher;
-                        Cipher cipherNotInvalidated;
                         try {
                             defaultCipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/"
-                                    + KeyProperties.BLOCK_MODE_CBC + "/"
-                                    + KeyProperties.ENCRYPTION_PADDING_PKCS7);
-                            cipherNotInvalidated = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/"
                                     + KeyProperties.BLOCK_MODE_CBC + "/"
                                     + KeyProperties.ENCRYPTION_PADDING_PKCS7);
                         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {

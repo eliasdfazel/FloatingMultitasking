@@ -9,6 +9,7 @@ import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthActivityHelper
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.FingerprintAuthenticationDialogFragment
 import java.io.IOException
@@ -156,6 +157,18 @@ class FunctionsClassSecurity {
             throw RuntimeException(e)
         }
 
+    }
+
+    fun fingerprintSensorAvailable(): Boolean {
+        val fingerprintManagerCompat = FingerprintManagerCompat.from(context)
+
+        return fingerprintManagerCompat.isHardwareDetected
+    }
+
+    fun fingerprintEnrolled(): Boolean {
+        val fingerprintManagerCompat = FingerprintManagerCompat.from(context)
+
+        return fingerprintManagerCompat.hasEnrolledFingerprints()
     }
 
     fun isAppLocked(authComponentName: String): Boolean {
