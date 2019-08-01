@@ -8,16 +8,31 @@
     android:background="@drawable/dialogue_rounded_background">
 
     <TextView
+        android:id="@+id/dialogueTitle"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:layout_alignParentTop="true"
+        android:layout_margin="1dp"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:gravity="center_vertical"
+        android:text="@string/app_name"
+        android:textColor="@color/dark"
+        android:textSize="21sp" />
+
+    <TextView
         android:id="@+id/extraInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_below="@id/dialogueTitle"
         android:padding="3dp"
         android:textSize="12sp"
-        android:visibility="invisible"/>
+        android:visibility="visible" />
 
     <ImageView
-        android:id="@+id/transparentIcon"
+        android:id="@+id/preferenceIcon"
         android:layout_width="83dp"
         android:layout_height="83dp"
         android:layout_below="@id/extraInfo"
@@ -28,12 +43,12 @@
         android:id="@+id/seekBarPreferences"
         android:layout_width="match_parent"
         android:layout_height="33dp"
-        android:layout_below="@id/transparentIcon"
+        android:layout_below="@id/preferenceIcon"
         android:layout_marginTop="5dp"/>
 
     <TextView
         android:id="@+id/revertDefault"
-        android:layout_width="173dp"
+        android:layout_width="match_parent"
         android:layout_height="23dp"
         android:layout_below="@id/seekBarPreferences"
         android:layout_marginStart="1dp"

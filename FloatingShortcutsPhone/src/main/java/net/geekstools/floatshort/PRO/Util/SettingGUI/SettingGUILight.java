@@ -42,6 +42,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
@@ -461,6 +462,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 layoutParams.dimAmount = 0.57f;
 
                 final Dialog dialog = new Dialog(SettingGUILight.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.seekbar_preferences);
                 dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.autotrans) + "</font>"));
                 dialog.getWindow().setAttributes(layoutParams);
@@ -471,7 +473,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 View seekBarView = (RelativeLayout) dialog.findViewById(R.id.seekBarView);
                 seekBarView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
-                final ImageView transparentIcon = (ImageView) dialog.findViewById(R.id.transparentIcon);
+                final ImageView transparentIcon = (ImageView) dialog.findViewById(R.id.preferenceIcon);
                 final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);
                 TextView revertDefault = (TextView) dialog.findViewById(R.id.revertDefault);
 
@@ -565,6 +567,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 layoutParams.dimAmount = 0.57f;
 
                 final Dialog dialog = new Dialog(SettingGUILight.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.seekbar_preferences);
                 dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.shortsizepref) + "</font>"));
                 dialog.getWindow().setAttributes(layoutParams);
@@ -575,7 +578,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 View seekBarView = (RelativeLayout) dialog.findViewById(R.id.seekBarView);
                 seekBarView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
-                final ImageView transparentIcon = (ImageView) dialog.findViewById(R.id.transparentIcon);
+                final ImageView transparentIcon = (ImageView) dialog.findViewById(R.id.preferenceIcon);
                 final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);
                 TextView revertDefault = (TextView) dialog.findViewById(R.id.revertDefault);
 
@@ -682,6 +685,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 layoutParams.dimAmount = 0.57f;
 
                 final Dialog dialog = new Dialog(SettingGUILight.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.seekbar_preferences);
                 dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.delayPressHold) + "</font>"));
                 dialog.getWindow().setAttributes(layoutParams);
@@ -693,7 +697,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 seekBarView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
                 final TextView extraInfo = (TextView) dialog.findViewById(R.id.extraInfo);
-                final ImageView delayIcon = (ImageView) dialog.findViewById(R.id.transparentIcon);
+                final ImageView delayIcon = (ImageView) dialog.findViewById(R.id.preferenceIcon);
                 final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);
                 TextView revertDefault = (TextView) dialog.findViewById(R.id.revertDefault);
 
@@ -1256,6 +1260,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         layoutParams.dimAmount = 0.57f;
 
         final Dialog dialog = new Dialog(SettingGUILight.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.icons_shapes_preferences);
         dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.shapedDesc) + "</font>"));
         dialog.getWindow().setAttributes(layoutParams);
@@ -1428,6 +1433,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         layoutParams.dimAmount = 0.57f;
 
         final Dialog dialog = new Dialog(SettingGUILight.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.custom_icons);
         dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.customIconTitle) + "</font>"));
         dialog.getWindow().setAttributes(layoutParams);
@@ -1525,6 +1531,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         layoutParams.dimAmount = 0.57f;
 
         final Dialog dialog = new Dialog(SettingGUILight.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.seekbar_preferences_fling);
         dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.flingSensitivityTitle) + "</font>"));
         dialog.getWindow().setAttributes(layoutParams);
@@ -1535,7 +1542,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         View dialogueView = (RelativeLayout) dialog.findViewById(R.id.dialogueView);
         dialogueView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
-        final ImageView flingingIcon = (ImageView) dialog.findViewById(R.id.transparentIcon);
+        final ImageView flingingIcon = (ImageView) dialog.findViewById(R.id.preferenceIcon);
         final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);
         TextView revertDefault = (TextView) dialog.findViewById(R.id.revertDefault);
 
