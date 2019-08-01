@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fingerprint_container"
     android:layout_width="300dp"
     android:layout_height="420dp"
-    android:paddingStart="3dp"
-    android:paddingEnd="3dp"
-    android:paddingTop="7dp"
-    android:paddingBottom="7dp">
+    android:paddingStart="7dp"
+    android:paddingEnd="7dp"
+    android:paddingTop="11dp"
+    android:paddingBottom="11dp"
+    android:id="@+id/fingerprintContainer"
+    android:background="@drawable/dialogue_rounded_background">
 
     <net.geekstools.imageview.customshapes.ShapesImage
         android:id="@+id/dialogueIcon"

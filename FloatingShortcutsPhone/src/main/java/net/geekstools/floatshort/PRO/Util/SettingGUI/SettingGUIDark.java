@@ -47,6 +47,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -466,8 +467,12 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 dialog.setContentView(R.layout.seekbar_preferences);
                 dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.autotrans) + "</font>"));
                 dialog.getWindow().setAttributes(layoutParams);
-                dialog.getWindow().getDecorView().setBackgroundColor(PublicVariable.colorLightDark);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
                 dialog.setCancelable(true);
+
+                View seekBarView = (RelativeLayout) dialog.findViewById(R.id.seekBarView);
+                seekBarView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
                 final ImageView transparentIcon = (ImageView) dialog.findViewById(R.id.transparentIcon);
                 final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);
@@ -566,8 +571,12 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 dialog.setContentView(R.layout.seekbar_preferences);
                 dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.shortsizepref) + "</font>"));
                 dialog.getWindow().setAttributes(layoutParams);
-                dialog.getWindow().getDecorView().setBackgroundColor(PublicVariable.colorLightDark);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
                 dialog.setCancelable(true);
+
+                View seekBarView = (RelativeLayout) dialog.findViewById(R.id.seekBarView);
+                seekBarView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
                 final ImageView transparentIcon = (ImageView) dialog.findViewById(R.id.transparentIcon);
                 final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);
@@ -679,8 +688,12 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
                 dialog.setContentView(R.layout.seekbar_preferences);
                 dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.delayPressHold) + "</font>"));
                 dialog.getWindow().setAttributes(layoutParams);
-                dialog.getWindow().getDecorView().setBackgroundColor(PublicVariable.colorLightDark);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
                 dialog.setCancelable(true);
+
+                View seekBarView = (RelativeLayout) dialog.findViewById(R.id.seekBarView);
+                seekBarView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
                 final TextView extraInfo = (TextView) dialog.findViewById(R.id.extraInfo);
                 final ImageView delayIcon = (ImageView) dialog.findViewById(R.id.transparentIcon);
@@ -1253,7 +1266,8 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         dialog.setContentView(R.layout.icons_shapes_preferences);
         dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.shapedDesc) + "</font>"));
         dialog.getWindow().setAttributes(layoutParams);
-        dialog.getWindow().getDecorView().setBackgroundColor(PublicVariable.colorLightDark);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
         dialog.setCancelable(true);
 
         final Drawable drawableTeardrop = getDrawable(R.drawable.droplet_icon);
@@ -1264,6 +1278,9 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         drawableSquare.setTint(PublicVariable.primaryColor);
         final Drawable drawableSquircle = getDrawable(R.drawable.squircle_icon);
         drawableSquircle.setTint(PublicVariable.primaryColor);
+
+        View dialogueView = (ScrollView) dialog.findViewById(R.id.dialogueView);
+        dialogueView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
         RelativeLayout teardropShape = (RelativeLayout) dialog.findViewById(R.id.teardropShape);
         RelativeLayout circleShape = (RelativeLayout) dialog.findViewById(R.id.circleShape);
@@ -1423,8 +1440,12 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         dialog.setContentView(R.layout.custom_icons);
         dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.customIconTitle) + "</font>"));
         dialog.getWindow().setAttributes(layoutParams);
-        dialog.getWindow().getDecorView().setBackgroundColor(PublicVariable.colorLightDark);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
         dialog.setCancelable(true);
+
+        View dialogueView = (RelativeLayout) dialog.findViewById(R.id.dialogueView);
+        dialogueView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
         TextView defaultTheme = (TextView) dialog.findViewById(R.id.setDefault);
         RecyclerView customIconList = (RecyclerView) dialog.findViewById(R.id.customIconList);
@@ -1516,8 +1537,12 @@ public class SettingGUIDark extends PreferenceActivity implements OnSharedPrefer
         dialog.setContentView(R.layout.seekbar_preferences_fling);
         dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.flingSensitivityTitle) + "</font>"));
         dialog.getWindow().setAttributes(layoutParams);
-        dialog.getWindow().getDecorView().setBackgroundColor(PublicVariable.colorLightDark);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
         dialog.setCancelable(true);
+
+        View dialogueView = (RelativeLayout) dialog.findViewById(R.id.dialogueView);
+        dialogueView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
         final ImageView flingingIcon = (ImageView) dialog.findViewById(R.id.transparentIcon);
         final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);

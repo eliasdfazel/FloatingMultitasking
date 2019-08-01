@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.text.Html;
@@ -75,7 +78,8 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
 
         dialog = getDialog();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().getDecorView().setBackgroundColor(PublicVariable.colorLightDark);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
         dialog.getWindow().setAttributes(layoutParams);
 
         dialog.setCancelable(false);
@@ -84,13 +88,15 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
 
         View viewContainer = inflater.inflate(R.layout.fingerprint_dialog_content, container, false);
 
-        fingerprintContent = (RelativeLayout) viewContainer.findViewById(R.id.fingerprint_container);
+        fingerprintContent = (RelativeLayout) viewContainer.findViewById(R.id.fingerprintContainer);
         dialogueIcon = (ShapesImage) viewContainer.findViewById(R.id.dialogueIcon);
         fingerprintIcon = (ImageView) viewContainer.findViewById(R.id.fingerprint_icon);
         dialogueTitle = (TextView) viewContainer.findViewById(R.id.dialogueTitle);
         fingerprintHint = (TextView) viewContainer.findViewById(R.id.fingerprint_status);
         password = (EditText) viewContainer.findViewById(R.id.password);
         cancelAuth = (Button) viewContainer.findViewById(R.id.cancelAuth);
+
+        fingerprintContent.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
         String componentName = functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
 

@@ -4,7 +4,8 @@
     android:id="@+id/seekBarView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="11dp">
+    android:padding="11dp"
+    android:background="@drawable/dialogue_rounded_background">
 
     <TextView
         android:id="@+id/extraInfo"
