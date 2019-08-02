@@ -19,8 +19,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
-import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
-import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
+import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 
 import java.util.ArrayList;
 
@@ -111,15 +110,9 @@ public class ActionListAdapter extends BaseAdapter {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(intent);
                 } else {
-                    if (PublicVariable.themeLightDark == true) {
-                        Intent intent = new Intent(context, SettingGUILight.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
-                    } else if (PublicVariable.themeLightDark == false) {
-                        Intent intent = new Intent(context, SettingGUIDark.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
-                    }
+                    Intent intent = new Intent(context, SettingGUI.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }
             }
         });

@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.TypedValue;
 
+import androidx.annotation.Nullable;
+
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-
-import androidx.annotation.Nullable;
 
 public class RecoveryWifi extends Service {
 

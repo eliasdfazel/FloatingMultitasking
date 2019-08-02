@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
@@ -82,7 +83,7 @@ import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.util.ArrayList;
 
-public class SettingGUILight extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+public class SettingGUI extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
     FunctionsClass functionsClass;
     ListPreference themeColor, stick;
@@ -92,7 +93,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
     Runnable runnablePressHold = null;
     Handler handlerPressHold = new Handler();
-    boolean touchingDelay = false, FromWidgetsConfigurations = false;
+    boolean touchingDelay = false, FromWidgetsConfigurations = false, currentTheme = false;
 
     View rootLayout;
 
@@ -101,17 +102,32 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
     String betaChangeLog = "net.geekstools.floatshort.PRO", betaVersionCode = "0";
 
     @Override
+    public Resources.Theme getTheme() {
+        FunctionsClass functionsClass = new FunctionsClass(getApplicationContext());
+
+        Resources.Theme theme = super.getTheme();
+
+        if (PublicVariable.themeLightDark) {
+            theme.applyStyle(R.style.GeeksEmpire_Preference_Light, true);
+        } else if (!PublicVariable.themeLightDark) {
+            theme.applyStyle(R.style.GeeksEmpire_Preference_Dark, true);
+        }
+
+        return theme;
+    }
+
+    @Override
     protected void onCreate(Bundle saved) {
         super.onCreate(saved);
         addPreferencesFromResource(R.xml.setting_gui);
+        currentTheme = PublicVariable.themeLightDark;
         try {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        PublicVariable.activityStatic = SettingGUILight.this;
-        functionsClass = new FunctionsClass(getApplicationContext(), SettingGUILight.this);
+        functionsClass = new FunctionsClass(getApplicationContext(), SettingGUI.this);
 
         this.getListView().setCacheColorHint(Color.TRANSPARENT);
         this.getListView().setVerticalFadingEdgeEnabled(true);
@@ -151,6 +167,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            rootLayout.setVisibility(View.VISIBLE);
                         }
 
                         @Override
@@ -268,9 +285,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (functionsClass.appThemeTransparent() == true) {
-                    functionsClass.setThemeColorPreferences(SettingGUILight.this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
+                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
                 } else {
-                    functionsClass.setThemeColorPreferences(SettingGUILight.this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
+                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
                 }
 
                 functionsClass.saveDefaultPreference("LitePreferences", false);
@@ -281,9 +298,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (functionsClass.appThemeTransparent() == true) {
-                    functionsClass.setThemeColorPreferences(SettingGUILight.this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
+                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
                 } else {
-                    functionsClass.setThemeColorPreferences(SettingGUILight.this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
+                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
                 }
 
                 functionsClass.saveDefaultPreference("LitePreferences", false);
@@ -295,7 +312,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         support.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                functionsClass.ContactSupport(SettingGUILight.this);
+                functionsClass.ContactSupport(SettingGUI.this);
                 return true;
             }
         });
@@ -312,7 +329,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         whatsnew.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                functionsClass.ChangeLog(SettingGUILight.this, betaChangeLog, betaVersionCode, true);
+                functionsClass.ChangeLog(SettingGUI.this, betaChangeLog, betaVersionCode, true);
 
                 return true;
             }
@@ -346,7 +363,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                     } else if (sharedPreferences.getBoolean("smart", true) == false) {
                         smart.setChecked(false);
 
-                        functionsClass.UsageAccess(SettingGUILight.this, smart);
+                        functionsClass.UsageAccess(SettingGUI.this, smart);
                     }
                 }
                 return true;
@@ -357,7 +374,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                    functionsClass.AccessibilityService(SettingGUILight.this, observe);
+                    functionsClass.AccessibilityService(SettingGUI.this, observe);
                 } else {
                     Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -373,9 +390,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 String[] remoteOptions = getResources().getStringArray(R.array.Boot);
                 AlertDialog.Builder builder = null;
                 if (PublicVariable.themeLightDark == true) {
-                    builder = new AlertDialog.Builder(SettingGUILight.this, R.style.GeeksEmpire_Dialogue_Light);
+                    builder = new AlertDialog.Builder(SettingGUI.this, R.style.GeeksEmpire_Dialogue_Light);
                 } else if (PublicVariable.themeLightDark == false) {
-                    builder = new AlertDialog.Builder(SettingGUILight.this, R.style.GeeksEmpire_Dialogue_Dark);
+                    builder = new AlertDialog.Builder(SettingGUI.this, R.style.GeeksEmpire_Dialogue_Dark);
                 }
                 builder.setTitle(getString(R.string.boot));
                 builder.setSingleChoiceItems(remoteOptions, Integer.parseInt(sharedPreferences.getString("boot", "1")), null);
@@ -405,10 +422,11 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                     builder.setNeutralButton(getString(R.string.read), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            functionsClass.RemoteRecovery(SettingGUILight.this);
+                            functionsClass.RemoteRecovery(SettingGUI.this);
                         }
                     });
                 }
+
                 builder.show();
                 return true;
             }
@@ -422,7 +440,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                     notification.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(notification);
                 } else {
-                    functionsClass.NotificationAccessService(SettingGUILight.this, notification);
+                    functionsClass.NotificationAccessService(SettingGUI.this, notification);
                 }
                 return true;
             }
@@ -432,6 +450,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 setupShapes();
+
                 return true;
             }
         });
@@ -440,7 +459,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (functionsClass.FreeForm()) {
-                    functionsClass.FreeFormInformation(SettingGUILight.this, freeForm);
+                    functionsClass.FreeFormInformation(SettingGUI.this, freeForm);
                 } else {
                     freeForm.setChecked(false);
                 }
@@ -461,10 +480,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 layoutParams.dimAmount = 0.57f;
 
-                final Dialog dialog = new Dialog(SettingGUILight.this);
+                final Dialog dialog = new Dialog(SettingGUI.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.seekbar_preferences);
-                dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.autotrans) + "</font>"));
                 dialog.getWindow().setAttributes(layoutParams);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
@@ -475,6 +493,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
                 final ImageView transparentIcon = (ImageView) dialog.findViewById(R.id.preferenceIcon);
                 final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);
+                TextView dialogueTitle = (TextView) dialog.findViewById(R.id.dialogueTitle);
                 TextView revertDefault = (TextView) dialog.findViewById(R.id.revertDefault);
 
                 seekBarPreferences.setThumbTintList(ColorStateList.valueOf(PublicVariable.primaryColor));
@@ -501,6 +520,8 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 transparentIcon.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
                 transparentIcon.setImageDrawable(layerDrawableLoadLogo);
 
+                dialogueTitle.setText(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.autotrans) + "</font>"));
+                dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
                 revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite);
 
                 seekBarPreferences.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -524,7 +545,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
                 revertDefault.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View view) {
                         functionsClass.saveDefaultPreference("autoTrans", 113);
                         functionsClass.saveDefaultPreference("autoTransProgress", 95);
 
@@ -566,10 +587,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 layoutParams.dimAmount = 0.57f;
 
-                final Dialog dialog = new Dialog(SettingGUILight.this);
+                final Dialog dialog = new Dialog(SettingGUI.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.seekbar_preferences);
-                dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.shortsizepref) + "</font>"));
                 dialog.getWindow().setAttributes(layoutParams);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
@@ -580,6 +600,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
                 final ImageView transparentIcon = (ImageView) dialog.findViewById(R.id.preferenceIcon);
                 final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);
+                TextView dialogueTitle = (TextView) dialog.findViewById(R.id.dialogueTitle);
                 TextView revertDefault = (TextView) dialog.findViewById(R.id.revertDefault);
 
                 seekBarPreferences.setThumbTintList(ColorStateList.valueOf(PublicVariable.primaryColor));
@@ -609,9 +630,12 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                         iconHW
                 );
                 layoutParamsIcon.addRule(RelativeLayout.CENTER_HORIZONTAL, R.id.seekBarView);
+                layoutParamsIcon.addRule(RelativeLayout.BELOW, R.id.extraInfo);
                 transparentIcon.setLayoutParams(layoutParamsIcon);
                 transparentIcon.setImageDrawable(layerDrawableLoadLogo);
 
+                dialogueTitle.setText(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.shortsizepref) + "</font>"));
+                dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
                 revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite);
 
                 final int[] progressTemp = new int[]{1, 2, 3, 4, 5, 6};
@@ -628,15 +652,18 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                                 iconHW
                         );
                         layoutParamsIcon.addRule(RelativeLayout.CENTER_HORIZONTAL, R.id.seekBarView);
+                        layoutParamsIcon.addRule(RelativeLayout.BELOW, R.id.extraInfo);
                         transparentIcon.setLayoutParams(layoutParamsIcon);
                     }
 
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
+
                     }
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
+
                     }
                 });
 
@@ -652,6 +679,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                                 iconHW
                         );
                         layoutParamsIcon.addRule(RelativeLayout.CENTER_HORIZONTAL, R.id.seekBarView);
+                        layoutParamsIcon.addRule(RelativeLayout.BELOW, R.id.extraInfo);
                         transparentIcon.setLayoutParams(layoutParamsIcon);
                         seekBarPreferences.setProgress(2);
                     }
@@ -684,10 +712,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 layoutParams.dimAmount = 0.57f;
 
-                final Dialog dialog = new Dialog(SettingGUILight.this);
+                final Dialog dialog = new Dialog(SettingGUI.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.seekbar_preferences);
-                dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.delayPressHold) + "</font>"));
                 dialog.getWindow().setAttributes(layoutParams);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
@@ -699,6 +726,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 final TextView extraInfo = (TextView) dialog.findViewById(R.id.extraInfo);
                 final ImageView delayIcon = (ImageView) dialog.findViewById(R.id.preferenceIcon);
                 final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);
+                TextView dialogueTitle = (TextView) dialog.findViewById(R.id.dialogueTitle);
                 TextView revertDefault = (TextView) dialog.findViewById(R.id.revertDefault);
 
                 extraInfo.setVisibility(View.VISIBLE);
@@ -728,6 +756,8 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
                 delayIcon.setImageDrawable(layerDrawableLoadLogo);
 
+                dialogueTitle.setText(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.delayPressHold) + "</font>"));
+                dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
                 revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite);
 
                 delayIcon.setOnClickListener(new View.OnClickListener() {
@@ -860,7 +890,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
         firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener(SettingGUILight.this, new OnCompleteListener<Void>() {
+                .addOnCompleteListener(SettingGUI.this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -869,7 +899,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                                 public void onSuccess(Boolean aBoolean) {
                                     if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(getPackageName())) {
                                         functionsClass.upcomingChangeLog(
-                                                SettingGUILight.this,
+                                                SettingGUI.this,
                                                 firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
                                                 String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
                                         );
@@ -894,7 +924,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                                                         runOnUiThread(new Runnable() {
                                                             @Override
                                                             public void run() {
-                                                                SettingGUILight.this.adApp.setIcon(resource);
+                                                                SettingGUI.this.adApp.setIcon(resource);
                                                             }
                                                         });
 
@@ -902,9 +932,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                                                     }
                                                 }).submit();
 
-                                        adApp.setTitle(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle))));
-                                        adApp.setSummary(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries))));
-                                        adApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                                        SettingGUI.this.adApp.setTitle(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle))));
+                                        SettingGUI.this.adApp.setSummary(Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries))));
+                                        SettingGUI.this.adApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                                             @Override
                                             public boolean onPreferenceClick(Preference preference) {
                                                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(firebaseRemoteConfig.getString(getString(R.string.adAppLink)))));
@@ -914,7 +944,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
                                         FunctionsClass.println("*** " + firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) + " ***");
                                         if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > functionsClass.readPreference(".AdApp", "FetchTime", Long.valueOf(0))) {
-                                            SettingGUILight.this.getListView().smoothScrollToPosition(SettingGUILight.this.getListView().getBottom());
+                                            SettingGUI.this.getListView().smoothScrollToPosition(SettingGUI.this.getListView().getBottom());
                                             functionsClass.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)));
                                         }
                                     }
@@ -944,8 +974,8 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         LayerDrawable drawPrefLite = (LayerDrawable) getDrawable(R.drawable.draw_pref).mutate();
         GradientDrawable backPrefLite = (GradientDrawable) drawPrefLite.findDrawableByLayerId(R.id.backtemp).mutate();
         Drawable drawablePrefLite = drawPrefLite.findDrawableByLayerId(R.id.wPref);
-        backPrefLite.setColor(getColor(R.color.dark));
-        drawablePrefLite.setTint(getColor(R.color.light));
+        backPrefLite.setColor(PublicVariable.themeLightDark ? getColor(R.color.dark) : getColor(R.color.light));
+        drawablePrefLite.setTint(PublicVariable.themeLightDark ? getColor(R.color.light) : getColor(R.color.dark));
         lite.setIcon(drawPrefLite);
 
         LayerDrawable drawFloatIt = (LayerDrawable) getDrawable(R.drawable.draw_floatit);
@@ -1061,10 +1091,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
     public void onPause() {
         super.onPause();
         functionsClass.loadSavedColor();
-        getPreferenceScreen().getSharedPreferences()
-                .unregisterOnSharedPreferenceChangeListener(this);
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 
-        functionsClass.CheckSystemRAM(SettingGUILight.this);
+        functionsClass.CheckSystemRAM(SettingGUI.this);
     }
 
     @Override
@@ -1084,7 +1113,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
             } else {
                 if (PublicVariable.forceReload) {
                     PublicVariable.forceReload = false;
-                    functionsClass.overrideBackPressToMain(SettingGUILight.this);
+                    functionsClass.overrideBackPressToMain(SettingGUI.this);
                 }
             }
 
@@ -1107,9 +1136,10 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SettingGUILight.this.finish();
+                SettingGUI.this.finish();
             }
         }, 700);
+
     }
 
     @Override
@@ -1120,15 +1150,15 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         MenuItem facebook = menu.findItem(R.id.facebook);
         MenuItem gift = menu.findItem(R.id.donate);
 
-        LayerDrawable drawOSP = (LayerDrawable) getDrawable(R.drawable.draw_facebook);
-        GradientDrawable backOSP = (GradientDrawable) drawOSP.findDrawableByLayerId(R.id.backtemp);
-        backOSP.setColor(PublicVariable.primaryColorOpposite);
-        facebook.setIcon(drawOSP);
+        LayerDrawable drawFacebook = (LayerDrawable) getDrawable(R.drawable.draw_facebook);
+        GradientDrawable backFacebook = (GradientDrawable) drawFacebook.findDrawableByLayerId(R.id.backtemp);
+        backFacebook.setColor(PublicVariable.primaryColorOpposite);
+        facebook.setIcon(drawFacebook);
 
         if (!functionsClass.alreadyDonated()) {
             LayerDrawable drawableDonate = (LayerDrawable) getDrawable(R.drawable.draw_gift);
-            GradientDrawable backgroundShare = (GradientDrawable) drawableDonate.findDrawableByLayerId(R.id.backtemp);
-            backgroundShare.setColor(PublicVariable.primaryColorOpposite);
+            GradientDrawable backgroundGift = (GradientDrawable) drawableDonate.findDrawableByLayerId(R.id.backtemp);
+            backgroundGift.setColor(PublicVariable.primaryColorOpposite);
             gift.setIcon(drawableDonate);
         } else {
             gift.setVisible(false);
@@ -1157,7 +1187,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 try {
                     if (PublicVariable.forceReload) {
                         PublicVariable.forceReload = false;
-                        functionsClass.overrideBackPressToMain(SettingGUILight.this);
+                        functionsClass.overrideBackPressToMain(SettingGUI.this);
                     }
 
                     float finalRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
@@ -1179,7 +1209,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        SettingGUILight.this.finish();
+                        SettingGUI.this.finish();
                     }
                 }, 700);
                 break;
@@ -1209,24 +1239,34 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         String appTheme = sharedPreferences.getString("themeColor", "2");
         themeColor = (ListPreference) findPreference("themeColor");
         if (appTheme.equals("1")) {
-            PublicVariable.forceReload = true;
-
             themeColor.setSummary(getString(R.string.light));
-            PublicVariable.themeLightDark = true;
+            if (PublicVariable.themeLightDark != currentTheme) {
+                PublicVariable.forceReload = true;
+
+                PublicVariable.themeLightDark = true;
+                startActivity(new Intent(getApplicationContext(), SettingGUI.class));
+
+                functionsClass.saveDefaultPreference("LitePreferences", false);
+            }
         } else if (appTheme.equals("2")) {
-            PublicVariable.forceReload = true;
-
             themeColor.setSummary(getString(R.string.dark));
-            PublicVariable.themeLightDark = false;
-            startActivity(new Intent(getApplicationContext(), SettingGUIDark.class));
-        } else if (appTheme.equals("3")) {
-            PublicVariable.forceReload = true;
+            if (PublicVariable.themeLightDark != currentTheme) {
+                PublicVariable.forceReload = true;
 
-            functionsClass.checkLightDarkTheme();
+                PublicVariable.themeLightDark = false;
+                startActivity(new Intent(getApplicationContext(), SettingGUI.class));
+
+                functionsClass.saveDefaultPreference("LitePreferences", false);
+            }
+        } else if (appTheme.equals("3")) {
             themeColor.setSummary(getString(R.string.dynamic));
-            if (PublicVariable.themeLightDark) {
-            } else if (!PublicVariable.themeLightDark) {
-                startActivity(new Intent(getApplicationContext(), SettingGUIDark.class));
+            if (PublicVariable.themeLightDark != currentTheme) {
+                PublicVariable.forceReload = true;
+
+                functionsClass.checkLightDarkTheme();
+                functionsClass.saveDefaultPreference("LitePreferences", false);
+
+                startActivity(new Intent(getApplicationContext(), SettingGUI.class));
             }
         }
 
@@ -1236,6 +1276,8 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 blur.setChecked(false);
                 blur.setEnabled(false);
             }
+
+            functionsClass.saveDefaultPreference("LitePreferences", false);
         } else if (sharedPreferences.getBoolean("transparent", true) == false) {
             blur.setChecked(false);
             blur.setEnabled(false);
@@ -1259,10 +1301,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         layoutParams.dimAmount = 0.57f;
 
-        final Dialog dialog = new Dialog(SettingGUILight.this);
+        final Dialog dialog = new Dialog(SettingGUI.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.icons_shapes_preferences);
-        dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.shapedDesc) + "</font>"));
         dialog.getWindow().setAttributes(layoutParams);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
@@ -1276,6 +1317,10 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         drawableSquare.setTint(PublicVariable.primaryColor);
         final Drawable drawableSquircle = getDrawable(R.drawable.squircle_icon);
         drawableSquircle.setTint(PublicVariable.primaryColor);
+
+        TextView dialogueTitle = (TextView) dialog.findViewById(R.id.dialogueTitle);
+        dialogueTitle.setText(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.shapedDesc) + "</font>"));
+        dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
 
         View dialogueView = (ScrollView) dialog.findViewById(R.id.dialogueView);
         dialogueView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
@@ -1388,6 +1433,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 listCustomIconPack();
             }
         });
+
         noShape.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1401,6 +1447,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 drawableNoShape.setTint(PublicVariable.primaryColor);
                 shapes.setIcon(drawableNoShape);
                 shapes.setSummary("");
+
                 dialog.dismiss();
             }
         });
@@ -1432,10 +1479,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         layoutParams.dimAmount = 0.57f;
 
-        final Dialog dialog = new Dialog(SettingGUILight.this);
+        final Dialog dialog = new Dialog(SettingGUI.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.custom_icons);
-        dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.customIconTitle) + "</font>"));
         dialog.getWindow().setAttributes(layoutParams);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
@@ -1444,9 +1490,12 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         View dialogueView = (RelativeLayout) dialog.findViewById(R.id.dialogueView);
         dialogueView.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
+        TextView dialogueTitle = (TextView) dialog.findViewById(R.id.dialogueTitle);
         TextView defaultTheme = (TextView) dialog.findViewById(R.id.setDefault);
         RecyclerView customIconList = (RecyclerView) dialog.findViewById(R.id.customIconList);
 
+        dialogueTitle.setText(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.customIconTitle) + "</font>"));
+        dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
         defaultTheme.setTextColor(PublicVariable.colorLightDarkOpposite);
 
         RecycleViewSmoothLayoutList recyclerViewLayoutManager = new RecycleViewSmoothLayoutList(getApplicationContext(), OrientationHelper.VERTICAL, false);
@@ -1461,7 +1510,7 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                     functionsClass.appIcon(packageName)
             ));
         }
-        CustomIconsThemeAdapter customIconsThemeAdapter = new CustomIconsThemeAdapter(SettingGUILight.this, getApplicationContext(), navDrawerItems);
+        CustomIconsThemeAdapter customIconsThemeAdapter = new CustomIconsThemeAdapter(SettingGUI.this, getApplicationContext(), navDrawerItems);
         customIconList.setAdapter(customIconsThemeAdapter);
 
         defaultTheme.setOnClickListener(new View.OnClickListener() {
@@ -1530,10 +1579,9 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         layoutParams.dimAmount = 0.57f;
 
-        final Dialog dialog = new Dialog(SettingGUILight.this);
+        final Dialog dialog = new Dialog(SettingGUI.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.seekbar_preferences_fling);
-        dialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.flingSensitivityTitle) + "</font>"));
         dialog.getWindow().setAttributes(layoutParams);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
@@ -1544,18 +1592,19 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
 
         final ImageView flingingIcon = (ImageView) dialog.findViewById(R.id.preferenceIcon);
         final SeekBar seekBarPreferences = (SeekBar) dialog.findViewById(R.id.seekBarPreferences);
+        TextView dialogueTitle = (TextView) dialog.findViewById(R.id.dialogueTitle);
         TextView revertDefault = (TextView) dialog.findViewById(R.id.revertDefault);
 
         seekBarPreferences.setThumbTintList(ColorStateList.valueOf(PublicVariable.primaryColor));
         seekBarPreferences.setThumbTintMode(PorterDuff.Mode.SRC_IN);
         seekBarPreferences.setProgressTintList(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
         seekBarPreferences.setProgressTintMode(PorterDuff.Mode.SRC_IN);
-        if (seekBarPreferences.getProgress() <= 10) {
-            seekBarPreferences.setProgressTintList(ColorStateList.valueOf(getColor(R.color.red)));
-        }
 
         seekBarPreferences.setMax(50);
         seekBarPreferences.setProgress(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValueProgress", 30));
+        if (seekBarPreferences.getProgress() <= 10) {
+            seekBarPreferences.setProgressTintList(ColorStateList.valueOf(getColor(R.color.red)));
+        }
 
         Drawable layerDrawableLoadLogo;
         try {
@@ -1575,10 +1624,13 @@ public class SettingGUILight extends PreferenceActivity implements OnSharedPrefe
                 iconHW,
                 iconHW
         );
-        layoutParamsIcon.addRule(RelativeLayout.CENTER_HORIZONTAL, R.id.seekBarView);
+        layoutParamsIcon.addRule(RelativeLayout.CENTER_IN_PARENT, R.id.preferenceIcon);
+        layoutParamsIcon.addRule(RelativeLayout.BELOW, R.id.dialogueTitle);
         flingingIcon.setLayoutParams(layoutParamsIcon);
         flingingIcon.setImageDrawable(layerDrawableLoadLogo);
 
+        dialogueTitle.setText(Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.flingSensitivityTitle) + "</font>"));
+        dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
         revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite);
 
         FlingAnimation flingAnimationX = new FlingAnimation(flingingIcon, DynamicAnimation.TRANSLATION_X)

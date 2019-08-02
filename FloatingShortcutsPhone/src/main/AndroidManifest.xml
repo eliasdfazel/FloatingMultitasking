@@ -137,11 +137,7 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/GeeksEmpire.AutomationFeatures"/>
         <activity
-            android:name=".Util.SettingGUI.SettingGUILight"
-            android:label="@string/settingTitle"
-            android:theme="@style/GeeksEmpire.Preference.Light"/>
-        <activity
-            android:name=".Util.SettingGUI.SettingGUIDark"
+            android:name=".Util.SettingGUI.SettingGUI"
             android:label="@string/settingTitle"
             android:theme="@style/GeeksEmpire.Preference.Dark"/>
         <activity

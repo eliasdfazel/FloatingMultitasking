@@ -87,8 +87,7 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
-import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
-import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
+import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
@@ -433,11 +432,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                 makeSceneTransitionAnimation(HybridViewOff.this, actionButton, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        if (PublicVariable.themeLightDark) {
-                            intent.setClass(HybridViewOff.this, SettingGUILight.class);
-                        } else if (!PublicVariable.themeLightDark) {
-                            intent.setClass(HybridViewOff.this, SettingGUIDark.class);
-                        }
+                        intent.setClass(HybridViewOff.this, SettingGUI.class);
                         startActivity(intent, activityOptionsCompat.toBundle());
                     }
                 }, 113);

@@ -81,8 +81,7 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
-import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
-import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
+import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
@@ -409,11 +408,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                                 makeSceneTransitionAnimation(FoldersHandler.this, actionButton, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        if (PublicVariable.themeLightDark) {
-                            intent.setClass(FoldersHandler.this, SettingGUILight.class);
-                        } else if (!PublicVariable.themeLightDark) {
-                            intent.setClass(FoldersHandler.this, SettingGUIDark.class);
-                        }
+                        intent.setClass(FoldersHandler.this, SettingGUI.class);
                         startActivity(intent, activityOptionsCompat.toBundle());
                     }
                 }, 113);

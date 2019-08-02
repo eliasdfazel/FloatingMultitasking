@@ -150,8 +150,7 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.OpenApplications;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.FloatingWidgetHomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RemoteController;
-import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUIDark;
-import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUILight;
+import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingCategory;
@@ -5272,11 +5271,7 @@ public class FunctionsClass {
                                 makeSceneTransitionAnimation(activity, preferencesView, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        if (PublicVariable.themeLightDark) {
-                            intent.setClass(activity, SettingGUILight.class);
-                        } else if (!PublicVariable.themeLightDark) {
-                            intent.setClass(activity, SettingGUIDark.class);
-                        }
+                        intent.setClass(activity, SettingGUI.class);
                         if (activity != null) {
                             if (activity.getClass().getSimpleName().equals(WidgetConfigurations.class.getSimpleName())) {
                                 intent.putExtra("FromWidgetsConfigurations", true);

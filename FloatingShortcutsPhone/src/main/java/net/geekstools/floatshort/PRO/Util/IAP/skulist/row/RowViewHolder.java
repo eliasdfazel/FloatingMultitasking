@@ -19,11 +19,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.button.MaterialButton;
 
 import net.geekstools.floatshort.PRO.R;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * ViewHolder for quick access to row's views

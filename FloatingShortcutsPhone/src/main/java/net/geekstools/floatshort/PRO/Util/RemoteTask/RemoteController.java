@@ -4,10 +4,10 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import androidx.annotation.Nullable;
+
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-
-import androidx.annotation.Nullable;
 
 public class RemoteController extends Service {
 
