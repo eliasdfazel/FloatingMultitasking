@@ -50,6 +50,7 @@ class FunctionsClassSecurity {
         var authHW: Int = 0
 
         var authUnlockIt = false
+        var authForgotPinPassword = false
 
         var keyStore: KeyStore? = null
         var keyGenerator: KeyGenerator? = null
@@ -121,6 +122,10 @@ class FunctionsClassSecurity {
 
             if (AuthOpenAppValues.authUnlockIt) {
                 FunctionsClass(context).savePreference(".LockedApps", authComponentName, false)
+            } else if (AuthOpenAppValues.authForgotPinPassword) {
+                /*
+                *
+                * */
             } else {
                 FunctionsClass(context).appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.authComponentName)
             }
