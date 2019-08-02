@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory android:title="@string/securityOptions">
+        <Preference
+            android:key="pinPassword"
+            android:icon="@drawable/draw_security_preferences"
+            android:title="@string/changePin"
+            android:summary="@string/changePinSummary" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/smartCategory">
         <SwitchPreference
             android:defaultValue="false"

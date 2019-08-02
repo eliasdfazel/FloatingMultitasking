@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -86,7 +85,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
 
-        View viewContainer = inflater.inflate(R.layout.fingerprint_dialog_content, container, false);
+        View viewContainer = inflater.inflate(R.layout.auth_dialog_content, container, false);
 
         fingerprintContent = (RelativeLayout) viewContainer.findViewById(R.id.fingerprintContainer);
         dialogueIcon = (ShapesImage) viewContainer.findViewById(R.id.dialogueIcon);
@@ -123,7 +122,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
         password.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                if (actionId == EditorInfo.IME_ACTION_DONE) {
 
                     /*If Password Match Authed*/
                     //
@@ -139,8 +138,8 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
 //                    }
 //                    functionsClass.appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
 
-                    return true;
-                }
+//                    return true;
+//                }
                 return false;
             }
         });

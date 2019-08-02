@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="default_color">#237DAE</color>
     <color name="default_color_game">#ae2357</color>
+    <color name="default_color_game_light">#FF005D</color>
     <color name="default_color_transparent">#33237dae</color>
     <color name="default_color_light">#008dda</color>
     <color name="default_color_darker">#0a415e</color>
@@ -27,5 +28,7 @@
     <color name="dark_transparent">#b30a0f18</color>
     <color name="dark_transparent_high">#4b0a0f18</color>
     <color name="transparent_dark_high_twice">#c80a0f18</color>
+
+    <color name="borderColor" tools:override="true">@color/default_color_game</color>
 
 </resources>

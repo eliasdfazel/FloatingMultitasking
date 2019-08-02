@@ -225,6 +225,11 @@
         ]]>
     </string>
 
+    <!-- Security Options -->
+    <string name="securityOptions">Security Options</string>
+    <string name="changePin">Pin Password</string>
+    <string name="changePinSummary">Create Or Edit Pin Password</string>
+
     <!-- Finger Print -->
     <string name="authing">Fingerprint Authentication</string>
     <string name="fingerprint_description">Confirm Your Fingerprint to Continue…</string>
@@ -233,8 +238,9 @@
     <string name="fingerprint_success">Fingerprint Recognized</string>
     <string name="lockIt">Lock It 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
-    <string name="passowrdHint">Enter Pin Password 🔑 </string>
+    <string name="passwordHint">Enter Pin Password 🔑 </string>
     <!-- Finger Print -->
+    <!-- Security Options -->
 
     <string name="purchase"> Purchase 💸 </string>
     <string name="donate"> Send Gift 🎁 </string>

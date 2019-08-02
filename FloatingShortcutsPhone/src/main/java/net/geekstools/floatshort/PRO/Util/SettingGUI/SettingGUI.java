@@ -3,6 +3,7 @@ package net.geekstools.floatshort.PRO.Util.SettingGUI;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.ActivityManager;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -71,9 +72,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import net.geekstools.floatshort.PRO.BindServices;
+import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Util.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.CustomIconsThemeAdapter;
@@ -89,7 +92,9 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
     ListPreference themeColor, stick;
     SharedPreferences sharedPreferences;
     SwitchPreference stable, cache, themeTrans, smart, blur, observe, notification, floatingSplash, freeForm;
-    Preference shapes, autotrans, sizes, delayPressHold, flingSensitivity, boot, lite, support, whatsnew, adApp;
+    Preference pinPassword,
+            shapes, autotrans, sizes, delayPressHold, flingSensitivity, boot, lite,
+            support, whatsnew, adApp;
 
     Runnable runnablePressHold = null;
     Handler handlerPressHold = new Handler();
@@ -194,6 +199,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         floatingSplash = (SwitchPreference) findPreference("floatingSplash");
         freeForm = (SwitchPreference) findPreference("freeForm");
 
+        pinPassword = (Preference) findPreference("pinPassword");
         shapes = (Preference) findPreference("shapes");
         autotrans = (Preference) findPreference("hide");
         sizes = (Preference) findPreference("sizes");
@@ -345,6 +351,21 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_ad_app))));
+                return true;
+            }
+        });
+
+        pinPassword.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (functionsClass.securityServicesSubscribed() || BuildConfig.DEBUG) {
+                    startActivity(new Intent(getApplicationContext(), HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                } else {
+                    startActivity(new Intent(getApplicationContext(), InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                }
+
                 return true;
             }
         });

@@ -73,7 +73,7 @@
         android:gravity="center"
         android:inputType="numberPassword"
         android:imeOptions="actionDone"
-        android:hint="@string/passowrdHint"
+        android:hint="@string/passwordHint"
         android:textSize="19sp"
         android:background="@android:color/transparent"
         android:visibility="invisible" />

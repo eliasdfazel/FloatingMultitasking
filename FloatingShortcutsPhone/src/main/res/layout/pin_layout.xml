@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="7dp"
+    android:id="@+id/pinFullView">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginEnd="19dp"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
+        android:gravity="center_vertical"
+        android:hint="@string/passwordHint"
+        android:textColorHint="@color/light"
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@color/darker"
+        app:boxCornerRadiusTopStart="7dp"
+        app:boxCornerRadiusTopEnd="7dp"
+        app:boxCornerRadiusBottomStart="7dp"
+        app:boxCornerRadiusBottomEnd="7dp"
+        app:boxStrokeColor="@color/default_color_game"
+        app:boxStrokeWidth="2dp"
+        app:hintEnabled="true"
+        app:hintAnimationEnabled="true"
+        app:hintTextColor="@color/default_color_game_light"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/red">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="7dp"
+            android:paddingEnd="7dp"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textSize="27sp"
+            android:textColor="@color/light"
+            android:cursorVisible="false" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</RelativeLayout>
