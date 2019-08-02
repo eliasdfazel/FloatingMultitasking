@@ -31,6 +31,7 @@ import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
@@ -44,6 +45,7 @@ import java.util.Map;
 public class App_Unlimited_Time extends Service {
 
     FunctionsClass functionsClass;
+    FunctionsClassSecurity functionsClassSecurity;
 
     WindowManager windowManager;
     WindowManager.LayoutParams[] layoutParams;
@@ -546,7 +548,12 @@ public class App_Unlimited_Time extends Service {
                     }
                 } else {
                     if (openIt[startId]) {
-                        if (functionsClass.splashReveal()) {
+                        if (functionsClassSecurity.isAppLocked(packages[startId])) {
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packages[startId]);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthUnlockIt(false);
+
+                            functionsClassSecurity.openAuthInvocation();
+                        } else if (functionsClass.splashReveal()) {
                             Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);
                             splashReveal.putExtra("packageName", packages[startId]);
                             if (moveDetection != null) {
@@ -571,6 +578,7 @@ public class App_Unlimited_Time extends Service {
                             }
                         }
                     } else {
+
                     }
                 }
             }
@@ -863,6 +871,7 @@ public class App_Unlimited_Time extends Service {
     public void onCreate() {
         super.onCreate();
         functionsClass = new FunctionsClass(getApplicationContext());
+        functionsClassSecurity = new FunctionsClassSecurity(getApplicationContext());
 
         array = getApplicationContext().getPackageManager().getInstalledApplications(0).size() * 2;
         layoutParams = new WindowManager.LayoutParams[array];
