@@ -229,6 +229,7 @@
     <string name="securityOptions">Security Options</string>
     <string name="changePin">Pin Password</string>
     <string name="changePinSummary">Create Or Edit Pin Password</string>
+    <string name="passwordError">Password Error ⚠</string>
 
     <!-- Finger Print -->
     <string name="authing">Fingerprint Authentication</string>
@@ -238,7 +239,10 @@
     <string name="fingerprint_success">Fingerprint Recognized</string>
     <string name="lockIt">Lock It 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
-    <string name="passwordHint">Enter Pin Password 🔑 </string>
+    <string name="passwordHint">Enter New Pin Password 🔑 </string>
+    <string name="passwordHintRepeat">Repeat New Pin Password 🔑 </string>
+    <string name="enterCurrentPassword">Enter Current Password 🔑 </string>
+    <string name="forgetPassword">Forgot Your Password? 🤔 </string>
     <!-- Finger Print -->
     <!-- Security Options -->
 

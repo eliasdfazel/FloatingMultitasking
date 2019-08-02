@@ -12,7 +12,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -20,14 +22,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.UI.FingerprintUiHelper;
@@ -122,25 +128,41 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
         password.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
-//                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    try {
+                        if (password.getText() != null) {
+                            String currentPassword = functionsClassSecurity.decryptEncodedData(functionsClassSecurity.rawStringToByteArray(functionsClass.readPreference(".Password", "Pin", getContext().getPackageName())), FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                    /*If Password Match Authed*/
-                    //
-//                    try {
-//                        functionsClassSecurity.encryptEncodedData(password.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getUid()).asList().toString()
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    try {
-//                        functionsClassSecurity.decryptEncodedData(functionsClassSecurity.rawStringToByteArray(password.getText().toString()), FirebaseAuth.getInstance().getCurrentUser().getUid());
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    functionsClass.appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                            if (password.getText().toString().equals(currentPassword)) {
+                                functionsClass.appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                            } else {
+                                fingerprintHint.setTextColor(getContext().getColor(R.color.warning_color));
+                                fingerprintHint.setText(getString(R.string.passwordError));
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                return true;
+            }
+        });
 
-//                    return true;
-//                }
-                return false;
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
+                FunctionsClassDebug.Companion.PrintDebug("*** Pin Password ==" + sequence.toString() + " ***");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                fingerprintHint.setText("");
+                fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 

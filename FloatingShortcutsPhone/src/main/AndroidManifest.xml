@@ -317,9 +317,10 @@
             android:noHistory="true"
             android:theme="@style/AuthTransparent" />
         <activity
-            android:name=".Util.HandlePinPassword"
+            android:name=".Util.SecurityServices.Authentication.HandlePinPassword"
             android:noHistory="true"
-            android:theme="@style/GeeksEmpire.Material" />
+            android:theme="@style/GeeksEmpire.Material"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity-alias
             android:name=".Alias.FoldersHandler"
