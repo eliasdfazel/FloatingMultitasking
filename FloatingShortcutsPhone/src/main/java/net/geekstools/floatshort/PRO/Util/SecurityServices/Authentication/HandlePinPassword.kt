@@ -1,6 +1,8 @@
 package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication
 
 import android.app.Activity
+import android.app.ActivityOptions
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
@@ -20,6 +22,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI
 import java.util.*
 
 class HandlePinPassword : Activity() {
@@ -162,8 +165,9 @@ class HandlePinPassword : Activity() {
     }
 
     override fun onBackPressed() {
+        startActivity(Intent(applicationContext, SettingGUI::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
         this@HandlePinPassword.finish()
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     private fun saveNewPinPassword() {

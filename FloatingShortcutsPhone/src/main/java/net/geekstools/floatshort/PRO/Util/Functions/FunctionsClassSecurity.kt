@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthActivityHelper
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.FingerprintAuthenticationDialogFragment
+import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.HandlePinPassword
 import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
@@ -44,7 +45,12 @@ class FunctionsClassSecurity {
 
     /*Lock/Unlock Apps*/
     fun doLockApps(PackageName: String) {
-        FunctionsClass(context).savePreference(".LockedApps", PackageName, true)
+        if (FunctionsClass(context).readPreference(".Password", "Pin", "0") == "0") {
+            context.startActivity(Intent(context, HandlePinPassword::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+        } else {
+            FunctionsClass(context).savePreference(".LockedApps", PackageName, true)
+        }
     }
 
     fun doUnlockApps(PackageName: String) {
