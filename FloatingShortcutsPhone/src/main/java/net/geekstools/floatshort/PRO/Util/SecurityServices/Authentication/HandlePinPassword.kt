@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
@@ -24,6 +25,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI
 import java.util.*
+
 
 class HandlePinPassword : Activity() {
 
@@ -160,6 +162,37 @@ class HandlePinPassword : Activity() {
                 Handler().postDelayed({
                     spinKitView.visibility = View.INVISIBLE
                 }, 1333)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (!functionsClassSecurity.fingerprintEnrolled()) {
+            securityWarningIcon.visibility = View.VISIBLE
+            securityWarningText.visibility = View.VISIBLE
+
+            securityWarningIcon.setOnClickListener {
+                functionClass.doVibrate(99)
+
+                val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    Intent(Settings.ACTION_FINGERPRINT_ENROLL)
+                } else {
+                    Intent(Settings.ACTION_SECURITY_SETTINGS);
+                }
+                startActivity(intent)
+            }
+
+            securityWarningText.setOnClickListener {
+                functionClass.doVibrate(99)
+
+                val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    Intent(Settings.ACTION_FINGERPRINT_ENROLL)
+                } else {
+                    Intent(Settings.ACTION_SECURITY_SETTINGS);
+                }
+                startActivity(intent)
             }
         }
     }

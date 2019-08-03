@@ -246,6 +246,7 @@
     <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 </string>
     <string name="verifying">Verifying Authentication Data 🔑</string>
     <string name="floatingShortcutsSecurityService">Floating Shortcuts | Security Services</string>
+    <string name="securityWarningFingerprint"> ⚠ Security Warning | Fingerprint Is Not Set ⚠ </string>
     <!-- Finger Print -->
     <!-- Security Options -->
 
