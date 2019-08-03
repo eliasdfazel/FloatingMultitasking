@@ -79,6 +79,7 @@ import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.CardHybridAdapter;
 import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.HybridSectionedGridRecyclerViewAdapter;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
@@ -105,6 +106,7 @@ import java.util.TreeMap;
 public class HybridViewOff extends Activity implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
     FunctionsClass functionsClass;
+    FunctionsClassSecurity functionsClassSecurity;
 
     RecyclerView loadView;
     ScrollView nestedScrollView, nestedIndexScrollView;
@@ -171,9 +173,11 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         recoverFloatingWidgets = (ImageView) findViewById(R.id.recoverFloatingWidgets);
         popupIndex = (TextView) findViewById(R.id.popupIndex);
 
-        simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
         functionsClass = new FunctionsClass(getApplicationContext(), this);
+        functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
         functionsClass.ChangeLog(HybridViewOff.this, false);
+
+        simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
 
         recyclerViewLayoutManager = new RecycleViewSmoothLayoutGrid(getApplicationContext(), functionsClass.columnCount(105), OrientationHelper.VERTICAL, false);
         loadView.setLayoutManager(recyclerViewLayoutManager);
@@ -991,6 +995,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                                 }
                                             }
                                         }, 333);
+
+                                        functionsClassSecurity.downloadLockedAppsData();
                                     }
                                 } else {
 

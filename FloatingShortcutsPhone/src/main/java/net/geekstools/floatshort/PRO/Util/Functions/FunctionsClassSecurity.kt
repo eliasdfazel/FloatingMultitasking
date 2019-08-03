@@ -5,14 +5,18 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.hardware.fingerprint.FingerprintManager
+import android.net.Uri
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
 import android.util.Base64
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthActivityHelper
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.FingerprintAuthenticationDialogFragment
+import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
 import java.security.*
@@ -122,6 +126,8 @@ class FunctionsClassSecurity {
 
             if (AuthOpenAppValues.authUnlockIt) {
                 FunctionsClass(context).savePreference(".LockedApps", authComponentName, false)
+
+                uploadLockedAppsData()
             } else if (AuthOpenAppValues.authForgotPinPassword) {
                 /*
                 *
@@ -267,5 +273,37 @@ class FunctionsClassSecurity {
         }
 
         return resultByteArray
+    }
+
+    /*Upload/Download Functions .LockedApps*/
+    fun uploadLockedAppsData() {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+
+        val lockedAppsFile = File("/data/data/" + context.packageName + "/shared_prefs/.LockedApps.xml")
+        val urilockedAppsFile = Uri.fromFile(lockedAppsFile)
+        val firebaseStorage = FirebaseStorage.getInstance()
+
+        val storageReference = firebaseStorage.getReference("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
+        val uploadTask = storageReference.putFile(urilockedAppsFile)
+        uploadTask.addOnSuccessListener {
+
+        }.addOnFailureListener {
+
+        }
+    }
+
+    fun downloadLockedAppsData() {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+
+        val firebaseStorage = FirebaseStorage.getInstance()
+        val firebaseStorageReference = firebaseStorage.reference
+        val allUploadedImageFilesXml = firebaseStorageReference.child("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
+
+        allUploadedImageFilesXml.getFile(File("/data/data/" + context.packageName + "/shared_prefs/" + ".LockedApps.xml"))
+                .addOnSuccessListener {
+
+                }.addOnFailureListener {
+
+                }
     }
 }

@@ -74,6 +74,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
@@ -93,6 +94,7 @@ import java.util.List;
 public class FoldersHandler extends Activity implements View.OnClickListener, View.OnLongClickListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
     FunctionsClass functionsClass;
+    FunctionsClassSecurity functionsClassSecurity;
 
     RelativeLayout fullActionViews, wholeCategory;
     RecyclerView categorylist;
@@ -137,9 +139,11 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         recoverFloatingApps = (ImageView) findViewById(R.id.recoverFloatingApps);
         recoverFloatingWidgets = (ImageView) findViewById(R.id.recoverFloatingWidgets);
 
-        simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
         functionsClass = new FunctionsClass(getApplicationContext(), this);
+        functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
         functionsClass.ChangeLog(FoldersHandler.this, false);
+
+        simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
 
         if (functionsClass.appThemeTransparent() == true) {
             functionsClass.setThemeColorFloating(wholeCategory, true);
@@ -952,8 +956,11 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                                                 }
                                             }
                                         }, 333);
+
+                                        functionsClassSecurity.downloadLockedAppsData();
                                     }
                                 } else {
+
                                 }
                             }
                         });

@@ -3876,6 +3876,8 @@ public class FunctionsClass {
                     } else {
                         if (securityServicesSubscribed() || BuildConfig.DEBUG) {
                             savePreference(".LockedApps", PackageName, true);
+
+                            functionsClassSecurity.uploadLockedAppsData();
                         } else {
                             context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                     ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
@@ -4012,6 +4014,8 @@ public class FunctionsClass {
                                 for (String packageName : packageNames) {
                                     savePreference(".LockedApps", packageName, true);
                                 }
+
+                                functionsClassSecurity.uploadLockedAppsData();
                             }
                         } else {
                             context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
