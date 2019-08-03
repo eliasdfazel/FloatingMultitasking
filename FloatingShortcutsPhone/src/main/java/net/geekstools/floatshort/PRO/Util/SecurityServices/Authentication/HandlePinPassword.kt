@@ -1,8 +1,10 @@
 package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication
 
 import android.app.Activity
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
@@ -12,7 +14,7 @@ import android.view.inputmethod.EditorInfo
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.password_handler_views.*
+import kotlinx.android.synthetic.main.auth_handler_views.*
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug
@@ -32,7 +34,7 @@ class HandlePinPassword : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.password_handler_views)
+        setContentView(R.layout.auth_handler_views)
 
         functionClass = FunctionsClass(applicationContext, this@HandlePinPassword)
         functionsClassSecurity = FunctionsClassSecurity(this@HandlePinPassword, applicationContext)
@@ -54,17 +56,17 @@ class HandlePinPassword : Activity() {
         pinFullViewScrollView.setBackgroundColor(PublicVariable.primaryColor)
         pinFullView.setBackgroundColor(PublicVariable.primaryColor)
 
-        textInputPasswordCurrent.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.89f)
-        textInputPassword.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.89f)
-        textInputPasswordRepeat.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.89f)
+        textInputPasswordCurrent.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
+        textInputPassword.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
+        textInputPasswordRepeat.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
 
-        if (PublicVariable.themeLightDark) {
-            passwordCurrent.setTextColor(getColor(R.color.dark))
-            password.setTextColor(getColor(R.color.dark))
-            passwordRepeat.setTextColor(getColor(R.color.dark))
-        } else {
+        textInputPasswordCurrent.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
+        textInputPassword.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
+        textInputPasswordRepeat.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
 
-        }
+        passwordCurrent.setTextColor(PublicVariable.colorLightDarkOpposite)
+        password.setTextColor(PublicVariable.colorLightDarkOpposite)
+        passwordRepeat.setTextColor(PublicVariable.colorLightDarkOpposite)
 
         currentPasswordExist = (functionClass.readPreference(".Password", "Pin", "0") != "0")
         if (currentPasswordExist) {
@@ -134,6 +136,7 @@ class HandlePinPassword : Activity() {
 
         forgotPassword.setOnClickListener {
             functionClass.doVibrate(113)
+            spinKitView.visibility = View.VISIBLE
 
             val actionCodeSettings = ActionCodeSettings.newBuilder()
                     .setUrl("https://floating-shortcuts-pro.firebaseapp.com")
@@ -147,23 +150,13 @@ class HandlePinPassword : Activity() {
                     .build()
             firebaseAuth.setLanguageCode(Locale.getDefault().language)
 
-
-            /*firebaseAuth.sendPasswordResetEmail(firebaseUser.email.toString()*//*, actionCodeSettings*//*).addOnSuccessListener {
-                FunctionsClassDebug.PrintDebug("*** Password Reset Email Sent To ${firebaseUser.email} ***")
-
-
-
-                functionClass.Toast(getString(R.string.passwordResetSent), Gravity.BOTTOM, getColor(R.color.red_transparent))
-            }*/
-
-            /**/
-
             firebaseAuth.sendSignInLinkToEmail(firebaseUser.email.toString(), actionCodeSettings).addOnSuccessListener {
                 FunctionsClassDebug.PrintDebug("*** Password Verification Email Sent To ${firebaseUser.email} ***")
-
-
-
                 functionClass.Toast(getString(R.string.passwordResetSent), Gravity.BOTTOM, getColor(R.color.red_transparent))
+
+                Handler().postDelayed({
+                    spinKitView.visibility = View.INVISIBLE
+                }, 1333)
             }
         }
     }

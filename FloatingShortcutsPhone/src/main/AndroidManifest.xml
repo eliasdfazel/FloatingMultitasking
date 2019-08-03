@@ -337,10 +337,10 @@
         </activity>
         <activity
             android:name=".Util.SecurityServices.Authentication.PasswordVerification"
+            android:label="@string/app_name"
             android:noHistory="true"
             android:excludeFromRecents="true"
-            android:label="@string/app_name"
-            android:theme="@style/Transparent">
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 

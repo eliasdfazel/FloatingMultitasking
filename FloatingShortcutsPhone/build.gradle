@@ -58,6 +58,8 @@ android {
     }
 }
 dependencies {
+    implementation project(path: ':LoadingSpin')
+
     implementation project(path: ':LicenseLibrary', configuration: 'default')
     implementation project(path: ':ShapesCustomImageViewLibrary', configuration: 'default')
 
