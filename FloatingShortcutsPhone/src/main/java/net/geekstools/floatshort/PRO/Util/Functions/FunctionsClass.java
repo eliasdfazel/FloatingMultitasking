@@ -3870,12 +3870,12 @@ public class FunctionsClass {
                 } else if (item.getItemId() == 3) {
                     if (functionsClassSecurity.isAppLocked(PackageName)) {
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(PackageName);
-                        FunctionsClassSecurity.AuthOpenAppValues.setAuthUnlockIt(true);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(true);
 
                         functionsClassSecurity.openAuthInvocation();
                     } else {
                         if (securityServicesSubscribed() || BuildConfig.DEBUG) {
-                            savePreference(".LockedApps", PackageName, true);
+                            functionsClassSecurity.doLockApps(PackageName);
 
                             functionsClassSecurity.uploadLockedAppsData();
                         } else {
@@ -4002,7 +4002,8 @@ public class FunctionsClass {
                 } else if (item.getItemId() == 5) {
                     if (functionsClassSecurity.isAppLocked(categoryName)) {
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(categoryName);
-                        FunctionsClassSecurity.AuthOpenAppValues.setAuthUnlockIt(true);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(false);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthFolderUnlockIt(true);
 
                         functionsClassSecurity.openAuthInvocation();
                     } else {
@@ -4012,7 +4013,7 @@ public class FunctionsClass {
 
                                 String[] packageNames = readFileLine(categoryName);
                                 for (String packageName : packageNames) {
-                                    savePreference(".LockedApps", packageName, true);
+                                    functionsClassSecurity.doLockApps(packageName);
                                 }
 
                                 functionsClassSecurity.uploadLockedAppsData();

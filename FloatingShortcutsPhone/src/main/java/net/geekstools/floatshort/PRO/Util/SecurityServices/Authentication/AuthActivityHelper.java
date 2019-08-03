@@ -67,45 +67,49 @@ public class AuthActivityHelper extends Activity {
 
         /*Finger-Print Authentication Invocation*/
         try {
-            KeyguardManager keyguardManager =
-                    (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-            FingerprintManager fingerprintManager =
-                    (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
-            if (fingerprintManager.isHardwareDetected()) {
-                if (fingerprintManager.hasEnrolledFingerprints()) {
-                    if (keyguardManager.isKeyguardSecure()) {
+            if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
+                KeyguardManager keyguardManager =
+                        (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+                FingerprintManager fingerprintManager =
+                        (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+                if (fingerprintManager.isHardwareDetected()) {
+                    if (fingerprintManager.hasEnrolledFingerprints()) {
+                        if (keyguardManager.isKeyguardSecure()) {
 
-                        try {
-                            FunctionsClassSecurity.AuthOpenAppValues.setKeyStore(KeyStore.getInstance("AndroidKeyStore"));
-                        } catch (KeyStoreException e) {
-                            throw new RuntimeException("Failed to get an instance of KeyStore", e);
-                        }
-                        try {
-                            FunctionsClassSecurity.AuthOpenAppValues.setKeyGenerator(KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore"));
-                        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-                            throw new RuntimeException("Failed to get an instance of KeyGenerator", e);
-                        }
-                        final Cipher defaultCipher;
-                        try {
-                            defaultCipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/"
-                                    + KeyProperties.BLOCK_MODE_CBC + "/"
-                                    + KeyProperties.ENCRYPTION_PADDING_PKCS7);
-                        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-                            throw new RuntimeException("Failed to get an instance of Cipher", e);
-                        }
-
-                        functionsClassSecurity.createKey(DEFAULT_KEY_NAME, true);
-                        functionsClassSecurity.createKey(KEY_NAME_NOT_INVALIDATED, false);
-
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                functionsClassSecurity.new InvokeAuth(defaultCipher, DEFAULT_KEY_NAME);
+                            try {
+                                FunctionsClassSecurity.AuthOpenAppValues.setKeyStore(KeyStore.getInstance("AndroidKeyStore"));
+                            } catch (KeyStoreException e) {
+                                throw new RuntimeException("Failed to get an instance of KeyStore", e);
                             }
-                        }, 333);
+                            try {
+                                FunctionsClassSecurity.AuthOpenAppValues.setKeyGenerator(KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore"));
+                            } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+                                throw new RuntimeException("Failed to get an instance of KeyGenerator", e);
+                            }
+                            final Cipher defaultCipher;
+                            try {
+                                defaultCipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/"
+                                        + KeyProperties.BLOCK_MODE_CBC + "/"
+                                        + KeyProperties.ENCRYPTION_PADDING_PKCS7);
+                            } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+                                throw new RuntimeException("Failed to get an instance of Cipher", e);
+                            }
 
+                            functionsClassSecurity.createKey(DEFAULT_KEY_NAME, true);
+                            functionsClassSecurity.createKey(KEY_NAME_NOT_INVALIDATED, false);
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    functionsClassSecurity.new InvokeAuth(defaultCipher, DEFAULT_KEY_NAME);
+                                }
+                            }, 333);
+
+                        }
                     }
                 }
+            } else {
+                functionsClassSecurity.new InvokeAuth(null, DEFAULT_KEY_NAME);
             }
         } catch (Exception e) {
             e.printStackTrace();

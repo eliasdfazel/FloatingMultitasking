@@ -39,7 +39,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.UI.FingerprintUiHelper;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
-public class FingerprintAuthenticationDialogFragment extends DialogFragment implements FingerprintUiHelper.Callback {
+public class FingerprintAuthenticationDialogFragment extends DialogFragment {
 
     private FunctionsClass functionsClass;
     private FunctionsClassSecurity functionsClassSecurity;
@@ -134,7 +134,34 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
                             String currentPassword = functionsClassSecurity.decryptEncodedData(functionsClassSecurity.rawStringToByteArray(functionsClass.readPreference(".Password", "Pin", getContext().getPackageName())), FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                             if (password.getText().toString().equals(currentPassword)) {
-                                functionsClass.appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSingleUnlockIt()) {
+                                    functionsClassSecurity.doUnlockApps(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+
+                                    functionsClassSecurity.uploadLockedAppsData();
+                                    dismiss();
+                                    try {
+                                        getActivity().finish();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthFolderUnlockIt()) {
+                                    if (getContext().getFileStreamPath(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()).exists() && getContext().getFileStreamPath(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()).isFile()) {
+                                        String[] packageNames = functionsClass.readFileLine(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                        for (String packageName : packageNames) {
+                                            functionsClassSecurity.doUnlockApps(packageName);
+                                        }
+                                        functionsClassSecurity.doUnlockApps(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                        functionsClassSecurity.uploadLockedAppsData();
+                                        dismiss();
+                                        try {
+                                            getActivity().finish();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                } else {
+                                    functionsClass.appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                }
                             } else {
                                 fingerprintHint.setTextColor(getContext().getColor(R.color.warning_color));
                                 fingerprintHint.setText(getString(R.string.passwordError));
@@ -166,36 +193,72 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
             }
         });
 
-        fingerprintUiHelper = new FingerprintUiHelper(
-                getContext(),
-                getActivity().getSystemService(FingerprintManager.class),
-                fingerprintIcon,
-                fingerprintHint,
-                password,
-                this);
+        if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
+            FunctionsClassDebug.Companion.PrintDebug("*** Finger Print Available ***");
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("SHOW_PASSWORD");
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals("SHOW_PASSWORD")) {
-                    fingerprintHint.setText("");
+            fingerprintUiHelper = new FingerprintUiHelper(
+                    getContext(),
+                    getActivity().getSystemService(FingerprintManager.class),
+                    fingerprintIcon,
+                    fingerprintHint,
+                    password,
+                    new FingerprintUiHelper.Callback() {
+                        @Override
+                        public void onAuthenticated() {
+                            functionsClassSecurity.Authed(true, FingerprintAuthenticationDialogFragment.this.cryptoObject);
 
-                    fingerprintIcon.setVisibility(View.INVISIBLE);
-                    password.setVisibility(View.VISIBLE);
+                            dismiss();
+                            try {
+                                getActivity().finish();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
 
-                    WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-                    int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
-                    int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 255, getResources().getDisplayMetrics());
+                        @Override
+                        public void onError() {
+                            functionsClassSecurity.authError();
+                        }
+                    });
 
-                    layoutParams.width = dialogueWidth;
-                    layoutParams.height = dialogueHeight;
-                    dialog.getWindow().setAttributes(layoutParams);
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction("SHOW_PASSWORD");
+            BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (intent.getAction().equals("SHOW_PASSWORD")) {
+                        fingerprintHint.setText("");
+
+                        fingerprintIcon.setVisibility(View.INVISIBLE);
+                        password.setVisibility(View.VISIBLE);
+
+                        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                        int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
+                        int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 255, getResources().getDisplayMetrics());
+
+                        layoutParams.width = dialogueWidth;
+                        layoutParams.height = dialogueHeight;
+                        dialog.getWindow().setAttributes(layoutParams);
+                    }
                 }
-            }
-        };
-        getContext().registerReceiver(broadcastReceiver, intentFilter);
+            };
+            getContext().registerReceiver(broadcastReceiver, intentFilter);
+        } else {
+            FunctionsClassDebug.Companion.PrintDebug("*** Finger Print Not Available ***");
+
+            fingerprintHint.setText("");
+
+            fingerprintIcon.setVisibility(View.INVISIBLE);
+            password.setVisibility(View.VISIBLE);
+
+            WindowManager.LayoutParams layoutParamsPin = new WindowManager.LayoutParams();
+            int dialogueWidthPin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
+            int dialogueHeightPin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 255, getResources().getDisplayMetrics());
+
+            layoutParamsPin.width = dialogueWidthPin;
+            layoutParamsPin.height = dialogueHeightPin;
+            dialog.getWindow().setAttributes(layoutParamsPin);
+        }
 
         cancelAuth.setOnLongClickListener(view -> {
             getActivity().finish();
@@ -209,13 +272,17 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
     @Override
     public void onResume() {
         super.onResume();
-        fingerprintUiHelper.startListening(this.cryptoObject);
+        if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
+            fingerprintUiHelper.startListening(this.cryptoObject);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        fingerprintUiHelper.stopListening();
+        if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
+            fingerprintUiHelper.stopListening();
+        }
     }
 
     @Override
@@ -226,23 +293,6 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment impl
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-    }
-
-    @Override
-    public void onAuthenticated() {
-        functionsClassSecurity.Authed(true, this.cryptoObject);
-
-        dismiss();
-        try {
-            getActivity().finish();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onError() {
-        functionsClassSecurity.authError();
     }
 
     public void setCryptoObject(FingerprintManager.CryptoObject cryptoObject) {

@@ -42,6 +42,15 @@ class FunctionsClassSecurity {
 
     }
 
+    /*Lock/Unlock Apps*/
+    fun doLockApps(PackageName: String) {
+        FunctionsClass(context).savePreference(".LockedApps", PackageName, true)
+    }
+
+    fun doUnlockApps(PackageName: String) {
+        FunctionsClass(context).savePreference(".LockedApps", PackageName, false)
+    }
+
     /*Finger-Print Functions*/
     val KEY_NAME_NOT_INVALIDATED = "key_not_invalidated"
     val DEFAULT_KEY_NAME = "default_key"
@@ -53,7 +62,8 @@ class FunctionsClassSecurity {
         var authPositionY: Int = 0
         var authHW: Int = 0
 
-        var authUnlockIt = false
+        var authSingleUnlockIt = false
+        var authFolderUnlockIt = false
         var authForgotPinPassword = false
 
         var keyStore: KeyStore? = null
@@ -67,17 +77,27 @@ class FunctionsClassSecurity {
         AuthOpenAppValues.authPositionY = 0
         AuthOpenAppValues.authHW = 0
 
-        AuthOpenAppValues.authUnlockIt = false
+        AuthOpenAppValues.authSingleUnlockIt = false
+        AuthOpenAppValues.authFolderUnlockIt = false
 
         AuthOpenAppValues.keyStore = null
         AuthOpenAppValues.keyGenerator = null
     }
 
-    inner class InvokeAuth(internal var cipher: Cipher, internal var keyName: String) {
+    inner class InvokeAuth(internal var cipher: Cipher?, internal var keyName: String) {
         init {
-            if (initCipher(this.cipher, this.keyName)) {
+            if (fingerprintSensorAvailable() && fingerprintEnrolled()) {
+                if (initCipher(this.cipher!!, this.keyName)) {
+                    FunctionsClassDebug.PrintDebug("*** Finger Print Available ***")
+
+                    val fingerprintAuthenticationDialogFragment = FingerprintAuthenticationDialogFragment()
+                    fingerprintAuthenticationDialogFragment.setCryptoObject(FingerprintManager.CryptoObject(this.cipher))
+                    fingerprintAuthenticationDialogFragment.show(activity.fragmentManager, context.packageName)
+                }
+            } else {
+                FunctionsClassDebug.PrintDebug("*** Finger Print Not Available ***")
+
                 val fingerprintAuthenticationDialogFragment = FingerprintAuthenticationDialogFragment()
-                fingerprintAuthenticationDialogFragment.setCryptoObject(FingerprintManager.CryptoObject(this.cipher))
                 fingerprintAuthenticationDialogFragment.show(activity.fragmentManager, context.packageName)
             }
         }
@@ -117,6 +137,8 @@ class FunctionsClassSecurity {
         if (withFingerprint) {
             assert(cryptoObject != null)
             tryEncrypt(cryptoObject!!.cipher)
+        } else {
+
         }
     }
 
@@ -124,10 +146,8 @@ class FunctionsClassSecurity {
         if (encrypted != null) {
             FunctionsClassDebug.PrintDebug("*** Authentication Confirmed ***")
 
-            if (AuthOpenAppValues.authUnlockIt) {
-                FunctionsClass(context).savePreference(".LockedApps", authComponentName, false)
-
-                uploadLockedAppsData()
+            if (AuthOpenAppValues.authSingleUnlockIt) {
+                doUnlockApps(AuthOpenAppValues.authComponentName!!)
             } else if (AuthOpenAppValues.authForgotPinPassword) {
                 /*
                 *

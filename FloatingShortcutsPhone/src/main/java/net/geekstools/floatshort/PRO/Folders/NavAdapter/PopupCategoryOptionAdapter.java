@@ -250,7 +250,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                         } else {
                             if (functionsClassSecurity.isAppLocked(navDrawerItems.get(position).getPackageName())) {
                                 FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(navDrawerItems.get(position).getPackageName());
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthUnlockIt(false);
+                                FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(false);
 
                                 functionsClassSecurity.openAuthInvocation();
                             } else if (functionsClass.FreeForm()) {

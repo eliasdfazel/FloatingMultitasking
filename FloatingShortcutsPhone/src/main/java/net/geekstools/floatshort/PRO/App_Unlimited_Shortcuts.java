@@ -558,7 +558,7 @@ public class App_Unlimited_Shortcuts extends Service {
                     if (openIt[startId]) {
                         if (functionsClassSecurity.isAppLocked(packages[startId])) {
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packages[startId]);
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthUnlockIt(false);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(false);
 
                             functionsClassSecurity.openAuthInvocation();
                         } else if (functionsClass.splashReveal()) {

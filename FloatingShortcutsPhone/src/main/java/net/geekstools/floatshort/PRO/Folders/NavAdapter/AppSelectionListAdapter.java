@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
@@ -31,16 +32,22 @@ import java.util.ArrayList;
 
 public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionListAdapter.ViewHolder> {
 
+    private Context context;
+    private Activity activity;
+
     FunctionsClass functionsClass;
+    FunctionsClassSecurity functionsClassSecurity;
+
     ImageView tempIcon;
-    float fromX, fromY, toX, toY, dpHeight, dpWidth, systemUiHeight;
-    int animationType, layoutInflater;
     CheckBox[] autoChoice;
     View view;
     ViewHolder viewHolder;
+
+    float fromX, fromY, toX, toY, dpHeight, dpWidth, systemUiHeight;
+    int animationType, layoutInflater;
+
     LoadCustomIcons loadCustomIcons;
-    private Context context;
-    private Activity activity;
+
     private ArrayList<NavDrawerItem> navDrawerItems;
 
     public AppSelectionListAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems) {
@@ -49,7 +56,10 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
         this.navDrawerItems = navDrawerItems;
 
         autoChoice = new CheckBox[navDrawerItems.size()];
+
         functionsClass = new FunctionsClass(context, activity);
+        functionsClassSecurity = new FunctionsClassSecurity(context);
+
         tempIcon = functionsClass.initShapesImage(activity, R.id.tempIcon);
 
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -134,6 +144,10 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
 
                             context.sendBroadcast(new Intent(context.getString(R.string.savedActionHideAdvance)));
                             context.sendBroadcast(new Intent(context.getString(R.string.visibilityActionAdvance)));
+
+                            if (functionsClassSecurity.isAppLocked(PublicVariable.categoryName)) {
+                                functionsClassSecurity.doUnlockApps(navDrawerItems.get(position).getPackageName());
+                            }
                         } else {
                             functionsClass.saveFile(
                                     pack + PublicVariable.categoryName, pack);
@@ -141,13 +155,16 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                                     PublicVariable.categoryName, pack);
                             autoChoice[position].setChecked(true);
 
+                            if (functionsClassSecurity.isAppLocked(PublicVariable.categoryName)) {
+                                functionsClassSecurity.doLockApps(navDrawerItems.get(position).getPackageName());
+                            }
+
                             TranslateAnimation translateAnimation =
                                     new TranslateAnimation(animationType, fromX,
                                             animationType, toX,
                                             animationType, fromY,
                                             animationType, toY);
                             translateAnimation.setDuration((long) Math.abs(fromY));
-
 
                             tempIcon.setImageDrawable(functionsClass.loadCustomIcons() ?
                                     loadCustomIcons.getDrawableIconForPackage(navDrawerItems.get(position).getPackageName(), functionsClass.shapedAppIcon(navDrawerItems.get(position).getPackageName()))
