@@ -243,6 +243,7 @@
     <string name="passwordHintRepeat">Repeat New Pin Password 🔑 </string>
     <string name="enterCurrentPassword">Enter Current Password 🔑 </string>
     <string name="forgetPassword">Forgot Your Password? 🤔 </string>
+    <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 </string>
     <!-- Finger Print -->
     <!-- Security Options -->
 
