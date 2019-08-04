@@ -12,7 +12,6 @@ public class PublicVariable {
 
     public static Context contextStatic;
 
-    public static int appInfoCount = 0;
     public static int floatingCounter = 0;
     public static int shortcutsCounter = -1;
 
@@ -52,8 +51,6 @@ public class PublicVariable {
     public static String previousDuplicated;
     public static final String WIDGET_DATA_DATABASE_NAME = "WidgetData";
 
-    public static String[] freqApps;
-
     public static boolean inMemory = false;
     public static boolean hearBeatCheckPoint = false;
     public static boolean themeLightDark = true;
@@ -67,6 +64,8 @@ public class PublicVariable {
     public static boolean splitScreen = true;
     public static boolean triggerWifiBroadcast = false;
     public static boolean forceReload = false;
+
+    public static String[] freqApps;
 
     public static ArrayList<String> FloatingShortcuts = new ArrayList<String>();
     public static ArrayList<String> RecoveryShortcuts = new ArrayList<String>();

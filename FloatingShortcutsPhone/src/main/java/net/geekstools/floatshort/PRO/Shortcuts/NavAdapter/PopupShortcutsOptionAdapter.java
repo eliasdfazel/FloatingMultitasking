@@ -21,6 +21,7 @@ import android.widget.TextView;
 import net.geekstools.floatshort.PRO.CheckPoint;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
@@ -34,8 +35,10 @@ import static android.content.Context.ACCESSIBILITY_SERVICE;
 
 public class PopupShortcutsOptionAdapter extends BaseAdapter {
 
-    FunctionsClass functionsClass;
     private Context context;
+
+    FunctionsClass functionsClass;
+    FunctionsClassSecurity functionsClassSecurity;
 
     private ArrayList<NavDrawerItem> navDrawerItems;
     private String packageName, className, classNameCommand;
@@ -50,6 +53,8 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         this.startId = startId;
 
         functionsClass = new FunctionsClass(context);
+        functionsClassSecurity = new FunctionsClassSecurity(context);
+
         FunctionsClass.println("*** Command ClassName ::: " + classNameCommand + " ***");
     }
 
@@ -63,6 +68,8 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         this.startId = startId;
 
         functionsClass = new FunctionsClass(context);
+        functionsClassSecurity = new FunctionsClassSecurity(context);
+
         FunctionsClass.println("*** Command ClassName ::: " + classNameCommand + " ***");
     }
 
@@ -117,21 +124,33 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 if (navDrawerItems.get(position).getPackageName().equals(context.getString(R.string.splitIt))) {
-                    if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                        context.startActivity(new Intent(context, CheckPoint.class)
-                                .putExtra(context.getString(R.string.splitIt), context.getPackageName())
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    if (functionsClassSecurity.isAppLocked(packageName)) {
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packageName);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(className);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(false);
+
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthSplitIt(true);
+
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthClassNameCommand(classNameCommand);
+
+                        functionsClassSecurity.openAuthInvocation();
                     } else {
-                        final AccessibilityManager accessibilityManager = (AccessibilityManager) context.getSystemService(ACCESSIBILITY_SERVICE);
-                        PublicVariable.splitSinglePackage = packageName;
-                        PublicVariable.splitSingleClassName = className;
-                        AccessibilityEvent event = AccessibilityEvent.obtain();
-                        event.setSource(view);
-                        event.setEventType(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
-                        event.setAction(69201);
-                        event.setClassName(classNameCommand);
-                        event.getText().add(context.getPackageName());
-                        accessibilityManager.sendAccessibilityEvent(event);
+                        if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
+                            context.startActivity(new Intent(context, CheckPoint.class)
+                                    .putExtra(context.getString(R.string.splitIt), context.getPackageName())
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        } else {
+                            final AccessibilityManager accessibilityManager = (AccessibilityManager) context.getSystemService(ACCESSIBILITY_SERVICE);
+                            PublicVariable.splitSinglePackage = packageName;
+                            PublicVariable.splitSingleClassName = className;
+                            AccessibilityEvent event = AccessibilityEvent.obtain();
+                            event.setSource(view);
+                            event.setEventType(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
+                            event.setAction(69201);
+                            event.setClassName(classNameCommand);
+                            event.getText().add(context.getPackageName());
+                            accessibilityManager.sendAccessibilityEvent(event);
+                        }
                     }
                 } else if (navDrawerItems.get(position).getPackageName().equals(context.getString(R.string.pin))) {
                     context.sendBroadcast(new Intent("Pin_App_" + classNameCommand).putExtra("startId", startId));

@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,14 +33,18 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import net.geekstools.floatshort.PRO.CheckPoint;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.UI.FingerprintUiHelper;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.imageview.customshapes.ShapesImage;
+
+import static android.content.Context.ACCESSIBILITY_SERVICE;
 
 public class FingerprintAuthenticationDialogFragment extends DialogFragment {
 
@@ -159,6 +165,23 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
+                                    }
+                                } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSplitIt()) {
+                                    if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
+                                        getContext().startActivity(new Intent(getContext(), CheckPoint.class)
+                                                .putExtra(getContext().getString(R.string.splitIt), getContext().getPackageName())
+                                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                                    } else {
+                                        final AccessibilityManager accessibilityManager = (AccessibilityManager) getContext().getSystemService(ACCESSIBILITY_SERVICE);
+                                        PublicVariable.splitSinglePackage = FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName();
+                                        PublicVariable.splitSingleClassName = FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName();
+                                        AccessibilityEvent accessibilityEvent = AccessibilityEvent.obtain();
+                                        accessibilityEvent.setSource(FunctionsClassSecurity.AuthOpenAppValues.getAnchorView());
+                                        accessibilityEvent.setEventType(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
+                                        accessibilityEvent.setAction(69201);
+                                        accessibilityEvent.setClassName(FunctionsClassSecurity.AuthOpenAppValues.getAuthClassNameCommand());
+                                        accessibilityEvent.getText().add(getContext().getPackageName());
+                                        accessibilityManager.sendAccessibilityEvent(accessibilityEvent);
                                     }
                                 } else {
                                     if (functionsClass.splashReveal()) {
