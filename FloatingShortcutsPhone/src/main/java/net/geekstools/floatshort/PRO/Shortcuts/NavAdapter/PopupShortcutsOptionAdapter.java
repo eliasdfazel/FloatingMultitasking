@@ -129,7 +129,7 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(className);
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(false);
 
-                        FunctionsClassSecurity.AuthOpenAppValues.setAuthSplitIt(true);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleSplitIt(true);
 
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthClassNameCommand(classNameCommand);
 

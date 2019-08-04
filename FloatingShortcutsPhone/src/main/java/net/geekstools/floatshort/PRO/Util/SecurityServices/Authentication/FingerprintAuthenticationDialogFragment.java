@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -166,7 +167,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
                                             e.printStackTrace();
                                         }
                                     }
-                                } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSplitIt()) {
+                                } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSingleSplitIt()) {
                                     if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
                                         getContext().startActivity(new Intent(getContext(), CheckPoint.class)
                                                 .putExtra(getContext().getString(R.string.splitIt), getContext().getPackageName())
@@ -179,6 +180,21 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
                                         accessibilityEvent.setSource(FunctionsClassSecurity.AuthOpenAppValues.getAnchorView());
                                         accessibilityEvent.setEventType(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
                                         accessibilityEvent.setAction(69201);
+                                        accessibilityEvent.setClassName(FunctionsClassSecurity.AuthOpenAppValues.getAuthClassNameCommand());
+                                        accessibilityEvent.getText().add(getContext().getPackageName());
+                                        accessibilityManager.sendAccessibilityEvent(accessibilityEvent);
+                                    }
+                                } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthPairSplitIt()) {
+                                    if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
+                                        getContext().startActivity(new Intent(getContext(), CheckPoint.class)
+                                                .putExtra(getContext().getString(R.string.splitIt), getContext().getPackageName())
+                                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                                    } else {
+                                        final AccessibilityManager accessibilityManager = (AccessibilityManager) getContext().getSystemService(ACCESSIBILITY_SERVICE);
+                                        AccessibilityEvent accessibilityEvent = AccessibilityEvent.obtain();
+                                        accessibilityEvent.setSource(FunctionsClassSecurity.AuthOpenAppValues.getAnchorView());
+                                        accessibilityEvent.setEventType(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
+                                        accessibilityEvent.setAction(10296);
                                         accessibilityEvent.setClassName(FunctionsClassSecurity.AuthOpenAppValues.getAuthClassNameCommand());
                                         accessibilityEvent.getText().add(getContext().getPackageName());
                                         accessibilityManager.sendAccessibilityEvent(accessibilityEvent);
@@ -209,6 +225,13 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
                                 fingerprintHint.setText(getString(R.string.passwordError));
                             }
                         }
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                functionsClassSecurity.resetAuthAppValues();
+                            }
+                        }, 500);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

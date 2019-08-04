@@ -43,15 +43,15 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
 
     private ArrayList<NavDrawerItem> navDrawerItems;
 
-    private String folderName, className;
+    private String folderName, classNameCommand;
     private int startId, layoutInflater, xPosition, yPosition, HW;
 
-    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String folderName, String className, int startId) {
+    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String folderName, String classNameCommand, int startId) {
         this.context = context;
         this.navDrawerItems = navDrawerItems;
 
         this.folderName = folderName;
-        this.className = className;
+        this.classNameCommand = classNameCommand;
 
         this.startId = startId;
 
@@ -83,13 +83,13 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         }
     }
 
-    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String folderName, String className, int startId,
+    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String folderName, String classNameCommand, int startId,
                                       int xPosition, int yPosition, int HW) {
         this.context = context;
         this.navDrawerItems = navDrawerItems;
 
         this.folderName = folderName;
-        this.className = className;
+        this.classNameCommand = classNameCommand;
 
         this.startId = startId;
         this.xPosition = xPosition;
@@ -225,25 +225,34 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                         context.startActivity(new Intent(context, FoldersHandler.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.remove_category))) {
-                        context.sendBroadcast(new Intent("Remove_Category_" + className).putExtra("startId", startId));
+                        context.sendBroadcast(new Intent("Remove_Category_" + classNameCommand).putExtra("startId", startId));
                     } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.unpin_category))) {
-                        context.sendBroadcast(new Intent("Unpin_App_" + className).putExtra("startId", startId));
+                        context.sendBroadcast(new Intent("Unpin_App_" + classNameCommand).putExtra("startId", startId));
                     } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.pin_category))) {
-                        context.sendBroadcast(new Intent("Pin_App_" + className).putExtra("startId", startId));
+                        context.sendBroadcast(new Intent("Pin_App_" + classNameCommand).putExtra("startId", startId));
                     } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.splitIt))) {
-                        if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                            context.startActivity(new Intent(context, CheckPoint.class)
-                                    .putExtra(context.getString(R.string.splitIt), context.getPackageName())
-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        if (functionsClassSecurity.isAppLocked(navDrawerItems.get(position).getPackageName()) || functionsClassSecurity.isAppLocked(folderName)) {
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(folderName);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPairSplitIt(true);
+
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthClassNameCommand(classNameCommand);
+
+                            functionsClassSecurity.openAuthInvocation();
                         } else {
-                            final AccessibilityManager accessibilityManager = (AccessibilityManager) context.getSystemService(ACCESSIBILITY_SERVICE);
-                            AccessibilityEvent event = AccessibilityEvent.obtain();
-                            event.setSource(view);
-                            event.setEventType(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
-                            event.setAction(10296);
-                            event.setClassName(className);
-                            event.getText().add(context.getPackageName());
-                            accessibilityManager.sendAccessibilityEvent(event);
+                            if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
+                                context.startActivity(new Intent(context, CheckPoint.class)
+                                        .putExtra(context.getString(R.string.splitIt), context.getPackageName())
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            } else {
+                                final AccessibilityManager accessibilityManager = (AccessibilityManager) context.getSystemService(ACCESSIBILITY_SERVICE);
+                                AccessibilityEvent event = AccessibilityEvent.obtain();
+                                event.setSource(view);
+                                event.setEventType(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
+                                event.setAction(10296);
+                                event.setClassName(classNameCommand);
+                                event.getText().add(context.getPackageName());
+                                accessibilityManager.sendAccessibilityEvent(event);
+                            }
                         }
                     } else {
                         if (functionsClassSecurity.isAppLocked(navDrawerItems.get(position).getPackageName()) || functionsClassSecurity.isAppLocked(folderName)) {
@@ -298,7 +307,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                             event.setSource(view);
                             event.setEventType(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
                             event.setAction(69201);
-                            event.setClassName(className);
+                            event.setClassName(classNameCommand);
                             event.getText().add(context.getPackageName());
                             accessibilityManager.sendAccessibilityEvent(event);
                         }

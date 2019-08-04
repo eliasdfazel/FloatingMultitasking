@@ -82,7 +82,8 @@ class FunctionsClassSecurity {
         var authFolderUnlockIt: Boolean = false
         var authForgotPinPassword: Boolean = false
 
-        var authSplitIt: Boolean = false
+        var authSingleSplitIt: Boolean = false
+        var authPairSplitIt: Boolean = false
         var authFreeform: Boolean = false
 
         var keyStore: KeyStore? = null
@@ -105,7 +106,8 @@ class FunctionsClassSecurity {
         AuthOpenAppValues.authFolderUnlockIt = false
         AuthOpenAppValues.authForgotPinPassword = false
 
-        AuthOpenAppValues.authSplitIt = false
+        AuthOpenAppValues.authSingleSplitIt = false
+        AuthOpenAppValues.authPairSplitIt = false
         AuthOpenAppValues.authFreeform = false
 
         AuthOpenAppValues.keyStore = null
@@ -147,19 +149,20 @@ class FunctionsClassSecurity {
         } catch (e: KeyPermanentlyInvalidatedException) {
             return false
         } catch (e: KeyStoreException) {
-            throw RuntimeException("Failed to init Cipher", e)
+            return false
         } catch (e: CertificateException) {
-            throw RuntimeException("Failed to init Cipher", e)
+            return false
         } catch (e: UnrecoverableKeyException) {
-            throw RuntimeException("Failed to init Cipher", e)
+            return false
         } catch (e: IOException) {
-            throw RuntimeException("Failed to init Cipher", e)
+            return false
         } catch (e: NoSuchAlgorithmException) {
-            throw RuntimeException("Failed to init Cipher", e)
+            return false
         } catch (e: InvalidKeyException) {
-            throw RuntimeException("Failed to init Cipher", e)
+            return false
+        } catch (e: KotlinNullPointerException) {
+            return false
         }
-
     }
 
     fun Authed(withFingerprint: Boolean, cryptoObject: FingerprintManager.CryptoObject?) {
@@ -183,7 +186,7 @@ class FunctionsClassSecurity {
                 /*
                 *
                 * */
-            } else if (AuthOpenAppValues.authSplitIt) {
+            } else if (AuthOpenAppValues.authSingleSplitIt) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Split It ***")
 
                 if (!FunctionsClass(context).AccessibilityServiceEnabled() && !FunctionsClass(context).SettingServiceRunning(InteractionObserver::class.java)) {
@@ -199,6 +202,21 @@ class FunctionsClassSecurity {
                     event.eventType = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
                     event.action = 69201
                     event.className = AuthOpenAppValues.authClassNameCommand
+                    event.text.add(context.packageName)
+                    accessibilityManager.sendAccessibilityEvent(event)
+                }
+            } else if (AuthOpenAppValues.authPairSplitIt) {
+                if (!FunctionsClass(context).AccessibilityServiceEnabled() && !FunctionsClass(context).SettingServiceRunning(InteractionObserver::class.java)) {
+                    context.startActivity(Intent(context, CheckPoint::class.java)
+                            .putExtra(context.getString(R.string.splitIt), context.packageName)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                } else {
+                    val accessibilityManager = context.getSystemService(ACCESSIBILITY_SERVICE) as AccessibilityManager
+                    val event = AccessibilityEvent.obtain()
+                    event.setSource(FunctionsClassSecurity.anchorView)
+                    event.eventType = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+                    event.action = 10296
+                    event.className = FunctionsClassSecurity.authClassNameCommand
                     event.text.add(context.packageName)
                     accessibilityManager.sendAccessibilityEvent(event)
                 }
