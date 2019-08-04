@@ -273,7 +273,7 @@ public class PopupOptionsFloatingCategory extends Service {
 
                 popupCategoryOptionAdapter =
                         new PopupCategoryOptionAdapter(getApplicationContext(),
-                                navDrawerItemsSaved, classNameCommand, startIdCommand);
+                                navDrawerItemsSaved, categoryName, classNameCommand, startIdCommand);
             } else if (MODE.equals("AppsList")) {
                 packagesNames = intent.getStringArrayExtra("PackagesNames");
 
@@ -384,7 +384,7 @@ public class PopupOptionsFloatingCategory extends Service {
 
                 popupCategoryOptionAdapter =
                         new PopupCategoryOptionAdapter(getApplicationContext(),
-                                navDrawerItemsSaved, classNameCommand, startIdCommand, xPosition, yPosition, HW);
+                                navDrawerItemsSaved, categoryName, classNameCommand, startIdCommand, xPosition, yPosition, HW);
             }
 
             popupOptionsItems.setAdapter(popupCategoryOptionAdapter);

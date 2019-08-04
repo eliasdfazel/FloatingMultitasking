@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/securityOptions">
+    <PreferenceCategory android:title="@string/securityServices">
         <Preference
             android:key="pinPassword"
             android:icon="@drawable/draw_security_preferences"

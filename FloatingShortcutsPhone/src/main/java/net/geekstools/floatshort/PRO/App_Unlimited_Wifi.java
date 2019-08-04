@@ -552,6 +552,15 @@ public class App_Unlimited_Wifi extends Service {
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packages[startId]);
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(false);
 
+                            if (moveDetection != null) {
+                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(moveDetection.x);
+                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(moveDetection.y);
+                            } else {
+                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(layoutParams[startId].x);
+                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(layoutParams[startId].y);
+                            }
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthHW(layoutParams[startId].width);
+
                             functionsClassSecurity.openAuthInvocation();
                         } else if (functionsClass.splashReveal()) {
                             Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);

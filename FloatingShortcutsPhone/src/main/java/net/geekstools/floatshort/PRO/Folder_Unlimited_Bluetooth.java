@@ -811,6 +811,7 @@ public class Folder_Unlimited_Bluetooth extends Service {
                             layoutParams[startId].width
                     );
                 } else {
+
                 }
             }
         });

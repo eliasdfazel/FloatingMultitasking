@@ -17,6 +17,7 @@ import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthActivityHelper
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.FingerprintAuthenticationDialogFragment
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.HandlePinPassword
+import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash
 import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
@@ -110,9 +111,8 @@ class FunctionsClassSecurity {
     }
 
     fun openAuthInvocation() {
-        val activityOptions = ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out)
         context.startActivity(Intent(context, AuthActivityHelper::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), activityOptions.toBundle())
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
     }
 
     fun initCipher(cipher: Cipher, keyName: String): Boolean {
@@ -159,7 +159,25 @@ class FunctionsClassSecurity {
                 *
                 * */
             } else {
-                FunctionsClass(context).appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.authComponentName)
+                if (FunctionsClass(context).splashReveal()) {
+                    val splashReveal = Intent(context, FloatingSplash::class.java)
+                    splashReveal.putExtra("packageName", FunctionsClassSecurity.authComponentName)
+                    splashReveal.putExtra("X", FunctionsClassSecurity.authPositionX)
+                    splashReveal.putExtra("Y", FunctionsClassSecurity.authPositionY)
+                    splashReveal.putExtra("HW", FunctionsClassSecurity.authHW)
+                    context.startService(splashReveal)
+                } else {
+                    if (FunctionsClass(context).FreeForm()) {
+                        FunctionsClass(context).openApplicationFreeForm(FunctionsClassSecurity.authComponentName,
+                                FunctionsClassSecurity.authPositionX,
+                                FunctionsClass(context).displayX() / 2,
+                                FunctionsClassSecurity.authPositionY,
+                                FunctionsClass(context).displayY() / 2
+                        )
+                    } else {
+                        FunctionsClass(context).appsLaunchPad(FunctionsClassSecurity.authComponentName)
+                    }
+                }
             }
         } else {
 

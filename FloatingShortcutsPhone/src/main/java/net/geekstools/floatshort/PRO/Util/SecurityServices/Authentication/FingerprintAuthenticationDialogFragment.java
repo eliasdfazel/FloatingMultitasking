@@ -37,6 +37,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.UI.FingerprintUiHelper;
+import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 public class FingerprintAuthenticationDialogFragment extends DialogFragment {
@@ -160,7 +161,25 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
                                         }
                                     }
                                 } else {
-                                    functionsClass.appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                    if (functionsClass.splashReveal()) {
+                                        Intent splashReveal = new Intent(getContext(), FloatingSplash.class);
+                                        splashReveal.putExtra("packageName", FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                        splashReveal.putExtra("X", FunctionsClassSecurity.AuthOpenAppValues.getAuthPositionX());
+                                        splashReveal.putExtra("Y", FunctionsClassSecurity.AuthOpenAppValues.getAuthPositionY());
+                                        splashReveal.putExtra("HW", FunctionsClassSecurity.AuthOpenAppValues.getAuthHW());
+                                        getContext().startService(splashReveal);
+                                    } else {
+                                        if (functionsClass.FreeForm()) {
+                                            functionsClass.openApplicationFreeForm(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName(),
+                                                    FunctionsClassSecurity.AuthOpenAppValues.getAuthPositionX(),
+                                                    (functionsClass.displayX() / 2),
+                                                    FunctionsClassSecurity.AuthOpenAppValues.getAuthPositionY(),
+                                                    (functionsClass.displayY() / 2)
+                                            );
+                                        } else {
+                                            functionsClass.appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                        }
+                                    }
                                 }
                             } else {
                                 fingerprintHint.setTextColor(getContext().getColor(R.color.warning_color));
@@ -178,7 +197,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
         password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
-                FunctionsClassDebug.Companion.PrintDebug("*** Pin Password ==" + sequence.toString() + " ***");
+
             }
 
             @Override

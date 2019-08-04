@@ -46,6 +46,7 @@ public class Configurations extends Activity {
                 .build();
         Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
         FirebaseApp.initializeApp(getApplicationContext());
+        PublicVariable.contextStatic = getApplicationContext();
 
         functionsClass = new FunctionsClass(getApplicationContext(), Configurations.this);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);

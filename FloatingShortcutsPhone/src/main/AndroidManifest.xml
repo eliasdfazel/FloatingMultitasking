@@ -315,6 +315,7 @@
         <activity
             android:name=".Util.SecurityServices.Authentication.AuthActivityHelper"
             android:noHistory="true"
+            android:excludeFromRecents="true"
             android:theme="@style/AuthTransparent" />
         <activity
             android:name=".Util.SecurityServices.Authentication.HandlePinPassword"

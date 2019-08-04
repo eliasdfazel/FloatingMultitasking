@@ -811,6 +811,7 @@ public class Folder_Unlimited_Gps extends Service {
                             layoutParams[startId].width
                     );
                 } else {
+
                 }
             }
         });

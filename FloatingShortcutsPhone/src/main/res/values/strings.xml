@@ -226,7 +226,7 @@
     </string>
 
     <!-- Security Options -->
-    <string name="securityOptions">Security Options</string>
+    <string name="securityServices">Security Services</string>
     <string name="changePin">Pin Password</string>
     <string name="changePinSummary">Create Or Edit Pin Password</string>
     <string name="passwordError">Password Error ⚠</string>

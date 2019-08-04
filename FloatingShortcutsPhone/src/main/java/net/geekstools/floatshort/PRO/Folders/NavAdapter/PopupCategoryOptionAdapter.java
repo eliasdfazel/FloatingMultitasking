@@ -43,13 +43,16 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
 
     private ArrayList<NavDrawerItem> navDrawerItems;
 
-    private String className;
+    private String folderName, className;
     private int startId, layoutInflater, xPosition, yPosition, HW;
 
-    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String className, int startId) {
+    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String folderName, String className, int startId) {
         this.context = context;
         this.navDrawerItems = navDrawerItems;
+
+        this.folderName = folderName;
         this.className = className;
+
         this.startId = startId;
 
         functionsClass = new FunctionsClass(context);
@@ -80,11 +83,14 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         }
     }
 
-    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String className, int startId,
+    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String folderName, String className, int startId,
                                       int xPosition, int yPosition, int HW) {
         this.context = context;
         this.navDrawerItems = navDrawerItems;
+
+        this.folderName = folderName;
         this.className = className;
+
         this.startId = startId;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
@@ -240,7 +246,16 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                             accessibilityManager.sendAccessibilityEvent(event);
                         }
                     } else {
-                        if (functionsClass.splashReveal()) {
+                        if (functionsClassSecurity.isAppLocked(navDrawerItems.get(position).getPackageName()) || functionsClassSecurity.isAppLocked(folderName)) {
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(navDrawerItems.get(position).getPackageName());
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(false);
+
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(xPosition);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(yPosition);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthHW(HW);
+
+                            functionsClassSecurity.openAuthInvocation();
+                        } else if (functionsClass.splashReveal()) {
                             Intent splashReveal = new Intent(context, FloatingSplash.class);
                             splashReveal.putExtra("packageName", navDrawerItems.get(position).getPackageName());
                             splashReveal.putExtra("X", xPosition);
@@ -248,12 +263,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                             splashReveal.putExtra("HW", HW);
                             context.startService(splashReveal);
                         } else {
-                            if (functionsClassSecurity.isAppLocked(navDrawerItems.get(position).getPackageName())) {
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(navDrawerItems.get(position).getPackageName());
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(false);
-
-                                functionsClassSecurity.openAuthInvocation();
-                            } else if (functionsClass.FreeForm()) {
+                            if (functionsClass.FreeForm()) {
                                 functionsClass.openApplicationFreeForm(navDrawerItems.get(position).getPackageName(),
                                         xPosition,
                                         (functionsClass.displayX() / 2),
