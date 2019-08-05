@@ -318,7 +318,7 @@
             android:excludeFromRecents="true"
             android:theme="@style/AuthTransparent" />
         <activity
-            android:name=".Util.SecurityServices.Authentication.HandlePinPassword"
+            android:name=".Util.SecurityServices.Authentication.PinPassword.HandlePinPassword"
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:theme="@style/GeeksEmpire.Material"
@@ -337,7 +337,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.SecurityServices.Authentication.PasswordVerification"
+            android:name=".Util.SecurityServices.Authentication.PinPassword.PasswordVerification"
             android:label="@string/app_name"
             android:noHistory="true"
             android:excludeFromRecents="true"

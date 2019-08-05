@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication
+package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword
 
 import android.app.Activity
 import android.app.ActivityOptions

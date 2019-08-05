@@ -32,6 +32,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import net.geekstools.floatshort.PRO.CheckPoint;
@@ -41,13 +43,13 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
-import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.UI.FingerprintUiHelper;
+import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.Fingerprint.FingerprintProcessHelper;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import static android.content.Context.ACCESSIBILITY_SERVICE;
 
-public class FingerprintAuthenticationDialogFragment extends DialogFragment {
+public class AuthenticationDialogFragment extends DialogFragment {
 
     private FunctionsClass functionsClass;
     private FunctionsClassSecurity functionsClassSecurity;
@@ -58,11 +60,12 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
     private ShapesImage dialogueIcon;
     private ImageView fingerprintIcon;
     private TextView dialogueTitle, fingerprintHint;
-    private EditText password;
+    private TextInputLayout textInputPassword;
+    private TextInputEditText password;
     private Button cancelAuth;
 
     private FingerprintManager.CryptoObject cryptoObject;
-    private FingerprintUiHelper fingerprintUiHelper;
+    private FingerprintProcessHelper fingerprintProcessHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,7 +109,8 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
         fingerprintIcon = (ImageView) viewContainer.findViewById(R.id.fingerprint_icon);
         dialogueTitle = (TextView) viewContainer.findViewById(R.id.dialogueTitle);
         fingerprintHint = (TextView) viewContainer.findViewById(R.id.fingerprint_status);
-        password = (EditText) viewContainer.findViewById(R.id.password);
+        textInputPassword = (TextInputLayout) viewContainer.findViewById(R.id.textInputPassword);
+        password = (TextInputEditText) viewContainer.findViewById(R.id.password);
         cancelAuth = (Button) viewContainer.findViewById(R.id.cancelAuth);
 
         fingerprintContent.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
@@ -129,9 +133,12 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
 
         dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
         fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
+        cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
+
         password.setHintTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
         password.setTextColor(PublicVariable.colorLightDarkOpposite);
-        cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
+        textInputPassword.setHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()))));
+        textInputPassword.setDefaultHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()))));
 
         password.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
@@ -231,7 +238,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
                             public void run() {
                                 functionsClassSecurity.resetAuthAppValues();
                             }
-                        }, 500);
+                        }, 333);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -261,16 +268,16 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
         if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
             FunctionsClassDebug.Companion.PrintDebug("*** Finger Print Available ***");
 
-            fingerprintUiHelper = new FingerprintUiHelper(
+            fingerprintProcessHelper = new FingerprintProcessHelper(
                     getContext(),
                     getActivity().getSystemService(FingerprintManager.class),
                     fingerprintIcon,
                     fingerprintHint,
                     password,
-                    new FingerprintUiHelper.Callback() {
+                    new FingerprintProcessHelper.Callback() {
                         @Override
                         public void onAuthenticated() {
-                            functionsClassSecurity.Authed(true, FingerprintAuthenticationDialogFragment.this.cryptoObject);
+                            functionsClassSecurity.Authed(true, AuthenticationDialogFragment.this.cryptoObject);
 
                             dismiss();
                             try {
@@ -295,6 +302,8 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
                         fingerprintHint.setText("");
 
                         fingerprintIcon.setVisibility(View.INVISIBLE);
+
+                        textInputPassword.setVisibility(View.VISIBLE);
                         password.setVisibility(View.VISIBLE);
 
                         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
@@ -314,6 +323,8 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
             fingerprintHint.setText("");
 
             fingerprintIcon.setVisibility(View.INVISIBLE);
+
+            textInputPassword.setVisibility(View.VISIBLE);
             password.setVisibility(View.VISIBLE);
 
             WindowManager.LayoutParams layoutParamsPin = new WindowManager.LayoutParams();
@@ -338,7 +349,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
-            fingerprintUiHelper.startListening(this.cryptoObject);
+            fingerprintProcessHelper.startListening(this.cryptoObject);
         }
     }
 
@@ -346,7 +357,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment {
     public void onPause() {
         super.onPause();
         if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
-            fingerprintUiHelper.stopListening();
+            fingerprintProcessHelper.stopListening();
         }
     }
 

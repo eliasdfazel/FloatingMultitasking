@@ -1041,7 +1041,8 @@ public class FunctionsClass {
                 );
             }
             PopupShortcutsNotification popupShortcutsNotification =
-                    new PopupShortcutsNotification(context, navDrawerItemsSaved, className, notificationPackage, startId);
+                    new PopupShortcutsNotification(context, navDrawerItemsSaved, className, notificationPackage, startId,
+                            X, Y, view.getWidth());
 
             final ListPopupWindow listPopupWindow = new ListPopupWindow(context);
             listPopupWindow.setAdapter(popupShortcutsNotification);
@@ -4002,7 +4003,6 @@ public class FunctionsClass {
                 } else if (item.getItemId() == 5) {
                     if (functionsClassSecurity.isAppLocked(categoryName)) {
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(categoryName);
-                        FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(false);
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthFolderUnlockIt(true);
 
                         functionsClassSecurity.openAuthInvocation();

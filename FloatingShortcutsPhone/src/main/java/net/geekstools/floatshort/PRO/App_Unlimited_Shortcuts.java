@@ -234,6 +234,9 @@ public class App_Unlimited_Shortcuts extends Service {
         layoutParams[startId] = functionsClass.normalLayoutParams(PublicVariable.HW, xPos, yPos);
         windowManager.addView(floatingView[startId], layoutParams[startId]);
 
+        xMove = xPos;
+        yMove = yPos;
+
         shapedIcon[startId].setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
 
         if (!functionsClass.litePreferencesEnabled()) {
@@ -558,7 +561,6 @@ public class App_Unlimited_Shortcuts extends Service {
                     if (openIt[startId]) {
                         if (functionsClassSecurity.isAppLocked(packages[startId])) {
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packages[startId]);
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(false);
 
                             if (moveDetection != null) {
                                 FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(moveDetection.x);
@@ -570,28 +572,30 @@ public class App_Unlimited_Shortcuts extends Service {
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthHW(layoutParams[startId].width);
 
                             functionsClassSecurity.openAuthInvocation();
-                        } else if (functionsClass.splashReveal()) {
-                            Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);
-                            splashReveal.putExtra("packageName", packages[startId]);
-                            if (moveDetection != null) {
-                                splashReveal.putExtra("X", moveDetection.x);
-                                splashReveal.putExtra("Y", moveDetection.y);
-                            } else {
-                                splashReveal.putExtra("X", layoutParams[startId].x);
-                                splashReveal.putExtra("Y", layoutParams[startId].y);
-                            }
-                            splashReveal.putExtra("HW", layoutParams[startId].width);
-                            startService(splashReveal);
                         } else {
-                            if (functionsClass.FreeForm()) {
-                                functionsClass.openApplicationFreeForm(packages[startId],
-                                        layoutParams[startId].x,
-                                        (functionsClass.displayX() / 2),
-                                        layoutParams[startId].y,
-                                        (functionsClass.displayY() / 2)
-                                );
+                            if (functionsClass.splashReveal()) {
+                                Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);
+                                splashReveal.putExtra("packageName", packages[startId]);
+                                if (moveDetection != null) {
+                                    splashReveal.putExtra("X", moveDetection.x);
+                                    splashReveal.putExtra("Y", moveDetection.y);
+                                } else {
+                                    splashReveal.putExtra("X", layoutParams[startId].x);
+                                    splashReveal.putExtra("Y", layoutParams[startId].y);
+                                }
+                                splashReveal.putExtra("HW", layoutParams[startId].width);
+                                startService(splashReveal);
                             } else {
-                                functionsClass.appsLaunchPad(packages[startId]);
+                                if (functionsClass.FreeForm()) {
+                                    functionsClass.openApplicationFreeForm(packages[startId],
+                                            layoutParams[startId].x,
+                                            (functionsClass.displayX() / 2),
+                                            layoutParams[startId].y,
+                                            (functionsClass.displayY() / 2)
+                                    );
+                                } else {
+                                    functionsClass.appsLaunchPad(packages[startId]);
+                                }
                             }
                         }
                     } else {

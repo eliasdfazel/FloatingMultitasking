@@ -23,8 +23,8 @@ import net.geekstools.floatshort.PRO.CheckPoint
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthActivityHelper
-import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.FingerprintAuthenticationDialogFragment
-import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.HandlePinPassword
+import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthenticationDialogFragment
+import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash
 import java.io.File
 import java.io.IOException
@@ -122,14 +122,14 @@ class FunctionsClassSecurity {
                 if (initCipher(this.cipher!!, this.keyName)) {
                     FunctionsClassDebug.PrintDebug("*** Finger Print Available ***")
 
-                    val fingerprintAuthenticationDialogFragment = FingerprintAuthenticationDialogFragment()
+                    val fingerprintAuthenticationDialogFragment = AuthenticationDialogFragment()
                     fingerprintAuthenticationDialogFragment.setCryptoObject(FingerprintManager.CryptoObject(this.cipher))
                     fingerprintAuthenticationDialogFragment.show(activity.fragmentManager, context.packageName)
                 }
             } else {
                 FunctionsClassDebug.PrintDebug("*** Finger Print Not Available ***")
 
-                val fingerprintAuthenticationDialogFragment = FingerprintAuthenticationDialogFragment()
+                val fingerprintAuthenticationDialogFragment = AuthenticationDialogFragment()
                 fingerprintAuthenticationDialogFragment.show(activity.fragmentManager, context.packageName)
             }
         }
@@ -246,7 +246,7 @@ class FunctionsClassSecurity {
 
             Handler().postDelayed({
                 resetAuthAppValues()
-            }, 500)
+            }, 333)
         } else {
 
         }

@@ -15,29 +15,43 @@ import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.util.ArrayList;
 
 public class PopupShortcutsNotification extends BaseAdapter {
 
-    FunctionsClass functionsClass;
     private Context context;
+
+    FunctionsClass functionsClass;
+    FunctionsClassSecurity functionsClassSecurity;
+
     private ArrayList<NavDrawerItem> navDrawerItems;
+
     private String packageName, className;
-    private int startId, layoutInflator;
+    private int startId, layoutInflator, xPosition, yPosition, HW;
 
     public PopupShortcutsNotification(Context context, ArrayList<NavDrawerItem> navDrawerItems,
-                                      String className, String packageName, int startId) {
+                                      String className, String packageName, int startId, int xPosition, int yPosition, int HW) {
         this.context = context;
+
         this.navDrawerItems = navDrawerItems;
+
         this.className = className;
         this.packageName = packageName;
+
         this.startId = startId;
 
+        this.xPosition = xPosition;
+        this.yPosition = yPosition;
+        this.HW = HW;
+
         functionsClass = new FunctionsClass(context);
+        functionsClassSecurity = new FunctionsClassSecurity(context);
 
         switch (functionsClass.shapesImageId()) {
             case 1:
@@ -129,7 +143,38 @@ public class PopupShortcutsNotification extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                functionsClass.appsLaunchPad(packageName);
+                if (functionsClassSecurity.isAppLocked(packageName)) {
+                    FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packageName);
+
+                    FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(xPosition);
+                    FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(yPosition);
+                    FunctionsClassSecurity.AuthOpenAppValues.setAuthHW(HW);
+
+                    functionsClassSecurity.openAuthInvocation();
+                } else {
+
+                    if (functionsClass.splashReveal()) {
+                        Intent splashReveal = new Intent(context, FloatingSplash.class);
+                        splashReveal.putExtra("packageName", packageName);
+                        splashReveal.putExtra("X", xPosition);
+                        splashReveal.putExtra("Y", yPosition);
+                        splashReveal.putExtra("HW", HW);
+                        splashReveal.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startService(splashReveal);
+                    } else {
+                        if (functionsClass.FreeForm()) {
+                            functionsClass.openApplicationFreeForm(packageName,
+                                    xPosition,
+                                    (functionsClass.displayX() / 2),
+                                    yPosition,
+                                    (functionsClass.displayY() / 2)
+                            );
+                        } else {
+                            functionsClass.appsLaunchPad(packageName);
+                        }
+                    }
+                }
+
                 context.sendBroadcast(new Intent("Hide_PopupListView_Shortcuts_Notification"));
             }
         });

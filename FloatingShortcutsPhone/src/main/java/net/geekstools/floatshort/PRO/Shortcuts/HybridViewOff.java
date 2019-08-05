@@ -894,7 +894,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
             if (functionsClassSecurity.isAppLocked(freqApps[position])) {
                 FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(freqApps[position]);
-                FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(false);
 
                 FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(functionsClass.displayX() / 2);
                 FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(functionsClass.displayY() / 2);

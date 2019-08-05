@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.UI;
+package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.Fingerprint;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.R;
 
-public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallback {
+public class FingerprintProcessHelper extends FingerprintManager.AuthenticationCallback {
 
     private static final long ERROR_TIMEOUT_MILLIS = 1600;
     private static final long SUCCESS_DELAY_MILLIS = 1300;
@@ -40,7 +40,7 @@ public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallba
         }
     };
 
-    public FingerprintUiHelper(Context context, FingerprintManager fingerprintManager, ImageView icon, TextView errorTextView, EditText password, Callback callback) {
+    public FingerprintProcessHelper(Context context, FingerprintManager fingerprintManager, ImageView icon, TextView errorTextView, EditText password, Callback callback) {
         this.context = context;
 
         this.fingerprintManager = fingerprintManager;

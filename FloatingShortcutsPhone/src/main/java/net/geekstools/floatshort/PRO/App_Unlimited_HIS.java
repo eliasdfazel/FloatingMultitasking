@@ -245,6 +245,9 @@ public class App_Unlimited_HIS extends Service {
         layoutParams[startId] = functionsClass.normalLayoutParams(PublicVariable.HW, xPos, yPos);
         windowManager.addView(floatingView[startId], layoutParams[startId]);
 
+        xMove = xPos;
+        yMove = yPos;
+
         shapedIcon[startId].setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
 
         if (!functionsClass.litePreferencesEnabled()) {

@@ -239,6 +239,7 @@
     <string name="fingerprint_success">Fingerprint Recognized</string>
     <string name="lockIt">Lock It 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
+    <string name="pinHint">Enter Pin Password 🔑 </string>
     <string name="passwordHint">Enter New Pin Password 🔑 </string>
     <string name="passwordHintRepeat">Repeat New Pin Password 🔑 </string>
     <string name="enterCurrentPassword">Enter Current Password 🔑 </string>

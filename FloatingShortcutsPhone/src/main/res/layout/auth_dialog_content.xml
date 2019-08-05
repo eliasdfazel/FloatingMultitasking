@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
     android:layout_height="420dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingStart="7dp"
     android:paddingEnd="7dp"
     android:paddingTop="11dp"
@@ -39,9 +40,8 @@
     <TextView
         android:id="@+id/fingerprint_status"
         android:layout_width="match_parent"
-        android:layout_height="47dp"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
         android:layout_below="@id/dialogueTitle"
         android:gravity="center_vertical"
         android:text="@string/fingerprint_description"
@@ -57,26 +57,54 @@
         android:layout_height="213dp"
         android:layout_below="@+id/fingerprint_status"
         android:layout_centerInParent="true"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:padding="3dp"
         android:src="@drawable/draw_finger_print"
         android:visibility="visible" />
 
-    <EditText
-        android:id="@+id/password"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputPassword"
         android:layout_width="match_parent"
-        android:layout_height="53dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/fingerprint_status"
-        android:layout_centerInParent="true"
         android:layout_marginTop="3dp"
         android:padding="3dp"
-        android:gravity="center"
-        android:inputType="numberPassword"
+        android:gravity="center_vertical"
         android:imeOptions="actionDone"
-        android:hint="@string/passwordHint"
-        android:textSize="19sp"
-        android:background="@android:color/transparent"
-        android:visibility="invisible" />
+        android:hint="@string/pinHint"
+        android:textColorHint="@color/default_color_light"
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:boxCornerRadiusTopStart="7dp"
+        app:boxCornerRadiusTopEnd="7dp"
+        app:boxCornerRadiusBottomStart="7dp"
+        app:boxCornerRadiusBottomEnd="7dp"
+        app:boxStrokeColor="@color/default_color_game"
+        app:boxStrokeWidth="2dp"
+        app:hintEnabled="true"
+        app:hintAnimationEnabled="true"
+        app:hintTextColor="@color/default_color_light"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/red"
+        android:visibility="invisible">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:lines="1"
+            android:inputType="numberPassword"
+            android:maxLines="1"
+            android:textSize="29sp"
+            android:textColor="@color/light"
+            android:textColorHint="@color/light"
+            android:cursorVisible="false" />
+    </com.google.android.material.textfield.TextInputLayout>
     <!-- Auth Content -->
 
     <Button

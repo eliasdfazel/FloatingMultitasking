@@ -81,7 +81,7 @@ import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserve
 import net.geekstools.floatshort.PRO.Util.NavAdapter.CustomIconsThemeAdapter;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutList;
-import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.HandlePinPassword;
+import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.util.ArrayList;
