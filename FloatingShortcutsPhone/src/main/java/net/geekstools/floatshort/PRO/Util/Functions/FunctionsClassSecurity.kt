@@ -25,6 +25,7 @@ import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserve
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthActivityHelper
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthenticationDialogFragment
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword
+import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.PasswordVerification
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash
 import java.io.File
 import java.io.IOException
@@ -78,9 +79,14 @@ class FunctionsClassSecurity {
         var authPositionY: Int = 0
         var authHW: Int = 0
 
+        var authWidgetId: Int = 0
+
         var authSingleUnlockIt: Boolean = false
         var authFolderUnlockIt: Boolean = false
         var authForgotPinPassword: Boolean = false
+
+        var authWidgetConfigurations: Boolean = false
+        var authFloatingWidget: Boolean = false
 
         var authSingleSplitIt: Boolean = false
         var authPairSplitIt: Boolean = false
@@ -102,9 +108,14 @@ class FunctionsClassSecurity {
         AuthOpenAppValues.authPositionY = 0
         AuthOpenAppValues.authHW = 0
 
+        AuthOpenAppValues.authWidgetId = 0
+
         AuthOpenAppValues.authSingleUnlockIt = false
         AuthOpenAppValues.authFolderUnlockIt = false
         AuthOpenAppValues.authForgotPinPassword = false
+
+        AuthOpenAppValues.authWidgetConfigurations = false
+        AuthOpenAppValues.authFloatingWidget = false
 
         AuthOpenAppValues.authSingleSplitIt = false
         AuthOpenAppValues.authPairSplitIt = false
@@ -180,12 +191,25 @@ class FunctionsClassSecurity {
             if (AuthOpenAppValues.authSingleUnlockIt) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Single Unlock It ***")
 
-                doUnlockApps(AuthOpenAppValues.authComponentName!!)
+                if (FunctionsClassSecurity.authWidgetConfigurations) {
+                    doUnlockApps(FunctionsClassSecurity.authSecondComponentName!! + FunctionsClassSecurity.authWidgetId)
+                } else {
+                    doUnlockApps(FunctionsClassSecurity.authComponentName!!)
+                }
+            } else if (AuthOpenAppValues.authFolderUnlockIt) {
+                if (context.getFileStreamPath(FunctionsClassSecurity.authComponentName).exists() && context.getFileStreamPath(FunctionsClassSecurity.authComponentName).isFile()) {
+                    val packageNames = FunctionsClass(context).readFileLine(FunctionsClassSecurity.authComponentName)
+                    for (packageName in packageNames!!) {
+                        doUnlockApps(packageName)
+                    }
+                    doUnlockApps(FunctionsClassSecurity.authComponentName!!)
+                    uploadLockedAppsData()
+                }
             } else if (AuthOpenAppValues.authForgotPinPassword) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Forgot Pin Password ***")
-                /*
-                *
-                * */
+
+                context.startActivity(Intent(context, PasswordVerification::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                        ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
             } else if (AuthOpenAppValues.authSingleSplitIt) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Split It ***")
 

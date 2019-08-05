@@ -4052,6 +4052,15 @@ public class FunctionsClass {
                     .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>"))
                     .setIcon(popupItemIcon);
         }
+        if (functionsClassSecurity.isAppLocked(packageName + appWidgetId)) {
+            popupMenu.getMenu()
+                    .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.unLockIt) + "</font>"))
+                    .setIcon(popupItemIcon);
+        } else {
+            popupMenu.getMenu()
+                    .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.lockIt) + "</font>"))
+                    .setIcon(popupItemIcon);
+        }
 
         try {
             Field[] fields = popupMenu.getClass().getDeclaredFields();
@@ -4148,6 +4157,28 @@ public class FunctionsClass {
                             widgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, appWidgetId);
                         } catch (Exception e) {
                             e.printStackTrace();
+                        }
+
+                        break;
+                    }
+                    case 3: {
+                        if (functionsClassSecurity.isAppLocked(packageName + appWidgetId)) {
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(widgetLabel);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(packageName);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(true);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetId(appWidgetId);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetConfigurations(true);
+
+                            functionsClassSecurity.openAuthInvocation();
+                        } else {
+                            if (securityServicesSubscribed() || BuildConfig.DEBUG) {
+                                functionsClassSecurity.doLockApps(packageName + appWidgetId);
+
+                                functionsClassSecurity.uploadLockedAppsData();
+                            } else {
+                                context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                                        ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                            }
                         }
 
                         break;
@@ -4373,6 +4404,7 @@ public class FunctionsClass {
         Intent differentIntent = new Intent(context, className);
         differentIntent.setAction(Intent.ACTION_MAIN);
         differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        differentIntent.putExtra("PackageName", packageName);
         differentIntent.putExtra("ShortcutsId", shortcutId);
         differentIntent.putExtra("ShortcutLabel", shortcutName);
 

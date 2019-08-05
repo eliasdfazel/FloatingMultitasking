@@ -118,10 +118,16 @@ public class AuthenticationDialogFragment extends DialogFragment {
         String componentName = functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
 
         dialogueIcon.setShapeDrawable(functionsClass.shapesDrawables());
-        dialogueIcon.setImageDrawable(
-                componentName.equals("null") ?
-                        null : functionsClass.shapedAppIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())
-        );
+        if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations() || FunctionsClassSecurity.AuthOpenAppValues.getAuthFloatingWidget()) {
+            dialogueIcon.setImageDrawable(
+                    functionsClass.shapedAppIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName())
+            );
+        } else {
+            dialogueIcon.setImageDrawable(
+                    componentName.equals("null") ?
+                            null : functionsClass.shapedAppIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())
+            );
+        }
 
         String dialogueTitleText = componentName.equals("null") ?
                 FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName() : functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
@@ -150,7 +156,13 @@ public class AuthenticationDialogFragment extends DialogFragment {
 
                             if (password.getText().toString().equals(currentPassword)) {
                                 if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSingleUnlockIt()) {
-                                    functionsClassSecurity.doUnlockApps(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                    FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Single Unlock It ***");
+
+                                    if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations()) {
+                                        functionsClassSecurity.doUnlockApps(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName() + FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetId());
+                                    } else {
+                                        functionsClassSecurity.doUnlockApps(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                    }
 
                                     functionsClassSecurity.uploadLockedAppsData();
                                     dismiss();
@@ -160,6 +172,8 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                         e.printStackTrace();
                                     }
                                 } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthFolderUnlockIt()) {
+                                    FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Folder Unlock It ***");
+
                                     if (getContext().getFileStreamPath(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()).exists() && getContext().getFileStreamPath(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()).isFile()) {
                                         String[] packageNames = functionsClass.readFileLine(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
                                         for (String packageName : packageNames) {
@@ -175,6 +189,8 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                         }
                                     }
                                 } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSingleSplitIt()) {
+                                    FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Single Split It ***");
+
                                     if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
                                         getContext().startActivity(new Intent(getContext(), CheckPoint.class)
                                                 .putExtra(getContext().getString(R.string.splitIt), getContext().getPackageName())
@@ -192,6 +208,8 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                         accessibilityManager.sendAccessibilityEvent(accessibilityEvent);
                                     }
                                 } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthPairSplitIt()) {
+                                    FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Pair Split It ***");
+
                                     if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
                                         getContext().startActivity(new Intent(getContext(), CheckPoint.class)
                                                 .putExtra(getContext().getString(R.string.splitIt), getContext().getPackageName())
@@ -206,7 +224,13 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                         accessibilityEvent.getText().add(getContext().getPackageName());
                                         accessibilityManager.sendAccessibilityEvent(accessibilityEvent);
                                     }
+                                } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthFloatingWidget()) {
+                                    FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Floating Widget ***");
+
+                                    functionsClass.runUnlimitedWidgetService(FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetId(),
+                                            FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
                                 } else {
+                                    FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Open Application ***");
                                     if (functionsClass.splashReveal()) {
                                         Intent splashReveal = new Intent(getContext(), FloatingSplash.class);
                                         splashReveal.putExtra("packageName", FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
@@ -227,9 +251,18 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                         }
                                     }
                                 }
+
+                                dismiss();
+                                try {
+                                    getActivity().finish();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             } else {
                                 fingerprintHint.setTextColor(getContext().getColor(R.color.warning_color));
                                 fingerprintHint.setText(getString(R.string.passwordError));
+
+                                textInputPassword.setError(getString(R.string.passwordError));
                             }
                         }
 
@@ -337,6 +370,8 @@ public class AuthenticationDialogFragment extends DialogFragment {
         }
 
         cancelAuth.setOnLongClickListener(view -> {
+            functionsClassSecurity.resetAuthAppValues();
+
             getActivity().finish();
 
             return true;

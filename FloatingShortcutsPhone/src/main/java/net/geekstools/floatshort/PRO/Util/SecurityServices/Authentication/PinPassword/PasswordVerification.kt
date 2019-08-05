@@ -31,30 +31,34 @@ class PasswordVerification : Activity() {
 
         fullView.setBackgroundColor(getColor(R.color.default_color_light))
 
-        FirebaseDynamicLinks.getInstance()
-                .getDynamicLink(intent)
-                .addOnSuccessListener(this@PasswordVerification) { pendingDynamicLinkData ->
-                    // Get deep link from result (may be null if no link is found)
-                    var deepLink: Uri? = null
-                    if (pendingDynamicLinkData != null) {
-                        deepLink = pendingDynamicLinkData.link
+        if (intent.hasExtra("RESET_PASSWORD_BY_FINGER_PRINT")) {
+
+        } else {
+            FirebaseDynamicLinks.getInstance()
+                    .getDynamicLink(intent)
+                    .addOnSuccessListener(this@PasswordVerification) { pendingDynamicLinkData ->
+                        // Get deep link from result (may be null if no link is found)
+                        var deepLink: Uri? = null
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.link
+                        }
+
+                        val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+                        val intent = intent
+                        val emailLink = intent.data!!.toString()
+
+                        FunctionsClassDebug.PrintDebug("*** Email Verified ***")
+
+                        functionsClass.savePreference(".Password", "Pin", "0")
+                        Handler().postDelayed({
+                            startActivity(Intent(applicationContext, HandlePinPassword::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                                    ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+                        }, 2333)
                     }
+                    .addOnFailureListener(this) {
 
-                    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-                    val intent = intent
-                    val emailLink = intent.data!!.toString()
-
-                    FunctionsClassDebug.PrintDebug("*** Email Verified ***")
-
-                    functionsClass.savePreference(".Password", "Pin", "0")
-                    Handler().postDelayed({
-                        startActivity(Intent(applicationContext, HandlePinPassword::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
-                    }, 2333)
-                }
-                .addOnFailureListener(this) {
-
-                }
+                    }
+        }
     }
 
     override fun onBackPressed() {

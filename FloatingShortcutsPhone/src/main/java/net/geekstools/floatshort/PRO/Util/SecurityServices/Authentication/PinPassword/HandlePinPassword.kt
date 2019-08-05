@@ -143,25 +143,31 @@ class HandlePinPassword : Activity() {
             functionClass.doVibrate(113)
             spinKitView.visibility = View.VISIBLE
 
-            val actionCodeSettings = ActionCodeSettings.newBuilder()
-                    .setUrl("https://floating-shortcuts-pro.firebaseapp.com")
-                    .setDynamicLinkDomain("floatshort.page.link")
-                    .setHandleCodeInApp(true)
-                    .setAndroidPackageName(
-                            applicationContext.packageName,
-                            true, /* installIfNotAvailable */
-                            "23" /* minimumVersion */
-                    )
-                    .build()
-            firebaseAuth.setLanguageCode(Locale.getDefault().language)
+            if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
+                FunctionsClassSecurity.AuthOpenAppValues.authForgotPinPassword = true
 
-            firebaseAuth.sendSignInLinkToEmail(firebaseUser.email.toString(), actionCodeSettings).addOnSuccessListener {
-                FunctionsClassDebug.PrintDebug("*** Password Verification Email Sent To ${firebaseUser.email} ***")
-                functionClass.Toast(getString(R.string.passwordResetSent), Gravity.BOTTOM, getColor(R.color.red_transparent))
+                functionsClassSecurity.openAuthInvocation()
+            } else {
+                val actionCodeSettings = ActionCodeSettings.newBuilder()
+                        .setUrl("https://floating-shortcuts-pro.firebaseapp.com")
+                        .setDynamicLinkDomain("floatshort.page.link")
+                        .setHandleCodeInApp(true)
+                        .setAndroidPackageName(
+                                applicationContext.packageName,
+                                true, /* installIfNotAvailable */
+                                "23" /* minimumVersion */
+                        )
+                        .build()
+                firebaseAuth.setLanguageCode(Locale.getDefault().language)
 
-                Handler().postDelayed({
-                    spinKitView.visibility = View.INVISIBLE
-                }, 1333)
+                firebaseAuth.sendSignInLinkToEmail(firebaseUser.email.toString(), actionCodeSettings).addOnSuccessListener {
+                    FunctionsClassDebug.PrintDebug("*** Password Verification Email Sent To ${firebaseUser.email} ***")
+                    functionClass.Toast(getString(R.string.passwordResetSent), Gravity.BOTTOM, getColor(R.color.red_transparent))
+
+                    Handler().postDelayed({
+                        spinKitView.visibility = View.INVISIBLE
+                    }, 1333)
+                }
             }
         }
     }

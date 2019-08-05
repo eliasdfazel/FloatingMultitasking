@@ -808,6 +808,8 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                         }
                     }
                 });
+
+        functionsClassSecurity.resetAuthAppValues();
     }
 
     @Override

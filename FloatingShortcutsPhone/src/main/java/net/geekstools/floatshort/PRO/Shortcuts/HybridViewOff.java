@@ -835,6 +835,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 });
 
         functionsClass.addAppShortcuts();
+        functionsClassSecurity.resetAuthAppValues();
     }
 
     @Override

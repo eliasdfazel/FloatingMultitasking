@@ -65,6 +65,7 @@ import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
@@ -91,6 +92,7 @@ import java.util.TreeMap;
 public class WidgetConfigurations extends Activity implements SimpleGestureFilterSwitch.SimpleGestureListener {
 
     FunctionsClass functionsClass;
+    FunctionsClassSecurity functionsClassSecurity;
 
     RelativeLayout wholeWidget, fullActionViews;
     ImageView addWidget,
@@ -141,6 +143,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         setContentView(R.layout.widget_configurations_views);
 
         functionsClass = new FunctionsClass(getApplicationContext(), WidgetConfigurations.this);
+        functionsClassSecurity = new FunctionsClassSecurity(WidgetConfigurations.this, getApplicationContext());
 
         wholeWidget = (RelativeLayout) findViewById(R.id.wholeWidget);
         fullActionViews = (RelativeLayout) findViewById(R.id.fullActionViews);
@@ -854,6 +857,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         }
                     }
                 });
+
+        functionsClassSecurity.resetAuthAppValues();
     }
 
     @Override
@@ -1679,8 +1684,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             appWidgetManager.bindAppWidgetIdIfAllowed(widgetId, appWidgetProviderInfo.provider, bundle);
 
             widgetView.addView(hostView);
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.DisplayMetrics;
@@ -101,7 +102,8 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
                         navDrawerItems.get(position).getPackageName(),
                         navDrawerItems.get(position).getAppWidgetId(),
                         navDrawerItems.get(position).getWidgetLabel(),
-                        appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) != null ? appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_HIGH) : appWidgetProviderInfo.loadIcon(context, DisplayMetrics.DENSITY_HIGH),
+                        appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) != null ?
+                                appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_HIGH) : appWidgetProviderInfo.loadIcon(context, DisplayMetrics.DENSITY_HIGH),
                         navDrawerItems.get(position).getAddedWidgetRecovery());
 
                 return true;
@@ -127,13 +129,19 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
                                             @Override
                                             public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
                                                 super.onOpen(supportSQLiteDatabase);
-
                                             }
                                         })
                                         .build();
                                 WidgetDataDAO widgetDataDAO = widgetDataInterface.initDataAccessObject();
                                 widgetDataDAO.updateWidgetLabelByWidgetId(navDrawerItems.get(position).getAppWidgetId(), textView.getText().toString().replace("\uD83D\uDD04", ""));
                                 widgetDataInterface.close();
+
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        context.sendBroadcast(new Intent("FORCE_RELOAD"));
+                                    }
+                                });
                             }
                         }).start();
                     }
