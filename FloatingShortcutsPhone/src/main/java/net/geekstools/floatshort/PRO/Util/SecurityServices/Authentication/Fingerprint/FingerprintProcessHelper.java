@@ -1,26 +1,42 @@
 package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.Fingerprint;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.CancellationSignal;
+import android.os.Handler;
+import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
+import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword;
+
+import java.util.Locale;
 
 public class FingerprintProcessHelper extends FingerprintManager.AuthenticationCallback {
 
     private static final long ERROR_TIMEOUT_MILLIS = 1600;
     private static final long SUCCESS_DELAY_MILLIS = 1300;
 
+    private Activity activity;
     private Context context;
 
     private final FingerprintManager fingerprintManager;
 
     private final ImageView imageView;
-    private final TextView errortextview;
+    private final TextView errorTextView;
     private final EditText password;
 
     private final Callback callback;
@@ -32,21 +48,22 @@ public class FingerprintProcessHelper extends FingerprintManager.AuthenticationC
     private Runnable resetErrorTextRunnable = new Runnable() {
         @Override
         public void run() {
-            errortextview.setTextColor(initHintTextColor);
+            errorTextView.setTextColor(initHintTextColor);
             if (!password.isShown()) {
-                errortextview.setText(errortextview.getResources().getString(R.string.fingerprint_hint));
+                errorTextView.setText(errorTextView.getResources().getString(R.string.fingerprint_hint));
             }
             imageView.setImageResource(R.drawable.draw_finger_print);
         }
     };
 
-    public FingerprintProcessHelper(Context context, FingerprintManager fingerprintManager, ImageView icon, TextView errorTextView, EditText password, Callback callback) {
+    public FingerprintProcessHelper(Activity activity, Context context, FingerprintManager fingerprintManager, ImageView icon, TextView errorTextView, EditText password, Callback callback) {
+        this.activity = activity;
         this.context = context;
 
         this.fingerprintManager = fingerprintManager;
 
         this.imageView = icon;
-        this.errortextview = errorTextView;
+        this.errorTextView = errorTextView;
         this.password = password;
 
         this.callback = callback;
@@ -82,7 +99,45 @@ public class FingerprintProcessHelper extends FingerprintManager.AuthenticationC
     public void onAuthenticationError(int errMsgId, CharSequence errString) {
         if (!selfCancelled) {
             showError(errString);
-            context.sendBroadcast(new Intent("SHOW_PASSWORD"));
+            if (FunctionsClassSecurity.AuthOpenAppValues.getAuthForgotPinPassword()) {
+                ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                        .setUrl("https://floating-shortcuts-pro.firebaseapp.com")
+                        .setDynamicLinkDomain("floatshort.page.link")
+                        .setHandleCodeInApp(true)
+                        .setAndroidPackageName(
+                                context.getPackageName(),
+                                true, /* installIfNotAvailable */
+                                "23" /* minimumVersion */
+                        )
+                        .build();
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                firebaseAuth.setLanguageCode(Locale.getDefault().getLanguage());
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+                firebaseAuth.sendSignInLinkToEmail(firebaseUser.getEmail().toString(), actionCodeSettings).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        FunctionsClassDebug.Companion.PrintDebug("*** Password Verification Email Sent To ${firebaseUser.email} ***");
+                        new FunctionsClass(context).Toast(context.getString(R.string.passwordResetSent), Gravity.BOTTOM, context.getColor(R.color.red_transparent));
+
+                        errorTextView.setText(context.getString(R.string.passwordResetSent));
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                activity.finish();
+                            }
+                        }, 1000);
+                    }
+                });
+            } else {
+                if (new FunctionsClass(context).readPreference(".Password", "Pin", "0").equals("0")) {
+                    context.startActivity(new Intent(context, HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                            ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                } else {
+                    context.sendBroadcast(new Intent("SHOW_PASSWORD"));
+                }
+            }
 
             imageView.postDelayed(new Runnable() {
                 @Override
@@ -103,17 +158,55 @@ public class FingerprintProcessHelper extends FingerprintManager.AuthenticationC
         showError(imageView.getResources().getString(R.string.fingerprint_not_recognized));
         failedCounter++;
         if (failedCounter >= 3) {
-            context.sendBroadcast(new Intent("SHOW_PASSWORD"));
+            if (FunctionsClassSecurity.AuthOpenAppValues.getAuthForgotPinPassword()) {
+                ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                        .setUrl("https://floating-shortcuts-pro.firebaseapp.com")
+                        .setDynamicLinkDomain("floatshort.page.link")
+                        .setHandleCodeInApp(true)
+                        .setAndroidPackageName(
+                                context.getPackageName(),
+                                true, /* installIfNotAvailable */
+                                "23" /* minimumVersion */
+                        )
+                        .build();
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                firebaseAuth.setLanguageCode(Locale.getDefault().getLanguage());
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+                firebaseAuth.sendSignInLinkToEmail(firebaseUser.getEmail().toString(), actionCodeSettings).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        FunctionsClassDebug.Companion.PrintDebug("*** Password Verification Email Sent To ${firebaseUser.email} ***");
+                        new FunctionsClass(context).Toast(context.getString(R.string.passwordResetSent), Gravity.BOTTOM, context.getColor(R.color.red_transparent));
+
+                        errorTextView.setText(context.getString(R.string.passwordResetSent));
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                activity.finish();
+                            }
+                        }, 1000);
+                    }
+                });
+            } else {
+                if (new FunctionsClass(context).readPreference(".Password", "Pin", "0").equals("0")) {
+                    context.startActivity(new Intent(context, HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                            ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                } else {
+                    context.sendBroadcast(new Intent("SHOW_PASSWORD"));
+                }
+            }
         }
     }
 
     @Override
     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-        errortextview.removeCallbacks(resetErrorTextRunnable);
+        errorTextView.removeCallbacks(resetErrorTextRunnable);
         imageView.setImageResource(R.drawable.draw_finger_print_success);
 
-        errortextview.setTextColor(errortextview.getResources().getColor(R.color.success_color, null));
-        errortextview.setText(errortextview.getResources().getString(R.string.fingerprint_success));
+        errorTextView.setTextColor(errorTextView.getResources().getColor(R.color.success_color, null));
+        errorTextView.setText(errorTextView.getResources().getString(R.string.fingerprint_success));
 
         imageView.postDelayed(new Runnable() {
             @Override
@@ -125,11 +218,11 @@ public class FingerprintProcessHelper extends FingerprintManager.AuthenticationC
 
     private void showError(CharSequence error) {
         imageView.setImageResource(R.drawable.draw_finger_print_error);
-        errortextview.setText(error);
-        errortextview.setTextColor(errortextview.getResources().getColor(R.color.warning_color, null));
+        errorTextView.setText(error);
+        errorTextView.setTextColor(errorTextView.getResources().getColor(R.color.warning_color, null));
 
-        errortextview.removeCallbacks(resetErrorTextRunnable);
-        errortextview.postDelayed(resetErrorTextRunnable, ERROR_TIMEOUT_MILLIS);
+        errorTextView.removeCallbacks(resetErrorTextRunnable);
+        errorTextView.postDelayed(resetErrorTextRunnable, ERROR_TIMEOUT_MILLIS);
     }
 
     public interface Callback {

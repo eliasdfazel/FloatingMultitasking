@@ -302,6 +302,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
             FunctionsClassDebug.Companion.PrintDebug("*** Finger Print Available ***");
 
             fingerprintProcessHelper = new FingerprintProcessHelper(
+                    getActivity(),
                     getContext(),
                     getActivity().getSystemService(FingerprintManager.class),
                     fingerprintIcon,

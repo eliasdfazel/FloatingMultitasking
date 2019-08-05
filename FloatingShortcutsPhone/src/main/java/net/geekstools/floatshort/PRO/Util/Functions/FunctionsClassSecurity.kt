@@ -125,6 +125,8 @@ class FunctionsClassSecurity {
         AuthOpenAppValues.keyGenerator = null
 
         AuthOpenAppValues.authClassNameCommand = null
+
+        AuthOpenAppValues.anchorView = null
     }
 
     inner class InvokeAuth(internal var cipher: Cipher?, internal var keyName: String) {
@@ -208,7 +210,9 @@ class FunctionsClassSecurity {
             } else if (AuthOpenAppValues.authForgotPinPassword) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Forgot Pin Password ***")
 
-                context.startActivity(Intent(context, PasswordVerification::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                context.startActivity(Intent(context, PasswordVerification::class.java)
+                        .putExtra("RESET_PASSWORD_BY_FINGER_PRINT", "RESET_PASSWORD_BY_FINGER_PRINT")
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
             } else if (AuthOpenAppValues.authSingleSplitIt) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Split It ***")
@@ -244,6 +248,11 @@ class FunctionsClassSecurity {
                     event.text.add(context.packageName)
                     accessibilityManager.sendAccessibilityEvent(event)
                 }
+            } else if (FunctionsClassSecurity.authFloatingWidget) run {
+                FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Floating Widget ***")
+
+                FunctionsClass(context).runUnlimitedWidgetService(FunctionsClassSecurity.authWidgetId,
+                        FunctionsClassSecurity.authComponentName)
             } else {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Opening... ***")
 

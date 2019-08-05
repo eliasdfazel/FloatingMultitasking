@@ -32,7 +32,11 @@ class PasswordVerification : Activity() {
         fullView.setBackgroundColor(getColor(R.color.default_color_light))
 
         if (intent.hasExtra("RESET_PASSWORD_BY_FINGER_PRINT")) {
-
+            functionsClass.savePreference(".Password", "Pin", "0")
+            Handler().postDelayed({
+                startActivity(Intent(applicationContext, HandlePinPassword::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                        ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+            }, 2333)
         } else {
             FirebaseDynamicLinks.getInstance()
                     .getDynamicLink(intent)

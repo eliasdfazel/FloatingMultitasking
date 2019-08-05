@@ -144,6 +144,7 @@ class HandlePinPassword : Activity() {
             spinKitView.visibility = View.VISIBLE
 
             if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
+                FunctionsClassSecurity.AuthOpenAppValues.authComponentName = getString(R.string.securityServices)
                 FunctionsClassSecurity.AuthOpenAppValues.authForgotPinPassword = true
 
                 functionsClassSecurity.openAuthInvocation()
