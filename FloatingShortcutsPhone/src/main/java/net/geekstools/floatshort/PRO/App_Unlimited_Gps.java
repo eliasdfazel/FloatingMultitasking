@@ -257,6 +257,8 @@ public class App_Unlimited_Gps extends Service {
                                 public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
                                     layoutParams[startId].x = (int) value;     // X movePoint
                                     windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
+
+                                    xMove = (int) value;
                                 }
                             });
                             flingAnimationY[startId].addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
@@ -264,6 +266,8 @@ public class App_Unlimited_Gps extends Service {
                                 public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
                                     layoutParams[startId].y = (int) value;     // Y movePoint
                                     windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
+
+                                    yMove = (int) value;
                                 }
                             });
 
@@ -398,6 +402,9 @@ public class App_Unlimited_Gps extends Service {
                             layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);
                             layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);
                             FunctionsClass.println("X :: " + layoutParamsOnTouch.x + "\n" + " Y :: " + layoutParamsOnTouch.y);
+
+                            xMove = Math.round(layoutParamsOnTouch.x);
+                            yMove = Math.round(layoutParamsOnTouch.y);
 
                             SharedPreferences sharedPrefPosition = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                             try {
@@ -606,7 +613,8 @@ public class App_Unlimited_Gps extends Service {
                         startId,
                         iconColor[startId],
                         xMove,
-                        yMove
+                        yMove,
+                        layoutParams[startId].width
                 );
             }
         });

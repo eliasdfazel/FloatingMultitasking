@@ -304,6 +304,9 @@ public class Folder_Unlimited_Bluetooth extends Service {
         layoutParams[startId] = functionsClass.normalLayoutParams(HW, xPos, yPos);
         windowManager.addView(floatingView[startId], layoutParams[startId]);
 
+        xMove = xPos;
+        yMove = yPos;
+
         final String className = Folder_Unlimited_Bluetooth.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Pair_" + className);
@@ -576,6 +579,8 @@ public class Folder_Unlimited_Bluetooth extends Service {
                                 public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
                                     layoutParams[startId].x = (int) value;     // X movePoint
                                     windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
+
+                                    xMove = (int) value;
                                 }
                             });
                             flingAnimationY[startId].addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
@@ -583,6 +588,8 @@ public class Folder_Unlimited_Bluetooth extends Service {
                                 public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
                                     layoutParams[startId].y = (int) value;     // Y movePoint
                                     windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
+
+                                    yMove = (int) value;
                                 }
                             });
 
@@ -684,6 +691,9 @@ public class Folder_Unlimited_Bluetooth extends Service {
                             layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);
                             layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);
                             FunctionsClass.println("X :: " + layoutParamsOnTouch.x + "\n" + " Y :: " + layoutParamsOnTouch.y);
+
+                            xMove = Math.round(layoutParamsOnTouch.x);
+                            yMove = Math.round(layoutParamsOnTouch.y);
 
                             String nameForPosition = categoryName[startId];
                             SharedPreferences sharedPrefPosition = getSharedPreferences(nameForPosition, MODE_PRIVATE);
@@ -825,7 +835,8 @@ public class Folder_Unlimited_Bluetooth extends Service {
                         startId,
                         PublicVariable.primaryColor,
                         xMove,
-                        yMove
+                        yMove,
+                        layoutParams[startId].width
                 );
             }
         });

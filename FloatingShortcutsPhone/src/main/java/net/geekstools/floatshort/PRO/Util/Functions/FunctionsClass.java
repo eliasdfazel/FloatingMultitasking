@@ -1007,7 +1007,7 @@ public class FunctionsClass {
     }
 
     /*Floating Notification*/
-    public void PopupNotificationShortcuts(View view, final String notificationPackage, String className, int startId, int iconColor, int X, int Y) {
+    public void PopupNotificationShortcuts(View view, final String notificationPackage, String className, int startId, int iconColor, int X, int Y, int HW) {
         Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(50);
 
@@ -1042,7 +1042,7 @@ public class FunctionsClass {
             }
             PopupShortcutsNotification popupShortcutsNotification =
                     new PopupShortcutsNotification(context, navDrawerItemsSaved, className, notificationPackage, startId,
-                            X, Y, view.getWidth());
+                            X, Y, HW);
 
             final ListPopupWindow listPopupWindow = new ListPopupWindow(context);
             listPopupWindow.setAdapter(popupShortcutsNotification);
