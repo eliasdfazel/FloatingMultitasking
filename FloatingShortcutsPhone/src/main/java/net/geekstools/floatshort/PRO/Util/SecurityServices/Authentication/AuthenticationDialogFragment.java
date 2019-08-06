@@ -1,5 +1,6 @@
 package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication;
 
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
@@ -12,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -37,6 +37,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import net.geekstools.floatshort.PRO.CheckPoint;
+import net.geekstools.floatshort.PRO.Configurations;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
@@ -45,6 +46,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.Fingerprint.FingerprintProcessHelper;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
+import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import static android.content.Context.ACCESSIBILITY_SERVICE;
@@ -118,7 +120,10 @@ public class AuthenticationDialogFragment extends DialogFragment {
         String componentName = functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
 
         dialogueIcon.setShapeDrawable(functionsClass.shapesDrawables());
-        if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations() || FunctionsClassSecurity.AuthOpenAppValues.getAuthFloatingWidget()) {
+        if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurationsUnlock()
+                || FunctionsClassSecurity.AuthOpenAppValues.getAuthFloatingWidget()
+                || FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations()
+                || FunctionsClassSecurity.AuthOpenAppValues.getAuthForgotPinPassword()) {
             dialogueIcon.setImageDrawable(
                     functionsClass.shapedAppIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName())
             );
@@ -158,7 +163,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                 if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSingleUnlockIt()) {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Single Unlock It ***");
 
-                                    if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations()) {
+                                    if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurationsUnlock()) {
                                         functionsClassSecurity.doUnlockApps(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName() + FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetId());
                                     } else {
                                         functionsClassSecurity.doUnlockApps(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
@@ -229,6 +234,10 @@ public class AuthenticationDialogFragment extends DialogFragment {
 
                                     functionsClass.runUnlimitedWidgetService(FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetId(),
                                             FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations()) {
+                                    FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Open Widget Configurations ***");
+
+                                    WidgetConfigurations.alreadyAuthenticated = true;
                                 } else {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Open Application ***");
                                     if (functionsClass.splashReveal()) {
@@ -266,12 +275,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                             }
                         }
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                functionsClassSecurity.resetAuthAppValues();
-                            }
-                        }, 333);
+                        functionsClassSecurity.resetAuthAppValues();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -371,10 +375,13 @@ public class AuthenticationDialogFragment extends DialogFragment {
         }
 
         cancelAuth.setOnLongClickListener(view -> {
-            functionsClassSecurity.resetAuthAppValues();
-
+            if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations()) {
+                startActivity(new Intent(getContext(), Configurations.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                        ActivityOptions.makeCustomAnimation(getContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+            }
             getActivity().finish();
 
+            functionsClassSecurity.resetAuthAppValues();
             return true;
         });
 
@@ -387,6 +394,19 @@ public class AuthenticationDialogFragment extends DialogFragment {
         if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
             fingerprintProcessHelper.startListening(this.cryptoObject);
         }
+
+        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(android.content.DialogInterface dialog, int keyCode, android.view.KeyEvent event) {
+                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
+
+                    return true;
+                } else {
+
+                    return false;
+                }
+            }
+        });
     }
 
     @Override

@@ -27,6 +27,7 @@ import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.Authen
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.PasswordVerification
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash
+import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
 import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
@@ -86,6 +87,7 @@ class FunctionsClassSecurity {
         var authForgotPinPassword: Boolean = false
 
         var authWidgetConfigurations: Boolean = false
+        var authWidgetConfigurationsUnlock: Boolean = false
         var authFloatingWidget: Boolean = false
 
         var authSingleSplitIt: Boolean = false
@@ -101,32 +103,35 @@ class FunctionsClassSecurity {
     }
 
     fun resetAuthAppValues() {
-        AuthOpenAppValues.authComponentName = null
-        AuthOpenAppValues.authSecondComponentName = null
+        Handler().postDelayed({
+            AuthOpenAppValues.authComponentName = null
+            AuthOpenAppValues.authSecondComponentName = null
 
-        AuthOpenAppValues.authPositionX = 0
-        AuthOpenAppValues.authPositionY = 0
-        AuthOpenAppValues.authHW = 0
+            AuthOpenAppValues.authPositionX = 0
+            AuthOpenAppValues.authPositionY = 0
+            AuthOpenAppValues.authHW = 0
 
-        AuthOpenAppValues.authWidgetId = 0
+            AuthOpenAppValues.authWidgetId = 0
 
-        AuthOpenAppValues.authSingleUnlockIt = false
-        AuthOpenAppValues.authFolderUnlockIt = false
-        AuthOpenAppValues.authForgotPinPassword = false
+            AuthOpenAppValues.authSingleUnlockIt = false
+            AuthOpenAppValues.authFolderUnlockIt = false
+            AuthOpenAppValues.authForgotPinPassword = false
 
-        AuthOpenAppValues.authWidgetConfigurations = false
-        AuthOpenAppValues.authFloatingWidget = false
+            AuthOpenAppValues.authWidgetConfigurations = false
+            AuthOpenAppValues.authWidgetConfigurationsUnlock = false
+            AuthOpenAppValues.authFloatingWidget = false
 
-        AuthOpenAppValues.authSingleSplitIt = false
-        AuthOpenAppValues.authPairSplitIt = false
-        AuthOpenAppValues.authFreeform = false
+            AuthOpenAppValues.authSingleSplitIt = false
+            AuthOpenAppValues.authPairSplitIt = false
+            AuthOpenAppValues.authFreeform = false
 
-        AuthOpenAppValues.keyStore = null
-        AuthOpenAppValues.keyGenerator = null
+            AuthOpenAppValues.keyStore = null
+            AuthOpenAppValues.keyGenerator = null
 
-        AuthOpenAppValues.authClassNameCommand = null
+            AuthOpenAppValues.authClassNameCommand = null
 
-        AuthOpenAppValues.anchorView = null
+            AuthOpenAppValues.anchorView = null
+        }, 777)
     }
 
     inner class InvokeAuth(internal var cipher: Cipher?, internal var keyName: String) {
@@ -193,7 +198,7 @@ class FunctionsClassSecurity {
             if (AuthOpenAppValues.authSingleUnlockIt) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Single Unlock It ***")
 
-                if (FunctionsClassSecurity.authWidgetConfigurations) {
+                if (FunctionsClassSecurity.authWidgetConfigurationsUnlock) {
                     doUnlockApps(FunctionsClassSecurity.authSecondComponentName!! + FunctionsClassSecurity.authWidgetId)
                 } else {
                     doUnlockApps(FunctionsClassSecurity.authComponentName!!)
@@ -253,6 +258,10 @@ class FunctionsClassSecurity {
 
                 FunctionsClass(context).runUnlimitedWidgetService(FunctionsClassSecurity.authWidgetId,
                         FunctionsClassSecurity.authComponentName)
+            } else if (FunctionsClassSecurity.authWidgetConfigurations) {
+                FunctionsClassDebug.PrintDebug("*** Authenticated | Open Widget Configurations ***")
+
+                WidgetConfigurations.alreadyAuthenticated = true
             } else {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Opening... ***")
 
@@ -277,9 +286,7 @@ class FunctionsClassSecurity {
                 }
             }
 
-            Handler().postDelayed({
-                resetAuthAppValues()
-            }, 333)
+            resetAuthAppValues()
         } else {
 
         }

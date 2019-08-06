@@ -127,4 +127,9 @@ public class AuthActivityHelper extends Activity {
     public void onDestroy() {
         super.onDestroy();
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

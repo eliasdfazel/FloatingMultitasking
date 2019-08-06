@@ -4167,7 +4167,7 @@ public class FunctionsClass {
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(packageName);
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(true);
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetId(appWidgetId);
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetConfigurations(true);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetConfigurationsUnlock(true);
 
                             functionsClassSecurity.openAuthInvocation();
                         } else {

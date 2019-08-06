@@ -145,6 +145,7 @@ class HandlePinPassword : Activity() {
 
             if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
                 FunctionsClassSecurity.AuthOpenAppValues.authComponentName = getString(R.string.securityServices)
+                FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName = packageName
                 FunctionsClassSecurity.AuthOpenAppValues.authForgotPinPassword = true
 
                 functionsClassSecurity.openAuthInvocation()

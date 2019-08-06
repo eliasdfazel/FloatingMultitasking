@@ -8,6 +8,6 @@ public final class BuildConfig {
   public static final String APPLICATION_ID = "net.geekstools.floatshort.PRO";
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "betaConfig";
-  public static final int VERSION_CODE = 644;
-  public static final String VERSION_NAME = "14.600.500.644_PRO[BETA]";
+  public static final int VERSION_CODE = 646;
+  public static final String VERSION_NAME = "14.700.500.646_PRO[BETA]";
 }

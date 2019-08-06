@@ -61,6 +61,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
+import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
@@ -136,6 +137,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     FirebaseRemoteConfig firebaseRemoteConfig;
 
     boolean installedWidgetsLoaded = false, configuredWidgetAvailable = false;
+
+    public static boolean alreadyAuthenticated = false;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -858,7 +861,15 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     }
                 });
 
-        functionsClassSecurity.resetAuthAppValues();
+        if (!alreadyAuthenticated) {
+            if (functionsClass.securityServicesSubscribed() || BuildConfig.DEBUG) {
+                FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(getString(R.string.securityServices));
+                FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(getPackageName());
+                FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetConfigurations(true);
+
+                functionsClassSecurity.openAuthInvocation();
+            }
+        }
     }
 
     @Override
