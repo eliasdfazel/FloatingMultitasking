@@ -126,11 +126,31 @@ public class AuthenticationDialogFragment extends DialogFragment {
             dialogueIcon.setImageDrawable(
                     functionsClass.shapedAppIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName())
             );
+
+            dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
+            fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName())));
+            cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
+
+            password.setHintTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName())));
+            password.setTextColor(PublicVariable.colorLightDarkOpposite);
+
+            textInputPassword.setHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName()))));
+            textInputPassword.setDefaultHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName()))));
         } else {
             dialogueIcon.setImageDrawable(
                     componentName.equals("null") ?
                             null : functionsClass.shapedAppIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())
             );
+
+            dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
+            fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
+            cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
+
+            password.setHintTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
+            password.setTextColor(PublicVariable.colorLightDarkOpposite);
+
+            textInputPassword.setHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()))));
+            textInputPassword.setDefaultHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()))));
         }
 
         String dialogueTitleText = componentName.equals("null") ?
@@ -140,15 +160,6 @@ public class AuthenticationDialogFragment extends DialogFragment {
                 dialogueTitleText + " 🔒 "
                 +
                 "</font></big>"));
-
-        dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
-        fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
-        cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
-
-        password.setHintTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
-        password.setTextColor(PublicVariable.colorLightDarkOpposite);
-        textInputPassword.setHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()))));
-        textInputPassword.setDefaultHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName()))));
 
         password.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override

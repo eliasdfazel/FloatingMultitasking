@@ -4403,8 +4403,8 @@ public class FunctionsClass {
 
     public void widgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, int shortcutId) throws Exception {
         Intent differentIntent = new Intent(context, className);
-        differentIntent.setAction(Intent.ACTION_MAIN);
-        differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        differentIntent.setAction("CREATE_FLOATING_WIDGET_HOME_SCREEN_SHORTCUTS");
+        differentIntent.addCategory(Intent.CATEGORY_DEFAULT);
         differentIntent.putExtra("PackageName", packageName);
         differentIntent.putExtra("ShortcutsId", shortcutId);
         differentIntent.putExtra("ShortcutLabel", shortcutName);
