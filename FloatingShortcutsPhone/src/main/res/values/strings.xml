@@ -244,7 +244,7 @@
     <string name="passwordHintRepeat">Repeat New Pin Password 🔑 </string>
     <string name="enterCurrentPassword">Enter Current Password 🔑 </string>
     <string name="forgetPassword">Forgot Your Password? 🤔 </string>
-    <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 </string>
+    <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 | Open It On This Phone 📱 </string>
     <string name="verifying">Verifying Authentication Data 🔑</string>
     <string name="floatingShortcutsSecurityService">Floating Shortcuts | Security Services</string>
     <string name="securityWarningFingerprint"> ⚠ Security Warning | Fingerprint Is Not Set ⚠ </string>

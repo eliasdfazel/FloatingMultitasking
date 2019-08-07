@@ -34,7 +34,6 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
 
 import net.geekstools.floatshort.PRO.CheckPoint;
 import net.geekstools.floatshort.PRO.Configurations;
@@ -157,9 +156,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     try {
                         if (password.getText() != null) {
-                            String currentPassword = functionsClassSecurity.decryptEncodedData(functionsClassSecurity.rawStringToByteArray(functionsClass.readPreference(".Password", "Pin", getContext().getPackageName())), FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-                            if (password.getText().toString().equals(currentPassword)) {
+                            if (functionsClassSecurity.isEncryptedPinPasswordEqual(password.getText().toString())) {
                                 if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSingleUnlockIt()) {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Single Unlock It ***");
 
@@ -266,6 +263,8 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                     getActivity().finish();
                                 } catch (Exception e) {
                                     e.printStackTrace();
+                                } finally {
+                                    functionsClassSecurity.resetAuthAppValues();
                                 }
                             } else {
                                 fingerprintHint.setTextColor(getContext().getColor(R.color.warning_color));
@@ -274,8 +273,6 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                 textInputPassword.setError(getString(R.string.passwordError));
                             }
                         }
-
-                        functionsClassSecurity.resetAuthAppValues();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -221,8 +221,8 @@ class HandlePinPassword : Activity() {
         } else {
             if ((password.text.toString() == passwordRepeat.text.toString())) {
                 try {
-                    val passwordToSave = functionsClassSecurity.encryptEncodedData(password.text.toString(), firebaseUser.uid).asList().toString()
-                    functionClass.savePreference(".Password", "Pin", passwordToSave)
+                    functionsClassSecurity.saveEncryptedPinPassword(password.text.toString())
+                    functionsClassSecurity.uploadLockedAppsData()
 
                     this@HandlePinPassword.finish()
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -241,19 +241,17 @@ class HandlePinPassword : Activity() {
 
     private fun editPinPassword() {
         try {
-            val currentPassword = functionsClassSecurity.decryptEncodedData(functionsClassSecurity.rawStringToByteArray(functionClass.readPreference(".Password", "Pin", packageName)), firebaseUser.uid)
             if (passwordCurrent.text.isNullOrBlank()) {
                 passwordCurrent.setText("")
                 passwordCurrent.error = getString(R.string.passwordError)
             } else {
-                if (passwordCurrent.text.toString() == currentPassword) {
+                if (functionsClassSecurity.isEncryptedPinPasswordEqual(passwordCurrent.text.toString())) {
                     saveNewPinPassword()
                 } else {
                     passwordCurrent.setText("")
                     passwordCurrent.error = getString(R.string.passwordError)
                 }
             }
-
         } catch (e: Exception) {
             e.printStackTrace()
         }

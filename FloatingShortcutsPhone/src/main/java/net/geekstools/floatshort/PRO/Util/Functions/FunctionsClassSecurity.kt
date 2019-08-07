@@ -352,6 +352,26 @@ class FunctionsClassSecurity {
         return FunctionsClass(context).readPreference(".LockedApps", authComponentName, false)
     }
 
+    fun saveEncryptedPinPassword(plainTextPassword: String) {
+        val passwordToSave = encryptEncodedData(plainTextPassword, FirebaseAuth.getInstance().currentUser!!.uid).asList().toString()
+        FunctionsClass(context).savePreference(".Password", "Pin", passwordToSave)
+    }
+
+    fun isEncryptedPinPasswordEqual(plainTextPassword: String): Boolean {
+        var passwordEqual = false
+
+        val encryptedPassword = encryptEncodedData(plainTextPassword, FirebaseAuth.getInstance().currentUser!!.uid).asList().toString()
+        val currentPassword = FunctionsClass(context).readPreference(".Password", "Pin", "0")
+
+        if (encryptedPassword == currentPassword) {
+            passwordEqual = true
+        } else {
+            passwordEqual = false
+        }
+
+        return passwordEqual
+    }
+
     /*(En/De)crypt Functions*/
     @Throws(Exception::class)
     fun generateEncryptionKey(passwordKey: String): SecretKeySpec {
@@ -429,14 +449,23 @@ class FunctionsClassSecurity {
     /*Upload/Download Functions .LockedApps*/
     fun uploadLockedAppsData() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val firebaseStorage = FirebaseStorage.getInstance()
 
         val lockedAppsFile = File("/data/data/" + context.packageName + "/shared_prefs/.LockedApps.xml")
         val urilockedAppsFile = Uri.fromFile(lockedAppsFile)
-        val firebaseStorage = FirebaseStorage.getInstance()
+        val storageReferenceLockedApps = firebaseStorage.getReference("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
+        val uploadTaskLockedApps = storageReferenceLockedApps.putFile(urilockedAppsFile)
+        uploadTaskLockedApps.addOnSuccessListener {
 
-        val storageReference = firebaseStorage.getReference("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
-        val uploadTask = storageReference.putFile(urilockedAppsFile)
-        uploadTask.addOnSuccessListener {
+        }.addOnFailureListener {
+
+        }
+
+        val pinPasswordFile = File("/data/data/" + context.packageName + "/shared_prefs/.Password.xml")
+        val uriPinPasswordFile = Uri.fromFile(pinPasswordFile)
+        val storageReferencePinPassword = firebaseStorage.getReference("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".Password.xml")
+        val uploadTaskPinPassword = storageReferencePinPassword.putFile(uriPinPasswordFile)
+        uploadTaskPinPassword.addOnSuccessListener {
 
         }.addOnFailureListener {
 
@@ -445,12 +474,19 @@ class FunctionsClassSecurity {
 
     fun downloadLockedAppsData() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-
         val firebaseStorage = FirebaseStorage.getInstance()
         val firebaseStorageReference = firebaseStorage.reference
-        val allUploadedImageFilesXml = firebaseStorageReference.child("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
 
-        allUploadedImageFilesXml.getFile(File("/data/data/" + context.packageName + "/shared_prefs/" + ".LockedApps.xml"))
+        val uploadLockedAppsFileXml = firebaseStorageReference.child("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
+        uploadLockedAppsFileXml.getFile(File("/data/data/" + context.packageName + "/shared_prefs/" + ".LockedApps.xml"))
+                .addOnSuccessListener {
+
+                }.addOnFailureListener {
+
+                }
+
+        val pinPasswordFileXml = firebaseStorageReference.child("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".Password.xml")
+        pinPasswordFileXml.getFile(File("/data/data/" + context.packageName + "/shared_prefs/" + ".Password.xml"))
                 .addOnSuccessListener {
 
                 }.addOnFailureListener {
