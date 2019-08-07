@@ -145,6 +145,7 @@ import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
+import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.OpenApplications;
@@ -5853,16 +5854,16 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return readPreference(".SubscribedItem", "security.services", false);
+        return readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
     }
 
     public boolean floatingWidgetsPurchased() {
 
-        return readPreference(".PurchasedItem", "floating.widgets", false);
+        return readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
     }
 
     public boolean alreadyDonated() {
 
-        return readPreference(".PurchasedItem", "donation", false);
+        return readPreference(".PurchasedItem", BillingManager.iapDonation, false);
     }
 }

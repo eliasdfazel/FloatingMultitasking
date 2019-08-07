@@ -347,6 +347,7 @@ class FunctionsClassSecurity {
         return fingerprintManagerCompat.hasEnrolledFingerprints()
     }
 
+    /*Lock Functions*/
     fun isAppLocked(authComponentName: String): Boolean {
         return FunctionsClass(context).readPreference(".LockedApps", authComponentName, false)
     }

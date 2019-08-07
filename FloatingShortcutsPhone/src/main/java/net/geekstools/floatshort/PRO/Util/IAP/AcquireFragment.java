@@ -45,6 +45,7 @@ import com.google.firebase.storage.StorageReference;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingProvider;
 import net.geekstools.floatshort.PRO.Util.IAP.skulist.SkusAdapter;
 import net.geekstools.floatshort.PRO.Util.IAP.skulist.row.SkuRowData;
@@ -283,7 +284,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                             List<SkuRowData> skuRowDataList = new ArrayList<>();
                             for (SkuDetails skuDetails : skuDetailsList) {
                                 FunctionsClass.println("*** SKU List ::: " + skuDetails + " ***");
-                                if (skuDetails.getSku().equals("floating.widgets") && functionsClass.floatingWidgetsPurchased()) {
+                                if (skuDetails.getSku().equals(BillingManager.iapFloatingWidgets) && functionsClass.floatingWidgetsPurchased()) {
                                     floatingWidgetDemoList.setVisibility(View.INVISIBLE);
                                     floatingWidgetDemo.setVisibility(View.INVISIBLE);
                                     floatingWidgetDemoDescription.setVisibility(View.INVISIBLE);
@@ -291,7 +292,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                     continue;
                                 }
 
-                                if (skuDetails.getSku().equals("donation") && functionsClass.alreadyDonated()) {
+                                if (skuDetails.getSku().equals(BillingManager.iapDonation) && functionsClass.alreadyDonated()) {
 
                                     continue;
                                 }
@@ -322,7 +323,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                                     FunctionsClass.println("*** SKU List ::: " + skuDetails + " ***");
 
 
-                                                    if (skuDetails.getSku().equals("security.services") && functionsClass.securityServicesSubscribed()) {
+                                                    if (skuDetails.getSku().equals(BillingManager.iapSecurityServices) && functionsClass.securityServicesSubscribed()) {
 
                                                         continue;
                                                     }

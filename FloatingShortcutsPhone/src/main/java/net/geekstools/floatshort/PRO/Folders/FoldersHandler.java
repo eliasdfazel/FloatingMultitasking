@@ -77,6 +77,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
+import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
@@ -538,7 +539,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                                 FunctionsClassDebug.Companion.PrintDebug("*** Purchased Item: " + purchase + " ***");
 
 
-                                if (purchase.getSku().equals("donation")) {
+                                if (purchase.getSku().equals(BillingManager.iapDonation)) {
                                     ConsumeResponseListener consumeResponseListener = new ConsumeResponseListener() {
                                         @Override
                                         public void onConsumeResponse(@BillingClient.BillingResponse int responseCode, String outToken) {
@@ -619,7 +620,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                     @Override
                     public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
                         if (billingResponseCode == BillingClient.BillingResponse.OK) {
-                            functionsClass.savePreference(".SubscribedItem", "security.services", false);
+                            functionsClass.savePreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
 
                             List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.SUBS).getPurchasesList();
                             for (Purchase purchase : purchases) {

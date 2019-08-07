@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.billingclient.api.BillingClient;
 
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingProvider;
 import net.geekstools.floatshort.PRO.Util.IAP.skulist.row.RowViewHolder;
 import net.geekstools.floatshort.PRO.Util.IAP.skulist.row.SkuRowData;
@@ -56,19 +57,19 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
             }
         }
         switch (skuRowData.getSku()) {
-            case "floating.widgets": {
+            case BillingManager.iapFloatingWidgets: {
                 rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.ic_floating_widgets);
                 rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
 
                 break;
             }
-            case "security.services": {
+            case BillingManager.iapSecurityServices: {
                 rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.draw_security);
                 rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
 
                 break;
             }
-            case "donation": {
+            case BillingManager.iapDonation: {
                 rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.logo);
                 rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.donate));
 
