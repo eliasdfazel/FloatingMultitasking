@@ -2238,7 +2238,7 @@ public class FunctionsClass {
         return API;
     }
 
-    public boolean appInstalledOrNot(String packName) {
+    public boolean appIsInstalled(String packName) {
         PackageManager pm = context.getPackageManager();
         boolean app_installed = false;
         try {
@@ -2365,7 +2365,7 @@ public class FunctionsClass {
     }
 
     public void openApplicationFromActivity(String packageName) {
-        if (appInstalledOrNot(packageName) == true) {
+        if (appIsInstalled(packageName) == true) {
             try {
                 Toast(appName(packageName), Gravity.BOTTOM);
 
@@ -2389,7 +2389,7 @@ public class FunctionsClass {
     }
 
     public void openApplicationFromActivity(String packageName, String className) {
-        if (appInstalledOrNot(packageName) == true) {
+        if (appIsInstalled(packageName) == true) {
             try {
                 Toast(String.valueOf(context.getPackageManager().getActivityInfo(new ComponentName(packageName, className), 0).loadLabel(context.getPackageManager())), Gravity.BOTTOM);
 
@@ -5781,7 +5781,7 @@ public class FunctionsClass {
                     String aPackageName = queryUsageStats.get(i).getPackageName();
                     try {
                         if (!aPackageName.equals(context.getPackageName())) {
-                            if (appInstalledOrNot(aPackageName)) {
+                            if (appIsInstalled(aPackageName)) {
                                 if (!ifSystem(aPackageName)) {
                                     if (!isDefaultLauncher(aPackageName)) {
                                         if (canLaunch(aPackageName)) {

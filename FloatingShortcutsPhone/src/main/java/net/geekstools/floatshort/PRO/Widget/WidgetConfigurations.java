@@ -1243,7 +1243,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         int appWidgetId = widgetDataModel.getWidgetId();
                         String packageName = widgetDataModel.getPackageName();
 
-                        if (functionsClass.appInstalledOrNot(packageName)) {
+                        if (functionsClass.appIsInstalled(packageName)) {
                             AppWidgetProviderInfo appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
                             String newAppName = functionsClass.appName(packageName);
                             Drawable appIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
@@ -1270,14 +1270,14 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                     appWidgetId,
                                     widgetDataModel.getRecovery()
                             ));
+
+                            widgetIndex++;
                         } else {
                             widgetDataInterface.initDataAccessObject().deleteByWidgetId(appWidgetId);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    widgetIndex++;
                 }
 
                 if (configuredWidgetsNavDrawerItems.size() > 0) {
