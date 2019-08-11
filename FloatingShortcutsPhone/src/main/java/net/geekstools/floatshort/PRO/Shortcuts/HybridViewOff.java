@@ -815,7 +815,6 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                                         firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
                                                         String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
                                                 );
-
                                             }
                                         });
 

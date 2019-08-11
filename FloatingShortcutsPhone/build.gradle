@@ -16,7 +16,7 @@ android {
         targetSdkVersion 28
 
         versionCode 650
-        versionName "14.720.500.640_"
+        versionName "14.720.500.650_"
 
         wearAppUnbundled true
     }

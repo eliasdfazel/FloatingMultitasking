@@ -9,5 +9,5 @@ public final class BuildConfig {
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "betaConfig";
   public static final int VERSION_CODE = 650;
-  public static final String VERSION_NAME = "14.720.500.640_PRO[BETA]";
+  public static final String VERSION_NAME = "14.720.500.650_PRO[BETA]";
 }
