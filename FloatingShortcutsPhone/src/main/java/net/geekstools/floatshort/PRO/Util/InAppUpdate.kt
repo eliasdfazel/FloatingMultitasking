@@ -2,6 +2,9 @@ package net.geekstools.floatshort.PRO.Util
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
+import android.view.Gravity
+import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
@@ -14,29 +17,23 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.tasks.Task
-import kotlinx.android.synthetic.main.empty.*
-import net.geeksempire.loadingspin.SpinKitView
-import net.geeksempire.loadingspin.style.RotatingCircle
+import kotlinx.android.synthetic.main.in_app_update_view.*
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 
 class InAppUpdate : AppCompatActivity() {
 
-    lateinit var appUpdateManager: AppUpdateManager
-    lateinit var installStateUpdatedListener: InstallStateUpdatedListener
+    private lateinit var appUpdateManager: AppUpdateManager
+    private lateinit var installStateUpdatedListener: InstallStateUpdatedListener
 
-    val IN_APP_UPDATE_REQUEST = 333
+    private val IN_APP_UPDATE_REQUEST = 333
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.empty)
+        setContentView(R.layout.in_app_update_view)
 
-        val spinKitView: SpinKitView = SpinKitView(applicationContext)
-        spinKitView.setIndeterminateDrawable(RotatingCircle())
-        spinKitView.setColor(PublicVariable.primaryColor)
-        spinKitView.setPadding(7, 7, 7, 7)
-        fullEmptyView.addView(spinKitView)
+        inAppUpdateWaiting.setColor(PublicVariable.primaryColorOpposite)
 
         installStateUpdatedListener = InstallStateUpdatedListener {
             when (it.installStatus()) {
@@ -49,16 +46,7 @@ class InAppUpdate : AppCompatActivity() {
                 InstallStatus.DOWNLOADED -> {
                     FunctionsClassDebug.PrintDebug("*** UPDATE Downloaded ***")
 
-//                    showCompleteConfirmation()
-                    appUpdateManager.completeUpdate().addOnSuccessListener {
-                        FunctionsClassDebug.PrintDebug("*** Complete Update Success Listener ***")
-
-                    }.addOnFailureListener {
-                        FunctionsClassDebug.PrintDebug("*** Complete Update Failure Listener ${it} ***")
-
-                    }
-
-
+                    showCompleteConfirmation()
                 }
                 InstallStatus.INSTALLING -> {
                     FunctionsClassDebug.PrintDebug("*** UPDATE Installing ***")
@@ -71,7 +59,7 @@ class InAppUpdate : AppCompatActivity() {
                 InstallStatus.CANCELED -> {
                     FunctionsClassDebug.PrintDebug("*** UPDATE Canceled ***")
 
-//                    this@InAppUpdate.finish()
+                    this@InAppUpdate.finish()
                 }
                 InstallStatus.FAILED -> {
                     FunctionsClassDebug.PrintDebug("*** UPDATE Failed ***")
@@ -86,10 +74,10 @@ class InAppUpdate : AppCompatActivity() {
             FunctionsClassDebug.PrintDebug("*** ${updateInfo.updateAvailability()} --- ${updateInfo.availableVersionCode()} ***")
 
             if (updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    && updateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                    && updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
                 appUpdateManager.startUpdateFlowForResult(
                         updateInfo,
-                        AppUpdateType.IMMEDIATE,
+                        AppUpdateType.FLEXIBLE,
                         this@InAppUpdate,
                         IN_APP_UPDATE_REQUEST
                 )
@@ -99,11 +87,11 @@ class InAppUpdate : AppCompatActivity() {
             FunctionsClassDebug.PrintDebug("*** Exception Error ${it} ***")
         }
 
-//        appUpdateManager.unregisterListener {
-//            FunctionsClassDebug.PrintDebug("*** Unregister Listener ${it} ***")
-//
-//            this@InAppUpdate.finish()
-//        }
+        appUpdateManager.unregisterListener {
+            FunctionsClassDebug.PrintDebug("*** Unregister Listener ${it} ***")
+
+            this@InAppUpdate.finish()
+        }
     }
 
     override fun onResume() {
@@ -115,10 +103,9 @@ class InAppUpdate : AppCompatActivity() {
                             == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                         appUpdateManager.startUpdateFlowForResult(
                                 appUpdateInfo,
-                                AppUpdateType.IMMEDIATE,
+                                AppUpdateType.FLEXIBLE,
                                 this@InAppUpdate,
-                                IN_APP_UPDATE_REQUEST
-                        )
+                                IN_APP_UPDATE_REQUEST)
                     }
 
                     if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
@@ -140,7 +127,7 @@ class InAppUpdate : AppCompatActivity() {
             if (resultCode == RESULT_CANCELED) {
                 FunctionsClassDebug.PrintDebug("*** RESULT CANCELED ***")
 
-//                appUpdateManager.unregisterListener(installStateUpdatedListener)
+                appUpdateManager.unregisterListener(installStateUpdatedListener)
                 this@InAppUpdate.finish()
 
                 PublicVariable.updateCancelByUser = false
@@ -161,21 +148,27 @@ class InAppUpdate : AppCompatActivity() {
     private fun showCompleteConfirmation() {
         FunctionsClassDebug.PrintDebug("*** Complete Confirmation ***")
 
-        val snackbar = Snackbar.make(
-                findViewById<RelativeLayout>(R.id.fullEmptyView),
-                "An Update has Just Been Installed.",
-                Snackbar.LENGTH_INDEFINITE
-        )
-        snackbar.setAction("Complete It!") { view ->
+        val snackbar = Snackbar.make(findViewById<RelativeLayout>(R.id.fullEmptyView),
+                getString(R.string.inAppUpdateDescription),
+                Snackbar.LENGTH_INDEFINITE)
+        snackbar.setBackgroundTint(PublicVariable.colorLightDark)
+        snackbar.setTextColor(PublicVariable.colorLightDarkOpposite)
+        snackbar.setActionTextColor(PublicVariable.primaryColor)
+        snackbar.setAction(Html.fromHtml(getString(R.string.inAppUpdateAction))) { view ->
             appUpdateManager.completeUpdate().addOnSuccessListener {
                 FunctionsClassDebug.PrintDebug("*** Complete Update Success Listener ***")
 
             }.addOnFailureListener {
-                FunctionsClassDebug.PrintDebug("*** Complete Update Failure Listener ***")
+                FunctionsClassDebug.PrintDebug("*** Complete Update Failure Listener | ${it} ***")
 
             }
         }
-        snackbar.setActionTextColor(PublicVariable.primaryColorOpposite)
+
+        val view = snackbar.view
+        val layoutParams = view.layoutParams as FrameLayout.LayoutParams
+        layoutParams.gravity = Gravity.BOTTOM
+        view.layoutParams = layoutParams
+
         snackbar.show()
     }
 }

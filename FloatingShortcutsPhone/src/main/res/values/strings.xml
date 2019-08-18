@@ -224,6 +224,12 @@
             (<small>Highly Recommended for Mid-Range &amp; Low-End Smartphones</small>)
         ]]>
     </string>
+    <string name="inAppUpdateDescription">An Update Has Just Been Installed</string>
+    <string name="inAppUpdateAction">
+        <![CDATA[
+            Complete It!
+        ]]>
+    </string>
 
     <!-- Security Options -->
     <string name="securityServices">Security Services</string>
