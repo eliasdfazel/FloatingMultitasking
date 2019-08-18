@@ -64,6 +64,7 @@ public class PublicVariable {
     public static boolean splitScreen = true;
     public static boolean triggerWifiBroadcast = false;
     public static boolean forceReload = false;
+    public static boolean updateCancelByUser = false;
 
     public static String[] freqApps;
 

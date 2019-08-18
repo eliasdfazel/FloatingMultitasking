@@ -5,14 +5,14 @@ import android.os.Bundle;
 
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 
-public class OpenApplications extends Activity {
+public class OpenApplicationsLaunchPad extends Activity {
 
     FunctionsClass functionsClass;
 
     @Override
     protected void onCreate(Bundle Saved) {
         super.onCreate(Saved);
-        functionsClass = new FunctionsClass(getApplicationContext(), OpenApplications.this);
+        functionsClass = new FunctionsClass(getApplicationContext(), OpenApplicationsLaunchPad.this);
         String packageName = getIntent().getStringExtra("packageName");
         try {
             if (getIntent().hasExtra("className")) {

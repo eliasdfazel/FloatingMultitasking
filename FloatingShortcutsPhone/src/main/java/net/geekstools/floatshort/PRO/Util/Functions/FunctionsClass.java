@@ -148,7 +148,7 @@ import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
-import net.geekstools.floatshort.PRO.Util.OpenApplications;
+import net.geekstools.floatshort.PRO.Util.OpenApplicationsLaunchPad;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.FloatingWidgetHomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RemoteController;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
@@ -2585,14 +2585,14 @@ public class FunctionsClass {
     }
 
     public void appsLaunchPad(String packageName) {
-        Intent intent = new Intent(context, OpenApplications.class);
+        Intent intent = new Intent(context, OpenApplicationsLaunchPad.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("packageName", packageName);
         context.startActivity(intent);
     }
 
     public void appsLaunchPad(String packageName, String className) {
-        Intent intent = new Intent(context, OpenApplications.class);
+        Intent intent = new Intent(context, OpenApplicationsLaunchPad.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("packageName", packageName);
         intent.putExtra("className", className);

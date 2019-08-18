@@ -273,7 +273,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.OpenApplications"
+            android:name=".Util.OpenApplicationsLaunchPad"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:noHistory="true"
             android:excludeFromRecents="true"
@@ -353,6 +353,9 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Util.InAppUpdate"
+            android:theme="@style/TransparentAppCompat" />
 
         <activity-alias
             android:name=".Alias.FoldersHandler"
