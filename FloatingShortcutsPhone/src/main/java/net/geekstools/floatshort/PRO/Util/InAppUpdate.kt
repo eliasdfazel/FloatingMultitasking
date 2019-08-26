@@ -50,6 +50,7 @@ class InAppUpdate : AppCompatActivity() {
                 }
                 InstallStatus.INSTALLING -> {
                     FunctionsClassDebug.PrintDebug("*** UPDATE Installing ***")
+
                 }
                 InstallStatus.INSTALLED -> {
                     FunctionsClassDebug.PrintDebug("*** UPDATE Installed ***")
@@ -71,7 +72,7 @@ class InAppUpdate : AppCompatActivity() {
 
         val appUpdateInfo: Task<AppUpdateInfo> = appUpdateManager.appUpdateInfo
         appUpdateInfo.addOnSuccessListener { updateInfo ->
-            FunctionsClassDebug.PrintDebug("*** ${updateInfo.updateAvailability()} --- ${updateInfo.availableVersionCode()} ***")
+            FunctionsClassDebug.PrintDebug("*** Update Availability == ${updateInfo.updateAvailability()} ||| Available Version Code == ${updateInfo.availableVersionCode()} ***")
 
             if (updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     && updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
@@ -81,6 +82,8 @@ class InAppUpdate : AppCompatActivity() {
                         this@InAppUpdate,
                         IN_APP_UPDATE_REQUEST
                 )
+            } else {
+                this@InAppUpdate.finish()
             }
 
         }.addOnFailureListener {
@@ -97,21 +100,20 @@ class InAppUpdate : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        appUpdateManager.appUpdateInfo
-                .addOnSuccessListener { appUpdateInfo ->
-                    if (appUpdateInfo.updateAvailability()
-                            == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                        appUpdateManager.startUpdateFlowForResult(
-                                appUpdateInfo,
-                                AppUpdateType.FLEXIBLE,
-                                this@InAppUpdate,
-                                IN_APP_UPDATE_REQUEST)
-                    }
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability()
+                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        AppUpdateType.FLEXIBLE,
+                        this@InAppUpdate,
+                        IN_APP_UPDATE_REQUEST)
+            }
 
-                    if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                        showCompleteConfirmation()
-                    }
-                }
+            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                showCompleteConfirmation()
+            }
+        }
     }
 
     override fun onPause() {

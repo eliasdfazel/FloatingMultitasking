@@ -9,8 +9,8 @@
 
     <net.geeksempire.loadingspin.SpinKitView
         android:id="@+id/inAppUpdateWaiting"
-        android:layout_width="123dp"
-        android:layout_height="123dp"
+        android:layout_width="153dp"
+        android:layout_height="153dp"
         android:padding="13dp"
         android:layout_centerInParent="true"
         app:SpinKit_Style="RotatingCircle"

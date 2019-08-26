@@ -825,7 +825,9 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                                 (int) firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())
                                         );
 
-                                        startActivity(new Intent(getApplicationContext(), InAppUpdate.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                                        if (firebaseAuth.getCurrentUser() != null) {
+                                            startActivity(new Intent(getApplicationContext(), InAppUpdate.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                                        }
                                     } else {
 
                                     }
