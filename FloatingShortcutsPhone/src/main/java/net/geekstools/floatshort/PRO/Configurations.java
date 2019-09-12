@@ -6,6 +6,7 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -92,7 +93,12 @@ public class Configurations extends Activity {
 
         if (sharedPreferences.getBoolean("stable", true) == true) {
             PublicVariable.Stable = true;
-            startService(new Intent(getApplicationContext(), BindServices.class));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(new Intent(getApplicationContext(), BindServices.class));
+            } else {
+                startService(new Intent(getApplicationContext(), BindServices.class));
+            }
         } else if (sharedPreferences.getBoolean("stable", true) == false) {
             PublicVariable.Stable = false;
         }

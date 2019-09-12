@@ -141,7 +141,7 @@ class FunctionsClassSecurity {
                     FunctionsClassDebug.PrintDebug("*** Finger Print Available ***")
 
                     val fingerprintAuthenticationDialogFragment = AuthenticationDialogFragment()
-                    fingerprintAuthenticationDialogFragment.setCryptoObject(FingerprintManager.CryptoObject(this.cipher))
+                    fingerprintAuthenticationDialogFragment.setCryptoObject(FingerprintManager.CryptoObject(this.cipher!!))
                     fingerprintAuthenticationDialogFragment.show(activity.fragmentManager, context.packageName)
                 }
             } else {

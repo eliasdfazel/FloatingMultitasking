@@ -73,6 +73,7 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
+import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
@@ -861,13 +862,18 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     }
                 });
 
-        if (!alreadyAuthenticated) {
-            if (functionsClass.securityServicesSubscribed() || BuildConfig.DEBUG) {
-                FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(getString(R.string.securityServices));
-                FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(getPackageName());
-                FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetConfigurations(true);
+        if (functionsClass.readPreference(".Password", "Pin", "0").equals("0")) {
+            startActivity(new Intent(getApplicationContext(), HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+        } else {
+            if (!alreadyAuthenticated) {
+                if (functionsClass.securityServicesSubscribed() || BuildConfig.DEBUG) {
+                    FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(getString(R.string.securityServices));
+                    FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(getPackageName());
+                    FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetConfigurations(true);
 
-                functionsClassSecurity.openAuthInvocation();
+                    functionsClassSecurity.openAuthInvocation();
+                }
             }
         }
     }
@@ -1081,9 +1087,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                                 WidgetDataModel widgetDataModel = new WidgetDataModel(
                                         appWidgetId,
-                                        InstalledWidgetsAdapter.pickedWidgetPackageName,
-                                        functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName),
-                                        InstalledWidgetsAdapter.pickedWidgetLabel,
+                                        appWidgetInfo.provider.getPackageName(),
+                                        functionsClass.appName(appWidgetInfo.provider.getPackageName()),
+                                        appWidgetInfo.loadLabel(getPackageManager()),
                                         false
                                 );
 
@@ -1120,6 +1126,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 case InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER_CONFIGURATION: {
                     Bundle extras = data.getExtras();
                     int appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+                    AppWidgetProviderInfo appWidgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
 
                     new Thread(new Runnable() {
                         @Override
@@ -1127,9 +1134,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                             WidgetDataModel widgetDataModel = new WidgetDataModel(
                                     appWidgetId,
-                                    InstalledWidgetsAdapter.pickedWidgetPackageName,
-                                    functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName),
-                                    InstalledWidgetsAdapter.pickedWidgetLabel,
+                                    appWidgetInfo.provider.getPackageName(),
+                                    functionsClass.appName(appWidgetInfo.provider.getPackageName()),
+                                    appWidgetInfo.loadLabel(getPackageManager()),
                                     false
                             );
 
