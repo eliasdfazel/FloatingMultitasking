@@ -2860,18 +2860,24 @@ public class FunctionsClass {
     public boolean automationFeatureEnable() {
         boolean automationEnabled = false;
         if (returnAPI() >= 26) {
-            String autoFileName = null;
+            List<String> autoFileName = new ArrayList<String>();
             File[] files = context.getFileStreamPath("").listFiles();
             for (File afile : files) {
-                FunctionsClass.println("*** " + afile.getAbsolutePath());
+                FunctionsClassDebug.Companion.PrintDebug("*** Automation Enabled == " + afile.getAbsolutePath());
                 if (afile.getName().contains(".auto")) {
-                    autoFileName = afile.getName();
-                    break;
+                    FunctionsClassDebug.Companion.PrintDebug("*** Automation File Found == " + afile.getAbsolutePath());
+
+                    autoFileName.add(afile.getName());
                 }
             }
-            if (countLineInnerFile(autoFileName) > 0) {
-                FunctionsClass.println("*** " + countLineInnerFile(autoFileName) + ". " + autoFileName + " | " + readFileLine(autoFileName));
 
+            int totalCount = 0;
+            for (String fileName : autoFileName) {
+                int countLine = countLineInnerFile(fileName);
+                totalCount += countLine;
+            }
+
+            if (totalCount > 0) {
                 automationEnabled = true;
 
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);

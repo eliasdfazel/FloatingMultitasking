@@ -34,6 +34,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -56,13 +59,16 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
     Activity activity;
     FunctionsClass functionsClass;
-    ListView listView, acttionElementsList;
+    ListView actionElementsList;
     RelativeLayout fullActionButton, MainView;
     LinearLayout indexView, autoIdentifier;
     RelativeLayout loadingSplash;
     ProgressBar loadingBarLTR;
     TextView desc, popupIndex;
     Button wifi, bluetooth, gps, nfc, time, autoApps, autoCategories;
+
+    ScrollView nestedScrollView;
+    RecyclerView loadView;
 
     ScrollView nestedIndexScrollView;
 
@@ -71,7 +77,8 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
     Map<Integer, String> mapRangeIndex;
 
     ArrayList<NavDrawerItem> navDrawerItems;
-    AppAutoListAdapter adapter;
+    RecyclerView.Adapter adapter;
+    LinearLayoutManager recyclerViewLayoutManager;
 
     String PackageName;
     String AppName = "Application";
@@ -89,13 +96,16 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         super.onCreate(Saved);
         setContentView(R.layout.auto_apps);
 
-        listView = (ListView) findViewById(R.id.listFav);
+        loadView = (RecyclerView) findViewById(R.id.listFav);
+        nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
+
+
         indexView = (LinearLayout) findViewById(R.id.side_index);
         autoIdentifier = (LinearLayout) findViewById(R.id.autoid);
         autoIdentifier.bringToFront();
         MainView = (RelativeLayout) findViewById(R.id.MainView);
         fullActionButton = (RelativeLayout) findViewById(R.id.fullActionViews);
-        acttionElementsList = (ListView) findViewById(R.id.acttionElementsList);
+        actionElementsList = (ListView) findViewById(R.id.acttionElementsList);
         autoApps = (Button) findViewById(R.id.autoApps);
         autoApps.bringToFront();
         autoCategories = (Button) findViewById(R.id.autoCategories);
@@ -112,6 +122,9 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         simpleGestureFilterFull = new SimpleGestureFilterFull(getApplicationContext(), this);
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         activity = this;
+
+        recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);
+        loadView.setLayoutManager(recyclerViewLayoutManager);
 
         if (functionsClass.returnAPI() >= 26) {
             if (!functionsClass.ControlPanel()) {
@@ -510,6 +523,10 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
     public void onPause() {
         super.onPause();
         functionsClass.CheckSystemRAM(AppAutoFeatures.this);
+
+        if (functionsClass.automationFeatureEnable()) {
+            startService(new Intent(getApplicationContext(), BindServices.class));
+        }
     }
 
     @Override
@@ -555,23 +572,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             }
             case SimpleGestureFilterFull.SWIPE_UP: {
                 FunctionsClass.println("SWIPE UP");
-                try {
-                    if (listView.getLastVisiblePosition() == (listView.getAdapter().getCount() - 1)) {
-                        try {
-                            functionsClass.overrideBackPressToMain(AppAutoFeatures.this);
-                            overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } catch (Exception e) {
-                    try {
-                        functionsClass.overrideBackPressToMain(AppAutoFeatures.this);
-                        overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-                }
+
                 break;
             }
         }
@@ -677,7 +678,6 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             }
 
 
-            listView.clearChoices();
             indexView.removeAllViews();
         }
 
@@ -728,8 +728,8 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            listView.setAdapter(adapter);
-            registerForContextMenu(listView);
+            loadView.setAdapter(adapter);
+            registerForContextMenu(loadView);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -822,7 +822,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                         if (functionsClass.litePreferencesEnabled()) {
 
                         } else {
-                            String indexText = mapRangeIndex.get((((int) motionEvent.getY())));
+                            String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
 
                             if (indexText != null) {
                                 popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
@@ -849,8 +849,10 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                                 popupIndex.setText(indexText);
 
                                 try {
-                                    listView.smoothScrollToPositionFromTop(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY()))), 0, 200);
-
+                                    nestedScrollView.smoothScrollTo(
+                                            0,
+                                            ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+                                    );
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -867,14 +869,20 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                     case MotionEvent.ACTION_UP: {
                         if (functionsClass.litePreferencesEnabled()) {
                             try {
-                                listView.smoothScrollToPositionFromTop(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY()))), 0, 200);
+                                nestedScrollView.smoothScrollTo(
+                                        0,
+                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+                                );
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         } else {
                             if (popupIndex.isShown()) {
                                 try {
-                                    listView.smoothScrollToPositionFromTop(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY()))), 0, 200);
+                                    nestedScrollView.smoothScrollTo(
+                                            0,
+                                            ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+                                    );
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

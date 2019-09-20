@@ -6,23 +6,41 @@
     android:layout_height="match_parent"
     android:background="@color/dark_transparent_high">
 
-    <ListView
-        android:id="@+id/listFav"
+    <ScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="87dp"
         android:cacheColorHint="@android:color/transparent"
-        android:divider="@drawable/draw_divider"
-        android:dividerHeight="5dp"
         android:fadingEdge="vertical"
         android:fadingEdgeLength="37dp"
-        android:listSelector="@color/transparent_default"
         android:paddingStart="9dp"
-        android:paddingTop="113dp"
         android:paddingEnd="30dp"
         android:requiresFadingEdge="vertical"
         android:saveEnabled="true"
-        android:scrollbars="none"
-        android:smoothScrollbar="true"/>
+        android:scrollbarFadeDuration="270"
+        android:scrollbarSize="7dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbarThumbVertical="@drawable/scrollbar"
+        android:scrollbars="vertical"
+        android:smoothScrollbar="true"
+        android:verticalScrollbarPosition="left">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="61dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listFav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/draw_divider"
+                android:dividerHeight="7dp"
+                android:isScrollContainer="false"
+                android:nestedScrollingEnabled="false" />
+        </RelativeLayout>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/loadingSplash"
@@ -166,7 +184,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_below="@id/autoSelection"
-        android:layout_alignEnd="@id/listFav"
+        android:layout_alignEnd="@id/nestedScrollView"
         android:layout_centerInParent="true"
         android:layout_centerVertical="true"
         android:foregroundGravity="center_vertical"

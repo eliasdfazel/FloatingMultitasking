@@ -32,8 +32,6 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
     Context context;
     ArrayList<NavDrawerItem> navDrawerItems;
 
-    Button[] recoveryIndicatorBind;
-
     int layoutInflater, idRippleShape;
 
     View view;
@@ -48,8 +46,6 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
         PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
 
-
-        recoveryIndicatorBind = new Button[navDrawerItems.size()];
         switch (functionsClass.shapesImageId()) {
             case 1:
                 layoutInflater = R.layout.item_card_hybrid_droplet;
@@ -100,21 +96,21 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
         viewHolderBinder.item.setBackground(drawItemRippleDrawable);
 
         try {
-            recoveryIndicatorBind[position] = viewHolderBinder.recoveryIndicator;
-            recoveryIndicatorBind[position].setVisibility(View.INVISIBLE);
+            //  viewHolderBinder.recoveryIndicator = viewHolderBinder.recoveryIndicator;
+            viewHolderBinder.recoveryIndicator.setVisibility(View.INVISIBLE);
             if (functionsClass.loadRecoveryIndicator(navDrawerItems.get(position).getPackageName()) == true) {
-                recoveryIndicatorBind[position].setVisibility(View.VISIBLE);
-                recoveryIndicatorBind[position].setBackground(drawIndicator);
+                viewHolderBinder.recoveryIndicator.setVisibility(View.VISIBLE);
+                viewHolderBinder.recoveryIndicator.setBackground(drawIndicator);
 
             } else {
-                recoveryIndicatorBind[position].setVisibility(View.INVISIBLE);
+                viewHolderBinder.recoveryIndicator.setVisibility(View.INVISIBLE);
             }
-            recoveryIndicatorBind[position].setOnClickListener(new View.OnClickListener() {
+            viewHolderBinder.recoveryIndicator.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     functionsClass.removeLine(".uFile", navDrawerItems.get(position).getPackageName());
                     try {
-                        recoveryIndicatorBind[position].setVisibility(View.INVISIBLE);
+                        viewHolderBinder.recoveryIndicator.setVisibility(View.INVISIBLE);
                         notifyDataSetChanged();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -135,8 +131,8 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
                     @Override
                     public void run() {
                         try {
-                            recoveryIndicatorBind[position].setBackground(drawIndicator);
-                            recoveryIndicatorBind[position].setVisibility(View.VISIBLE);
+                            viewHolderBinder.recoveryIndicator.setBackground(drawIndicator);
+                            viewHolderBinder.recoveryIndicator.setVisibility(View.VISIBLE);
                             notifyDataSetChanged();
                         } catch (Exception e) {
                             e.printStackTrace();

@@ -495,6 +495,10 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
     public void onPause() {
         super.onPause();
         functionsClass.CheckSystemRAM(CategoryAutoFeatures.this);
+
+        if (functionsClass.automationFeatureEnable()) {
+            startService(new Intent(getApplicationContext(), BindServices.class));
+        }
     }
 
     @Override
@@ -539,23 +543,6 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
             }
             case SimpleGestureFilterFull.SWIPE_UP: {
                 FunctionsClass.println("Swipe UP");
-                try {
-                    if (recyclerViewLayoutManager.findLastCompletelyVisibleItemPosition() == (categorylist.getAdapter().getItemCount() - 1)) {
-                        try {
-                            functionsClass.overrideBackPressToMain(CategoryAutoFeatures.this);
-                            overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } catch (Exception e) {
-                    try {
-                        functionsClass.overrideBackPressToMain(CategoryAutoFeatures.this);
-                        overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-                }
 
                 break;
             }

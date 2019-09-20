@@ -43,11 +43,6 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
     ImageView imageView;
     RelativeLayout freqLayout;
 
-    LinearLayout[] selectedApps;
-    TextView[] runCategories;
-    EditText[] categoryNames;
-    ImageView[] addApps;
-
     String endEdited = "";
 
     View view;
@@ -64,11 +59,6 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
         PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
 
-        selectedApps = new LinearLayout[navDrawerItems.size()];
-        runCategories = new TextView[navDrawerItems.size()];
-        categoryNames = new EditText[navDrawerItems.size()];
-        addApps = new ImageView[navDrawerItems.size()];
-
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
         }
@@ -84,44 +74,38 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
     @Override
     public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
 
-        RelativeLayout categoryItem = viewHolderBinder.categoryItem;
-        selectedApps[position] = viewHolderBinder.selectedApp;
-        categoryNames[position] = viewHolderBinder.categoryName;
-        addApps[position] = viewHolderBinder.addApp;
-        runCategories[position] = viewHolderBinder.runCategory;
-
         LayerDrawable drawCardCategory = (LayerDrawable) context.getDrawable(R.drawable.card_category);
         GradientDrawable backCardCategory = (GradientDrawable) drawCardCategory.findDrawableByLayerId(R.id.category_item);
         backCardCategory.setColor(PublicVariable.colorLightDark);
         drawCardCategory.setAlpha(7);
-        categoryItem.setBackground(drawCardCategory);
+        viewHolderBinder.categoryItem.setBackground(drawCardCategory);
 
-        categoryNames[position].setTextColor(PublicVariable.colorLightDarkOpposite);
-        categoryNames[position].setHintTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175));
+        viewHolderBinder.categoryName.setTextColor(PublicVariable.colorLightDarkOpposite);
+        viewHolderBinder.categoryName.setHintTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175));
 
         final String nameCategory = navDrawerItems.get(position).getCategory();
         final String[] categoryPackages = navDrawerItems.get(position).getPackName();
 
         if (functionsClass.loadRecoveryIndicatorCategory(nameCategory)) {
-            categoryNames[position].setText(navDrawerItems.get(position).getCategory() + " " + "\uD83D\uDD04");
+            viewHolderBinder.categoryName.setText(navDrawerItems.get(position).getCategory() + " " + "\uD83D\uDD04");
         } else {
-            categoryNames[position].setText(navDrawerItems.get(position).getCategory());
+            viewHolderBinder.categoryName.setText(navDrawerItems.get(position).getCategory());
         }
-        runCategories[position].setText(String.valueOf(nameCategory.charAt(0)).toUpperCase());
+        viewHolderBinder.runCategory.setText(String.valueOf(nameCategory.charAt(0)).toUpperCase());
 
         if (nameCategory.equals(context.getPackageName())) {
             try {
-                runCategories[position].setText(context.getString(R.string.index_item));
-                categoryNames[position].setText("");
-                addApps[position].setVisibility(View.INVISIBLE);
-                selectedApps[position].removeAllViews();
+                viewHolderBinder.runCategory.setText(context.getString(R.string.index_item));
+                viewHolderBinder.categoryName.setText("");
+                viewHolderBinder.addApp.setVisibility(View.INVISIBLE);
+                viewHolderBinder.selectedApp.removeAllViews();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             File autoFile = context.getFileStreamPath(nameCategory);
             if (autoFile.exists() && autoFile.isFile()) {
-                selectedApps[position].removeAllViews();
+                viewHolderBinder.selectedApp.removeAllViews();
                 int previewItems = 7;
                 if (categoryPackages.length < 7) {
                     previewItems = categoryPackages.length;
@@ -133,16 +117,16 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                             loadCustomIcons.getDrawableIconForPackage(categoryPackages[i], functionsClass.shapedAppIcon(categoryPackages[i]))
                             :
                             functionsClass.shapedAppIcon(categoryPackages[i]));
-                    selectedApps[position].addView(freqLayout);
-                    addApps[position].setVisibility(View.VISIBLE);
+                    viewHolderBinder.selectedApp.addView(freqLayout);
+                    viewHolderBinder.addApp.setVisibility(View.VISIBLE);
                     Drawable addAppsDrawable = context.getDrawable(R.drawable.ic_add_apps);
                     addAppsDrawable.setTint(PublicVariable.primaryColorOpposite);
-                    addApps[position].setImageDrawable(addAppsDrawable);
+                    viewHolderBinder.addApp.setImageDrawable(addAppsDrawable);
                 }
             }
         }
 
-        categoryNames[position].setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        viewHolderBinder.categoryName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -186,7 +170,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                 return true;
             }
         });
-        categoryNames[position].addTextChangedListener(new TextWatcher() {
+        viewHolderBinder.categoryName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -198,12 +182,12 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
             @Override
             public void afterTextChanged(Editable editable) {
                 endEdited = editable.toString();
-                if (addApps[position].isShown()) {
-                    addApps[position].setVisibility(View.INVISIBLE);
+                if (viewHolderBinder.addApp.isShown()) {
+                    viewHolderBinder.addApp.setVisibility(View.INVISIBLE);
                 }
             }
         });
-        addApps[position].setOnClickListener(new View.OnClickListener() {
+        viewHolderBinder.addApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
@@ -246,7 +230,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
             }
         });
 
-        selectedApps[position].setOnClickListener(new View.OnClickListener() {
+        viewHolderBinder.selectedApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
@@ -255,7 +239,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                 }
             }
         });
-        selectedApps[position].setOnLongClickListener(new View.OnLongClickListener() {
+        viewHolderBinder.selectedApp.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
@@ -266,7 +250,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                 return true;
             }
         });
-        runCategories[position].setOnClickListener(new View.OnClickListener() {
+        viewHolderBinder.runCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
@@ -275,7 +259,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                 }
             }
         });
-        runCategories[position].setOnLongClickListener(new View.OnLongClickListener() {
+        viewHolderBinder.runCategory.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
@@ -288,13 +272,13 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
         });
 
         RippleDrawable drawItem = (RippleDrawable) context.getDrawable(R.drawable.ripple_effect_category_logo);
-        drawItem.setDrawableByLayerId(R.id.category_logo_layer, functionsClass.shapesDrawablesCategory(runCategories[position]));
-        drawItem.setDrawableByLayerId(android.R.id.mask, functionsClass.shapesDrawablesCategory(runCategories[position]));
+        drawItem.setDrawableByLayerId(R.id.category_logo_layer, functionsClass.shapesDrawablesCategory(viewHolderBinder.runCategory));
+        drawItem.setDrawableByLayerId(android.R.id.mask, functionsClass.shapesDrawablesCategory(viewHolderBinder.runCategory));
         Drawable categoryLogoLayer = (Drawable) drawItem.findDrawableByLayerId(R.id.category_logo_layer);
         Drawable categoryMask = (Drawable) drawItem.findDrawableByLayerId(android.R.id.mask);
         categoryLogoLayer.setTint(PublicVariable.primaryColorOpposite);
         categoryMask.setTint(PublicVariable.primaryColor);
-        runCategories[position].setBackground(drawItem);
+        viewHolderBinder.runCategory.setBackground(drawItem);
     }
 
     @Override

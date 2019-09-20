@@ -9,11 +9,12 @@ import android.graphics.drawable.RippleDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.Automation.Alarms.TimeDialogue;
 import net.geekstools.floatshort.PRO.R;
@@ -25,15 +26,19 @@ import net.geekstools.imageview.customshapes.ShapesImage;
 import java.io.File;
 import java.util.ArrayList;
 
-public class AppAutoListAdapter extends BaseAdapter {
+public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.ViewHolder> {
 
-    FunctionsClass functionsClass;
-    TextView[] timeView;
-    CheckBox[] autoChoice;
-    String autoIdAppend;
-    int layoutInflater;
     private Context context;
     private Activity activity;
+
+    FunctionsClass functionsClass;
+
+    View view;
+    ViewHolder viewHolder;
+
+    String autoIdAppend;
+    int layoutInflater;
+
     private ArrayList<NavDrawerItem> navDrawerItems;
 
     public AppAutoListAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems) {
@@ -41,9 +46,6 @@ public class AppAutoListAdapter extends BaseAdapter {
         this.context = context;
         this.navDrawerItems = navDrawerItems;
         functionsClass = new FunctionsClass(context, activity);
-
-        autoChoice = new CheckBox[navDrawerItems.size()];
-        timeView = new TextView[navDrawerItems.size()];
 
         switch (functionsClass.shapesImageId()) {
             case 1:
@@ -79,79 +81,55 @@ public class AppAutoListAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return navDrawerItems.size();
+    public AppAutoListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        view = LayoutInflater.from(context).inflate(layoutInflater, parent, false);
+        viewHolder = new ViewHolder(view);
+        return viewHolder;
     }
 
     @Override
-    public Object getItem(int position) {
-        return navDrawerItems.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
-        if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(layoutInflater, null);
-
-            viewHolder = new ViewHolder();
-            viewHolder.item = (RelativeLayout) convertView.findViewById(R.id.item);
-            viewHolder.imgIcon = (ShapesImage) convertView.findViewById(R.id.icon);
-            viewHolder.txtDesc = (TextView) convertView.findViewById(R.id.desc);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        timeView[position] = (TextView) convertView.findViewById(R.id.time);
-        timeView[position].setTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 113));
-        autoChoice[position] = (CheckBox) convertView.findViewById(R.id.autoChoice);
+    public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
+        viewHolderBinder.time.setTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 113));
 
         if (PublicVariable.themeLightDark) {
-            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.dark)));
+            viewHolderBinder.autoChoice.setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.dark)));
         } else if (!PublicVariable.themeLightDark) {
-            viewHolder.txtDesc.setTextColor(context.getColor(R.color.light));
-            autoChoice[position].setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.light)));
+            viewHolderBinder.desc.setTextColor(context.getColor(R.color.light));
+            viewHolderBinder.autoChoice.setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.light)));
         }
 
-        viewHolder.imgIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
-        viewHolder.txtDesc.setText(navDrawerItems.get(position).getAppName());
+        viewHolderBinder.icon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
+        viewHolderBinder.desc.setText(navDrawerItems.get(position).getAppName());
 
         try {
             if (PublicVariable.autoID.equals(context.getString(R.string.time))) {
                 final String pack = navDrawerItems.get(position).getPackageName();
                 File autoFile = context.getFileStreamPath(pack + ".Time");
-                autoChoice[position].setChecked(false);
-                timeView[position].setVisibility(View.INVISIBLE);
+                viewHolderBinder.autoChoice.setChecked(false);
+                viewHolderBinder.time.setVisibility(View.INVISIBLE);
                 if (autoFile.exists()) {
-                    autoChoice[position].setChecked(true);
-                    timeView[position].setText(navDrawerItems.get(position).getTimes());
-                    timeView[position].setVisibility(View.VISIBLE);
+                    viewHolderBinder.autoChoice.setChecked(true);
+                    viewHolderBinder.time.setText(navDrawerItems.get(position).getTimes());
+                    viewHolderBinder.time.setVisibility(View.VISIBLE);
                 } else {
-                    autoChoice[position].setChecked(false);
-                    timeView[position].setVisibility(View.INVISIBLE);
+                    viewHolderBinder.autoChoice.setChecked(false);
+                    viewHolderBinder.time.setVisibility(View.INVISIBLE);
                 }
             } else {
                 final String pack = navDrawerItems.get(position).getPackageName();
                 File autoFile = context.getFileStreamPath(pack + autoIdAppend);
-                autoChoice[position].setChecked(false);
+                viewHolderBinder.autoChoice.setChecked(false);
                 if (autoFile.exists()) {
-                    autoChoice[position].setChecked(true);
+                    viewHolderBinder.autoChoice.setChecked(true);
                 } else {
-                    autoChoice[position].setChecked(false);
+                    viewHolderBinder.autoChoice.setChecked(false);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
+        viewHolderBinder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (PublicVariable.autoID == null) {
@@ -164,7 +142,7 @@ public class AppAutoListAdapter extends BaseAdapter {
                             context.deleteFile(
                                     navDrawerItems.get(position).getPackageName() + ".Wifi");
                             functionsClass.removeLine(".autoWifi", navDrawerItems.get(position).getPackageName());
-                            autoChoice[position].setChecked(false);
+                            viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
                                     navDrawerItems.get(position).getPackageName() + ".Wifi",
@@ -172,7 +150,7 @@ public class AppAutoListAdapter extends BaseAdapter {
                             functionsClass.saveFileAppendLine(
                                     ".autoWifi",
                                     navDrawerItems.get(position).getPackageName());
-                            autoChoice[position].setChecked(true);
+                            viewHolderBinder.autoChoice.setChecked(true);
                         }
                     } else if (PublicVariable.autoID.equals(context.getString(R.string.bluetooth))) {
                         final String pack = navDrawerItems.get(position).getPackageName();
@@ -181,7 +159,7 @@ public class AppAutoListAdapter extends BaseAdapter {
                             context.deleteFile(
                                     navDrawerItems.get(position).getPackageName() + ".Bluetooth");
                             functionsClass.removeLine(".autoBluetooth", navDrawerItems.get(position).getPackageName());
-                            autoChoice[position].setChecked(false);
+                            viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
                                     navDrawerItems.get(position).getPackageName() + ".Bluetooth",
@@ -189,7 +167,7 @@ public class AppAutoListAdapter extends BaseAdapter {
                             functionsClass.saveFileAppendLine(
                                     ".autoBluetooth",
                                     navDrawerItems.get(position).getPackageName());
-                            autoChoice[position].setChecked(true);
+                            viewHolderBinder.autoChoice.setChecked(true);
                         }
                     } else if (PublicVariable.autoID.equals(context.getString(R.string.gps))) {
                         final String pack = navDrawerItems.get(position).getPackageName();
@@ -198,7 +176,7 @@ public class AppAutoListAdapter extends BaseAdapter {
                             context.deleteFile(
                                     navDrawerItems.get(position).getPackageName() + ".Gps");
                             functionsClass.removeLine(".autoGps", navDrawerItems.get(position).getPackageName());
-                            autoChoice[position].setChecked(false);
+                            viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
                                     navDrawerItems.get(position).getPackageName() + ".Gps",
@@ -206,7 +184,7 @@ public class AppAutoListAdapter extends BaseAdapter {
                             functionsClass.saveFileAppendLine(
                                     ".autoGps",
                                     navDrawerItems.get(position).getPackageName());
-                            autoChoice[position].setChecked(true);
+                            viewHolderBinder.autoChoice.setChecked(true);
                         }
                     } else if (PublicVariable.autoID.equals(context.getString(R.string.nfc))) {
                         final String pack = navDrawerItems.get(position).getPackageName();
@@ -215,7 +193,7 @@ public class AppAutoListAdapter extends BaseAdapter {
                             context.deleteFile(
                                     navDrawerItems.get(position).getPackageName() + ".Nfc");
                             functionsClass.removeLine(".autoNfc", navDrawerItems.get(position).getPackageName());
-                            autoChoice[position].setChecked(false);
+                            viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
                                     navDrawerItems.get(position).getPackageName() + ".Nfc",
@@ -223,7 +201,7 @@ public class AppAutoListAdapter extends BaseAdapter {
                             functionsClass.saveFileAppendLine(
                                     ".autoNfc",
                                     navDrawerItems.get(position).getPackageName());
-                            autoChoice[position].setChecked(true);
+                            viewHolderBinder.autoChoice.setChecked(true);
                         }
                     } else if (PublicVariable.autoID.equals(context.getString(R.string.time))) {
                         final String pack = navDrawerItems.get(position).getPackageName();
@@ -240,11 +218,11 @@ public class AppAutoListAdapter extends BaseAdapter {
                             }
 
                             functionsClass.removeLine(".times.clocks", navDrawerItems.get(position).getTimes());
-                            autoChoice[position].setChecked(false);
-                            timeView[position].setText("");
-                            timeView[position].setVisibility(View.INVISIBLE);
+                            viewHolderBinder.autoChoice.setChecked(false);
+                            viewHolderBinder.time.setText("");
+                            viewHolderBinder.time.setVisibility(View.INVISIBLE);
                         } else {
-                            autoChoice[position].setChecked(true);
+                            viewHolderBinder.autoChoice.setChecked(true);
                             context.startActivity(
                                     new Intent(context, TimeDialogue.class)
                                             .putExtra("content", navDrawerItems.get(position).getPackageName())
@@ -263,13 +241,28 @@ public class AppAutoListAdapter extends BaseAdapter {
         gradientDrawable.setColor(PublicVariable.primaryColorOpposite);
         drawItem.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
         viewHolder.item.setBackground(drawItem);
-
-        return convertView;
     }
 
-    static class ViewHolder {
+    @Override
+    public int getItemCount() {
+        return navDrawerItems.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
         RelativeLayout item;
-        ShapesImage imgIcon;
-        TextView txtDesc;
+        CheckBox autoChoice;
+        ShapesImage icon;
+        TextView desc;
+        TextView time;
+
+        public ViewHolder(View view) {
+            super(view);
+            item = (RelativeLayout) view.findViewById(R.id.item);
+            autoChoice = (CheckBox) view.findViewById(R.id.autoChoice);
+            icon = (ShapesImage) view.findViewById(R.id.icon);
+            desc = (TextView) view.findViewById(R.id.desc);
+            time = (TextView) view.findViewById(R.id.time);
+        }
     }
 }
