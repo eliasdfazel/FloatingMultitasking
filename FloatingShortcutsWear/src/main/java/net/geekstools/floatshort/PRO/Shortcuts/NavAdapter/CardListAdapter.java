@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -22,8 +24,6 @@ import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryComplication;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.util.ArrayList;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHolder> {
 
@@ -35,9 +35,6 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
     String PackageName;
     int layoutInflater;
 
-    Button[] recoveryIndicator;
-
-
     View view;
     ViewHolder viewHolder;
 
@@ -47,7 +44,6 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
         this.navDrawerItems = navDrawerItems;
 
         functionsClass = new FunctionsClass(context, activity);
-        recoveryIndicator = new Button[navDrawerItems.size()];
 
         switch (functionsClass.shapesImageId()) {
             case 1:
@@ -81,18 +77,17 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
         try {
-            recoveryIndicator[position] = viewHolderBinder.recoveryIndicator;
-            recoveryIndicator[position].setVisibility(View.INVISIBLE);
+            viewHolderBinder.recoveryIndicator.setVisibility(View.INVISIBLE);
             if (functionsClass.loadRecoveryIndicator(navDrawerItems.get(position).getPackageName()) == true) {
-                recoveryIndicator[position].setVisibility(View.VISIBLE);
+                viewHolderBinder.recoveryIndicator.setVisibility(View.VISIBLE);
             } else {
-                recoveryIndicator[position].setVisibility(View.INVISIBLE);
+                viewHolderBinder.recoveryIndicator.setVisibility(View.INVISIBLE);
             }
-            recoveryIndicator[position].setOnClickListener(new View.OnClickListener() {
+            viewHolderBinder.recoveryIndicator.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     functionsClass.removeLine(".uFile", navDrawerItems.get(position).getPackageName());
-                    recoveryIndicator[position].setVisibility(View.INVISIBLE);
+                    viewHolderBinder.recoveryIndicator.setVisibility(View.INVISIBLE);
                     functionsClass.updateRecoverShortcuts();
 
                     try {
@@ -137,7 +132,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.ViewHo
                     @Override
                     public void run() {
                         try {
-                            recoveryIndicator[position].setVisibility(View.VISIBLE);
+                            viewHolderBinder.recoveryIndicator.setVisibility(View.VISIBLE);
 
                             ProviderUpdateRequester requester = new ProviderUpdateRequester(context, new ComponentName(context, RecoveryComplication.class));
                             requester.requestUpdate(functionsClass.readPreference("ComplicationProviderService", "ComplicationedId", 0));
