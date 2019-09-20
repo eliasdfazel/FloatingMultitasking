@@ -3269,9 +3269,17 @@ public class FunctionsClass {
     }
 
     private Drawable resizeDrawable(Drawable drawable, int dstWidth, int dstHeight) {
-        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-        Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, dstWidth, dstHeight, false);
-        return new BitmapDrawable(context.getResources(), bitmapResized).mutate();
+        Drawable resizedDrawable = null;
+        try {
+            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, dstWidth, dstHeight, false);
+            resizedDrawable = new BitmapDrawable(context.getResources(), bitmapResized).mutate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            resizedDrawable = new ColorDrawable(Color.TRANSPARENT);
+        }
+
+        return resizedDrawable;
     }
 
     /*App GUI Functions*/

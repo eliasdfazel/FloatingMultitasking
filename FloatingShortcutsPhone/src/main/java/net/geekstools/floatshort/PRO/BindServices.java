@@ -71,7 +71,12 @@ public class BindServices extends Service {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                registerReceiver(broadcastReceiverONOFF, intentFilterNewDataSet);
+
+                try {
+                    registerReceiver(broadcastReceiverONOFF, intentFilterNewDataSet);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -171,7 +176,11 @@ public class BindServices extends Service {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                registerReceiver(broadcastReceiverAction, intentFilter);
+                try {
+                    registerReceiver(broadcastReceiverAction, intentFilter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
