@@ -857,6 +857,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         }
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
         functionsClass.CheckSystemRAM(HybridViewOff.this);
+
+        if (functionsClass.SystemCache()) {
+            startService(new Intent(getApplicationContext(), BindServices.class));
+        }
     }
 
     @Override
