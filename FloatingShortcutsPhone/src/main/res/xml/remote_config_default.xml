@@ -58,6 +58,27 @@
                 &bull; First Select & Setup Widgets<br/>
                 &bull; then, Click on ✔ to Create Floating Widget<br/>
                 &bull; Press & Hold on ✔ to See More Options & Create Shortcuts of Floating Widgets on Home Screen<br/>
+                ✨ Please, Write Review & Rate 🌟🌟🌟🌟🌟
+            ]]>
+        </value>
+    </entry>
+
+    <!-- SECURITY SERVICES -->
+    <entry>
+        <key>security_services_demo_screenshots</key>
+        <value>
+            5
+        </value>
+    </entry>
+    <entry>
+        <key>security_services_description</key>
+        <value>
+            <![CDATA[
+                🔵 <b><big>Security Services</big></b><br/>
+                &bull; <b>Lock It 🔒</b> | Secure Your Apps By Your Fingerprint <br/>
+                &bull; <b>Lock It 🔒</b> | Secure Your Apps By Pin Password <br/>
+                &bull; (<small>Press & Hold on an App/Folder/Widget in the List</small>)<br/><br/>
+                ✨ Please, Write Review & Rate 🌟🌟🌟🌟🌟
             ]]>
         </value>
     </entry>

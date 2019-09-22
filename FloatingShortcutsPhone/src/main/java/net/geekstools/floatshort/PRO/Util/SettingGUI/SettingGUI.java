@@ -77,6 +77,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
+import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.CustomIconsThemeAdapter;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
@@ -362,6 +363,8 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
                     startActivity(new Intent(getApplicationContext(), HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                 } else {
+                    InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
+
                     startActivity(new Intent(getApplicationContext(), InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                 }
@@ -909,7 +912,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         });
 
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
+        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
         firebaseRemoteConfig.fetch(0)
                 .addOnCompleteListener(SettingGUI.this, new OnCompleteListener<Void>() {
                     @Override

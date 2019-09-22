@@ -3895,6 +3895,8 @@ public class FunctionsClass {
 
                             functionsClassSecurity.uploadLockedAppsData();
                         } else {
+                            InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
+
                             context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                     ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                         }
@@ -4034,6 +4036,8 @@ public class FunctionsClass {
                                 functionsClassSecurity.uploadLockedAppsData();
                             }
                         } else {
+                            InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
+
                             context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                     ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                         }
@@ -4191,6 +4195,8 @@ public class FunctionsClass {
 
                                 functionsClassSecurity.uploadLockedAppsData();
                             } else {
+                                InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
+
                                 context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                         ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                             }
@@ -5333,6 +5339,15 @@ public class FunctionsClass {
                         activity.startActivity(intent, options.toBundle());
                     }
                 }, 113);
+            }
+        });
+        preferencesView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                        ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+
+                return false;
             }
         });
     }

@@ -338,6 +338,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                 e.printStackTrace();
                             }
                         } else {
+                            InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
+
                             startActivity(new Intent(getApplicationContext(), InAppBilling.class)
                                             .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
                                     ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
@@ -790,7 +792,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         PublicVariable.inMemory = true;
 
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
+        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
         firebaseRemoteConfig.fetch(0)
                 .addOnCompleteListener(HybridViewOff.this, new OnCompleteListener<Void>() {
                     @Override

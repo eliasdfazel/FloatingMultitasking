@@ -314,6 +314,8 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                                 e.printStackTrace();
                             }
                         } else {
+                            InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
+
                             startActivity(new Intent(getApplicationContext(), InAppBilling.class)
                                             .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
                                     ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
@@ -585,6 +587,8 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                 @Override
                 public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
                     if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                        functionsClass.savePreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
+
                         List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
                         for (Purchase purchase : purchases) {
                             FunctionsClass.println("*** Purchased Item: " + purchase + " ***");
@@ -764,7 +768,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         PublicVariable.inMemory = true;
 
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
+        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
 
         firebaseRemoteConfig.fetch(0)
                 .addOnCompleteListener(FoldersHandler.this, new OnCompleteListener<Void>() {

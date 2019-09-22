@@ -268,6 +268,15 @@
             &bull; Press & Hold on ✔ to See More Options & Create Shortcuts of Floating Widgets on Home Screen<br/>
         ]]>
     </string>
+    <string name="securityServicesDemoDescriptions">
+        <![CDATA[
+            🔵 <b><big>Security Services</big></b><br/>
+            &bull; <b>Lock It 🔒</b> | Secure Your Apps By Your Fingerprint <br/>
+            &bull; <b>Lock It 🔒</b> | Secure Your Apps By Pin Password <br/>
+            &bull; (<small>Press & Hold on an App/Folder/Widget in the List</small>)<br/><br/>
+            ✨ Please, Rate Floating Shortcuts 🌟🌟🌟🌟🌟
+        ]]>
+    </string>
 
     <string-array name="ContextMenuLock">
         <item name="1">Small</item>

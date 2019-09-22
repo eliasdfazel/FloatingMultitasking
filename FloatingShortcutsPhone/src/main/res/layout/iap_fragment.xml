@@ -15,7 +15,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/shareNow"
-        android:layout_width="237dp"
+        android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -23,7 +23,7 @@
         android:paddingBottom="3dp"
         android:textAllCaps="false"
         android:text="@string/share"
-        android:textSize="17sp"
+        android:textSize="19sp"
         android:textColor="@color/light"
         android:textStyle="bold"
         android:fontFamily="@font/upcil"
@@ -65,20 +65,22 @@
                 android:scrollbars="none" />
 
             <TextView
-                android:id="@+id/floatingWidgetDemoDescription"
+                android:id="@+id/itemIABDemoDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/list"
                 android:layout_marginTop="27dp"
                 android:layout_marginBottom="7dp"
                 android:paddingStart="17dp"
-                android:paddingEnd="17dp" />
+                android:paddingEnd="17dp"
+                android:linksClickable="true"
+                android:textIsSelectable="true" />
 
             <HorizontalScrollView
-                android:id="@+id/floatingWidgetDemo"
+                android:id="@+id/itemIABDemo"
                 android:layout_width="match_parent"
                 android:layout_height="480dp"
-                android:layout_below="@id/floatingWidgetDemoDescription"
+                android:layout_below="@id/itemIABDemoDescription"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="3dp"
                 android:paddingStart="11dp"
@@ -91,7 +93,7 @@
                 android:requiresFadingEdge="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/floatingWidgetDemoList"
+                    android:id="@+id/itemIABDemoList"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="horizontal" />

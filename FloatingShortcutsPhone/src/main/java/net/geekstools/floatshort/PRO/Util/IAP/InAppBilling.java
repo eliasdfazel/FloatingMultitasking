@@ -21,9 +21,20 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
     private BillingManager billingManager;
     private AcquireFragment acquireFragment;
 
+    public static String ItemIAB = BillingManager.iapFloatingWidgets;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        functionsClass = new FunctionsClass(getApplicationContext(), InAppBilling.this);
+
+        if (functionsClass.floatingWidgetsPurchased()) {
+            InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
+        }
+        if (functionsClass.securityServicesSubscribed()) {
+            InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
+        }
 
         if (PublicVariable.themeLightDark) {
             setTheme(R.style.GeeksEmpire_Material_IAP_LIGHT);
@@ -31,10 +42,8 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
             setTheme(R.style.GeeksEmpire_Material_IAP_DARK);
         }
 
-        functionsClass = new FunctionsClass(getApplicationContext(), InAppBilling.this);
-
         if (savedInstanceState != null) {
-            acquireFragment = (AcquireFragment) getFragmentManager().findFragmentByTag(DIALOG_TAG);
+            acquireFragment = (AcquireFragment) getSupportFragmentManager().findFragmentByTag(DIALOG_TAG);
         }
 
         billingManager = new BillingManager(InAppBilling.this, getIntent().hasExtra("UserEmailAddress") ? getIntent().getStringExtra("UserEmailAddress") : null);
@@ -60,7 +69,7 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
         }
 
         if (!isAcquireFragmentShown()) {
-            acquireFragment.show(getFragmentManager(), DIALOG_TAG);
+            acquireFragment.show(getSupportFragmentManager(), DIALOG_TAG);
         }
     }
 
