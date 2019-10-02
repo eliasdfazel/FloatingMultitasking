@@ -93,6 +93,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
     ListPreference themeColor, stick;
     SharedPreferences sharedPreferences;
     SwitchPreference stable, cache, themeTrans, smart, blur, observe, notification, floatingSplash, freeForm;
+
     Preference pinPassword,
             shapes, autotrans, sizes, delayPressHold, flingSensitivity, boot, lite,
             support, whatsnew, adApp;

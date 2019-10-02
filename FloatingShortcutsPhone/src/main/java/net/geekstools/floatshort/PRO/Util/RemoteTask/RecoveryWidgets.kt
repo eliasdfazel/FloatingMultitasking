@@ -1,10 +1,11 @@
 package net.geekstools.floatshort.PRO.Util.RemoteTask
 
+import android.app.ActivityOptions
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import android.preference.PreferenceManager
 import android.widget.Toast
+import androidx.preference.PreferenceManager
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -15,6 +16,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel
+import net.geekstools.floatshort.PRO.Widget.WidgetsReallocationProcess
 
 class RecoveryWidgets : Service() {
 
@@ -27,6 +29,13 @@ class RecoveryWidgets : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (functionsClass.readPreference("WidgetsInformation", "Reallocated", true) && getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+            startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
+            stopSelf()
+            return START_NOT_STICKY
+        }
         Thread(Runnable {
             try {
                 if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
@@ -52,6 +61,7 @@ class RecoveryWidgets : Service() {
                     val widgetDataModels: List<WidgetDataModel> = widgetDataInterface.initDataAccessObject().getAllWidgetData()
 
                     AllWidgetData@ for (widgetDataModel in widgetDataModels) {
+
                         if (widgetDataModel.Recovery) {
                             noRecovery = false
 
@@ -94,7 +104,9 @@ class RecoveryWidgets : Service() {
 
     override fun onCreate() {
         super.onCreate()
-
         functionsClass = FunctionsClass(applicationContext)
+        if (functionsClass.returnAPI() >= 26) {
+            startForeground(333, functionsClass.bindServiceNotification())
+        }
     }
 }

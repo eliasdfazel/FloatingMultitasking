@@ -4,11 +4,11 @@ package net.geekstools.floatshort.PRO.Util.RemoteTask;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;

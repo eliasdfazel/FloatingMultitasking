@@ -13,7 +13,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -25,6 +24,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -63,10 +64,6 @@ public class Widget_Unlimited_Floating extends Service {
             return START_NOT_STICKY;
         }
         appWidgetId[startId] = intent.getIntExtra("WidgetId", -1);
-
-        appWidgetProviderInfo[startId] = appWidgetManager.getAppWidgetInfo(appWidgetId[startId]);
-        appWidgetHosts[startId] = new AppWidgetHost(this, (int) System.currentTimeMillis());
-        appWidgetHosts[startId].startListening();
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_widgets, null, false);
@@ -116,6 +113,10 @@ public class Widget_Unlimited_Floating extends Service {
                 return START_NOT_STICKY;
             }
         }
+
+        appWidgetProviderInfo[startId] = appWidgetManager.getAppWidgetInfo(appWidgetId[startId]);
+        appWidgetHosts[startId] = new AppWidgetHost(this, (int) System.currentTimeMillis());
+        appWidgetHosts[startId].startListening();
 
         if (PublicVariable.themeLightDark) {
             wholeViewWidget[startId].setBackgroundTintList(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? getColor(R.color.light_transparent) : getColor(R.color.light)));

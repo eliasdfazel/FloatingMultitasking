@@ -3,10 +3,10 @@ package net.geekstools.floatshort.PRO.Util.RemoteTask;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.util.TypedValue;
 
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 
 import com.google.firebase.appindexing.FirebaseAppIndex;
 

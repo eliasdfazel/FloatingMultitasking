@@ -260,6 +260,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Widget.WidgetsReallocationProcess"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" />
+        <activity
             android:name=".Util.RemoteTask.RemoteRecoveryActivity"
             android:exported="true"
             android:label="@string/recovery_center"

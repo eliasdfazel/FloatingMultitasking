@@ -6,7 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
-import android.preference.PreferenceManager;
+
+import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -21,6 +22,8 @@ public class BootRecoverReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         functionsClass = new FunctionsClass(context);
+        functionsClass.savePreference("WidgetsInformation", "Reallocated", false);
+
         try {
             if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
                 if (functionsClass.ControlPanel()) {

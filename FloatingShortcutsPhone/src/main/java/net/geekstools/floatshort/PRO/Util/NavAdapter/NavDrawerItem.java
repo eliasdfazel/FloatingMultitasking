@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
 public class NavDrawerItem {
 
     CharSequence charTitle;
-    String packageName, appName, category, times, widgetLabel,
+    String packageName, classNameWidget, ConfigClassNameWidget, appName, category, times, widgetLabel,
             notificationAppName, notificationTitle, notificationText, notificationId, notificationTime, notificationPackage;
 
     String[] packageNames;
@@ -62,18 +62,22 @@ public class NavDrawerItem {
         this.times = times;
     }
 
-    public NavDrawerItem(String AppName, String PackageName, String widgetLabel, Drawable AppIcon, Drawable widgetPreview, AppWidgetProviderInfo appWidgetProviderInfo) {
+    public NavDrawerItem(String AppName, String PackageName, String ClassNameWidget, String configClassNameWidget, String widgetLabel, Drawable AppIcon, Drawable widgetPreview, AppWidgetProviderInfo appWidgetProviderInfo) {
         this.appName = AppName;
         this.packageName = PackageName;
+        this.classNameWidget = ClassNameWidget;
+        this.ConfigClassNameWidget = configClassNameWidget;
         this.widgetLabel = widgetLabel;
         this.appIcon = AppIcon;
         this.widgetPreview = widgetPreview;
         this.appWidgetProviderInfo = appWidgetProviderInfo;
     }
 
-    public NavDrawerItem(String AppName, String PackageName, String widgetLabel, Drawable AppIcon, AppWidgetProviderInfo appWidgetProviderInfo, int appWidgetId, boolean addedWidgetRecovery) {
+    public NavDrawerItem(String AppName, String PackageName, String ClassNameWidget, String configClassNameWidget, String widgetLabel, Drawable AppIcon, AppWidgetProviderInfo appWidgetProviderInfo, int appWidgetId, boolean addedWidgetRecovery) {
         this.appName = AppName;
         this.packageName = PackageName;
+        this.classNameWidget = ClassNameWidget;
+        this.ConfigClassNameWidget = configClassNameWidget;
         this.widgetLabel = widgetLabel;
         this.appIcon = AppIcon;
         this.appWidgetProviderInfo = appWidgetProviderInfo;
@@ -140,6 +144,14 @@ public class NavDrawerItem {
 
     public String getWidgetLabel() {
         return this.widgetLabel;
+    }
+
+    public String getClassNameWidget() {
+        return this.classNameWidget;
+    }
+
+    public String getConfigClassNameWidget() {
+        return this.ConfigClassNameWidget;
     }
 
     public String[] getPackName() {

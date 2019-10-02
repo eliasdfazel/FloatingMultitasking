@@ -21,7 +21,7 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
     private BillingManager billingManager;
     private AcquireFragment acquireFragment;
 
-    public static String ItemIAB = BillingManager.iapFloatingWidgets;
+    public static String ItemIAB = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +29,15 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
 
         functionsClass = new FunctionsClass(getApplicationContext(), InAppBilling.this);
 
-        if (functionsClass.floatingWidgetsPurchased()) {
-            InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
-        }
-        if (functionsClass.securityServicesSubscribed()) {
-            InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
+        if (InAppBilling.ItemIAB == null) {
+            if (functionsClass.floatingWidgetsPurchased()) {
+                InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
+            }
+            if (functionsClass.securityServicesSubscribed()) {
+                InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
+            }
+        } else {
+
         }
 
         if (PublicVariable.themeLightDark) {

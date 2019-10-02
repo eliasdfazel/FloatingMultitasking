@@ -14,7 +14,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,6 +28,7 @@ import androidx.dynamicanimation.animation.FlingAnimation;
 import androidx.dynamicanimation.animation.FloatValueHolder;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
+import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;

@@ -61,11 +61,11 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
-import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
@@ -141,6 +141,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     public static boolean alreadyAuthenticated = false;
 
+
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -148,6 +149,14 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         functionsClass = new FunctionsClass(getApplicationContext(), WidgetConfigurations.this);
         functionsClassSecurity = new FunctionsClassSecurity(WidgetConfigurations.this, getApplicationContext());
+
+        if (!functionsClass.readPreference("WidgetsInformation", "Reallocated", true) && getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+            startActivity(new Intent(getApplicationContext(), WidgetsReallocationProcess.class),
+                    ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+
+            finish();
+            return;
+        }
 
         wholeWidget = (RelativeLayout) findViewById(R.id.wholeWidget);
         fullActionViews = (RelativeLayout) findViewById(R.id.fullActionViews);
@@ -867,7 +876,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
         } else {
             if (!alreadyAuthenticated) {
-                if (functionsClass.securityServicesSubscribed() || BuildConfig.DEBUG) {
+                if (functionsClass.securityServicesSubscribed()) {
                     FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(getString(R.string.securityServices));
                     FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(getPackageName());
                     FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetConfigurations(true);
@@ -1032,8 +1041,11 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         public void run() {
 
                             WidgetDataModel widgetDataModel = new WidgetDataModel(
+                                    System.currentTimeMillis(),
                                     appWidgetId,
                                     InstalledWidgetsAdapter.pickedWidgetPackageName,
+                                    InstalledWidgetsAdapter.pickedWidgetClassNameProvider,
+                                    InstalledWidgetsAdapter.pickedWidgetConfigClassName,
                                     functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName),
                                     InstalledWidgetsAdapter.pickedWidgetLabel,
                                     false
@@ -1086,8 +1098,11 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                             public void run() {
 
                                 WidgetDataModel widgetDataModel = new WidgetDataModel(
+                                        System.currentTimeMillis(),
                                         appWidgetId,
                                         appWidgetInfo.provider.getPackageName(),
+                                        InstalledWidgetsAdapter.pickedWidgetClassNameProvider,
+                                        InstalledWidgetsAdapter.pickedWidgetConfigClassName,
                                         functionsClass.appName(appWidgetInfo.provider.getPackageName()),
                                         appWidgetInfo.loadLabel(getPackageManager()),
                                         false
@@ -1124,6 +1139,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     break;
                 }
                 case InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER_CONFIGURATION: {
+
                     Bundle extras = data.getExtras();
                     int appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
                     AppWidgetProviderInfo appWidgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
@@ -1133,8 +1149,11 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         public void run() {
 
                             WidgetDataModel widgetDataModel = new WidgetDataModel(
+                                    System.currentTimeMillis(),
                                     appWidgetId,
                                     appWidgetInfo.provider.getPackageName(),
+                                    InstalledWidgetsAdapter.pickedWidgetClassNameProvider,
+                                    InstalledWidgetsAdapter.pickedWidgetConfigClassName,
                                     functionsClass.appName(appWidgetInfo.provider.getPackageName()),
                                     appWidgetInfo.loadLabel(getPackageManager()),
                                     false
@@ -1171,7 +1190,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 }
             }
         }
-
     }
 
     public class LoadConfiguredWidgets extends AsyncTask<Void, Void, Boolean> {
@@ -1249,6 +1267,10 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     try {
                         int appWidgetId = widgetDataModel.getWidgetId();
                         String packageName = widgetDataModel.getPackageName();
+                        String className = widgetDataModel.getClassNameProvider();
+                        String configClassName = widgetDataModel.getConfigClassName();
+
+                        FunctionsClassDebug.Companion.PrintDebug("*** " + appWidgetId + " *** PackageName: " + packageName + " - ClassName: " + className + " - Configure: " + configClassName + " ***");
 
                         if (functionsClass.appIsInstalled(packageName)) {
                             AppWidgetProviderInfo appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
@@ -1271,6 +1293,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                             configuredWidgetsNavDrawerItems.add(new NavDrawerItem(
                                     newAppName,
                                     packageName,
+                                    className,
+                                    configClassName,
                                     widgetDataModel.getWidgetLabel(),
                                     appIcon,
                                     appWidgetProviderInfo,
@@ -1380,6 +1404,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 String oldAppName = "";
                 int widgetIndex = 0;
                 for (AppWidgetProviderInfo appWidgetProviderInfo : widgetProviderInfoList) {
+                    FunctionsClassDebug.Companion.PrintDebug("*** Provider = " + appWidgetProviderInfo.provider + " | Config = " + appWidgetProviderInfo.configure + " ***");
                     try {
                         String packageName = appWidgetProviderInfo.provider.getPackageName();
                         String newAppName = functionsClass.appName(packageName);
@@ -1403,6 +1428,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
                         installedWidgetsNavDrawerItems.add(new NavDrawerItem(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
                                 appWidgetProviderInfo.provider.getPackageName(),
+                                appWidgetProviderInfo.provider.getClassName(),
+                                (appWidgetProviderInfo.configure != null) ? appWidgetProviderInfo.configure.getClassName() : null,
                                 (widgetLabel != null) ? widgetLabel : newAppName,
                                 newAppIcon,
                                 (widgetPreviewDrawable != null) ? widgetPreviewDrawable : appWidgetProviderInfo.loadIcon(getApplicationContext(), DisplayMetrics.DENSITY_HIGH),

@@ -60,7 +60,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.renderscript.Allocation;
@@ -101,6 +100,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.palette.graphics.Palette;
+import androidx.preference.PreferenceManager;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
@@ -1510,7 +1510,7 @@ public class FunctionsClass {
         alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                dialog.dismiss();
+
             }
         });
         try {

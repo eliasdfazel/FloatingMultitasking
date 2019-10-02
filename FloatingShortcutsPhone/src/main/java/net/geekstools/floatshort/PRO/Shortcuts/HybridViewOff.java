@@ -593,7 +593,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         }
 
         //Restore Purchased Item
-        if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.alreadyDonated()) {
+        if (!functionsClass.floatingWidgetsPurchased()) {
             BillingClient billingClient = BillingClient.newBuilder(HybridViewOff.this).setListener(new PurchasesUpdatedListener() {
                 @Override
                 public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {

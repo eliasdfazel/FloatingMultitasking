@@ -26,6 +26,9 @@ public class RecoveryAll extends Service {
     public void onCreate() {
         super.onCreate();
         functionsClass = new FunctionsClass(getApplicationContext());
+        if (functionsClass.returnAPI() >= 26) {
+            startForeground(333, functionsClass.bindServiceNotification());
+        }
     }
 
     @Nullable

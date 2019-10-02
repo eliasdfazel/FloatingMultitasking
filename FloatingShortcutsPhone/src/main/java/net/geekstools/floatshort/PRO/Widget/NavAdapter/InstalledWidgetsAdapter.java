@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 
@@ -38,7 +40,7 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
     public static final int SYSTEM_WIDGET_PICKER = 333;
     public static final int SYSTEM_WIDGET_PICKER_CONFIGURATION = 111;
 
-    public static String pickedWidgetPackageName;
+    public static String pickedWidgetPackageName, pickedWidgetClassNameProvider, pickedWidgetConfigClassName = null;
     public static AppWidgetProviderInfo pickedAppWidgetProviderInfo;
     public static int pickedWidgetId;
     public static String pickedWidgetLabel;
@@ -82,23 +84,29 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
                 functionsClass.doVibrate(77);
 
                 pickedWidgetPackageName = navDrawerItems.get(position).getPackageName();
+                pickedWidgetClassNameProvider = navDrawerItems.get(position).getClassNameWidget();
+                pickedWidgetConfigClassName = navDrawerItems.get(position).getConfigClassNameWidget();
                 pickedAppWidgetProviderInfo = navDrawerItems.get(position).getAppWidgetProviderInfo();
                 pickedWidgetId = appWidgetHost.allocateAppWidgetId();
                 pickedWidgetLabel = navDrawerItems.get(position).getWidgetLabel();
 
+                ComponentName provider = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetClassNameProvider);
+                FunctionsClassDebug.Companion.PrintDebug("*** Provider Widget = " + provider);
+
                 Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId);
-                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, pickedAppWidgetProviderInfo.provider);
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider);
                 activity.startActivityForResult(intent, WIDGET_CONFIGURATION_REQUEST);
 
-
                 if (pickedAppWidgetProviderInfo.configure != null) {
+                    ComponentName configure = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetConfigClassName);
+                    FunctionsClassDebug.Companion.PrintDebug("*** Configure Widget = " + configure);
+
                     Intent intentWidgetConfiguration = new Intent();
-                    //intentWidgetConfiguration.setAction(AppWidgetManager.ACTION_APPWIDGET_BIND);
                     intentWidgetConfiguration.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-                    intentWidgetConfiguration.setComponent(pickedAppWidgetProviderInfo.configure);
+                    intentWidgetConfiguration.setComponent(/*pickedAppWidgetProviderInfo.*/configure);
                     intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId);
-                    intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, pickedAppWidgetProviderInfo.provider);
+                    intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, /*pickedAppWidgetProviderInfo.*/provider);
                     intentWidgetConfiguration.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                     activity.startActivityForResult(intentWidgetConfiguration, WIDGET_CONFIGURATION_REQUEST);
                 }
