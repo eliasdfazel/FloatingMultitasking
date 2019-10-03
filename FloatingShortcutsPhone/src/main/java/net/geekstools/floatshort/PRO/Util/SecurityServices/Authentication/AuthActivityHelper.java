@@ -1,6 +1,5 @@
 package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication;
 
-import android.app.Activity;
 import android.app.KeyguardManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
@@ -9,6 +8,8 @@ import android.security.keystore.KeyProperties;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -23,7 +24,7 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 
-public class AuthActivityHelper extends Activity {
+public class AuthActivityHelper extends AppCompatActivity {
 
     static final String DEFAULT_KEY_NAME = "default_key";
     private static final String KEY_NAME_NOT_INVALIDATED = "key_not_invalidated";

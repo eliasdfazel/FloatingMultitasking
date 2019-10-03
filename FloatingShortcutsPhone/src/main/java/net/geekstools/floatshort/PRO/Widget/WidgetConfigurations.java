@@ -1304,7 +1304,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                             widgetIndex++;
                         } else {
-                            widgetDataInterface.initDataAccessObject().deleteByWidgetId(appWidgetId);
+                            widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

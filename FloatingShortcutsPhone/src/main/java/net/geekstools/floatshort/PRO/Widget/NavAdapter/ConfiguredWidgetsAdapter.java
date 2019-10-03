@@ -34,6 +34,8 @@ import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataDAO;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder> {
@@ -71,7 +73,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
+    public void onBindViewHolder(@NotNull ViewHolder viewHolderBinder, final int position) {
         AppWidgetProviderInfo appWidgetProviderInfo = navDrawerItems.get(position).getAppWidgetProviderInfo();
         int appWidgetId = navDrawerItems.get(position).getAppWidgetId();
 
@@ -100,7 +102,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
 
                 functionsClass.popupOptionWidget(context, view,
                         navDrawerItems.get(position).getPackageName(),
-                        navDrawerItems.get(position).getAppWidgetId(),
+                        navDrawerItems.get(position).getClassNameProviderWidget(),
                         navDrawerItems.get(position).getWidgetLabel(),
                         appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) != null ?
                                 appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_HIGH) : appWidgetProviderInfo.loadIcon(context, DisplayMetrics.DENSITY_HIGH),

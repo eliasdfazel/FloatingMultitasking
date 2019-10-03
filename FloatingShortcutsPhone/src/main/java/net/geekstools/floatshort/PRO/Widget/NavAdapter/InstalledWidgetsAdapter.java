@@ -84,7 +84,7 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
                 functionsClass.doVibrate(77);
 
                 pickedWidgetPackageName = navDrawerItems.get(position).getPackageName();
-                pickedWidgetClassNameProvider = navDrawerItems.get(position).getClassNameWidget();
+                pickedWidgetClassNameProvider = navDrawerItems.get(position).getClassNameProviderWidget();
                 pickedWidgetConfigClassName = navDrawerItems.get(position).getConfigClassNameWidget();
                 pickedAppWidgetProviderInfo = navDrawerItems.get(position).getAppWidgetProviderInfo();
                 pickedWidgetId = appWidgetHost.allocateAppWidgetId();

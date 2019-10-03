@@ -16,7 +16,11 @@ import android.util.Base64
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.CheckPoint
@@ -27,6 +31,7 @@ import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.Authen
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.PasswordVerification
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
 import java.io.File
 import java.io.IOException
@@ -39,10 +44,16 @@ import javax.crypto.spec.SecretKeySpec
 class FunctionsClassSecurity {
 
     lateinit var activity: Activity
+    lateinit var appCompatActivity: AppCompatActivity
     lateinit var context: Context
 
     constructor(activity: Activity, context: Context) {
         this.activity = activity
+        this.context = context
+    }
+
+    constructor(appCompatActivity: AppCompatActivity, context: Context) {
+        this.appCompatActivity = appCompatActivity
         this.context = context
     }
 
@@ -80,7 +91,7 @@ class FunctionsClassSecurity {
         var authPositionY: Int = 0
         var authHW: Int = 0
 
-        var authWidgetId: Int = 0
+        var authWidgetProviderClassName: String? = null
 
         var authSingleUnlockIt: Boolean = false
         var authFolderUnlockIt: Boolean = false
@@ -111,7 +122,7 @@ class FunctionsClassSecurity {
             AuthOpenAppValues.authPositionY = 0
             AuthOpenAppValues.authHW = 0
 
-            AuthOpenAppValues.authWidgetId = 0
+            AuthOpenAppValues.authWidgetProviderClassName = null
 
             AuthOpenAppValues.authSingleUnlockIt = false
             AuthOpenAppValues.authFolderUnlockIt = false
@@ -131,7 +142,7 @@ class FunctionsClassSecurity {
             AuthOpenAppValues.authClassNameCommand = null
 
             AuthOpenAppValues.anchorView = null
-        }, 777)
+        }, 1000)
     }
 
     inner class InvokeAuth(internal var cipher: Cipher?, internal var keyName: String) {
@@ -142,13 +153,13 @@ class FunctionsClassSecurity {
 
                     val fingerprintAuthenticationDialogFragment = AuthenticationDialogFragment()
                     fingerprintAuthenticationDialogFragment.setCryptoObject(FingerprintManager.CryptoObject(this.cipher!!))
-                    fingerprintAuthenticationDialogFragment.show(activity.fragmentManager, context.packageName)
+                    fingerprintAuthenticationDialogFragment.show(appCompatActivity.supportFragmentManager, context.packageName)
                 }
             } else {
                 FunctionsClassDebug.PrintDebug("*** Finger Print Not Available ***")
 
                 val fingerprintAuthenticationDialogFragment = AuthenticationDialogFragment()
-                fingerprintAuthenticationDialogFragment.show(activity.fragmentManager, context.packageName)
+                fingerprintAuthenticationDialogFragment.show(appCompatActivity.supportFragmentManager, context.packageName)
             }
         }
     }
@@ -199,7 +210,7 @@ class FunctionsClassSecurity {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Single Unlock It ***")
 
                 if (FunctionsClassSecurity.authWidgetConfigurationsUnlock) {
-                    doUnlockApps(FunctionsClassSecurity.authSecondComponentName!! + FunctionsClassSecurity.authWidgetId)
+                    doUnlockApps(FunctionsClassSecurity.authSecondComponentName!! + FunctionsClassSecurity.authWidgetProviderClassName)
                 } else {
                     doUnlockApps(FunctionsClassSecurity.authComponentName!!)
                 }
@@ -253,11 +264,32 @@ class FunctionsClassSecurity {
                     event.text.add(context.packageName)
                     accessibilityManager.sendAccessibilityEvent(event)
                 }
-            } else if (FunctionsClassSecurity.authFloatingWidget) run {
+            } else if (FunctionsClassSecurity.authFloatingWidget) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Floating Widget ***")
 
-                FunctionsClass(context).runUnlimitedWidgetService(FunctionsClassSecurity.authWidgetId,
-                        FunctionsClassSecurity.authComponentName)
+                Thread {
+                    val widgetDataInterface = Room.databaseBuilder(context, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                            .fallbackToDestructiveMigration()
+                            .addCallback(object : RoomDatabase.Callback() {
+                                override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                    super.onCreate(supportSQLiteDatabase)
+                                }
+
+                                override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                    super.onOpen(supportSQLiteDatabase)
+
+                                }
+                            })
+                            .build()
+
+                    val widgetDataModelsReallocation = widgetDataInterface.initDataAccessObject()
+                            .loadWidgetByClassNameProviderWidget(FunctionsClassSecurity.authSecondComponentName!!, FunctionsClassSecurity.authWidgetProviderClassName!!)
+
+                    activity.runOnUiThread {
+                        FunctionsClass(context).runUnlimitedWidgetService(widgetDataModelsReallocation.WidgetId,
+                                widgetDataModelsReallocation.WidgetLabel)
+                    }
+                }.start()
             } else if (FunctionsClassSecurity.authWidgetConfigurations) {
                 FunctionsClassDebug.PrintDebug("*** Authenticated | Open Widget Configurations ***")
 

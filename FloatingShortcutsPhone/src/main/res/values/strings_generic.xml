@@ -64,17 +64,15 @@
     <string name="whatsnew" translatable="false">What\'s New…</string>
     <string name="changelog" translatable="false">
         <![CDATA[
+            🔵 <b>Floating Widgets</b> | Bugs Fixed <br/>
+            &bull; I Am Sorry 🙏 <br/>
+            &bull; If You Configured Widgets to Use as Floating Widgets,<br/>
+            Please Go to Setting > Apps > Floating Shortcuts > Clear Data.<br/>
+            Then Open Aoo & Start Using It Normal 🙂 <br/><br/>
             🔵 <b><big>Security Services</big></b><br/>
             &bull; <b>Lock It 🔒</b> | Secure Your Apps By Your Fingerprint <br/>
             &bull; <b>Lock It 🔒</b> | Secure Your Apps By Pin Password <br/>
             &bull; (<small>Press & Hold on an App/Folder/Widget in the List</small>) <br/>
-            🔵 <b>Floating Widgets</b> 🔳 🔲 <br/>
-            &bull; First Select & Setup Widgets<br/>
-            &bull; then, Click on ✔ to Create Floating Widget<br/>
-            &bull; Press & Hold on ✔ to See More Options<br/>
-            🔵 <b>Fling Sensitivity</b> | <small>Floating Shortcuts/Folders Movement Enhancement</small> <br/>
-            &bull; Fling Effect on Floating Shortcuts to Move them Around Easier <br/>
-            &bull; Spring Effect on Pinned Floating Shortcuts/Folders for Fun 😉  <br/>
             🔵 <b>Press & Hold on Bottom Action Buttons to See Recovery</b> 🔁 <br/>
             <br/><br/>
             /* <b>Explore More Options in Preferences  ⚙️  </b>*/ <br/>

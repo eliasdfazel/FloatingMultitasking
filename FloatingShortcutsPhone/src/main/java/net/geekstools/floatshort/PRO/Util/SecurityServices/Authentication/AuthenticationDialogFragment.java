@@ -2,7 +2,6 @@ package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication;
 
 import android.app.ActivityOptions;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,6 +31,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -45,6 +50,8 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.Fingerprint.FingerprintProcessHelper;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -130,6 +137,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
             dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
             fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName())));
             cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
+            cancelAuth.setBackgroundColor(PublicVariable.colorLightDark);
 
             password.setHintTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName())));
             password.setTextColor(PublicVariable.colorLightDarkOpposite);
@@ -145,6 +153,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
             dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
             fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
             cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
+            cancelAuth.setBackgroundColor(PublicVariable.colorLightDark);
 
             password.setHintTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
             password.setTextColor(PublicVariable.colorLightDarkOpposite);
@@ -172,7 +181,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Single Unlock It ***");
 
                                     if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurationsUnlock()) {
-                                        functionsClassSecurity.doUnlockApps(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName() + FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetId());
+                                        functionsClassSecurity.doUnlockApps(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName() + FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetProviderClassName());
                                     } else {
                                         functionsClassSecurity.doUnlockApps(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
                                     }
@@ -240,8 +249,34 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                 } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthFloatingWidget()) {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Floating Widget ***");
 
-                                    functionsClass.runUnlimitedWidgetService(FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetId(),
-                                            FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                                    .fallbackToDestructiveMigration()
+                                                    .addCallback(new RoomDatabase.Callback() {
+                                                        @Override
+                                                        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                                                            super.onCreate(db);
+                                                        }
+
+                                                        @Override
+                                                        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                                                            super.onOpen(db);
+                                                        }
+                                                    })
+                                                    .build();
+                                            WidgetDataModel widgetDataModelsReallocation = widgetDataInterface.initDataAccessObject()
+                                                    .loadWidgetByClassNameProviderWidget(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName(), FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetProviderClassName());
+
+                                            getActivity().runOnUiThread(() -> {
+                                                functionsClass.runUnlimitedWidgetService(widgetDataModelsReallocation.getWidgetId(),
+                                                        widgetDataModelsReallocation.getWidgetLabel());
+                                            });
+                                        }
+                                    }).start();
+
+
                                 } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations()) {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Open Widget Configurations ***");
 

@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
 public class NavDrawerItem {
 
     CharSequence charTitle;
-    String packageName, classNameWidget, ConfigClassNameWidget, appName, category, times, widgetLabel,
+    String packageName, classNameProviderWidget, ConfigClassNameWidget, appName, category, times, widgetLabel,
             notificationAppName, notificationTitle, notificationText, notificationId, notificationTime, notificationPackage;
 
     String[] packageNames;
@@ -62,10 +62,10 @@ public class NavDrawerItem {
         this.times = times;
     }
 
-    public NavDrawerItem(String AppName, String PackageName, String ClassNameWidget, String configClassNameWidget, String widgetLabel, Drawable AppIcon, Drawable widgetPreview, AppWidgetProviderInfo appWidgetProviderInfo) {
+    public NavDrawerItem(String AppName, String PackageName, String classNameProviderWidget, String configClassNameWidget, String widgetLabel, Drawable AppIcon, Drawable widgetPreview, AppWidgetProviderInfo appWidgetProviderInfo) {
         this.appName = AppName;
         this.packageName = PackageName;
-        this.classNameWidget = ClassNameWidget;
+        this.classNameProviderWidget = classNameProviderWidget;
         this.ConfigClassNameWidget = configClassNameWidget;
         this.widgetLabel = widgetLabel;
         this.appIcon = AppIcon;
@@ -73,10 +73,10 @@ public class NavDrawerItem {
         this.appWidgetProviderInfo = appWidgetProviderInfo;
     }
 
-    public NavDrawerItem(String AppName, String PackageName, String ClassNameWidget, String configClassNameWidget, String widgetLabel, Drawable AppIcon, AppWidgetProviderInfo appWidgetProviderInfo, int appWidgetId, boolean addedWidgetRecovery) {
+    public NavDrawerItem(String AppName, String PackageName, String classNameProviderWidget, String configClassNameWidget, String widgetLabel, Drawable AppIcon, AppWidgetProviderInfo appWidgetProviderInfo, int appWidgetId, boolean addedWidgetRecovery) {
         this.appName = AppName;
         this.packageName = PackageName;
-        this.classNameWidget = ClassNameWidget;
+        this.classNameProviderWidget = classNameProviderWidget;
         this.ConfigClassNameWidget = configClassNameWidget;
         this.widgetLabel = widgetLabel;
         this.appIcon = AppIcon;
@@ -146,8 +146,8 @@ public class NavDrawerItem {
         return this.widgetLabel;
     }
 
-    public String getClassNameWidget() {
-        return this.classNameWidget;
+    public String getClassNameProviderWidget() {
+        return this.classNameProviderWidget;
     }
 
     public String getConfigClassNameWidget() {

@@ -4049,7 +4049,7 @@ public class FunctionsClass {
         popupMenu.show();
     }
 
-    public void popupOptionWidget(final Context context, View anchorView, String packageName, final int appWidgetId, String widgetLabel, Drawable widgetPreview, boolean addedWidgetRecovery) {
+    public void popupOptionWidget(final Context context, View anchorView, String packageName, final String providerClassName, String widgetLabel, Drawable widgetPreview, boolean addedWidgetRecovery) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
             popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Light);
@@ -4071,7 +4071,7 @@ public class FunctionsClass {
                     .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>"))
                     .setIcon(popupItemIcon);
         }
-        if (functionsClassSecurity.isAppLocked(packageName + appWidgetId)) {
+        if (functionsClassSecurity.isAppLocked(packageName + providerClassName)) {
             popupMenu.getMenu()
                     .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.unLockIt) + "</font>"))
                     .setIcon(popupItemIcon);
@@ -4125,7 +4125,7 @@ public class FunctionsClass {
                                                         context.sendBroadcast(new Intent("FORCE_RELOAD"));
 
                                                         try {
-                                                            removeWidgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, appWidgetId);
+                                                            removeWidgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, providerClassName);
                                                         } catch (Exception e) {
                                                             e.printStackTrace();
                                                         }
@@ -4134,12 +4134,12 @@ public class FunctionsClass {
                                             }
                                         })
                                         .build();
-                                widgetDataInterface.initDataAccessObject().deleteByWidgetId(appWidgetId);
+                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, providerClassName);
                                 widgetDataInterface.close();
                             }
                         }).start();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            context.deleteSharedPreferences(appWidgetId + packageName);
+                            context.deleteSharedPreferences(providerClassName + packageName);
                         }
 
                         break;
@@ -4163,7 +4163,7 @@ public class FunctionsClass {
                                             }
                                         })
                                         .build();
-                                widgetDataInterface.initDataAccessObject().updateRecoveryByWidgetId(appWidgetId, !addedWidgetRecovery);
+                                widgetDataInterface.initDataAccessObject().updateRecoveryByClassNameProviderWidget(packageName, providerClassName, !addedWidgetRecovery);
                                 widgetDataInterface.close();
                             }
                         }).start();
@@ -4173,7 +4173,7 @@ public class FunctionsClass {
                     }
                     case 2: {
                         try {
-                            widgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, appWidgetId);
+                            widgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, providerClassName);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -4181,17 +4181,17 @@ public class FunctionsClass {
                         break;
                     }
                     case 3: {
-                        if (functionsClassSecurity.isAppLocked(packageName + appWidgetId)) {
+                        if (functionsClassSecurity.isAppLocked(packageName + providerClassName)) {
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(widgetLabel);
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(packageName);
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(true);
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetId(appWidgetId);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetProviderClassName(providerClassName);
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetConfigurationsUnlock(true);
 
                             functionsClassSecurity.openAuthInvocation();
                         } else {
                             if (securityServicesSubscribed() || BuildConfig.DEBUG) {
-                                functionsClassSecurity.doLockApps(packageName + appWidgetId);
+                                functionsClassSecurity.doLockApps(packageName + providerClassName);
 
                                 functionsClassSecurity.uploadLockedAppsData();
                             } else {
@@ -4421,12 +4421,12 @@ public class FunctionsClass {
         }
     }
 
-    public void widgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, int shortcutId) throws Exception {
+    public void widgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, String providerClassName) throws Exception {
         Intent differentIntent = new Intent(context, className);
         differentIntent.setAction("CREATE_FLOATING_WIDGET_HOME_SCREEN_SHORTCUTS");
         differentIntent.addCategory(Intent.CATEGORY_DEFAULT);
         differentIntent.putExtra("PackageName", packageName);
-        differentIntent.putExtra("ShortcutsId", shortcutId);
+        differentIntent.putExtra("ProviderClassName", providerClassName);
         differentIntent.putExtra("ShortcutLabel", shortcutName);
 
         Drawable forNull = context.getDrawable(R.drawable.ic_launcher);
@@ -4448,7 +4448,7 @@ public class FunctionsClass {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, String.valueOf(shortcutId))
+            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, (packageName + providerClassName))
                     .setShortLabel(shortcutName)
                     .setLongLabel(shortcutName)
                     .setIcon(Icon.createWithBitmap(layerDrawableToBitmap(widgetShortcutIcon)))
@@ -4466,11 +4466,11 @@ public class FunctionsClass {
         }
     }
 
-    public void removeWidgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, int shortcutId) throws Exception {
+    public void removeWidgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, String providerClassName) throws Exception {
         Intent differentIntent = new Intent(context, className);
         differentIntent.setAction(Intent.ACTION_MAIN);
         differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        differentIntent.putExtra("ShortcutsId", shortcutId);
+        differentIntent.putExtra("ShortcutsId", providerClassName);
         differentIntent.putExtra("ShortcutLabel", shortcutName);
 
         Drawable forNull = context.getDrawable(R.drawable.ic_launcher);
@@ -4493,7 +4493,7 @@ public class FunctionsClass {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             List<String> shortcutToDelete = new ArrayList<String>();
-            shortcutToDelete.add(String.valueOf(shortcutId));
+            shortcutToDelete.add((packageName + providerClassName));
 
             context.getSystemService(ShortcutManager.class).disableShortcuts(shortcutToDelete);
         } else {

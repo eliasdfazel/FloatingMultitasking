@@ -17,8 +17,8 @@ interface WidgetDataDAO {
     @Query("SELECT * FROM WidgetData ORDER BY AppName ASC")
     fun getAllWidgetData(): List<WidgetDataModel>
 
-    @Query("SELECT * FROM WidgetData WHERE WidgetId IN (:WidgetId)")
-    fun loadWidgetById(WidgetId: Int): WidgetDataModel
+    @Query("SELECT * FROM WidgetData WHERE PackageName IN (:PackageName) AND ClassNameProvider IN (:ClassNameWidgetProvider)")
+    fun loadWidgetByClassNameProviderWidget(PackageName: String, ClassNameWidgetProvider: String): WidgetDataModel
 
     @Query("UPDATE WidgetData SET WidgetId = :WidgetId WHERE PackageName = :PackageName AND ClassNameProvider == :ClassNameProvider")
     fun updateWidgetIdByPackageNameClassName(PackageName: String, ClassNameProvider: String, WidgetId: Int): Int
@@ -26,9 +26,9 @@ interface WidgetDataDAO {
     @Query("UPDATE WidgetData SET WidgetLabel = :WidgetLabel WHERE WidgetId = :WidgetId")
     fun updateWidgetLabelByWidgetId(WidgetId: Int, WidgetLabel: String): Int
 
-    @Query("UPDATE WidgetData SET Recovery = :AddedWidgetRecovery WHERE WidgetId = :WidgetId")
-    fun updateRecoveryByWidgetId(WidgetId: Int, AddedWidgetRecovery: Boolean): Int
+    @Query("UPDATE WidgetData SET Recovery = :AddedWidgetRecovery WHERE PackageName= :PackageName AND ClassNameProvider = :ClassNameWidgetProvider")
+    fun updateRecoveryByClassNameProviderWidget(PackageName: String, ClassNameWidgetProvider: String, AddedWidgetRecovery: Boolean): Int
 
-    @Query("DELETE FROM WidgetData WHERE WidgetId = :WidgetId")
-    fun deleteByWidgetId(WidgetId: Int)
+    @Query("DELETE FROM WidgetData WHERE PackageName = :PackageName AND ClassNameProvider = :ClassNameWidgetProvider")
+    fun deleteByWidgetClassNameProviderWidget(PackageName: String, ClassNameWidgetProvider: String)
 }

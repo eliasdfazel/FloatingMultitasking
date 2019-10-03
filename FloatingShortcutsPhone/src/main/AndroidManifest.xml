@@ -262,7 +262,7 @@
         <activity
             android:name=".Widget.WidgetsReallocationProcess"
             android:excludeFromRecents="true"
-            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" />
+            android:theme="@style/GeeksEmpire.Material" />
         <activity
             android:name=".Util.RemoteTask.RemoteRecoveryActivity"
             android:exported="true"
