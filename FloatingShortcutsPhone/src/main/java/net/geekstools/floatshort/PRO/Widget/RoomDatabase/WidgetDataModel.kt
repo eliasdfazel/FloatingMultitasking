@@ -18,7 +18,7 @@ data class WidgetDataModel(
         @Nullable @ColumnInfo(name = "ConfigClassName") var ConfigClassName: String?,
 
         @NonNull @ColumnInfo(name = "AppName") var AppName: String,
-        @ColumnInfo(name = "WidgetLabel") var WidgetLabel: String,
+        @ColumnInfo(name = "WidgetLabel") var WidgetLabel: String?,
 
-        @ColumnInfo(name = "Recovery") var Recovery: Boolean
+        @ColumnInfo(name = "Recovery") var Recovery: Boolean?
 )

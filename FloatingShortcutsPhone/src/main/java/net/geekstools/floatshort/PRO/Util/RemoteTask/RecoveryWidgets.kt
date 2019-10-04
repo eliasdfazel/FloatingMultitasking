@@ -62,7 +62,7 @@ class RecoveryWidgets : Service() {
 
                     AllWidgetData@ for (widgetDataModel in widgetDataModels) {
 
-                        if (widgetDataModel.Recovery) {
+                        if (widgetDataModel.Recovery!!) {
                             noRecovery = false
 
                             FloatingWidgetCheck@ for (floatingWidgetCheck in PublicVariable.FloatingWidgets) {

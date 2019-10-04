@@ -703,61 +703,65 @@ public class Folder_Unlimited_Gps extends Service {
                             editor.apply();
                         } else {
                             if (!functionsClass.litePreferencesEnabled()) {
-                                float initialTouchXBoundBack = getSharedPreferences((categoryName[startId]), MODE_PRIVATE).getInt("X", 0);
-                                float initialTouchYBoundBack = getSharedPreferences((categoryName[startId]), MODE_PRIVATE).getInt("Y", 0);
+                                if (motionEvent.getRawX() > 0 || motionEvent.getRawY() > 0) {
+                                    float initialTouchXBoundBack = getSharedPreferences((categoryName[startId]), MODE_PRIVATE).getInt("X", 0);
+                                    float initialTouchYBoundBack = getSharedPreferences((categoryName[startId]), MODE_PRIVATE).getInt("Y", 0);
 
-                                SpringForce springForceX = new SpringForce()
-                                        .setFinalPosition(initialTouchXBoundBack)
-                                        .setStiffness(SpringForce.STIFFNESS_MEDIUM)
-                                        .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
+                                    SpringForce springForceX = new SpringForce()
+                                            .setFinalPosition(initialTouchXBoundBack)
+                                            .setStiffness(SpringForce.STIFFNESS_MEDIUM)
+                                            .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
 
-                                SpringForce springForceY = new SpringForce()
-                                        .setFinalPosition(initialTouchYBoundBack)
-                                        .setStiffness(SpringForce.STIFFNESS_MEDIUM)
-                                        .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
+                                    SpringForce springForceY = new SpringForce()
+                                            .setFinalPosition(initialTouchYBoundBack)
+                                            .setStiffness(SpringForce.STIFFNESS_MEDIUM)
+                                            .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
 
-                                SpringAnimation springAnimationX = new SpringAnimation(new FloatValueHolder())
-                                        .setSpring(springForceX);
-                                SpringAnimation springAnimationY = new SpringAnimation(new FloatValueHolder())
-                                        .setSpring(springForceY);
+                                    SpringAnimation springAnimationX = new SpringAnimation(new FloatValueHolder())
+                                            .setMinValue(0)
+                                            .setSpring(springForceX);
+                                    SpringAnimation springAnimationY = new SpringAnimation(new FloatValueHolder())
+                                            .setMinValue(0)
+                                            .setSpring(springForceY);
 
-                                springAnimationX.setStartValue(motionEvent.getRawX());
-                                springAnimationX.setStartVelocity(-0f);
-                                springAnimationX.setMaxValue(functionsClass.displayX());
-                                springAnimationY.setStartValue(motionEvent.getRawY());
-                                springAnimationY.setStartVelocity(-0f);
-                                springAnimationY.setMaxValue(functionsClass.displayY());
+                                    springAnimationX.setStartValue(motionEvent.getRawX());
+                                    springAnimationX.setStartVelocity(-0f);
+                                    springAnimationX.setMaxValue(functionsClass.displayX());
+                                    springAnimationY.setStartValue(motionEvent.getRawY());
+                                    springAnimationY.setStartVelocity(-0f);
+                                    springAnimationY.setMaxValue(functionsClass.displayY());
 
-                                springAnimationX.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
-                                    @Override
-                                    public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
-                                        layoutParamsOnTouch.x = (int) value;     // X movePoint
-                                        windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
-                                    }
-                                });
-                                springAnimationY.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
-                                    @Override
-                                    public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
-                                        layoutParamsOnTouch.y = (int) value;     // Y movePoint
-                                        windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
-                                    }
-                                });
+                                    springAnimationX.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
+                                        @Override
+                                        public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
+                                            layoutParamsOnTouch.x = (int) value;     // X movePoint
+                                            windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
+                                        }
+                                    });
+                                    springAnimationY.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
+                                        @Override
+                                        public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
+                                            layoutParamsOnTouch.y = (int) value;     // Y movePoint
+                                            windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
+                                        }
+                                    });
 
-                                springAnimationX.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
-                                    @Override
-                                    public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                                        openIt[startId] = true;
-                                    }
-                                });
-                                springAnimationY.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
-                                    @Override
-                                    public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                                        openIt[startId] = true;
-                                    }
-                                });
+                                    springAnimationX.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+                                        @Override
+                                        public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+                                            openIt[startId] = true;
+                                        }
+                                    });
+                                    springAnimationY.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+                                        @Override
+                                        public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+                                            openIt[startId] = true;
+                                        }
+                                    });
 
-                                springAnimationX.start();
-                                springAnimationY.start();
+                                    springAnimationX.start();
+                                    springAnimationY.start();
+                                }
                             }
                         }
 
