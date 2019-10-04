@@ -45,38 +45,46 @@ class WidgetsReallocationProcess : Activity() {
         fullViewAllocating.setBackgroundColor(PublicVariable.primaryColor)
         allocatingProgress.setColor(PublicVariable.primaryColorOpposite)
 
-        appWidgetHost = AppWidgetHost(getApplicationContext(), System.currentTimeMillis().toInt())
+        if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+            appWidgetHost = AppWidgetHost(getApplicationContext(), System.currentTimeMillis().toInt())
 
-        Thread(Runnable {
-            val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
-                    .fallbackToDestructiveMigration()
-                    .addCallback(object : RoomDatabase.Callback() {
-                        override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                            super.onCreate(supportSQLiteDatabase)
-                        }
+            Thread(Runnable {
+                val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                        .fallbackToDestructiveMigration()
+                        .addCallback(object : RoomDatabase.Callback() {
+                            override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                super.onCreate(supportSQLiteDatabase)
+                            }
 
-                        override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                            super.onOpen(supportSQLiteDatabase)
+                            override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                super.onOpen(supportSQLiteDatabase)
 
-                        }
-                    })
-                    .build()
-            widgetDataModelsReallocation = widgetDataInterface.initDataAccessObject().getAllWidgetData()
+                            }
+                        })
+                        .build()
+                widgetDataModelsReallocation = widgetDataInterface.initDataAccessObject().getAllWidgetData()
 
-            runOnUiThread {
-                Handler().postDelayed({
-                    if (REALLOCATION_COUNTER < widgetDataModelsReallocation.size) {
-                        widgetsReallocationProcess(widgetDataModelsReallocation[REALLOCATION_COUNTER], appWidgetHost)
+                if (widgetDataModelsReallocation.isNotEmpty()) {
+                    runOnUiThread {
+                        Handler().postDelayed({
+                            if (REALLOCATION_COUNTER < widgetDataModelsReallocation.size) {
+                                widgetsReallocationProcess(widgetDataModelsReallocation[REALLOCATION_COUNTER], appWidgetHost)
+                            }
+                        }, 333)
                     }
-                }, 333)
+                } else {
+                    this@WidgetsReallocationProcess.finish()
+                }
+
+                widgetDataInterface.close()
+            }).start()
+
+            widgetInformation.setOnClickListener {
+                startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java),
+                        ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
             }
-
-            widgetDataInterface.close()
-        }).start()
-
-        widgetInformation.setOnClickListener {
-            startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java),
-                    ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+        } else {
+            this@WidgetsReallocationProcess.finish()
         }
     }
 

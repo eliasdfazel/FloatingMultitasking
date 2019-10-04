@@ -14,6 +14,8 @@
         <item name="colorPrimary">@color/default_color</item>
         <item name="colorPrimaryDark">@color/default_color_darker</item>
         <item name="colorAccent">@color/default_color_light</item>
+
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <style name="GeeksEmpire.Preference.Light" parent="@style/GeeksEmpire">

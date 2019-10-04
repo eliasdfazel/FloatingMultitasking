@@ -232,6 +232,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             LoadConfiguredWidgets loadConfiguredWidgets = new LoadConfiguredWidgets();
             loadConfiguredWidgets.execute();
         } else {
+            reconfigure.setVisibility(View.INVISIBLE);
+
             actionButton.bringToFront();
             addWidget.bringToFront();
 
@@ -1343,6 +1345,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
             if (result) {
+                reconfigure.setVisibility(View.VISIBLE);
+
                 configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged();
                 WidgetSectionedGridRecyclerViewAdapter.Section[] sectionsData = new WidgetSectionedGridRecyclerViewAdapter.Section[configuredWidgetsSections.size()];
                 configuredWidgetsSectionedGridRecyclerViewAdapter = new WidgetSectionedGridRecyclerViewAdapter(
@@ -1366,6 +1370,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     }
                 }, 333);
             } else {
+                reconfigure.setVisibility(View.INVISIBLE);
+
                 installedWidgetsLoaded = false;
                 addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener);
                 loadingSplash.setVisibility(View.VISIBLE);
