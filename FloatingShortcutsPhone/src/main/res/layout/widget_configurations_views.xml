@@ -243,7 +243,7 @@
         android:scaleType="fitCenter"
         android:src="@drawable/draw_pref_add_widget" />
 
-    <RelativeLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fullActionViews"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -282,6 +282,24 @@
             android:layout_centerInParent="true"
             android:background="@drawable/draw_pref_action"
             android:visibility="invisible" />
+
+        <com.google.android.material.button.MaterialButton xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/reconfigure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:padding="11dp"
+            android:layout_marginBottom="53dp"
+            android:textAllCaps="false"
+            android:text="@string/reallocatingWidgets"
+            android:textColor="@color/light"
+            android:textSize="29sp"
+            android:fontFamily="@font/upcil_bold"
+            app:elevation="13dp"
+            app:cornerRadius="7dp"
+            app:backgroundTint="@color/default_color_game_light"
+            app:rippleColor="@color/default_color" />
 
     </RelativeLayout>
 

@@ -99,7 +99,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     RelativeLayout wholeWidget, fullActionViews;
     ImageView addWidget,
             actionButton, recoverFloatingCategories, recoverFloatingApps;
-    MaterialButton switchApps, switchCategories, recoveryAction, automationAction;
+    MaterialButton switchApps, switchCategories, recoveryAction, automationAction,
+            reconfigure;
 
     RecyclerView installedWidgetsLoadView, configuredWidgetsLoadView;
     ScrollView installedWidgetsNestedScrollView, configuredWidgetsNestedScrollView,
@@ -177,6 +178,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         automationAction = (MaterialButton) findViewById(R.id.automationAction);
         recoverFloatingCategories = (ImageView) findViewById(R.id.recoverFloatingCategories);
         recoverFloatingApps = (ImageView) findViewById(R.id.recoverFloatingApps);
+        reconfigure = (MaterialButton) findViewById(R.id.reconfigure);
 
         nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
         installedNestedIndexScrollView = (ScrollView) findViewById(R.id.installedNestedIndexScrollView);
@@ -688,6 +690,16 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     @Override
     public void onStart() {
         super.onStart();
+
+        reconfigure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), WidgetsReallocationProcess.class),
+                        ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+
+                finish();
+            }
+        });
 
         addWidget.setOnClickListener(new View.OnClickListener() {
             @Override
