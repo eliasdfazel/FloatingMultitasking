@@ -615,7 +615,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
                         List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
                         for (Purchase purchase : purchases) {
-                            FunctionsClass.println("*** Purchased Item: " + purchase + " ***");
+                            FunctionsClassDebug.Companion.PrintDebug("*** Purchased Item: " + purchase + " ***");
                             functionsClass.savePreference(".PurchasedItem", purchase.getSku(), true);
                         }
                     }
@@ -652,7 +652,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
                             List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.SUBS).getPurchasesList();
                             for (Purchase purchase : purchases) {
-                                FunctionsClass.println("*** Subscribed Item: " + purchase + " ***");
+                                FunctionsClassDebug.Companion.PrintDebug("*** Subscribed Item: " + purchase + " ***");
                                 functionsClass.savePreference(".SubscribedItem", purchase.getSku(), true);
                             }
                         }
@@ -999,7 +999,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                         @Override
                                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                            FunctionsClass.println("Firebase Activities Done Successfully");
+                                                            FunctionsClassDebug.Companion.PrintDebug("Firebase Activities Done Successfully");
                                                             functionsClass.Toast(getString(R.string.signinFinished), Gravity.TOP);
                                                             try {
                                                                 progressDialog.dismiss();
@@ -1102,7 +1102,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
-                    FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
+                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                 }
 
                 int itemOfIndex = 1;
@@ -1398,7 +1398,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     e.printStackTrace();
                 }
                 for (ResolveInfo resolveInfo : resolveInfos) {
-                    FunctionsClass.println("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName);
+                    FunctionsClassDebug.Companion.PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName);
 
                     PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName);
                 }

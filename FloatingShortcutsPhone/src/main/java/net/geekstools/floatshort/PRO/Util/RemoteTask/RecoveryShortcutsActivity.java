@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.TypedValue;
 
 import androidx.annotation.NonNull;
 
@@ -23,7 +22,6 @@ import com.google.firebase.appindexing.builders.Actions;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 public class RecoveryShortcutsActivity extends Activity {
 
@@ -65,103 +63,17 @@ public class RecoveryShortcutsActivity extends Activity {
                 setResult(RESULT_OK, intent);
             } else if (getIntent().getAction().equals(Intent.ACTION_MAIN) || getIntent().getAction().equals(Intent.ACTION_VIEW)
                     || getIntent().getAction().equals("Remote_Recover_Shortcuts")) {
-                functionsClass = new FunctionsClass(getApplicationContext());
 
-                PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
-                PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());
-
-                if (getApplicationContext().getFileStreamPath(".uFile").exists()) {
-                    try {
-                        appData = functionsClass.readFileLine(".uFile");
-                        FirebaseAppIndex.getInstance().removeAll();
-
-                        if (functionsClass.loadCustomIcons()) {
-                            LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
-                            loadCustomIcons.load();
-                            FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                        }
-
-                        for (String anAppData : appData) {
-                            runService = true;
-                            if (PublicVariable.FloatingShortcuts != null) {
-                                for (int check = 0; check < PublicVariable.FloatingShortcuts.size(); check++) {
-                                    if (anAppData.equals(PublicVariable.FloatingShortcuts.get(check))) {
-                                        runService = false;
-                                    }
-                                }
-                            }
-
-                            if (runService == true) {
-                                try {
-                                    packageName = anAppData;
-                                    functionsClass.runUnlimitedShortcutsService(packageName);
-                                    try {
-                                        setAppIndex = functionsClass.appName(packageName) + " | " + packageName;
-                                        setAppIndexUrl = String.valueOf(BASE_URL.buildUpon().appendPath(setAppIndex).build());
-
-                                        IndexAppInfo(setAppIndex, setAppIndexUrl);
-                                    } catch (Exception e1) {
-                                        e1.printStackTrace();
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                Intent intent = new Intent(getApplicationContext(), RecoveryShortcuts.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            functionsClass = new FunctionsClass(getApplicationContext());
 
-            PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
-            PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());
-
-            if (getApplicationContext().getFileStreamPath(".uFile").exists()) {
-                try {
-                    appData = functionsClass.readFileLine(".uFile");
-                    FirebaseAppIndex.getInstance().removeAll();
-
-                    if (functionsClass.loadCustomIcons()) {
-                        LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
-                        loadCustomIcons.load();
-                        FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                    }
-
-                    for (String anAppData : appData) {
-                        runService = true;
-                        if (PublicVariable.FloatingShortcuts != null) {
-                            for (int check = 0; check < PublicVariable.FloatingShortcuts.size(); check++) {
-                                if (anAppData.equals(PublicVariable.FloatingShortcuts.get(check))) {
-                                    runService = false;
-                                }
-                            }
-                        }
-
-                        if (runService == true) {
-                            try {
-                                packageName = anAppData;
-                                functionsClass.runUnlimitedShortcutsService(packageName);
-                                try {
-                                    setAppIndex = functionsClass.appName(packageName) + " | " + packageName;
-                                    setAppIndexUrl = String.valueOf(BASE_URL.buildUpon().appendPath(setAppIndex).build());
-
-                                    IndexAppInfo(setAppIndex, setAppIndexUrl);
-                                } catch (Exception e1) {
-                                    e1.printStackTrace();
-                                }
-                            } catch (Exception e1) {
-                                e1.printStackTrace();
-                            }
-                        }
-                    }
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
+            Intent intent = new Intent(getApplicationContext(), RecoveryShortcuts.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startService(intent);
         }
         finish();
     }

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import net.geekstools.floatshort.PRO.CheckPoint;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
@@ -55,7 +56,7 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         functionsClass = new FunctionsClass(context);
         functionsClassSecurity = new FunctionsClassSecurity(context);
 
-        FunctionsClass.println("*** Command ClassName ::: " + classNameCommand + " ***");
+        FunctionsClassDebug.Companion.PrintDebug("*** Command ClassName ::: " + classNameCommand + " ***");
     }
 
     public PopupShortcutsOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems,
@@ -70,7 +71,7 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         functionsClass = new FunctionsClass(context);
         functionsClassSecurity = new FunctionsClassSecurity(context);
 
-        FunctionsClass.println("*** Command ClassName ::: " + classNameCommand + " ***");
+        FunctionsClassDebug.Companion.PrintDebug("*** Command ClassName ::: " + classNameCommand + " ***");
     }
 
     @Override

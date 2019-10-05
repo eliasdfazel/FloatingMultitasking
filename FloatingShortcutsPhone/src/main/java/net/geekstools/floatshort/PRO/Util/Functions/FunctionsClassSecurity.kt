@@ -84,6 +84,8 @@ class FunctionsClassSecurity {
     val DEFAULT_KEY_NAME = "default_key"
 
     companion object AuthOpenAppValues {
+        var alreadyAuthenticating: Boolean = false
+
         var authComponentName: String? = null /*Package Name*/
         var authSecondComponentName: String? = null /*Class Name*/
 
@@ -111,10 +113,14 @@ class FunctionsClassSecurity {
         var authClassNameCommand: String? = null
 
         var anchorView: View? = null
+
+        var authRecovery: Boolean = false
     }
 
     fun resetAuthAppValues() {
         Handler().postDelayed({
+            AuthOpenAppValues.alreadyAuthenticating = false
+
             AuthOpenAppValues.authComponentName = null
             AuthOpenAppValues.authSecondComponentName = null
 
@@ -142,6 +148,8 @@ class FunctionsClassSecurity {
             AuthOpenAppValues.authClassNameCommand = null
 
             AuthOpenAppValues.anchorView = null
+
+            AuthOpenAppValues.authRecovery = false
         }, 1000)
     }
 
@@ -294,6 +302,10 @@ class FunctionsClassSecurity {
                 FunctionsClassDebug.PrintDebug("*** Authenticated | Open Widget Configurations ***")
 
                 WidgetConfigurations.alreadyAuthenticated = true
+            } else if (FunctionsClassSecurity.authRecovery) {
+                FunctionsClassDebug.PrintDebug("*** Authenticated | Perform Recovery ***")
+
+                context.sendBroadcast(Intent("RECOVERY_AUTHENTICATED"))
             } else {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Opening... ***")
 

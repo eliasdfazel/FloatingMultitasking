@@ -31,6 +31,7 @@ import androidx.dynamicanimation.animation.SpringForce;
 import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
@@ -131,7 +132,7 @@ public class App_Unlimited_Bluetooth extends Service {
 
     @Override
     public int onStartCommand(final Intent intent, final int flags, final int startId) {
-        FunctionsClass.println(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
+        FunctionsClassDebug.Companion.PrintDebug(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
         startIdCounter = startId;
 
         if (functionsClass.loadCustomIcons()) {
@@ -405,7 +406,7 @@ public class App_Unlimited_Bluetooth extends Service {
                         if (allowMove[startId] == true) {
                             layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);
                             layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);
-                            FunctionsClass.println("X :: " + layoutParamsOnTouch.x + "\n" + " Y :: " + layoutParamsOnTouch.y);
+                            FunctionsClassDebug.Companion.PrintDebug("X :: " + layoutParamsOnTouch.x + "\n" + " Y :: " + layoutParamsOnTouch.y);
 
                             xMove = Math.round(layoutParamsOnTouch.x);
                             yMove = Math.round(layoutParamsOnTouch.y);
@@ -668,7 +669,7 @@ public class App_Unlimited_Bluetooth extends Service {
             @Override
             public void onReceive(Context context, final Intent intent) {
                 if (intent.getAction().equals("Split_Apps_Single_" + className) && PublicVariable.splitScreen == true) {
-                    FunctionsClass.println("Split Apps Single");
+                    FunctionsClassDebug.Companion.PrintDebug("Split Apps Single");
                     PublicVariable.splitScreen = false;
 
                     new Handler().postDelayed(new Runnable() {
@@ -690,7 +691,7 @@ public class App_Unlimited_Bluetooth extends Service {
                         }
                     }, 200);
                 } else if (intent.getAction().equals("Pin_App_" + className)) {
-                    FunctionsClass.println(functionsClass.appName(packages[intent.getIntExtra("startId", 1)]));
+                    FunctionsClassDebug.Companion.PrintDebug(functionsClass.appName(packages[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = false;
 
                     Drawable pinDrawable = null;
@@ -725,7 +726,7 @@ public class App_Unlimited_Bluetooth extends Service {
                     }
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable);
                 } else if (intent.getAction().equals("Unpin_App_" + className)) {
-                    FunctionsClass.println(functionsClass.appName(packages[intent.getIntExtra("startId", 1)]));
+                    FunctionsClassDebug.Companion.PrintDebug(functionsClass.appName(packages[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = true;
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(null);
                 } else if (intent.getAction().equals("Float_It_" + className)) {

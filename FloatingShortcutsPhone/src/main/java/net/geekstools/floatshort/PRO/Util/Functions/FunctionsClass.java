@@ -262,13 +262,6 @@ public class FunctionsClass {
         }
     }
 
-    /*Debugging Functions*/
-    public static void println(Object aValue) {
-        if (BuildConfig.DEBUG) {
-            System.out.println(aValue);
-        }
-    }
-
     /*Database & Indexing*/
     public void IndexAppInfoShortcuts(final String contentAppIndex) throws Exception {
         Uri BASE_URL =
@@ -1604,7 +1597,7 @@ public class FunctionsClass {
                                                         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                             @Override
                                                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                                FunctionsClass.println("Firebase Activities Done Successfully");
+                                                                FunctionsClassDebug.Companion.PrintDebug("Firebase Activities Done Successfully");
                                                             }
                                                         });
 
@@ -1647,7 +1640,7 @@ public class FunctionsClass {
             });
 
             String neutralButtonText;
-            if (betaChangeLog.equals(context.getPackageName())) {
+            if (betaChangeLog.contains(context.getPackageName())) {
                 neutralButtonText = context.getString(R.string.shareit);
             } else {
                 neutralButtonText = context.getString(R.string.betaUpdate);
@@ -1711,7 +1704,7 @@ public class FunctionsClass {
                                                         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                             @Override
                                                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                                FunctionsClass.println("Firebase Activities Done Successfully");
+                                                                FunctionsClassDebug.Companion.PrintDebug("Firebase Activities Done Successfully");
                                                             }
                                                         });
 
@@ -2436,7 +2429,7 @@ public class FunctionsClass {
                     }
                     switch (displaySection(leftPositionX, topPositionY)) {
                         case DisplaySection.TopLeft: {
-                            FunctionsClass.println("***** DisplaySection.TopLeft");
+                            FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.TopLeft");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX,
@@ -2447,7 +2440,7 @@ public class FunctionsClass {
                             break;
                         }
                         case DisplaySection.TopRight: {
-                            FunctionsClass.println("***** DisplaySection.TopRight");
+                            FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.TopRight");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX - (displayX() / 2),
@@ -2458,7 +2451,7 @@ public class FunctionsClass {
                             break;
                         }
                         case DisplaySection.BottomRight: {
-                            FunctionsClass.println("***** DisplaySection.BottomRight");
+                            FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.BottomRight");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX - (displayX() / 2),
@@ -2469,7 +2462,7 @@ public class FunctionsClass {
                             break;
                         }
                         case DisplaySection.BottomLeft: {
-                            FunctionsClass.println("***** DisplaySection.BottomLeft");
+                            FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.BottomLeft");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX,
@@ -2480,7 +2473,7 @@ public class FunctionsClass {
                             break;
                         }
                         default: {
-                            FunctionsClass.println("***** DisplaySection.Not.Supported");
+                            FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.Not.Supported");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             displayX() / 4,
@@ -2517,7 +2510,7 @@ public class FunctionsClass {
             }
             switch (displaySection(leftPositionX, topPositionY)) {
                 case DisplaySection.TopLeft: {
-                    FunctionsClass.println("***** DisplaySection.TopLeft");
+                    FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.TopLeft");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX,
@@ -2528,7 +2521,7 @@ public class FunctionsClass {
                     break;
                 }
                 case DisplaySection.TopRight: {
-                    FunctionsClass.println("***** DisplaySection.TopRight");
+                    FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.TopRight");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX - (displayX() / 2),
@@ -2539,7 +2532,7 @@ public class FunctionsClass {
                     break;
                 }
                 case DisplaySection.BottomRight: {
-                    FunctionsClass.println("***** DisplaySection.BottomRight");
+                    FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.BottomRight");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX - (displayX() / 2),
@@ -2550,7 +2543,7 @@ public class FunctionsClass {
                     break;
                 }
                 case DisplaySection.BottomLeft: {
-                    FunctionsClass.println("***** DisplaySection.BottomLeft");
+                    FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.BottomLeft");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX,
@@ -2561,7 +2554,7 @@ public class FunctionsClass {
                     break;
                 }
                 default: {
-                    FunctionsClass.println("***** DisplaySection.Not.Supported");
+                    FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.Not.Supported");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     displayX() / 4,
@@ -3678,7 +3671,7 @@ public class FunctionsClass {
                     PixelFormat.TRANSLUCENT);
         }
 
-        FunctionsClass.println(packageName);
+        FunctionsClassDebug.Companion.PrintDebug(packageName);
 
 
         SharedPreferences sharedPrefPosition = context.getSharedPreferences(packageName, Context.MODE_PRIVATE);
@@ -3714,7 +3707,7 @@ public class FunctionsClass {
                     PixelFormat.TRANSLUCENT);
         }
 
-        FunctionsClass.println(packageName);
+        FunctionsClassDebug.Companion.PrintDebug(packageName);
 
         SharedPreferences sharedPrefPosition = context.getSharedPreferences(packageName, Context.MODE_PRIVATE);
 
@@ -5230,12 +5223,12 @@ public class FunctionsClass {
             int initMix = mixColors(vibrantColor, darkMutedColor, 0.50f);
             int finalMix = mixColors(dominantColor, initMix, 0.50f);
 
-            FunctionsClass.println("*** Vibrant ::: " + vibrantColor + " >>> " + ColorUtils.calculateLuminance(vibrantColor));
-            FunctionsClass.println("*** Dark ::: " + darkMutedColor + " >>> " + ColorUtils.calculateLuminance(darkMutedColor));
-            FunctionsClass.println("*** Dominant ::: " + dominantColor + " >>> " + ColorUtils.calculateLuminance(dominantColor));
+            FunctionsClassDebug.Companion.PrintDebug("*** Vibrant ::: " + vibrantColor + " >>> " + ColorUtils.calculateLuminance(vibrantColor));
+            FunctionsClassDebug.Companion.PrintDebug("*** Dark ::: " + darkMutedColor + " >>> " + ColorUtils.calculateLuminance(darkMutedColor));
+            FunctionsClassDebug.Companion.PrintDebug("*** Dominant ::: " + dominantColor + " >>> " + ColorUtils.calculateLuminance(dominantColor));
 
-            FunctionsClass.println("*** initMix ::: " + initMix + " >>> " + ColorUtils.calculateLuminance(initMix));
-            FunctionsClass.println("*** finalMix ::: " + finalMix + " >>> " + ColorUtils.calculateLuminance(finalMix));
+            FunctionsClassDebug.Companion.PrintDebug("*** initMix ::: " + initMix + " >>> " + ColorUtils.calculateLuminance(initMix));
+            FunctionsClassDebug.Companion.PrintDebug("*** finalMix ::: " + finalMix + " >>> " + ColorUtils.calculateLuminance(finalMix));
 
             double calculateLuminance = ColorUtils.calculateLuminance(dominantColor);
             if (calculateLuminance > 0.50) {//light
@@ -5779,7 +5772,7 @@ public class FunctionsClass {
                 /*AlarmManager.INTERVAL_DAY*/86400000,
                 pendingIntent);
 
-        FunctionsClass.println("*** " + newAlarmTime.getTime());
+        FunctionsClassDebug.Companion.PrintDebug("*** " + newAlarmTime.getTime());
 
         context.stopService(new Intent(context, SetupAlarms.class));
     }
@@ -5883,7 +5876,7 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
+        return true/*readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false)*/;
     }
 
     public boolean floatingWidgetsPurchased() {

@@ -44,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingProvider;
@@ -203,7 +204,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                     public void onReceive(Context context, Intent intent) {
                         if (intent.getAction().equals("LOAD_SCREENSHOTS")) {
                             for (int i = 1; i <= screenshotsNumber; i++) {
-                                FunctionsClass.println(">>> " + mapIndexURI.get(i) + " <<<");
+                                FunctionsClassDebug.Companion.PrintDebug(">>> " + mapIndexURI.get(i) + " <<<");
 
                                 RelativeLayout demoLayout = (RelativeLayout) activity.getLayoutInflater().inflate(R.layout.iap_demo_layout, null);
                                 ImageView demoItem = (ImageView) demoLayout.findViewById(R.id.DemoItem);
@@ -313,7 +314,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                         if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
                             List<SkuRowData> skuRowDataList = new ArrayList<>();
                             for (SkuDetails skuDetails : skuDetailsList) {
-                                FunctionsClass.println("*** SKU List Product ::: " + skuDetails + " ***");
+                                FunctionsClassDebug.Companion.PrintDebug("*** SKU List Product ::: " + skuDetails + " ***");
 
                                 if (skuDetails.getSku().equals(BillingManager.iapFloatingWidgets) && functionsClass.floatingWidgetsPurchased()) {
                                     itemIABDemoList.setVisibility(View.INVISIBLE);
@@ -350,7 +351,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                         public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
                                             if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
                                                 for (SkuDetails skuDetails : skuDetailsList) {
-                                                    FunctionsClass.println("*** SKU List Subscriptions ::: " + skuDetails + " ***");
+                                                    FunctionsClassDebug.Companion.PrintDebug("*** SKU List Subscriptions ::: " + skuDetails + " ***");
 
                                                     if (skuDetails.getSku().equals(BillingManager.iapSecurityServices) && functionsClass.securityServicesSubscribed()) {
                                                         itemIABDemoList.setVisibility(View.INVISIBLE);

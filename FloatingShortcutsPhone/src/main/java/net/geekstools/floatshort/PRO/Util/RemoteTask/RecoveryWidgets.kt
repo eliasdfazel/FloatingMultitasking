@@ -2,7 +2,10 @@ package net.geekstools.floatshort.PRO.Util.RemoteTask
 
 import android.app.ActivityOptions
 import android.app.Service
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.IBinder
 import android.widget.Toast
 import androidx.preference.PreferenceManager
@@ -12,6 +15,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
@@ -21,6 +25,7 @@ import net.geekstools.floatshort.PRO.Widget.WidgetsReallocationProcess
 class RecoveryWidgets : Service() {
 
     lateinit var functionsClass: FunctionsClass
+    lateinit var functionsClassSecurity: FunctionsClassSecurity
 
     var noRecovery = false
 
@@ -36,75 +41,159 @@ class RecoveryWidgets : Service() {
             stopSelf()
             return START_NOT_STICKY
         }
-        Thread(Runnable {
-            try {
-                if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+        if (functionsClass.securityServicesSubscribed() && !FunctionsClassSecurity.alreadyAuthenticating) {
+            FunctionsClassSecurity.authComponentName = packageName
+            FunctionsClassSecurity.authSecondComponentName = packageName
+            FunctionsClassSecurity.authRecovery = true
 
-                    if (functionsClass.loadCustomIcons()) {
-                        val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
-                        loadCustomIcons.load()
-                        println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons())
-                    }
+            functionsClassSecurity.openAuthInvocation()
+            FunctionsClassSecurity.alreadyAuthenticating = true
 
-                    val widgetDataInterface: WidgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
-                            .fallbackToDestructiveMigration()
-                            .addCallback(object : RoomDatabase.Callback() {
-                                override fun onCreate(sqLiteDatabase: SupportSQLiteDatabase) {
-                                    super.onCreate(sqLiteDatabase)
-                                }
-
-                                override fun onOpen(sqLiteDatabase: SupportSQLiteDatabase) {
-                                    super.onOpen(sqLiteDatabase)
-                                }
-                            })
-                            .build()
-                    val widgetDataModels: List<WidgetDataModel> = widgetDataInterface.initDataAccessObject().getAllWidgetData()
-
-                    AllWidgetData@ for (widgetDataModel in widgetDataModels) {
-
-                        if (widgetDataModel.Recovery!!) {
-                            noRecovery = false
-
-                            FloatingWidgetCheck@ for (floatingWidgetCheck in PublicVariable.FloatingWidgets) {
-                                if (widgetDataModel.WidgetId == floatingWidgetCheck) {
-                                    continue@AllWidgetData
-                                }
-                            }
-
+            val intentFilter = IntentFilter()
+            intentFilter.addAction("RECOVERY_AUTHENTICATED")
+            val broadcastReceiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    if (intent.action == "RECOVERY_AUTHENTICATED") {
+                        Thread(Runnable {
                             try {
-                                functionsClass.runUnlimitedWidgetService(widgetDataModel.WidgetId, widgetDataModel.WidgetLabel)
+                                if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+
+                                    if (functionsClass.loadCustomIcons()) {
+                                        val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
+                                        loadCustomIcons.load()
+                                        println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons())
+                                    }
+
+                                    val widgetDataInterface: WidgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                            .fallbackToDestructiveMigration()
+                                            .addCallback(object : RoomDatabase.Callback() {
+                                                override fun onCreate(sqLiteDatabase: SupportSQLiteDatabase) {
+                                                    super.onCreate(sqLiteDatabase)
+                                                }
+
+                                                override fun onOpen(sqLiteDatabase: SupportSQLiteDatabase) {
+                                                    super.onOpen(sqLiteDatabase)
+                                                }
+                                            })
+                                            .build()
+                                    val widgetDataModels: List<WidgetDataModel> = widgetDataInterface.initDataAccessObject().getAllWidgetData()
+
+                                    AllWidgetData@ for (widgetDataModel in widgetDataModels) {
+                                        if (widgetDataModel.Recovery!!) {
+                                            noRecovery = false
+
+                                            FloatingWidgetCheck@ for (floatingWidgetCheck in PublicVariable.FloatingWidgets) {
+                                                if (widgetDataModel.WidgetId == floatingWidgetCheck) {
+                                                    continue@AllWidgetData
+                                                }
+                                            }
+
+                                            try {
+                                                functionsClass.runUnlimitedWidgetService(widgetDataModel.WidgetId, widgetDataModel.WidgetLabel)
+                                            } catch (e: Exception) {
+                                                e.printStackTrace()
+                                            }
+                                        } else {
+                                            noRecovery = true
+                                        }
+                                    }
+
+                                    if (noRecovery) {
+                                        Toast.makeText(applicationContext, getString(R.string.recoveryErrorWidget), Toast.LENGTH_LONG).show()
+                                    }
+
+                                    stopSelf()
+                                    widgetDataInterface.close()
+                                }
                             } catch (e: Exception) {
                                 e.printStackTrace()
+                            } finally {
+                                if (PublicVariable.floatingCounter == 0) {
+                                    if (PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                                                    .getBoolean("stable", true) == false) {
+                                        stopService(Intent(applicationContext, BindServices::class.java))
+                                    }
+                                }
                             }
-                        } else {
-                            noRecovery = true
-                        }
-                    }
-
-                    if (noRecovery) {
-                        Toast.makeText(applicationContext, getString(R.string.recoveryErrorWidget), Toast.LENGTH_LONG).show()
-                    }
-
-                    widgetDataInterface.close()
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                if (PublicVariable.floatingCounter == 0) {
-                    if (PreferenceManager.getDefaultSharedPreferences(applicationContext)
-                                    .getBoolean("stable", true) == false) {
-                        stopService(Intent(applicationContext, BindServices::class.java))
+                        }).start()
                     }
                 }
             }
-        }).start()
+            registerReceiver(broadcastReceiver, intentFilter)
+        } else {
+            Thread(Runnable {
+                try {
+                    if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+
+                        if (functionsClass.loadCustomIcons()) {
+                            val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
+                            loadCustomIcons.load()
+                            println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons())
+                        }
+
+                        val widgetDataInterface: WidgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                .fallbackToDestructiveMigration()
+                                .addCallback(object : RoomDatabase.Callback() {
+                                    override fun onCreate(sqLiteDatabase: SupportSQLiteDatabase) {
+                                        super.onCreate(sqLiteDatabase)
+                                    }
+
+                                    override fun onOpen(sqLiteDatabase: SupportSQLiteDatabase) {
+                                        super.onOpen(sqLiteDatabase)
+                                    }
+                                })
+                                .build()
+                        val widgetDataModels: List<WidgetDataModel> = widgetDataInterface.initDataAccessObject().getAllWidgetData()
+
+                        AllWidgetData@ for (widgetDataModel in widgetDataModels) {
+                            if (widgetDataModel.Recovery!!) {
+                                noRecovery = false
+
+                                FloatingWidgetCheck@ for (floatingWidgetCheck in PublicVariable.FloatingWidgets) {
+                                    if (widgetDataModel.WidgetId == floatingWidgetCheck) {
+                                        continue@AllWidgetData
+                                    }
+                                }
+
+                                try {
+                                    functionsClass.runUnlimitedWidgetService(widgetDataModel.WidgetId, widgetDataModel.WidgetLabel)
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                            } else {
+                                noRecovery = true
+                            }
+                        }
+
+                        if (noRecovery) {
+                            Toast.makeText(applicationContext, getString(R.string.recoveryErrorWidget), Toast.LENGTH_LONG).show()
+                        }
+
+                        stopSelf()
+                        widgetDataInterface.close()
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    if (PublicVariable.floatingCounter == 0) {
+                        if (PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                                        .getBoolean("stable", true) == false) {
+                            stopService(Intent(applicationContext, BindServices::class.java))
+                        }
+                    }
+                }
+            }).start()
+        }
 
         return START_NOT_STICKY
     }
 
     override fun onCreate() {
         super.onCreate()
+
         functionsClass = FunctionsClass(applicationContext)
+        functionsClassSecurity = FunctionsClassSecurity(applicationContext)
+
         if (functionsClass.returnAPI() >= 26) {
             startForeground(333, functionsClass.bindServiceNotification())
         }

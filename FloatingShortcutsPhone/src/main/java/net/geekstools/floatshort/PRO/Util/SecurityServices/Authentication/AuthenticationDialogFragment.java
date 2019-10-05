@@ -281,6 +281,10 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Open Widget Configurations ***");
 
                                     WidgetConfigurations.alreadyAuthenticated = true;
+                                } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthRecovery()) {
+                                    FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Recovery ***");
+
+                                    getContext().sendBroadcast(new Intent("RECOVERY_AUTHENTICATED"));
                                 } else {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Open Application ***");
                                     if (functionsClass.splashReveal()) {

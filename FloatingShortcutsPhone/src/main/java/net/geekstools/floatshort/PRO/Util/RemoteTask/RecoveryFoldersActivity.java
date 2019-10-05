@@ -8,12 +8,10 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.util.TypedValue;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 public class RecoveryFoldersActivity extends Activity {
 
@@ -50,81 +48,17 @@ public class RecoveryFoldersActivity extends Activity {
                 setResult(RESULT_OK, intent);
             } else if (getIntent().getAction().equals(Intent.ACTION_MAIN) || getIntent().getAction().equals(Intent.ACTION_VIEW)
                     || getIntent().getAction().equals("Remote_Recover_Categories")) {
-                FunctionsClass functionsClass = new FunctionsClass(getApplicationContext());
 
-                PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
-                PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());
-
-                try {
-                    appData = functionsClass.readFileLine(".uCategory");
-
-                    if (functionsClass.loadCustomIcons()) {
-                        LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
-                        loadCustomIcons.load();
-                        FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                    }
-
-                    for (String anAppData : appData) {
-                        runService = true;
-                        if (PublicVariable.FloatingCategories != null) {
-                            for (int check = 0; check < PublicVariable.FloatingCategories.size(); check++) {
-                                if (anAppData.equals(PublicVariable.FloatingCategories.get(check))) {
-                                    runService = false;
-                                }
-                            }
-                        }
-
-                        if (runService == true) {
-                            try {
-                                categoryName = anAppData;
-                                functionsClass.runUnlimitedCategoryService(categoryName);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Intent intent = new Intent(getApplicationContext(), RecoveryFolders.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startService(intent);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            FunctionsClass functionsClass = new FunctionsClass(getApplicationContext());
 
-            PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
-            PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());
-
-            try {
-                appData = functionsClass.readFileLine(".uCategory");
-
-                if (functionsClass.loadCustomIcons()) {
-                    LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
-                    loadCustomIcons.load();
-                    FunctionsClass.println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
-                }
-
-                for (String anAppData : appData) {
-                    runService = true;
-                    if (PublicVariable.FloatingCategories != null) {
-                        for (int check = 0; check < PublicVariable.FloatingCategories.size(); check++) {
-                            if (anAppData.equals(PublicVariable.FloatingCategories.get(check))) {
-                                runService = false;
-                            }
-                        }
-                    }
-
-                    if (runService == true) {
-                        try {
-                            categoryName = anAppData;
-                            functionsClass.runUnlimitedCategoryService(categoryName);
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                }
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
+            Intent intent = new Intent(getApplicationContext(), RecoveryFolders.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startService(intent);
         }
         finish();
     }

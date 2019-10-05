@@ -28,6 +28,7 @@ import android.widget.TextView;
 import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 
 public class Widget_Unlimited_Floating extends Service {
@@ -59,11 +60,10 @@ public class Widget_Unlimited_Floating extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
-        FunctionsClass.println("StartID ::: " + startId);
+        FunctionsClassDebug.Companion.PrintDebug("StartID ::: " + startId);
         if (startId >= array) {
             return START_NOT_STICKY;
         }
-        appWidgetId[startId] = intent.getIntExtra("WidgetId", -1);
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_widgets, null, false);
@@ -113,6 +113,8 @@ public class Widget_Unlimited_Floating extends Service {
                 return START_NOT_STICKY;
             }
         }
+
+        appWidgetId[startId] = intent.getIntExtra("WidgetId", -1);
 
         appWidgetProviderInfo[startId] = appWidgetManager.getAppWidgetInfo(appWidgetId[startId]);
         appWidgetHosts[startId] = new AppWidgetHost(this, (int) System.currentTimeMillis());
