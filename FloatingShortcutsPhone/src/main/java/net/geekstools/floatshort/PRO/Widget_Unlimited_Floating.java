@@ -189,7 +189,11 @@ public class Widget_Unlimited_Floating extends Service {
                 initWidth, initHeight);
         layoutParams[startId].windowAnimations = android.R.style.Animation_Dialog;
 
-        windowManager.addView(floatingView[startId], layoutParams[startId]);
+        try {
+            windowManager.addView(floatingView[startId], layoutParams[startId]);
+        } catch (WindowManager.BadTokenException e) {
+            e.printStackTrace();
+        }
 
         widgetLabel[startId].setOnTouchListener(new View.OnTouchListener() {
             WindowManager.LayoutParams layoutParamsTouch = layoutParams[startId];

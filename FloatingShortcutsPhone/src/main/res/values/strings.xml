@@ -166,6 +166,7 @@
     <string name="recover_category">Recover Floating Folders</string>
     <string name="recover_widgets">Recover Floating Widgets</string>
     <string name="reallocatingWidgets"> 🔁 Reconfiguring… </string>
+    <string name="reconfiguringWidgets"> Reconfiguring… </string>
     <string name="categoryDesc">Please Write a Folder Name</string>
     <string name="colortext">App Theme</string>
     <string name="themeTrans">Transparent Theme</string>

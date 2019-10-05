@@ -131,7 +131,7 @@ public class FingerprintProcessHelper extends FingerprintManager.AuthenticationC
                     }
                 });
             } else {
-                if (new FunctionsClass(context).readPreference(".Password", "Pin", "0").equals("0")) {
+                if (new FunctionsClass(context).readPreference(".Password", "Pin", "0").equals("0") && new FunctionsClass(context).securityServicesSubscribed()) {
                     context.startActivity(new Intent(context, HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                             ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                 } else {
@@ -190,7 +190,7 @@ public class FingerprintProcessHelper extends FingerprintManager.AuthenticationC
                     }
                 });
             } else {
-                if (new FunctionsClass(context).readPreference(".Password", "Pin", "0").equals("0")) {
+                if (new FunctionsClass(context).readPreference(".Password", "Pin", "0").equals("0") && new FunctionsClass(context).securityServicesSubscribed()) {
                     context.startActivity(new Intent(context, HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                             ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                 } else {

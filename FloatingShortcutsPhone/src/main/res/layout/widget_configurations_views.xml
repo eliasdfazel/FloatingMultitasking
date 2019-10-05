@@ -289,17 +289,21 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:padding="11dp"
+            android:padding="13dp"
             android:layout_marginBottom="53dp"
             android:textAllCaps="false"
-            android:text="@string/reallocatingWidgets"
+            android:text="@string/reconfiguringWidgets"
             android:textColor="@color/light"
             android:textSize="29sp"
             android:fontFamily="@font/upcil_bold"
             app:elevation="13dp"
             app:cornerRadius="7dp"
             app:backgroundTint="@color/default_color_game_light"
-            app:rippleColor="@color/default_color" />
+            app:rippleColor="@color/default_color"
+            app:icon="@drawable/reconfiguring_icon"
+            app:iconSize="27dp"
+            app:iconTint="@color/light"
+            app:iconGravity="textStart" />
 
     </RelativeLayout>
 

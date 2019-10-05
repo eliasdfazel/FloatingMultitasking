@@ -227,7 +227,11 @@ public class App_Unlimited_Wifi extends Service {
         xPos = sharedPrefPosition.getInt("X", xInit);
         yPos = sharedPrefPosition.getInt("Y", yInit);
         layoutParams[startId] = functionsClass.normalLayoutParams(PublicVariable.HW, xPos, yPos);
-        windowManager.addView(floatingView[startId], layoutParams[startId]);
+        try {
+            windowManager.addView(floatingView[startId], layoutParams[startId]);
+        } catch (WindowManager.BadTokenException e) {
+            e.printStackTrace();
+        }
 
         xMove = xPos;
         yMove = yPos;

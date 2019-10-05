@@ -885,7 +885,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     }
                 });
 
-        if (functionsClass.readPreference(".Password", "Pin", "0").equals("0")) {
+        if (functionsClass.readPreference(".Password", "Pin", "0").equals("0") && functionsClass.securityServicesSubscribed()) {
             startActivity(new Intent(getApplicationContext(), HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                     ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
         } else {

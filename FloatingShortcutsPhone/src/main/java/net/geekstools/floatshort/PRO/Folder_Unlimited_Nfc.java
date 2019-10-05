@@ -302,7 +302,11 @@ public class Folder_Unlimited_Nfc extends Service {
         yPos = sharedPrefPosition.getInt("Y", yInit);
 
         layoutParams[startId] = functionsClass.normalLayoutParams(HW, xPos, yPos);
-        windowManager.addView(floatingView[startId], layoutParams[startId]);
+        try {
+            windowManager.addView(floatingView[startId], layoutParams[startId]);
+        } catch (WindowManager.BadTokenException e) {
+            e.printStackTrace();
+        }
 
         xMove = xPos;
         yMove = yPos;
