@@ -72,7 +72,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
@@ -361,13 +360,15 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         pinPassword.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (functionsClass.securityServicesSubscribed() || BuildConfig.DEBUG) {
+                if (functionsClass.securityServicesSubscribed()) {
                     startActivity(new Intent(getApplicationContext(), HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                 } else {
                     InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
 
-                    startActivity(new Intent(getApplicationContext(), InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    startActivity(new Intent(getApplicationContext(), InAppBilling.class)
+                                    .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null))
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                 }
 
@@ -1205,7 +1206,8 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
                 break;
             }
             case R.id.donate: {
-                startActivity(new Intent(getApplicationContext(), InAppBilling.class));
+                startActivity(new Intent(getApplicationContext(), InAppBilling.class)
+                        .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)));
 
                 break;
             }

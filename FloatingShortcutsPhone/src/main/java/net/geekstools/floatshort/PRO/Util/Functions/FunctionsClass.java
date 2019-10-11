@@ -3890,7 +3890,9 @@ public class FunctionsClass {
                         } else {
                             InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
 
-                            context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                            context.startActivity(new Intent(context, InAppBilling.class)
+                                            .putExtra("UserEmailAddress", readPreference(".UserInformation", "userEmail", null))
+                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                     ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                         }
                     }
@@ -4031,7 +4033,9 @@ public class FunctionsClass {
                         } else {
                             InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
 
-                            context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                            context.startActivity(new Intent(context, InAppBilling.class)
+                                            .putExtra("UserEmailAddress", readPreference(".UserInformation", "userEmail", null))
+                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                     ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                         }
                     }
@@ -4190,7 +4194,9 @@ public class FunctionsClass {
                             } else {
                                 InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
 
-                                context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                                context.startActivity(new Intent(context, InAppBilling.class)
+                                                .putExtra("UserEmailAddress", readPreference(".UserInformation", "userEmail", null))
+                                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                         ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                             }
                         }
@@ -5337,7 +5343,9 @@ public class FunctionsClass {
         preferencesView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                context.startActivity(new Intent(context, InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                context.startActivity(new Intent(context, InAppBilling.class)
+                                .putExtra("UserEmailAddress", readPreference(".UserInformation", "userEmail", null))
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
 
                 return false;
@@ -5876,7 +5884,7 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return true/*readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false)*/;
+        return readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
     }
 
     public boolean floatingWidgetsPurchased() {

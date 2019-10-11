@@ -2,8 +2,11 @@ package net.geekstools.floatshort.PRO.Util.IAP;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -48,6 +51,13 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
 
         if (savedInstanceState != null) {
             acquireFragment = (AcquireFragment) getSupportFragmentManager().findFragmentByTag(DIALOG_TAG);
+        }
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Toast.makeText(getApplicationContext(), getString(R.string.authError), Toast.LENGTH_LONG).show();
+
+            finish();
+            return;
         }
 
         billingManager = new BillingManager(InAppBilling.this, getIntent().hasExtra("UserEmailAddress") ? getIntent().getStringExtra("UserEmailAddress") : null);

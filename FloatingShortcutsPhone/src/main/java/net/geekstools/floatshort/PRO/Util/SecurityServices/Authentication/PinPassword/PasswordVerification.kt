@@ -16,7 +16,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug
 
 class PasswordVerification : Activity() {
 
-    lateinit var functionsClass: FunctionsClass
+    private lateinit var functionsClass: FunctionsClass
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

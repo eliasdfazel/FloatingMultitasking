@@ -57,7 +57,7 @@
     <string name="license" translatable="false">LICENSE</string>
     <string name="error" translatable="false">Error Occurred</string>
     <string name="internetError" translatable="false">⚠ Internet Connection Problem ⚠</string>
-    <string name="authError" translatable="false">⚠ Authentication Required | Reopen App ⚠</string>
+    <string name="authError" translatable="false">⚠ Authentication Required | Enable Internet &amp; Reopen ⚠</string>
 
     <string name="betaUpdateAvailable">Update Available in βeta Stage</string>
     <string name="betaUpdate">βeta Change Log</string>

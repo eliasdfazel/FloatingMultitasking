@@ -14,6 +14,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -29,13 +30,13 @@ import java.util.*
 
 class HandlePinPassword : Activity() {
 
-    lateinit var functionClass: FunctionsClass
-    lateinit var functionsClassSecurity: FunctionsClassSecurity
+    private lateinit var functionClass: FunctionsClass
+    private lateinit var functionsClassSecurity: FunctionsClassSecurity
 
-    lateinit var firebaseAuth: FirebaseAuth
-    lateinit var firebaseUser: FirebaseUser
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseUser: FirebaseUser
 
-    var currentPasswordExist: Boolean = false
+    private var currentPasswordExist: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +56,15 @@ class HandlePinPassword : Activity() {
             }
         }
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        firebaseUser = firebaseAuth.currentUser!!
+        if (firebaseAuth.currentUser != null) {
+            Toast.makeText(applicationContext, getString(R.string.authError), Toast.LENGTH_LONG).show()
+
+            this@HandlePinPassword.finish()
+            return
+        } else {
+            firebaseAuth = FirebaseAuth.getInstance()
+            firebaseUser = firebaseAuth.currentUser!!
+        }
 
         pinFullViewScrollView.setBackgroundColor(PublicVariable.primaryColor)
         pinFullView.setBackgroundColor(PublicVariable.primaryColor)

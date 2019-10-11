@@ -883,8 +883,15 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
             }
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
                 try {
-                    functionsClass.navigateToClass(WidgetConfigurations.class,
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
+                    if (functionsClass.floatingWidgetsPurchased()) {
+                        functionsClass.navigateToClass(WidgetConfigurations.class,
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
+                    } else {
+                        InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
+
+                        functionsClass.navigateToClass(InAppBilling.class,
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

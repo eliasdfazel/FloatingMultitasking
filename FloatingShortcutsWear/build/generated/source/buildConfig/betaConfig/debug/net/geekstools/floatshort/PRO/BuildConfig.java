@@ -9,5 +9,5 @@ public final class BuildConfig {
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "betaConfig";
   public static final int VERSION_CODE = 671;
-  public static final String VERSION_NAME = "14.000.000.671_PRO[BETA]";
+  public static final String VERSION_NAME = "[WearOS][Watch]5|10.11.2019{671}PRO[BETA]";
 }

@@ -97,7 +97,9 @@ public class BillingManager implements PurchasesUpdatedListener {
         Log.d(TAG, "onPurchasesUpdated() Response: " + responseCode);
 
         activity.finish();
-        activity.startActivity(new Intent(activity.getApplicationContext(), InAppBilling.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        activity.startActivity(new Intent(activity.getApplicationContext(), InAppBilling.class)
+                .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null))
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     public void querySkuDetailsAsync(@BillingClient.SkuType final String itemType, final List<String> skuList, final SkuDetailsResponseListener listener) {

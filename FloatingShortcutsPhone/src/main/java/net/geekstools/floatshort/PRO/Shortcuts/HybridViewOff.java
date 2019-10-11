@@ -919,8 +919,15 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         switch (direction) {
             case SimpleGestureFilterSwitch.SWIPE_RIGHT: {
                 try {
-                    functionsClass.navigateToClass(WidgetConfigurations.class,
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
+                    if (functionsClass.floatingWidgetsPurchased()) {
+                        functionsClass.navigateToClass(WidgetConfigurations.class,
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
+                    } else {
+                        InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
+
+                        functionsClass.navigateToClass(InAppBilling.class,
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
