@@ -16,7 +16,7 @@ android {
         targetSdkVersion 29
 
         versionCode 674
-        versionName "[Android][Phone]${majorVersion}|" + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "{${versionCode}}"
+        versionName "[Android][Phone] ${majorVersion} | " + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "{${versionCode}}" + "-"
 
         wearAppUnbundled true
     }
