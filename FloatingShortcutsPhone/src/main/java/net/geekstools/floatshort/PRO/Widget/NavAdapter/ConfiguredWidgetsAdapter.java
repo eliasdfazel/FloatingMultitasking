@@ -98,15 +98,18 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
         viewHolder.floatTheWidget.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                functionsClass.doVibrate(77);
+
+                AppWidgetProviderInfo appWidgetProviderInfoLongClick = navDrawerItems.get(position).getAppWidgetProviderInfo();
 
                 functionsClass.popupOptionWidget(context, view,
                         navDrawerItems.get(position).getPackageName(),
                         navDrawerItems.get(position).getClassNameProviderWidget(),
                         navDrawerItems.get(position).getWidgetLabel(),
-                        appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) != null ?
-                                appWidgetProviderInfo.loadPreviewImage(context, DisplayMetrics.DENSITY_HIGH) : appWidgetProviderInfo.loadIcon(context, DisplayMetrics.DENSITY_HIGH),
+                        appWidgetProviderInfoLongClick.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) != null ?
+                                appWidgetProviderInfoLongClick.loadPreviewImage(context, DisplayMetrics.DENSITY_HIGH) : appWidgetProviderInfoLongClick.loadIcon(context, DisplayMetrics.DENSITY_HIGH),
                         navDrawerItems.get(position).getAddedWidgetRecovery());
+
+                functionsClass.doVibrate(77);
 
                 return true;
             }

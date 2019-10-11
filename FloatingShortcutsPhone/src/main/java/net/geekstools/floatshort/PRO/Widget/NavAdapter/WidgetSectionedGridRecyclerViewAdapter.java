@@ -128,9 +128,13 @@ public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
 
         int offset = 0; // offset positions for the headers we're adding
         for (Section section : sections) {
-            section.sectionedPosition = section.firstPosition + offset;
-            this.sectionSparseArray.append(section.sectionedPosition, section);
-            ++offset;
+            try {
+                section.sectionedPosition = section.firstPosition + offset;
+                this.sectionSparseArray.append(section.sectionedPosition, section);
+                ++offset;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         notifyDataSetChanged();

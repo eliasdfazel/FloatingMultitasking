@@ -56,15 +56,14 @@ class HandlePinPassword : Activity() {
             }
         }
 
-        if (firebaseAuth.currentUser != null) {
+        firebaseAuth = FirebaseAuth.getInstance()
+        if (firebaseAuth.currentUser == null) {
             Toast.makeText(applicationContext, getString(R.string.authError), Toast.LENGTH_LONG).show()
 
             this@HandlePinPassword.finish()
             return
-        } else {
-            firebaseAuth = FirebaseAuth.getInstance()
-            firebaseUser = firebaseAuth.currentUser!!
         }
+        firebaseUser = firebaseAuth.currentUser!!
 
         pinFullViewScrollView.setBackgroundColor(PublicVariable.primaryColor)
         pinFullView.setBackgroundColor(PublicVariable.primaryColor)

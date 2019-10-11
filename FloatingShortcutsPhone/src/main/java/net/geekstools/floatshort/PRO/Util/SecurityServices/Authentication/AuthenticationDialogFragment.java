@@ -90,10 +90,10 @@ public class AuthenticationDialogFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
         int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 420, getResources().getDisplayMetrics());
 
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.width = dialogueWidth;
         layoutParams.height = dialogueHeight;
         layoutParams.windowAnimations = android.R.style.Animation_Dialog;
@@ -384,6 +384,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     if (intent.getAction().equals("SHOW_PASSWORD")) {
+                        fingerprintHint.setHeight(functionsClass.DpToInteger(13));
                         fingerprintHint.setText("");
 
                         fingerprintIcon.setVisibility(View.INVISIBLE);
@@ -391,12 +392,14 @@ public class AuthenticationDialogFragment extends DialogFragment {
                         textInputPassword.setVisibility(View.VISIBLE);
                         password.setVisibility(View.VISIBLE);
 
-                        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                         int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
                         int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 255, getResources().getDisplayMetrics());
 
+                        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                         layoutParams.width = dialogueWidth;
                         layoutParams.height = dialogueHeight;
+                        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                        layoutParams.dimAmount = 0.57f;
                         dialog.getWindow().setAttributes(layoutParams);
                     }
                 }

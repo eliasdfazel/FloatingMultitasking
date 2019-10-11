@@ -64,16 +64,13 @@
     <string name="whatsnew" translatable="false">What\'s New…</string>
     <string name="changelog" translatable="false">
         <![CDATA[
-            🔵 <b>Floating Widgets</b> | Bugs Fixed <br/>
-            &bull; I Am Sorry 🙏 for The Issue<br/>
-            &bull; If You Configured Widgets to Use as Floating Widgets Consider These Solutions <br/>
-            1️⃣  Open \'Floating Widgets\' List, Click on Preferences ⚙ then Click on \'🔁 Reconfiguring…\' OR<br/>
-            2️⃣  Go to System Setting > Apps > Floating Shortcuts > Clear Data.<br/>
-            - Then Open Aoo & Start Using It Normal 🙂 <br/><br/>
             🔵 <b><big>Security Services</big></b><br/>
             &bull; <b>Lock It 🔒</b> | Secure Your Apps By Your Fingerprint <br/>
             &bull; <b>Lock It 🔒</b> | Secure Your Apps By Pin Password <br/>
             &bull; (<small>Press & Hold on an App/Folder/Widget in the List</small>) <br/>
+            🔵 <b>Floating Widgets</b> <br/>
+            &bull; If You Encounter Any Issue... <br/>
+            &bull; ➡ Open \'Floating Widgets\' List, Click on Preferences ⚙ then Click on \'🔁 Reconfiguring…\' <br/>
             🔵 <b>Press & Hold on Bottom Action Buttons to See Recovery</b> 🔁 <br/>
             <br/><br/>
             /* <b>Explore More Options in Preferences  ⚙️  </b>*/ <br/>

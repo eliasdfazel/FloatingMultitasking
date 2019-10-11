@@ -153,7 +153,7 @@ class FunctionsClassSecurity {
         }, 1000)
     }
 
-    inner class InvokeAuth(internal var cipher: Cipher?, internal var keyName: String) {
+    inner class InvokeAuth(activity: Activity, internal var cipher: Cipher?, internal var keyName: String) {
         init {
             if (fingerprintSensorAvailable() && fingerprintEnrolled()) {
                 if (initCipher(this.cipher!!, this.keyName)) {
@@ -161,13 +161,22 @@ class FunctionsClassSecurity {
 
                     val fingerprintAuthenticationDialogFragment = AuthenticationDialogFragment()
                     fingerprintAuthenticationDialogFragment.setCryptoObject(FingerprintManager.CryptoObject(this.cipher!!))
-                    fingerprintAuthenticationDialogFragment.show(appCompatActivity.supportFragmentManager, context.packageName)
+
+                    if (!activity.isFinishing) {
+                        Handler().post {
+                            fingerprintAuthenticationDialogFragment.show(appCompatActivity.supportFragmentManager, context.packageName)
+                        }
+                    }
                 }
             } else {
                 FunctionsClassDebug.PrintDebug("*** Finger Print Not Available ***")
 
                 val fingerprintAuthenticationDialogFragment = AuthenticationDialogFragment()
-                fingerprintAuthenticationDialogFragment.show(appCompatActivity.supportFragmentManager, context.packageName)
+                if (!activity.isFinishing) {
+                    Handler().post {
+                        fingerprintAuthenticationDialogFragment.show(appCompatActivity.supportFragmentManager, context.packageName)
+                    }
+                }
             }
         }
     }

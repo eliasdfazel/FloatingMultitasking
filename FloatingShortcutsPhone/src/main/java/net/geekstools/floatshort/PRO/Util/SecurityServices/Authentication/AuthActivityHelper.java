@@ -65,6 +65,11 @@ public class AuthActivityHelper extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
         /*Finger-Print Authentication Invocation*/
         try {
@@ -102,7 +107,7 @@ public class AuthActivityHelper extends AppCompatActivity {
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    functionsClassSecurity.new InvokeAuth(defaultCipher, DEFAULT_KEY_NAME);
+                                    functionsClassSecurity.new InvokeAuth(AuthActivityHelper.this, defaultCipher, DEFAULT_KEY_NAME);
                                 }
                             }, 333);
 
@@ -110,7 +115,7 @@ public class AuthActivityHelper extends AppCompatActivity {
                     }
                 }
             } else {
-                functionsClassSecurity.new InvokeAuth(null, DEFAULT_KEY_NAME);
+                functionsClassSecurity.new InvokeAuth(AuthActivityHelper.this, null, DEFAULT_KEY_NAME);
             }
         } catch (Exception e) {
             e.printStackTrace();
