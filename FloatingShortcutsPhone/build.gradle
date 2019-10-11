@@ -15,8 +15,8 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
 
-        versionCode 672
-        versionName "16.310.000.672_"
+        versionCode 674
+        versionName "[Android][Phone]${majorVersion}|" + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "{${versionCode}}"
 
         wearAppUnbundled true
     }
@@ -57,6 +57,25 @@ android {
         exclude 'META-INF/DEPENDENCIES'
     }
 }
+
+static def getDateYear() {
+    def date = new Date()
+    def formattedDate = date.format('yyyy')//yyyyMMdd
+    return formattedDate
+}
+
+static def getDateMonth() {
+    def date = new Date()
+    def formattedDate = date.format('MM')//yyyyMMdd
+    return formattedDate
+}
+
+static def getDateDay() {
+    def date = new Date()
+    def formattedDate = date.format('dd')//yyyyMMdd
+    return formattedDate
+}
+
 dependencies {
     implementation project(path: ':LoadingSpin')
 
@@ -70,13 +89,13 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.palette:palette:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta04'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta05'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
 
     implementation 'com.google.android.play:core:1.6.3'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha10'
+    implementation 'com.google.android.material:material:1.1.0-beta01'
 
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.google.firebase:firebase-appindexing:19.0.0'
@@ -88,9 +107,9 @@ dependencies {
 
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
-    implementation 'androidx.room:room-runtime:2.1.0'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0'
-    kapt 'androidx.room:room-compiler:2.1.0'
+    implementation 'androidx.room:room-runtime:2.2.0'
+    annotationProcessor 'androidx.room:room-compiler:2.2.0'
+    kapt 'androidx.room:room-compiler:2.2.0'
 
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50'
 

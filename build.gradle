@@ -1,4 +1,8 @@
 buildscript {
+    ext {
+        majorVersion = "5"
+    }
+
     repositories {
         jcenter()
         google()
