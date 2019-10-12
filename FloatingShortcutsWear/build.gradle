@@ -12,7 +12,7 @@ android {
         targetSdkVersion 29
 
         versionCode 671
-        versionName "[WearOS][Watch]${majorVersion} | " + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "{${versionCode}}" + "."
+        versionName "[WearOS][Watch] ${majorVersion} | " + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "{${versionCode}}" + "-"
     }
 
     buildTypes {
