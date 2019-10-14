@@ -17,6 +17,7 @@ import net.geekstools.floatshort.PRO.Automation.RecoveryGps;
 import net.geekstools.floatshort.PRO.Automation.RecoveryNfc;
 import net.geekstools.floatshort.PRO.Automation.RecoveryWifi;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 
 public class BindServices extends Service {
@@ -32,6 +33,7 @@ public class BindServices extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        FunctionsClassDebug.Companion.PrintDebug("*** Bind Service StartId " + startId + " ***");
         if (startId > 1) {
 
             return START_NOT_STICKY;
@@ -86,6 +88,7 @@ public class BindServices extends Service {
                 intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
                 intentFilter.addAction("android.location.PROVIDERS_CHANGED");
                 intentFilter.addAction("android.nfc.action.ADAPTER_STATE_CHANGED");
+                intentFilter.addAction("REMOVE_SELF");
                 broadcastReceiverAction = new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
@@ -168,6 +171,9 @@ public class BindServices extends Service {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                        } else if (intent.getAction().equals("REMOVE_SELF")) {
+                            stopForeground(true);
+                            stopSelf();
                         }
                     }
                 };
@@ -203,11 +209,6 @@ public class BindServices extends Service {
     public void onDestroy() {
         super.onDestroy();
         try {
-            unregisterReceiver(broadcastReceiverAction);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
             if (functionsClass.SystemCache() || functionsClass.automationFeatureEnable()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     startForegroundService(new Intent(getApplicationContext(), BindServices.class));
@@ -216,9 +217,17 @@ public class BindServices extends Service {
                 }
             } else {
                 unregisterReceiver(broadcastReceiverONOFF);
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    stopForeground(Service.STOP_FOREGROUND_REMOVE);
+                    stopForeground(true);
+                }
+                stopSelf();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("################ " + e);
         }
     }
 }

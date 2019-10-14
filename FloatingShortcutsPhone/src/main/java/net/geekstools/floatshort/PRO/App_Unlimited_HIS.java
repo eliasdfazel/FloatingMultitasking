@@ -137,8 +137,8 @@ public class App_Unlimited_HIS extends Service {
     @Override
     public int onStartCommand(Intent intent, final int flags, final int startId) {
         FunctionsClassDebug.Companion.PrintDebug(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
-        FunctionsClassDebug.Companion.PrintDebug("-----HIS PackageName" + intent.getStringExtra("packageName"));
-        FunctionsClassDebug.Companion.PrintDebug("-----HIS ClassName" + intent.getStringExtra("className"));
+        FunctionsClassDebug.Companion.PrintDebug("HIS PackageName: " + intent.getStringExtra("packageName"));
+        FunctionsClassDebug.Companion.PrintDebug("HIS ClassName: " + intent.getStringExtra("className"));
         startIdCounter = startId;
 
         if (functionsClass.loadCustomIcons()) {

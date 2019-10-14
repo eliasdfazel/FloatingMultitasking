@@ -503,10 +503,10 @@ public class FunctionsClass {
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -547,10 +547,10 @@ public class FunctionsClass {
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -569,10 +569,10 @@ public class FunctionsClass {
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -591,10 +591,10 @@ public class FunctionsClass {
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -613,10 +613,10 @@ public class FunctionsClass {
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -635,10 +635,10 @@ public class FunctionsClass {
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -658,10 +658,10 @@ public class FunctionsClass {
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -760,10 +760,10 @@ public class FunctionsClass {
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -784,10 +784,10 @@ public class FunctionsClass {
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -808,10 +808,10 @@ public class FunctionsClass {
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -832,10 +832,10 @@ public class FunctionsClass {
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -856,10 +856,10 @@ public class FunctionsClass {
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -880,10 +880,10 @@ public class FunctionsClass {
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }

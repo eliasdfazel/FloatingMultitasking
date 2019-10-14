@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.TypedValue;
 import android.widget.Toast;
@@ -137,9 +138,21 @@ public class RecoveryFolders extends Service {
         functionsClass = new FunctionsClass(getApplicationContext());
         functionsClassSecurity = new FunctionsClassSecurity(getApplicationContext());
 
-        if (functionsClass.returnAPI() >= 26) {
-            startForeground(333, functionsClass.bindServiceNotification());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(getApplicationContext(), BindServices.class));
+        } else {
+            startService(new Intent(getApplicationContext(), BindServices.class));
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(Service.STOP_FOREGROUND_REMOVE);
+            stopForeground(true);
+        }
+        stopSelf();
     }
 
     @Nullable

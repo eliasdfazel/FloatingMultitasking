@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.IBinder
 import android.widget.Toast
 import androidx.preference.PreferenceManager
@@ -194,8 +195,19 @@ class RecoveryWidgets : Service() {
         functionsClass = FunctionsClass(applicationContext)
         functionsClassSecurity = FunctionsClassSecurity(applicationContext)
 
-        if (functionsClass.returnAPI() >= 26) {
-            startForeground(333, functionsClass.bindServiceNotification())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(Intent(applicationContext, BindServices::class.java))
+        } else {
+            startService(Intent(applicationContext, BindServices::class.java))
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(Service.STOP_FOREGROUND_REMOVE)
+            stopForeground(true)
+        }
+        stopSelf()
     }
 }
