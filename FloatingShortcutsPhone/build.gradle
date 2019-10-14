@@ -15,8 +15,8 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
 
-        versionCode 674
-        versionName "[Android][Phone] ${majorVersion} | " + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "{${versionCode}}" + "-"
+        versionCode 676
+        versionName "${majorVersion} | " + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "{${versionCode}}" + "-"
 
         wearAppUnbundled true
     }
@@ -41,12 +41,12 @@ android {
         releaseConfig {
             dimension "FloatingShortcutsPro"
 
-            versionNameSuffix 'PRO'
+            versionNameSuffix 'PRO[Android][Phone]'
         }
         betaConfig {
             dimension "FloatingShortcutsPro"
 
-            versionNameSuffix 'PRO[BETA]'
+            versionNameSuffix 'PRO[BETA][Android][Phone]'
         }
     }
 

@@ -227,7 +227,6 @@ public class BindServices extends Service {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("################ " + e);
         }
     }
 }
