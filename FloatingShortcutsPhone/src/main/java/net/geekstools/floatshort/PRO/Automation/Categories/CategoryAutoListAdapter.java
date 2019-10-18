@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -217,10 +216,10 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
         viewHolderBinder.timeView.setBackground(drawItem);
 
         RippleDrawable drawCategories = (RippleDrawable) context.getDrawable(R.drawable.auto_category);
-        GradientDrawable backCategories = (GradientDrawable) drawCategories.findDrawableByLayerId(R.id.category_item);
-        GradientDrawable backCategoriesRipple = (GradientDrawable) drawCategories.findDrawableByLayerId(android.R.id.mask);
-        backCategories.setColor(PublicVariable.colorLightDark);
-        backCategoriesRipple.setColor(PublicVariable.colorLightDarkOpposite);
+        Drawable backCategories = drawCategories.findDrawableByLayerId(R.id.category_item);
+        Drawable backCategoriesRipple = drawCategories.findDrawableByLayerId(android.R.id.mask);
+        backCategories.setTint(PublicVariable.colorLightDark);
+        backCategoriesRipple.setTint(PublicVariable.colorLightDarkOpposite);
         drawCategories.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
         drawCategories.setAlpha(7);
         categoryItem.setBackground(drawCategories);

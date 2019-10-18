@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -151,12 +150,12 @@ public class Widget_Unlimited_Floating extends Service {
             widgetLabel[startId].setTextColor(widgetColor[startId]);
 
             LayerDrawable moveLayerDrawable = (LayerDrawable) getDrawable(R.drawable.draw_move);
-            GradientDrawable moveBackgroundLayerDrawable = (GradientDrawable) moveLayerDrawable.findDrawableByLayerId(R.id.backtemp);
-            moveBackgroundLayerDrawable.setColor(widgetColor[startId]);
+            Drawable moveBackgroundLayerDrawable = moveLayerDrawable.findDrawableByLayerId(R.id.backtemp);
+            moveBackgroundLayerDrawable.setTint(widgetColor[startId]);
 
             LayerDrawable closeLayerDrawable = (LayerDrawable) getDrawable(R.drawable.draw_close_service);
-            GradientDrawable closeBackgroundLayerDrawable = (GradientDrawable) closeLayerDrawable.findDrawableByLayerId(R.id.backtemp);
-            closeBackgroundLayerDrawable.setColor(widgetColor[startId]);
+            Drawable closeBackgroundLayerDrawable = closeLayerDrawable.findDrawableByLayerId(R.id.backtemp);
+            closeBackgroundLayerDrawable.setTint(widgetColor[startId]);
 
             Drawable resizeDrawable = getDrawable(R.drawable.w_resize).mutate();
             resizeDrawable.setTint(widgetColor[startId]);

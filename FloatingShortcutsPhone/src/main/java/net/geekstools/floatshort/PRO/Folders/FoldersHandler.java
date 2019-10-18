@@ -14,7 +14,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -158,8 +158,8 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
 
         ImageView floatingLogo = (ImageView) findViewById(R.id.loadLogo);
         LayerDrawable drawFloatingLogo = (LayerDrawable) getDrawable(R.drawable.draw_floating_logo);
-        GradientDrawable backFloatingLogo = (GradientDrawable) drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
-        backFloatingLogo.setColor(PublicVariable.primaryColorOpposite);
+        Drawable backFloatingLogo = drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
+        backFloatingLogo.setTint(PublicVariable.primaryColorOpposite);
         floatingLogo.setImageDrawable(drawFloatingLogo);
 
         if (functionsClass.loadCustomIcons()) {
@@ -183,8 +183,8 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         registerReceiver(broadcastReceiver, intentFilter);
 
         LayerDrawable drawPreferenceAction = (LayerDrawable) getDrawable(R.drawable.draw_pref_action);
-        GradientDrawable backPreferenceAction = (GradientDrawable) drawPreferenceAction.findDrawableByLayerId(R.id.backtemp);
-        backPreferenceAction.setColor(PublicVariable.primaryColorOpposite);
+        Drawable backPreferenceAction = drawPreferenceAction.findDrawableByLayerId(R.id.backtemp);
+        backPreferenceAction.setTint(PublicVariable.primaryColorOpposite);
         actionButton.setImageDrawable(drawPreferenceAction);
 
         switchWidgets.setTextColor(getColor(R.color.light));
@@ -208,12 +208,12 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
 
         try {
             LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
-            GradientDrawable backRecoverFloatingCategories = (GradientDrawable) drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
-            backRecoverFloatingCategories.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+            Drawable backRecoverFloatingCategories = drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
+            backRecoverFloatingCategories.setTint(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
 
             LayerDrawable drawRecoverFloatingWidgets = (LayerDrawable) getDrawable(R.drawable.draw_recovery_widgets).mutate();
-            GradientDrawable backRecoverFloatingWidgets = (GradientDrawable) drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backtemp).mutate();
-            backRecoverFloatingWidgets.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+            Drawable backRecoverFloatingWidgets = drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backtemp).mutate();
+            backRecoverFloatingWidgets.setTint(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
 
             recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories);
             recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets);
@@ -742,8 +742,8 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
 
         ImageView shareIt = (ImageView) findViewById(R.id.share);
         LayerDrawable drawableShare = (LayerDrawable) getDrawable(R.drawable.draw_share);
-        GradientDrawable backgroundShare = (GradientDrawable) drawableShare.findDrawableByLayerId(R.id.backtemp);
-        backgroundShare.setColor(PublicVariable.primaryColor);
+        Drawable backgroundShare = drawableShare.findDrawableByLayerId(R.id.backtemp);
+        backgroundShare.setTint(PublicVariable.primaryColor);
         shareIt.setImageDrawable(drawableShare);
         shareIt.setOnClickListener(new View.OnClickListener() {
             @Override

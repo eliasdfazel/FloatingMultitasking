@@ -5,7 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -47,12 +47,12 @@ public class AppsConfirmButton extends Button
         detector = new SimpleGestureFilterAdvance(context, this);
 
         drawShow = (LayerDrawable) context.getDrawable(R.drawable.draw_saved_show);
-        GradientDrawable backShow = (GradientDrawable) drawShow.findDrawableByLayerId(R.id.backtemp);
-        backShow.setColor(PublicVariable.primaryColorOpposite);
+        Drawable backShow = drawShow.findDrawableByLayerId(R.id.backtemp);
+        backShow.setTint(PublicVariable.primaryColorOpposite);
 
         drawDismiss = (LayerDrawable) context.getDrawable(R.drawable.draw_saved_dismiss);
-        GradientDrawable backDismiss = (GradientDrawable) drawDismiss.findDrawableByLayerId(R.id.backtemp);
-        backDismiss.setColor(PublicVariable.primaryColor);
+        Drawable backDismiss = drawDismiss.findDrawableByLayerId(R.id.backtemp);
+        backDismiss.setTint(PublicVariable.primaryColor);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(context.getString(R.string.visibilityActionAdvance));

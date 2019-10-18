@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -153,54 +154,54 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         }
 
         RippleDrawable rippleDrawableShortcuts = (RippleDrawable) getDrawable(R.drawable.draw_shortcuts);
-        GradientDrawable gradientDrawableShortcutsForeground = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(R.id.foregroundItem);
-        GradientDrawable gradientDrawableShortcutsBackground = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(R.id.backgroundItem);
-        GradientDrawable gradientDrawableMaskShortcuts = (GradientDrawable) rippleDrawableShortcuts.findDrawableByLayerId(android.R.id.mask);
+        Drawable gradientDrawableShortcutsForeground = rippleDrawableShortcuts.findDrawableByLayerId(R.id.foregroundItem);
+        Drawable gradientDrawableShortcutsBackground = rippleDrawableShortcuts.findDrawableByLayerId(R.id.backgroundItem);
+        Drawable gradientDrawableMaskShortcuts = rippleDrawableShortcuts.findDrawableByLayerId(android.R.id.mask);
 
         if (functionsClass.appThemeTransparent()) {
             rippleDrawableShortcuts.setColor(ColorStateList.valueOf(PublicVariable.primaryColor));
-            gradientDrawableShortcutsForeground.setColor(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 255));
+            gradientDrawableShortcutsForeground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 255));
             if (functionsClass.returnAPI() > 21) {
                 gradientDrawableShortcutsBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
             } else {
-                gradientDrawableShortcutsBackground.setColor(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
+                gradientDrawableShortcutsBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
             }
-            gradientDrawableMaskShortcuts.setColor(PublicVariable.primaryColor);
+            gradientDrawableMaskShortcuts.setTint(PublicVariable.primaryColor);
         } else {
             rippleDrawableShortcuts.setColor(ColorStateList.valueOf(PublicVariable.primaryColor));
-            gradientDrawableShortcutsForeground.setColor(PublicVariable.primaryColorOpposite);
+            gradientDrawableShortcutsForeground.setTint(PublicVariable.primaryColorOpposite);
             gradientDrawableShortcutsBackground.setTint(PublicVariable.primaryColorOpposite);
-            gradientDrawableMaskShortcuts.setColor(PublicVariable.primaryColor);
+            gradientDrawableMaskShortcuts.setTint(PublicVariable.primaryColor);
         }
         autoApps.setBackground(rippleDrawableShortcuts);
 
         RippleDrawable rippleDrawableCategories = (RippleDrawable) getDrawable(R.drawable.draw_categories);
-        GradientDrawable gradientDrawableCategoriesForeground = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(R.id.foregroundItem);
-        GradientDrawable gradientDrawableCategoriesBackground = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(R.id.backgroundItem);
-        GradientDrawable gradientDrawableMaskCategories = (GradientDrawable) rippleDrawableCategories.findDrawableByLayerId(android.R.id.mask);
+        Drawable gradientDrawableCategoriesForeground = rippleDrawableCategories.findDrawableByLayerId(R.id.foregroundItem);
+        Drawable gradientDrawableCategoriesBackground = rippleDrawableCategories.findDrawableByLayerId(R.id.backgroundItem);
+        Drawable gradientDrawableMaskCategories = rippleDrawableCategories.findDrawableByLayerId(android.R.id.mask);
 
         if (functionsClass.appThemeTransparent()) {
             rippleDrawableCategories.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
-            gradientDrawableCategoriesForeground.setColor(
+            gradientDrawableCategoriesForeground.setTint(
                     functionsClass.setColorAlpha(
                             functionsClass.mixColors(
                                     PublicVariable.primaryColor, PublicVariable.colorLightDark,
                                     0.75f), functionsClass.wallpaperStaticLive() ? 245 : 113)
             );
             gradientDrawableCategoriesBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, functionsClass.wallpaperStaticLive() ? 150 : 155));
-            gradientDrawableMaskCategories.setColor(PublicVariable.primaryColorOpposite);
+            gradientDrawableMaskCategories.setTint(PublicVariable.primaryColorOpposite);
         } else {
             rippleDrawableCategories.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
-            gradientDrawableCategoriesForeground.setColor(PublicVariable.primaryColor);
+            gradientDrawableCategoriesForeground.setTint(PublicVariable.primaryColor);
             gradientDrawableCategoriesBackground.setTint(PublicVariable.primaryColor);
-            gradientDrawableMaskCategories.setColor(PublicVariable.primaryColorOpposite);
+            gradientDrawableMaskCategories.setTint(PublicVariable.primaryColorOpposite);
         }
         autoCategories.setBackground(rippleDrawableCategories);
 
         ImageView floatingLogo = (ImageView) findViewById(R.id.loadLogo);
         LayerDrawable drawFloatingLogo = (LayerDrawable) getDrawable(R.drawable.draw_floating_logo);
-        GradientDrawable backFloatingLogo = (GradientDrawable) drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
-        backFloatingLogo.setColor(PublicVariable.primaryColorOpposite);
+        Drawable backFloatingLogo = drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
+        backFloatingLogo.setTint(PublicVariable.primaryColorOpposite);
         floatingLogo.setImageDrawable(drawFloatingLogo);
 
         loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
@@ -252,19 +253,19 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
 
         if (PublicVariable.autoID != null) {
             final LayerDrawable drawWifi = (LayerDrawable) getDrawable(R.drawable.draw_wifi);
-            final GradientDrawable backWifi = (GradientDrawable) drawWifi.findDrawableByLayerId(R.id.backtemp);
+            final Drawable backWifi = drawWifi.findDrawableByLayerId(R.id.backtemp);
 
             final LayerDrawable drawBluetooth = (LayerDrawable) getDrawable(R.drawable.draw_bluetooth);
-            final GradientDrawable backBluetooth = (GradientDrawable) drawBluetooth.findDrawableByLayerId(R.id.backtemp);
+            final Drawable backBluetooth = drawBluetooth.findDrawableByLayerId(R.id.backtemp);
 
             final LayerDrawable drawGPS = (LayerDrawable) getDrawable(R.drawable.draw_gps);
-            final GradientDrawable backGPS = (GradientDrawable) drawGPS.findDrawableByLayerId(R.id.backtemp);
+            final Drawable backGPS = drawGPS.findDrawableByLayerId(R.id.backtemp);
 
             final LayerDrawable drawNfc = (LayerDrawable) getDrawable(R.drawable.draw_nfc);
-            final GradientDrawable backNfc = (GradientDrawable) drawNfc.findDrawableByLayerId(R.id.backtemp);
+            final Drawable backNfc = drawNfc.findDrawableByLayerId(R.id.backtemp);
 
             final LayerDrawable drawTime = (LayerDrawable) getDrawable(R.drawable.draw_time);
-            final GradientDrawable backTime = (GradientDrawable) drawTime.findDrawableByLayerId(R.id.backtemp);
+            final Drawable backTime = drawTime.findDrawableByLayerId(R.id.backtemp);
 
             wifi.setBackground(drawWifi);
             bluetooth.setBackground(drawBluetooth);
@@ -273,75 +274,75 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
             time.setBackground(drawTime);
 
             if (PublicVariable.autoID.equals(getString(R.string.wifi_category))) {
-                backWifi.setColor(pressColor);
+                backWifi.setTint(pressColor);
                 wifi.setBackground(drawWifi);
 
                 autoWiFi();
 
-                backBluetooth.setColor(color);
-                backGPS.setColor(color);
-                backNfc.setColor(color);
-                backTime.setColor(color);
+                backBluetooth.setTint(color);
+                backGPS.setTint(color);
+                backNfc.setTint(color);
+                backTime.setTint(color);
 
                 bluetooth.setBackground(drawBluetooth);
                 gps.setBackground(drawGPS);
                 nfc.setBackground(drawNfc);
                 time.setBackground(drawTime);
             } else if (PublicVariable.autoID.equals(getString(R.string.bluetooth_category))) {
-                backBluetooth.setColor(pressColor);
+                backBluetooth.setTint(pressColor);
                 bluetooth.setBackground(drawBluetooth);
 
                 autoBluetooth();
 
-                backWifi.setColor(color);
-                backGPS.setColor(color);
-                backNfc.setColor(color);
-                backTime.setColor(color);
+                backWifi.setTint(color);
+                backGPS.setTint(color);
+                backNfc.setTint(color);
+                backTime.setTint(color);
 
                 wifi.setBackground(drawWifi);
                 gps.setBackground(drawGPS);
                 nfc.setBackground(drawNfc);
                 time.setBackground(drawTime);
             } else if (PublicVariable.autoID.equals(getString(R.string.gps_category))) {
-                backGPS.setColor(pressColor);
+                backGPS.setTint(pressColor);
                 gps.setBackground(drawGPS);
 
                 autoGPS();
 
-                backWifi.setColor(color);
-                backBluetooth.setColor(color);
-                backNfc.setColor(color);
-                backTime.setColor(color);
+                backWifi.setTint(color);
+                backBluetooth.setTint(color);
+                backNfc.setTint(color);
+                backTime.setTint(color);
 
                 wifi.setBackground(drawWifi);
                 bluetooth.setBackground(drawBluetooth);
                 nfc.setBackground(drawNfc);
                 time.setBackground(drawTime);
             } else if (PublicVariable.autoID.equals(getString(R.string.nfc_category))) {
-                backNfc.setColor(pressColor);
+                backNfc.setTint(pressColor);
                 nfc.setBackground(drawNfc);
 
                 autoNfc();
 
-                backWifi.setColor(color);
-                backBluetooth.setColor(color);
-                backGPS.setColor(color);
-                backTime.setColor(color);
+                backWifi.setTint(color);
+                backBluetooth.setTint(color);
+                backGPS.setTint(color);
+                backTime.setTint(color);
 
                 wifi.setBackground(drawWifi);
                 bluetooth.setBackground(drawBluetooth);
                 gps.setBackground(drawGPS);
                 time.setBackground(drawTime);
             } else if (PublicVariable.autoID.equals(getString(R.string.time_category))) {
-                backTime.setColor(pressColor);
+                backTime.setTint(pressColor);
                 time.setBackground(drawTime);
 
                 autoTime();
 
-                backWifi.setColor(color);
-                backBluetooth.setColor(color);
-                backGPS.setColor(color);
-                backNfc.setColor(color);
+                backWifi.setTint(color);
+                backBluetooth.setTint(color);
+                backGPS.setTint(color);
+                backNfc.setTint(color);
 
                 wifi.setBackground(drawWifi);
                 bluetooth.setBackground(drawBluetooth);
@@ -356,19 +357,19 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         super.onStart();
 
         final LayerDrawable drawWifi = (LayerDrawable) getDrawable(R.drawable.draw_wifi);
-        final GradientDrawable backWifi = (GradientDrawable) drawWifi.findDrawableByLayerId(R.id.backtemp);
+        final Drawable backWifi = drawWifi.findDrawableByLayerId(R.id.backtemp);
 
         final LayerDrawable drawBluetooth = (LayerDrawable) getDrawable(R.drawable.draw_bluetooth);
-        final GradientDrawable backBluetooth = (GradientDrawable) drawBluetooth.findDrawableByLayerId(R.id.backtemp);
+        final Drawable backBluetooth = drawBluetooth.findDrawableByLayerId(R.id.backtemp);
 
         final LayerDrawable drawGPS = (LayerDrawable) getDrawable(R.drawable.draw_gps);
-        final GradientDrawable backGPS = (GradientDrawable) drawGPS.findDrawableByLayerId(R.id.backtemp);
+        final Drawable backGPS = drawGPS.findDrawableByLayerId(R.id.backtemp);
 
         final LayerDrawable drawNfc = (LayerDrawable) getDrawable(R.drawable.draw_nfc);
-        final GradientDrawable backNfc = (GradientDrawable) drawNfc.findDrawableByLayerId(R.id.backtemp);
+        final Drawable backNfc = drawNfc.findDrawableByLayerId(R.id.backtemp);
 
         final LayerDrawable drawTime = (LayerDrawable) getDrawable(R.drawable.draw_time);
-        final GradientDrawable backTime = (GradientDrawable) drawTime.findDrawableByLayerId(R.id.backtemp);
+        final Drawable backTime = drawTime.findDrawableByLayerId(R.id.backtemp);
 
         if (PublicVariable.themeLightDark) {
             color = PublicVariable.themeColor;
@@ -378,11 +379,11 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
             pressColor = PublicVariable.themeColor;
         }
 
-        backWifi.setColor(color);
-        backBluetooth.setColor(color);
-        backGPS.setColor(color);
-        backNfc.setColor(color);
-        backTime.setColor(color);
+        backWifi.setTint(color);
+        backBluetooth.setTint(color);
+        backGPS.setTint(color);
+        backNfc.setTint(color);
+        backTime.setTint(color);
 
         wifi.setBackground(drawWifi);
         bluetooth.setBackground(drawBluetooth);
@@ -393,15 +394,15 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         wifi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backWifi.setColor(pressColor);
+                backWifi.setTint(pressColor);
                 wifi.setBackground(drawWifi);
 
                 autoWiFi();
 
-                backBluetooth.setColor(color);
-                backGPS.setColor(color);
-                backNfc.setColor(color);
-                backTime.setColor(color);
+                backBluetooth.setTint(color);
+                backGPS.setTint(color);
+                backNfc.setTint(color);
+                backTime.setTint(color);
 
                 bluetooth.setBackground(drawBluetooth);
                 gps.setBackground(drawGPS);
@@ -412,15 +413,15 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         bluetooth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backBluetooth.setColor(pressColor);
+                backBluetooth.setTint(pressColor);
                 bluetooth.setBackground(drawBluetooth);
 
                 autoBluetooth();
 
-                backWifi.setColor(color);
-                backGPS.setColor(color);
-                backNfc.setColor(color);
-                backTime.setColor(color);
+                backWifi.setTint(color);
+                backGPS.setTint(color);
+                backNfc.setTint(color);
+                backTime.setTint(color);
 
                 wifi.setBackground(drawWifi);
                 gps.setBackground(drawGPS);
@@ -431,15 +432,15 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backGPS.setColor(pressColor);
+                backGPS.setTint(pressColor);
                 gps.setBackground(drawGPS);
 
                 autoGPS();
 
-                backWifi.setColor(color);
-                backBluetooth.setColor(color);
-                backNfc.setColor(color);
-                backTime.setColor(color);
+                backWifi.setTint(color);
+                backBluetooth.setTint(color);
+                backNfc.setTint(color);
+                backTime.setTint(color);
 
                 wifi.setBackground(drawWifi);
                 bluetooth.setBackground(drawBluetooth);
@@ -450,15 +451,15 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         nfc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                backNfc.setColor(pressColor);
+                backNfc.setTint(pressColor);
                 nfc.setBackground(drawNfc);
 
                 autoNfc();
 
-                backWifi.setColor(color);
-                backBluetooth.setColor(color);
-                backGPS.setColor(color);
-                backTime.setColor(color);
+                backWifi.setTint(color);
+                backBluetooth.setTint(color);
+                backGPS.setTint(color);
+                backTime.setTint(color);
 
                 wifi.setBackground(drawWifi);
                 bluetooth.setBackground(drawBluetooth);
@@ -469,15 +470,15 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backTime.setColor(pressColor);
+                backTime.setTint(pressColor);
                 time.setBackground(drawTime);
 
                 autoTime();
 
-                backWifi.setColor(color);
-                backBluetooth.setColor(color);
-                backGPS.setColor(color);
-                backNfc.setColor(color);
+                backWifi.setTint(color);
+                backBluetooth.setTint(color);
+                backGPS.setTint(color);
+                backNfc.setTint(color);
 
                 wifi.setBackground(drawWifi);
                 bluetooth.setBackground(drawBluetooth);

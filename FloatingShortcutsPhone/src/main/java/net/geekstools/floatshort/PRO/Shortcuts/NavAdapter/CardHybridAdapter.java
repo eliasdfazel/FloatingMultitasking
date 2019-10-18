@@ -3,7 +3,7 @@ package net.geekstools.floatshort.PRO.Shortcuts.NavAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Handler;
@@ -84,8 +84,8 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
         final LayerDrawable drawIndicator = (LayerDrawable) context.getDrawable(R.drawable.draw_recovery_indicator);
-        final GradientDrawable backIndicator = (GradientDrawable) drawIndicator.findDrawableByLayerId(R.id.backtemp);
-        backIndicator.setColor(PublicVariable.primaryColor);
+        final Drawable backIndicator = drawIndicator.findDrawableByLayerId(R.id.backtemp);
+        backIndicator.setTint(PublicVariable.primaryColor);
 
         viewHolderBinder.shapedIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
         viewHolderBinder.appName.setText(navDrawerItems.get(position).getAppName());

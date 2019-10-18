@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.view.LayoutInflater;
@@ -96,8 +96,8 @@ public class AppSavedListAdapter extends BaseAdapter {
         }
 
         LayerDrawable drawConfirm = (LayerDrawable) context.getDrawable(R.drawable.ripple_effect_confirm);
-        GradientDrawable backConfirm = (GradientDrawable) drawConfirm.findDrawableByLayerId(R.id.backtemp);
-        backConfirm.setColor(PublicVariable.primaryColorOpposite);
+        Drawable backConfirm = drawConfirm.findDrawableByLayerId(R.id.backtemp);
+        backConfirm.setTint(PublicVariable.primaryColorOpposite);
         viewHolder.confirmItem.setBackground(drawConfirm);
         viewHolder.textAppName.setTextColor(context.getColor(R.color.light));
 
@@ -135,12 +135,12 @@ public class AppSavedListAdapter extends BaseAdapter {
         });
 
         RippleDrawable rippleDrawableBack = (RippleDrawable) context.getDrawable(R.drawable.saved_app_shortcut_whole);
-        GradientDrawable gradientDrawableBack = (GradientDrawable) rippleDrawableBack.findDrawableByLayerId(R.id.backtemp);
-        GradientDrawable gradientDrawableBackMask = (GradientDrawable) rippleDrawableBack.findDrawableByLayerId(android.R.id.mask);
+        Drawable gradientDrawableBack = rippleDrawableBack.findDrawableByLayerId(R.id.backtemp);
+        Drawable gradientDrawableBackMask = rippleDrawableBack.findDrawableByLayerId(android.R.id.mask);
 
         rippleDrawableBack.setColor(ColorStateList.valueOf(PublicVariable.colorLightDark));
-        gradientDrawableBack.setColor(PublicVariable.primaryColorOpposite);
-        gradientDrawableBackMask.setColor(PublicVariable.colorLightDark);
+        gradientDrawableBack.setTint(PublicVariable.primaryColorOpposite);
+        gradientDrawableBackMask.setTint(PublicVariable.colorLightDark);
 
         viewHolder.items.setBackground(rippleDrawableBack);
 

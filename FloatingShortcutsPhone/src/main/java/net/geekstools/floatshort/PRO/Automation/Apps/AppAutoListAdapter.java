@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -237,8 +237,8 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
         });
 
         RippleDrawable drawItem = (RippleDrawable) context.getDrawable(R.drawable.ripple_effect);
-        GradientDrawable gradientDrawable = (GradientDrawable) drawItem.findDrawableByLayerId(android.R.id.mask);
-        gradientDrawable.setColor(PublicVariable.primaryColorOpposite);
+        Drawable gradientDrawable = drawItem.findDrawableByLayerId(android.R.id.mask);
+        gradientDrawable.setTint(PublicVariable.primaryColorOpposite);
         drawItem.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
         viewHolder.item.setBackground(drawItem);
     }

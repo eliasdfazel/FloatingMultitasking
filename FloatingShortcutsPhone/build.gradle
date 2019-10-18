@@ -15,7 +15,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
 
-        versionCode 676
+        versionCode 678
         versionName "${majorVersion} | " + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "{${versionCode}}" + "-"
 
         wearAppUnbundled true
@@ -46,7 +46,7 @@ android {
         betaConfig {
             dimension "FloatingShortcutsPro"
 
-            versionNameSuffix 'PRO[BETA][Android][Phone]'
+            versionNameSuffix 'PRO[Android][Phone][BETA]'
         }
     }
 
@@ -100,7 +100,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.google.firebase:firebase-appindexing:19.0.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
-    implementation 'com.google.firebase:firebase-config:19.0.2'
+    implementation 'com.google.firebase:firebase-config:19.0.3'
     implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'
     implementation 'com.google.firebase:firebase-storage:19.1.0'

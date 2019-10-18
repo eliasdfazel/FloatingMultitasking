@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.text.Editable;
@@ -75,8 +74,8 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
     public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
 
         LayerDrawable drawCardCategory = (LayerDrawable) context.getDrawable(R.drawable.card_category);
-        GradientDrawable backCardCategory = (GradientDrawable) drawCardCategory.findDrawableByLayerId(R.id.category_item);
-        backCardCategory.setColor(PublicVariable.colorLightDark);
+        Drawable backCardCategory = drawCardCategory.findDrawableByLayerId(R.id.category_item);
+        backCardCategory.setTint(PublicVariable.colorLightDark);
         drawCardCategory.setAlpha(7);
         viewHolderBinder.categoryItem.setBackground(drawCardCategory);
 

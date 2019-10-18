@@ -6,7 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -85,7 +85,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
         viewHolder.widgetLabel.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
 
         LayerDrawable drawFloatTheWidget = (LayerDrawable) context.getDrawable(R.drawable.draw_open);
-        GradientDrawable backFloatTheWidget = (GradientDrawable) drawFloatTheWidget.findDrawableByLayerId(R.id.backtemp);
+        Drawable backFloatTheWidget = drawFloatTheWidget.findDrawableByLayerId(R.id.backtemp);
         backFloatTheWidget.setTint(functionsClass.extractDominantColor(functionsClass.appIcon(navDrawerItems.get(position).getPackageName())));
         viewHolder.floatTheWidget.setImageDrawable(drawFloatTheWidget);
 

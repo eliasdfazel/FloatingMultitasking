@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.os.IBinder;
@@ -172,8 +171,8 @@ public class App_Unlimited_Shortcuts extends Service {
                                 if (touchingDelay[startId] == true) {
                                     remove[startId] = true;
                                     LayerDrawable drawClose = (LayerDrawable) getResources().getDrawable(R.drawable.draw_close_service);
-                                    GradientDrawable backPref = (GradientDrawable) drawClose.findDrawableByLayerId(R.id.backtemp);
-                                    backPref.setColor(iconColor[startId]);
+                                    Drawable backPref = drawClose.findDrawableByLayerId(R.id.backtemp);
+                                    backPref.setTint(iconColor[startId]);
                                     controlIcon[startId].setImageDrawable(drawClose);
 
                                     Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);

@@ -2,7 +2,7 @@ package net.geekstools.floatshort.PRO.Util.UI;
 
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.os.IBinder;
@@ -88,8 +88,8 @@ public class PopupOptionsFloatingShortcuts extends Service {
             popupItems.clear();
 
             LayerDrawable popupItemsIcon = (LayerDrawable) getDrawable(R.drawable.draw_popup_shortcuts);
-            GradientDrawable popupItemsIconBack = (GradientDrawable) popupItemsIcon.findDrawableByLayerId(R.id.backtemp);
-            popupItemsIconBack.setColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageName)));
+            Drawable popupItemsIconBack = popupItemsIcon.findDrawableByLayerId(R.id.backtemp);
+            popupItemsIconBack.setTint(functionsClass.extractVibrantColor(functionsClass.appIcon(packageName)));
 
             switch (functionsClass.displaySection(xPosition, yPosition)) {
                 case FunctionsClass.DisplaySection.TopLeft:

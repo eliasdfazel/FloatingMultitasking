@@ -18,7 +18,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -261,15 +260,15 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         }
 
         LayerDrawable drawAddWidget = (LayerDrawable) getDrawable(R.drawable.draw_pref_add_widget);
-        GradientDrawable backAddWidget = (GradientDrawable) drawAddWidget.findDrawableByLayerId(R.id.backtemp);
+        Drawable backAddWidget = drawAddWidget.findDrawableByLayerId(R.id.backtemp);
         Drawable frontAddWidget = drawAddWidget.findDrawableByLayerId(R.id.frontTemp).mutate();
-        backAddWidget.setColor(PublicVariable.primaryColor);
+        backAddWidget.setTint(PublicVariable.primaryColor);
         frontAddWidget.setTint(getColor(R.color.light));
         addWidget.setImageDrawable(drawAddWidget);
 
         LayerDrawable drawPreferenceAction = (LayerDrawable) getDrawable(R.drawable.draw_pref_action);
-        GradientDrawable backPreferenceAction = (GradientDrawable) drawPreferenceAction.findDrawableByLayerId(R.id.backtemp);
-        backPreferenceAction.setColor(PublicVariable.primaryColorOpposite);
+        Drawable backPreferenceAction = drawPreferenceAction.findDrawableByLayerId(R.id.backtemp);
+        backPreferenceAction.setTint(PublicVariable.primaryColorOpposite);
         actionButton.setImageDrawable(drawPreferenceAction);
 
         switchApps.setTextColor(getColor(R.color.light));
@@ -293,8 +292,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         try {
             LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
-            GradientDrawable backRecoverFloatingCategories = (GradientDrawable) drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
-            backRecoverFloatingCategories.setColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+            Drawable backRecoverFloatingCategories = drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
+            backRecoverFloatingCategories.setTint(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
 
             recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories);
             recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories);
@@ -664,8 +663,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         ImageView floatingLogo = (ImageView) findViewById(R.id.loadLogo);
         LayerDrawable drawFloatingLogo = (LayerDrawable) getDrawable(R.drawable.draw_floating_widgets);
-        GradientDrawable backFloatingLogo = (GradientDrawable) drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
-        backFloatingLogo.setColor(PublicVariable.primaryColorOpposite);
+        Drawable backFloatingLogo = drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
+        backFloatingLogo.setTint(PublicVariable.primaryColorOpposite);
         floatingLogo.setImageDrawable(drawFloatingLogo);
 
         IntentFilter intentFilter = new IntentFilter();

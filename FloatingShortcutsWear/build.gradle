@@ -11,8 +11,8 @@ android {
         minSdkVersion 25
         targetSdkVersion 29
 
-        versionCode 671
-        versionName "[WearOS][Watch] ${majorVersion} | " + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "{${versionCode}}" + "-"
+        versionCode 677
+        versionName "${majorVersion} | " + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "{${versionCode}}" + "-"
     }
 
     buildTypes {
@@ -32,12 +32,12 @@ android {
         releaseConfig {
             dimension "FloatingShortcutsPro"
 
-            versionNameSuffix 'PRO'
+            versionNameSuffix 'PRO[WearOS][Watch]'
         }
         betaConfig {
             dimension "FloatingShortcutsPro"
 
-            versionNameSuffix 'PRO[BETA]'
+            versionNameSuffix 'PRO[WearOS][Watch][BETA]'
         }
     }
 

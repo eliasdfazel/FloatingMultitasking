@@ -48,7 +48,6 @@ import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.Icon;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.VectorDrawable;
@@ -1780,8 +1779,8 @@ public class FunctionsClass {
             builder = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
         }
         LayerDrawable drawSupport = (LayerDrawable) context.getDrawable(R.drawable.draw_support);
-        GradientDrawable backSupport = (GradientDrawable) drawSupport.findDrawableByLayerId(R.id.backtemp);
-        backSupport.setColor(PublicVariable.themeTextColor);
+        Drawable backSupport = drawSupport.findDrawableByLayerId(R.id.backtemp);
+        backSupport.setTint(PublicVariable.themeTextColor);
         builder.setIcon(drawSupport);
         builder.setTitle(context.getString(R.string.supportCategory));
         builder.setSingleChoiceItems(contactOption, 0, null);
@@ -1836,13 +1835,13 @@ public class FunctionsClass {
         alertDialog.setMessage(Html.fromHtml(context.getString(R.string.liteDesc)));
 
         LayerDrawable drawPrefLite = (LayerDrawable) context.getDrawable(R.drawable.draw_pref).mutate();
-        GradientDrawable backPrefLite = (GradientDrawable) drawPrefLite.findDrawableByLayerId(R.id.backtemp).mutate();
+        Drawable backPrefLite = drawPrefLite.findDrawableByLayerId(R.id.backtemp).mutate();
         Drawable drawablePrefLite = drawPrefLite.findDrawableByLayerId(R.id.wPref);
         if (PublicVariable.themeLightDark == true) {
-            backPrefLite.setColor(context.getColor(R.color.dark));
+            backPrefLite.setTint(context.getColor(R.color.dark));
             drawablePrefLite.setTint(context.getColor(R.color.light));
         } else if (PublicVariable.themeLightDark == false) {
-            backPrefLite.setColor(context.getColor(R.color.light));
+            backPrefLite.setTint(context.getColor(R.color.light));
             drawablePrefLite.setTint(context.getColor(R.color.dark));
         }
         alertDialog.setIcon(drawPrefLite);
@@ -4229,24 +4228,24 @@ public class FunctionsClass {
         } else if (toastGravity == Gravity.BOTTOM) {
             drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_bottom);
         }
-        GradientDrawable backToast = (GradientDrawable) drawToast.findDrawableByLayerId(R.id.backtemp);
+        Drawable backToast = drawToast.findDrawableByLayerId(R.id.backtemp);
 
         TextView textView = layout.findViewById(R.id.toastText);
         textView.setText(Html.fromHtml("<small>" + toastContent + "</small>"));
         if (appThemeTransparent() == true) {
             if (PublicVariable.themeLightDark) {
-                backToast.setColor(context.getColor(R.color.light_transparent));
+                backToast.setTint(context.getColor(R.color.light_transparent));
                 textView.setBackground(drawToast);
                 textView.setTextColor(context.getColor(R.color.dark));
                 textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
             } else if (!PublicVariable.themeLightDark) {
-                backToast.setColor(context.getColor(R.color.dark_transparent));
+                backToast.setTint(context.getColor(R.color.dark_transparent));
                 textView.setBackground(drawToast);
                 textView.setTextColor(context.getColor(R.color.light));
                 textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.light_transparent_high));
             }
         } else {
-            backToast.setColor(context.getColor(R.color.light_transparent));
+            backToast.setTint(context.getColor(R.color.light_transparent));
             textView.setBackground(drawToast);
             textView.setTextColor(context.getColor(R.color.dark));
             textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
@@ -4268,8 +4267,8 @@ public class FunctionsClass {
         } else if (toastGravity == Gravity.BOTTOM) {
             drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_bottom);
         }
-        GradientDrawable backToast = (GradientDrawable) drawToast.findDrawableByLayerId(R.id.backtemp);
-        backToast.setColor(toastColor);
+        Drawable backToast = drawToast.findDrawableByLayerId(R.id.backtemp);
+        backToast.setTint(toastColor);
 
         TextView textView = layout.findViewById(R.id.toastText);
         textView.setText(Html.fromHtml("<small>" + toastContent + "</small>"));
@@ -4284,7 +4283,7 @@ public class FunctionsClass {
                 textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.light_transparent_high));
             }
         } else {
-            backToast.setColor(context.getColor(R.color.light_transparent));
+            backToast.setTint(context.getColor(R.color.light_transparent));
             textView.setBackground(drawToast);
             textView.setTextColor(context.getColor(R.color.dark));
             textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
@@ -5305,8 +5304,8 @@ public class FunctionsClass {
         final Button preferencesView = activity.findViewById(R.id.preferences);
         if (visibility == true && !preferencesView.isShown()) {
             LayerDrawable drawPrefAction = (LayerDrawable) context.getDrawable(R.drawable.draw_pref_action);
-            GradientDrawable backPrefAction = (GradientDrawable) drawPrefAction.findDrawableByLayerId(R.id.backtemp);
-            backPrefAction.setColor(PublicVariable.primaryColorOpposite);
+            Drawable backPrefAction = drawPrefAction.findDrawableByLayerId(R.id.backtemp);
+            backPrefAction.setTint(PublicVariable.primaryColorOpposite);
             preferencesView.setBackground(drawPrefAction);
 
             Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
@@ -5404,8 +5403,8 @@ public class FunctionsClass {
         });
 
         LayerDrawable drawFloating = (LayerDrawable) context.getDrawable(R.drawable.draw_floating);
-        GradientDrawable backFloating = (GradientDrawable) drawFloating.findDrawableByLayerId(R.id.backtemp);
-        backFloating.setColor(PublicVariable.primaryColor);
+        Drawable backFloating = drawFloating.findDrawableByLayerId(R.id.backtemp);
+        backFloating.setTint(PublicVariable.primaryColor);
 
         CharSequence[] charSequence = new CharSequence[]{
                 activity.getClass().getSimpleName().equals(AppAutoFeatures.class.getSimpleName()) || activity.getClass().getSimpleName().equals(CategoryAutoFeatures.class.getSimpleName())

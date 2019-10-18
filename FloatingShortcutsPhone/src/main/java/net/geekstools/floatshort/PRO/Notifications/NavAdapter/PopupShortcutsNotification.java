@@ -3,7 +3,7 @@ package net.geekstools.floatshort.PRO.Notifications.NavAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -118,8 +118,8 @@ public class PopupShortcutsNotification extends BaseAdapter {
             itemBackground = PublicVariable.colorLightDark;
         }
         LayerDrawable drawPopupShortcut = (LayerDrawable) context.getDrawable(R.drawable.popup_shortcut_whole);
-        GradientDrawable backPopupShortcut = (GradientDrawable) drawPopupShortcut.findDrawableByLayerId(R.id.backtemp);
-        backPopupShortcut.setColor(itemBackground);
+        Drawable backPopupShortcut = drawPopupShortcut.findDrawableByLayerId(R.id.backtemp);
+        backPopupShortcut.setTint(itemBackground);
         viewHolder.notificationItem.setBackground(drawPopupShortcut);
         viewHolder.notificationBanner.setBackground(drawPopupShortcut);
 

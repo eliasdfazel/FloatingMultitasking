@@ -6,7 +6,7 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,8 +116,8 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         }
 
         LayerDrawable drawPopupShortcut = (LayerDrawable) context.getDrawable(R.drawable.popup_shortcut_whole);
-        GradientDrawable backPopupShortcut = (GradientDrawable) drawPopupShortcut.findDrawableByLayerId(R.id.backtemp);
-        backPopupShortcut.setColor(itemsListColor);
+        Drawable backPopupShortcut = drawPopupShortcut.findDrawableByLayerId(R.id.backtemp);
+        backPopupShortcut.setTint(itemsListColor);
         viewHolder.items.setBackground(drawPopupShortcut);
         viewHolder.textAppName.setTextColor(PublicVariable.colorLightDarkOpposite);
 
