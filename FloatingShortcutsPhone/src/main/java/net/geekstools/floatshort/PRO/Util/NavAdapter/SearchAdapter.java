@@ -2,8 +2,9 @@ package net.geekstools.floatshort.PRO.Util.NavAdapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,17 +99,16 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         viewHolder.itemAppIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
         viewHolder.itemAppName.setText(navDrawerItems.get(position).getAppName());
 
-        int itemsListColor = 0;
-        if (functionsClass.appThemeTransparent() == true) {
-            itemsListColor = functionsClass.setColorAlpha(PublicVariable.colorLightDark, 50);
-        } else {
-            itemsListColor = PublicVariable.colorLightDark;
-        }
+        int dominantColor = functionsClass.extractDominantColor(navDrawerItems.get(position).getAppIcon());
+        RippleDrawable searchItemBackground = (RippleDrawable) context.getDrawable(R.drawable.background_search_items);
+        Drawable backSearchItemBackground = searchItemBackground.findDrawableByLayerId(R.id.backgroundTemporary);
+        Drawable frontSearchItemBackground = searchItemBackground.findDrawableByLayerId(R.id.frontTemporary);
+        searchItemBackground.setColor(ColorStateList.valueOf(dominantColor));
+        backSearchItemBackground.setTint(dominantColor);
+        backSearchItemBackground.setAlpha(175);
+        frontSearchItemBackground.setTint(PublicVariable.colorLightDark);
 
-        LayerDrawable drawPopupShortcut = (LayerDrawable) context.getDrawable(R.drawable.popup_shortcut_whole);
-        Drawable backPopupShortcut = drawPopupShortcut.findDrawableByLayerId(R.id.backtemp);
-        backPopupShortcut.setTint(itemsListColor);
-        viewHolder.searchItem.setBackground(drawPopupShortcut);
+        viewHolder.searchItem.setBackground(searchItemBackground);
         viewHolder.itemAppName.setTextColor(PublicVariable.colorLightDarkOpposite);
 
         convertView.setOnClickListener(new View.OnClickListener() {

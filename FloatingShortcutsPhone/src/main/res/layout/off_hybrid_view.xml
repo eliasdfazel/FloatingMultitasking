@@ -280,12 +280,13 @@
         android:background="@drawable/ic_launcher_balloon"
         android:visibility="invisible" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/textInputSearchView"
-        android:layout_width="200dp"
-        android:layout_height="75dp"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
         android:layout_centerHorizontal="true"
         android:layout_above="@id/switchFloating"
+        android:layout_marginBottom="3dp"
         android:gravity="center|start"
         android:imeOptions="actionSearch"
         android:hint="@string/searchHint"
@@ -293,18 +294,18 @@
         android:visibility="invisible"
         app:boxBackgroundMode="outline"
         app:boxBackgroundColor="@android:color/transparent"
-        app:boxCornerRadiusTopStart="7dp"
-        app:boxCornerRadiusTopEnd="7dp"
-        app:boxCornerRadiusBottomStart="7dp"
-        app:boxCornerRadiusBottomEnd="7dp"
-        app:boxStrokeColor="@color/default_color_game"
+        app:boxCornerRadiusTopStart="51dp"
+        app:boxCornerRadiusTopEnd="51dp"
+        app:boxCornerRadiusBottomStart="51dp"
+        app:boxCornerRadiusBottomEnd="51dp"
+        app:boxStrokeColor="@color/default_color"
         app:boxStrokeWidth="2dp"
         app:boxStrokeWidthFocused="2dp"
         app:hintTextColor="@color/default_color_light"
         app:errorEnabled="true"
         app:errorTextColor="@color/yellow">
 
-        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -317,9 +318,20 @@
             android:maxLines="1"
             android:textSize="17sp"
             android:textColor="@color/light"
-            android:textColorHint="@color/light"
-            android:cursorVisible="false"/>
+            android:cursorVisible="true"
+            android:drawableEnd="@android:drawable/ic_menu_search"
+            android:drawableTint="@color/default_color_light"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/searchIcon"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/switchFloating"
+        android:layout_marginBottom="3dp"
+        android:visibility="invisible"
+        android:background="@drawable/search_icon"/>
 
     <RelativeLayout
         android:id="@+id/loadingSplash"

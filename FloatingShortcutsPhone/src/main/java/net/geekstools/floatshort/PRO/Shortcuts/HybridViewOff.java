@@ -1,6 +1,7 @@
 package net.geekstools.floatshort.PRO.Shortcuts;
 
 import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
@@ -17,19 +18,26 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -123,6 +131,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
     TextInputLayout textInputSearchView;
     AppCompatAutoCompleteTextView searchView;
+    ImageView searchIcon;
 
     List<ApplicationInfo> applicationInfoList;
     Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
@@ -182,6 +191,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
         textInputSearchView = (TextInputLayout) findViewById(R.id.textInputSearchView);
         searchView = (AppCompatAutoCompleteTextView) findViewById(R.id.searchView);
+        searchIcon = (ImageView) findViewById(R.id.searchIcon);
 
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
@@ -1284,7 +1294,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     @Override
                     public void run() {
                         searchView.setAdapter(searchRecyclerViewAdapter);
+
                         searchView.setDropDownBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        searchView.setVerticalScrollBarEnabled(false);
+                        searchView.setScrollBarSize(0);
                     }
                 });
             }
@@ -1309,10 +1322,11 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             recyclerViewLayoutManager.scrollToPosition(0);
             nestedScrollView.scrollTo(0, 0);
 
-            textInputSearchView.setVisibility(View.VISIBLE);
 
             LoadApplicationsIndex loadApplicationsIndex = new LoadApplicationsIndex();
             loadApplicationsIndex.execute();
+
+            setupSearchView();
 
             try {
                 Intent goHome = getIntent();
@@ -1532,5 +1546,178 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 return true;
             }
         });
+    }
+
+    public void setupSearchView() {
+        searchView.setTextColor(PublicVariable.colorLightDarkOpposite);
+        searchView.setCompoundDrawableTintList(ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite));
+
+        RippleDrawable layerDrawableSearchIcon = (RippleDrawable) getDrawable(R.drawable.search_icon);
+        Drawable backgroundTemporarySearchIcon = layerDrawableSearchIcon.findDrawableByLayerId(R.id.backgroundTemporary);
+        Drawable frontTemporarySearchIcon = layerDrawableSearchIcon.findDrawableByLayerId(R.id.frontTemporary);
+        backgroundTemporarySearchIcon.setTint(PublicVariable.colorLightDark);
+        frontTemporarySearchIcon.setTint(PublicVariable.colorLightDarkOpposite);
+
+        searchIcon.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+        searchIcon.setVisibility(View.VISIBLE);
+
+        GradientDrawable backgroundTemporaryInput = new GradientDrawable();
+        try {
+            LayerDrawable layerDrawableBackgroundInput = (LayerDrawable) getDrawable(R.drawable.background_search_input);
+            backgroundTemporaryInput = (GradientDrawable) layerDrawableBackgroundInput.findDrawableByLayerId(R.id.backgroundTemporary);
+            backgroundTemporaryInput.setTint(PublicVariable.colorLightDark);
+            textInputSearchView.setBackground(layerDrawableBackgroundInput);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            textInputSearchView.setBackground(null);
+        }
+
+        GradientDrawable finalBackgroundTemporaryInput = backgroundTemporaryInput;
+        searchIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        textInputSearchView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                        textInputSearchView.setVisibility(View.VISIBLE);
+
+                        searchIcon.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                        searchIcon.setVisibility(View.INVISIBLE);
+
+                        ValueAnimator valueAnimatorCornerDown = ValueAnimator.ofInt(functionsClass.DpToInteger(51), functionsClass.DpToInteger(7));
+                        valueAnimatorCornerDown.setDuration(777);
+                        valueAnimatorCornerDown.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animator) {
+                                int animatorValue = (int) animator.getAnimatedValue();
+
+                                textInputSearchView.setBoxCornerRadii(animatorValue, animatorValue, animatorValue, animatorValue);
+                                finalBackgroundTemporaryInput.setCornerRadius(animatorValue);
+                            }
+                        });
+                        valueAnimatorCornerDown.start();
+
+                        ValueAnimator valueAnimatorScalesUp = ValueAnimator.ofInt(functionsClass.DpToInteger(51), switchWidgets.getWidth());
+                        valueAnimatorScalesUp.setDuration(777);
+                        valueAnimatorScalesUp.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animator) {
+                                int animatorValue = (int) animator.getAnimatedValue();
+
+                                textInputSearchView.getLayoutParams().width = animatorValue;
+                                textInputSearchView.requestLayout();
+                            }
+                        });
+                        valueAnimatorScalesUp.addListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                searchView.requestFocus();
+
+                                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        });
+                        valueAnimatorScalesUp.start();
+
+                        searchView.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+
+                            }
+                        });
+
+                        searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                            @Override
+                            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+                                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    inputMethodManager.hideSoftInputFromWindow(searchView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                                    ValueAnimator valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51));
+                                    valueAnimatorCornerUp.setDuration(777);
+                                    valueAnimatorCornerUp.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                        @Override
+                                        public void onAnimationUpdate(ValueAnimator animator) {
+                                            int animatorValue = (int) animator.getAnimatedValue();
+
+                                            textInputSearchView.setBoxCornerRadii(animatorValue, animatorValue, animatorValue, animatorValue);
+                                            finalBackgroundTemporaryInput.setCornerRadius(animatorValue);
+                                        }
+                                    });
+                                    valueAnimatorCornerUp.start();
+
+                                    ValueAnimator valueAnimatorScales = ValueAnimator.ofInt(textInputSearchView.getWidth(), functionsClass.DpToInteger(51));
+                                    valueAnimatorScales.setDuration(777);
+                                    valueAnimatorScales.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                        @Override
+                                        public void onAnimationUpdate(ValueAnimator animator) {
+                                            int animatorValue = (int) animator.getAnimatedValue();
+
+                                            textInputSearchView.getLayoutParams().width = animatorValue;
+                                            textInputSearchView.requestLayout();
+                                        }
+                                    });
+                                    valueAnimatorScales.addListener(new Animator.AnimatorListener() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+
+                                        }
+
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            textInputSearchView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                                            textInputSearchView.setVisibility(View.INVISIBLE);
+
+                                            searchIcon.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                            searchIcon.setVisibility(View.VISIBLE);
+                                        }
+
+                                        @Override
+                                        public void onAnimationCancel(Animator animation) {
+
+                                        }
+
+                                        @Override
+                                        public void onAnimationRepeat(Animator animation) {
+
+                                        }
+                                    });
+                                    valueAnimatorScales.start();
+                                }
+                                return false;
+                            }
+                        });
+                    }
+                }, 77);
+            }
+        });
+
     }
 }

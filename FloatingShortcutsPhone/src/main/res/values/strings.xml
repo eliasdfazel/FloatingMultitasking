@@ -233,7 +233,7 @@
         ]]>
     </string>
 
-    <string name="searchHint">Search</string>
+    <string name="searchHint">Type To Search</string>
 
     <!-- Security Options -->
     <string name="securityServices">Security Services</string>
