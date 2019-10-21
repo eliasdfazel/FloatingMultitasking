@@ -83,7 +83,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
         viewHolderBinder.categoryName.setHintTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175));
 
         final String nameCategory = navDrawerItems.get(position).getCategory();
-        final String[] categoryPackages = navDrawerItems.get(position).getPackName();
+        final String[] categoryPackages = navDrawerItems.get(position).getPackageNames();
 
         if (functionsClass.loadRecoveryIndicatorCategory(nameCategory)) {
             viewHolderBinder.categoryName.setText(navDrawerItems.get(position).getCategory() + " " + "\uD83D\uDD04");

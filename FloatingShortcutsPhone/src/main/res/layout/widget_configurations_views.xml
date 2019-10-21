@@ -36,7 +36,7 @@
                 android:alwaysDrawnWithCache="true"
                 android:drawSelectorOnTop="true"
                 android:isScrollContainer="false"
-                android:listSelector="@color/transparent_default"
+                android:listSelector="@color/default_color_transparent_twice"
                 android:nestedScrollingEnabled="false"
                 android:persistentDrawingCache="animation|scrolling"
                 android:saveEnabled="true"/>
@@ -203,7 +203,7 @@
                 android:alwaysDrawnWithCache="true"
                 android:drawSelectorOnTop="true"
                 android:isScrollContainer="false"
-                android:listSelector="@color/transparent_default"
+                android:listSelector="@color/default_color_transparent_twice"
                 android:nestedScrollingEnabled="false"
                 android:persistentDrawingCache="animation|scrolling"
                 android:saveEnabled="true"/>

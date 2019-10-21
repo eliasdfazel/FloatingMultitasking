@@ -233,6 +233,8 @@
         ]]>
     </string>
 
+    <string name="searchHint">Search</string>
+
     <!-- Security Options -->
     <string name="securityServices">Security Services</string>
     <string name="changePin">Pin Password</string>

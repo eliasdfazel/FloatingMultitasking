@@ -227,7 +227,7 @@
             android:layout_alignParentEnd="true"
             android:divider="@drawable/draw_divider"
             android:dividerHeight="2dp"
-            android:listSelector="@color/transparent_default"
+            android:listSelector="@color/default_color_transparent_twice"
             android:saveEnabled="true"
             android:smoothScrollbar="true"/>
 

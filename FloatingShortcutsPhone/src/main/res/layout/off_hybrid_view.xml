@@ -59,7 +59,7 @@
                 android:alwaysDrawnWithCache="true"
                 android:drawSelectorOnTop="true"
                 android:isScrollContainer="false"
-                android:listSelector="@color/transparent_default"
+                android:listSelector="@color/default_color_transparent_twice"
                 android:nestedScrollingEnabled="false"
                 android:paddingStart="3dp"
                 android:paddingTop="5dp"
@@ -279,6 +279,47 @@
         android:typeface="monospace"
         android:background="@drawable/ic_launcher_balloon"
         android:visibility="invisible" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputSearchView"
+        android:layout_width="200dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/switchFloating"
+        android:gravity="center|start"
+        android:imeOptions="actionSearch"
+        android:hint="@string/searchHint"
+        android:textColorHint="@color/default_color_light"
+        android:visibility="invisible"
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:boxCornerRadiusTopStart="7dp"
+        app:boxCornerRadiusTopEnd="7dp"
+        app:boxCornerRadiusBottomStart="7dp"
+        app:boxCornerRadiusBottomEnd="7dp"
+        app:boxStrokeColor="@color/default_color_game"
+        app:boxStrokeWidth="2dp"
+        app:boxStrokeWidthFocused="2dp"
+        app:hintTextColor="@color/default_color_light"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/yellow">
+
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="13dp"
+            android:paddingEnd="13dp"
+            android:gravity="center|start"
+            android:imeOptions="actionSearch"
+            android:lines="1"
+            android:inputType="textAutoComplete|textCapWords"
+            android:maxLines="1"
+            android:textSize="17sp"
+            android:textColor="@color/light"
+            android:textColorHint="@color/light"
+            android:cursorVisible="false"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <RelativeLayout
         android:id="@+id/loadingSplash"

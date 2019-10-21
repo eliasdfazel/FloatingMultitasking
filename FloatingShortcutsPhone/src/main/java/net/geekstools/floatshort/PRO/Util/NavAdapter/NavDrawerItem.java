@@ -154,7 +154,7 @@ public class NavDrawerItem {
         return this.ConfigClassNameWidget;
     }
 
-    public String[] getPackName() {
+    public String[] getPackageNames() {
         return this.packageNames;
     }
 

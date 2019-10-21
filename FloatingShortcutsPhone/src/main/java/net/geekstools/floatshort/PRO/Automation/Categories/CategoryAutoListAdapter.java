@@ -92,7 +92,7 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
         viewHolderBinder.autoChoice.setButtonTintList(ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite));
 
         final String nameCategory = navDrawerItems.get(position).getCategory();
-        final String[] categoryPackages = navDrawerItems.get(position).getPackName();
+        final String[] categoryPackages = navDrawerItems.get(position).getPackageNames();
 
         viewHolderBinder.categoryName.setText(navDrawerItems.get(position).getCategory());
         viewHolderBinder.timeView.setText(String.valueOf(nameCategory.charAt(0)).toUpperCase());

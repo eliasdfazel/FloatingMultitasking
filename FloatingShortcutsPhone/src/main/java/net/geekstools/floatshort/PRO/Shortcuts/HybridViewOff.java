@@ -15,6 +15,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
@@ -40,6 +41,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
@@ -60,6 +62,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -85,6 +88,7 @@ import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.SearchAdapter;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
@@ -116,6 +120,9 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     ImageView loadLogo, actionButton, recoverFloatingCategories, recoverFloatingWidgets;
     TextView popupIndex;
     MaterialButton switchWidgets, switchCategories, recoveryAction, automationAction;
+
+    TextInputLayout textInputSearchView;
+    AppCompatAutoCompleteTextView searchView;
 
     List<ApplicationInfo> applicationInfoList;
     Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
@@ -172,6 +179,9 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         recoverFloatingCategories = (ImageView) findViewById(R.id.recoverFloatingCategories);
         recoverFloatingWidgets = (ImageView) findViewById(R.id.recoverFloatingWidgets);
         popupIndex = (TextView) findViewById(R.id.popupIndex);
+
+        textInputSearchView = (TextInputLayout) findViewById(R.id.textInputSearchView);
+        searchView = (AppCompatAutoCompleteTextView) findViewById(R.id.searchView);
 
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
@@ -1263,17 +1273,20 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     }
                 }
 
-                if (loadFreq == false) {
-                    for (int i = hybridItem; i < (hybridItem + 2); i++) {
-                        //    sections.add(new HybridSectionedGridRecyclerViewAdapter.Section(i, ""));
-                    }
-                }
-
                 recyclerViewAdapter = new CardHybridAdapter(HybridViewOff.this, getApplicationContext(), navDrawerItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
                 finish();
+            } finally {
+                SearchAdapter searchRecyclerViewAdapter = new SearchAdapter(getApplicationContext(), navDrawerItems);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        searchView.setAdapter(searchRecyclerViewAdapter);
+                        searchView.setDropDownBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    }
+                });
             }
             return null;
         }
@@ -1295,6 +1308,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
             recyclerViewLayoutManager.scrollToPosition(0);
             nestedScrollView.scrollTo(0, 0);
+
+            textInputSearchView.setVisibility(View.VISIBLE);
 
             LoadApplicationsIndex loadApplicationsIndex = new LoadApplicationsIndex();
             loadApplicationsIndex.execute();

@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <color name="default_color">#237DAE</color>
-    <color name="default_color_game">#ae2357</color>
-    <color name="default_color_game_light">#FF005D</color>
-    <color name="default_color_transparent">#33237dae</color>
     <color name="default_color_light">#008dda</color>
     <color name="default_color_darker">#0a415e</color>
-    <color name="transparent_default">#80237dae</color>
+    <color name="default_color_transparent">#33237dae</color>
+    <color name="default_color_transparent_twice">#80237dae</color>
+
+    <color name="default_color_game">#ae2357</color>
+    <color name="default_color_game_light">#FF005D</color>
+    <color name="default_color_game_dark">#760F35</color>
+    <color name="default_color_game_transparent">#80ae2357</color>
+
     <color name="red">#9b000e</color>
     <color name="red_transparent">#4d9b000e</color>
+    <color name="green">#007b08</color>
+    <color name="yellow">#FFEA00</color>
 
     <color name="warning_color">#FE5475</color>
     <color name="hint_color">#42000000</color>
