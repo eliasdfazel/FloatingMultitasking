@@ -5883,17 +5883,17 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return /*BuildConfig.DEBUG ||*/ readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
+        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
     }
 
     public boolean floatingWidgetsPurchased() {
 
-        return /*BuildConfig.DEBUG ||*/ readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
+        return BuildConfig.VERSION_NAME.contains("[BETA]") ? true : readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
     }
 
     public boolean searchEnginePurchased() {
 
-        return BuildConfig.DEBUG || readPreference(".PurchasedItem", BillingManager.iapSearchEngine, false);
+        return BuildConfig.VERSION_NAME.contains("[BETA]") ? true : readPreference(".PurchasedItem", BillingManager.iapSearchEngine, false);
     }
 
     public boolean alreadyDonated() {

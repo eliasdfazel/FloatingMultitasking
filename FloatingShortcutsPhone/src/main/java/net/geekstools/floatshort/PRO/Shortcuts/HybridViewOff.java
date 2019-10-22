@@ -1687,8 +1687,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                             searchFloatIt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    for (NavDrawerItem searchResultItem : SearchAdapter.searchResultItems) {
-                                        functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
+                                    if (!searchView.getText().toString().isEmpty() && (SearchAdapter.searchResultItems.size() > 0)) {
+                                        for (NavDrawerItem searchResultItem : SearchAdapter.searchResultItems) {
+                                            functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
+                                        }
                                     }
                                 }
                             });
@@ -1714,8 +1716,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                 @Override
                                 public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                                        if (SearchAdapter.searchResultItems.size() == 1) {
+                                        if (SearchAdapter.searchResultItems.size() == 1 && !searchView.getText().toString().isEmpty()) {
                                             functionsClass.runUnlimitedShortcutsService(SearchAdapter.searchResultItems.get(0).getPackageName());
+
+                                            searchView.setText("");
 
                                             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                                             inputMethodManager.hideSoftInputFromWindow(searchView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -1787,6 +1791,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                             searchClose.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+                                    searchView.setText("");
+
                                     InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                                     inputMethodManager.hideSoftInputFromWindow(searchView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
