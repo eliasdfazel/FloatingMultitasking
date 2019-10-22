@@ -334,6 +334,14 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                     continue;
                                 }
 
+                                if (skuDetails.getSku().equals(BillingManager.iapSearchEngine) && functionsClass.searchEnginePurchased()) {
+                                    itemIABDemoList.setVisibility(View.INVISIBLE);
+                                    itemIABDemo.setVisibility(View.INVISIBLE);
+                                    itemIABDemoDescription.setVisibility(View.INVISIBLE);
+
+                                    continue;
+                                }
+
                                 skuRowDataList.add(new SkuRowData(
                                         skuDetails,
                                         skuDetails.getSku(),
@@ -367,8 +375,6 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                                         itemIABDemoList.setVisibility(View.INVISIBLE);
                                                         itemIABDemo.setVisibility(View.INVISIBLE);
                                                         itemIABDemoDescription.setVisibility(View.INVISIBLE);
-
-                                                        System.out.println("*** ** iapSS");
 
                                                         continue;
                                                     }
