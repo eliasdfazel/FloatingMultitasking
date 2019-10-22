@@ -333,6 +333,21 @@
         android:visibility="invisible"
         android:background="@drawable/search_icon"/>
 
+    <ImageView
+        android:id="@+id/searchClose"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/switchFloating"
+        android:layout_toStartOf="@id/textInputSearchView"
+        android:padding="7dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="3dp"
+        android:scaleType="fitCenter"
+        android:tint="@color/default_color_game_light"
+        android:visibility="invisible"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+
     <RelativeLayout
         android:id="@+id/loadingSplash"
         android:layout_width="match_parent"

@@ -129,9 +129,12 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     TextView popupIndex;
     MaterialButton switchWidgets, switchCategories, recoveryAction, automationAction;
 
+    /*Search Engine*/
+    SearchAdapter searchRecyclerViewAdapter;
     TextInputLayout textInputSearchView;
     AppCompatAutoCompleteTextView searchView;
-    ImageView searchIcon;
+    ImageView searchIcon, searchClose;
+    /*Search Engine*/
 
     List<ApplicationInfo> applicationInfoList;
     Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
@@ -189,9 +192,12 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         recoverFloatingWidgets = (ImageView) findViewById(R.id.recoverFloatingWidgets);
         popupIndex = (TextView) findViewById(R.id.popupIndex);
 
+        /*Search Engine*/
         textInputSearchView = (TextInputLayout) findViewById(R.id.textInputSearchView);
         searchView = (AppCompatAutoCompleteTextView) findViewById(R.id.searchView);
         searchIcon = (ImageView) findViewById(R.id.searchIcon);
+        searchClose = (ImageView) findViewById(R.id.searchClose);
+        /*Search Engine*/
 
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
@@ -1289,17 +1295,9 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 this.cancel(true);
                 finish();
             } finally {
-                SearchAdapter searchRecyclerViewAdapter = new SearchAdapter(getApplicationContext(), navDrawerItems);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        searchView.setAdapter(searchRecyclerViewAdapter);
-
-                        searchView.setDropDownBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        searchView.setVerticalScrollBarEnabled(false);
-                        searchView.setScrollBarSize(0);
-                    }
-                });
+                /*Search Engine*/
+                searchRecyclerViewAdapter = new SearchAdapter(getApplicationContext(), navDrawerItems);
+                /*Search Engine*/
             }
             return null;
         }
@@ -1452,6 +1450,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         }
     }
 
+    /*Indexing*/
     @SuppressLint("ClickableViewAccessibility")
     public void setupFastScrollingIndexing() {
         Drawable popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon).mutate();
@@ -1547,8 +1546,29 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             }
         });
     }
+    /*Indexing*/
 
+    /*Search Engine*/
     public void setupSearchView() {
+        if (loadFreq) {
+            RelativeLayout.LayoutParams layoutParamsAbove = (RelativeLayout.LayoutParams) textInputSearchView.getLayoutParams();
+            layoutParamsAbove.addRule(RelativeLayout.ABOVE, R.id.freqList);
+
+            textInputSearchView.setLayoutParams(layoutParamsAbove);
+            searchIcon.setLayoutParams(layoutParamsAbove);
+
+            RelativeLayout.LayoutParams layoutParamsAlignStart = (RelativeLayout.LayoutParams) searchClose.getLayoutParams();
+            layoutParamsAlignStart.addRule(RelativeLayout.START_OF, R.id.textInputSearchView);
+            layoutParamsAlignStart.addRule(RelativeLayout.ABOVE, R.id.freqList);
+            searchClose.setLayoutParams(layoutParamsAlignStart);
+        }
+
+        searchView.setAdapter(searchRecyclerViewAdapter);
+
+        searchView.setDropDownBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        searchView.setVerticalScrollBarEnabled(false);
+        searchView.setScrollBarSize(0);
+
         searchView.setTextColor(PublicVariable.colorLightDarkOpposite);
         searchView.setCompoundDrawableTintList(ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite));
 
@@ -1622,6 +1642,14 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
                                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                                 inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        searchClose.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.scale_up_bounce_interpolator));
+                                        searchClose.setVisibility(View.VISIBLE);
+                                    }
+                                }, 555);
                             }
 
                             @Override
@@ -1697,6 +1725,9 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
                                             searchIcon.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
                                             searchIcon.setVisibility(View.VISIBLE);
+
+                                            searchClose.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.scale_down_zero));
+                                            searchClose.setVisibility(View.INVISIBLE);
                                         }
 
                                         @Override
@@ -1714,10 +1745,72 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                 return false;
                             }
                         });
+
+                        searchClose.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                inputMethodManager.hideSoftInputFromWindow(searchView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                                ValueAnimator valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51));
+                                valueAnimatorCornerUp.setDuration(777);
+                                valueAnimatorCornerUp.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                    @Override
+                                    public void onAnimationUpdate(ValueAnimator animator) {
+                                        int animatorValue = (int) animator.getAnimatedValue();
+
+                                        textInputSearchView.setBoxCornerRadii(animatorValue, animatorValue, animatorValue, animatorValue);
+                                        finalBackgroundTemporaryInput.setCornerRadius(animatorValue);
+                                    }
+                                });
+                                valueAnimatorCornerUp.start();
+
+                                ValueAnimator valueAnimatorScales = ValueAnimator.ofInt(textInputSearchView.getWidth(), functionsClass.DpToInteger(51));
+                                valueAnimatorScales.setDuration(777);
+                                valueAnimatorScales.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                    @Override
+                                    public void onAnimationUpdate(ValueAnimator animator) {
+                                        int animatorValue = (int) animator.getAnimatedValue();
+
+                                        textInputSearchView.getLayoutParams().width = animatorValue;
+                                        textInputSearchView.requestLayout();
+                                    }
+                                });
+                                valueAnimatorScales.addListener(new Animator.AnimatorListener() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        textInputSearchView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                                        textInputSearchView.setVisibility(View.INVISIBLE);
+
+                                        searchIcon.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                        searchIcon.setVisibility(View.VISIBLE);
+
+                                        searchClose.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.scale_down_zero));
+                                        searchClose.setVisibility(View.INVISIBLE);
+                                    }
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animator animation) {
+
+                                    }
+                                });
+                                valueAnimatorScales.start();
+                            }
+                        });
                     }
-                }, 77);
+                }, 99);
             }
         });
-
     }
+    /*Search Engine*/
 }
