@@ -38,7 +38,7 @@ public class BillingManager implements PurchasesUpdatedListener {
 
     static {
         SKUS = new HashMap<>();
-        SKUS.put(BillingClient.SkuType.INAPP, Arrays.asList("donation", "floating.widgets, search.engine"));
+        SKUS.put(BillingClient.SkuType.INAPP, Arrays.asList("donation", "floating.widgets", "search.engine"));
         SKUS.put(BillingClient.SkuType.SUBS, Arrays.asList("security.services"));
     }
 

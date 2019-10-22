@@ -5893,7 +5893,7 @@ public class FunctionsClass {
 
     public boolean searchEnginePurchased() {
 
-        return BuildConfig.VERSION_NAME.contains("[BETA]") ? true : readPreference(".PurchasedItem", BillingManager.iapSearchEngine, false);
+        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".PurchasedItem", BillingManager.iapSearchEngine, false);
     }
 
     public boolean alreadyDonated() {
