@@ -272,6 +272,14 @@
             &bull; Press & Hold on ✔ to See More Options & Create Shortcuts of Floating Widgets on Home Screen<br/>
         ]]>
     </string>
+    <string name="searchEngineDemoDescriptions">
+        <![CDATA[
+            🔵 <b><big>Search Engine</big></b> 🔍 <br/>
+            &bull; Search in List of Installed Applications<br/>
+            &bull; Search in List of Configured Folders & Widgets<br/>
+            &bull; then, Click on Search Result to Float It<br/>
+        ]]>
+    </string>
     <string name="securityServicesDemoDescriptions">
         <![CDATA[
             🔵 <b><big>Security Services</big></b><br/>

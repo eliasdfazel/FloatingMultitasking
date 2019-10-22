@@ -569,7 +569,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         }
 
         //Restore Purchased Item
-        if (!functionsClass.floatingWidgetsPurchased()) {
+        if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.searchEnginePurchased()) {
             BillingClient billingClient = BillingClient.newBuilder(FoldersHandler.this).setListener(new PurchasesUpdatedListener() {
                 @Override
                 public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {

@@ -37,6 +37,7 @@
                 android:id="@+id/listFav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="51dp"
                 android:divider="@drawable/draw_divider"
                 android:dividerHeight="7dp"
                 android:isScrollContainer="false"

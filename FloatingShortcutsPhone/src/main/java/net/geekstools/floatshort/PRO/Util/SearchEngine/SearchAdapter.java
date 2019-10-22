@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Util.NavAdapter;
+package net.geekstools.floatshort.PRO.Util.SearchEngine;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 
 import java.util.ArrayList;
 
@@ -29,11 +30,13 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
 
     int layoutInflater;
 
-    private ArrayList<NavDrawerItem> navDrawerItems, dataListAllItems;
+    private ArrayList<NavDrawerItem> dataListAllItems;
 
-    public SearchAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems) {
+    public static ArrayList<NavDrawerItem> searchResultItems;
+
+    public SearchAdapter(Context context, ArrayList<NavDrawerItem> searchResultItems) {
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.searchResultItems = searchResultItems;
 
         functionsClass = new FunctionsClass(context);
 
@@ -67,12 +70,12 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getCount() {
-        return navDrawerItems.size();
+        return searchResultItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return navDrawerItems.get(position);
+        return searchResultItems.get(position);
     }
 
     @Override
@@ -96,10 +99,10 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.itemAppIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
-        viewHolder.itemAppName.setText(navDrawerItems.get(position).getAppName());
+        viewHolder.itemAppIcon.setImageDrawable(searchResultItems.get(position).getAppIcon());
+        viewHolder.itemAppName.setText(searchResultItems.get(position).getAppName());
 
-        int dominantColor = functionsClass.extractDominantColor(navDrawerItems.get(position).getAppIcon());
+        int dominantColor = functionsClass.extractDominantColor(searchResultItems.get(position).getAppIcon());
         RippleDrawable searchItemBackground = (RippleDrawable) context.getDrawable(R.drawable.background_search_items);
         Drawable backSearchItemBackground = searchItemBackground.findDrawableByLayerId(R.id.backgroundTemporary);
         Drawable frontSearchItemBackground = searchItemBackground.findDrawableByLayerId(R.id.frontTemporary);
@@ -115,7 +118,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
             @Override
             public void onClick(View view) {
                 functionsClass
-                        .runUnlimitedShortcutsService(navDrawerItems.get(position).getPackageName());
+                        .runUnlimitedShortcutsService(searchResultItems.get(position).getPackageName());
             }
         });
 
@@ -141,7 +144,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
             FilterResults results = new FilterResults();
             if (dataListAllItems == null) {
                 synchronized (lock) {
-                    dataListAllItems = new ArrayList<NavDrawerItem>(navDrawerItems);
+                    dataListAllItems = new ArrayList<NavDrawerItem>(searchResultItems);
                 }
             }
 
@@ -155,7 +158,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
 
                 ArrayList<NavDrawerItem> matchValues = new ArrayList<NavDrawerItem>();
                 for (NavDrawerItem dataItem : dataListAllItems) {
-                    if (dataItem.getAppName().toLowerCase().startsWith(searchStrLowerCase)) {
+                    if (dataItem.getAppName().toLowerCase().contains(searchStrLowerCase)) {
                         matchValues.add(dataItem);
                     }
                 }
@@ -170,9 +173,9 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             if (results.values != null) {
-                navDrawerItems = (ArrayList<NavDrawerItem>) results.values;
+                searchResultItems = (ArrayList<NavDrawerItem>) results.values;
             } else {
-                navDrawerItems = null;
+                searchResultItems = null;
             }
             if (results.count > 0) {
                 notifyDataSetChanged();

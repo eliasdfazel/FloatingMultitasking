@@ -1270,7 +1270,7 @@ public class FunctionsClass {
                 Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                activity.finish();
+
                 dialog.dismiss();
             }
         });
@@ -5883,12 +5883,17 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
+        return /*BuildConfig.DEBUG ||*/ readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
     }
 
     public boolean floatingWidgetsPurchased() {
 
-        return readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
+        return /*BuildConfig.DEBUG ||*/ readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
+    }
+
+    public boolean searchEnginePurchased() {
+
+        return BuildConfig.DEBUG || readPreference(".PurchasedItem", BillingManager.iapSearchEngine, false);
     }
 
     public boolean alreadyDonated() {

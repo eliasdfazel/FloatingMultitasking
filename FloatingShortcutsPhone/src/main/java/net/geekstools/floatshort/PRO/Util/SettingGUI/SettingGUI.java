@@ -89,8 +89,10 @@ import java.util.ArrayList;
 public class SettingGUI extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
     FunctionsClass functionsClass;
-    ListPreference themeColor, stick;
+
     SharedPreferences sharedPreferences;
+
+    ListPreference themeColor, stick;
     SwitchPreference stable, cache, themeTrans, smart, blur, observe, notification, floatingSplash, freeForm;
 
     Preference pinPassword,
@@ -1078,6 +1080,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         }
 
         if (functionsClass.UsageStatsEnabled()) {
+            PublicVariable.forceReload = true;
             smart.setChecked(true);
         } else {
             smart.setChecked(false);
@@ -1139,6 +1142,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
             } else {
                 if (PublicVariable.forceReload) {
                     PublicVariable.forceReload = false;
+
                     functionsClass.overrideBackPressToMain(SettingGUI.this);
                 }
             }
@@ -1214,6 +1218,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
                 try {
                     if (PublicVariable.forceReload) {
                         PublicVariable.forceReload = false;
+
                         functionsClass.overrideBackPressToMain(SettingGUI.this);
                     }
 

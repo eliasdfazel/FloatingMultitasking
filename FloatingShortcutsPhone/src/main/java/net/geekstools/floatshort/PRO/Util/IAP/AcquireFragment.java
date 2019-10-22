@@ -115,10 +115,13 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
         onManagerReady((BillingProvider) activity);
 
         if (InAppBilling.ItemIAB != null) {
-            if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.securityServicesSubscribed()) {
+            if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.securityServicesSubscribed() || !functionsClass.searchEnginePurchased()) {
                 itemIABDemoDescription.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
                 if (InAppBilling.ItemIAB.equals(BillingManager.iapFloatingWidgets)) {
                     itemIABDemoDescription.setText(Html.fromHtml(getString(R.string.floatingWidgetsDemoDescriptions)));
+                }
+                if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngine)) {
+                    itemIABDemoDescription.setText(Html.fromHtml(getString(R.string.searchEngineDemoDescriptions)));
                 }
                 if (InAppBilling.ItemIAB.equals(BillingManager.iapSecurityServices)) {
                     itemIABDemoDescription.setText(Html.fromHtml(getString(R.string.securityServicesDemoDescriptions)));
@@ -133,6 +136,10 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                             itemIABDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("floating_widgets_description")));
                             screenshotsNumber = (int) firebaseRemoteConfig.getLong("floating_widgets_demo_screenshots");
                         }
+                        if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngine)) {
+                            itemIABDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("search_engine_description")));
+                            screenshotsNumber = (int) firebaseRemoteConfig.getLong("search_engine_demo_screenshots");
+                        }
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapSecurityServices)) {
                             itemIABDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("security_services_description")));
                             screenshotsNumber = (int) firebaseRemoteConfig.getLong("security_services_demo_screenshots");
@@ -141,6 +148,9 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                         String ItemIAB = "FloatingWidgets";
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapFloatingWidgets)) {
                             ItemIAB = "FloatingWidgets";
+                        }
+                        if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngine)) {
+                            ItemIAB = "SearchEngine";
                         }
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapSecurityServices)) {
                             ItemIAB = "SecurityServices";

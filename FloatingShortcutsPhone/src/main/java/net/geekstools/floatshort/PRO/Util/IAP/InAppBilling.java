@@ -36,6 +36,9 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
             if (functionsClass.floatingWidgetsPurchased()) {
                 InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
             }
+            if (functionsClass.searchEnginePurchased()) {
+                InAppBilling.ItemIAB = BillingManager.iapSearchEngine;
+            }
             if (functionsClass.securityServicesSubscribed()) {
                 InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
             }

@@ -45,6 +45,7 @@ public class BillingManager implements PurchasesUpdatedListener {
     public static final String iapDonation = "donation";
     public static final String iapFloatingWidgets = "floating.widgets";
     public static final String iapSecurityServices = "security.services";
+    public static final String iapSearchEngine= "search.engine";
 
     public List<String> getSkus(@BillingClient.SkuType String type) {
         return SKUS.get(type);

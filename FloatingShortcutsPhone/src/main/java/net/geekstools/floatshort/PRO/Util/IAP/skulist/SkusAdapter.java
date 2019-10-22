@@ -63,6 +63,12 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
 
                 break;
             }
+            case BillingManager.iapSearchEngine: {
+                rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.search_icon_iap);
+                rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
+
+                break;
+            }
             case BillingManager.iapSecurityServices: {
                 rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.draw_security);
                 rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));

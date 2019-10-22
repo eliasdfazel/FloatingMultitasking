@@ -63,6 +63,25 @@
         </value>
     </entry>
 
+    <!-- Search Engine -->
+    <entry>
+        <key>search_engine_demo_screenshots</key>
+        <value>
+            4
+        </value>
+    </entry>
+    <entry>
+        <key>search_engine_description</key>
+        <value>
+            <![CDATA[
+                🔵 <b><big>Search Engine</big></b> 🔍 <br/>
+                &bull; Search in List of Installed Applications<br/>
+                &bull; Search in List of Configured Folders & Widgets<br/>
+                &bull; then, Click on Search Result to Float It<br/>
+        ]]>
+        </value>
+    </entry>
+
     <!-- SECURITY SERVICES -->
     <entry>
         <key>security_services_demo_screenshots</key>

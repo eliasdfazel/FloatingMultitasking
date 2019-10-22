@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/light"
+    android:radius="123dp">
+
+    <item
+        android:id="@+id/backgroundTemporary">
+        <bitmap
+            android:src="@drawable/ic_launcher_balloon"
+            android:tint="@color/default_color_game"
+            android:gravity="center"/>
+    </item>
+
+    <item
+        android:id="@+id/frontDrawable"
+        android:top="1dp"
+        android:bottom="1dp"
+        android:start="1dp"
+        android:end="1dp">
+        <bitmap
+            android:src="@drawable/ic_launcher_dots"
+            android:gravity="center"/>
+    </item>
+</ripple>
