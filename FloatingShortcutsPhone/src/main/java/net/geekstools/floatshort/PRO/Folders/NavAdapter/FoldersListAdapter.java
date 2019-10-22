@@ -234,7 +234,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
             public void onClick(View view) {
                 if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
                     functionsClass
-                            .runUnlimitedCategoryService(navDrawerItems.get(position).getCategory());
+                            .runUnlimiteFolderService(navDrawerItems.get(position).getCategory());
                 }
             }
         });
@@ -254,7 +254,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
             public void onClick(View view) {
                 if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
                     functionsClass
-                            .runUnlimitedCategoryService(navDrawerItems.get(position).getCategory());
+                            .runUnlimiteFolderService(navDrawerItems.get(position).getCategory());
                 }
             }
         });

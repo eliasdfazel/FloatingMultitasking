@@ -99,7 +99,7 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
-import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchAdapter;
+import net.geekstools.floatshort.PRO.Util.SearchEngine.ShortcutsSearchAdapter;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
@@ -115,7 +115,7 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-public class HybridViewOff extends Activity implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
+public class HybridAppsList extends Activity implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
@@ -130,7 +130,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     MaterialButton switchWidgets, switchCategories, recoveryAction, automationAction;
 
     /*Search Engine*/
-    SearchAdapter searchRecyclerViewAdapter;
+    ShortcutsSearchAdapter searchRecyclerViewAdapter;
     TextInputLayout textInputSearchView;
     AppCompatAutoCompleteTextView searchView;
     ImageView searchIcon, searchFloatIt,
@@ -171,7 +171,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(R.layout.off_hybrid_view);
+        setContentView(R.layout.hybrid_view);
 
         nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
         nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
@@ -203,7 +203,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
-        functionsClass.ChangeLog(HybridViewOff.this, false);
+        functionsClass.ChangeLog(HybridAppsList.this, false);
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
 
@@ -463,10 +463,10 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     @Override
                     public void run() {
                         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.
-                                makeSceneTransitionAnimation(HybridViewOff.this, actionButton, "transition");
+                                makeSceneTransitionAnimation(HybridAppsList.this, actionButton, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setClass(HybridViewOff.this, SettingGUI.class);
+                        intent.setClass(HybridAppsList.this, SettingGUI.class);
                         startActivity(intent, activityOptionsCompat.toBundle());
                     }
                 }, 113);
@@ -570,7 +570,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         //Consume Donation
         try {
             if (functionsClass.alreadyDonated() && functionsClass.networkConnection()) {
-                BillingClient billingClient = BillingClient.newBuilder(HybridViewOff.this).setListener(new PurchasesUpdatedListener() {
+                BillingClient billingClient = BillingClient.newBuilder(HybridAppsList.this).setListener(new PurchasesUpdatedListener() {
                     @Override
                     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
                         if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
@@ -621,7 +621,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
 
         //Restore Purchased Item
         if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.searchEnginePurchased()) {
-            BillingClient billingClient = BillingClient.newBuilder(HybridViewOff.this).setListener(new PurchasesUpdatedListener() {
+            BillingClient billingClient = BillingClient.newBuilder(HybridAppsList.this).setListener(new PurchasesUpdatedListener() {
                 @Override
                 public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
                     if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
@@ -658,7 +658,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         //Restore Subscribed Item
         try {
             if (functionsClass.networkConnection()) {
-                BillingClient billingClient = BillingClient.newBuilder(HybridViewOff.this).setListener(new PurchasesUpdatedListener() {
+                BillingClient billingClient = BillingClient.newBuilder(HybridAppsList.this).setListener(new PurchasesUpdatedListener() {
                     @Override
                     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
                         if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
@@ -707,7 +707,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(getString(R.string.license))) {
-                    functionsClass.dialogueLicense(HybridViewOff.this);
+                    functionsClass.dialogueLicense(HybridAppsList.this);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -777,7 +777,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     Intent signInIntent = googleSignInClient.getSignInIntent();
                     startActivityForResult(signInIntent, 666);
 
-                    progressDialog = new ProgressDialog(HybridViewOff.this,
+                    progressDialog = new ProgressDialog(HybridAppsList.this,
                             PublicVariable.themeLightDark ? R.style.GeeksEmpire_Dialogue_Light : R.style.GeeksEmpire_Dialogue_Dark);
                     progressDialog.setMessage(Html.fromHtml(
                             "<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.signinTitle) + "</font></big>"
@@ -821,7 +821,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
         firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener(HybridViewOff.this, new OnCompleteListener<Void>() {
+                .addOnCompleteListener(HybridAppsList.this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -840,7 +840,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                             @Override
                                             public void onClick(View view) {
                                                 functionsClass.upcomingChangeLog(
-                                                        HybridViewOff.this,
+                                                        HybridAppsList.this,
                                                         firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
                                                         String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
                                                 );
@@ -885,7 +885,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
             functionsClass.closeActionMenuOption(fullActionViews, actionButton);
         }
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
-        functionsClass.CheckSystemRAM(HybridViewOff.this);
+        functionsClass.CheckSystemRAM(HybridAppsList.this);
 
         if (functionsClass.SystemCache()) {
             startService(new Intent(getApplicationContext(), BindServices.class));
@@ -1082,8 +1082,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                 freqLayout = (RelativeLayout) getLayoutInflater().inflate(R.layout.freq_item, null);
                 shapesImage = functionsClass.initShapesImage(freqLayout, R.id.freqItems);
                 shapesImage.setId(i);
-                shapesImage.setOnClickListener(HybridViewOff.this);
-                shapesImage.setOnLongClickListener(HybridViewOff.this);
+                shapesImage.setOnClickListener(HybridAppsList.this);
+                shapesImage.setOnLongClickListener(HybridAppsList.this);
                 shapesImage.setImageDrawable(functionsClass.loadCustomIcons() ?
                         loadCustomIcons.getDrawableIconForPackage(freqApps[i], functionsClass.shapedAppIcon(freqApps[i]))
                         :
@@ -1171,7 +1171,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                         }
                     }
                 }
-                recyclerViewAdapter = new CardHybridAdapter(HybridViewOff.this, getApplicationContext(), navDrawerItems);
+                recyclerViewAdapter = new CardHybridAdapter(HybridAppsList.this, getApplicationContext(), navDrawerItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -1291,14 +1291,14 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     }
                 }
 
-                recyclerViewAdapter = new CardHybridAdapter(HybridViewOff.this, getApplicationContext(), navDrawerItems);
+                recyclerViewAdapter = new CardHybridAdapter(HybridAppsList.this, getApplicationContext(), navDrawerItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
                 finish();
             } finally {
                 /*Search Engine*/
-                searchRecyclerViewAdapter = new SearchAdapter(getApplicationContext(), navDrawerItems);
+                searchRecyclerViewAdapter = new ShortcutsSearchAdapter(getApplicationContext(), navDrawerItems);
                 /*Search Engine*/
             }
             return null;
@@ -1308,7 +1308,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             recyclerViewAdapter.notifyDataSetChanged();
-            HybridSectionedGridRecyclerViewAdapter.Section[] sectionsData = new HybridSectionedGridRecyclerViewAdapter.Section[HybridViewOff.this.sections.size()];
+            HybridSectionedGridRecyclerViewAdapter.Section[] sectionsData = new HybridSectionedGridRecyclerViewAdapter.Section[HybridAppsList.this.sections.size()];
             HybridSectionedGridRecyclerViewAdapter hybridSectionedGridRecyclerViewAdapter = new HybridSectionedGridRecyclerViewAdapter(
                     getApplicationContext(),
                     R.layout.hybrid_sections,
@@ -1316,7 +1316,7 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                     loadView,
                     recyclerViewAdapter
             );
-            hybridSectionedGridRecyclerViewAdapter.setSections(HybridViewOff.this.sections.toArray(sectionsData));
+            hybridSectionedGridRecyclerViewAdapter.setSections(HybridAppsList.this.sections.toArray(sectionsData));
             loadView.setAdapter(hybridSectionedGridRecyclerViewAdapter);
 
             recyclerViewLayoutManager.scrollToPosition(0);
@@ -1687,8 +1687,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                             searchFloatIt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if (!searchView.getText().toString().isEmpty() && (SearchAdapter.searchResultItems.size() > 0)) {
-                                        for (NavDrawerItem searchResultItem : SearchAdapter.searchResultItems) {
+                                    if (!searchView.getText().toString().isEmpty() && (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0)) {
+                                        for (NavDrawerItem searchResultItem : ShortcutsSearchAdapter.shortcutsSearchResultItems) {
                                             functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
                                         }
                                     }
@@ -1716,8 +1716,8 @@ public class HybridViewOff extends Activity implements View.OnClickListener, Vie
                                 @Override
                                 public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                                        if (SearchAdapter.searchResultItems.size() == 1 && !searchView.getText().toString().isEmpty()) {
-                                            functionsClass.runUnlimitedShortcutsService(SearchAdapter.searchResultItems.get(0).getPackageName());
+                                        if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty()) {
+                                            functionsClass.runUnlimitedShortcutsService(ShortcutsSearchAdapter.shortcutsSearchResultItems.get(0).getPackageName());
 
                                             searchView.setText("");
 

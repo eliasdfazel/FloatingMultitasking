@@ -19,7 +19,7 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.firebase.FirebaseApp;
 
 import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
+import net.geekstools.floatshort.PRO.Shortcuts.HybridAppsList;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryAll;
@@ -206,7 +206,7 @@ public class Configurations extends Activity {
             }
         }
         functionsClass.updateRecoverShortcuts();
-        if (functionsClass.readPreference("OpenMode", "openClassName", HybridViewOff.class.getSimpleName()).equals(FoldersHandler.class.getSimpleName())) {
+        if (functionsClass.readPreference("OpenMode", "openClassName", HybridAppsList.class.getSimpleName()).equals(FoldersHandler.class.getSimpleName())) {
             try {
                 if (functionsClass.UsageStatsEnabled()) {
                     if (getFileStreamPath("Frequently").exists()) {
@@ -239,7 +239,7 @@ public class Configurations extends Activity {
                 }
             }
 
-            Intent AppIntent = new Intent(getApplicationContext(), HybridViewOff.class);
+            Intent AppIntent = new Intent(getApplicationContext(), HybridAppsList.class);
             try {
                 Intent goHome = getIntent();
                 if (goHome.hasExtra("goHome")) {

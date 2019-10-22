@@ -14,7 +14,7 @@ import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Automation.Categories.CategoryAutoFeatures;
 import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
+import net.geekstools.floatshort.PRO.Shortcuts.HybridAppsList;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
@@ -81,7 +81,7 @@ public class ActionListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.automation))) {
-                    if (functionsClass.readPreference("OpenMode", "openClassName", HybridViewOff.class.getSimpleName())
+                    if (functionsClass.readPreference("OpenMode", "openClassName", HybridAppsList.class.getSimpleName())
                             .equals(FoldersHandler.class.getSimpleName())) {
                         Intent intent = new Intent(context, CategoryAutoFeatures.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

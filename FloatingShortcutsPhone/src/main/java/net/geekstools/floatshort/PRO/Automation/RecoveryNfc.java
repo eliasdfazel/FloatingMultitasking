@@ -48,7 +48,7 @@ public class RecoveryNfc extends Service {
                         ".auto" + getClass().getSimpleName().replace("Recovery", "") + "Category");
                 if (CategoryNames.length > 0) {
                     for (String CategoryName : CategoryNames) {
-                        functionsClass.runUnlimitedCategoryNfc(CategoryName, functionsClass.readFileLine(CategoryName));
+                        functionsClass.runUnlimitedFolderNfc(CategoryName, functionsClass.readFileLine(CategoryName));
                     }
 
                     Intent steady = new Intent(getApplicationContext(), BindServices.class);

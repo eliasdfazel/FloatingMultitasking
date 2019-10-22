@@ -223,6 +223,92 @@
         android:src="@drawable/ic_update"
         android:visibility="invisible" />
 
+    <!-- Search Engine -->
+    <com.google.android.material.textfield.TextInputLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/textInputSearchView"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/switchFloating"
+        android:layout_marginBottom="3dp"
+        android:gravity="center|start"
+        android:imeOptions="actionSearch"
+        android:hint="@string/searchHint"
+        android:textColorHint="@color/default_color_light"
+        android:visibility="invisible"
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:boxCornerRadiusTopStart="51dp"
+        app:boxCornerRadiusTopEnd="51dp"
+        app:boxCornerRadiusBottomStart="51dp"
+        app:boxCornerRadiusBottomEnd="51dp"
+        app:boxStrokeColor="@color/default_color"
+        app:boxStrokeWidth="2dp"
+        app:boxStrokeWidthFocused="2dp"
+        app:hintTextColor="@color/default_color_light"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/yellow">
+
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="13dp"
+            android:paddingEnd="13dp"
+            android:gravity="center|start"
+            android:imeOptions="actionSearch"
+            android:lines="1"
+            android:inputType="textAutoComplete|textCapWords"
+            android:maxLines="1"
+            android:textSize="17sp"
+            android:textColor="@color/light"
+            android:cursorVisible="true"
+            android:drawableEnd="@drawable/search_engine_icon"
+            android:drawableTint="@color/default_color_light"
+            android:drawablePadding="3dp"
+            android:dropDownAnchor="@id/searchView"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/searchIcon"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/switchFloating"
+        android:layout_marginBottom="3dp"
+        android:visibility="invisible"
+        android:background="@drawable/search_icon"/>
+
+    <ImageView
+        android:id="@+id/searchFloatIt"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/switchFloating"
+        android:layout_toEndOf="@id/textInputSearchView"
+        android:padding="7dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="3dp"
+        android:scaleType="fitCenter"
+        android:visibility="invisible"
+        android:src="@drawable/search_icon_float_it"/>
+
+    <ImageView
+        android:id="@+id/searchClose"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/switchFloating"
+        android:layout_toStartOf="@id/textInputSearchView"
+        android:padding="7dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="3dp"
+        android:scaleType="fitCenter"
+        android:tint="@color/default_color_game_light"
+        android:visibility="invisible"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+    <!-- Search Engine -->
+
     <RelativeLayout
         android:id="@+id/loadingSplash"
         android:layout_width="match_parent"

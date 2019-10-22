@@ -667,7 +667,7 @@ public class Folder_Unlimited_Bluetooth extends Service {
                             @Override
                             public void run() {
                                 if (touchingDelay[startId] == true) {
-                                    functionsClass.PopupOptionCategory(
+                                    functionsClass.PopupOptionFolder(
                                             view,
                                             categoryName[startId],
                                             className,
@@ -844,7 +844,7 @@ public class Folder_Unlimited_Bluetooth extends Service {
             @Override
             public void onClick(View view) {
                 if (openIt[startId]) {
-                    functionsClass.PopupAppListCategory(
+                    functionsClass.PopupAppListFolder(
                             view,
                             categoryName[startId],
                             functionsClass.readFileLine(categoryName[startId]),

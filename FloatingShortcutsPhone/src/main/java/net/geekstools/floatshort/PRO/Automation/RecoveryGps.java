@@ -48,7 +48,7 @@ public class RecoveryGps extends Service {
                         ".auto" + getClass().getSimpleName().replace("Recovery", "") + "Category");
                 if (CategoryNames.length > 0) {
                     for (String CategoryName : CategoryNames) {
-                        functionsClass.runUnlimitedCategoryGps(CategoryName, functionsClass.readFileLine(CategoryName));
+                        functionsClass.runUnlimitedFolderGps(CategoryName, functionsClass.readFileLine(CategoryName));
                     }
 
                     Intent steady = new Intent(getApplicationContext(), BindServices.class);

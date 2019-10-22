@@ -62,7 +62,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
+import net.geekstools.floatshort.PRO.Shortcuts.HybridAppsList;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
@@ -473,7 +473,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         switchApps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), HybridViewOff.class),
+                startActivity(new Intent(getApplicationContext(), HybridAppsList.class),
                         ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left).toBundle());
             }
         });
@@ -1022,7 +1022,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             }
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
                 try {
-                    functionsClass.navigateToClass(HybridViewOff.class,
+                    functionsClass.navigateToClass(HybridAppsList.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -43,7 +43,7 @@ public class AlarmAlertBroadcastReceiver extends BroadcastReceiver {
                 if (content.contains("APP")) {
                     functionsClass.runUnlimitedTime(content.replace("APP", ""));
                 } else if (content.contains("CATEGORY")) {
-                    functionsClass.runUnlimitedCategoryTime(content.replace("CATEGORY", ""),
+                    functionsClass.runUnlimitedFolderTime(content.replace("CATEGORY", ""),
                             functionsClass.readFileLine(content.replace("CATEGORY", "")));
                 }
             }

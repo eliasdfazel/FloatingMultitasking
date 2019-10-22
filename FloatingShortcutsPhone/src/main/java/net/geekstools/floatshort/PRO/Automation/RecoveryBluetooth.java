@@ -48,7 +48,7 @@ public class RecoveryBluetooth extends Service {
                         ".auto" + getClass().getSimpleName().replace("Recovery", "") + "Category");
                 if (CategoryNames.length > 0) {
                     for (String CategoryName : CategoryNames) {
-                        functionsClass.runUnlimitedCategoryBluetooth(CategoryName, functionsClass.readFileLine(CategoryName));
+                        functionsClass.runUnlimitedFolderBluetooth(CategoryName, functionsClass.readFileLine(CategoryName));
                     }
 
                     Intent steady = new Intent(getApplicationContext(), BindServices.class);

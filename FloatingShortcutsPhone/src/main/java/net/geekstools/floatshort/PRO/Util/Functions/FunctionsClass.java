@@ -142,7 +142,7 @@ import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
 import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridViewOff;
+import net.geekstools.floatshort.PRO.Shortcuts.HybridAppsList;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
@@ -733,7 +733,7 @@ public class FunctionsClass {
     }
 
     /*Category Function*/
-    public void runUnlimitedCategoryService(String categoryName) {
+    public void runUnlimiteFolderService(String categoryName) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -767,7 +767,7 @@ public class FunctionsClass {
         }
     }
 
-    public void runUnlimitedCategoryWifi(String categoryName, String[] categoryNamePackages) {
+    public void runUnlimitedFolderWifi(String categoryName, String[] categoryNamePackages) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -791,7 +791,7 @@ public class FunctionsClass {
         }
     }
 
-    public void runUnlimitedCategoryBluetooth(String categoryName, String[] categoryNamePackages) {
+    public void runUnlimitedFolderBluetooth(String categoryName, String[] categoryNamePackages) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -815,7 +815,7 @@ public class FunctionsClass {
         }
     }
 
-    public void runUnlimitedCategoryGps(String categoryName, String[] categoryNamePackages) {
+    public void runUnlimitedFolderGps(String categoryName, String[] categoryNamePackages) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -839,7 +839,7 @@ public class FunctionsClass {
         }
     }
 
-    public void runUnlimitedCategoryNfc(String categoryName, String[] categoryNamePackages) {
+    public void runUnlimitedFolderNfc(String categoryName, String[] categoryNamePackages) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -863,7 +863,7 @@ public class FunctionsClass {
         }
     }
 
-    public void runUnlimitedCategoryTime(String categoryName, String[] categoryNamePackages) {
+    public void runUnlimitedFolderTime(String categoryName, String[] categoryNamePackages) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -887,8 +887,8 @@ public class FunctionsClass {
         }
     }
 
-    public void PopupAppListCategory(View anchorView,
-                                     String categoryName, String[] packagesName, String classNameCommand, int startIdCommand, int X, int Y, int HW) {
+    public void PopupAppListFolder(View anchorView,
+                                   String categoryName, String[] packagesName, String classNameCommand, int startIdCommand, int X, int Y, int HW) {
         if (!context.getFileStreamPath(categoryName).exists() && !context.getFileStreamPath(categoryName).isFile()) {
             return;
         }
@@ -926,8 +926,8 @@ public class FunctionsClass {
         }
     }
 
-    public void PopupOptionCategory(View anchorView,
-                                    String categoryName, String classNameCommand, int startIdCommand, int X, int Y) {
+    public void PopupOptionFolder(View anchorView,
+                                  String categoryName, String classNameCommand, int startIdCommand, int X, int Y) {
         if (!context.getFileStreamPath(categoryName).exists() && !context.getFileStreamPath(categoryName).isFile()) {
             return;
         }
@@ -1949,7 +1949,7 @@ public class FunctionsClass {
 
     public void navigateToClass(Class returnClass, ActivityOptions activityOptions) throws Exception {
         Intent intentOverride = new Intent(context, returnClass);
-        if (returnClass.getSimpleName().equals(HybridViewOff.class.getSimpleName())) {
+        if (returnClass.getSimpleName().equals(HybridAppsList.class.getSimpleName())) {
             intentOverride.putExtra("freq", PublicVariable.freqApps);
             intentOverride.putExtra("num", PublicVariable.freqLength);
         }
@@ -1957,11 +1957,11 @@ public class FunctionsClass {
     }
 
     public void overrideBackPressToMain(final Activity activityToFinish) throws Exception {
-        if (readPreference("OpenMode", "openClassName", HybridViewOff.class.getSimpleName()).equals(FoldersHandler.class.getSimpleName())) {
+        if (readPreference("OpenMode", "openClassName", HybridAppsList.class.getSimpleName()).equals(FoldersHandler.class.getSimpleName())) {
             Intent categoryInten = new Intent(context, FoldersHandler.class);
             activity.startActivity(categoryInten);
         } else {
-            Intent hybridViewOff = new Intent(context, HybridViewOff.class);
+            Intent hybridViewOff = new Intent(context, HybridAppsList.class);
             hybridViewOff.putExtra("freq", PublicVariable.freqApps);
             hybridViewOff.putExtra("num", PublicVariable.freqLength);
             hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
@@ -1976,7 +1976,7 @@ public class FunctionsClass {
     }
 
     public void overrideBackPressToShortcuts(final Activity activityToFinish) throws Exception {
-        Intent hybridViewOff = new Intent(context, HybridViewOff.class);
+        Intent hybridViewOff = new Intent(context, HybridAppsList.class);
         hybridViewOff.putExtra("freq", PublicVariable.freqApps);
         hybridViewOff.putExtra("num", PublicVariable.freqLength);
         hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
@@ -3962,7 +3962,7 @@ public class FunctionsClass {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == 0) {
                     PublicVariable.size = 26;
-                    runUnlimitedCategoryService(categoryName);
+                    runUnlimiteFolderService(categoryName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -3972,7 +3972,7 @@ public class FunctionsClass {
                     }, 100);
                 } else if (item.getItemId() == 1) {
                     PublicVariable.size = 52;
-                    runUnlimitedCategoryService(categoryName);
+                    runUnlimiteFolderService(categoryName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -3982,7 +3982,7 @@ public class FunctionsClass {
                     }, 100);
                 } else if (item.getItemId() == 2) {
                     PublicVariable.size = 78;
-                    runUnlimitedCategoryService(categoryName);
+                    runUnlimiteFolderService(categoryName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -5265,6 +5265,22 @@ public class FunctionsClass {
         vibrator.vibrate(millisecondVibrate);
     }
 
+    public BitmapDrawable writeOnDrawable(int drawableId, String textToRender, int textColor,
+                                          float xPosition, float yPosition){
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
+
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(textColor);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(213f);
+
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawText(textToRender, xPosition, yPosition, paint);
+
+        return new BitmapDrawable(bitmap);
+    }
+
     /*Custom Icons*/
     public String customIconPackageName() {
         //com.Fraom.Smugy
@@ -5893,7 +5909,7 @@ public class FunctionsClass {
 
     public boolean searchEnginePurchased() {
 
-        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".PurchasedItem", BillingManager.iapSearchEngine, false);
+        return BuildConfig.VERSION_NAME.contains("[BETA]") ? true : readPreference(".PurchasedItem", BillingManager.iapSearchEngine, false);
     }
 
     public boolean alreadyDonated() {
