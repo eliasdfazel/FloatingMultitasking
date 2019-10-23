@@ -33,6 +33,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -695,6 +696,10 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
             e.printStackTrace();
         }
 
+        /*Search Engine*/
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        /*Search Engine*/
+
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
@@ -869,6 +874,10 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
 
         functionsClass.addAppShortcuts();
         functionsClassSecurity.resetAuthAppValues();
+
+        /*Search Engine*/
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        /*Search Engine*/
     }
 
     @Override

@@ -100,8 +100,7 @@
             android:resizeableActivity="true"
             android:screenOrientation="sensorPortrait"
             android:supportsPictureInPicture="true"
-            android:theme="@style/GeeksEmpire.Material"
-            android:windowSoftInputMode="adjustPan"/>
+            android:theme="@style/GeeksEmpire.Material" />
         <activity
             android:name=".Widget.WidgetConfigurations"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
@@ -109,8 +108,7 @@
             android:resizeableActivity="true"
             android:screenOrientation="sensorPortrait"
             android:supportsPictureInPicture="true"
-            android:theme="@style/GeeksEmpire.Material"
-            android:windowSoftInputMode="adjustPan"/>
+            android:theme="@style/GeeksEmpire.Material" />
         <activity
             android:name=".Folders.AppSelectionList"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
