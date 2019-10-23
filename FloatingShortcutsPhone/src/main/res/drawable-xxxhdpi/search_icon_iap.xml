@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/default_color_game_transparent">
+    <item android:id="@+id/backgroundTemporary">
+        <shape android:shape="oval">
+            <solid android:color="@color/dark" />
+        </shape>
+    </item>
+
+    <item
+        android:id="@+id/frontTemporary"
+        android:start="2dp"
+        android:end="2dp"
+        android:top="2dp"
+        android:bottom="2dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/lighter" />
+        </shape>
+    </item>
+
+    <item
+        android:id="@+id/frontDrawable"
+        android:start="13dp"
+        android:end="13dp"
+        android:top="13dp"
+        android:bottom="13dp">
+        <bitmap
+            android:src="@drawable/search_engine_icon"
+            android:tint="@color/default_color_light"
+            android:gravity="center"/>
+    </item>
+
+</ripple>

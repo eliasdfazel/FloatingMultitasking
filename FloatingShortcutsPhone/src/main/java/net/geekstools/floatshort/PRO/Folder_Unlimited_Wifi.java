@@ -582,19 +582,23 @@ public class Folder_Unlimited_Wifi extends Service {
                             flingAnimationX[startId].addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
                                 @Override
                                 public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
-                                    layoutParams[startId].x = (int) value;     // X movePoint
-                                    windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
+                                    if (floatingView[startId].isShown()) {
+                                        layoutParams[startId].x = (int) value;     // X movePoint
+                                        windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
 
-                                    xMove = (int) value;
+                                        xMove = (int) value;
+                                    }
                                 }
                             });
                             flingAnimationY[startId].addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
                                 @Override
                                 public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
-                                    layoutParams[startId].y = (int) value;     // Y movePoint
-                                    windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
+                                    if (floatingView[startId].isShown()) {
+                                        layoutParams[startId].y = (int) value;     // Y movePoint
+                                        windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
 
-                                    yMove = (int) value;
+                                        yMove = (int) value;
+                                    }
                                 }
                             });
 
@@ -765,15 +769,19 @@ public class Folder_Unlimited_Wifi extends Service {
                                 springAnimationX.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
                                     @Override
                                     public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
-                                        layoutParamsOnTouch.x = (int) value;     // X movePoint
-                                        windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
+                                        if (floatingView[startId].isShown()) {
+                                            layoutParamsOnTouch.x = (int) value;     // X movePoint
+                                            windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
+                                        }
                                     }
                                 });
                                 springAnimationY.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
                                     @Override
                                     public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
-                                        layoutParamsOnTouch.y = (int) value;     // Y movePoint
-                                        windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
+                                        if (floatingView[startId].isShown()) {
+                                            layoutParamsOnTouch.y = (int) value;     // Y movePoint
+                                            windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
+                                        }
                                     }
                                 });
 

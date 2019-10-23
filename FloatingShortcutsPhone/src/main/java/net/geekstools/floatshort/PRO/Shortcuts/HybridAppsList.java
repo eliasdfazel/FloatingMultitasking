@@ -1566,17 +1566,22 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
             layoutParamsAbove.addRule(RelativeLayout.ABOVE, R.id.freqList);
 
             textInputSearchView.setLayoutParams(layoutParamsAbove);
-            searchIcon.setLayoutParams(layoutParamsAbove);
+            textInputSearchView.bringToFront();
 
-            RelativeLayout.LayoutParams layoutParamsAlignEnd = (RelativeLayout.LayoutParams) searchClose.getLayoutParams();
+            searchIcon.setLayoutParams(layoutParamsAbove);
+            searchIcon.bringToFront();
+
+            RelativeLayout.LayoutParams layoutParamsAlignEnd = (RelativeLayout.LayoutParams) searchFloatIt.getLayoutParams();
             layoutParamsAlignEnd.addRule(RelativeLayout.END_OF, R.id.textInputSearchView);
             layoutParamsAlignEnd.addRule(RelativeLayout.ABOVE, R.id.freqList);
             searchFloatIt.setLayoutParams(layoutParamsAlignEnd);
+            searchFloatIt.bringToFront();
 
             RelativeLayout.LayoutParams layoutParamsAlignStart = (RelativeLayout.LayoutParams) searchClose.getLayoutParams();
             layoutParamsAlignStart.addRule(RelativeLayout.START_OF, R.id.textInputSearchView);
             layoutParamsAlignStart.addRule(RelativeLayout.ABOVE, R.id.freqList);
             searchClose.setLayoutParams(layoutParamsAlignStart);
+            searchClose.bringToFront();
         }
 
         searchView.setAdapter(searchRecyclerViewAdapter);
@@ -1696,7 +1701,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                             searchFloatIt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if (!searchView.getText().toString().isEmpty() && (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0)) {
+                                    if (!searchView.getText().toString().isEmpty() && (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0) && !(searchView.getText().toString().length() >= 2)) {
                                         for (NavDrawerItem searchResultItem : ShortcutsSearchAdapter.shortcutsSearchResultItems) {
                                             functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
                                         }
@@ -1725,7 +1730,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                                 @Override
                                 public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                                        if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty()) {
+                                        if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && !(searchView.getText().toString().length() >= 2)) {
                                             functionsClass.runUnlimitedShortcutsService(ShortcutsSearchAdapter.shortcutsSearchResultItems.get(0).getPackageName());
 
                                             searchView.setText("");
@@ -1790,7 +1795,9 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                                             });
                                             valueAnimatorScales.start();
                                         } else {
-                                            searchView.showDropDown();
+                                            if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0 && !(searchView.getText().toString().length() >= 2)) {
+                                                searchView.showDropDown();
+                                            }
                                         }
                                     }
                                     return false;

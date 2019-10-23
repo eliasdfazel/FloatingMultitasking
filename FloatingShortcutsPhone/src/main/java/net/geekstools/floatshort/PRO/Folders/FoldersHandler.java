@@ -96,6 +96,7 @@ import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
 import net.geekstools.floatshort.PRO.Util.SearchEngine.FoldersSearchAdapter;
+import net.geekstools.floatshort.PRO.Util.SearchEngine.ShortcutsSearchAdapter;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
@@ -1309,7 +1310,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                             searchFloatIt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if (!searchView.getText().toString().isEmpty() && (FoldersSearchAdapter.foldersSearchResultItems.size() > 0)) {
+                                    if (!searchView.getText().toString().isEmpty() && (FoldersSearchAdapter.foldersSearchResultItems.size() > 0) && !(searchView.getText().toString().length() >= 2)) {
                                         for (NavDrawerItem searchResultItem : FoldersSearchAdapter.foldersSearchResultItems) {
                                             functionsClass.runUnlimiteFolderService(searchResultItem.getCategory());
                                         }
@@ -1338,7 +1339,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                                 @Override
                                 public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                                        if (FoldersSearchAdapter.foldersSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty()) {
+                                        if (FoldersSearchAdapter.foldersSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && !(searchView.getText().toString().length() >= 2)) {
                                             functionsClass.runUnlimiteFolderService(FoldersSearchAdapter.foldersSearchResultItems.get(0).getCategory());
 
                                             searchView.setText("");
@@ -1403,7 +1404,9 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                                             });
                                             valueAnimatorScales.start();
                                         } else {
-                                            searchView.showDropDown();
+                                            if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0 && !(searchView.getText().toString().length() >= 2)) {
+                                                searchView.showDropDown();
+                                            }
                                         }
                                     }
                                     return false;
