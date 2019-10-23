@@ -124,7 +124,11 @@ public class CheckPoint extends Activity {
         alertDialog.setMessage(
                 Html.fromHtml("<font color='" + PublicVariable.themeColorString + "'>" +
                         getResources().getString(R.string.permDesc) + "</font>"));
-        alertDialog.setIcon(getDrawable(R.drawable.ic_launcher));
+        try {
+            alertDialog.setIcon(getDrawable(R.drawable.ic_launcher));
+        } catch (Exception e) {
+            alertDialog.setIcon(getResources().getDrawable(R.drawable.ic_launcher));
+        }
         alertDialog.setCancelable(true);
 
         alertDialog.setPositiveButton(getString(R.string.grant), new DialogInterface.OnClickListener() {

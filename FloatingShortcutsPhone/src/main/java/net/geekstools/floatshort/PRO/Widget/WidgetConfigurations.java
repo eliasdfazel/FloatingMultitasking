@@ -10,9 +10,11 @@ import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -1468,36 +1470,72 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     try {
                         String packageName = appWidgetProviderInfo.provider.getPackageName();
                         String className = appWidgetProviderInfo.provider.getClassName();
+                        ComponentName componentNameConfiguration = appWidgetProviderInfo.configure;
 
-                        if (packageName.isEmpty() && className.isEmpty()) {
-                            String newAppName = functionsClass.appName(packageName);
-                            Drawable newAppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
+                        if (componentNameConfiguration != null) {
+                            if (getPackageManager().getActivityInfo(componentNameConfiguration, PackageManager.GET_META_DATA).exported) {
+                                if (!packageName.isEmpty() && !className.isEmpty()) {
+                                    String newAppName = functionsClass.appName(packageName);
+                                    Drawable newAppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
 
-                            if (widgetIndex == 0) {
-                                installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
-                                indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
-                            } else {
-                                if (!oldAppName.equals(newAppName)) {
-                                    installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
+                                    if (widgetIndex == 0) {
+                                        installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
+                                        indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
+                                    } else {
+                                        if (!oldAppName.equals(newAppName)) {
+                                            installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
+                                            indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
+                                        }
+                                    }
+
+                                    oldAppName = functionsClass.appName(appWidgetProviderInfo.provider.getPackageName());
+
+                                    Drawable widgetPreviewDrawable = appWidgetProviderInfo.loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_HIGH);
+                                    String widgetLabel = appWidgetProviderInfo.loadLabel(getPackageManager());
+
                                     indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
+                                    installedWidgetsNavDrawerItems.add(new NavDrawerItem(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
+                                            appWidgetProviderInfo.provider.getPackageName(),
+                                            appWidgetProviderInfo.provider.getClassName(),
+                                            componentNameConfiguration.getClassName(),
+                                            (widgetLabel != null) ? widgetLabel : newAppName,
+                                            newAppIcon,
+                                            (widgetPreviewDrawable != null) ? widgetPreviewDrawable : appWidgetProviderInfo.loadIcon(getApplicationContext(), DisplayMetrics.DENSITY_HIGH),
+                                            appWidgetProviderInfo
+                                    ));
                                 }
                             }
+                        } else {
+                            if (!packageName.isEmpty() && !className.isEmpty()) {
+                                String newAppName = functionsClass.appName(packageName);
+                                Drawable newAppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
 
-                            oldAppName = functionsClass.appName(appWidgetProviderInfo.provider.getPackageName());
+                                if (widgetIndex == 0) {
+                                    installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
+                                    indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
+                                } else {
+                                    if (!oldAppName.equals(newAppName)) {
+                                        installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
+                                        indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
+                                    }
+                                }
 
-                            Drawable widgetPreviewDrawable = appWidgetProviderInfo.loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_HIGH);
-                            String widgetLabel = appWidgetProviderInfo.loadLabel(getPackageManager());
+                                oldAppName = functionsClass.appName(appWidgetProviderInfo.provider.getPackageName());
 
-                            indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
-                            installedWidgetsNavDrawerItems.add(new NavDrawerItem(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
-                                    appWidgetProviderInfo.provider.getPackageName(),
-                                    appWidgetProviderInfo.provider.getClassName(),
-                                    (appWidgetProviderInfo.configure != null) ? appWidgetProviderInfo.configure.getClassName() : null,
-                                    (widgetLabel != null) ? widgetLabel : newAppName,
-                                    newAppIcon,
-                                    (widgetPreviewDrawable != null) ? widgetPreviewDrawable : appWidgetProviderInfo.loadIcon(getApplicationContext(), DisplayMetrics.DENSITY_HIGH),
-                                    appWidgetProviderInfo
-                            ));
+                                Drawable widgetPreviewDrawable = appWidgetProviderInfo.loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_HIGH);
+                                String widgetLabel = appWidgetProviderInfo.loadLabel(getPackageManager());
+
+                                indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
+                                installedWidgetsNavDrawerItems.add(new NavDrawerItem(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
+                                        appWidgetProviderInfo.provider.getPackageName(),
+                                        appWidgetProviderInfo.provider.getClassName(),
+                                        null,
+                                        (widgetLabel != null) ? widgetLabel : newAppName,
+                                        newAppIcon,
+                                        (widgetPreviewDrawable != null) ? widgetPreviewDrawable : appWidgetProviderInfo.loadIcon(getApplicationContext(), DisplayMetrics.DENSITY_HIGH),
+                                        appWidgetProviderInfo
+                                ));
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

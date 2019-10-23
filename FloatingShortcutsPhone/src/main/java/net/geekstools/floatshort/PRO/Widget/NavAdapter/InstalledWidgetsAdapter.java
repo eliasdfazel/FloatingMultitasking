@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,24 +92,37 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
                 pickedWidgetLabel = navDrawerItems.get(position).getWidgetLabel();
 
                 ComponentName provider = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetClassNameProvider);
-                FunctionsClassDebug.Companion.PrintDebug("*** Provider Widget = " + provider);
+                ComponentName configure = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetConfigClassName);
 
-                Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
-                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId);
-                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider);
-                activity.startActivityForResult(intent, WIDGET_CONFIGURATION_REQUEST);
+                FunctionsClassDebug.Companion.PrintDebug("*** Provider Widget = " + provider);
+                FunctionsClassDebug.Companion.PrintDebug("*** Configure Widget = " + configure);
 
                 if (pickedAppWidgetProviderInfo.configure != null) {
-                    ComponentName configure = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetConfigClassName);
-                    FunctionsClassDebug.Companion.PrintDebug("*** Configure Widget = " + configure);
+                    try {
+                        if (context.getPackageManager().getActivityInfo(configure,PackageManager.GET_META_DATA).exported) {
+                            Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
+                            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId);
+                            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider);
+                            activity.startActivityForResult(intent, WIDGET_CONFIGURATION_REQUEST);
 
-                    Intent intentWidgetConfiguration = new Intent();
-                    intentWidgetConfiguration.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-                    intentWidgetConfiguration.setComponent(/*pickedAppWidgetProviderInfo.*/configure);
-                    intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId);
-                    intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, /*pickedAppWidgetProviderInfo.*/provider);
-                    intentWidgetConfiguration.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                    activity.startActivityForResult(intentWidgetConfiguration, WIDGET_CONFIGURATION_REQUEST);
+                            Intent intentWidgetConfiguration = new Intent();
+                            intentWidgetConfiguration.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
+                            intentWidgetConfiguration.setComponent(/*pickedAppWidgetProviderInfo.*/configure);
+                            intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId);
+                            intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, /*pickedAppWidgetProviderInfo.*/provider);
+                            intentWidgetConfiguration.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                            activity.startActivityForResult(intentWidgetConfiguration, WIDGET_CONFIGURATION_REQUEST);
+                        } else {
+
+                        }
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
+                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId);
+                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider);
+                    activity.startActivityForResult(intent, WIDGET_CONFIGURATION_REQUEST);
                 }
 
                 return false;
