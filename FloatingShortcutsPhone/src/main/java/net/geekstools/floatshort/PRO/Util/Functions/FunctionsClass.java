@@ -5795,7 +5795,7 @@ public class FunctionsClass {
                 /*AlarmManager.INTERVAL_DAY*/86400000,
                 pendingIntent);
 
-        FunctionsClassDebug.Companion.PrintDebug("*** " + newAlarmTime.getTime());
+        FunctionsClassDebug.Companion.PrintDebug("*** " + newAlarmTime.getTime() + " ***");
 
         context.stopService(new Intent(context, SetupAlarms.class));
     }

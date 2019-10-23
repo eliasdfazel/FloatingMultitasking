@@ -92,12 +92,11 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
                 pickedWidgetLabel = navDrawerItems.get(position).getWidgetLabel();
 
                 ComponentName provider = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetClassNameProvider);
-                ComponentName configure = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetConfigClassName);
-
                 FunctionsClassDebug.Companion.PrintDebug("*** Provider Widget = " + provider);
-                FunctionsClassDebug.Companion.PrintDebug("*** Configure Widget = " + configure);
 
                 if (pickedAppWidgetProviderInfo.configure != null) {
+                    ComponentName configure = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetConfigClassName);
+                    FunctionsClassDebug.Companion.PrintDebug("*** Configure Widget = " + configure);
                     try {
                         if (context.getPackageManager().getActivityInfo(configure,PackageManager.GET_META_DATA).exported) {
                             Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);

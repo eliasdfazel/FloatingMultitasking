@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -66,14 +67,22 @@ public class RecoveryShortcutsActivity extends Activity {
 
                 Intent intent = new Intent(getApplicationContext(), RecoveryShortcuts.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startService(intent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(intent);
+                } else {
+                    startService(intent);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
 
             Intent intent = new Intent(getApplicationContext(), RecoveryShortcuts.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startService(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent);
+            } else {
+                startService(intent);
+            }
         }
         finish();
     }

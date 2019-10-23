@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.os.Bundle
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
@@ -45,14 +46,22 @@ class RecoveryWidgetActivity : Activity() {
 
                 val intent = Intent(applicationContext, RecoveryWidgets::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startService(intent)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(intent)
+                } else {
+                    startService(intent)
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
 
             val intent = Intent(applicationContext, RecoveryWidgets::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startService(intent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent)
+            } else {
+                startService(intent)
+            }
         }
 
         finish()

@@ -8,13 +8,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
-import android.widget.Toast
 import androidx.preference.PreferenceManager
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import net.geekstools.floatshort.PRO.BindServices
-import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
@@ -39,6 +37,10 @@ class RecoveryWidgets : Service() {
             startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                     ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                stopForeground(Service.STOP_FOREGROUND_REMOVE)
+                stopForeground(true)
+            }
             stopSelf()
             return START_NOT_STICKY
         }
@@ -99,15 +101,28 @@ class RecoveryWidgets : Service() {
                                         }
                                     }
 
-                                    if (noRecovery) {
-                                        Toast.makeText(applicationContext, getString(R.string.recoveryErrorWidget), Toast.LENGTH_LONG).show()
-                                    }
-
-                                    stopSelf()
                                     widgetDataInterface.close()
+
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        stopForeground(Service.STOP_FOREGROUND_REMOVE)
+                                        stopForeground(true)
+                                    }
+                                    stopSelf()
+                                } else {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        stopForeground(Service.STOP_FOREGROUND_REMOVE)
+                                        stopForeground(true)
+                                    }
+                                    stopSelf()
                                 }
                             } catch (e: Exception) {
                                 e.printStackTrace()
+
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    stopForeground(Service.STOP_FOREGROUND_REMOVE)
+                                    stopForeground(true)
+                                }
+                                stopSelf()
                             } finally {
                                 if (PublicVariable.floatingCounter == 0) {
                                     if (PreferenceManager.getDefaultSharedPreferences(applicationContext)
@@ -166,15 +181,28 @@ class RecoveryWidgets : Service() {
                             }
                         }
 
-                        if (noRecovery) {
-                            Toast.makeText(applicationContext, getString(R.string.recoveryErrorWidget), Toast.LENGTH_LONG).show()
-                        }
-
-                        stopSelf()
                         widgetDataInterface.close()
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            stopForeground(Service.STOP_FOREGROUND_REMOVE)
+                            stopForeground(true)
+                        }
+                        stopSelf()
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            stopForeground(Service.STOP_FOREGROUND_REMOVE)
+                            stopForeground(true)
+                        }
+                        stopSelf()
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        stopForeground(Service.STOP_FOREGROUND_REMOVE)
+                        stopForeground(true)
+                    }
+                    stopSelf()
                 } finally {
                     if (PublicVariable.floatingCounter == 0) {
                         if (PreferenceManager.getDefaultSharedPreferences(applicationContext)
@@ -186,7 +214,7 @@ class RecoveryWidgets : Service() {
             }).start()
         }
 
-        return START_NOT_STICKY
+        return functionsClass.serviceMode()
     }
 
     override fun onCreate() {
@@ -194,6 +222,12 @@ class RecoveryWidgets : Service() {
 
         functionsClass = FunctionsClass(applicationContext)
         functionsClassSecurity = FunctionsClassSecurity(applicationContext)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(333, functionsClass.bindServiceNotification(), Service.STOP_FOREGROUND_REMOVE)
+        } else {
+            startForeground(333, functionsClass.bindServiceNotification())
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(Intent(applicationContext, BindServices::class.java))

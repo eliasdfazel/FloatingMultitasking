@@ -7,6 +7,7 @@ import android.os.IBinder;
 
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 
 import java.util.Calendar;
 
@@ -60,12 +61,24 @@ public class SetupAlarms extends Service {
             } catch (Exception e) {
                 e.printStackTrace();
 
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    stopForeground(Service.STOP_FOREGROUND_REMOVE);
+                    stopForeground(true);
+                }
                 stopSelf();
                 return Service.START_NOT_STICKY;
             }
 
         }
         functionsClass.initialAlarm(newAlarmTime, nextSetTime, nextPosition);
+
+        FunctionsClassDebug.Companion.PrintDebug("*** Setting Up New/Next Alarm ***");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(Service.STOP_FOREGROUND_REMOVE);
+            stopForeground(true);
+        }
+        stopSelf();
 
         return Service.START_NOT_STICKY;
     }
@@ -74,11 +87,19 @@ public class SetupAlarms extends Service {
     public void onCreate() {
         super.onCreate();
         functionsClass = new FunctionsClass(getApplicationContext());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(333, functionsClass.bindServiceNotification(),Service.STOP_FOREGROUND_REMOVE);
+        } else {
+            startForeground(333, functionsClass.bindServiceNotification());
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(new Intent(getApplicationContext(), BindServices.class));
         } else {
             startService(new Intent(getApplicationContext(), BindServices.class));
         }
+
         newAlarmTime = Calendar.getInstance();
 
         timesClocks = new String[functionsClass.countLineInnerFile(".times.clocks")];

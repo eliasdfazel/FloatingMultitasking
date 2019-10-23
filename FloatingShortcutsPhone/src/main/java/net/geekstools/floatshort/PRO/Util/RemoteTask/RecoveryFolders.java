@@ -82,6 +82,11 @@ public class RecoveryFolders extends Service {
                                     }
                                 }
                             }
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                stopForeground(Service.STOP_FOREGROUND_REMOVE);
+                                stopForeground(true);
+                            }
                             stopSelf();
                         }
                     }
@@ -115,6 +120,11 @@ public class RecoveryFolders extends Service {
                         }
                     }
                 }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    stopForeground(Service.STOP_FOREGROUND_REMOVE);
+                    stopForeground(true);
+                }
                 stopSelf();
             }
         } catch (Exception e) {
@@ -137,6 +147,12 @@ public class RecoveryFolders extends Service {
 
         functionsClass = new FunctionsClass(getApplicationContext());
         functionsClassSecurity = new FunctionsClassSecurity(getApplicationContext());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(333, functionsClass.bindServiceNotification(),Service.STOP_FOREGROUND_REMOVE);
+        } else {
+            startForeground(333, functionsClass.bindServiceNotification());
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(new Intent(getApplicationContext(), BindServices.class));
