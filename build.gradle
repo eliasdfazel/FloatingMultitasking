@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        majorVersion = "5"
+        majorVersion = "7"
     }
 
     repositories {
