@@ -85,7 +85,6 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
-import net.geekstools.floatshort.PRO.Util.SearchEngine.ShortcutsSearchAdapter;
 import net.geekstools.floatshort.PRO.Util.SearchEngine.WidgetsSearchAdapter;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
@@ -2201,7 +2200,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                             searchFloatIt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if (!searchView.getText().toString().isEmpty() && (WidgetsSearchAdapter.widgetsSearchResultItems.size() > 0) && !(searchView.getText().toString().length() >= 2)) {
+                                    if (!searchView.getText().toString().isEmpty() && (WidgetsSearchAdapter.widgetsSearchResultItems.size() > 0) && (searchView.getText().toString().length() >= 2)) {
                                         for (NavDrawerItem searchResultItem : WidgetsSearchAdapter.widgetsSearchResultItems) {
                                             functionsClass
                                                     .runUnlimitedWidgetService(searchResultItem.getAppWidgetId(),
@@ -2232,7 +2231,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 @Override
                                 public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                                        if (WidgetsSearchAdapter.widgetsSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && !(searchView.getText().toString().length() >= 2)) {
+                                        if (WidgetsSearchAdapter.widgetsSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && (searchView.getText().toString().length() >= 2)) {
                                             functionsClass
                                                     .runUnlimitedWidgetService(WidgetsSearchAdapter.widgetsSearchResultItems.get(0).getAppWidgetId(),
                                                             WidgetsSearchAdapter.widgetsSearchResultItems.get(0).getWidgetLabel());
@@ -2299,7 +2298,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                             });
                                             valueAnimatorScales.start();
                                         } else {
-                                            if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0 && !(searchView.getText().toString().length() >= 2)) {
+                                            if (WidgetsSearchAdapter.widgetsSearchResultItems.size() > 0 && (searchView.getText().toString().length() >= 2)) {
                                                 searchView.showDropDown();
                                             }
                                         }

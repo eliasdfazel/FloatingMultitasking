@@ -1701,7 +1701,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                             searchFloatIt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if (!searchView.getText().toString().isEmpty() && (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0) && !(searchView.getText().toString().length() >= 2)) {
+                                    if (!searchView.getText().toString().isEmpty() && (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0) && (searchView.getText().toString().length() >= 2)) {
                                         for (NavDrawerItem searchResultItem : ShortcutsSearchAdapter.shortcutsSearchResultItems) {
                                             functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
                                         }
@@ -1730,7 +1730,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                                 @Override
                                 public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                                        if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && !(searchView.getText().toString().length() >= 2)) {
+                                        if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && (searchView.getText().toString().length() >= 2)) {
                                             functionsClass.runUnlimitedShortcutsService(ShortcutsSearchAdapter.shortcutsSearchResultItems.get(0).getPackageName());
 
                                             searchView.setText("");
@@ -1795,7 +1795,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                                             });
                                             valueAnimatorScales.start();
                                         } else {
-                                            if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0 && !(searchView.getText().toString().length() >= 2)) {
+                                            if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0 && (searchView.getText().toString().length() >= 2)) {
                                                 searchView.showDropDown();
                                             }
                                         }

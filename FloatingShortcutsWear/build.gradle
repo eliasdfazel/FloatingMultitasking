@@ -12,7 +12,7 @@ android {
         targetSdkVersion 29
 
         versionCode 677
-        versionName "${majorVersion} | " + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "{${versionCode}}" + "-"
+        versionName "${majorVersion} | " + getDateMonth() + "." + getDateDay() + "." + getDateYear() + "-{${versionCode}}" + "-"
     }
 
     buildTypes {
@@ -32,12 +32,12 @@ android {
         releaseConfig {
             dimension "FloatingShortcutsPro"
 
-            versionNameSuffix 'PRO[WearOS][Watch]'
+            versionNameSuffix '[PRO][WearOS][Watch]'
         }
         betaConfig {
             dimension "FloatingShortcutsPro"
 
-            versionNameSuffix 'PRO[WearOS][Watch][BETA]'
+            versionNameSuffix '[PRO][WearOS][Watch][BETA]'
         }
     }
 

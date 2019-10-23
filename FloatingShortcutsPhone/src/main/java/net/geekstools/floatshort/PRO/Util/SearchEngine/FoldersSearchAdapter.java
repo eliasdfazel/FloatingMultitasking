@@ -103,8 +103,8 @@ public class FoldersSearchAdapter extends BaseAdapter implements Filterable {
                 R.drawable.ic_launcher_balloon,
                 String.valueOf(foldersSearchResultItems.get(position).getCategory().charAt(0)).toUpperCase(),
                 context.getColor(R.color.light),
-                220f,
-                300f));
+                functionsClass.DpToPixel(85),
+                functionsClass.DpToPixel(120)));
         viewHolder.itemAppName.setText(foldersSearchResultItems.get(position).getCategory());
 
         int dominantColor = context.getColor(R.color.default_color);
