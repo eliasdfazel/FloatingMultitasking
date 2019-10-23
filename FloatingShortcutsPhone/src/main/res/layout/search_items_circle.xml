@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/searchItem"
     android:layout_width="173dp"
     android:layout_height="47dp"
     android:background="@drawable/background_search_items"
     android:visibility="visible">
 
-    <net.geekstools.imageview.customshapes.ShapesImage
+    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/itemAppIcon"
         android:layout_width="45dp"
         android:layout_height="45dp"
@@ -18,7 +17,7 @@
         android:layout_marginTop="9dp"
         android:layout_marginBottom="9dp"
         android:scaleType="centerCrop"
-        app:shapeDrawable="@drawable/circle_icon" />
+        apps:shapeDrawable="@drawable/circle_icon" />
 
     <TextView
         android:id="@+id/itemAppName"

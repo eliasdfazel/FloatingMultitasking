@@ -2,17 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fullView">
 
-    <net.geeksempire.loadingspin.SpinKitView
+    <net.geeksempire.loadingspin.SpinKitView xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/spinKitView"
         android:layout_width="257dp"
         android:layout_height="257dp"
         android:layout_centerInParent="true"
         android:padding="41dp"
-        app:SpinKit_Style="FoldingCube"
-        app:SpinKit_Color="@color/default_color_game" />
+        apps:SpinKit_Style="FoldingCube"
+        apps:SpinKit_Color="@color/default_color_game" />
 
     <TextView
         android:layout_width="265dp"

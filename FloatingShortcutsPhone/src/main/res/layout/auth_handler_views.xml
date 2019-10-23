@@ -5,13 +5,13 @@
     android:scrollbarSize="0dp"
     android:id="@+id/pinFullViewScrollView">
 
-    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="7dp"
         android:id="@+id/pinFullView">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/textInputPasswordCurrent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,22 +24,22 @@
             android:imeOptions="actionNext"
             android:hint="@string/enterCurrentPassword"
             android:textColorHint="@color/default_color_light"
-            app:boxBackgroundMode="outline"
-            app:boxBackgroundColor="@color/darker"
-            app:boxCornerRadiusTopStart="7dp"
-            app:boxCornerRadiusTopEnd="7dp"
-            app:boxCornerRadiusBottomStart="7dp"
-            app:boxCornerRadiusBottomEnd="7dp"
-            app:boxStrokeColor="@color/default_color_game"
-            app:boxStrokeWidth="2dp"
-            app:hintEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintTextColor="@color/default_color_light"
-            app:errorEnabled="true"
-            app:errorTextColor="@color/red"
+            apps:boxBackgroundMode="outline"
+            apps:boxBackgroundColor="@color/darker"
+            apps:boxCornerRadiusTopStart="7dp"
+            apps:boxCornerRadiusTopEnd="7dp"
+            apps:boxCornerRadiusBottomStart="7dp"
+            apps:boxCornerRadiusBottomEnd="7dp"
+            apps:boxStrokeColor="@color/default_color_game"
+            apps:boxStrokeWidth="2dp"
+            apps:hintEnabled="true"
+            apps:hintAnimationEnabled="true"
+            apps:hintTextColor="@color/default_color_light"
+            apps:errorEnabled="true"
+            apps:errorTextColor="@color/red"
             android:visibility="invisible">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText xmlns:apps="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/passwordCurrent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                 android:cursorVisible="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/textInputPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,19 +70,19 @@
             android:imeOptions="actionNext"
             android:hint="@string/passwordHint"
             android:textColorHint="@color/default_color_light"
-            app:boxBackgroundMode="outline"
-            app:boxBackgroundColor="@color/darker"
-            app:boxCornerRadiusTopStart="7dp"
-            app:boxCornerRadiusTopEnd="7dp"
-            app:boxCornerRadiusBottomStart="7dp"
-            app:boxCornerRadiusBottomEnd="7dp"
-            app:boxStrokeColor="@color/default_color_game"
-            app:boxStrokeWidth="2dp"
-            app:hintEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintTextColor="@color/default_color_light"
-            app:errorEnabled="true"
-            app:errorTextColor="@color/red">
+            apps:boxBackgroundMode="outline"
+            apps:boxBackgroundColor="@color/darker"
+            apps:boxCornerRadiusTopStart="7dp"
+            apps:boxCornerRadiusTopEnd="7dp"
+            apps:boxCornerRadiusBottomStart="7dp"
+            apps:boxCornerRadiusBottomEnd="7dp"
+            apps:boxStrokeColor="@color/default_color_game"
+            apps:boxStrokeWidth="2dp"
+            apps:hintEnabled="true"
+            apps:hintAnimationEnabled="true"
+            apps:hintTextColor="@color/default_color_light"
+            apps:errorEnabled="true"
+            apps:errorTextColor="@color/red">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password"
@@ -101,7 +101,7 @@
                 android:cursorVisible="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/textInputPasswordRepeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,19 +115,19 @@
             android:imeOptions="actionDone"
             android:hint="@string/passwordHintRepeat"
             android:textColorHint="@color/default_color_light"
-            app:boxBackgroundMode="outline"
-            app:boxBackgroundColor="@color/darker"
-            app:boxCornerRadiusTopStart="7dp"
-            app:boxCornerRadiusTopEnd="7dp"
-            app:boxCornerRadiusBottomStart="7dp"
-            app:boxCornerRadiusBottomEnd="7dp"
-            app:boxStrokeColor="@color/default_color_game"
-            app:boxStrokeWidth="2dp"
-            app:hintEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintTextColor="@color/default_color_light"
-            app:errorEnabled="true"
-            app:errorTextColor="@color/red">
+            apps:boxBackgroundMode="outline"
+            apps:boxBackgroundColor="@color/darker"
+            apps:boxCornerRadiusTopStart="7dp"
+            apps:boxCornerRadiusTopEnd="7dp"
+            apps:boxCornerRadiusBottomStart="7dp"
+            apps:boxCornerRadiusBottomEnd="7dp"
+            apps:boxStrokeColor="@color/default_color_game"
+            apps:boxStrokeWidth="2dp"
+            apps:hintEnabled="true"
+            apps:hintAnimationEnabled="true"
+            apps:hintTextColor="@color/default_color_light"
+            apps:errorEnabled="true"
+            apps:errorTextColor="@color/red">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordRepeat"
@@ -146,7 +146,7 @@
                 android:cursorVisible="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/donePassword"
             android:layout_width="match_parent"
             android:layout_height="71dp"
@@ -160,14 +160,14 @@
             android:textColor="@color/light"
             android:textSize="23sp"
             android:typeface="sans"
-            app:elevation="13dp"
-            app:cornerRadius="7dp"
-            app:backgroundTint="@color/default_color"
-            app:rippleColor="@color/default_color_game"
-            app:iconGravity="start"
-            app:iconTint="@color/light"
-            app:iconSize="49dp"
-            app:icon="@drawable/app_locked_icon" />
+            apps:elevation="13dp"
+            apps:cornerRadius="7dp"
+            apps:backgroundTint="@color/default_color"
+            apps:rippleColor="@color/default_color_game"
+            apps:iconGravity="start"
+            apps:iconTint="@color/light"
+            apps:iconSize="49dp"
+            apps:icon="@drawable/app_locked_icon" />
 
         <TextView
             android:id="@+id/forgotPassword"
@@ -184,7 +184,7 @@
             android:typeface="monospace"
             android:visibility="invisible" />
 
-        <net.geeksempire.loadingspin.SpinKitView
+        <net.geeksempire.loadingspin.SpinKitView xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/spinKitView"
             android:layout_width="51dp"
             android:layout_height="51dp"
@@ -192,8 +192,8 @@
             android:layout_toEndOf="@id/forgotPassword"
             android:padding="13dp"
             android:visibility="invisible"
-            app:SpinKit_Style="CubeGrid"
-            app:SpinKit_Color="@color/default_color_game_light" />
+            apps:SpinKit_Style="CubeGrid"
+            apps:SpinKit_Color="@color/default_color_game_light" />
 
         <ImageView
             android:id="@+id/securityWarningIcon"

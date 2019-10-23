@@ -1467,35 +1467,38 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     FunctionsClassDebug.Companion.PrintDebug("*** Provider = " + appWidgetProviderInfo.provider + " | Config = " + appWidgetProviderInfo.configure + " ***");
                     try {
                         String packageName = appWidgetProviderInfo.provider.getPackageName();
-                        String newAppName = functionsClass.appName(packageName);
-                        Drawable newAppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
+                        String className = appWidgetProviderInfo.provider.getClassName();
 
-                        if (widgetIndex == 0) {
-                            installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
-                            indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
-                        } else {
-                            if (!oldAppName.equals(newAppName)) {
+                        if (packageName.isEmpty() && className.isEmpty()) {
+                            String newAppName = functionsClass.appName(packageName);
+                            Drawable newAppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
+
+                            if (widgetIndex == 0) {
                                 installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
                                 indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
+                            } else {
+                                if (!oldAppName.equals(newAppName)) {
+                                    installedWidgetsSections.add(new WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon));
+                                    indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
+                                }
                             }
+
+                            oldAppName = functionsClass.appName(appWidgetProviderInfo.provider.getPackageName());
+
+                            Drawable widgetPreviewDrawable = appWidgetProviderInfo.loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_HIGH);
+                            String widgetLabel = appWidgetProviderInfo.loadLabel(getPackageManager());
+
+                            indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
+                            installedWidgetsNavDrawerItems.add(new NavDrawerItem(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
+                                    appWidgetProviderInfo.provider.getPackageName(),
+                                    appWidgetProviderInfo.provider.getClassName(),
+                                    (appWidgetProviderInfo.configure != null) ? appWidgetProviderInfo.configure.getClassName() : null,
+                                    (widgetLabel != null) ? widgetLabel : newAppName,
+                                    newAppIcon,
+                                    (widgetPreviewDrawable != null) ? widgetPreviewDrawable : appWidgetProviderInfo.loadIcon(getApplicationContext(), DisplayMetrics.DENSITY_HIGH),
+                                    appWidgetProviderInfo
+                            ));
                         }
-
-                        oldAppName = functionsClass.appName(appWidgetProviderInfo.provider.getPackageName());
-
-                        Drawable widgetPreviewDrawable = appWidgetProviderInfo.loadPreviewImage(getApplicationContext(), DisplayMetrics.DENSITY_HIGH);
-                        String widgetLabel = appWidgetProviderInfo.loadLabel(getPackageManager());
-
-                        indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
-                        installedWidgetsNavDrawerItems.add(new NavDrawerItem(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
-                                appWidgetProviderInfo.provider.getPackageName(),
-                                appWidgetProviderInfo.provider.getClassName(),
-                                (appWidgetProviderInfo.configure != null) ? appWidgetProviderInfo.configure.getClassName() : null,
-                                (widgetLabel != null) ? widgetLabel : newAppName,
-                                newAppIcon,
-                                (widgetPreviewDrawable != null) ? widgetPreviewDrawable : appWidgetProviderInfo.loadIcon(getApplicationContext(), DisplayMetrics.DENSITY_HIGH),
-                                appWidgetProviderInfo
-                        ));
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -8,7 +8,7 @@
                 android:background="@drawable/ripple_effect"
                 android:gravity="center">
 
-    <net.geekstools.imageview.customshapes.ShapesImage
+    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/icon"
         android:layout_width="64dp"
         android:layout_height="64dp"

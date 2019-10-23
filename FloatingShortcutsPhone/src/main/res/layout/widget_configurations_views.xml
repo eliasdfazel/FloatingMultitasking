@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/wholeWidget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -65,8 +64,8 @@
             android:orientation="vertical" />
     </ScrollView>
 
-    <net.geekstools.imageview.customshapes.ShapesImage
-        app:shapeDrawable="@drawable/ic_bulb"
+    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
+        apps:shapeDrawable="@drawable/ic_bulb"
         android:id="@+id/recoverFloatingCategories"
         android:layout_width="47dp"
         android:layout_height="47dp"
@@ -79,8 +78,8 @@
         android:visibility="gone"
         android:contentDescription="@string/recover_category" />
 
-    <net.geekstools.imageview.customshapes.ShapesImage
-        app:shapeDrawable="@drawable/ic_bulb"
+    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
+        apps:shapeDrawable="@drawable/ic_bulb"
         android:id="@+id/recoverFloatingApps"
         android:layout_width="47dp"
         android:layout_height="47dp"
@@ -104,7 +103,7 @@
         android:background="@android:color/transparent"
         android:weightSum="2">
 
-        <com.google.android.material.button.MaterialButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/switchCategories"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -118,11 +117,11 @@
             android:text="@string/categoryHint"
             android:textSize="19sp"
             android:fontFamily="@font/upcil"
-            app:elevation="7dp"
-            app:cornerRadius="7dp"
-            app:backgroundTint="@color/default_color" />
+            apps:elevation="7dp"
+            apps:cornerRadius="7dp"
+            apps:backgroundTint="@color/default_color" />
 
-        <com.google.android.material.button.MaterialButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/switchApps"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -136,13 +135,13 @@
             android:text="@string/floatingHint"
             android:textSize="19sp"
             android:fontFamily="@font/upcil"
-            app:elevation="7dp"
-            app:cornerRadius="7dp"
-            app:backgroundTint="@color/default_color" />
+            apps:elevation="7dp"
+            apps:cornerRadius="7dp"
+            apps:backgroundTint="@color/default_color" />
 
     </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/recoveryAction"
         android:layout_width="247dp"
         android:layout_height="49dp"
@@ -158,17 +157,17 @@
         android:textAllCaps="false"
         android:textSize="19sp"
         android:fontFamily="@font/upcil"
-        app:elevation="3dp"
-        app:backgroundTint="@color/default_color"
-        app:rippleColor="@color/light"
-        app:cornerRadius="57dp"
-        app:icon="@drawable/w_recovery_widgets"
-        app:iconGravity="start"
-        app:iconSize="29dp"
-        app:iconPadding="1dp" />
+        apps:elevation="3dp"
+        apps:backgroundTint="@color/default_color"
+        apps:rippleColor="@color/light"
+        apps:cornerRadius="57dp"
+        apps:icon="@drawable/w_recovery_widgets"
+        apps:iconGravity="start"
+        apps:iconSize="29dp"
+        apps:iconPadding="1dp" />
 
     <!-- Search Engine -->
-    <com.google.android.material.textfield.TextInputLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/textInputSearchView"
         android:layout_width="51dp"
         android:layout_height="51dp"
@@ -180,20 +179,20 @@
         android:hint="@string/searchHint"
         android:textColorHint="@color/default_color_light"
         android:visibility="invisible"
-        app:boxBackgroundMode="outline"
-        app:boxBackgroundColor="@android:color/transparent"
-        app:boxCornerRadiusTopStart="51dp"
-        app:boxCornerRadiusTopEnd="51dp"
-        app:boxCornerRadiusBottomStart="51dp"
-        app:boxCornerRadiusBottomEnd="51dp"
-        app:boxStrokeColor="@color/default_color"
-        app:boxStrokeWidth="2dp"
-        app:boxStrokeWidthFocused="2dp"
-        app:hintTextColor="@color/default_color_light"
-        app:errorEnabled="true"
-        app:errorTextColor="@color/yellow">
+        apps:boxBackgroundMode="outline"
+        apps:boxBackgroundColor="@android:color/transparent"
+        apps:boxCornerRadiusTopStart="51dp"
+        apps:boxCornerRadiusTopEnd="51dp"
+        apps:boxCornerRadiusBottomStart="51dp"
+        apps:boxCornerRadiusBottomEnd="51dp"
+        apps:boxStrokeColor="@color/default_color"
+        apps:boxStrokeWidth="2dp"
+        apps:boxStrokeWidthFocused="2dp"
+        apps:hintTextColor="@color/default_color_light"
+        apps:errorEnabled="true"
+        apps:errorTextColor="@color/yellow">
 
-        <androidx.appcompat.widget.AppCompatAutoCompleteTextView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -337,7 +336,7 @@
         android:background="@color/transparent_light"
         android:visibility="invisible">
 
-        <com.google.android.material.button.MaterialButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/automationAction"
             android:layout_width="247dp"
             android:layout_height="49dp"
@@ -353,14 +352,14 @@
             android:textColor="@color/light"
             android:textSize="19sp"
             android:fontFamily="@font/upcil"
-            app:elevation="3dp"
-            app:backgroundTint="@color/default_color"
-            app:rippleColor="@color/light"
-            app:cornerRadius="57dp"
-            app:icon="@drawable/w_floating"
-            app:iconGravity="start"
-            app:iconSize="29dp"
-            app:iconPadding="1dp" />
+            apps:elevation="3dp"
+            apps:backgroundTint="@color/default_color"
+            apps:rippleColor="@color/light"
+            apps:cornerRadius="57dp"
+            apps:icon="@drawable/w_floating"
+            apps:iconGravity="start"
+            apps:iconSize="29dp"
+            apps:iconPadding="1dp" />
 
         <Button
             android:id="@+id/preferences"
@@ -370,7 +369,7 @@
             android:background="@drawable/draw_pref_action"
             android:visibility="invisible" />
 
-        <com.google.android.material.button.MaterialButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/reconfigure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -383,14 +382,14 @@
             android:textColor="@color/light"
             android:textSize="29sp"
             android:fontFamily="@font/upcil_bold"
-            app:elevation="13dp"
-            app:cornerRadius="7dp"
-            app:backgroundTint="@color/default_color_game_light"
-            app:rippleColor="@color/default_color"
-            app:icon="@drawable/reconfiguring_icon"
-            app:iconSize="27dp"
-            app:iconTint="@color/light"
-            app:iconGravity="textStart" />
+            apps:elevation="13dp"
+            apps:cornerRadius="7dp"
+            apps:backgroundTint="@color/default_color_game_light"
+            apps:rippleColor="@color/default_color"
+            apps:icon="@drawable/reconfiguring_icon"
+            apps:iconSize="27dp"
+            apps:iconTint="@color/light"
+            apps:iconGravity="textStart" />
 
     </RelativeLayout>
 

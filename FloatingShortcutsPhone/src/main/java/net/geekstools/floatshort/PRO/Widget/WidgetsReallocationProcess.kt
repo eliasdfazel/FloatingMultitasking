@@ -237,8 +237,17 @@ class WidgetsReallocationProcess : Activity() {
                         }
                     })
                     .build()
+
             val widgetDataDAO = widgetDataInterface.initDataAccessObject()
-            widgetDataDAO.updateWidgetIdByPackageNameClassName(widgetDataModel.PackageName, widgetDataModel.ClassNameProvider, widgetId)
+            if (widgetDataModel.PackageName.isNullOrEmpty() && widgetDataModel.ClassNameProvider.isNullOrEmpty()) {
+                try {
+                    widgetDataDAO.delete(widgetDataModel)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } else {
+                widgetDataDAO.updateWidgetIdByPackageNameClassName(widgetDataModel.PackageName, widgetDataModel.ClassNameProvider, widgetId)
+            }
         }).start()
 
         REALLOCATION_COUNTER++

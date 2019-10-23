@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:apps="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/item"
-                android:layout_width="110dp"
-                android:layout_height="105dp"
-                android:animateLayoutChanges="true"
-                android:background="@drawable/ripple_effect"
-                android:gravity="center">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item"
+    android:layout_width="110dp"
+    android:layout_height="105dp"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/ripple_effect"
+    android:gravity="center">
 
-    <net.geekstools.imageview.customshapes.ShapesImage
+    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/icon"
         android:layout_width="64dp"
         android:layout_height="64dp"

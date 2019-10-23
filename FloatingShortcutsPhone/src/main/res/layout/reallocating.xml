@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <net.geeksempire.loadingspin.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <net.geeksempire.loadingspin.SpinKitView xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/allocatingProgress"
         android:layout_width="373dp"
         android:layout_height="373dp"
         android:layout_centerInParent="true"
         android:padding="13dp"
-        app:SpinKit_Style="MultiplePulse"
-        app:SpinKit_Color="@color/default_color" />
+        apps:SpinKit_Style="MultiplePulse"
+        apps:SpinKit_Color="@color/default_color" />
 
-    <com.google.android.material.button.MaterialButton xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/widgetInformation"
         android:layout_width="313dp"
         android:layout_height="113dp"
@@ -31,16 +31,16 @@
         android:textSize="19sp"
         android:textColor="@color/light"
         android:fontFamily="monospace"
-        app:cornerRadius="7dp"
-        app:elevation="13dp"
-        app:rippleColor="@color/default_color_light"
-        app:backgroundTint="@color/default_color"
-        app:strokeColor="@android:color/transparent"
-        app:strokeWidth="0dp"
-        app:iconSize="51dp"
-        app:iconPadding="3dp"
-        app:iconGravity="textEnd"
-        app:iconTint="@android:color/transparent"
-        app:iconTintMode="add" />
+        apps:cornerRadius="7dp"
+        apps:elevation="13dp"
+        apps:rippleColor="@color/default_color_light"
+        apps:backgroundTint="@color/default_color"
+        apps:strokeColor="@android:color/transparent"
+        apps:strokeWidth="0dp"
+        apps:iconSize="51dp"
+        apps:iconPadding="3dp"
+        apps:iconGravity="textEnd"
+        apps:iconTint="@android:color/transparent"
+        apps:iconTintMode="add" />
 
 </RelativeLayout>

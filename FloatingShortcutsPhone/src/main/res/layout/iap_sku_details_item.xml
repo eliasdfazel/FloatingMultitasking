@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
     style="@style/CardViewStyle"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:layout_marginBottom="3dp"
-    app:cardBackgroundColor="@color/light"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    apps:cardBackgroundColor="@color/light">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -79,7 +79,7 @@
             android:typeface="monospace"
             android:background="@android:color/transparent"/>
 
-        <com.google.android.material.button.MaterialButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/purchaseItemButton"
             android:layout_width="match_parent"
             android:layout_height="41dp"
@@ -92,10 +92,10 @@
             android:textColor="@color/light"
             android:textStyle="bold"
             android:contentDescription="@string/purchase"
-            app:cornerRadius="3dp"
-            app:rippleColor="@color/light_transparent_high"
-            app:backgroundTint="@color/default_color_light"
-            app:elevation="7dp"/>
+            apps:cornerRadius="3dp"
+            apps:rippleColor="@color/light_transparent_high"
+            apps:backgroundTint="@color/default_color_light"
+            apps:elevation="7dp"/>
 
         <TextView
             android:id="@+id/purchaseItemInfo"

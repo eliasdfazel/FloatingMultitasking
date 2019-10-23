@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/backgroundFull"
     android:background="@color/light">
 
@@ -13,7 +12,7 @@
         android:layout_centerInParent="true"
         style="@style/Widget.AppCompat.ProgressBar" />
 
-    <com.google.android.material.button.MaterialButton xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/shareNow"
         android:layout_width="wrap_content"
         android:layout_height="51dp"
@@ -27,13 +26,13 @@
         android:textColor="@color/light"
         android:textStyle="bold"
         android:fontFamily="@font/upcil"
-        app:icon="@drawable/w_sharing"
-        app:iconSize="19dp"
-        app:iconTint="@color/light"
-        app:rippleColor="@color/default_color"
-        app:backgroundTint="@color/default_color_game"
-        app:elevation="13dp"
-        app:cornerRadius="51dp" />
+        apps:icon="@drawable/w_sharing"
+        apps:iconSize="19dp"
+        apps:iconTint="@color/light"
+        apps:rippleColor="@color/default_color"
+        apps:backgroundTint="@color/default_color_game"
+        apps:elevation="13dp"
+        apps:cornerRadius="51dp" />
 
     <ScrollView
         android:layout_width="match_parent"

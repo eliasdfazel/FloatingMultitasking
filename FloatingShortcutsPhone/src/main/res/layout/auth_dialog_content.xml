@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
     android:layout_height="420dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingStart="7dp"
     android:paddingEnd="7dp"
     android:paddingTop="11dp"
@@ -10,7 +9,7 @@
     android:id="@+id/fingerprintContainer"
     android:background="@drawable/dialogue_rounded_background">
 
-    <net.geekstools.imageview.customshapes.ShapesImage
+    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/dialogueIcon"
         android:layout_width="49dp"
         android:layout_height="49dp"
@@ -64,7 +63,7 @@
         android:src="@drawable/draw_finger_print"
         android:visibility="visible" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/textInputPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,19 +74,19 @@
         android:imeOptions="actionDone"
         android:hint="@string/pinHint"
         android:textColorHint="@color/default_color_light"
-        app:boxBackgroundMode="outline"
-        app:boxBackgroundColor="@android:color/transparent"
-        app:boxCornerRadiusTopStart="7dp"
-        app:boxCornerRadiusTopEnd="7dp"
-        app:boxCornerRadiusBottomStart="7dp"
-        app:boxCornerRadiusBottomEnd="7dp"
-        app:boxStrokeColor="@color/default_color_game"
-        app:boxStrokeWidth="2dp"
-        app:hintEnabled="true"
-        app:hintAnimationEnabled="true"
-        app:hintTextColor="@color/default_color_light"
-        app:errorEnabled="true"
-        app:errorTextColor="@color/red"
+        apps:boxBackgroundMode="outline"
+        apps:boxBackgroundColor="@android:color/transparent"
+        apps:boxCornerRadiusTopStart="7dp"
+        apps:boxCornerRadiusTopEnd="7dp"
+        apps:boxCornerRadiusBottomStart="7dp"
+        apps:boxCornerRadiusBottomEnd="7dp"
+        apps:boxStrokeColor="@color/default_color_game"
+        apps:boxStrokeWidth="2dp"
+        apps:hintEnabled="true"
+        apps:hintAnimationEnabled="true"
+        apps:hintTextColor="@color/default_color_light"
+        apps:errorEnabled="true"
+        apps:errorTextColor="@color/red"
         android:visibility="invisible">
 
         <com.google.android.material.textfield.TextInputEditText

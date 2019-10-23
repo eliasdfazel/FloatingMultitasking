@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:apps="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/item"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/ripple_effect"
-                android:clickable="true">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/ripple_effect"
+    android:clickable="true">
 
     <CheckBox
         android:id="@+id/autoChoice"
@@ -19,7 +19,7 @@
         android:clickable="false"
         android:enabled="false"/>
 
-    <net.geekstools.imageview.customshapes.ShapesImage
+    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/icon"
         android:layout_width="60dp"
         android:layout_height="60dp"

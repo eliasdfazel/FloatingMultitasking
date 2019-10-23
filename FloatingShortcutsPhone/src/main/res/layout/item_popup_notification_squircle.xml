@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/notificationItem"
     android:layout_width="221dp"
     android:layout_height="wrap_content"
@@ -20,12 +19,12 @@
         android:paddingEnd="5dp"
         android:paddingBottom="3dp">
 
-        <net.geekstools.imageview.customshapes.ShapesImage
+        <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/notificationAppIcon"
             android:layout_width="23dp"
             android:layout_height="23dp"
             android:src="@drawable/ic_launcher"
-            app:shapeDrawable="@drawable/squircle_icon"/>
+            apps:shapeDrawable="@drawable/squircle_icon"/>
 
         <TextView
             android:id="@+id/notificationAppName"
@@ -49,7 +48,7 @@
         android:paddingEnd="5dp"
         android:paddingBottom="3dp">
 
-        <net.geekstools.imageview.customshapes.ShapesImage
+        <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/notificationLargeIcon"
             android:layout_width="37dp"
             android:layout_height="37dp"
@@ -58,7 +57,7 @@
             android:layout_margin="2dp"
             android:layout_marginEnd="5dp"
             android:src="@drawable/ic_launcher"
-            app:shapeDrawable="@drawable/squircle_icon"/>
+            apps:shapeDrawable="@drawable/squircle_icon"/>
 
         <TextView
             android:id="@+id/notificationTitle"

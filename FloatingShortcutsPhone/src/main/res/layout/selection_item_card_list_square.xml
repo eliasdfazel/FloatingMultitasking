@@ -19,7 +19,7 @@
         android:clickable="false"
         android:enabled="false"/>
 
-    <net.geekstools.imageview.customshapes.ShapesImage
+    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/icon"
         android:layout_width="60dp"
         android:layout_height="60dp"

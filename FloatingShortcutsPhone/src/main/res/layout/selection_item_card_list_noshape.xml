@@ -24,7 +24,7 @@
         android:layout_toEndOf="@id/autoChoice"
         android:padding="5dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/desc"
