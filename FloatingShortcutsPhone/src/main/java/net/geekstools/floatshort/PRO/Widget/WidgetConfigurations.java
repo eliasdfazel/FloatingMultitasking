@@ -80,7 +80,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
@@ -148,7 +148,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     TextView gx;
 
     List<AppWidgetProviderInfo> widgetProviderInfoList;
-    ArrayList<NavDrawerItem> installedWidgetsNavDrawerItems, configuredWidgetsNavDrawerItems;
+    ArrayList<AdapterItems> installedWidgetsAdapterItems, configuredWidgetsAdapterItems;
 
     AppWidgetManager appWidgetManager;
     AppWidgetHost appWidgetHost;
@@ -240,8 +240,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         appWidgetManager = AppWidgetManager.getInstance(this);
         appWidgetHost = new AppWidgetHost(getApplicationContext(), (int) System.currentTimeMillis());
 
-        installedWidgetsNavDrawerItems = new ArrayList<NavDrawerItem>();
-        configuredWidgetsNavDrawerItems = new ArrayList<NavDrawerItem>();
+        installedWidgetsAdapterItems = new ArrayList<AdapterItems>();
+        configuredWidgetsAdapterItems = new ArrayList<AdapterItems>();
         indexListConfigured = new ArrayList<String>();
         indexListInstalled = new ArrayList<String>();
         mapIndexFirstItem = new LinkedHashMap<String, Integer>();
@@ -704,7 +704,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("FORCE_RELOAD")) {
                     try {
-                        configuredWidgetsNavDrawerItems.clear();
+                        configuredWidgetsAdapterItems.clear();
                         configuredWidgetsSections.clear();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1249,7 +1249,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         protected void onPreExecute() {
             super.onPreExecute();
             try {
-                configuredWidgetsNavDrawerItems.clear();
+                configuredWidgetsAdapterItems.clear();
                 configuredWidgetsSections.clear();
                 configuredWidgetsLoadView.removeAllViews();
             } catch (Exception e) {
@@ -1279,7 +1279,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            configuredWidgetsNavDrawerItems.clear();
+            configuredWidgetsAdapterItems.clear();
             configuredWidgetsSections.clear();
 
             configuredWidgetAvailable = false;
@@ -1341,7 +1341,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                             oldAppName = functionsClass.appName(packageName);
 
                             indexListConfigured.add(newAppName.substring(0, 1).toUpperCase());
-                            configuredWidgetsNavDrawerItems.add(new NavDrawerItem(
+                            configuredWidgetsAdapterItems.add(new AdapterItems(
                                     newAppName,
                                     packageName,
                                     className,
@@ -1363,20 +1363,20 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     }
                 }
 
-                if (configuredWidgetsNavDrawerItems.size() > 0) {
+                if (configuredWidgetsAdapterItems.size() > 0) {
                     configuredWidgetAvailable = true;
                 } else {
                     return false;
                 }
 
-                configuredWidgetsRecyclerViewAdapter = new ConfiguredWidgetsAdapter(WidgetConfigurations.this, getApplicationContext(), configuredWidgetsNavDrawerItems, appWidgetManager, appWidgetHost);
+                configuredWidgetsRecyclerViewAdapter = new ConfiguredWidgetsAdapter(WidgetConfigurations.this, getApplicationContext(), configuredWidgetsAdapterItems, appWidgetManager, appWidgetHost);
 
                 widgetDataInterface.close();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 /*Search Engine*/
-                widgetsSearchAdapter = new SearchEngineAdapter(getApplicationContext(), configuredWidgetsNavDrawerItems, SearchEngineAdapter.SearchResultType.SearchWidgets);
+                widgetsSearchAdapter = new SearchEngineAdapter(getApplicationContext(), configuredWidgetsAdapterItems, SearchEngineAdapter.SearchResultType.SearchWidgets);
                 /*Search Engine*/
             }
 
@@ -1442,7 +1442,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            installedWidgetsNavDrawerItems.clear();
+            installedWidgetsAdapterItems.clear();
             installedWidgetsSections.clear();
 
             try {
@@ -1494,7 +1494,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                     String widgetLabel = appWidgetProviderInfo.loadLabel(getPackageManager());
 
                                     indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
-                                    installedWidgetsNavDrawerItems.add(new NavDrawerItem(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
+                                    installedWidgetsAdapterItems.add(new AdapterItems(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
                                             appWidgetProviderInfo.provider.getPackageName(),
                                             appWidgetProviderInfo.provider.getClassName(),
                                             componentNameConfiguration.getClassName(),
@@ -1526,7 +1526,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 String widgetLabel = appWidgetProviderInfo.loadLabel(getPackageManager());
 
                                 indexListInstalled.add(newAppName.substring(0, 1).toUpperCase());
-                                installedWidgetsNavDrawerItems.add(new NavDrawerItem(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
+                                installedWidgetsAdapterItems.add(new AdapterItems(functionsClass.appName(appWidgetProviderInfo.provider.getPackageName()),
                                         appWidgetProviderInfo.provider.getPackageName(),
                                         appWidgetProviderInfo.provider.getClassName(),
                                         null,
@@ -1543,7 +1543,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     widgetIndex++;
                 }
 
-                installedWidgetsRecyclerViewAdapter = new InstalledWidgetsAdapter(WidgetConfigurations.this, getApplicationContext(), installedWidgetsNavDrawerItems, appWidgetHost);
+                installedWidgetsRecyclerViewAdapter = new InstalledWidgetsAdapter(WidgetConfigurations.this, getApplicationContext(), installedWidgetsAdapterItems, appWidgetHost);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -2202,7 +2202,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 @Override
                                 public void onClick(View view) {
                                     if (!searchView.getText().toString().isEmpty() && (SearchEngineAdapter.allSearchResultItems.size() > 0) && (searchView.getText().toString().length() >= 2)) {
-                                        for (NavDrawerItem searchResultItem : SearchEngineAdapter.allSearchResultItems) {
+                                        for (AdapterItems searchResultItem : SearchEngineAdapter.allSearchResultItems) {
                                             switch (searchResultItem.getSearchResultType()) {
                                                 case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
                                                     functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
@@ -2210,7 +2210,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                                     break;
                                                 }
                                                 case SearchEngineAdapter.SearchResultType.SearchFolders: {
-                                                    functionsClass.runUnlimiteFolderService(searchResultItem.getCategory());
+                                                    functionsClass.runUnlimitedFolderService(searchResultItem.getCategory());
 
                                                     break;
                                                 }
@@ -2256,7 +2256,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                                     break;
                                                 }
                                                 case SearchEngineAdapter.SearchResultType.SearchFolders: {
-                                                    functionsClass.runUnlimiteFolderService(SearchEngineAdapter.allSearchResultItems.get(0).getCategory());
+                                                    functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems.get(0).getCategory());
 
                                                     break;
                                                 }

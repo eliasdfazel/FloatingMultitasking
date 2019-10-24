@@ -26,7 +26,7 @@ import net.geekstools.floatshort.PRO.Folders.AppSelectionList;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 import java.io.File;
@@ -37,7 +37,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
     FunctionsClass functionsClass;
     Context context;
     Activity activity;
-    ArrayList<NavDrawerItem> navDrawerItems;
+    ArrayList<AdapterItems> adapterItems;
 
     ImageView imageView;
     RelativeLayout freqLayout;
@@ -49,10 +49,10 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
 
     LoadCustomIcons loadCustomIcons;
 
-    public FoldersListAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems) {
+    public FoldersListAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems) {
         this.activity = activity;
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
         functionsClass = new FunctionsClass(context, activity);
 
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
@@ -82,13 +82,13 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
         viewHolderBinder.categoryName.setTextColor(PublicVariable.colorLightDarkOpposite);
         viewHolderBinder.categoryName.setHintTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175));
 
-        final String nameCategory = navDrawerItems.get(position).getCategory();
-        final String[] categoryPackages = navDrawerItems.get(position).getPackageNames();
+        final String nameCategory = adapterItems.get(position).getCategory();
+        final String[] categoryPackages = adapterItems.get(position).getPackageNames();
 
         if (functionsClass.loadRecoveryIndicatorCategory(nameCategory)) {
-            viewHolderBinder.categoryName.setText(navDrawerItems.get(position).getCategory() + " " + "\uD83D\uDD04");
+            viewHolderBinder.categoryName.setText(adapterItems.get(position).getCategory() + " " + "\uD83D\uDD04");
         } else {
-            viewHolderBinder.categoryName.setText(navDrawerItems.get(position).getCategory());
+            viewHolderBinder.categoryName.setText(adapterItems.get(position).getCategory());
         }
         viewHolderBinder.runCategory.setText(String.valueOf(nameCategory.charAt(0)).toUpperCase());
 
@@ -131,18 +131,18 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     PublicVariable.categoryName = textView.getText().toString().replace(" \uD83D\uDD04", "");
 
-                    File file = context.getFileStreamPath(navDrawerItems.get(position).getCategory());
+                    File file = context.getFileStreamPath(adapterItems.get(position).getCategory());
                     if (file.exists() && file.isFile()) {//edit
-                        if (navDrawerItems.get(position).getCategory().equals(PublicVariable.categoryName)) {
-                            PublicVariable.categoryName = navDrawerItems.get(position).getCategory();
+                        if (adapterItems.get(position).getCategory().equals(PublicVariable.categoryName)) {
+                            PublicVariable.categoryName = adapterItems.get(position).getCategory();
                             context.startActivity(new Intent(context, AppSelectionList.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         } else {//edit name
-                            String[] appsContent = functionsClass.readFileLine(navDrawerItems.get(position).getCategory());
+                            String[] appsContent = functionsClass.readFileLine(adapterItems.get(position).getCategory());
                             if (PublicVariable.categoryName.length() == 0) {
                                 PublicVariable.categoryName = PublicVariable.categoryName + "_" + System.currentTimeMillis();
                             }
                             for (String appContent : appsContent) {
-                                context.deleteFile(appContent + navDrawerItems.get(position).getCategory());
+                                context.deleteFile(appContent + adapterItems.get(position).getCategory());
                                 functionsClass.saveFileAppendLine(PublicVariable.categoryName, appContent);
                                 functionsClass.saveFile(appContent + PublicVariable.categoryName, appContent);
                             }
@@ -151,9 +151,9 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
 
                                 functionsClass.saveFileAppendLine(".uCategory", PublicVariable.categoryName);
                             }
-                            functionsClass.removeLine(".categoryInfo", navDrawerItems.get(position).getCategory());
+                            functionsClass.removeLine(".categoryInfo", adapterItems.get(position).getCategory());
                             functionsClass.saveFileAppendLine(".categoryInfo", PublicVariable.categoryName);
-                            context.deleteFile(navDrawerItems.get(position).getCategory());
+                            context.deleteFile(adapterItems.get(position).getCategory());
                             context.startActivity(new Intent(context, AppSelectionList.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
                     } else {
@@ -189,32 +189,32 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
         viewHolderBinder.addApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
-                    PublicVariable.categoryName = navDrawerItems.get(position).getCategory();
+                if (!adapterItems.get(position).getCategory().equals(context.getPackageName())) {
+                    PublicVariable.categoryName = adapterItems.get(position).getCategory();
                 } else {
                     if (endEdited.length() > 0) {
                         PublicVariable.categoryName = endEdited;
                     }
                 }
 
-                File file = context.getFileStreamPath(navDrawerItems.get(position).getCategory());
+                File file = context.getFileStreamPath(adapterItems.get(position).getCategory());
                 if (file.exists() && file.isFile()) {
-                    if (navDrawerItems.get(position).getCategory().equals(PublicVariable.categoryName)) {
-                        PublicVariable.categoryName = navDrawerItems.get(position).getCategory();
+                    if (adapterItems.get(position).getCategory().equals(PublicVariable.categoryName)) {
+                        PublicVariable.categoryName = adapterItems.get(position).getCategory();
                         context.startActivity(new Intent(context, AppSelectionList.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     } else {
-                        String[] appsContent = functionsClass.readFileLine(navDrawerItems.get(position).getCategory());
+                        String[] appsContent = functionsClass.readFileLine(adapterItems.get(position).getCategory());
                         if (PublicVariable.categoryName.length() == 0) {
                             PublicVariable.categoryName = PublicVariable.categoryName + "_" + System.currentTimeMillis();
                         }
                         for (String appContent : appsContent) {
-                            context.deleteFile(appContent + navDrawerItems.get(position).getCategory());
+                            context.deleteFile(appContent + adapterItems.get(position).getCategory());
                             functionsClass.saveFileAppendLine(PublicVariable.categoryName, appContent);
                             functionsClass.saveFile(appContent + PublicVariable.categoryName, appContent);
                         }
                         functionsClass.saveFileAppendLine(".categoryInfo", PublicVariable.categoryName);
-                        functionsClass.removeLine(".categoryInfo", navDrawerItems.get(position).getCategory());
-                        context.deleteFile(navDrawerItems.get(position).getCategory());
+                        functionsClass.removeLine(".categoryInfo", adapterItems.get(position).getCategory());
+                        context.deleteFile(adapterItems.get(position).getCategory());
                         context.startActivity(new Intent(context, AppSelectionList.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     }
                 } else {
@@ -232,18 +232,18 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
         viewHolderBinder.selectedApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
+                if (!adapterItems.get(position).getCategory().equals(context.getPackageName())) {
                     functionsClass
-                            .runUnlimiteFolderService(navDrawerItems.get(position).getCategory());
+                            .runUnlimitedFolderService(adapterItems.get(position).getCategory());
                 }
             }
         });
         viewHolderBinder.selectedApp.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
+                if (!adapterItems.get(position).getCategory().equals(context.getPackageName())) {
                     PublicVariable.itemPosition = position;
-                    String categoryName = navDrawerItems.get(position).getCategory();
+                    String categoryName = adapterItems.get(position).getCategory();
                     functionsClass.popupOptionCategory(context, view, categoryName, position);
                 }
                 return true;
@@ -252,18 +252,18 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
         viewHolderBinder.runCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
+                if (!adapterItems.get(position).getCategory().equals(context.getPackageName())) {
                     functionsClass
-                            .runUnlimiteFolderService(navDrawerItems.get(position).getCategory());
+                            .runUnlimitedFolderService(adapterItems.get(position).getCategory());
                 }
             }
         });
         viewHolderBinder.runCategory.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (!navDrawerItems.get(position).getCategory().equals(context.getPackageName())) {
+                if (!adapterItems.get(position).getCategory().equals(context.getPackageName())) {
                     PublicVariable.itemPosition = position;
-                    String categoryName = navDrawerItems.get(position).getCategory();
+                    String categoryName = adapterItems.get(position).getCategory();
                     functionsClass.popupOptionCategory(context, view, categoryName, position);
                 }
                 return true;
@@ -282,7 +282,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
 
     @Override
     public int getItemCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

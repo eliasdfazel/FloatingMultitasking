@@ -23,7 +23,7 @@ import net.geekstools.floatshort.PRO.Automation.Alarms.TimeDialogue;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 import java.io.File;
@@ -46,12 +46,12 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
 
     String autoIdAppend;
 
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    private ArrayList<AdapterItems> adapterItems;
 
-    public CategoryAutoListAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems) {
+    public CategoryAutoListAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems) {
         this.activity = activity;
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
 
         functionsClass = new FunctionsClass(context, activity);
 
@@ -91,10 +91,10 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
 
         viewHolderBinder.autoChoice.setButtonTintList(ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite));
 
-        final String nameCategory = navDrawerItems.get(position).getCategory();
-        final String[] categoryPackages = navDrawerItems.get(position).getPackageNames();
+        final String nameCategory = adapterItems.get(position).getCategory();
+        final String[] categoryPackages = adapterItems.get(position).getPackageNames();
 
-        viewHolderBinder.categoryName.setText(navDrawerItems.get(position).getCategory());
+        viewHolderBinder.categoryName.setText(adapterItems.get(position).getCategory());
         viewHolderBinder.timeView.setText(String.valueOf(nameCategory.charAt(0)).toUpperCase());
 
         if (nameCategory.equals(context.getPackageName())) {
@@ -133,7 +133,7 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
                 if (autoFile.exists()) {
                     viewHolderBinder.autoChoice.setChecked(true);
                     viewHolderBinder.timeView.setTextSize(15);
-                    viewHolderBinder.timeView.setText(navDrawerItems.get(position).getTimes());
+                    viewHolderBinder.timeView.setText(adapterItems.get(position).getTimes());
                     viewHolderBinder.timeView.setVisibility(View.VISIBLE);
                 } else {
                     viewHolderBinder.autoChoice.setChecked(false);
@@ -159,46 +159,46 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
                     Toast.makeText(context, context.getString(R.string.retry), Toast.LENGTH_LONG).show();
                 } else {
                     if (PublicVariable.autoID.equals(context.getString(R.string.time_category))) {
-                        final String nameCategory = navDrawerItems.get(position).getCategory();
+                        final String nameCategory = adapterItems.get(position).getCategory();
 
                         File autoFile = context.getFileStreamPath(nameCategory + "." + autoIdAppend);
                         if (autoFile.exists()) {
                             context.deleteFile(
-                                    navDrawerItems.get(position).getCategory() + "." + autoIdAppend);
+                                    adapterItems.get(position).getCategory() + "." + autoIdAppend);
                             functionsClass.removeLine(
-                                    navDrawerItems.get(position).getTimes(),
-                                    navDrawerItems.get(position).getCategory());
-                            if (functionsClass.countLineInnerFile(navDrawerItems.get(position).getCategory()) == 0) {
-                                context.deleteFile(navDrawerItems.get(position).getTimes());
+                                    adapterItems.get(position).getTimes(),
+                                    adapterItems.get(position).getCategory());
+                            if (functionsClass.countLineInnerFile(adapterItems.get(position).getCategory()) == 0) {
+                                context.deleteFile(adapterItems.get(position).getTimes());
                             }
 
-                            functionsClass.removeLine(".times.clocks", navDrawerItems.get(position).getTimes());
+                            functionsClass.removeLine(".times.clocks", adapterItems.get(position).getTimes());
                             viewHolderBinder.autoChoice.setChecked(false);
                             viewHolderBinder.timeView.setTextSize(50);
-                            viewHolderBinder.timeView.setText(String.valueOf(navDrawerItems.get(position).getCategory().charAt(0)).toUpperCase());
+                            viewHolderBinder.timeView.setText(String.valueOf(adapterItems.get(position).getCategory().charAt(0)).toUpperCase());
                         } else {
                             viewHolderBinder.autoChoice.setChecked(true);
                             context.startActivity(
                                     new Intent(context, TimeDialogue.class)
-                                            .putExtra("content", navDrawerItems.get(position).getCategory())
+                                            .putExtra("content", adapterItems.get(position).getCategory())
                                             .putExtra("type", "CATEGORY")
                                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
                     } else {
-                        final String nameCategory = navDrawerItems.get(position).getCategory();
+                        final String nameCategory = adapterItems.get(position).getCategory();
                         File autoFile = context.getFileStreamPath(nameCategory + "." + autoIdAppend);
                         if (autoFile.exists()) {
                             context.deleteFile(
-                                    navDrawerItems.get(position).getCategory() + "." + autoIdAppend);
-                            functionsClass.removeLine(".auto" + autoIdAppend + "Category", navDrawerItems.get(position).getCategory());
+                                    adapterItems.get(position).getCategory() + "." + autoIdAppend);
+                            functionsClass.removeLine(".auto" + autoIdAppend + "Category", adapterItems.get(position).getCategory());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
-                                    navDrawerItems.get(position).getCategory() + "." + autoIdAppend,
-                                    navDrawerItems.get(position).getCategory());
+                                    adapterItems.get(position).getCategory() + "." + autoIdAppend,
+                                    adapterItems.get(position).getCategory());
                             functionsClass.saveFileAppendLine(
                                     ".auto" + autoIdAppend + "Category",
-                                    navDrawerItems.get(position).getCategory());
+                                    adapterItems.get(position).getCategory());
                             viewHolderBinder.autoChoice.setChecked(true);
                         }
                     }
@@ -227,7 +227,7 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
 
     @Override
     public int getItemCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

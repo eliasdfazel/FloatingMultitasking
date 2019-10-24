@@ -21,7 +21,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
 
     FunctionsClass functionsClass;
 
-    ArrayList<NavDrawerItem> navDrawerItems;
+    ArrayList<AdapterItems> adapterItems;
 
     View view;
     ViewHolder viewHolder;
@@ -48,11 +48,11 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
 
     AppWidgetHost appWidgetHost;
 
-    public InstalledWidgetsAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems, AppWidgetHost appWidgetHost) {
+    public InstalledWidgetsAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems, AppWidgetHost appWidgetHost) {
         this.context = context;
         this.activity = activity;
 
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
 
         this.appWidgetHost = appWidgetHost;
 
@@ -69,8 +69,8 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
     @Override
     public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
 
-        viewHolder.widgetPreview.setImageDrawable(navDrawerItems.get(position).getWidgetPreview());
-        viewHolder.widgetLabel.setText(navDrawerItems.get(position).getWidgetLabel());
+        viewHolder.widgetPreview.setImageDrawable(adapterItems.get(position).getWidgetPreview());
+        viewHolder.widgetLabel.setText(adapterItems.get(position).getWidgetLabel());
         viewHolder.widgetLabel.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
 
         viewHolder.widgetitem.setOnClickListener(new View.OnClickListener() {
@@ -84,12 +84,12 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
             public boolean onLongClick(View view) {
                 functionsClass.doVibrate(77);
 
-                pickedWidgetPackageName = navDrawerItems.get(position).getPackageName();
-                pickedWidgetClassNameProvider = navDrawerItems.get(position).getClassNameProviderWidget();
-                pickedWidgetConfigClassName = navDrawerItems.get(position).getConfigClassNameWidget();
-                pickedAppWidgetProviderInfo = navDrawerItems.get(position).getAppWidgetProviderInfo();
+                pickedWidgetPackageName = adapterItems.get(position).getPackageName();
+                pickedWidgetClassNameProvider = adapterItems.get(position).getClassNameProviderWidget();
+                pickedWidgetConfigClassName = adapterItems.get(position).getConfigClassNameWidget();
+                pickedAppWidgetProviderInfo = adapterItems.get(position).getAppWidgetProviderInfo();
                 pickedWidgetId = appWidgetHost.allocateAppWidgetId();
-                pickedWidgetLabel = navDrawerItems.get(position).getWidgetLabel();
+                pickedWidgetLabel = adapterItems.get(position).getWidgetLabel();
 
                 ComponentName provider = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetClassNameProvider);
                 FunctionsClassDebug.Companion.PrintDebug("*** Provider Widget = " + provider);
@@ -131,7 +131,7 @@ public class InstalledWidgetsAdapter extends RecyclerView.Adapter<InstalledWidge
 
     @Override
     public int getItemCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

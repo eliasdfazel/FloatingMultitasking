@@ -76,7 +76,7 @@ public class RecoveryFolders extends Service {
                                 if (runService == true) {
                                     try {
                                         categoryName = aCategoryData;
-                                        functionsClass.runUnlimiteFolderService(categoryName);
+                                        functionsClass.runUnlimitedFolderService(categoryName);
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -114,7 +114,7 @@ public class RecoveryFolders extends Service {
                     if (runService == true) {
                         try {
                             categoryName = aCategoryData;
-                            functionsClass.runUnlimiteFolderService(categoryName);
+                            functionsClass.runUnlimitedFolderService(categoryName);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

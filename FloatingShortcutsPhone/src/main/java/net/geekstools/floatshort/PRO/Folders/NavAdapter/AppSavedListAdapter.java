@@ -19,7 +19,7 @@ import android.widget.TextView;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 
 import java.util.ArrayList;
 
@@ -29,12 +29,12 @@ public class AppSavedListAdapter extends BaseAdapter {
     int splitNumber = 1, layoutInflater;
     private Context context;
     private Activity activity;
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    private ArrayList<AdapterItems> adapterItems;
 
-    public AppSavedListAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems, int splitNumber) {
+    public AppSavedListAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems, int splitNumber) {
         this.activity = activity;
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
         this.splitNumber = splitNumber;
 
         functionsClass = new FunctionsClass(context, activity);
@@ -60,12 +60,12 @@ public class AppSavedListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return navDrawerItems.get(position);
+        return adapterItems.get(position);
     }
 
     @Override
@@ -101,8 +101,8 @@ public class AppSavedListAdapter extends BaseAdapter {
         viewHolder.confirmItem.setBackground(drawConfirm);
         viewHolder.textAppName.setTextColor(context.getColor(R.color.light));
 
-        viewHolder.imgIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
-        viewHolder.textAppName.setText(navDrawerItems.get(position).getAppName());
+        viewHolder.imgIcon.setImageDrawable(adapterItems.get(position).getAppIcon());
+        viewHolder.textAppName.setText(adapterItems.get(position).getAppName());
 
         viewHolder.items.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,10 +113,10 @@ public class AppSavedListAdapter extends BaseAdapter {
         viewHolder.deleteItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.deleteFile(navDrawerItems.get(position).getPackageName()
+                context.deleteFile(adapterItems.get(position).getPackageName()
                         + PublicVariable.categoryName);
                 functionsClass.removeLine(PublicVariable.categoryName,
-                        navDrawerItems.get(position).getPackageName());
+                        adapterItems.get(position).getPackageName());
                 context.sendBroadcast(new Intent(context.getString(R.string.checkboxActionAdvance)));
                 context.sendBroadcast(new Intent(context.getString(R.string.counterActionAdvance)));
             }
@@ -125,9 +125,9 @@ public class AppSavedListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 if (splitNumber == 1) {
-                    functionsClass.saveFile(PublicVariable.categoryName + ".SplitOne", navDrawerItems.get(position).getPackageName());
+                    functionsClass.saveFile(PublicVariable.categoryName + ".SplitOne", adapterItems.get(position).getPackageName());
                 } else if (splitNumber == 2) {
-                    functionsClass.saveFile(PublicVariable.categoryName + ".SplitTwo", navDrawerItems.get(position).getPackageName());
+                    functionsClass.saveFile(PublicVariable.categoryName + ".SplitTwo", adapterItems.get(position).getPackageName());
                 }
                 context.sendBroadcast(new Intent(context.getString(R.string.splitActionAdvance)));
                 context.sendBroadcast(new Intent(context.getString(R.string.visibilityActionAdvance)));

@@ -146,7 +146,7 @@ import net.geekstools.floatshort.PRO.Shortcuts.HybridAppsList;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.OpenApplicationsLaunchPad;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.FloatingWidgetHomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RemoteController;
@@ -196,7 +196,7 @@ public class FunctionsClass {
 
     FunctionsClassSecurity functionsClassSecurity;
 
-    ArrayList<NavDrawerItem> navDrawerItems;
+    ArrayList<AdapterItems> adapterItems;
 
     public FunctionsClass(Context context) {
         this.context = context;
@@ -733,7 +733,7 @@ public class FunctionsClass {
     }
 
     /*Category Function*/
-    public void runUnlimiteFolderService(String categoryName) {
+    public void runUnlimitedFolderService(String categoryName) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -1004,7 +1004,7 @@ public class FunctionsClass {
         Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(50);
 
-        ArrayList<NavDrawerItem> navDrawerItemsSaved = new ArrayList<NavDrawerItem>();
+        ArrayList<AdapterItems> navDrawerItemsSaved = new ArrayList<AdapterItems>();
         try {
             int W = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     221,
@@ -1020,7 +1020,7 @@ public class FunctionsClass {
             String[] packageContentTime = readFileLine(notificationPackage + "_" + "Notification" + "Package");
             for (String notificationTime : packageContentTime) {
                 navDrawerItemsSaved.add(
-                        new NavDrawerItem(
+                        new AdapterItems(
                                 notificationTime,
                                 notificationPackage,
                                 appName(notificationPackage),
@@ -3962,7 +3962,7 @@ public class FunctionsClass {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == 0) {
                     PublicVariable.size = 26;
-                    runUnlimiteFolderService(categoryName);
+                    runUnlimitedFolderService(categoryName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -3972,7 +3972,7 @@ public class FunctionsClass {
                     }, 100);
                 } else if (item.getItemId() == 1) {
                     PublicVariable.size = 52;
-                    runUnlimiteFolderService(categoryName);
+                    runUnlimitedFolderService(categoryName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -3982,7 +3982,7 @@ public class FunctionsClass {
                     }, 100);
                 } else if (item.getItemId() == 2) {
                     PublicVariable.size = 78;
-                    runUnlimiteFolderService(categoryName);
+                    runUnlimitedFolderService(categoryName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -5430,12 +5430,12 @@ public class FunctionsClass {
                 drawFloating,
         };
 
-        navDrawerItems = new ArrayList<NavDrawerItem>();
+        adapterItems = new ArrayList<AdapterItems>();
         for (int navItem = 0; navItem < charSequence.length; navItem++) {
             CharSequence itemText = charSequence[navItem];
             Drawable itemIcon = drawables[navItem];
 
-            navDrawerItems.add(new NavDrawerItem(itemText, itemIcon));
+            adapterItems.add(new AdapterItems(itemText, itemIcon));
         }
 
         if (appThemeTransparent() == true) {

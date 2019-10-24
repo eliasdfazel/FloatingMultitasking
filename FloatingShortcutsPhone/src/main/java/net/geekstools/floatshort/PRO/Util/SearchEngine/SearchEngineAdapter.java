@@ -19,7 +19,7 @@ import android.widget.TextView;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -33,18 +33,18 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
     int layoutInflater, searchResultType;
 
-    private ArrayList<NavDrawerItem> dataListAllItems;
+    private ArrayList<AdapterItems> dataListAllItems;
 
-    public static ArrayList<NavDrawerItem> allSearchResultItems = new ArrayList<NavDrawerItem>();
+    public static ArrayList<AdapterItems> allSearchResultItems = new ArrayList<AdapterItems>();
 
-    public SearchEngineAdapter(Context context, ArrayList<NavDrawerItem> allSearchResultItems, int searchResultType) {
+    public SearchEngineAdapter(Context context, ArrayList<AdapterItems> allSearchResultItems, int searchResultType) {
         this.context = context;
         this.searchResultType = searchResultType;
 
 //        SearchEngineAdapter.allSearchResultItems = allSearchResultItems;
         SearchEngineAdapter.allSearchResultItems.addAll(allSearchResultItems);
 
-        Set<NavDrawerItem> stringHashSet = new LinkedHashSet<NavDrawerItem>(SearchEngineAdapter.allSearchResultItems);
+        Set<AdapterItems> stringHashSet = new LinkedHashSet<AdapterItems>(SearchEngineAdapter.allSearchResultItems);
         SearchEngineAdapter.allSearchResultItems.clear();
         SearchEngineAdapter.allSearchResultItems.addAll(stringHashSet);
 
@@ -169,7 +169,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                     }
                     case SearchResultType.SearchFolders: {
                         functionsClass
-                                .runUnlimiteFolderService(allSearchResultItems.get(position).getCategory());
+                                .runUnlimitedFolderService(allSearchResultItems.get(position).getCategory());
 
                         break;
                     }
@@ -214,7 +214,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
             FilterResults results = new FilterResults();
             if (dataListAllItems == null) {
                 synchronized (lock) {
-                    dataListAllItems = new ArrayList<NavDrawerItem>(allSearchResultItems);
+                    dataListAllItems = new ArrayList<AdapterItems>(allSearchResultItems);
                 }
             }
 
@@ -226,8 +226,8 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
             } else {
                 final String searchStrLowerCase = prefix.toString().toLowerCase();
 
-                ArrayList<NavDrawerItem> matchValues = new ArrayList<NavDrawerItem>();
-                for (NavDrawerItem dataItem : dataListAllItems) {
+                ArrayList<AdapterItems> matchValues = new ArrayList<AdapterItems>();
+                for (AdapterItems dataItem : dataListAllItems) {
                     /*Add Switch To Change for Different Type: Apps/Folders/Widgets*/
                     switch (dataItem.getSearchResultType()) {
                         case SearchResultType.SearchShortcuts: {
@@ -265,7 +265,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             if (results.values != null) {
-                allSearchResultItems = (ArrayList<NavDrawerItem>) results.values;
+                allSearchResultItems = (ArrayList<AdapterItems>) results.values;
             } else {
                 allSearchResultItems = null;
             }

@@ -44,7 +44,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterFull;
 
@@ -65,7 +65,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
     Button wifi, bluetooth, gps, nfc, time, autoApps, autoCategories;
 
     String AppTime;
-    ArrayList<NavDrawerItem> navDrawerItems;
+    ArrayList<AdapterItems> adapterItems;
     RecyclerView.Adapter categoryAutoListAdapter;
     LinearLayoutManager recyclerViewLayoutManager;
 
@@ -141,7 +141,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
 
-        navDrawerItems = new ArrayList<NavDrawerItem>();
+        adapterItems = new ArrayList<AdapterItems>();
 
         recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);
         categorylist.setLayoutManager(recyclerViewLayoutManager);
@@ -667,7 +667,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
                     FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                 }
 
-                navDrawerItems = new ArrayList<NavDrawerItem>();
+                adapterItems = new ArrayList<AdapterItems>();
                 for (int navItem = 0; navItem < appData.length; navItem++) {
                     try {
                         if (getFileStreamPath(appData[navItem] + ".Time").exists()) {
@@ -679,7 +679,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
                             }
                         }
 
-                        navDrawerItems.add(new NavDrawerItem(
+                        adapterItems.add(new AdapterItems(
                                 appData[navItem],
                                 functionsClass.readFileLine(appData[navItem]),
                                 AppTime));
@@ -687,7 +687,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
                         e.printStackTrace();
                     }
                 }
-                categoryAutoListAdapter = new CategoryAutoListAdapter(activity, getApplicationContext(), navDrawerItems);
+                categoryAutoListAdapter = new CategoryAutoListAdapter(activity, getApplicationContext(), adapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 startActivity(new Intent(getApplicationContext(), FoldersHandler.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

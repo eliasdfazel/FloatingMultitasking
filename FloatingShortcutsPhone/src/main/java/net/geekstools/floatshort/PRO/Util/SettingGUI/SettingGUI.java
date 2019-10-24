@@ -78,8 +78,8 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.CustomIconsThemeAdapter;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutList;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
@@ -1533,16 +1533,16 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         RecycleViewSmoothLayoutList recyclerViewLayoutManager = new RecycleViewSmoothLayoutList(getApplicationContext(), OrientationHelper.VERTICAL, false);
         customIconList.setLayoutManager(recyclerViewLayoutManager);
         customIconList.removeAllViews();
-        final ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
-        navDrawerItems.clear();
+        final ArrayList<AdapterItems> adapterItems = new ArrayList<AdapterItems>();
+        adapterItems.clear();
         for (String packageName : PublicVariable.customIconsPackages) {
-            navDrawerItems.add(new NavDrawerItem(
+            adapterItems.add(new AdapterItems(
                     functionsClass.appName(packageName),
                     packageName,
                     functionsClass.appIcon(packageName)
             ));
         }
-        CustomIconsThemeAdapter customIconsThemeAdapter = new CustomIconsThemeAdapter(SettingGUI.this, getApplicationContext(), navDrawerItems);
+        CustomIconsThemeAdapter customIconsThemeAdapter = new CustomIconsThemeAdapter(SettingGUI.this, getApplicationContext(), adapterItems);
         customIconList.setAdapter(customIconsThemeAdapter);
 
         defaultTheme.setOnClickListener(new View.OnClickListener() {
@@ -1566,7 +1566,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                navDrawerItems.clear();
+                adapterItems.clear();
 
                 if (!currentCustomIconPack.equals(sharedPreferences.getString("customIcon", getPackageName()))) {
                     PublicVariable.forceReload = true;

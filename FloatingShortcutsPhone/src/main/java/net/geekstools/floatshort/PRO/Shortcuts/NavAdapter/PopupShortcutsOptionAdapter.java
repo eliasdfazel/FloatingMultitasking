@@ -25,7 +25,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,14 +41,14 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
 
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    private ArrayList<AdapterItems> adapterItems;
     private String packageName, className, classNameCommand;
     private int startId;
 
-    public PopupShortcutsOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems,
+    public PopupShortcutsOptionAdapter(Context context, ArrayList<AdapterItems> adapterItems,
                                        String classNameCommand, String packageName, int startId) {
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
         this.classNameCommand = classNameCommand;
         this.packageName = packageName;
         this.startId = startId;
@@ -59,10 +59,10 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         FunctionsClassDebug.Companion.PrintDebug("*** Command ClassName ::: " + classNameCommand + " ***");
     }
 
-    public PopupShortcutsOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems,
+    public PopupShortcutsOptionAdapter(Context context, ArrayList<AdapterItems> adapterItems,
                                        String classNameCommand, String packageName, String className, int startId) {
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
         this.classNameCommand = classNameCommand;
         this.packageName = packageName;
         this.className = className;
@@ -76,12 +76,12 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return navDrawerItems.get(position);
+        return adapterItems.get(position);
     }
 
     @Override
@@ -105,8 +105,8 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.imgIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
-        viewHolder.textAppName.setText(navDrawerItems.get(position).getPackageName());
+        viewHolder.imgIcon.setImageDrawable(adapterItems.get(position).getAppIcon());
+        viewHolder.textAppName.setText(adapterItems.get(position).getPackageName());
 
         int itemsListColor = 0;
         if (functionsClass.appThemeTransparent() == true) {
@@ -124,7 +124,7 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (navDrawerItems.get(position).getPackageName().equals(context.getString(R.string.splitIt))) {
+                if (adapterItems.get(position).getPackageName().equals(context.getString(R.string.splitIt))) {
                     if (functionsClassSecurity.isAppLocked(packageName)) {
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packageName);
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(className);
@@ -152,13 +152,13 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
                             accessibilityManager.sendAccessibilityEvent(event);
                         }
                     }
-                } else if (navDrawerItems.get(position).getPackageName().equals(context.getString(R.string.pin))) {
+                } else if (adapterItems.get(position).getPackageName().equals(context.getString(R.string.pin))) {
                     context.sendBroadcast(new Intent("Pin_App_" + classNameCommand).putExtra("startId", startId));
-                } else if (navDrawerItems.get(position).getPackageName().equals(context.getString(R.string.unpin))) {
+                } else if (adapterItems.get(position).getPackageName().equals(context.getString(R.string.unpin))) {
                     context.sendBroadcast(new Intent("Unpin_App_" + classNameCommand).putExtra("startId", startId));
-                } else if (navDrawerItems.get(position).getPackageName().equals(context.getString(R.string.floatIt))) {
+                } else if (adapterItems.get(position).getPackageName().equals(context.getString(R.string.floatIt))) {
                     context.sendBroadcast(new Intent("Float_It_" + classNameCommand).putExtra("startId", startId));
-                } else if (navDrawerItems.get(position).getPackageName().equals(context.getString(R.string.close))) {
+                } else if (adapterItems.get(position).getPackageName().equals(context.getString(R.string.close))) {
                     if (functionsClass.UsageStatsEnabled()) {
                         try {
                             UsageStatsManager mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
@@ -184,7 +184,7 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
                             e.printStackTrace();
                         }
                     }
-                } else if (navDrawerItems.get(position).getPackageName().equals(context.getString(R.string.remove))) {
+                } else if (adapterItems.get(position).getPackageName().equals(context.getString(R.string.remove))) {
                     context.sendBroadcast(new Intent("Remove_App_" + classNameCommand).putExtra("startId", startId));
                 }
                 context.sendBroadcast(new Intent("Hide_PopupListView_Shortcuts"));

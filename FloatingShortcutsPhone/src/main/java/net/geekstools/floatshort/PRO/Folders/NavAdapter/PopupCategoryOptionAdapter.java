@@ -21,7 +21,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.imageview.customshapes.ShapesImage;
@@ -40,14 +40,14 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
     Drawable splitOne = null, splitTwo = null;
     LoadCustomIcons loadCustomIcons;
 
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    private ArrayList<AdapterItems> adapterItems;
 
     private String folderName, classNameCommand;
     private int startId, layoutInflater, xPosition, yPosition, HW;
 
-    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String folderName, String classNameCommand, int startId) {
+    public PopupCategoryOptionAdapter(Context context, ArrayList<AdapterItems> adapterItems, String folderName, String classNameCommand, int startId) {
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
 
         this.folderName = folderName;
         this.classNameCommand = classNameCommand;
@@ -82,10 +82,10 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         }
     }
 
-    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String folderName, String classNameCommand, int startId,
+    public PopupCategoryOptionAdapter(Context context, ArrayList<AdapterItems> adapterItems, String folderName, String classNameCommand, int startId,
                                       int xPosition, int yPosition, int HW) {
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
 
         this.folderName = folderName;
         this.classNameCommand = classNameCommand;
@@ -125,12 +125,12 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return navDrawerItems.get(position);
+        return adapterItems.get(position);
     }
 
     @Override
@@ -157,32 +157,32 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         }
 
         try {
-            if (context.getFileStreamPath(navDrawerItems.get(position).getPackageName() + ".SplitOne").exists()
-                    && context.getFileStreamPath(navDrawerItems.get(position).getPackageName() + ".SplitTwo").exists()
-                    && navDrawerItems.get(position).getAppName().equals(context.getString(R.string.splitIt))) {
+            if (context.getFileStreamPath(adapterItems.get(position).getPackageName() + ".SplitOne").exists()
+                    && context.getFileStreamPath(adapterItems.get(position).getPackageName() + ".SplitTwo").exists()
+                    && adapterItems.get(position).getAppName().equals(context.getString(R.string.splitIt))) {
                 splitOne = functionsClass.loadCustomIcons() ?
-                        loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(navDrawerItems.get(position).getPackageName() + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(navDrawerItems.get(position).getPackageName() + ".SplitOne")))
+                        loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitOne")))
                         :
-                        functionsClass.shapedAppIcon(functionsClass.readFile(navDrawerItems.get(position).getPackageName() + ".SplitOne"));
+                        functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitOne"));
                 splitTwo = functionsClass.loadCustomIcons() ?
-                        loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(navDrawerItems.get(position).getPackageName() + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(navDrawerItems.get(position).getPackageName() + ".SplitTwo")))
+                        loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitTwo")))
                         :
-                        functionsClass.shapedAppIcon(functionsClass.readFile(navDrawerItems.get(position).getPackageName() + ".SplitTwo"));
+                        functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitTwo"));
 
                 viewHolder.split_one.setImageDrawable(splitOne);
                 viewHolder.split_two.setImageDrawable(splitTwo);
 
                 viewHolder.split_one.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
                 viewHolder.split_two.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
-            } else if (navDrawerItems.get(position).getAppName().equals(context.getString(R.string.splitIt))) {
+            } else if (adapterItems.get(position).getAppName().equals(context.getString(R.string.splitIt))) {
                 splitOne = functionsClass.loadCustomIcons() ?
-                        loadCustomIcons.getDrawableIconForPackage(functionsClass.readFileLine(navDrawerItems.get(position).getPackageName())[0], functionsClass.shapedAppIcon(functionsClass.readFileLine(navDrawerItems.get(position).getPackageName())[0]))
+                        loadCustomIcons.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[0], functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[0]))
                         :
-                        functionsClass.shapedAppIcon(functionsClass.readFileLine(navDrawerItems.get(position).getPackageName())[0]);
+                        functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[0]);
                 splitTwo = functionsClass.loadCustomIcons() ?
-                        loadCustomIcons.getDrawableIconForPackage(functionsClass.readFileLine(navDrawerItems.get(position).getPackageName())[1], functionsClass.shapedAppIcon(functionsClass.readFileLine(navDrawerItems.get(position).getPackageName())[1]))
+                        loadCustomIcons.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[1], functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[1]))
                         :
-                        functionsClass.shapedAppIcon(functionsClass.readFileLine(navDrawerItems.get(position).getPackageName())[1]);
+                        functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[1]);
 
                 viewHolder.split_one.setImageDrawable(splitOne);
                 viewHolder.split_two.setImageDrawable(splitTwo);
@@ -197,8 +197,8 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
             e.printStackTrace();
         }
 
-        viewHolder.imgIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
-        viewHolder.textAppName.setText(navDrawerItems.get(position).getAppName());
+        viewHolder.imgIcon.setImageDrawable(adapterItems.get(position).getAppIcon());
+        viewHolder.textAppName.setText(adapterItems.get(position).getAppName());
 
         viewHolder.imgIcon.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
         viewHolder.textAppName.setAlpha(functionsClass.readDefaultPreference("autoTrans", 255) < 130 ? 0.70f : 1.0f);
@@ -220,17 +220,17 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 try {
-                    if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.edit_category))) {
+                    if (adapterItems.get(position).getAppName().contains(context.getString(R.string.edit_category))) {
                         context.startActivity(new Intent(context, FoldersHandler.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.remove_category))) {
+                    } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.remove_category))) {
                         context.sendBroadcast(new Intent("Remove_Category_" + classNameCommand).putExtra("startId", startId));
-                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.unpin_category))) {
+                    } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.unpin_category))) {
                         context.sendBroadcast(new Intent("Unpin_App_" + classNameCommand).putExtra("startId", startId));
-                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.pin_category))) {
+                    } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.pin_category))) {
                         context.sendBroadcast(new Intent("Pin_App_" + classNameCommand).putExtra("startId", startId));
-                    } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.splitIt))) {
-                        if (functionsClassSecurity.isAppLocked(navDrawerItems.get(position).getPackageName()) || functionsClassSecurity.isAppLocked(folderName)) {
+                    } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.splitIt))) {
+                        if (functionsClassSecurity.isAppLocked(adapterItems.get(position).getPackageName()) || functionsClassSecurity.isAppLocked(folderName)) {
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(folderName);
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthPairSplitIt(true);
 
@@ -254,8 +254,8 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                             }
                         }
                     } else {
-                        if (functionsClassSecurity.isAppLocked(navDrawerItems.get(position).getPackageName()) || functionsClassSecurity.isAppLocked(folderName)) {
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(navDrawerItems.get(position).getPackageName());
+                        if (functionsClassSecurity.isAppLocked(adapterItems.get(position).getPackageName()) || functionsClassSecurity.isAppLocked(folderName)) {
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(adapterItems.get(position).getPackageName());
 
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(xPosition);
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(yPosition);
@@ -264,21 +264,21 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                             functionsClassSecurity.openAuthInvocation();
                         } else if (functionsClass.splashReveal()) {
                             Intent splashReveal = new Intent(context, FloatingSplash.class);
-                            splashReveal.putExtra("packageName", navDrawerItems.get(position).getPackageName());
+                            splashReveal.putExtra("packageName", adapterItems.get(position).getPackageName());
                             splashReveal.putExtra("X", xPosition);
                             splashReveal.putExtra("Y", yPosition);
                             splashReveal.putExtra("HW", HW);
                             context.startService(splashReveal);
                         } else {
                             if (functionsClass.FreeForm()) {
-                                functionsClass.openApplicationFreeForm(navDrawerItems.get(position).getPackageName(),
+                                functionsClass.openApplicationFreeForm(adapterItems.get(position).getPackageName(),
                                         xPosition,
                                         (functionsClass.displayX() / 2),
                                         yPosition,
                                         (functionsClass.displayY() / 2)
                                 );
                             } else {
-                                functionsClass.appsLaunchPad(navDrawerItems.get(position).getPackageName());
+                                functionsClass.appsLaunchPad(adapterItems.get(position).getPackageName());
                             }
                         }
 
@@ -298,7 +298,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                                 .putExtra(context.getString(R.string.splitIt), context.getPackageName())
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     } else {
-                        PublicVariable.splitSinglePackage = navDrawerItems.get(position).getPackageName();
+                        PublicVariable.splitSinglePackage = adapterItems.get(position).getPackageName();
                         if (functionsClass.appIsInstalled(PublicVariable.splitSinglePackage)) {
                             final AccessibilityManager accessibilityManager = (AccessibilityManager) context.getSystemService(ACCESSIBILITY_SERVICE);
                             AccessibilityEvent event = AccessibilityEvent.obtain();

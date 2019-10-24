@@ -22,7 +22,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -46,12 +46,12 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
 
     LoadCustomIcons loadCustomIcons;
 
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    private ArrayList<AdapterItems> adapterItems;
 
-    public AppSelectionListAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems) {
+    public AppSelectionListAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems) {
         this.activity = activity;
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
 
         functionsClass = new FunctionsClass(context, activity);
         functionsClassSecurity = new FunctionsClassSecurity(context);
@@ -99,7 +99,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
     @Override
     public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
         try {
-            final String packageName = navDrawerItems.get(position).getPackageName();
+            final String packageName = adapterItems.get(position).getPackageName();
             File autoFile = context.getFileStreamPath(packageName + PublicVariable.categoryName);
             viewHolderBinder.autoChoice.setChecked(false);
             if (autoFile.exists()) {
@@ -115,8 +115,8 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                 viewHolderBinder.autoChoice.setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.light)));
             }
 
-            viewHolder.appIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
-            viewHolder.appName.setText(navDrawerItems.get(position).getAppName());
+            viewHolder.appIcon.setImageDrawable(adapterItems.get(position).getAppIcon());
+            viewHolder.appName.setText(adapterItems.get(position).getAppName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,11 +129,11 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                         fromY = -((dpHeight - motionEvent.getRawY()) - (systemUiHeight));
                         break;
                     case MotionEvent.ACTION_UP:
-                        final String pack = navDrawerItems.get(position).getPackageName();
+                        final String pack = adapterItems.get(position).getPackageName();
                         File autoFile = context.getFileStreamPath(pack + PublicVariable.categoryName);
                         if (autoFile.exists()) {
                             context.deleteFile(pack + PublicVariable.categoryName);
-                            functionsClass.removeLine(PublicVariable.categoryName, navDrawerItems.get(position).getPackageName());
+                            functionsClass.removeLine(PublicVariable.categoryName, adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                             context.sendBroadcast(new Intent(context.getString(R.string.counterActionAdvance)));
 
@@ -141,7 +141,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                             context.sendBroadcast(new Intent(context.getString(R.string.visibilityActionAdvance)));
 
                             if (functionsClassSecurity.isAppLocked(PublicVariable.categoryName)) {
-                                functionsClassSecurity.doUnlockApps(navDrawerItems.get(position).getPackageName());
+                                functionsClassSecurity.doUnlockApps(adapterItems.get(position).getPackageName());
                             }
                         } else {
                             functionsClass.saveFile(
@@ -151,7 +151,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                             viewHolderBinder.autoChoice.setChecked(true);
 
                             if (functionsClassSecurity.isAppLocked(PublicVariable.categoryName)) {
-                                functionsClassSecurity.doLockApps(navDrawerItems.get(position).getPackageName());
+                                functionsClassSecurity.doLockApps(adapterItems.get(position).getPackageName());
                             }
 
                             TranslateAnimation translateAnimation =
@@ -162,9 +162,9 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                             translateAnimation.setDuration((long) Math.abs(fromY));
 
                             tempIcon.setImageDrawable(functionsClass.loadCustomIcons() ?
-                                    loadCustomIcons.getDrawableIconForPackage(navDrawerItems.get(position).getPackageName(), functionsClass.shapedAppIcon(navDrawerItems.get(position).getPackageName()))
+                                    loadCustomIcons.getDrawableIconForPackage(adapterItems.get(position).getPackageName(), functionsClass.shapedAppIcon(adapterItems.get(position).getPackageName()))
                                     :
-                                    functionsClass.shapedAppIcon(navDrawerItems.get(position).getPackageName()));
+                                    functionsClass.shapedAppIcon(adapterItems.get(position).getPackageName()));
                             tempIcon.startAnimation(translateAnimation);
                             translateAnimation.setAnimationListener(new Animation.AnimationListener() {
                                 @Override
@@ -196,7 +196,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
 
     @Override
     public int getItemCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

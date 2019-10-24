@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.PopupShortcutsOptionAdapter;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
         }
 
         try {
-            ArrayList<NavDrawerItem> navDrawerItemsSaved = new ArrayList<NavDrawerItem>();
+            ArrayList<AdapterItems> navDrawerItemsSaved = new ArrayList<AdapterItems>();
             navDrawerItemsSaved.clear();
 
             List<String> popupItems = new ArrayList<String>();
@@ -220,7 +220,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
             }
 
             for (int i = 0; i < popupItems.size(); i++) {
-                navDrawerItemsSaved.add(new NavDrawerItem(
+                navDrawerItemsSaved.add(new AdapterItems(
                         popupItems.get(i),
                         popupItemsIcon));
             }

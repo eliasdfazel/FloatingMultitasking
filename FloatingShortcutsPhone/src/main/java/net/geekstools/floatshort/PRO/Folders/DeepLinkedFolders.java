@@ -30,7 +30,7 @@ public class DeepLinkedFolders extends Activity {
             CategoryName = incomingURI.substring(incomingURI.lastIndexOf(htmlSymbol) + 1);
             CategoryName = CategoryName.replace(htmlSymbolDelete, "");
 
-            functionsClass.runUnlimiteFolderService(CategoryName);
+            functionsClass.runUnlimitedFolderService(CategoryName);
         } catch (Exception e) {
             finish();
             return;

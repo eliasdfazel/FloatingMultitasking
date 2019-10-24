@@ -28,24 +28,24 @@ public class ActionListAdapter extends BaseAdapter {
     FunctionsClass functionsClass;
     private Activity activity;
     private Context context;
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    private ArrayList<AdapterItems> adapterItems;
 
-    public ActionListAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems) {
+    public ActionListAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems) {
         this.activity = activity;
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
 
         functionsClass = new FunctionsClass(context, activity);
     }
 
     @Override
     public int getCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return navDrawerItems.get(position);
+        return adapterItems.get(position);
     }
 
     @Override
@@ -74,13 +74,13 @@ public class ActionListAdapter extends BaseAdapter {
             viewHolder.txtTitle.setTextColor(context.getColor(R.color.light));
         }
 
-        viewHolder.imgIcon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
-        viewHolder.txtTitle.setText(navDrawerItems.get(position).getCharTitle());
+        viewHolder.imgIcon.setImageDrawable(adapterItems.get(position).getAppIcon());
+        viewHolder.txtTitle.setText(adapterItems.get(position).getCharTitle());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.automation))) {
+                if (adapterItems.get(position).getCharTitle().equals(context.getString(R.string.automation))) {
                     if (functionsClass.readPreference("OpenMode", "openClassName", HybridAppsList.class.getSimpleName())
                             .equals(FoldersHandler.class.getSimpleName())) {
                         Intent intent = new Intent(context, CategoryAutoFeatures.class);
@@ -95,17 +95,17 @@ public class ActionListAdapter extends BaseAdapter {
                     /*if (!functionsClass.wallpaperStaticLive()) {
                         activity.finish();
                     }*/
-                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.floatingCategory))) {
+                } else if (adapterItems.get(position).getCharTitle().equals(context.getString(R.string.floatingCategory))) {
                     Intent intent = new Intent(context, FoldersHandler.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     activity.overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
                     activity.finish();
-                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recoveryShortcuts))) {
+                } else if (adapterItems.get(position).getCharTitle().equals(context.getString(R.string.recoveryShortcuts))) {
                     Intent intent = new Intent(context, RecoveryShortcuts.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(intent);
-                } else if (navDrawerItems.get(position).getCharTitle().equals(context.getString(R.string.recover_category))) {
+                } else if (adapterItems.get(position).getCharTitle().equals(context.getString(R.string.recover_category))) {
                     Intent intent = new Intent(context, RecoveryFolders.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(intent);

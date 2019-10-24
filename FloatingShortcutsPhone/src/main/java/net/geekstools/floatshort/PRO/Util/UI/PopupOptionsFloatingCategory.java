@@ -18,7 +18,7 @@ import net.geekstools.floatshort.PRO.Folders.NavAdapter.PopupCategoryOptionAdapt
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 import java.util.ArrayList;
@@ -93,7 +93,7 @@ public class PopupOptionsFloatingCategory extends Service {
             }
 
             PublicVariable.splitPairPackage = categoryName;
-            ArrayList<NavDrawerItem> navDrawerItemsSaved = new ArrayList<NavDrawerItem>();
+            ArrayList<AdapterItems> navDrawerItemsSaved = new ArrayList<AdapterItems>();
             navDrawerItemsSaved.clear();
 
             if (MODE.equals("Options")) {
@@ -265,7 +265,7 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                 }
                 for (int i = 0; i < popupItems.length; i++) {
-                    navDrawerItemsSaved.add(new NavDrawerItem(
+                    navDrawerItemsSaved.add(new AdapterItems(
                             popupItems[i],
                             categoryName,
                             popupItemsIcon[i]));
@@ -292,7 +292,7 @@ public class PopupOptionsFloatingCategory extends Service {
                 switch (functionsClass.displaySection(xPosition, yPosition)) {
                     case FunctionsClass.DisplaySection.TopLeft:
                         for (String packageName : packagesNames) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
                                     functionsClass.loadCustomIcons() ?
@@ -300,7 +300,7 @@ public class PopupOptionsFloatingCategory extends Service {
                                             :
                                             functionsClass.shapedAppIcon(packageName)));
                         }
-                        navDrawerItemsSaved.add(new NavDrawerItem(
+                        navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_category) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
@@ -310,7 +310,7 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                     case FunctionsClass.DisplaySection.TopRight:
                         for (String packageName : packagesNames) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
                                     functionsClass.loadCustomIcons() ?
@@ -318,7 +318,7 @@ public class PopupOptionsFloatingCategory extends Service {
                                             :
                                             functionsClass.shapedAppIcon(packageName)));
                         }
-                        navDrawerItemsSaved.add(new NavDrawerItem(
+                        navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_category) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
@@ -327,12 +327,12 @@ public class PopupOptionsFloatingCategory extends Service {
                         itemMenuView.setY(yPosition + HW + functionsClass.DpToInteger(19));
                         break;
                     case FunctionsClass.DisplaySection.BottomLeft:
-                        navDrawerItemsSaved.add(new NavDrawerItem(
+                        navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_category) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
                         for (String packageName : packagesNames) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
                                     functionsClass.loadCustomIcons() ?
@@ -345,12 +345,12 @@ public class PopupOptionsFloatingCategory extends Service {
                         itemMenuView.setY(yPosition - (functionsClass.DpToInteger(191)));
                         break;
                     case FunctionsClass.DisplaySection.BottomRight:
-                        navDrawerItemsSaved.add(new NavDrawerItem(
+                        navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_category) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
                         for (String packageName : packagesNames) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
                                     functionsClass.loadCustomIcons() ?
@@ -364,7 +364,7 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                     default:
                         for (String packageName : packagesNames) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
                                     functionsClass.loadCustomIcons() ?
@@ -372,7 +372,7 @@ public class PopupOptionsFloatingCategory extends Service {
                                             :
                                             functionsClass.shapedAppIcon(packageName)));
                         }
-                        navDrawerItemsSaved.add(new NavDrawerItem(
+                        navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_category) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));

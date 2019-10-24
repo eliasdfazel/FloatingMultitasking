@@ -46,7 +46,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterFull;
 
@@ -77,7 +77,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
     Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
     Map<Integer, String> mapRangeIndex;
 
-    ArrayList<NavDrawerItem> navDrawerItems;
+    ArrayList<AdapterItems> adapterItems;
     RecyclerView.Adapter adapter;
     LinearLayoutManager recyclerViewLayoutManager;
 
@@ -168,7 +168,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
 
-        navDrawerItems = new ArrayList<NavDrawerItem>();
+        adapterItems = new ArrayList<AdapterItems>();
         mapIndexFirstItem = new LinkedHashMap<String, Integer>();
         mapIndexLastItem = new LinkedHashMap<String, Integer>();
         mapRangeIndex = new LinkedHashMap<Integer, String>();
@@ -688,7 +688,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                 applicationInfoList = getApplicationContext().getPackageManager().getInstalledApplications(0);
                 Collections.sort(applicationInfoList, new ApplicationInfo.DisplayNameComparator(getPackageManager()));
 
-                navDrawerItems = new ArrayList<NavDrawerItem>();
+                adapterItems = new ArrayList<AdapterItems>();
                 mapIndexFirstItem = new LinkedHashMap<String, Integer>();
 
                 if (functionsClass.loadCustomIcons()) {
@@ -712,13 +712,13 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                                 }
                             }
 
-                            navDrawerItems.add(new NavDrawerItem(AppName, PackageName, AppIcon, AppTime));
+                            adapterItems.add(new AdapterItems(AppName, PackageName, AppIcon, AppTime));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
-                adapter = new AppAutoListAdapter(activity, getApplicationContext(), navDrawerItems);
+                adapter = new AppAutoListAdapter(activity, getApplicationContext(), adapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -756,9 +756,9 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
         @Override
         protected Void doInBackground(Void... params) {
-            for (int itemCount = 0; itemCount < navDrawerItems.size(); itemCount++) {
+            for (int itemCount = 0; itemCount < adapterItems.size(); itemCount++) {
                 try {
-                    String index = (navDrawerItems.get(itemCount).getAppName()).substring(0, 1).toUpperCase();
+                    String index = (adapterItems.get(itemCount).getAppName()).substring(0, 1).toUpperCase();
                     if (mapIndexFirstItem.get(index) == null) {
                         mapIndexFirstItem.put(index, itemCount);
                     }

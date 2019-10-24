@@ -20,7 +20,7 @@ import net.geekstools.floatshort.PRO.Automation.Alarms.TimeDialogue;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.io.File;
@@ -39,12 +39,12 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
     String autoIdAppend;
     int layoutInflater;
 
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    private ArrayList<AdapterItems> adapterItems;
 
-    public AppAutoListAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems) {
+    public AppAutoListAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems) {
         this.activity = activity;
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
         functionsClass = new FunctionsClass(context, activity);
 
         switch (functionsClass.shapesImageId()) {
@@ -98,25 +98,25 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
             viewHolderBinder.autoChoice.setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.light)));
         }
 
-        viewHolderBinder.icon.setImageDrawable(navDrawerItems.get(position).getAppIcon());
-        viewHolderBinder.desc.setText(navDrawerItems.get(position).getAppName());
+        viewHolderBinder.icon.setImageDrawable(adapterItems.get(position).getAppIcon());
+        viewHolderBinder.desc.setText(adapterItems.get(position).getAppName());
 
         try {
             if (PublicVariable.autoID.equals(context.getString(R.string.time))) {
-                final String pack = navDrawerItems.get(position).getPackageName();
+                final String pack = adapterItems.get(position).getPackageName();
                 File autoFile = context.getFileStreamPath(pack + ".Time");
                 viewHolderBinder.autoChoice.setChecked(false);
                 viewHolderBinder.time.setVisibility(View.INVISIBLE);
                 if (autoFile.exists()) {
                     viewHolderBinder.autoChoice.setChecked(true);
-                    viewHolderBinder.time.setText(navDrawerItems.get(position).getTimes());
+                    viewHolderBinder.time.setText(adapterItems.get(position).getTimes());
                     viewHolderBinder.time.setVisibility(View.VISIBLE);
                 } else {
                     viewHolderBinder.autoChoice.setChecked(false);
                     viewHolderBinder.time.setVisibility(View.INVISIBLE);
                 }
             } else {
-                final String pack = navDrawerItems.get(position).getPackageName();
+                final String pack = adapterItems.get(position).getPackageName();
                 File autoFile = context.getFileStreamPath(pack + autoIdAppend);
                 viewHolderBinder.autoChoice.setChecked(false);
                 if (autoFile.exists()) {
@@ -136,88 +136,88 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                     Toast.makeText(context, context.getString(R.string.retry), Toast.LENGTH_LONG).show();
                 } else {
                     if (PublicVariable.autoID.equals(context.getString(R.string.wifi))) {
-                        final String pack = navDrawerItems.get(position).getPackageName();
+                        final String pack = adapterItems.get(position).getPackageName();
                         File autoFile = context.getFileStreamPath(pack + ".Wifi");
                         if (autoFile.exists()) {
                             context.deleteFile(
-                                    navDrawerItems.get(position).getPackageName() + ".Wifi");
-                            functionsClass.removeLine(".autoWifi", navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName() + ".Wifi");
+                            functionsClass.removeLine(".autoWifi", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
-                                    navDrawerItems.get(position).getPackageName() + ".Wifi",
-                                    navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName() + ".Wifi",
+                                    adapterItems.get(position).getPackageName());
                             functionsClass.saveFileAppendLine(
                                     ".autoWifi",
-                                    navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(true);
                         }
                     } else if (PublicVariable.autoID.equals(context.getString(R.string.bluetooth))) {
-                        final String pack = navDrawerItems.get(position).getPackageName();
+                        final String pack = adapterItems.get(position).getPackageName();
                         File autoFile = context.getFileStreamPath(pack + ".Bluetooth");
                         if (autoFile.exists()) {
                             context.deleteFile(
-                                    navDrawerItems.get(position).getPackageName() + ".Bluetooth");
-                            functionsClass.removeLine(".autoBluetooth", navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName() + ".Bluetooth");
+                            functionsClass.removeLine(".autoBluetooth", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
-                                    navDrawerItems.get(position).getPackageName() + ".Bluetooth",
-                                    navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName() + ".Bluetooth",
+                                    adapterItems.get(position).getPackageName());
                             functionsClass.saveFileAppendLine(
                                     ".autoBluetooth",
-                                    navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(true);
                         }
                     } else if (PublicVariable.autoID.equals(context.getString(R.string.gps))) {
-                        final String pack = navDrawerItems.get(position).getPackageName();
+                        final String pack = adapterItems.get(position).getPackageName();
                         File autoFile = context.getFileStreamPath(pack + ".Gps");
                         if (autoFile.exists()) {
                             context.deleteFile(
-                                    navDrawerItems.get(position).getPackageName() + ".Gps");
-                            functionsClass.removeLine(".autoGps", navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName() + ".Gps");
+                            functionsClass.removeLine(".autoGps", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
-                                    navDrawerItems.get(position).getPackageName() + ".Gps",
-                                    navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName() + ".Gps",
+                                    adapterItems.get(position).getPackageName());
                             functionsClass.saveFileAppendLine(
                                     ".autoGps",
-                                    navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(true);
                         }
                     } else if (PublicVariable.autoID.equals(context.getString(R.string.nfc))) {
-                        final String pack = navDrawerItems.get(position).getPackageName();
+                        final String pack = adapterItems.get(position).getPackageName();
                         File autoFile = context.getFileStreamPath(pack + ".Nfc");
                         if (autoFile.exists()) {
                             context.deleteFile(
-                                    navDrawerItems.get(position).getPackageName() + ".Nfc");
-                            functionsClass.removeLine(".autoNfc", navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName() + ".Nfc");
+                            functionsClass.removeLine(".autoNfc", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
-                                    navDrawerItems.get(position).getPackageName() + ".Nfc",
-                                    navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName() + ".Nfc",
+                                    adapterItems.get(position).getPackageName());
                             functionsClass.saveFileAppendLine(
                                     ".autoNfc",
-                                    navDrawerItems.get(position).getPackageName());
+                                    adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(true);
                         }
                     } else if (PublicVariable.autoID.equals(context.getString(R.string.time))) {
-                        final String pack = navDrawerItems.get(position).getPackageName();
+                        final String pack = adapterItems.get(position).getPackageName();
 
                         File autoFile = context.getFileStreamPath(pack + ".Time");
                         if (autoFile.exists()) {
                             context.deleteFile(
-                                    navDrawerItems.get(position).getPackageName() + ".Time");
+                                    adapterItems.get(position).getPackageName() + ".Time");
                             functionsClass.removeLine(
-                                    navDrawerItems.get(position).getTimes(),
-                                    navDrawerItems.get(position).getPackageName());
-                            if (functionsClass.countLineInnerFile(navDrawerItems.get(position).getPackageName()) == 0) {
-                                context.deleteFile(navDrawerItems.get(position).getTimes());
+                                    adapterItems.get(position).getTimes(),
+                                    adapterItems.get(position).getPackageName());
+                            if (functionsClass.countLineInnerFile(adapterItems.get(position).getPackageName()) == 0) {
+                                context.deleteFile(adapterItems.get(position).getTimes());
                             }
 
-                            functionsClass.removeLine(".times.clocks", navDrawerItems.get(position).getTimes());
+                            functionsClass.removeLine(".times.clocks", adapterItems.get(position).getTimes());
                             viewHolderBinder.autoChoice.setChecked(false);
                             viewHolderBinder.time.setText("");
                             viewHolderBinder.time.setVisibility(View.INVISIBLE);
@@ -225,7 +225,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                             viewHolderBinder.autoChoice.setChecked(true);
                             context.startActivity(
                                     new Intent(context, TimeDialogue.class)
-                                            .putExtra("content", navDrawerItems.get(position).getPackageName())
+                                            .putExtra("content", adapterItems.get(position).getPackageName())
                                             .putExtra("type", "APP")
                                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
@@ -245,7 +245,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
 
     @Override
     public int getItemCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

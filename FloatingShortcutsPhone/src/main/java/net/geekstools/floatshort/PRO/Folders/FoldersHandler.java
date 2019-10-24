@@ -91,7 +91,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
@@ -127,7 +127,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
     /*Search Engine*/
 
     RecyclerView.Adapter categoryListAdapter;
-    ArrayList<NavDrawerItem> navDrawerItems;
+    ArrayList<AdapterItems> adapterItems;
 
     RelativeLayout loadingSplash;
     ProgressBar loadingBarLTR;
@@ -181,7 +181,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         } else {
             functionsClass.setThemeColorFloating(wholeCategory, false);
         }
-        navDrawerItems = new ArrayList<NavDrawerItem>();
+        adapterItems = new ArrayList<AdapterItems>();
 
         LinearLayoutManager recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);
         categorylist.setLayoutManager(recyclerViewLayoutManager);
@@ -1066,7 +1066,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                navDrawerItems = new ArrayList<NavDrawerItem>();
+                adapterItems = new ArrayList<AdapterItems>();
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
@@ -1075,7 +1075,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
 
                 if (getFileStreamPath(".categoryInfo").exists() && functionsClass.countLineInnerFile(".categoryInfo") > 0) {
                     try {
-                        navDrawerItems = new ArrayList<NavDrawerItem>();
+                        adapterItems = new ArrayList<AdapterItems>();
                         try {
                             FileInputStream fileInputStream = new FileInputStream(getFileStreamPath(".categoryInfo"));
                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
@@ -1083,7 +1083,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                             String folderData = "";
                             while ((folderData = bufferedReader.readLine()) != null) {
                                 try {
-                                    navDrawerItems.add(new NavDrawerItem(folderData,
+                                    adapterItems.add(new AdapterItems(folderData,
                                             functionsClass.readFileLine(folderData), SearchEngineAdapter.SearchResultType.SearchFolders));
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -1099,20 +1099,20 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                             e.printStackTrace();
                         }
 
-                        navDrawerItems.add(new NavDrawerItem(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                        categoryListAdapter = new FoldersListAdapter(FoldersHandler.this, getApplicationContext(), navDrawerItems);
+                        adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
+                        categoryListAdapter = new FoldersListAdapter(FoldersHandler.this, getApplicationContext(), adapterItems);
                     } catch (Exception e) {
                         e.printStackTrace();
                         this.cancel(true);
                     } finally {
                         /*Search Engine*/
-                        foldersSearchAdapter = new SearchEngineAdapter(getApplicationContext(), navDrawerItems, SearchEngineAdapter.SearchResultType.SearchFolders);
+                        foldersSearchAdapter = new SearchEngineAdapter(getApplicationContext(), adapterItems, SearchEngineAdapter.SearchResultType.SearchFolders);
                         /*Search Engine*/
                     }
                 } else {
-                    navDrawerItems = new ArrayList<NavDrawerItem>();
-                    navDrawerItems.add(new NavDrawerItem(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                    categoryListAdapter = new FoldersListAdapter(FoldersHandler.this, getApplicationContext(), navDrawerItems);
+                    adapterItems = new ArrayList<AdapterItems>();
+                    adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
+                    categoryListAdapter = new FoldersListAdapter(FoldersHandler.this, getApplicationContext(), adapterItems);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1322,7 +1322,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                                 @Override
                                 public void onClick(View view) {
                                     if (!searchView.getText().toString().isEmpty() && (SearchEngineAdapter.allSearchResultItems.size() > 0) && (searchView.getText().toString().length() >= 2)) {
-                                        for (NavDrawerItem searchResultItem : SearchEngineAdapter.allSearchResultItems) {
+                                        for (AdapterItems searchResultItem : SearchEngineAdapter.allSearchResultItems) {
                                             switch (searchResultItem.getSearchResultType()) {
                                                 case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
                                                     functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
@@ -1330,7 +1330,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                                                     break;
                                                 }
                                                 case SearchEngineAdapter.SearchResultType.SearchFolders: {
-                                                    functionsClass.runUnlimiteFolderService(searchResultItem.getCategory());
+                                                    functionsClass.runUnlimitedFolderService(searchResultItem.getCategory());
 
                                                     break;
                                                 }
@@ -1376,7 +1376,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                                                     break;
                                                 }
                                                 case SearchEngineAdapter.SearchResultType.SearchFolders: {
-                                                    functionsClass.runUnlimiteFolderService(SearchEngineAdapter.allSearchResultItems.get(0).getCategory());
+                                                    functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems.get(0).getCategory());
 
                                                     break;
                                                 }

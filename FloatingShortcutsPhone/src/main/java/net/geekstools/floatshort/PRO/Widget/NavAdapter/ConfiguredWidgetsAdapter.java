@@ -29,7 +29,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataDAO;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
@@ -45,7 +45,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
 
     FunctionsClass functionsClass;
 
-    ArrayList<NavDrawerItem> navDrawerItems;
+    ArrayList<AdapterItems> adapterItems;
 
     View view;
     ViewHolder viewHolder;
@@ -53,11 +53,11 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
     AppWidgetManager appWidgetManager;
     AppWidgetHost appWidgetHost;
 
-    public ConfiguredWidgetsAdapter(Activity activity, Context context, ArrayList<NavDrawerItem> navDrawerItems, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost) {
+    public ConfiguredWidgetsAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost) {
         this.context = context;
         this.activity = activity;
 
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
 
         this.appWidgetManager = appWidgetManager;
         this.appWidgetHost = appWidgetHost;
@@ -74,40 +74,40 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
 
     @Override
     public void onBindViewHolder(@NotNull ViewHolder viewHolderBinder, final int position) {
-        AppWidgetProviderInfo appWidgetProviderInfo = navDrawerItems.get(position).getAppWidgetProviderInfo();
-        int appWidgetId = navDrawerItems.get(position).getAppWidgetId();
+        AppWidgetProviderInfo appWidgetProviderInfo = adapterItems.get(position).getAppWidgetProviderInfo();
+        int appWidgetId = adapterItems.get(position).getAppWidgetId();
 
         WidgetConfigurations.createWidget(activity, viewHolder.widgetPreview,
                 appWidgetManager, appWidgetHost,
                 appWidgetProviderInfo, appWidgetId);
 
-        viewHolder.widgetLabel.setText(navDrawerItems.get(position).getAddedWidgetRecovery() ? navDrawerItems.get(position).getWidgetLabel() + " " + "\uD83D\uDD04" : navDrawerItems.get(position).getWidgetLabel());
+        viewHolder.widgetLabel.setText(adapterItems.get(position).getAddedWidgetRecovery() ? adapterItems.get(position).getWidgetLabel() + " " + "\uD83D\uDD04" : adapterItems.get(position).getWidgetLabel());
         viewHolder.widgetLabel.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
 
         LayerDrawable drawFloatTheWidget = (LayerDrawable) context.getDrawable(R.drawable.draw_open);
         Drawable backFloatTheWidget = drawFloatTheWidget.findDrawableByLayerId(R.id.backtemp);
-        backFloatTheWidget.setTint(functionsClass.extractDominantColor(functionsClass.appIcon(navDrawerItems.get(position).getPackageName())));
+        backFloatTheWidget.setTint(functionsClass.extractDominantColor(functionsClass.appIcon(adapterItems.get(position).getPackageName())));
         viewHolder.floatTheWidget.setImageDrawable(drawFloatTheWidget);
 
         viewHolder.floatTheWidget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                functionsClass.runUnlimitedWidgetService(navDrawerItems.get(position).getAppWidgetId(), navDrawerItems.get(position).getWidgetLabel());
+                functionsClass.runUnlimitedWidgetService(adapterItems.get(position).getAppWidgetId(), adapterItems.get(position).getWidgetLabel());
             }
         });
         viewHolder.floatTheWidget.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
 
-                AppWidgetProviderInfo appWidgetProviderInfoLongClick = navDrawerItems.get(position).getAppWidgetProviderInfo();
+                AppWidgetProviderInfo appWidgetProviderInfoLongClick = adapterItems.get(position).getAppWidgetProviderInfo();
 
                 functionsClass.popupOptionWidget(context, view,
-                        navDrawerItems.get(position).getPackageName(),
-                        navDrawerItems.get(position).getClassNameProviderWidget(),
-                        navDrawerItems.get(position).getWidgetLabel(),
+                        adapterItems.get(position).getPackageName(),
+                        adapterItems.get(position).getClassNameProviderWidget(),
+                        adapterItems.get(position).getWidgetLabel(),
                         appWidgetProviderInfoLongClick.loadPreviewImage(context, DisplayMetrics.DENSITY_LOW) != null ?
                                 appWidgetProviderInfoLongClick.loadPreviewImage(context, DisplayMetrics.DENSITY_HIGH) : appWidgetProviderInfoLongClick.loadIcon(context, DisplayMetrics.DENSITY_HIGH),
-                        navDrawerItems.get(position).getAddedWidgetRecovery());
+                        adapterItems.get(position).getAddedWidgetRecovery());
 
                 functionsClass.doVibrate(77);
 
@@ -138,7 +138,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
                                         })
                                         .build();
                                 WidgetDataDAO widgetDataDAO = widgetDataInterface.initDataAccessObject();
-                                widgetDataDAO.updateWidgetLabelByWidgetId(navDrawerItems.get(position).getAppWidgetId(), textView.getText().toString().replace("\uD83D\uDD04", ""));
+                                widgetDataDAO.updateWidgetLabelByWidgetId(adapterItems.get(position).getAppWidgetId(), textView.getText().toString().replace("\uD83D\uDD04", ""));
                                 widgetDataInterface.close();
 
                                 activity.runOnUiThread(new Runnable() {
@@ -159,7 +159,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
 
     @Override
     public int getItemCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

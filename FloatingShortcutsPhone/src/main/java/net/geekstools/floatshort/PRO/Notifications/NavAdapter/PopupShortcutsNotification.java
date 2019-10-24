@@ -17,7 +17,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -30,16 +30,16 @@ public class PopupShortcutsNotification extends BaseAdapter {
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
 
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    private ArrayList<AdapterItems> adapterItems;
 
     private String packageName, className;
     private int startId, layoutInflator, xPosition, yPosition, HW;
 
-    public PopupShortcutsNotification(Context context, ArrayList<NavDrawerItem> navDrawerItems,
+    public PopupShortcutsNotification(Context context, ArrayList<AdapterItems> adapterItems,
                                       String className, String packageName, int startId, int xPosition, int yPosition, int HW) {
         this.context = context;
 
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
 
         this.className = className;
         this.packageName = packageName;
@@ -77,12 +77,12 @@ public class PopupShortcutsNotification extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return navDrawerItems.get(position);
+        return adapterItems.get(position);
     }
 
     @Override
@@ -123,18 +123,18 @@ public class PopupShortcutsNotification extends BaseAdapter {
         viewHolder.notificationItem.setBackground(drawPopupShortcut);
         viewHolder.notificationBanner.setBackground(drawPopupShortcut);
 
-        viewHolder.notificationAppIcon.setImageDrawable(navDrawerItems.get(position).getNotificationAppIcon());
-        viewHolder.notificationAppName.setText(navDrawerItems.get(position).getNotificationAppName());
+        viewHolder.notificationAppIcon.setImageDrawable(adapterItems.get(position).getNotificationAppIcon());
+        viewHolder.notificationAppName.setText(adapterItems.get(position).getNotificationAppName());
         viewHolder.notificationAppName.append("   " + context.getString(R.string.notificationEmoji));
 
-        viewHolder.notificationLargeIcon.setImageDrawable(navDrawerItems.get(position).getNotificationLargeIcon());
-        viewHolder.notificationTitle.setText(navDrawerItems.get(position).getNotificationTitle());
-        viewHolder.notificationText.setText(navDrawerItems.get(position).getNotificationText());
+        viewHolder.notificationLargeIcon.setImageDrawable(adapterItems.get(position).getNotificationLargeIcon());
+        viewHolder.notificationTitle.setText(adapterItems.get(position).getNotificationTitle());
+        viewHolder.notificationText.setText(adapterItems.get(position).getNotificationText());
 
         if (PublicVariable.themeLightDark) {
-            viewHolder.notificationAppName.setTextColor(functionsClass.manipulateColor(functionsClass.extractVibrantColor(navDrawerItems.get(position).getNotificationAppIcon()), 0.50f));
+            viewHolder.notificationAppName.setTextColor(functionsClass.manipulateColor(functionsClass.extractVibrantColor(adapterItems.get(position).getNotificationAppIcon()), 0.50f));
         } else {
-            viewHolder.notificationAppName.setTextColor(functionsClass.manipulateColor(functionsClass.extractVibrantColor(navDrawerItems.get(position).getNotificationAppIcon()), 1.30f));
+            viewHolder.notificationAppName.setTextColor(functionsClass.manipulateColor(functionsClass.extractVibrantColor(adapterItems.get(position).getNotificationAppIcon()), 1.30f));
         }
 
         viewHolder.notificationTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
@@ -195,9 +195,9 @@ public class PopupShortcutsNotification extends BaseAdapter {
                             if (Math.abs(minus) > X) {
                                 viewHolder.notificationContent.animate().translationX(-xPosition);
                                 context.sendBroadcast(new Intent("Remove_Notification_Key")
-                                        .putExtra("notification_key", navDrawerItems.get(position).getNotificationId())
-                                        .putExtra("notification_time", navDrawerItems.get(position).getNotificationTime())
-                                        .putExtra("notification_package", navDrawerItems.get(position).getNotificationPackage())
+                                        .putExtra("notification_key", adapterItems.get(position).getNotificationId())
+                                        .putExtra("notification_time", adapterItems.get(position).getNotificationTime())
+                                        .putExtra("notification_package", adapterItems.get(position).getNotificationPackage())
                                 );
                                 context.sendBroadcast(new Intent("Hide_PopupListView_Shortcuts_Notification"));
                             }
@@ -205,9 +205,9 @@ public class PopupShortcutsNotification extends BaseAdapter {
                             if (Math.abs(minus) > X) {
                                 viewHolder.notificationContent.animate().translationX(xPosition);
                                 context.sendBroadcast(new Intent("Remove_Notification_Key")
-                                        .putExtra("notification_key", navDrawerItems.get(position).getNotificationId())
-                                        .putExtra("notification_time", navDrawerItems.get(position).getNotificationTime())
-                                        .putExtra("notification_package", navDrawerItems.get(position).getNotificationPackage())
+                                        .putExtra("notification_key", adapterItems.get(position).getNotificationId())
+                                        .putExtra("notification_time", adapterItems.get(position).getNotificationTime())
+                                        .putExtra("notification_package", adapterItems.get(position).getNotificationPackage())
                                 );
                                 context.sendBroadcast(new Intent("Hide_PopupListView_Shortcuts_Notification"));
                             }

@@ -41,7 +41,7 @@ import net.geekstools.floatshort.PRO.Folders.NavAdapter.AppSelectionListAdapter;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -70,7 +70,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
     List<ApplicationInfo> applicationInfoList;
     Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
     Map<Integer, String> mapRangeIndex;
-    ArrayList<NavDrawerItem> navDrawerItems, navDrawerItemsSaved;
+    ArrayList<AdapterItems> adapterItems, navDrawerItemsSaved;
     RecyclerView.Adapter appSelectionListAdapter;
     LinearLayoutManager recyclerViewLayoutManager;
     AppSavedListAdapter advanceSavedListAdapter;
@@ -120,8 +120,8 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);
         loadView.setLayoutManager(recyclerViewLayoutManager);
 
-        navDrawerItems = new ArrayList<NavDrawerItem>();
-        navDrawerItemsSaved = new ArrayList<NavDrawerItem>();
+        adapterItems = new ArrayList<AdapterItems>();
+        navDrawerItemsSaved = new ArrayList<AdapterItems>();
         mapIndexFirstItem = new LinkedHashMap<String, Integer>();
         mapIndexLastItem = new LinkedHashMap<String, Integer>();
         mapRangeIndex = new LinkedHashMap<Integer, String>();
@@ -166,7 +166,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                         navDrawerItemsSaved.clear();
                         String[] savedLine = functionsClass.readFileLine(PublicVariable.categoryName);
                         for (String aSavedLine : savedLine) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(aSavedLine),
                                     aSavedLine,
                                     functionsClass.loadCustomIcons() ?
@@ -296,7 +296,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                         navDrawerItemsSaved.clear();
                         String[] savedLine = functionsClass.readFileLine(PublicVariable.categoryName);
                         for (String aSavedLine : savedLine) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(aSavedLine),
                                     aSavedLine,
                                     functionsClass.loadCustomIcons() ?
@@ -335,7 +335,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                         navDrawerItemsSaved.clear();
                         String[] savedLine = functionsClass.readFileLine(PublicVariable.categoryName);
                         for (String aSavedLine : savedLine) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(aSavedLine),
                                     aSavedLine,
                                     functionsClass.loadCustomIcons() ?
@@ -432,13 +432,13 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
 //                            AppIcon = functionsClass.shapedAppIcon(PackageName);
                             AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
 
-                            navDrawerItems.add(new NavDrawerItem(AppName, PackageName, AppIcon));
+                            adapterItems.add(new AdapterItems(AppName, PackageName, AppIcon));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
-                appSelectionListAdapter = new AppSelectionListAdapter(AppSelectionList.this, getApplicationContext(), navDrawerItems);
+                appSelectionListAdapter = new AppSelectionListAdapter(AppSelectionList.this, getApplicationContext(), adapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -499,9 +499,9 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
 
         @Override
         protected Void doInBackground(Void... params) {
-            for (int itemCount = 0; itemCount < navDrawerItems.size(); itemCount++) {
+            for (int itemCount = 0; itemCount < adapterItems.size(); itemCount++) {
                 try {
-                    String index = (navDrawerItems.get(itemCount).getAppName()).substring(0, 1).toUpperCase();
+                    String index = (adapterItems.get(itemCount).getAppName()).substring(0, 1).toUpperCase();
                     if (mapIndexFirstItem.get(index) == null) {
                         mapIndexFirstItem.put(index, itemCount);
                     }

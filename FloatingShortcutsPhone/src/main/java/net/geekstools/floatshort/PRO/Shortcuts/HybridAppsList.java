@@ -95,7 +95,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
@@ -142,7 +142,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
     Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
     Map<Integer, String> mapRangeIndex;
     NavigableMap<String, Integer> indexItems;
-    ArrayList<NavDrawerItem> navDrawerItems;
+    ArrayList<AdapterItems> adapterItems, searchAdapterItems;
 
     List<String> indexList;
     List<HybridSectionedGridRecyclerViewAdapter.Section> sections;
@@ -222,7 +222,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
         }
 
         applicationInfoList = new ArrayList<ApplicationInfo>();
-        navDrawerItems = new ArrayList<NavDrawerItem>();
+        adapterItems = new ArrayList<AdapterItems>();
         mapIndexFirstItem = new LinkedHashMap<String, Integer>();
         mapIndexLastItem = new LinkedHashMap<String, Integer>();
         mapRangeIndex = new LinkedHashMap<Integer, String>();
@@ -1168,7 +1168,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                             AppName = functionsClass.appName(PackageName);
                             AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
 
-                            navDrawerItems.add(new NavDrawerItem(AppName, PackageName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
+                            adapterItems.add(new AdapterItems(AppName, PackageName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
                             indexList.add(newChar);
                             indexItems.put(newChar, itemOfIndex++);
 
@@ -1180,7 +1180,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                         }
                     }
                 }
-                recyclerViewAdapter = new CardHybridAdapter(HybridAppsList.this, getApplicationContext(), navDrawerItems);
+                recyclerViewAdapter = new CardHybridAdapter(HybridAppsList.this, getApplicationContext(), adapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -1287,7 +1287,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                             AppName = functionsClass.appName(PackageName);
                             AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
 
-                            navDrawerItems.add(new NavDrawerItem(AppName, PackageName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
+                            adapterItems.add(new AdapterItems(AppName, PackageName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
                             indexList.add(newChar);
                             indexItems.put(newChar, itemOfIndex++);
 
@@ -1300,7 +1300,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                     }
                 }
 
-                recyclerViewAdapter = new CardHybridAdapter(HybridAppsList.this, getApplicationContext(), navDrawerItems);
+                recyclerViewAdapter = new CardHybridAdapter(HybridAppsList.this, getApplicationContext(), adapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -1568,7 +1568,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
         @Override
         protected String doInBackground(Void... voids) {
             /*Search Engine*/
-            searchRecyclerViewAdapter = new SearchEngineAdapter(getApplicationContext(), navDrawerItems, SearchEngineAdapter.SearchResultType.SearchShortcuts);
+            searchRecyclerViewAdapter = new SearchEngineAdapter(getApplicationContext(), adapterItems, SearchEngineAdapter.SearchResultType.SearchShortcuts);
             /*Search Engine*/
             return "";
         }
@@ -1723,7 +1723,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                                 @Override
                                 public void onClick(View view) {
                                     if (!searchView.getText().toString().isEmpty() && (SearchEngineAdapter.allSearchResultItems.size() > 0) && (searchView.getText().toString().length() >= 2)) {
-                                        for (NavDrawerItem searchResultItem : SearchEngineAdapter.allSearchResultItems) {
+                                        for (AdapterItems searchResultItem : SearchEngineAdapter.allSearchResultItems) {
                                             switch (searchResultItem.getSearchResultType()) {
                                                 case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
                                                     functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
@@ -1731,7 +1731,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                                                     break;
                                                 }
                                                 case SearchEngineAdapter.SearchResultType.SearchFolders: {
-                                                    functionsClass.runUnlimiteFolderService(searchResultItem.getCategory());
+                                                    functionsClass.runUnlimitedFolderService(searchResultItem.getCategory());
 
                                                     break;
                                                 }
@@ -1777,7 +1777,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                                                     break;
                                                 }
                                                 case SearchEngineAdapter.SearchResultType.SearchFolders: {
-                                                    functionsClass.runUnlimiteFolderService(SearchEngineAdapter.allSearchResultItems.get(0).getCategory());
+                                                    functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems.get(0).getCategory());
 
                                                     break;
                                                 }
