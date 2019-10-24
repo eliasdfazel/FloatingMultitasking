@@ -100,7 +100,7 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
-import net.geekstools.floatshort.PRO.Util.SearchEngine.ShortcutsSearchAdapter;
+import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
@@ -131,7 +131,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
     MaterialButton switchWidgets, switchCategories, recoveryAction, automationAction;
 
     /*Search Engine*/
-    ShortcutsSearchAdapter searchRecyclerViewAdapter;
+    SearchEngineAdapter searchRecyclerViewAdapter;
     TextInputLayout textInputSearchView;
     AppCompatAutoCompleteTextView searchView;
     ImageView searchIcon, searchFloatIt,
@@ -1168,7 +1168,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                             AppName = functionsClass.appName(PackageName);
                             AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
 
-                            navDrawerItems.add(new NavDrawerItem(AppName, PackageName, AppIcon));
+                            navDrawerItems.add(new NavDrawerItem(AppName, PackageName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
                             indexList.add(newChar);
                             indexItems.put(newChar, itemOfIndex++);
 
@@ -1287,7 +1287,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                             AppName = functionsClass.appName(PackageName);
                             AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
 
-                            navDrawerItems.add(new NavDrawerItem(AppName, PackageName, AppIcon));
+                            navDrawerItems.add(new NavDrawerItem(AppName, PackageName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
                             indexList.add(newChar);
                             indexItems.put(newChar, itemOfIndex++);
 
@@ -1306,9 +1306,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                 this.cancel(true);
                 finish();
             } finally {
-                /*Search Engine*/
-                searchRecyclerViewAdapter = new ShortcutsSearchAdapter(getApplicationContext(), navDrawerItems);
-                /*Search Engine*/
+
             }
             return null;
         }
@@ -1335,7 +1333,8 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
             LoadApplicationsIndex loadApplicationsIndex = new LoadApplicationsIndex();
             loadApplicationsIndex.execute();
 
-            setupSearchView();
+            LoadSearchEngineData loadSearchEngineData = new LoadSearchEngineData();
+            loadSearchEngineData.execute();
 
             try {
                 Intent goHome = getIntent();
@@ -1560,6 +1559,28 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
     /*Indexing*/
 
     /*Search Engine*/
+    private class LoadSearchEngineData extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            /*Search Engine*/
+            searchRecyclerViewAdapter = new SearchEngineAdapter(getApplicationContext(), navDrawerItems, SearchEngineAdapter.SearchResultType.SearchShortcuts);
+            /*Search Engine*/
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String results) {
+            super.onPostExecute(results);
+
+            setupSearchView();
+        }
+    }
+
     public void setupSearchView() {
         if (loadFreq) {
             RelativeLayout.LayoutParams layoutParamsAbove = (RelativeLayout.LayoutParams) textInputSearchView.getLayoutParams();
@@ -1701,9 +1722,27 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                             searchFloatIt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if (!searchView.getText().toString().isEmpty() && (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0) && (searchView.getText().toString().length() >= 2)) {
-                                        for (NavDrawerItem searchResultItem : ShortcutsSearchAdapter.shortcutsSearchResultItems) {
-                                            functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
+                                    if (!searchView.getText().toString().isEmpty() && (SearchEngineAdapter.allSearchResultItems.size() > 0) && (searchView.getText().toString().length() >= 2)) {
+                                        for (NavDrawerItem searchResultItem : SearchEngineAdapter.allSearchResultItems) {
+                                            switch (searchResultItem.getSearchResultType()) {
+                                                case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
+                                                    functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
+
+                                                    break;
+                                                }
+                                                case SearchEngineAdapter.SearchResultType.SearchFolders: {
+                                                    functionsClass.runUnlimiteFolderService(searchResultItem.getCategory());
+
+                                                    break;
+                                                }
+                                                case SearchEngineAdapter.SearchResultType.SearchWidgets: {
+                                                    functionsClass
+                                                            .runUnlimitedWidgetService(searchResultItem.getAppWidgetId(),
+                                                                    searchResultItem.getWidgetLabel());
+
+                                                    break;
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -1730,8 +1769,26 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                                 @Override
                                 public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                                        if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && (searchView.getText().toString().length() >= 2)) {
-                                            functionsClass.runUnlimitedShortcutsService(ShortcutsSearchAdapter.shortcutsSearchResultItems.get(0).getPackageName());
+                                        if (SearchEngineAdapter.allSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && (searchView.getText().toString().length() >= 2)) {
+                                            switch (SearchEngineAdapter.allSearchResultItems.get(0).getSearchResultType()) {
+                                                case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
+                                                    functionsClass.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems.get(0).getPackageName());
+
+                                                    break;
+                                                }
+                                                case SearchEngineAdapter.SearchResultType.SearchFolders: {
+                                                    functionsClass.runUnlimiteFolderService(SearchEngineAdapter.allSearchResultItems.get(0).getCategory());
+
+                                                    break;
+                                                }
+                                                case SearchEngineAdapter.SearchResultType.SearchWidgets: {
+                                                    functionsClass
+                                                            .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResultItems.get(0).getAppWidgetId(),
+                                                                    SearchEngineAdapter.allSearchResultItems.get(0).getWidgetLabel());
+
+                                                    break;
+                                                }
+                                            }
 
                                             searchView.setText("");
 
@@ -1795,7 +1852,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                                             });
                                             valueAnimatorScales.start();
                                         } else {
-                                            if (ShortcutsSearchAdapter.shortcutsSearchResultItems.size() > 0 && (searchView.getText().toString().length() >= 2)) {
+                                            if (SearchEngineAdapter.allSearchResultItems.size() > 0 && (searchView.getText().toString().length() >= 2)) {
                                                 searchView.showDropDown();
                                             }
                                         }

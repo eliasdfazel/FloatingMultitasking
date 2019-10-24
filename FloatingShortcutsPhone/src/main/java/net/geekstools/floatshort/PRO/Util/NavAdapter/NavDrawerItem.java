@@ -12,7 +12,7 @@ public class NavDrawerItem {
 
     String[] packageNames;
 
-    int appWidgetId;
+    int appWidgetId, searchResultType;
 
     Drawable appIcon, run, widgetPreview,
             notificationAppIcon, notificationLargeIcon;
@@ -27,6 +27,13 @@ public class NavDrawerItem {
         this.appName = AppName;
         this.packageName = PackageName;
         this.appIcon = AppIcon;
+    }
+
+    public NavDrawerItem(String AppName, String PackageName, Drawable AppIcon, int searchResultType) {
+        this.appName = AppName;
+        this.packageName = PackageName;
+        this.appIcon = AppIcon;
+        this.searchResultType = searchResultType;
     }
 
     public NavDrawerItem(String appName, String packageName, Drawable icon, String times) {
@@ -51,9 +58,10 @@ public class NavDrawerItem {
         this.appIcon = icon;
     }
 
-    public NavDrawerItem(String category, String[] packageNames) {
+    public NavDrawerItem(String category, String[] packageNames, int searchResultType) {
         this.category = category;
         this.packageNames = packageNames;
+        this.searchResultType = searchResultType;
     }
 
     public NavDrawerItem(String category, String[] packageNames, String times) {
@@ -73,7 +81,7 @@ public class NavDrawerItem {
         this.appWidgetProviderInfo = appWidgetProviderInfo;
     }
 
-    public NavDrawerItem(String AppName, String PackageName, String classNameProviderWidget, String configClassNameWidget, String widgetLabel, Drawable AppIcon, AppWidgetProviderInfo appWidgetProviderInfo, int appWidgetId, boolean addedWidgetRecovery) {
+    public NavDrawerItem(String AppName, String PackageName, String classNameProviderWidget, String configClassNameWidget, String widgetLabel, Drawable AppIcon, AppWidgetProviderInfo appWidgetProviderInfo, int appWidgetId, boolean addedWidgetRecovery, int searchResultType) {
         this.appName = AppName;
         this.packageName = PackageName;
         this.classNameProviderWidget = classNameProviderWidget;
@@ -83,6 +91,7 @@ public class NavDrawerItem {
         this.appWidgetProviderInfo = appWidgetProviderInfo;
         this.appWidgetId = appWidgetId;
         this.addedWidgetRecovery = addedWidgetRecovery;
+        this.searchResultType = searchResultType;
     }
 
     public NavDrawerItem(String notificationTime, String notificationPackage,
@@ -162,6 +171,9 @@ public class NavDrawerItem {
         return this.appWidgetId;
     }
 
+    public int getSearchResultType(){
+        return this.searchResultType;
+    }
     public Drawable getAppIcon() {
         return this.appIcon;
     }

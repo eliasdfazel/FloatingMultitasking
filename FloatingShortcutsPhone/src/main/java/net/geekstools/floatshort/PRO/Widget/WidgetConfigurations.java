@@ -85,7 +85,7 @@ import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
-import net.geekstools.floatshort.PRO.Util.SearchEngine.WidgetsSearchAdapter;
+import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
@@ -123,7 +123,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     TextView popupIndex;
 
     /*Search Engine*/
-    WidgetsSearchAdapter widgetsSearchAdapter;
+    SearchEngineAdapter widgetsSearchAdapter;
     TextInputLayout textInputSearchView;
     AppCompatAutoCompleteTextView searchView;
     ImageView searchIcon, searchFloatIt,
@@ -1350,7 +1350,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                     appIcon,
                                     appWidgetProviderInfo,
                                     appWidgetId,
-                                    widgetDataModel.getRecovery()
+                                    widgetDataModel.getRecovery(),
+                                    SearchEngineAdapter.SearchResultType.SearchWidgets
                             ));
 
                             widgetIndex++;
@@ -1375,7 +1376,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 e.printStackTrace();
             } finally {
                 /*Search Engine*/
-                widgetsSearchAdapter = new WidgetsSearchAdapter(getApplicationContext(), configuredWidgetsNavDrawerItems);
+                widgetsSearchAdapter = new SearchEngineAdapter(getApplicationContext(), configuredWidgetsNavDrawerItems, SearchEngineAdapter.SearchResultType.SearchWidgets);
                 /*Search Engine*/
             }
 
@@ -2200,11 +2201,27 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                             searchFloatIt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if (!searchView.getText().toString().isEmpty() && (WidgetsSearchAdapter.widgetsSearchResultItems.size() > 0) && (searchView.getText().toString().length() >= 2)) {
-                                        for (NavDrawerItem searchResultItem : WidgetsSearchAdapter.widgetsSearchResultItems) {
-                                            functionsClass
-                                                    .runUnlimitedWidgetService(searchResultItem.getAppWidgetId(),
-                                                            searchResultItem.getWidgetLabel());
+                                    if (!searchView.getText().toString().isEmpty() && (SearchEngineAdapter.allSearchResultItems.size() > 0) && (searchView.getText().toString().length() >= 2)) {
+                                        for (NavDrawerItem searchResultItem : SearchEngineAdapter.allSearchResultItems) {
+                                            switch (searchResultItem.getSearchResultType()) {
+                                                case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
+                                                    functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
+
+                                                    break;
+                                                }
+                                                case SearchEngineAdapter.SearchResultType.SearchFolders: {
+                                                    functionsClass.runUnlimiteFolderService(searchResultItem.getCategory());
+
+                                                    break;
+                                                }
+                                                case SearchEngineAdapter.SearchResultType.SearchWidgets: {
+                                                    functionsClass
+                                                            .runUnlimitedWidgetService(searchResultItem.getAppWidgetId(),
+                                                                    searchResultItem.getWidgetLabel());
+
+                                                    break;
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -2231,10 +2248,26 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 @Override
                                 public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                                        if (WidgetsSearchAdapter.widgetsSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && (searchView.getText().toString().length() >= 2)) {
-                                            functionsClass
-                                                    .runUnlimitedWidgetService(WidgetsSearchAdapter.widgetsSearchResultItems.get(0).getAppWidgetId(),
-                                                            WidgetsSearchAdapter.widgetsSearchResultItems.get(0).getWidgetLabel());
+                                        if (SearchEngineAdapter.allSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && (searchView.getText().toString().length() >= 2)) {
+                                            switch (SearchEngineAdapter.allSearchResultItems.get(0).getSearchResultType()) {
+                                                case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
+                                                    functionsClass.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems.get(0).getPackageName());
+
+                                                    break;
+                                                }
+                                                case SearchEngineAdapter.SearchResultType.SearchFolders: {
+                                                    functionsClass.runUnlimiteFolderService(SearchEngineAdapter.allSearchResultItems.get(0).getCategory());
+
+                                                    break;
+                                                }
+                                                case SearchEngineAdapter.SearchResultType.SearchWidgets: {
+                                                    functionsClass
+                                                            .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResultItems.get(0).getAppWidgetId(),
+                                                                    SearchEngineAdapter.allSearchResultItems.get(0).getWidgetLabel());
+
+                                                    break;
+                                                }
+                                            }
 
                                             searchView.setText("");
 
@@ -2298,7 +2331,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                             });
                                             valueAnimatorScales.start();
                                         } else {
-                                            if (WidgetsSearchAdapter.widgetsSearchResultItems.size() > 0 && (searchView.getText().toString().length() >= 2)) {
+                                            if (SearchEngineAdapter.allSearchResultItems.size() > 0 && (searchView.getText().toString().length() >= 2)) {
                                                 searchView.showDropDown();
                                             }
                                         }
