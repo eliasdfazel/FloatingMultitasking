@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_transparent_high"
-    tools:context="net.geekstools.floatshort.PRO.Folders.FoldersHandler">
+    tools:context="net.geekstools.floatshort.PRO.Folders.FoldersConfigurations">
 
     <ScrollView
         android:layout_width="match_parent"

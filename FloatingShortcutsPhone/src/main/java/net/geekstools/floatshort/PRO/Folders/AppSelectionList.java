@@ -390,7 +390,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
     public void onBackPressed() {
         super.onBackPressed();
         try {
-            functionsClass.navigateToClass(FoldersHandler.class, AppSelectionList.this);
+            functionsClass.navigateToClass(FoldersConfigurations.class, AppSelectionList.this);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -138,11 +138,11 @@ import net.geekstools.floatshort.PRO.Folder_Unlimited_Gps;
 import net.geekstools.floatshort.PRO.Folder_Unlimited_Nfc;
 import net.geekstools.floatshort.PRO.Folder_Unlimited_Time;
 import net.geekstools.floatshort.PRO.Folder_Unlimited_Wifi;
-import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
+import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridAppsList;
+import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
@@ -1949,7 +1949,7 @@ public class FunctionsClass {
 
     public void navigateToClass(Class returnClass, ActivityOptions activityOptions) throws Exception {
         Intent intentOverride = new Intent(context, returnClass);
-        if (returnClass.getSimpleName().equals(HybridAppsList.class.getSimpleName())) {
+        if (returnClass.getSimpleName().equals(HybridApplicationsView.class.getSimpleName())) {
             intentOverride.putExtra("freq", PublicVariable.freqApps);
             intentOverride.putExtra("num", PublicVariable.freqLength);
         }
@@ -1957,11 +1957,11 @@ public class FunctionsClass {
     }
 
     public void overrideBackPressToMain(final Activity activityToFinish) throws Exception {
-        if (readPreference("OpenMode", "openClassName", HybridAppsList.class.getSimpleName()).equals(FoldersHandler.class.getSimpleName())) {
-            Intent categoryInten = new Intent(context, FoldersHandler.class);
+        if (readPreference("OpenMode", "openClassName", HybridApplicationsView.class.getSimpleName()).equals(FoldersConfigurations.class.getSimpleName())) {
+            Intent categoryInten = new Intent(context, FoldersConfigurations.class);
             activity.startActivity(categoryInten);
         } else {
-            Intent hybridViewOff = new Intent(context, HybridAppsList.class);
+            Intent hybridViewOff = new Intent(context, HybridApplicationsView.class);
             hybridViewOff.putExtra("freq", PublicVariable.freqApps);
             hybridViewOff.putExtra("num", PublicVariable.freqLength);
             hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
@@ -1976,7 +1976,7 @@ public class FunctionsClass {
     }
 
     public void overrideBackPressToShortcuts(final Activity activityToFinish) throws Exception {
-        Intent hybridViewOff = new Intent(context, HybridAppsList.class);
+        Intent hybridViewOff = new Intent(context, HybridApplicationsView.class);
         hybridViewOff.putExtra("freq", PublicVariable.freqApps);
         hybridViewOff.putExtra("num", PublicVariable.freqLength);
         hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
@@ -5899,17 +5899,17 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return BuildConfig.VERSION_NAME.contains("[BETA]") ? true : readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
+        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
     }
 
     public boolean floatingWidgetsPurchased() {
 
-        return BuildConfig.VERSION_NAME.contains("[BETA]") ? true : readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
+        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
     }
 
     public boolean searchEnginePurchased() {
 
-        return BuildConfig.VERSION_NAME.contains("[BETA]") ? true : readPreference(".PurchasedItem", BillingManager.iapSearchEngine, false);
+        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".PurchasedItem", BillingManager.iapSearchEngine, false);
     }
 
     public boolean alreadyDonated() {

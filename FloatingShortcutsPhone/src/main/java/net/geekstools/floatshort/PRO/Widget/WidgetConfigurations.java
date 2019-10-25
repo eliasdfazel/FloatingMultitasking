@@ -72,9 +72,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
-import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
+import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridAppsList;
+import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
@@ -499,7 +499,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             @Override
             public void onClick(View view) {
                 try {
-                    functionsClass.navigateToClass(FoldersHandler.class,
+                    functionsClass.navigateToClass(FoldersConfigurations.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -509,7 +509,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         switchApps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), HybridAppsList.class),
+                startActivity(new Intent(getApplicationContext(), HybridApplicationsView.class),
                         ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left).toBundle());
             }
         });
@@ -1057,7 +1057,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         switch (direction) {
             case SimpleGestureFilterSwitch.SWIPE_RIGHT: {
                 try {
-                    functionsClass.navigateToClass(FoldersHandler.class,
+                    functionsClass.navigateToClass(FoldersConfigurations.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1066,7 +1066,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             }
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
                 try {
-                    functionsClass.navigateToClass(HybridAppsList.class,
+                    functionsClass.navigateToClass(HybridApplicationsView.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();

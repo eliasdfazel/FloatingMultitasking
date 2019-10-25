@@ -13,7 +13,7 @@ import android.view.MotionEvent;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
-import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
+import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.Folders.SimpleGestureFilterAdvance;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -136,7 +136,7 @@ public class AppsConfirmButton extends Button
     @Override
     public void onSingleTapUp() {
         try {
-            functionsClass.navigateToClass(FoldersHandler.class, activity);
+            functionsClass.navigateToClass(FoldersConfigurations.class, activity);
         } catch (Exception e) {
             e.printStackTrace();
         }

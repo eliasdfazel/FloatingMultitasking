@@ -89,7 +89,7 @@ import net.geekstools.floatshort.PRO.Automation.Categories.CategoryAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Folders.NavAdapter.FoldersListAdapter;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridAppsList;
+import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
@@ -118,7 +118,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FoldersHandler extends Activity implements View.OnClickListener, View.OnLongClickListener, SimpleGestureFilterSwitch.SimpleGestureListener {
+public class FoldersConfigurations extends Activity implements View.OnClickListener, View.OnLongClickListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
@@ -182,7 +182,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
 
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
-        functionsClass.ChangeLog(FoldersHandler.this, false);
+        functionsClass.ChangeLog(FoldersConfigurations.this, false);
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
 
@@ -335,7 +335,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
             @Override
             public void onClick(View view) {
                 try {
-                    functionsClass.navigateToClass(HybridAppsList.class,
+                    functionsClass.navigateToClass(HybridApplicationsView.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -453,10 +453,10 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                     @Override
                     public void run() {
                         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.
-                                makeSceneTransitionAnimation(FoldersHandler.this, actionButton, "transition");
+                                makeSceneTransitionAnimation(FoldersConfigurations.this, actionButton, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setClass(FoldersHandler.this, SettingGUI.class);
+                        intent.setClass(FoldersConfigurations.this, SettingGUI.class);
                         startActivity(intent, activityOptionsCompat.toBundle());
                     }
                 }, 113);
@@ -560,7 +560,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         //Consume Donation
         try {
             if (functionsClass.alreadyDonated() && functionsClass.networkConnection()) {
-                BillingClient billingClient = BillingClient.newBuilder(FoldersHandler.this).setListener(new PurchasesUpdatedListener() {
+                BillingClient billingClient = BillingClient.newBuilder(FoldersConfigurations.this).setListener(new PurchasesUpdatedListener() {
                     @Override
                     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
                         if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
@@ -611,7 +611,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
 
         //Restore Purchased Item
         if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.searchEnginePurchased()) {
-            BillingClient billingClient = BillingClient.newBuilder(FoldersHandler.this).setListener(new PurchasesUpdatedListener() {
+            BillingClient billingClient = BillingClient.newBuilder(FoldersConfigurations.this).setListener(new PurchasesUpdatedListener() {
                 @Override
                 public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
                     if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
@@ -648,7 +648,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         //Restore Subscribed Item
         try {
             if (functionsClass.networkConnection()) {
-                BillingClient billingClient = BillingClient.newBuilder(FoldersHandler.this).setListener(new PurchasesUpdatedListener() {
+                BillingClient billingClient = BillingClient.newBuilder(FoldersConfigurations.this).setListener(new PurchasesUpdatedListener() {
                     @Override
                     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
                         if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
@@ -701,7 +701,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(getString(R.string.license))) {
-                    functionsClass.dialogueLicense(FoldersHandler.this);
+                    functionsClass.dialogueLicense(FoldersConfigurations.this);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -771,7 +771,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                     Intent signInIntent = googleSignInClient.getSignInIntent();
                     startActivityForResult(signInIntent, 666);
 
-                    progressDialog = new ProgressDialog(FoldersHandler.this,
+                    progressDialog = new ProgressDialog(FoldersConfigurations.this,
                             PublicVariable.themeLightDark ? R.style.GeeksEmpire_Dialogue_Light : R.style.GeeksEmpire_Dialogue_Dark);
                     progressDialog.setMessage(Html.fromHtml(
                             "<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.signinTitle) + "</font></big>"
@@ -816,7 +816,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
 
         firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener(FoldersHandler.this, new OnCompleteListener<Void>() {
+                .addOnCompleteListener(FoldersConfigurations.this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -835,7 +835,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                                             @Override
                                             public void onClick(View view) {
                                                 functionsClass.upcomingChangeLog(
-                                                        FoldersHandler.this,
+                                                        FoldersConfigurations.this,
                                                         firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
                                                         String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
                                                 );
@@ -884,7 +884,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         }
 
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
-        functionsClass.CheckSystemRAM(FoldersHandler.this);
+        functionsClass.CheckSystemRAM(FoldersConfigurations.this);
     }
 
     @Override
@@ -923,7 +923,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         switch (direction) {
             case SimpleGestureFilterSwitch.SWIPE_RIGHT: {
                 try {
-                    functionsClass.navigateToClass(HybridAppsList.class,
+                    functionsClass.navigateToClass(HybridApplicationsView.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1108,11 +1108,11 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
 
                             if (linesNumber > 0) {
                                 adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                                categoryListAdapter = new FoldersListAdapter(FoldersHandler.this, getApplicationContext(), adapterItems);
+                                categoryListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
                             } else {
                                 adapterItems = new ArrayList<AdapterItems>();
                                 adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                                categoryListAdapter = new FoldersListAdapter(FoldersHandler.this, getApplicationContext(), adapterItems);
+                                categoryListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1126,7 +1126,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                 } else {
                     adapterItems = new ArrayList<AdapterItems>();
                     adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                    categoryListAdapter = new FoldersListAdapter(FoldersHandler.this, getApplicationContext(), adapterItems);
+                    categoryListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1289,7 +1289,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
                 }
 
                 //Loading Widgets
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(FoldersHandler.this);
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(FoldersConfigurations.this);
                 WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                         .fallbackToDestructiveMigration()
                         .addCallback(new RoomDatabase.Callback() {

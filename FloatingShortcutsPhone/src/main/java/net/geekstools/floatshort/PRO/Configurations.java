@@ -18,8 +18,8 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.firebase.FirebaseApp;
 
-import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridAppsList;
+import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
+import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryAll;
@@ -206,7 +206,7 @@ public class Configurations extends Activity {
             }
         }
         functionsClass.updateRecoverShortcuts();
-        if (functionsClass.readPreference("OpenMode", "openClassName", HybridAppsList.class.getSimpleName()).equals(FoldersHandler.class.getSimpleName())) {
+        if (functionsClass.readPreference("OpenMode", "openClassName", HybridApplicationsView.class.getSimpleName()).equals(FoldersConfigurations.class.getSimpleName())) {
             try {
                 if (functionsClass.UsageStatsEnabled()) {
                     if (getFileStreamPath("Frequently").exists()) {
@@ -227,7 +227,7 @@ public class Configurations extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Intent categoryIntent = new Intent(getApplicationContext(), FoldersHandler.class);
+            Intent categoryIntent = new Intent(getApplicationContext(), FoldersConfigurations.class);
             startActivity(categoryIntent);
         } else {
             if (functionsClass.UsageStatsEnabled()) {
@@ -239,7 +239,7 @@ public class Configurations extends Activity {
                 }
             }
 
-            Intent AppIntent = new Intent(getApplicationContext(), HybridAppsList.class);
+            Intent AppIntent = new Intent(getApplicationContext(), HybridApplicationsView.class);
             try {
                 Intent goHome = getIntent();
                 if (goHome.hasExtra("goHome")) {

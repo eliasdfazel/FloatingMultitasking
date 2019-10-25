@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Automation.Categories.CategoryAutoFeatures;
-import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
+import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridAppsList;
+import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
@@ -81,8 +81,8 @@ public class ActionListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 if (adapterItems.get(position).getCharTitle().equals(context.getString(R.string.automation))) {
-                    if (functionsClass.readPreference("OpenMode", "openClassName", HybridAppsList.class.getSimpleName())
-                            .equals(FoldersHandler.class.getSimpleName())) {
+                    if (functionsClass.readPreference("OpenMode", "openClassName", HybridApplicationsView.class.getSimpleName())
+                            .equals(FoldersConfigurations.class.getSimpleName())) {
                         Intent intent = new Intent(context, CategoryAutoFeatures.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
@@ -96,7 +96,7 @@ public class ActionListAdapter extends BaseAdapter {
                         activity.finish();
                     }*/
                 } else if (adapterItems.get(position).getCharTitle().equals(context.getString(R.string.floatingCategory))) {
-                    Intent intent = new Intent(context, FoldersHandler.class);
+                    Intent intent = new Intent(context, FoldersConfigurations.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     activity.overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);

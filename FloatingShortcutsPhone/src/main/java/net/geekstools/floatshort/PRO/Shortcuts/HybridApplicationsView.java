@@ -89,7 +89,7 @@ import com.google.firebase.storage.UploadTask;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.Folders.FoldersHandler;
+import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.CardHybridAdapter;
 import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.HybridSectionedGridRecyclerViewAdapter;
@@ -127,7 +127,7 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-public class HybridAppsList extends Activity implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
+public class HybridApplicationsView extends Activity implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
@@ -215,7 +215,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
 
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
-        functionsClass.ChangeLog(HybridAppsList.this, false);
+        functionsClass.ChangeLog(HybridApplicationsView.this, false);
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
 
@@ -357,7 +357,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
             @Override
             public void onClick(View view) {
                 try {
-                    functionsClass.navigateToClass(FoldersHandler.class,
+                    functionsClass.navigateToClass(FoldersConfigurations.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -475,10 +475,10 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                     @Override
                     public void run() {
                         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.
-                                makeSceneTransitionAnimation(HybridAppsList.this, actionButton, "transition");
+                                makeSceneTransitionAnimation(HybridApplicationsView.this, actionButton, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setClass(HybridAppsList.this, SettingGUI.class);
+                        intent.setClass(HybridApplicationsView.this, SettingGUI.class);
                         startActivity(intent, activityOptionsCompat.toBundle());
                     }
                 }, 113);
@@ -582,7 +582,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
         //Consume Donation
         try {
             if (functionsClass.alreadyDonated() && functionsClass.networkConnection()) {
-                BillingClient billingClient = BillingClient.newBuilder(HybridAppsList.this).setListener(new PurchasesUpdatedListener() {
+                BillingClient billingClient = BillingClient.newBuilder(HybridApplicationsView.this).setListener(new PurchasesUpdatedListener() {
                     @Override
                     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
                         if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
@@ -633,7 +633,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
 
         //Restore Purchased Item
         if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.searchEnginePurchased()) {
-            BillingClient billingClient = BillingClient.newBuilder(HybridAppsList.this).setListener(new PurchasesUpdatedListener() {
+            BillingClient billingClient = BillingClient.newBuilder(HybridApplicationsView.this).setListener(new PurchasesUpdatedListener() {
                 @Override
                 public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
                     if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
@@ -670,7 +670,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
         //Restore Subscribed Item
         try {
             if (functionsClass.networkConnection()) {
-                BillingClient billingClient = BillingClient.newBuilder(HybridAppsList.this).setListener(new PurchasesUpdatedListener() {
+                BillingClient billingClient = BillingClient.newBuilder(HybridApplicationsView.this).setListener(new PurchasesUpdatedListener() {
                     @Override
                     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
                         if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
@@ -723,7 +723,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(getString(R.string.license))) {
-                    functionsClass.dialogueLicense(HybridAppsList.this);
+                    functionsClass.dialogueLicense(HybridApplicationsView.this);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -793,7 +793,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                     Intent signInIntent = googleSignInClient.getSignInIntent();
                     startActivityForResult(signInIntent, 666);
 
-                    progressDialog = new ProgressDialog(HybridAppsList.this,
+                    progressDialog = new ProgressDialog(HybridApplicationsView.this,
                             PublicVariable.themeLightDark ? R.style.GeeksEmpire_Dialogue_Light : R.style.GeeksEmpire_Dialogue_Dark);
                     progressDialog.setMessage(Html.fromHtml(
                             "<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.signinTitle) + "</font></big>"
@@ -837,7 +837,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
         firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener(HybridAppsList.this, new OnCompleteListener<Void>() {
+                .addOnCompleteListener(HybridApplicationsView.this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -856,7 +856,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                                             @Override
                                             public void onClick(View view) {
                                                 functionsClass.upcomingChangeLog(
-                                                        HybridAppsList.this,
+                                                        HybridApplicationsView.this,
                                                         firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()),
                                                         String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()))
                                                 );
@@ -905,7 +905,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
             functionsClass.closeActionMenuOption(fullActionViews, actionButton);
         }
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
-        functionsClass.CheckSystemRAM(HybridAppsList.this);
+        functionsClass.CheckSystemRAM(HybridApplicationsView.this);
 
         if (functionsClass.SystemCache()) {
             startService(new Intent(getApplicationContext(), BindServices.class));
@@ -982,7 +982,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
             }
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
                 try {
-                    functionsClass.navigateToClass(FoldersHandler.class,
+                    functionsClass.navigateToClass(FoldersConfigurations.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1102,8 +1102,8 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                 freqLayout = (RelativeLayout) getLayoutInflater().inflate(R.layout.freq_item, null);
                 shapesImage = functionsClass.initShapesImage(freqLayout, R.id.freqItems);
                 shapesImage.setId(i);
-                shapesImage.setOnClickListener(HybridAppsList.this);
-                shapesImage.setOnLongClickListener(HybridAppsList.this);
+                shapesImage.setOnClickListener(HybridApplicationsView.this);
+                shapesImage.setOnLongClickListener(HybridApplicationsView.this);
                 shapesImage.setImageDrawable(functionsClass.loadCustomIcons() ?
                         loadCustomIcons.getDrawableIconForPackage(freqApps[i], functionsClass.shapedAppIcon(freqApps[i]))
                         :
@@ -1191,7 +1191,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                         }
                     }
                 }
-                recyclerViewAdapter = new CardHybridAdapter(HybridAppsList.this, getApplicationContext(), adapterItems);
+                recyclerViewAdapter = new CardHybridAdapter(HybridApplicationsView.this, getApplicationContext(), adapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -1311,7 +1311,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                     }
                 }
 
-                recyclerViewAdapter = new CardHybridAdapter(HybridAppsList.this, getApplicationContext(), adapterItems);
+                recyclerViewAdapter = new CardHybridAdapter(HybridApplicationsView.this, getApplicationContext(), adapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -1326,7 +1326,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             recyclerViewAdapter.notifyDataSetChanged();
-            HybridSectionedGridRecyclerViewAdapter.Section[] sectionsData = new HybridSectionedGridRecyclerViewAdapter.Section[HybridAppsList.this.sections.size()];
+            HybridSectionedGridRecyclerViewAdapter.Section[] sectionsData = new HybridSectionedGridRecyclerViewAdapter.Section[HybridApplicationsView.this.sections.size()];
             HybridSectionedGridRecyclerViewAdapter hybridSectionedGridRecyclerViewAdapter = new HybridSectionedGridRecyclerViewAdapter(
                     getApplicationContext(),
                     R.layout.hybrid_sections,
@@ -1334,7 +1334,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                     loadView,
                     recyclerViewAdapter
             );
-            hybridSectionedGridRecyclerViewAdapter.setSections(HybridAppsList.this.sections.toArray(sectionsData));
+            hybridSectionedGridRecyclerViewAdapter.setSections(HybridApplicationsView.this.sections.toArray(sectionsData));
             loadView.setAdapter(hybridSectionedGridRecyclerViewAdapter);
 
             recyclerViewLayoutManager.scrollToPosition(0);
@@ -1607,7 +1607,7 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
                 }
 
                 //Loading Widgets
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(HybridAppsList.this);
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(HybridApplicationsView.this);
                 WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                         .fallbackToDestructiveMigration()
                         .addCallback(new RoomDatabase.Callback() {
