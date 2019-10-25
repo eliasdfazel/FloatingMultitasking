@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.PopupShortcutsOptionAdapter;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.NavDrawerItem;
 
 import java.util.ArrayList;
 import java.util.List;

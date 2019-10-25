@@ -75,12 +75,12 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.CustomIconsThemeAdapter;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutList;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.CustomIconsThemeAdapter;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutList;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 

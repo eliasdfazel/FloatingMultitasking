@@ -357,7 +357,7 @@
         </activity>
         <activity
             android:name=".Util.InAppUpdate"
-            android:theme="@style/TransparentAppCompat" />
+            android:theme="@style/TransparentInAppUpdate" />
 
         <activity-alias
             android:name=".Alias.FoldersHandler"

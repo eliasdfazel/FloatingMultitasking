@@ -69,6 +69,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
@@ -79,10 +81,10 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutGrid;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.RecycleViewSmoothLayoutGrid;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
@@ -169,6 +171,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     public static boolean alreadyAuthenticatedWidgets = false;
 
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -726,6 +729,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         /*Search Engine*/
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         /*Search Engine*/
+
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -2282,6 +2287,13 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundleSearchEngineUsed = new Bundle();
+                bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.getCurrentUser());
+                bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchEngineAdapter.SearchResultType.SearchWidgets);
+
+                FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+                firebaseAnalytics.logEvent(SearchEngineAdapter.SEARCH_ENGINE_USED_LOG, bundleSearchEngineUsed);
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

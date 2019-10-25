@@ -19,10 +19,13 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.tasks.Task
 import kotlinx.android.synthetic.main.in_app_update_view.*
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 
 class InAppUpdate : AppCompatActivity() {
+
+    lateinit var functionsClass: FunctionsClass
 
     private lateinit var appUpdateManager: AppUpdateManager
     private lateinit var installStateUpdatedListener: InstallStateUpdatedListener
@@ -33,6 +36,12 @@ class InAppUpdate : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.in_app_update_view)
 
+        functionsClass = FunctionsClass(applicationContext)
+
+        window.statusBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 113f)
+        window.navigationBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 113f)
+
+        fullEmptyView.setBackgroundColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 113f))
         inAppUpdateWaiting.setColor(PublicVariable.primaryColorOpposite)
 
         installStateUpdatedListener = InstallStateUpdatedListener {
@@ -55,7 +64,7 @@ class InAppUpdate : AppCompatActivity() {
                 InstallStatus.INSTALLED -> {
                     FunctionsClassDebug.PrintDebug("*** UPDATE Installed ***")
 
-//                    appUpdateManager.unregisterListener(installStateUpdatedListener)
+                    appUpdateManager.unregisterListener(installStateUpdatedListener)
                 }
                 InstallStatus.CANCELED -> {
                     FunctionsClassDebug.PrintDebug("*** UPDATE Canceled ***")
@@ -75,10 +84,10 @@ class InAppUpdate : AppCompatActivity() {
             FunctionsClassDebug.PrintDebug("*** Update Availability == ${updateInfo.updateAvailability()} ||| Available Version Code == ${updateInfo.availableVersionCode()} ***")
 
             if (updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    && updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+                    && updateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
                 appUpdateManager.startUpdateFlowForResult(
                         updateInfo,
-                        AppUpdateType.FLEXIBLE,
+                        AppUpdateType.IMMEDIATE,
                         this@InAppUpdate,
                         IN_APP_UPDATE_REQUEST
                 )
@@ -105,7 +114,7 @@ class InAppUpdate : AppCompatActivity() {
                     == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                 appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
-                        AppUpdateType.FLEXIBLE,
+                        AppUpdateType.IMMEDIATE,
                         this@InAppUpdate,
                         IN_APP_UPDATE_REQUEST)
             }

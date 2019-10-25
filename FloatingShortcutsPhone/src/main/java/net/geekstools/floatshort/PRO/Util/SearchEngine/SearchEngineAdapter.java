@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
 
 import java.util.ArrayList;
 
@@ -36,6 +39,9 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
     public static ArrayList<AdapterItems> allSearchResultItems = new ArrayList<AdapterItems>();
 
     public static boolean alreadyAuthenticatedSearchEngine = false;
+
+    public static String SEARCH_ENGINE_USED_LOG = "search_engine_used";
+    public static String SEARCH_ENGINE_Query_LOG = "search_engine_query";
 
     public SearchEngineAdapter(Context context, ArrayList<AdapterItems> allSearchResultItems) {
         this.context = context;
@@ -154,16 +160,23 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
             @Override
             public void onClick(View view) {
                 /*Add Switch To Change for Different Type: Apps/Folders/Widgets*/
+                FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
+                Bundle bundleSearchEngineQuery = new Bundle();
+
                 switch (allSearchResultItems.get(position).getSearchResultType()) {
                     case SearchResultType.SearchShortcuts: {
                         functionsClass
                                 .runUnlimitedShortcutsService(allSearchResultItems.get(position).getPackageName());
+
+                        bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", allSearchResultItems.get(position).getPackageName());
 
                         break;
                     }
                     case SearchResultType.SearchFolders: {
                         functionsClass
                                 .runUnlimitedFolderService(allSearchResultItems.get(position).getCategory());
+
+                        bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", allSearchResultItems.get(position).getCategory());
 
                         break;
                     }
@@ -172,9 +185,13 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                                 .runUnlimitedWidgetService(allSearchResultItems.get(position).getAppWidgetId(),
                                         allSearchResultItems.get(position).getWidgetLabel());
 
+                        bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", allSearchResultItems.get(position).getWidgetLabel());
+
                         break;
                     }
                 }
+
+                firebaseAnalytics.logEvent(SearchEngineAdapter.SEARCH_ENGINE_Query_LOG, bundleSearchEngineQuery);
                 /*Add Switch To Change for Different Type: Apps/Folders/Widgets*/
             }
         });

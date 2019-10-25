@@ -17,7 +17,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.imageview.customshapes.ShapesImage;
 

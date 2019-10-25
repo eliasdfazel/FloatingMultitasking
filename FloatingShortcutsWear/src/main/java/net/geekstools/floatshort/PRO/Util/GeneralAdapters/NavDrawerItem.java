@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Util.NavAdapter;
+package net.geekstools.floatshort.PRO.Util.GeneralAdapters;
 
 import android.graphics.drawable.Drawable;
 

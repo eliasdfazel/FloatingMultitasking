@@ -39,7 +39,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.CardListAdapter;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Util.SettingGUI;
 
 import java.util.ArrayList;

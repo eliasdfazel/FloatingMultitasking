@@ -143,10 +143,10 @@ import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNoti
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.OpenApplicationsLaunchPad;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.FloatingWidgetHomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RemoteController;

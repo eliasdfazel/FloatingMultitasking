@@ -75,6 +75,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -94,10 +95,11 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
+import net.geekstools.floatshort.PRO.Util.InAppUpdate;
 import net.geekstools.floatshort.PRO.Util.LicenseValidator;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
@@ -849,9 +851,9 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                                                 (int) firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())
                                         );
 
-                                        /*if (firebaseAuth.getCurrentUser() != null) {
+                                        if (firebaseAuth.getCurrentUser() != null) {
                                             startActivity(new Intent(getApplicationContext(), InAppUpdate.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
-                                        }*/
+                                        }
                                     } else {
 
                                     }
@@ -1412,6 +1414,13 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundleSearchEngineUsed = new Bundle();
+                bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.getCurrentUser());
+                bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchEngineAdapter.SearchResultType.SearchFolders);
+
+                FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+                firebaseAnalytics.logEvent(SearchEngineAdapter.SEARCH_ENGINE_USED_LOG, bundleSearchEngineUsed);
+
                 if (functionsClass.securityServicesSubscribed()) {
                     if (functionsClass.readPreference(".Password", "Pin", "0").equals("0") && functionsClass.securityServicesSubscribed()) {
                         startActivity(new Intent(getApplicationContext(), HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),

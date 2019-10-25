@@ -29,7 +29,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataDAO;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
