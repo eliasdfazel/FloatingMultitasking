@@ -14,6 +14,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -96,7 +97,11 @@ import net.geekstools.floatshort.PRO.Widget.NavAdapter.WidgetSectionedGridRecycl
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -123,7 +128,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     TextView popupIndex;
 
     /*Search Engine*/
-    SearchEngineAdapter widgetsSearchAdapter;
+    SearchEngineAdapter searchRecyclerViewAdapter;
+    ArrayList<AdapterItems> searchAdapterItems;
     TextInputLayout textInputSearchView;
     AppCompatAutoCompleteTextView searchView;
     ImageView searchIcon, searchFloatIt,
@@ -1375,9 +1381,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                /*Search Engine*/
-                widgetsSearchAdapter = new SearchEngineAdapter(getApplicationContext(), configuredWidgetsAdapterItems);
-                /*Search Engine*/
+
             }
 
             return configuredWidgetAvailable;
@@ -1409,8 +1413,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                         loadingSplash.setVisibility(View.INVISIBLE);
                         loadingSplash.startAnimation(animation);
-
-                        setupSearchView();
                     }
                 }, 333);
             } else {
@@ -1429,6 +1431,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
             LoadApplicationsIndexConfigured loadApplicationsIndexConfigured = new LoadApplicationsIndexConfigured();
             loadApplicationsIndexConfigured.execute();
+
+            LoadSearchEngineData loadSearchEngineData = new LoadSearchEngineData();
+            loadSearchEngineData.execute();
         }
     }
 
@@ -2083,8 +2088,158 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     }
 
     /*Search Engine*/
+    private class LoadSearchEngineData extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            /*
+             * Search Engine
+             */
+            if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
+                searchAdapterItems = new ArrayList<AdapterItems>();
+
+                //Loading Folders
+                if (getFileStreamPath(".categoryInfo").exists()) {
+                    try {
+                        try {
+                            FileInputStream fileInputStream = new FileInputStream(getFileStreamPath(".categoryInfo"));
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+
+                            String folderData = "";
+                            while ((folderData = bufferedReader.readLine()) != null) {
+                                try {
+                                    searchAdapterItems.add(new AdapterItems(folderData,
+                                            functionsClass.readFileLine(folderData), SearchEngineAdapter.SearchResultType.SearchFolders));
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            fileInputStream.close();
+                            bufferedReader.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        this.cancel(true);
+                    } finally {
+
+                    }
+                }
+
+                //Loading Shortcuts
+                try {
+                    List<ApplicationInfo> applicationInfoList = getApplicationContext().getPackageManager().getInstalledApplications(0);
+                    Collections.sort(applicationInfoList, new ApplicationInfo.DisplayNameComparator(getPackageManager()));
+
+                    for (int appInfo = 0; appInfo < applicationInfoList.size(); appInfo++) {
+                        if (getPackageManager().getLaunchIntentForPackage(applicationInfoList.get(appInfo).packageName) != null) {
+                            try {
+
+
+                                String PackageName = applicationInfoList.get(appInfo).packageName;
+                                String AppName = functionsClass.appName(PackageName);
+                                Drawable AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
+
+                                searchAdapterItems.add(new AdapterItems(AppName, PackageName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                //Loading Widgets
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(WidgetConfigurations.this);
+                WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                        .fallbackToDestructiveMigration()
+                        .addCallback(new RoomDatabase.Callback() {
+                            @Override
+                            public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                super.onCreate(supportSQLiteDatabase);
+                            }
+
+                            @Override
+                            public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                super.onOpen(supportSQLiteDatabase);
+
+                            }
+                        })
+                        .build();
+
+                List<WidgetDataModel> widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetData();
+                if (widgetDataModels.size() > 0) {
+                    for (WidgetDataModel widgetDataModel : widgetDataModels) {
+                        try {
+                            int appWidgetId = widgetDataModel.getWidgetId();
+                            String packageName = widgetDataModel.getPackageName();
+                            String className = widgetDataModel.getClassNameProvider();
+                            String configClassName = widgetDataModel.getConfigClassName();
+
+                            FunctionsClassDebug.Companion.PrintDebug("*** " + appWidgetId + " *** PackageName: " + packageName + " - ClassName: " + className + " - Configure: " + configClassName + " ***");
+
+                            if (functionsClass.appIsInstalled(packageName)) {
+                                AppWidgetProviderInfo appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
+                                String newAppName = functionsClass.appName(packageName);
+                                Drawable appIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
+
+
+                                searchAdapterItems.add(new AdapterItems(
+                                        newAppName,
+                                        packageName,
+                                        className,
+                                        configClassName,
+                                        widgetDataModel.getWidgetLabel(),
+                                        appIcon,
+                                        appWidgetProviderInfo,
+                                        appWidgetId,
+                                        widgetDataModel.getRecovery(),
+                                        SearchEngineAdapter.SearchResultType.SearchWidgets
+                                ));
+
+                            } else {
+                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+
+                }
+                searchRecyclerViewAdapter = new SearchEngineAdapter(getApplicationContext(), searchAdapterItems);
+            } else {
+                searchAdapterItems = SearchEngineAdapter.allSearchResultItems;
+
+                searchRecyclerViewAdapter = new SearchEngineAdapter(getApplicationContext(), searchAdapterItems);
+            }
+            /*
+             * Search Engine
+             */
+            return (searchAdapterItems.size() > 0);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean results) {
+            super.onPostExecute(results);
+
+            if (results) {
+                setupSearchView();
+            }
+        }
+    }
+
     public void setupSearchView() {
-        searchView.setAdapter(widgetsSearchAdapter);
+        searchView.setAdapter(searchRecyclerViewAdapter);
 
         searchView.setDropDownBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         searchView.setVerticalScrollBarEnabled(false);
