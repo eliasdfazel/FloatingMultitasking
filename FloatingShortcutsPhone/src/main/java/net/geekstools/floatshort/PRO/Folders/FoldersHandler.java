@@ -5,10 +5,13 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
@@ -52,6 +55,9 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
@@ -99,6 +105,8 @@ import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.io.BufferedReader;
@@ -106,6 +114,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FoldersHandler extends Activity implements View.OnClickListener, View.OnLongClickListener, SimpleGestureFilterSwitch.SimpleGestureListener {
@@ -119,7 +128,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
     MaterialButton switchWidgets, switchApps, recoveryAction, automationAction;
 
     /*Search Engine*/
-    SearchEngineAdapter foldersSearchAdapter;
+    SearchEngineAdapter searchRecyclerViewAdapter;
     TextInputLayout textInputSearchView;
     AppCompatAutoCompleteTextView searchView;
     ImageView searchIcon, searchFloatIt,
@@ -127,7 +136,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
     /*Search Engine*/
 
     RecyclerView.Adapter categoryListAdapter;
-    ArrayList<AdapterItems> adapterItems;
+    ArrayList<AdapterItems> adapterItems, searchAdapterItems;
 
     RelativeLayout loadingSplash;
     ProgressBar loadingBarLTR;
@@ -181,6 +190,7 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         } else {
             functionsClass.setThemeColorFloating(wholeCategory, false);
         }
+
         adapterItems = new ArrayList<AdapterItems>();
 
         LinearLayoutManager recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);
@@ -1066,8 +1076,6 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                adapterItems = new ArrayList<AdapterItems>();
-
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
                     FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
@@ -1075,39 +1083,44 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
 
                 if (getFileStreamPath(".categoryInfo").exists() && functionsClass.countLineInnerFile(".categoryInfo") > 0) {
                     try {
-                        adapterItems = new ArrayList<AdapterItems>();
                         try {
                             FileInputStream fileInputStream = new FileInputStream(getFileStreamPath(".categoryInfo"));
                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
+                            int linesNumber = 0;
                             String folderData = "";
                             while ((folderData = bufferedReader.readLine()) != null) {
                                 try {
                                     adapterItems.add(new AdapterItems(folderData,
                                             functionsClass.readFileLine(folderData), SearchEngineAdapter.SearchResultType.SearchFolders));
+
+                                    linesNumber++;
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 } finally {
                                     functionsClass.IndexAppInfoCategory(folderData + " | " + getString(R.string.floatingCategory));
                                 }
-
                             }
 
                             fileInputStream.close();
                             bufferedReader.close();
+
+                            if (linesNumber > 0) {
+                                adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
+                                categoryListAdapter = new FoldersListAdapter(FoldersHandler.this, getApplicationContext(), adapterItems);
+                            } else {
+                                adapterItems = new ArrayList<AdapterItems>();
+                                adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
+                                categoryListAdapter = new FoldersListAdapter(FoldersHandler.this, getApplicationContext(), adapterItems);
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
-                        adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                        categoryListAdapter = new FoldersListAdapter(FoldersHandler.this, getApplicationContext(), adapterItems);
                     } catch (Exception e) {
                         e.printStackTrace();
                         this.cancel(true);
                     } finally {
-                        /*Search Engine*/
-                        foldersSearchAdapter = new SearchEngineAdapter(getApplicationContext(), adapterItems, SearchEngineAdapter.SearchResultType.SearchFolders);
-                        /*Search Engine*/
+
                     }
                 } else {
                     adapterItems = new ArrayList<AdapterItems>();
@@ -1151,13 +1164,14 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
 
                         }
                     });
-
-                    setupSearchView();
                 }
             }, 333);
 
             LoadInstalledCustomIcons loadInstalledCustomIcons = new LoadInstalledCustomIcons();
             loadInstalledCustomIcons.execute();
+
+            LoadSearchEngineData loadSearchEngineData = new LoadSearchEngineData();
+            loadSearchEngineData.execute();
         }
     }
 
@@ -1203,8 +1217,158 @@ public class FoldersHandler extends Activity implements View.OnClickListener, Vi
     }
 
     /*Search Engine*/
+    private class LoadSearchEngineData extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            /*
+             * Search Engine
+             */
+            if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
+                searchAdapterItems = new ArrayList<AdapterItems>();
+
+                //Loading Folders
+                if (getFileStreamPath(".categoryInfo").exists()) {
+                    try {
+                        try {
+                            FileInputStream fileInputStream = new FileInputStream(getFileStreamPath(".categoryInfo"));
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+
+                            String folderData = "";
+                            while ((folderData = bufferedReader.readLine()) != null) {
+                                try {
+                                    searchAdapterItems.add(new AdapterItems(folderData,
+                                            functionsClass.readFileLine(folderData), SearchEngineAdapter.SearchResultType.SearchFolders));
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            fileInputStream.close();
+                            bufferedReader.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        this.cancel(true);
+                    } finally {
+
+                    }
+                }
+
+                //Loading Shortcuts
+                try {
+                    List<ApplicationInfo> applicationInfoList = getApplicationContext().getPackageManager().getInstalledApplications(0);
+                    Collections.sort(applicationInfoList, new ApplicationInfo.DisplayNameComparator(getPackageManager()));
+
+                    for (int appInfo = 0; appInfo < applicationInfoList.size(); appInfo++) {
+                        if (getPackageManager().getLaunchIntentForPackage(applicationInfoList.get(appInfo).packageName) != null) {
+                            try {
+
+
+                                String PackageName = applicationInfoList.get(appInfo).packageName;
+                                String AppName = functionsClass.appName(PackageName);
+                                Drawable AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
+
+                                searchAdapterItems.add(new AdapterItems(AppName, PackageName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                //Loading Widgets
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(FoldersHandler.this);
+                WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                        .fallbackToDestructiveMigration()
+                        .addCallback(new RoomDatabase.Callback() {
+                            @Override
+                            public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                super.onCreate(supportSQLiteDatabase);
+                            }
+
+                            @Override
+                            public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                super.onOpen(supportSQLiteDatabase);
+
+                            }
+                        })
+                        .build();
+
+                List<WidgetDataModel> widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetData();
+                if (widgetDataModels.size() > 0) {
+                    for (WidgetDataModel widgetDataModel : widgetDataModels) {
+                        try {
+                            int appWidgetId = widgetDataModel.getWidgetId();
+                            String packageName = widgetDataModel.getPackageName();
+                            String className = widgetDataModel.getClassNameProvider();
+                            String configClassName = widgetDataModel.getConfigClassName();
+
+                            FunctionsClassDebug.Companion.PrintDebug("*** " + appWidgetId + " *** PackageName: " + packageName + " - ClassName: " + className + " - Configure: " + configClassName + " ***");
+
+                            if (functionsClass.appIsInstalled(packageName)) {
+                                AppWidgetProviderInfo appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
+                                String newAppName = functionsClass.appName(packageName);
+                                Drawable appIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
+
+
+                                searchAdapterItems.add(new AdapterItems(
+                                        newAppName,
+                                        packageName,
+                                        className,
+                                        configClassName,
+                                        widgetDataModel.getWidgetLabel(),
+                                        appIcon,
+                                        appWidgetProviderInfo,
+                                        appWidgetId,
+                                        widgetDataModel.getRecovery(),
+                                        SearchEngineAdapter.SearchResultType.SearchWidgets
+                                ));
+
+                            } else {
+                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+
+                }
+                searchRecyclerViewAdapter = new SearchEngineAdapter(getApplicationContext(), searchAdapterItems);
+            } else {
+                searchAdapterItems = SearchEngineAdapter.allSearchResultItems;
+
+                searchRecyclerViewAdapter = new SearchEngineAdapter(getApplicationContext(), searchAdapterItems);
+            }
+            /*
+             * Search Engine
+             */
+            return (searchAdapterItems.size() > 0);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean results) {
+            super.onPostExecute(results);
+
+            if (results) {
+                setupSearchView();
+            }
+        }
+    }
+
     public void setupSearchView() {
-        searchView.setAdapter(foldersSearchAdapter);
+        searchView.setAdapter(searchRecyclerViewAdapter);
 
         searchView.setDropDownBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         searchView.setVerticalScrollBarEnabled(false);

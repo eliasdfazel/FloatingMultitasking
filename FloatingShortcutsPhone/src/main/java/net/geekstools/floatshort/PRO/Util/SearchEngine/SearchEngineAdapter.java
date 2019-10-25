@@ -22,8 +22,6 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.NavAdapter.AdapterItems;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
@@ -31,22 +29,16 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
     FunctionsClass functionsClass;
 
-    int layoutInflater, searchResultType;
+    int layoutInflater;
 
     private ArrayList<AdapterItems> dataListAllItems;
 
     public static ArrayList<AdapterItems> allSearchResultItems = new ArrayList<AdapterItems>();
 
-    public SearchEngineAdapter(Context context, ArrayList<AdapterItems> allSearchResultItems, int searchResultType) {
+    public SearchEngineAdapter(Context context, ArrayList<AdapterItems> allSearchResultItems) {
         this.context = context;
-        this.searchResultType = searchResultType;
 
-//        SearchEngineAdapter.allSearchResultItems = allSearchResultItems;
-        SearchEngineAdapter.allSearchResultItems.addAll(allSearchResultItems);
-
-        Set<AdapterItems> stringHashSet = new LinkedHashSet<AdapterItems>(SearchEngineAdapter.allSearchResultItems);
-        SearchEngineAdapter.allSearchResultItems.clear();
-        SearchEngineAdapter.allSearchResultItems.addAll(stringHashSet);
+        SearchEngineAdapter.allSearchResultItems = allSearchResultItems;
 
         functionsClass = new FunctionsClass(context);
 

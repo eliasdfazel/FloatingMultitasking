@@ -1376,7 +1376,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 e.printStackTrace();
             } finally {
                 /*Search Engine*/
-                widgetsSearchAdapter = new SearchEngineAdapter(getApplicationContext(), configuredWidgetsAdapterItems, SearchEngineAdapter.SearchResultType.SearchWidgets);
+                widgetsSearchAdapter = new SearchEngineAdapter(getApplicationContext(), configuredWidgetsAdapterItems);
                 /*Search Engine*/
             }
 

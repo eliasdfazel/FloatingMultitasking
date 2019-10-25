@@ -53,6 +53,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
         this.activity = activity;
         this.context = context;
         this.adapterItems = adapterItems;
+
         functionsClass = new FunctionsClass(context, activity);
 
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
@@ -83,6 +84,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
         viewHolderBinder.categoryName.setHintTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175));
 
         final String nameCategory = adapterItems.get(position).getCategory();
+
         final String[] categoryPackages = adapterItems.get(position).getPackageNames();
 
         if (functionsClass.loadRecoveryIndicatorCategory(nameCategory)) {

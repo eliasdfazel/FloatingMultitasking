@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -55,6 +57,9 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
@@ -104,10 +109,15 @@ import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -1559,25 +1569,119 @@ public class HybridAppsList extends Activity implements View.OnClickListener, Vi
     /*Indexing*/
 
     /*Search Engine*/
-    private class LoadSearchEngineData extends AsyncTask<Void, Void, String> {
+    private class LoadSearchEngineData extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected String doInBackground(Void... voids) {
-            /*Search Engine*/
-            searchRecyclerViewAdapter = new SearchEngineAdapter(getApplicationContext(), adapterItems, SearchEngineAdapter.SearchResultType.SearchShortcuts);
-            /*Search Engine*/
-            return "";
+        protected Boolean doInBackground(Void... voids) {
+            /*
+             * Search Engine
+             */
+            //Loading Shortcuts
+            if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
+                searchAdapterItems = adapterItems;
+
+                //Loading Folders
+                try {
+                    FileInputStream fileInputStream = new FileInputStream(getFileStreamPath(".categoryInfo"));
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+
+                    String folderData = "";
+                    while ((folderData = bufferedReader.readLine()) != null) {
+                        try {
+                            searchAdapterItems.add(new AdapterItems(folderData,
+                                    functionsClass.readFileLine(folderData), SearchEngineAdapter.SearchResultType.SearchFolders));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    fileInputStream.close();
+                    bufferedReader.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                //Loading Widgets
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(HybridAppsList.this);
+                WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                        .fallbackToDestructiveMigration()
+                        .addCallback(new RoomDatabase.Callback() {
+                            @Override
+                            public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                super.onCreate(supportSQLiteDatabase);
+                            }
+
+                            @Override
+                            public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                super.onOpen(supportSQLiteDatabase);
+
+                            }
+                        })
+                        .build();
+
+                List<WidgetDataModel> widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetData();
+                if (widgetDataModels.size() > 0) {
+                    for (WidgetDataModel widgetDataModel : widgetDataModels) {
+                        try {
+                            int appWidgetId = widgetDataModel.getWidgetId();
+                            String packageName = widgetDataModel.getPackageName();
+                            String className = widgetDataModel.getClassNameProvider();
+                            String configClassName = widgetDataModel.getConfigClassName();
+
+                            FunctionsClassDebug.Companion.PrintDebug("*** " + appWidgetId + " *** PackageName: " + packageName + " - ClassName: " + className + " - Configure: " + configClassName + " ***");
+
+                            if (functionsClass.appIsInstalled(packageName)) {
+                                AppWidgetProviderInfo appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
+                                String newAppName = functionsClass.appName(packageName);
+                                Drawable appIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
+
+
+                                searchAdapterItems.add(new AdapterItems(
+                                        newAppName,
+                                        packageName,
+                                        className,
+                                        configClassName,
+                                        widgetDataModel.getWidgetLabel(),
+                                        appIcon,
+                                        appWidgetProviderInfo,
+                                        appWidgetId,
+                                        widgetDataModel.getRecovery(),
+                                        SearchEngineAdapter.SearchResultType.SearchWidgets
+                                ));
+
+                            } else {
+                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+
+                }
+                searchRecyclerViewAdapter = new SearchEngineAdapter(getApplicationContext(), searchAdapterItems);
+            } else {
+                searchAdapterItems = SearchEngineAdapter.allSearchResultItems;
+
+                searchRecyclerViewAdapter = new SearchEngineAdapter(getApplicationContext(), searchAdapterItems);
+            }
+            /*
+             * Search Engine
+             */
+            return (searchAdapterItems.size() > 0);
         }
 
         @Override
-        protected void onPostExecute(String results) {
+        protected void onPostExecute(Boolean results) {
             super.onPostExecute(results);
 
-            setupSearchView();
+            if (results) {
+                setupSearchView();
+            }
         }
     }
 
