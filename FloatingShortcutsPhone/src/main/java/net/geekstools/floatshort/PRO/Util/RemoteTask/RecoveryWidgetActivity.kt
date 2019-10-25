@@ -42,8 +42,6 @@ class RecoveryWidgetActivity : Activity() {
             } else if (intent.action == Intent.ACTION_MAIN || intent.action == Intent.ACTION_VIEW
                     || intent.action == "Remote_Recover_Widgets") {
 
-                println(">>> To Recovery Widgets to Service <<<")
-
                 val intent = Intent(applicationContext, RecoveryWidgets::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

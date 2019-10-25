@@ -48,6 +48,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
+import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.Fingerprint.FingerprintProcessHelper;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
@@ -129,6 +130,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
         if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurationsUnlock()
                 || FunctionsClassSecurity.AuthOpenAppValues.getAuthFloatingWidget()
                 || FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations()
+                || FunctionsClassSecurity.AuthOpenAppValues.getAuthSearchEngine()
                 || FunctionsClassSecurity.AuthOpenAppValues.getAuthForgotPinPassword()) {
             dialogueIcon.setImageDrawable(
                     functionsClass.shapedAppIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName())
@@ -280,7 +282,12 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                 } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations()) {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Open Widget Configurations ***");
 
-                                    WidgetConfigurations.alreadyAuthenticated = true;
+                                    WidgetConfigurations.alreadyAuthenticatedWidgets = true;
+                                } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSearchEngine()) {
+                                    FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Run Search Engine ***");
+
+                                    SearchEngineAdapter.alreadyAuthenticatedSearchEngine = true;
+                                    getContext().sendBroadcast(new Intent("SEARCH_ENGINE_AUTHENTICATED"));
                                 } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthRecovery()) {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Recovery ***");
 

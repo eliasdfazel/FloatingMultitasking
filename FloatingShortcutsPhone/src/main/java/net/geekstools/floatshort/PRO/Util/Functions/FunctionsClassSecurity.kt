@@ -26,6 +26,7 @@ import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.CheckPoint
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver
+import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthActivityHelper
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.AuthenticationDialogFragment
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword
@@ -115,6 +116,8 @@ class FunctionsClassSecurity {
         var anchorView: View? = null
 
         var authRecovery: Boolean = false
+
+        var authSearchEngine: Boolean = false
     }
 
     fun resetAuthAppValues() {
@@ -150,6 +153,8 @@ class FunctionsClassSecurity {
             AuthOpenAppValues.anchorView = null
 
             AuthOpenAppValues.authRecovery = false
+
+            AuthOpenAppValues.authSearchEngine = false
         }, 1000)
     }
 
@@ -310,7 +315,12 @@ class FunctionsClassSecurity {
             } else if (FunctionsClassSecurity.authWidgetConfigurations) {
                 FunctionsClassDebug.PrintDebug("*** Authenticated | Open Widget Configurations ***")
 
-                WidgetConfigurations.alreadyAuthenticated = true
+                WidgetConfigurations.alreadyAuthenticatedWidgets = true
+            } else if (FunctionsClassSecurity.authSearchEngine) {
+                FunctionsClassDebug.PrintDebug("*** Authenticated | Run Search Engine ***")
+
+                SearchEngineAdapter.alreadyAuthenticatedSearchEngine = true
+                context.sendBroadcast(Intent("SEARCH_ENGINE_AUTHENTICATED"))
             } else if (FunctionsClassSecurity.authRecovery) {
                 FunctionsClassDebug.PrintDebug("*** Authenticated | Perform Recovery ***")
 

@@ -5899,7 +5899,7 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
+        return BuildConfig.VERSION_NAME.contains("[BETA]") ? true : readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
     }
 
     public boolean floatingWidgetsPurchased() {

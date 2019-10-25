@@ -167,7 +167,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     boolean installedWidgetsLoaded = false, configuredWidgetAvailable = false;
 
-    public static boolean alreadyAuthenticated = false;
+    public static boolean alreadyAuthenticatedWidgets = false;
 
 
     @Override
@@ -928,7 +928,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             startActivity(new Intent(getApplicationContext(), HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                     ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
         } else {
-            if (!alreadyAuthenticated) {
+            if (!alreadyAuthenticatedWidgets) {
                 if (functionsClass.securityServicesSubscribed()) {
                     FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(getString(R.string.securityServices));
                     FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(getPackageName());

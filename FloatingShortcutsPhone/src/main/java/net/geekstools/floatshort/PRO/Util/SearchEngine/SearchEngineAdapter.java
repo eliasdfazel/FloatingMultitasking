@@ -35,6 +35,8 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
     public static ArrayList<AdapterItems> allSearchResultItems = new ArrayList<AdapterItems>();
 
+    public static boolean alreadyAuthenticatedSearchEngine = false;
+
     public SearchEngineAdapter(Context context, ArrayList<AdapterItems> allSearchResultItems) {
         this.context = context;
 
