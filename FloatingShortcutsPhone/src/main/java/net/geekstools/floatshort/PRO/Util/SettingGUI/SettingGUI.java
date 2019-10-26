@@ -901,7 +901,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
 
                                     functionsClass.saveFileEmpty(".LitePreferenceCheckpoint");
                                 }
-                            }, 333);
+                            }, 555);
                         }
                     }, 333);
                 }
@@ -911,6 +911,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 functionsClass.litePreferenceConfirm();
+
                 return true;
             }
         });
