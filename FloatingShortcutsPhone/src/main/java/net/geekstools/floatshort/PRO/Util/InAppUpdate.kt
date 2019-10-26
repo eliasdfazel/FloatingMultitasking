@@ -22,6 +22,7 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
+import java.util.*
 
 class InAppUpdate : AppCompatActivity() {
 
@@ -38,11 +39,16 @@ class InAppUpdate : AppCompatActivity() {
 
         functionsClass = FunctionsClass(applicationContext)
 
-        window.statusBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 113f)
-        window.navigationBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 113f)
+        window.statusBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 99f)
+        window.navigationBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 99f)
 
-        fullEmptyView.setBackgroundColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 113f))
+        fullEmptyView.setBackgroundColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 99f))
         inAppUpdateWaiting.setColor(PublicVariable.primaryColorOpposite)
+
+        updateInformation.append(" ")
+        updateInformation.append("|")
+        updateInformation.append(" ")
+        updateInformation.append("${intent.getStringExtra("UPDATE_VERSION")}")
 
         installStateUpdatedListener = InstallStateUpdatedListener {
             when (it.installStatus()) {
@@ -92,6 +98,8 @@ class InAppUpdate : AppCompatActivity() {
                         IN_APP_UPDATE_REQUEST
                 )
             } else {
+                functionsClass.savePreference("InAppUpdate", "TriggeredDate", Calendar.getInstance().get(Calendar.DATE))
+
                 this@InAppUpdate.finish()
             }
 
@@ -127,6 +135,7 @@ class InAppUpdate : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     override fun onBackPressed() {
@@ -138,10 +147,12 @@ class InAppUpdate : AppCompatActivity() {
             if (resultCode == RESULT_CANCELED) {
                 FunctionsClassDebug.PrintDebug("*** RESULT CANCELED ***")
 
+                functionsClass.savePreference("InAppUpdate", "TriggeredDate", Calendar.getInstance().get(Calendar.DATE))
+
                 appUpdateManager.unregisterListener(installStateUpdatedListener)
                 this@InAppUpdate.finish()
 
-                PublicVariable.updateCancelByUser = false
+                PublicVariable.updateCancelByUser = true
             } else if (resultCode == RESULT_OK) {
                 FunctionsClassDebug.PrintDebug("*** RESULT OK ***")
 

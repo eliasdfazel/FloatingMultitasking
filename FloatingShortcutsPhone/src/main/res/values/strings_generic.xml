@@ -85,6 +85,8 @@
     <string name="shareit" translatable="false">Rate &amp; Share</string>
     <string name="newupdate" translatable="false">Install Update</string>
     <string name="updateAvailable" translatable="false">New Update Available | Click Here to Install…!</string>
+    <string name="inAppUpdateAvailable" translatable="false">Loading New Update</string>
+
     <string name="share" translatable="false">Share It With Your Friends</string>
     <string name="facebook" translatable="false">Like Me on…</string>
     <string name="twitter" translatable="false">Follow Me on…</string>

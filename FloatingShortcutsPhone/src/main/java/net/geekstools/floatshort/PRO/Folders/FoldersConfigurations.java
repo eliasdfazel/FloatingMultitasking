@@ -117,6 +117,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -851,8 +852,12 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                                                 (int) firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())
                                         );
 
-                                        if (firebaseAuth.getCurrentUser() != null) {
-                                            startActivity(new Intent(getApplicationContext(), InAppUpdate.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                                        if ((firebaseAuth.getCurrentUser() != null)
+                                                && (functionsClass.readPreference("InAppUpdate", "TriggeredDate", Calendar.getInstance().get(Calendar.DATE)) < Calendar.getInstance().get(Calendar.DATE))) {
+                                            startActivity(new Intent(getApplicationContext(), InAppUpdate.class)
+                                                            .putExtra("UPDATE_VERSION", String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())))
+                                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                                                    ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
                                         }
                                     } else {
 
