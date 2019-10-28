@@ -22,6 +22,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryAll;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
@@ -144,6 +145,10 @@ public class Configurations extends Activity {
                     freqAppsArray = retrieveFreqUsedApp();
                     String previousAppPack = queryUsageStats.get(1).getPackageName();
                     if (previousAppPack.contains("com.google.android.googlequicksearchbox")) {
+                        Bundle bundleFirebaseAnalytics = new Bundle();
+                        bundleFirebaseAnalytics.putString("COUNTRY", functionsClass.getCountryIso());
+                        firebaseAnalytics.logEvent(FunctionsClassDebug.REMOTE_TASK_OK_GOOGLE, bundleFirebaseAnalytics);
+
                         if (sharedPreferences.getString("boot", "1").equals("0")) {
                         } else if (sharedPreferences.getString("boot", "1").equals("1")) {
                             Intent r = new Intent(getApplicationContext(), RecoveryShortcuts.class);

@@ -28,5 +28,7 @@ class FunctionsClassDebug {
                 println(debugMessage)
             }
         }
+
+        const val REMOTE_TASK_OK_GOOGLE: String = "REMOTE_TASK_OK_GOOGLE_OPEN_FLOAT_IT"
     }
 }
