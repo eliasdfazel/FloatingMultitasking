@@ -215,7 +215,7 @@
     <string name="autorecovs">Always Ready</string>
     <string name="syscache">Load &amp; Open Apps Faster</string>
     <string name="enableControlPanel">Control Panel Will Be Started Automatically</string>
-    <string name="freeFormTitle">Float It</string>
+    <string name="freeFormTitle">Extended Float It</string>
     <string name="freeFormDesc">Always Open All Apps in Floating View (FreeForm)</string>
     <string name="enable">Enable Now</string>
     <string name="liteTitle">Lite Preferences</string>

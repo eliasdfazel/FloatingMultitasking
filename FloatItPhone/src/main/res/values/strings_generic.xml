@@ -61,11 +61,12 @@
 
     <string name="betaUpdateAvailable">Update Available in βeta Stage</string>
     <string name="betaUpdate">βeta Change Log</string>
+
     <string name="whatsnew" translatable="false">What\'s New…</string>
     <string name="changelog" translatable="false">
         <![CDATA[
             🔵 <b><big>Search Engine</b> 🔍</big><br/>
-            &bull; Type To Search In List of Installed Applications <br/>
+            &bull; Type To Search In List of Installed Applications & Configured Folders/Widgets <br/>
             &bull; Click On Search Result to Float It<br/>
             &bull; Or Click on 3 Floating Dots Icon (Right Side of Search Engine) to Float All Search Results 🎈 🎈 🎈 <br/><br/>
             🔵 <b><big>Security Services</big></b><br/>
@@ -100,7 +101,7 @@
     <string name="link_xda" translatable="false">https://forum.xda-developers.com/showpost.php?p=58661916&amp;postcount=4</string>
     <string name="link_twitter" translatable="false">https://twitter.com/GeeksEmpire</string>
     <string name="link_facebook" translatable="false">https://www.facebook.com/GeeksEmpire</string>
-    <string name="link_facebook_app" translatable="false">https://www.facebook.com/FloatingShortcuts/</string>
+    <string name="link_facebook_app" translatable="false">https://www.facebook.com/FloatIt.Android/</string>
     <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
 
     <string name="integerVersionCodeNewUpdatePhone" translatable="false">integer_version_code_new_update_phone</string>

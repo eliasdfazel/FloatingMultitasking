@@ -90,10 +90,10 @@ class InAppUpdate : AppCompatActivity() {
             FunctionsClassDebug.PrintDebug("*** Update Availability == ${updateInfo.updateAvailability()} ||| Available Version Code == ${updateInfo.availableVersionCode()} ***")
 
             if (updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    && updateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                    && updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
                 appUpdateManager.startUpdateFlowForResult(
                         updateInfo,
-                        AppUpdateType.IMMEDIATE,
+                        AppUpdateType.FLEXIBLE,
                         this@InAppUpdate,
                         IN_APP_UPDATE_REQUEST
                 )
@@ -122,7 +122,7 @@ class InAppUpdate : AppCompatActivity() {
                     == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                 appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
-                        AppUpdateType.IMMEDIATE,
+                        AppUpdateType.FLEXIBLE,
                         this@InAppUpdate,
                         IN_APP_UPDATE_REQUEST)
             }
