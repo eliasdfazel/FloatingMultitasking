@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Widget.NavAdapter;
+package net.geekstools.floatshort.PRO.Widget.WidgetsAdapter;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetHost;

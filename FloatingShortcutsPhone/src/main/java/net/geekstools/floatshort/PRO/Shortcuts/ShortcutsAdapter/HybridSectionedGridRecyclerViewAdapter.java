@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Shortcuts.NavAdapter;
+package net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter;
 
 import android.content.Context;
 import android.util.SparseArray;

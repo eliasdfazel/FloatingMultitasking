@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Widget.NavAdapter;
+package net.geekstools.floatshort.PRO.Widget.WidgetsAdapter;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetHost;
@@ -30,6 +30,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataDAO;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
@@ -144,6 +145,8 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
                                 activity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        SearchEngineAdapter.allSearchResultItems.clear();
+
                                         context.sendBroadcast(new Intent("FORCE_RELOAD"));
                                     }
                                 });

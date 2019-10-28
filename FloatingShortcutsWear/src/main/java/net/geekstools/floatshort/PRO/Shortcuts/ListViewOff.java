@@ -36,7 +36,7 @@ import net.geekstools.floatshort.PRO.Category_Unlimited_Category;
 import net.geekstools.floatshort.PRO.Configurations;
 import net.geekstools.floatshort.PRO.LicenseValidator;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.NavAdapter.CardListAdapter;
+import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardListAdapter;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.NavDrawerItem;

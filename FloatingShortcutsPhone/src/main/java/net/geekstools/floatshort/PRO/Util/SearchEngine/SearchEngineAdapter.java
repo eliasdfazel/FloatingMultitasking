@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +22,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
+import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.util.ArrayList;
 
@@ -102,7 +102,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
             viewHolder = new ViewHolder();
             viewHolder.searchItem = (RelativeLayout) convertView.findViewById(R.id.searchItem);
-            viewHolder.itemAppIcon = (ImageView) convertView.findViewById(R.id.itemAppIcon);
+            viewHolder.itemAppIcon = (ShapesImage) convertView.findViewById(R.id.itemAppIcon);
             viewHolder.itemAppName = (TextView) convertView.findViewById(R.id.itemAppName);
             convertView.setTag(viewHolder);
         } else {
@@ -125,11 +125,11 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                 dominantColor = context.getColor(R.color.default_color);
 
                 viewHolder.itemAppIcon.setImageDrawable(functionsClass.writeOnDrawable(
-                        R.drawable.ic_launcher_balloon,
+                        functionsClass.shapedDrablesResourceId(),
                         String.valueOf(allSearchResultItems.get(position).getCategory().charAt(0)).toUpperCase(),
-                        context.getColor(R.color.light),
-                        functionsClass.DpToPixel(85),
-                        functionsClass.DpToPixel(120)));
+                        PublicVariable.colorLightDark,
+                        functionsClass.DpToPixel(51),
+                        functionsClass.DpToPixel(79)));
                 viewHolder.itemAppName.setText(allSearchResultItems.get(position).getCategory());
 
                 break;
@@ -206,7 +206,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
     static class ViewHolder {
         RelativeLayout searchItem;
-        ImageView itemAppIcon;
+        ShapesImage itemAppIcon;
         TextView itemAppName;
     }
 

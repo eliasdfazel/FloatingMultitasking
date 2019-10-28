@@ -12,7 +12,7 @@
         ]]>
     </string>
 
-    <string name="app_name" translatable="false">Floating Shortcuts</string>
+    <string name="app_name" translatable="false">Float It</string>
     <string name="geeksempire" translatable="false">Geeks Empire</string>
 
     <string name="visibilityActionAdvance" translatable="false">VISIBILITY_ACTION_ADVANCE</string>
@@ -47,9 +47,9 @@
         <![CDATA[
             <br/>
             <b>Hi</b>&#8230; &#9786;<br/>
-            <small>Floating Shortcuts ᴾᴿᴼ has been installed illegally & It can cause Security Risk ⚠️<br/><br/>
+            <small>Float It ᴾᴿᴼ has been installed illegally & It can cause Security Risk ⚠️<br/><br/>
             <b>Please, Consider following Solutions</b>&#8230;<br/>
-            1. Purchase Floating Shortcuts ᴾᴿᴼ from Google Play Store <big>💳</big><br/>
+            1. Purchase Float It ᴾᴿᴼ from Google Play Store <big>💳</big><br/>
             2. Install Free Edition from Google Play Store <big>🆓</big><br/>
             3. Always Ready to Help, Contact me! <big>📧</big></small>
         ]]>
@@ -66,7 +66,7 @@
         <![CDATA[
             🔵 <b><big>Search Engine</b> 🔍</big><br/>
             &bull; Type To Search In List of Installed Applications <br/>
-            &bull; Click On Search Result to Create its Floating Shortcuts<br/>
+            &bull; Click On Search Result to Float It<br/>
             &bull; Or Click on 3 Floating Dots Icon (Right Side of Search Engine) to Float All Search Results 🎈 🎈 🎈 <br/><br/>
             🔵 <b><big>Security Services</big></b><br/>
             &bull; <b>Lock It 🔒</b> | Secure Your Apps By Your Fingerprint <br/>
@@ -93,7 +93,7 @@
     <string name="email" translatable="false">Appreciate your Feedback</string>
     <string name="rate" translatable="false">Please Rate &amp; Write Review</string>
     <string name="supportEmail" translatable="false">Support@GeeksEmpire.net</string>
-    <string name="feedback_tag" translatable="false">Floating Shortcuts ᴾᴿᴼ Direct Help | Feedback</string>
+    <string name="feedback_tag" translatable="false">Float It ᴾᴿᴼ Direct Help | Feedback</string>
 
     <string name="link_ad_app" translatable="false">https://play.google.com/store/apps/details?id=net.geekstools.supershortcuts.PRO</string>
     <string name="link_alpha" translatable="false">https://play.google.com/apps/testing/</string>

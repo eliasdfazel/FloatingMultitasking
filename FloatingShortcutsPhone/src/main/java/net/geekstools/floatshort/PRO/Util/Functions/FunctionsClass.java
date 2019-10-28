@@ -2949,6 +2949,30 @@ public class FunctionsClass {
         return shapesImageId;
     }
 
+    public int shapedDrablesResourceId() {
+        int shapeDrawable = R.drawable.droplet_icon;
+        switch (shapesImageId()) {
+            case 1:
+                shapeDrawable = (R.drawable.droplet_icon);
+                break;
+            case 2:
+                shapeDrawable = (R.drawable.circle_icon);
+                break;
+            case 3:
+                shapeDrawable = (R.drawable.square_icon);
+                break;
+            case 4:
+                shapeDrawable = (R.drawable.squircle_icon);
+                break;
+
+            case 0:
+                shapeDrawable = R.drawable.droplet_icon;
+
+                break;
+        }
+        return shapeDrawable;
+    }
+
     public Drawable shapesDrawables() {
         Drawable shapeDrawable = null;
         switch (shapesImageId()) {
@@ -3195,6 +3219,17 @@ public class FunctionsClass {
             drawable.draw(canvas);
         }
         return bitmap;
+    }
+
+    public Bitmap drawableToBitmapMute(Drawable drawable) {
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmapCopy = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+        Canvas canvas = new Canvas(bitmapCopy);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmapCopy;
     }
 
     public Bitmap genericDrawableToBitmap(Drawable drawable) {
@@ -5267,13 +5302,16 @@ public class FunctionsClass {
 
     public BitmapDrawable writeOnDrawable(int drawableId, String textToRender, int textColor,
                                           float xPosition, float yPosition){
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
+
+        Drawable backgroundDrawable = context.getDrawable(drawableId).mutate();
+        backgroundDrawable.setTint(PublicVariable.colorLightDarkOpposite);
+        Bitmap bitmap = drawableToBitmapMute(backgroundDrawable);
 
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(textColor);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(213f);
+        paint.setTextSize(191f);
 
         Canvas canvas = new Canvas(bitmap);
         canvas.drawText(textToRender, xPosition, yPosition, paint);

@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Folders.NavAdapter;
+package net.geekstools.floatshort.PRO.Folders.FoldersAdapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,6 +27,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 import java.io.File;
@@ -134,11 +135,13 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                     PublicVariable.categoryName = textView.getText().toString().replace(" \uD83D\uDD04", "");
 
                     File file = context.getFileStreamPath(adapterItems.get(position).getCategory());
-                    if (file.exists() && file.isFile()) {//edit
+                    if (file.exists() && file.isFile()) {
                         if (adapterItems.get(position).getCategory().equals(PublicVariable.categoryName)) {
                             PublicVariable.categoryName = adapterItems.get(position).getCategory();
                             context.startActivity(new Intent(context, AppSelectionList.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        } else {//edit name
+                        } else {//Edit Folder Name
+                            SearchEngineAdapter.allSearchResultItems.clear();
+
                             String[] appsContent = functionsClass.readFileLine(adapterItems.get(position).getCategory());
                             if (PublicVariable.categoryName.length() == 0) {
                                 PublicVariable.categoryName = PublicVariable.categoryName + "_" + System.currentTimeMillis();

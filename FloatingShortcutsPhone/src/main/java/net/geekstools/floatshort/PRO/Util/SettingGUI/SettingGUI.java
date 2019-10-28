@@ -81,6 +81,7 @@ import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayou
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
+import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
@@ -1463,7 +1464,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
             public void onClick(View view) {
                 dialog.dismiss();
 
-                listCustomIconPack();
+                listCustomIconsPackage();
             }
         });
 
@@ -1492,6 +1493,8 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
 
                 if (currentShape != sharedPreferences.getInt("iconShape", 0)) {
                     PublicVariable.forceReload = true;
+
+                    SearchEngineAdapter.allSearchResultItems.clear();
                 }
 
                 dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -1500,7 +1503,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         dialog.show();
     }
 
-    public void listCustomIconPack() {
+    public void listCustomIconsPackage() {
         String currentCustomIconPack = sharedPreferences.getString("customIcon", getPackageName());
 
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
@@ -1571,6 +1574,8 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
 
                 if (!currentCustomIconPack.equals(sharedPreferences.getString("customIcon", getPackageName()))) {
                     PublicVariable.forceReload = true;
+
+                    SearchEngineAdapter.allSearchResultItems.clear();
                 }
 
                 dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);

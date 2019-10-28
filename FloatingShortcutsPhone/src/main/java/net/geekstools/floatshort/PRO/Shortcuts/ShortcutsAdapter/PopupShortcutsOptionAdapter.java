@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.Shortcuts.NavAdapter;
+package net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter;
 
 import android.app.Activity;
 import android.app.ActivityOptions;

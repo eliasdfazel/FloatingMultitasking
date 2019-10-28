@@ -14,7 +14,7 @@ import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import net.geekstools.floatshort.PRO.Folders.NavAdapter.PopupCategoryOptionAdapter;
+import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.PopupCategoryOptionAdapter;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;

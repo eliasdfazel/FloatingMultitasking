@@ -296,6 +296,15 @@
         </RelativeLayout>
     </ScrollView>
 
+    <net.geeksempire.loadingspin.SpinKitView xmlns:apps="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/loadingInstalledWidgets"
+        android:layout_width="313dp"
+        android:layout_height="333dp"
+        android:layout_centerInParent="true"
+        android:padding="51dp"
+        android:visibility="invisible"
+        apps:SpinKit_Style="FoldingCube"/>
+
     <ScrollView
         android:id="@+id/installedNestedIndexScrollView"
         android:layout_width="wrap_content"

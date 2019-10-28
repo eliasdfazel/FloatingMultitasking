@@ -73,6 +73,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
+import net.geeksempire.loadingspin.SpinKitView;
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
@@ -93,11 +94,11 @@ import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPas
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
-import net.geekstools.floatshort.PRO.Widget.NavAdapter.ConfiguredWidgetsAdapter;
-import net.geekstools.floatshort.PRO.Widget.NavAdapter.InstalledWidgetsAdapter;
-import net.geekstools.floatshort.PRO.Widget.NavAdapter.WidgetSectionedGridRecyclerViewAdapter;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel;
+import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.ConfiguredWidgetsAdapter;
+import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.InstalledWidgetsAdapter;
+import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.WidgetSectionedGridRecyclerViewAdapter;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -150,6 +151,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     RecyclerView.Adapter installedWidgetsRecyclerViewAdapter, configuredWidgetsRecyclerViewAdapter;
     WidgetSectionedGridRecyclerViewAdapter configuredWidgetsSectionedGridRecyclerViewAdapter;
     GridLayoutManager installedWidgetsRecyclerViewLayoutManager, configuredWidgetsRecyclerViewLayoutManager;
+    SpinKitView loadingInstalledWidgets;
 
     RelativeLayout loadingSplash;
     ProgressBar loadingBarLTR;
@@ -194,6 +196,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         installedWidgetsNestedScrollView = (ScrollView) findViewById(R.id.installedNestedScrollView);
         installedWidgetsLoadView = (RecyclerView) findViewById(R.id.installedWidgetList);
+        loadingInstalledWidgets = (SpinKitView) findViewById(R.id.loadingInstalledWidgets);
 
         configuredWidgetsNestedScrollView = (ScrollView) findViewById(R.id.configuredWidgetNestedScrollView);
         configuredWidgetsLoadView = (RecyclerView) findViewById(R.id.configuredWidgetList);
@@ -1447,7 +1450,10 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         protected void onPreExecute() {
             super.onPreExecute();
 
+            loadingInstalledWidgets.setColor(PublicVariable.primaryColor);
             installedWidgetsNestedScrollView.setBackgroundColor(PublicVariable.themeLightDark ? getColor(R.color.transparent_light_high_twice) : getColor(R.color.transparent_dark_high_twice));
+
+            loadingInstalledWidgets.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -1574,88 +1580,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     .setInterpolator(new OvershootInterpolator(13.0f));
             viewPropertyAnimator.start();
 
-            int xPosition = (int) (addWidget.getX() + (addWidget.getWidth() / 2));
-            int yPosition = (int) (addWidget.getY() + (addWidget.getHeight() / 2));
-
-            int startRadius = 0;
-            int endRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
-
             installedWidgetsNestedScrollView.setBackgroundColor(PublicVariable.themeLightDark ? getColor(R.color.transparent_light) : getColor(R.color.dark_transparent));
             installedWidgetsNestedScrollView.setVisibility(View.VISIBLE);
-            Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedWidgetsNestedScrollView, xPosition, yPosition, startRadius, endRadius);
-            circularReveal.setDuration(864);
-            circularReveal.start();
-            circularReveal.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animator) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animator) {
-                    installedWidgetsNestedScrollView.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animator) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animator) {
-
-                }
-            });
-
-            final Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-            if (functionsClass.appThemeTransparent()) {
-                ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(getWindow().getNavigationBarColor(), PublicVariable.themeLightDark ? getColor(R.color.fifty_light_twice) : getColor(R.color.transparent_dark_high_twice));
-                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        window.setStatusBarColor((Integer) animator.getAnimatedValue());
-                        window.setNavigationBarColor((Integer) animator.getAnimatedValue());
-                    }
-                });
-                colorAnimation.start();
-            } else {
-                if (PublicVariable.themeLightDark) {
-                    installedWidgetsNestedScrollView.setBackground(new ColorDrawable(getColor(R.color.transparent_light)));
-                    if (PublicVariable.themeLightDark) {
-                        if (functionsClass.returnAPI() > 25) {
-                            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                        }
-                    }
-
-                    ValueAnimator colorAnimation = ValueAnimator
-                            .ofArgb(getWindow().getNavigationBarColor(), functionsClass.mixColors(getColor(R.color.light), getWindow().getNavigationBarColor(), 0.70f));
-                    colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animator) {
-                            getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
-                            getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
-                        }
-                    });
-                    colorAnimation.start();
-                } else if (!PublicVariable.themeLightDark) {
-                    installedWidgetsNestedScrollView.setBackground(new ColorDrawable(getColor(R.color.dark_transparent)));
-
-                    ValueAnimator colorAnimation = ValueAnimator
-                            .ofArgb(getWindow().getNavigationBarColor(), functionsClass.mixColors(getColor(R.color.dark), getWindow().getNavigationBarColor(), 0.70f));
-                    colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animator) {
-                            getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
-                            getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
-                        }
-                    });
-                    colorAnimation.start();
-                }
-            }
 
             installedWidgetsRecyclerViewAdapter.notifyDataSetChanged();
             WidgetSectionedGridRecyclerViewAdapter.Section[] sectionsData = new WidgetSectionedGridRecyclerViewAdapter.Section[installedWidgetsSections.size()];
@@ -1668,6 +1594,91 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             widgetSectionedGridRecyclerViewAdapter.setSections(installedWidgetsSections.toArray(sectionsData));
             widgetSectionedGridRecyclerViewAdapter.notifyDataSetChanged();
             installedWidgetsLoadView.setAdapter(widgetSectionedGridRecyclerViewAdapter);
+
+            try {
+                int xPosition = (int) (addWidget.getX() + (addWidget.getWidth() / 2));
+                int yPosition = (int) (addWidget.getY() + (addWidget.getHeight() / 2));
+
+                int startRadius = 0;
+                int endRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
+
+                Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedWidgetsNestedScrollView, xPosition, yPosition, startRadius, endRadius);
+                circularReveal.setDuration(864);
+                circularReveal.start();
+                circularReveal.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        installedWidgetsNestedScrollView.setVisibility(View.VISIBLE);
+
+                        final Window window = getWindow();
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+                        if (functionsClass.appThemeTransparent()) {
+                            ValueAnimator colorAnimation = ValueAnimator
+                                    .ofArgb(getWindow().getNavigationBarColor(), PublicVariable.themeLightDark ? getColor(R.color.fifty_light_twice) : getColor(R.color.transparent_dark_high_twice));
+                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animator) {
+                                    window.setStatusBarColor((Integer) animator.getAnimatedValue());
+                                    window.setNavigationBarColor((Integer) animator.getAnimatedValue());
+                                }
+                            });
+                            colorAnimation.start();
+                        } else {
+                            if (PublicVariable.themeLightDark) {
+                                installedWidgetsNestedScrollView.setBackground(new ColorDrawable(getColor(R.color.transparent_light)));
+                                if (PublicVariable.themeLightDark) {
+                                    if (functionsClass.returnAPI() > 25) {
+                                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                                    }
+                                }
+
+                                ValueAnimator colorAnimation = ValueAnimator
+                                        .ofArgb(getWindow().getNavigationBarColor(), functionsClass.mixColors(getColor(R.color.light), getWindow().getNavigationBarColor(), 0.70f));
+                                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                    @Override
+                                    public void onAnimationUpdate(ValueAnimator animator) {
+                                        getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                                        getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
+                                    }
+                                });
+                                colorAnimation.start();
+                            } else if (!PublicVariable.themeLightDark) {
+                                installedWidgetsNestedScrollView.setBackground(new ColorDrawable(getColor(R.color.dark_transparent)));
+
+                                ValueAnimator colorAnimation = ValueAnimator
+                                        .ofArgb(getWindow().getNavigationBarColor(), functionsClass.mixColors(getColor(R.color.dark), getWindow().getNavigationBarColor(), 0.70f));
+                                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                    @Override
+                                    public void onAnimationUpdate(ValueAnimator animator) {
+                                        getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                                        getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
+                                    }
+                                });
+                                colorAnimation.start();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             if (!getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists() || !result) {
                 new Handler().postDelayed(new Runnable() {
@@ -1698,6 +1709,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
             LoadApplicationsIndexInstalled loadApplicationsIndexInstalled = new LoadApplicationsIndexInstalled();
             loadApplicationsIndexInstalled.execute();
+
+            loadingInstalledWidgets.setVisibility(View.INVISIBLE);
         }
     }
 
