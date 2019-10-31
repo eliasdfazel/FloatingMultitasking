@@ -22,7 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.ListViewOff;
+import net.geekstools.floatshort.PRO.Shortcuts.ListApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 
 public class SettingGUI extends WearableActivity {
@@ -358,7 +358,7 @@ public class SettingGUI extends WearableActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ListViewOff.class));
+                startActivity(new Intent(getApplicationContext(), ListApplicationsView.class));
                 overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
             }
         });

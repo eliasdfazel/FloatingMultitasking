@@ -992,6 +992,11 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         super.onResume();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
+        LayerDrawable drawSecurity = (LayerDrawable) getDrawable(R.drawable.draw_security_preferences);
+        Drawable backSecurity = drawSecurity.findDrawableByLayerId(R.id.backtemp);
+        backSecurity.setTint(PublicVariable.primaryColorOpposite);
+        pinPassword.setIcon(drawSecurity);
+
         LayerDrawable drawSmart = (LayerDrawable) getDrawable(R.drawable.draw_smart);
         Drawable backSmart = drawSmart.findDrawableByLayerId(R.id.backtemp);
 

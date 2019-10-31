@@ -38,14 +38,14 @@ public class BillingManager implements PurchasesUpdatedListener {
 
     static {
         SKUS = new HashMap<>();
-        SKUS.put(BillingClient.SkuType.INAPP, Arrays.asList("donation", "floating.widgets", "search.engine"));
-        SKUS.put(BillingClient.SkuType.SUBS, Arrays.asList("security.services"));
+        SKUS.put(BillingClient.SkuType.INAPP, Arrays.asList("donation", "floating.widgets"));
+        SKUS.put(BillingClient.SkuType.SUBS, Arrays.asList("security.services", "search.engines"));
     }
 
     public static final String iapDonation = "donation";
     public static final String iapFloatingWidgets = "floating.widgets";
     public static final String iapSecurityServices = "security.services";
-    public static final String iapSearchEngine= "search.engine";
+    public static final String iapSearchEngines = "search.engines";
 
     public List<String> getSkus(@BillingClient.SkuType String type) {
         return SKUS.get(type);

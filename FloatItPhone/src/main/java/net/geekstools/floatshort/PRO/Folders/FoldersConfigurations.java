@@ -81,6 +81,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -88,6 +89,7 @@ import com.google.firebase.storage.UploadTask;
 
 import net.geekstools.floatshort.PRO.Automation.Categories.CategoryAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
+import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.FoldersListAdapter;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
@@ -693,6 +695,21 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
         /*Search Engine*/
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        if (BuildConfig.VERSION_NAME.contains("[BETA]")
+                && !functionsClass.readPreference(".UserInformation", "SubscribeToBeta", false)) {
+            FirebaseMessaging.getInstance().subscribeToTopic("BETA").addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    functionsClass.savePreference(".UserInformation", "SubscribeToBeta", true);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -1743,7 +1760,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                         }
                     });
                 } else {
-                    InAppBilling.ItemIAB = BillingManager.iapSearchEngine;
+                    InAppBilling.ItemIAB = BillingManager.iapSearchEngines;
 
                     startActivity(new Intent(getApplicationContext(), InAppBilling.class),
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());

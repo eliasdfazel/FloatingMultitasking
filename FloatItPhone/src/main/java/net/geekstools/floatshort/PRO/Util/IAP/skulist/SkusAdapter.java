@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.billingclient.api.BillingClient;
-
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingProvider;
@@ -47,41 +45,41 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
         if (skuRowData != null) {
             rowViewHolder.purchaseItemName.setText(skuRowData.getTitle());
             rowViewHolder.purchaseItemDescription.setText(skuRowData.getDescription());
-            rowViewHolder.purchaseItemPrice.setText(skuRowData.getPrice());
             rowViewHolder.purchaseItemButton.setEnabled(true);
 
-            if (skuRowData.getBillingType().equals(BillingClient.SkuType.INAPP)) {
-                rowViewHolder.purchaseItemInfo.setVisibility(View.VISIBLE);
-            } else {
-                rowViewHolder.purchaseItemInfo.setVisibility(View.INVISIBLE);
-            }
-        }
-        switch (skuRowData.getSku()) {
-            case BillingManager.iapFloatingWidgets: {
-                rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.ic_floating_widgets);
-                rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
+            switch (skuRowData.getSku()) {
+                case BillingManager.iapFloatingWidgets: {
+                    rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.ic_floating_widgets);
+                    rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
+                    rowViewHolder.purchaseItemPrice.setText(skuRowData.getPrice());
 
-                break;
-            }
-            case BillingManager.iapSearchEngine: {
-                rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.search_icon_iap);
-                rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
+                    break;
+                }
+                case BillingManager.iapSearchEngines: {
+                    rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.search_icon_iap);
+                    rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
+                    rowViewHolder.purchaseItemPrice.setText(skuRowData.getPrice());
 
-                break;
-            }
-            case BillingManager.iapSecurityServices: {
-                rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.draw_security);
-                rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
+                    break;
+                }
+                case BillingManager.iapSecurityServices: {
+                    rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.draw_security);
+                    rowViewHolder.purchaseItemPrice.setText(skuRowData.getPrice());
 
-                break;
-            }
-            case BillingManager.iapDonation: {
-                rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.logo);
-                rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.donate));
+                    rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
 
-                rowViewHolder.purchaseItemInfo.setText(R.string.thanks);
+                    break;
+                }
+                case BillingManager.iapDonation: {
+                    rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.logo);
+                    rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.donate));
 
-                break;
+                    rowViewHolder.purchaseItemDescription.append("\n");
+                    rowViewHolder.purchaseItemDescription.append(activity.getString(R.string.thanks));
+
+                    rowViewHolder.purchaseItemPrice.setText(skuRowData.getPrice());
+                    break;
+                }
             }
         }
     }

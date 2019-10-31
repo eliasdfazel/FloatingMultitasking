@@ -2587,7 +2587,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 }
                             });
                         } else {
-                            InAppBilling.ItemIAB = BillingManager.iapSearchEngine;
+                            InAppBilling.ItemIAB = BillingManager.iapSearchEngines;
 
                             startActivity(new Intent(getApplicationContext(), InAppBilling.class),
                                     ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());

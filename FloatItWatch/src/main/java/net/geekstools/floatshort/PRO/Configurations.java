@@ -11,7 +11,7 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import net.geekstools.floatshort.PRO.Shortcuts.ListViewOff;
+import net.geekstools.floatshort.PRO.Shortcuts.ListApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 
 import io.fabric.sdk.android.Fabric;
@@ -61,7 +61,7 @@ public class Configurations extends WearableActivity {
         if (!Settings.canDrawOverlays(getApplicationContext())) {
             startActivity(new Intent(getApplicationContext(), PermissionDialogue.class));
         } else {
-            Intent listViewOff = new Intent(getApplicationContext(), ListViewOff.class);
+            Intent listViewOff = new Intent(getApplicationContext(), ListApplicationsView.class);
             listViewOff.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(listViewOff);
         }

@@ -71,7 +71,7 @@
             android:label="@string/settingTitle"
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper"/>
         <activity
-            android:name=".Shortcuts.ListViewOff"
+            android:name=".Shortcuts.ListApplicationsView"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper"/>
         <activity
@@ -90,6 +90,12 @@
         </activity>
 
         <service
+            android:name=".BindServices"
+            android:foregroundServiceType="dataSync"/>
+        <service
+            android:name=".LicenseValidator"
+            android:foregroundServiceType="dataSync"/>
+        <service
             android:name=".Automation.RecoveryShortcuts"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
@@ -98,15 +104,14 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
-        <service android:name=".LicenseValidator"/>
+        <!-- Float It -->
         <service
             android:name=".App_Unlimited_Shortcuts"/>
         <service
             android:name=".App_Unlimited_HIS"/>
         <service
             android:name=".Category_Unlimited_Category"/>
-        <service
-            android:name=".BindServices"/>
+        <!-- Float It -->
         <service
             android:name=".CloudNotificationHandler"
             android:icon="@drawable/ic_launcher">

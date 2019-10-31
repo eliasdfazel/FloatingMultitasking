@@ -5,7 +5,7 @@
     style="@style/CardViewStyle"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_marginBottom="3dp"
+    android:layout_marginBottom="1dp"
     apps:cardBackgroundColor="@color/light">
 
     <RelativeLayout
@@ -82,31 +82,22 @@
         <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/purchaseItemButton"
             android:layout_width="match_parent"
-            android:layout_height="41dp"
+            android:layout_height="49dp"
             android:layout_margin="3dp"
             android:layout_below="@id/purchaseItemPrice"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textAllCaps="false"
             android:text="@string/purchase"
-            android:textSize="12sp"
+            android:textSize="19sp"
             android:textColor="@color/light"
-            android:textStyle="bold"
+            android:textStyle="normal"
+            android:typeface="monospace"
             android:contentDescription="@string/purchase"
             apps:cornerRadius="3dp"
             apps:rippleColor="@color/light_transparent_high"
             apps:backgroundTint="@color/default_color_light"
             apps:elevation="7dp"/>
-
-        <TextView
-            android:id="@+id/purchaseItemInfo"
-            android:layout_width="match_parent"
-            android:layout_height="15dp"
-            android:layout_below="@id/purchaseItemButton"
-            android:layout_margin="3dp"
-            android:text="@string/restorePurchase"
-            android:textSize="12sp"
-            android:textColor="@color/dark_transparent_high"
-            android:visibility="invisible"/>
 
     </RelativeLayout>
 

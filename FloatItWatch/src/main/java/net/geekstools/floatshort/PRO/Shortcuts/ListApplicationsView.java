@@ -27,7 +27,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import net.geekstools.floatshort.PRO.Automation.RecoveryShortcuts;
@@ -46,7 +49,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ListViewOff extends WearableActivity implements View.OnClickListener {
+public class ListApplicationsView extends WearableActivity implements View.OnClickListener {
 
     Activity activity;
     FunctionsClass functionsClass;
@@ -86,6 +89,21 @@ public class ListViewOff extends WearableActivity implements View.OnClickListene
 
         LoadApplicationsOffInit loadApplicationsOffInit = new LoadApplicationsOffInit();
         loadApplicationsOffInit.execute();
+
+        if (BuildConfig.VERSION_NAME.contains("[BETA]")
+                && !functionsClass.readPreference(".UserInformation", "SubscribeToBeta", false)) {
+            FirebaseMessaging.getInstance().subscribeToTopic("BETA").addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    functionsClass.savePreference(".UserInformation", "SubscribeToBeta", true);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -100,7 +118,7 @@ public class ListViewOff extends WearableActivity implements View.OnClickListene
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
         firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener(ListViewOff.this, new OnCompleteListener<Void>() {
+                .addOnCompleteListener(ListApplicationsView.this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -130,7 +148,7 @@ public class ListViewOff extends WearableActivity implements View.OnClickListene
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(getString(R.string.license))) {
-                    functionsClass.dialogueLicense(ListViewOff.this);
+                    functionsClass.dialogueLicense(ListApplicationsView.this);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -261,7 +279,7 @@ public class ListViewOff extends WearableActivity implements View.OnClickListene
                         startActivity(new Intent(getApplicationContext(), Configurations.class));
                     }
                 }, 113);
-                ListViewOff.this.finish();
+                ListApplicationsView.this.finish();
             }
             return null;
         }
@@ -329,7 +347,7 @@ public class ListViewOff extends WearableActivity implements View.OnClickListene
                         startActivity(new Intent(getApplicationContext(), Configurations.class));
                     }
                 }, 113);
-                ListViewOff.this.finish();
+                ListApplicationsView.this.finish();
             }
             return null;
         }

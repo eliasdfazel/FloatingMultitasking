@@ -262,7 +262,7 @@
     <!-- Security Options -->
 
     <string name="purchase"> Purchase 💸 </string>
-    <string name="donate"> Send Gift 🎁 </string>
+    <string name="donate"> Send A Gift 🎁 </string>
     <string name="restorePurchase">ℹ Click To Restore The Item ℹ</string>
     <string name="floatingWidgetsDemoDescriptions">
         <![CDATA[

@@ -120,7 +120,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                 if (InAppBilling.ItemIAB.equals(BillingManager.iapFloatingWidgets)) {
                     itemIABDemoDescription.setText(Html.fromHtml(getString(R.string.floatingWidgetsDemoDescriptions)));
                 }
-                if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngine)) {
+                if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngines)) {
                     itemIABDemoDescription.setText(Html.fromHtml(getString(R.string.searchEngineDemoDescriptions)));
                 }
                 if (InAppBilling.ItemIAB.equals(BillingManager.iapSecurityServices)) {
@@ -136,7 +136,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                             itemIABDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("floating_widgets_description")));
                             screenshotsNumber = (int) firebaseRemoteConfig.getLong("floating_widgets_demo_screenshots");
                         }
-                        if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngine)) {
+                        if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngines)) {
                             itemIABDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("search_engine_description")));
                             screenshotsNumber = (int) firebaseRemoteConfig.getLong("search_engine_demo_screenshots");
                         }
@@ -149,7 +149,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapFloatingWidgets)) {
                             ItemIAB = "FloatingWidgets";
                         }
-                        if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngine)) {
+                        if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngines)) {
                             ItemIAB = "SearchEngine";
                         }
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapSecurityServices)) {
@@ -334,14 +334,6 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                     continue;
                                 }
 
-                                if (skuDetails.getSku().equals(BillingManager.iapSearchEngine) && functionsClass.searchEnginePurchased()) {
-                                    itemIABDemoList.setVisibility(View.INVISIBLE);
-                                    itemIABDemo.setVisibility(View.INVISIBLE);
-                                    itemIABDemoDescription.setVisibility(View.INVISIBLE);
-
-                                    continue;
-                                }
-
                                 skuRowDataList.add(new SkuRowData(
                                         skuDetails,
                                         skuDetails.getSku(),
@@ -372,6 +364,14 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                                     FunctionsClassDebug.Companion.PrintDebug("*** SKU List Subscriptions ::: " + skuDetails + " ***");
 
                                                     if (skuDetails.getSku().equals(BillingManager.iapSecurityServices) && functionsClass.securityServicesSubscribed()) {
+                                                        itemIABDemoList.setVisibility(View.INVISIBLE);
+                                                        itemIABDemo.setVisibility(View.INVISIBLE);
+                                                        itemIABDemoDescription.setVisibility(View.INVISIBLE);
+
+                                                        continue;
+                                                    }
+
+                                                    if (skuDetails.getSku().equals(BillingManager.iapSearchEngines) && functionsClass.searchEnginePurchased()) {
                                                         itemIABDemoList.setVisibility(View.INVISIBLE);
                                                         itemIABDemo.setVisibility(View.INVISIBLE);
                                                         itemIABDemoDescription.setVisibility(View.INVISIBLE);
