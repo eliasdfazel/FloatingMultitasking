@@ -356,11 +356,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.InAppUpdate"
+            android:name=".Util.InAppUpdate.InAppUpdateProcess"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/TransparentInAppUpdate" />
 
         <activity-alias
-            android:name=".Alias.FoldersHandler"
+            android:name=".Alias.FoldersConfigurations"
             android:enabled="false"
             android:icon="@drawable/alias_categories"
             android:label="@string/floatingCategory"
@@ -498,7 +499,7 @@
             android:name=".App_Unlimited_HIS"/>
         <!-- Float It -->
         <service
-            android:name=".Util.CloudNotificationHandler">
+            android:name=".Util.RemoteProcess.CloudNotificationHandler">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
@@ -518,7 +519,7 @@
             android:name=".Util.RemoteTask.RemoteController"
             android:theme="@android:style/Theme.NoDisplay"/>
         <service
-            android:name=".Util.LicenseValidator"
+            android:name=".Util.RemoteProcess.LicenseValidator"
             android:foregroundServiceType="dataSync"/>
         <service
             android:name=".Notifications.NotificationListener"

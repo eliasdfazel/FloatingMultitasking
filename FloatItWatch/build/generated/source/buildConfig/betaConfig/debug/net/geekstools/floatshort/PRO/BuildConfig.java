@@ -8,6 +8,6 @@ public final class BuildConfig {
   public static final String APPLICATION_ID = "net.geekstools.floatshort.PRO";
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "betaConfig";
-  public static final int VERSION_CODE = 695;
-  public static final String VERSION_NAME = "7 | 10.31.2019-{695}-[PRO][WearOS][Watch][BETA]";
+  public static final int VERSION_CODE = 701;
+  public static final String VERSION_NAME = "7 | 11.02.2019-{701}-[PRO][WearOS][Watch][BETA]";
 }

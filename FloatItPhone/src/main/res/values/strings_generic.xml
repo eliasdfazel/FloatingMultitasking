@@ -86,13 +86,14 @@
     <string name="shareit" translatable="false">Rate &amp; Share</string>
     <string name="newupdate" translatable="false">Install Update</string>
     <string name="updateAvailable" translatable="false">New Update Available | Click Here to Install…!</string>
-    <string name="inAppUpdateAvailable" translatable="false">Loading New Update</string>
+    <string name="inAppUpdateAvailable" translatable="false">Loading New Update | Version </string>
 
     <string name="share" translatable="false">Share It With Your Friends</string>
     <string name="facebook" translatable="false">Like Me on…</string>
     <string name="twitter" translatable="false">Follow Me on…</string>
     <string name="email" translatable="false">Appreciate your Feedback</string>
-    <string name="rate" translatable="false">Please Rate &amp; Write Review</string>
+    <string name="rate" translatable="false">Rate Me Five </string>
+    <string name="rateReview" translatable="false">Please Rate &amp; Write Review</string>
     <string name="supportEmail" translatable="false">Support@GeeksEmpire.net</string>
     <string name="feedback_tag" translatable="false">Float It ᴾᴿᴼ Direct Help | Feedback</string>
 

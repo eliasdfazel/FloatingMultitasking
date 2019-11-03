@@ -100,8 +100,8 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
-import net.geekstools.floatshort.PRO.Util.InAppUpdate;
-import net.geekstools.floatshort.PRO.Util.LicenseValidator;
+import net.geekstools.floatshort.PRO.Util.InAppUpdate.InAppUpdateProcess;
+import net.geekstools.floatshort.PRO.Util.RemoteProcess.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
@@ -869,9 +869,16 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                                                 (int) firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())
                                         );
 
+                                        int inAppUpdateTriggeredTime = Integer.parseInt(
+                                                String.valueOf(Calendar.getInstance().get(Calendar.YEAR))
+                                                        + String.valueOf(Calendar.getInstance().get(Calendar.MONTH))
+                                                        + String.valueOf(Calendar.getInstance().get(Calendar.DATE))
+                                        );
+
                                         if ((firebaseAuth.getCurrentUser() != null)
-                                                && (functionsClass.readPreference("InAppUpdate", "TriggeredDate", Calendar.getInstance().get(Calendar.DATE)) < Calendar.getInstance().get(Calendar.DATE))) {
-                                            startActivity(new Intent(getApplicationContext(), InAppUpdate.class)
+                                                && (functionsClass.readPreference("InAppUpdate", "TriggeredDate", Calendar.getInstance().get(Calendar.DATE)) < inAppUpdateTriggeredTime)) {
+                                            startActivity(new Intent(getApplicationContext(), InAppUpdateProcess.class)
+                                                            .putExtra("UPDATE_CHANGE_LOG", String.valueOf(firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey())))
                                                             .putExtra("UPDATE_VERSION", String.valueOf(firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey())))
                                                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                                     ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());

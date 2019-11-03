@@ -197,7 +197,7 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="TransparentInAppUpdate" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="TransparentInAppUpdate" parent="@style/GeeksEmpire.Material">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
 

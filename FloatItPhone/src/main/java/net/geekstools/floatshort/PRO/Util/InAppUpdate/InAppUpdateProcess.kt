@@ -1,6 +1,10 @@
-package net.geekstools.floatshort.PRO.Util
+package net.geekstools.floatshort.PRO.Util.InAppUpdate
 
+import android.app.ActivityOptions
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.Gravity
@@ -24,7 +28,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import java.util.*
 
-class InAppUpdate : AppCompatActivity() {
+class InAppUpdateProcess : AppCompatActivity() {
 
     lateinit var functionsClass: FunctionsClass
 
@@ -39,16 +43,21 @@ class InAppUpdate : AppCompatActivity() {
 
         functionsClass = FunctionsClass(applicationContext)
 
-        window.statusBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 99f)
-        window.navigationBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 99f)
+        window.statusBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f)
+        window.navigationBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f)
 
-        fullEmptyView.setBackgroundColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 99f))
+        fullEmptyView.setBackgroundColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f))
         inAppUpdateWaiting.setColor(PublicVariable.primaryColorOpposite)
 
-        updateInformation.append(" ")
-        updateInformation.append("|")
-        updateInformation.append(" ")
-        updateInformation.append("${intent.getStringExtra("UPDATE_VERSION")}")
+        textInputChangeLog.boxBackgroundColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f)
+        textInputChangeLog.hintTextColor = ColorStateList.valueOf(getColor(R.color.lighter))
+        textInputChangeLog.hint = "${getString(R.string.inAppUpdateAvailable)} ${intent.getStringExtra("UPDATE_VERSION")}"
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            changeLog.setText(Html.fromHtml(intent.getStringExtra("UPDATE_CHANGE_LOG"), Html.FROM_HTML_MODE_LEGACY))
+        } else {
+            changeLog.setText(Html.fromHtml(intent.getStringExtra("UPDATE_CHANGE_LOG")))
+        }
 
         installStateUpdatedListener = InstallStateUpdatedListener {
             when (it.installStatus()) {
@@ -75,10 +84,13 @@ class InAppUpdate : AppCompatActivity() {
                 InstallStatus.CANCELED -> {
                     FunctionsClassDebug.PrintDebug("*** UPDATE Canceled ***")
 
-                    this@InAppUpdate.finish()
+                    this@InAppUpdateProcess.finish()
                 }
                 InstallStatus.FAILED -> {
                     FunctionsClassDebug.PrintDebug("*** UPDATE Failed ***")
+
+                    val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
+                    functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
                 }
             }
         }
@@ -94,23 +106,41 @@ class InAppUpdate : AppCompatActivity() {
                 appUpdateManager.startUpdateFlowForResult(
                         updateInfo,
                         AppUpdateType.FLEXIBLE,
-                        this@InAppUpdate,
+                        this@InAppUpdateProcess,
                         IN_APP_UPDATE_REQUEST
                 )
             } else {
-                functionsClass.savePreference("InAppUpdate", "TriggeredDate", Calendar.getInstance().get(Calendar.DATE))
+                val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
+                functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
 
-                this@InAppUpdate.finish()
+                this@InAppUpdateProcess.finish()
             }
 
         }.addOnFailureListener {
             FunctionsClassDebug.PrintDebug("*** Exception Error ${it} ***")
+
+            val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
+            functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
         }
 
         appUpdateManager.unregisterListener {
             FunctionsClassDebug.PrintDebug("*** Unregister Listener ${it} ***")
 
-            this@InAppUpdate.finish()
+            this@InAppUpdateProcess.finish()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        rateFloatIt.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_store_link) + packageName)),
+                    ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+        }
+
+        pageFloatIt.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_facebook_app))),
+                    ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
         }
     }
 
@@ -123,7 +153,7 @@ class InAppUpdate : AppCompatActivity() {
                 appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
                         AppUpdateType.FLEXIBLE,
-                        this@InAppUpdate,
+                        this@InAppUpdateProcess,
                         IN_APP_UPDATE_REQUEST)
             }
 
@@ -147,10 +177,11 @@ class InAppUpdate : AppCompatActivity() {
             if (resultCode == RESULT_CANCELED) {
                 FunctionsClassDebug.PrintDebug("*** RESULT CANCELED ***")
 
-                functionsClass.savePreference("InAppUpdate", "TriggeredDate", Calendar.getInstance().get(Calendar.DATE))
+                val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
+                functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
 
                 appUpdateManager.unregisterListener(installStateUpdatedListener)
-                this@InAppUpdate.finish()
+                this@InAppUpdateProcess.finish()
 
                 PublicVariable.updateCancelByUser = true
             } else if (resultCode == RESULT_OK) {
@@ -160,7 +191,6 @@ class InAppUpdate : AppCompatActivity() {
 
             if (resultCode == ActivityResult.RESULT_IN_APP_UPDATE_FAILED) {
                 FunctionsClassDebug.PrintDebug("*** RESULT IN APP UPDATE FAILED ***")
-
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -183,6 +213,8 @@ class InAppUpdate : AppCompatActivity() {
             }.addOnFailureListener {
                 FunctionsClassDebug.PrintDebug("*** Complete Update Failure Listener | ${it} ***")
 
+                val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
+                functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
             }
         }
 

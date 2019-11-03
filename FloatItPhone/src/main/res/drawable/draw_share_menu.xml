@@ -13,6 +13,6 @@
     </item>
 
     <item
-        android:drawable="@drawable/w_share">
+        android:drawable="@drawable/w_rate">
     </item>
 </layer-list>

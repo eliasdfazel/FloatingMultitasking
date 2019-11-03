@@ -400,7 +400,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                         password.setVisibility(View.VISIBLE);
 
                         int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
-                        int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 255, getResources().getDisplayMetrics());
+                        int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 265, getResources().getDisplayMetrics());
 
                         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                         layoutParams.width = dialogueWidth;
@@ -424,7 +424,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
 
             WindowManager.LayoutParams layoutParamsPin = new WindowManager.LayoutParams();
             int dialogueWidthPin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
-            int dialogueHeightPin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 255, getResources().getDisplayMetrics());
+            int dialogueHeightPin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 265, getResources().getDisplayMetrics());
 
             layoutParamsPin.width = dialogueWidthPin;
             layoutParamsPin.height = dialogueHeightPin;

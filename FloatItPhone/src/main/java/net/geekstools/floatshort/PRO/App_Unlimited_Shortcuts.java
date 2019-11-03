@@ -252,7 +252,6 @@ public class App_Unlimited_Shortcuts extends Service {
             simpleOnGestureListener[startId] = new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onFling(MotionEvent motionEventFirst, MotionEvent motionEventLast, float velocityX, float velocityY) {
-
                     if (allowMove[startId]) {
                         flingAnimationX[startId].setStartVelocity(velocityX);
                         flingAnimationY[startId].setStartVelocity(velocityY);

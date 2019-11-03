@@ -1753,7 +1753,7 @@ public class FunctionsClass {
                 dialog.dismiss();
                 context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()))
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                Toast(context.getString(R.string.rate), Gravity.BOTTOM);
+                Toast(context.getString(R.string.rateReview), Gravity.BOTTOM);
             }
         });
         alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -5667,7 +5667,7 @@ public class FunctionsClass {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 Notification.Action.Builder builderActionNotification = new Notification.Action.Builder(
                         Icon.createWithResource(context, R.drawable.draw_share_menu),
-                        context.getString(R.string.rate),
+                        context.getString(R.string.rateReview),
                         newUpdatePendingIntent
                 );
                 notificationBuilder.addAction(builderActionNotification.build());

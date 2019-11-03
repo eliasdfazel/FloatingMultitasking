@@ -113,11 +113,12 @@
         android:layout_height="43dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="3dp"
-        android:background="@drawable/ripple_effect_cancel"
+
         android:gravity="center"
         android:text="@android:string/cancel"
         android:textSize="13sp"
         android:textStyle="bold"
-        android:typeface="monospace" />
+        android:typeface="monospace"
+        android:background="@drawable/ripple_effect_cancel" />
 
 </RelativeLayout>
