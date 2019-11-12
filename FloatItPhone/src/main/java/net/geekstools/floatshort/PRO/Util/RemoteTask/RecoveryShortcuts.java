@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:52 PM
+ * Created by Elias Fazel on 11/12/19 2:20 PM
+ * Last modified 11/12/19 2:18 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -150,6 +150,12 @@ public class RecoveryShortcuts extends Service {
                     }
                 }
             }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                stopForeground(Service.STOP_FOREGROUND_REMOVE);
+                stopForeground(true);
+            }
+            stopSelf();
         }
         if (PublicVariable.floatingCounter == 0) {
             if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())

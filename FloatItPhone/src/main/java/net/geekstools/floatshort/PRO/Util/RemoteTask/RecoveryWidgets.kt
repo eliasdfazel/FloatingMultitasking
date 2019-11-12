@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:51 PM
+ * Created by Elias Fazel on 11/12/19 2:20 PM
+ * Last modified 11/12/19 2:14 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -158,7 +158,6 @@ class RecoveryWidgets : Service() {
                         if (functionsClass.loadCustomIcons()) {
                             val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
                             loadCustomIcons.load()
-                            println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons())
                         }
 
                         val widgetDataInterface: WidgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)

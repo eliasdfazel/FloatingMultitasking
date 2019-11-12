@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:52 PM
+ * Created by Elias Fazel on 11/12/19 2:20 PM
+ * Last modified 11/12/19 2:20 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,7 +19,6 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.TypedValue;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
@@ -47,7 +46,11 @@ public class RecoveryFolders extends Service {
         PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());
 
         if (!getApplicationContext().getFileStreamPath(".uCategory").exists()) {
-            Toast.makeText(getApplicationContext(), "Press & Hold ", Toast.LENGTH_LONG).show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                stopForeground(Service.STOP_FOREGROUND_REMOVE);
+                stopForeground(true);
+            }
+            stopSelf();
             return START_NOT_STICKY;
         }
         try {
