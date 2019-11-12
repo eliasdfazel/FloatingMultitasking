@@ -1,3 +1,13 @@
+<!--
+  ~ Copyright © 2019 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 11/11/19 7:18 PM
+  ~ Last modified 11/11/19 7:16 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
 <!-- drawable/beaker_empty.xml -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
         android:width="100dp"
