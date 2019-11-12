@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 11/12/19 2:00 PM
+ * Last modified 11/12/19 1:50 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -60,7 +60,11 @@ public class InteractionObserver extends AccessibilityService {
                             }
                         }
                     };
-                    registerReceiver(broadcastReceiver, intentFilterTest);
+                    try {
+                        registerReceiver(broadcastReceiver, intentFilterTest);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (accessibilityEvent.getAction() == 69201) {
                     classNameCommand = (String) accessibilityEvent.getClassName();
 
@@ -82,7 +86,11 @@ public class InteractionObserver extends AccessibilityService {
                             }
                         }
                     };
-                    registerReceiver(broadcastReceiver, intentFilterTest);
+                    try {
+                        registerReceiver(broadcastReceiver, intentFilterTest);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (accessibilityEvent.getAction() == 66666) {
                     performGlobalAction(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS);
                 }

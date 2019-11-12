@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 11/12/19 2:00 PM
+ * Last modified 11/12/19 1:51 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -236,7 +236,11 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                 }
             }
         };
-        registerReceiver(broadcastReceiver, intentFilter);
+        try {
+            registerReceiver(broadcastReceiver, intentFilter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         LayerDrawable drawPreferenceAction = (LayerDrawable) getDrawable(R.drawable.draw_pref_action);
         Drawable backPreferenceAction = drawPreferenceAction.findDrawableByLayerId(R.id.backtemp);
@@ -741,7 +745,11 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                 }
             }
         };
-        registerReceiver(broadcastReceiver, intentFilter);
+        try {
+            registerReceiver(broadcastReceiver, intentFilter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         try {
             if (!getFileStreamPath(".License").exists() && functionsClass.networkConnection() == true) {
                 startService(new Intent(getApplicationContext(), LicenseValidator.class));
@@ -1483,7 +1491,11 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                                         }
                                     }
                                 };
-                                registerReceiver(broadcastReceiver, intentFilter);
+                                try {
+                                    registerReceiver(broadcastReceiver, intentFilter);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         } else {
                             performSearchEngine(finalBackgroundTemporaryInput);

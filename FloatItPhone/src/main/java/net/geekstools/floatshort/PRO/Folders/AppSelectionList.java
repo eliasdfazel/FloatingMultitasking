@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 11/12/19 2:00 PM
+ * Last modified 11/12/19 1:53 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -245,7 +245,11 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                 }
             }
         };
-        registerReceiver(counterReceiver, intentFilter);
+        try {
+            registerReceiver(counterReceiver, intentFilter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         loadDataOff();
     }

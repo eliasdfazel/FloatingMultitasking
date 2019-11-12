@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 11/12/19 2:00 PM
+ * Last modified 11/12/19 2:00 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -162,9 +162,9 @@ import net.geekstools.floatshort.PRO.Util.RemoteTask.FloatingWidgetHomeScreenSho
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RemoteController;
 import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
-import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingCategory;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingShortcuts;
+import net.geekstools.floatshort.PRO.Util.UI.Splash.FloatingSplash;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 import net.geekstools.floatshort.PRO.Widget_Unlimited_Floating;
@@ -736,7 +736,11 @@ public class FunctionsClass {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            context.registerReceiver(counterReceiver, intentFilter);
+            try {
+                context.registerReceiver(counterReceiver, intentFilter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -930,7 +934,11 @@ public class FunctionsClass {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            context.registerReceiver(counterReceiver, intentFilter);
+            try {
+                context.registerReceiver(counterReceiver, intentFilter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -967,7 +975,11 @@ public class FunctionsClass {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            context.registerReceiver(counterReceiver, intentFilter);
+            try {
+                context.registerReceiver(counterReceiver, intentFilter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1084,7 +1096,11 @@ public class FunctionsClass {
                     }
                 }
             };
-            context.registerReceiver(counterReceiver, intentFilter);
+            try {
+                context.registerReceiver(counterReceiver, intentFilter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             listPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override

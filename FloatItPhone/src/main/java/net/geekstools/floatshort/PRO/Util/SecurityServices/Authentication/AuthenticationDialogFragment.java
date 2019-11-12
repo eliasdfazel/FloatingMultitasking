@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 11/12/19 2:00 PM
+ * Last modified 11/12/19 1:56 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -60,7 +60,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.Fingerprint.FingerprintProcessHelper;
-import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
+import net.geekstools.floatshort.PRO.Util.UI.Splash.FloatingSplash;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
@@ -421,7 +421,11 @@ public class AuthenticationDialogFragment extends DialogFragment {
                     }
                 }
             };
-            getContext().registerReceiver(broadcastReceiver, intentFilter);
+            try {
+                getContext().registerReceiver(broadcastReceiver, intentFilter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             FunctionsClassDebug.Companion.PrintDebug("*** Finger Print Not Available ***");
 

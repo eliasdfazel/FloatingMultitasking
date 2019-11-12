@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 11/12/19 2:00 PM
+ * Last modified 11/12/19 1:56 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -157,6 +157,8 @@ public class NotificationListener extends NotificationListenerService {
                 };
                 try {
                     registerReceiver(broadcastReceiver, intentFilter);
+                }catch (IllegalArgumentException e) {
+                    e.printStackTrace();
                 } catch (AssertionError assertionError) {
                     assertionError.printStackTrace();
                 }

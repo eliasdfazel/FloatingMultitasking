@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 11/12/19 2:00 PM
+ * Last modified 11/12/19 1:53 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1617,7 +1617,11 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
                 }
             }
         };
-        registerReceiver(broadcastReceiver, intentFilter);
+        try {
+            registerReceiver(broadcastReceiver, intentFilter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /*Fling Sensitivity*/
