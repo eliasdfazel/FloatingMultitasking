@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 2:00 PM
+ * Created by Elias Fazel on 11/13/19 11:24 AM
+ * Last modified 11/13/19 11:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -5971,9 +5971,9 @@ public class FunctionsClass {
         return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
     }
 
-    public boolean searchEnginePurchased() {
+    public boolean searchEngineSubscribed() {
 
-        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".PurchasedItem", BillingManager.iapSearchEngines, false);
+        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".SubscribedItem", BillingManager.iapSearchEngines, false);
     }
 
     public boolean alreadyDonated() {

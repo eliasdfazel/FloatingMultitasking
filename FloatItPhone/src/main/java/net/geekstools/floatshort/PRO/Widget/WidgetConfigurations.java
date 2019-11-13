@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:47 PM
+ * Created by Elias Fazel on 11/13/19 11:24 AM
+ * Last modified 11/13/19 11:21 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -2324,7 +2324,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (functionsClass.searchEnginePurchased()) {
+                        if (functionsClass.searchEngineSubscribed()) {
                             textInputSearchView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
                             textInputSearchView.setVisibility(View.VISIBLE);
 

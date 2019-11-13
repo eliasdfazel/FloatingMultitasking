@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 11/13/19 11:24 AM
+ * Last modified 11/13/19 11:21 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -46,7 +46,7 @@ public class InAppBilling extends FragmentActivity implements BillingProvider {
             if (functionsClass.floatingWidgetsPurchased()) {
                 InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
             }
-            if (functionsClass.searchEnginePurchased()) {
+            if (functionsClass.searchEngineSubscribed()) {
                 InAppBilling.ItemIAB = BillingManager.iapSearchEngines;
             }
             if (functionsClass.securityServicesSubscribed()) {

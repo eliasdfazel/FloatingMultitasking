@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:51 PM
+ * Created by Elias Fazel on 11/13/19 11:24 AM
+ * Last modified 11/13/19 11:21 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -629,7 +629,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
         }
 
         //Restore Purchased Item
-        if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.searchEnginePurchased()) {
+        if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.searchEngineSubscribed()) {
             BillingClient billingClient = BillingClient.newBuilder(FoldersConfigurations.this).setListener(new PurchasesUpdatedListener() {
                 @Override
                 public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
@@ -1512,7 +1512,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (functionsClass.searchEnginePurchased()) {
+                if (functionsClass.searchEngineSubscribed()) {
                     textInputSearchView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
                     textInputSearchView.setVisibility(View.VISIBLE);
 
