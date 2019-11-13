@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 11/12/19 3:27 PM
+ * Last modified 11/12/19 3:19 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -576,6 +576,12 @@ public class Folder_Unlimited_Bluetooth extends Service {
                     .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
             flingAnimationY[startId] = new FlingAnimation(new FloatValueHolder())
                     .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
+
+            flingAnimationX[startId].setMaxValue(functionsClass.displayX() - categorySize);
+            flingAnimationX[startId].setMinValue(0);
+
+            flingAnimationY[startId].setMaxValue(functionsClass.displayY() - categorySize);
+            flingAnimationY[startId].setMinValue(0);
 
             simpleOnGestureListener[startId] = new GestureDetector.SimpleOnGestureListener() {
                 @Override

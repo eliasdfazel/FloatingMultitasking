@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:32 PM
+ * Created by Elias Fazel on 11/12/19 3:27 PM
+ * Last modified 11/12/19 3:16 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -253,6 +253,12 @@ public class App_Unlimited_Gps extends Service {
                     .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
             flingAnimationY[startId] = new FlingAnimation(new FloatValueHolder())
                     .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
+
+            flingAnimationX[startId].setMaxValue(functionsClass.displayX() - PublicVariable.HW);
+            flingAnimationX[startId].setMinValue(0);
+
+            flingAnimationY[startId].setMaxValue(functionsClass.displayY() - PublicVariable.HW);
+            flingAnimationY[startId].setMinValue(0);
 
             simpleOnGestureListener[startId] = new GestureDetector.SimpleOnGestureListener() {
                 @Override
