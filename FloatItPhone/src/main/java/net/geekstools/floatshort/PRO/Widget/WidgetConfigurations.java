@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/13/19 11:24 AM
- * Last modified 11/13/19 11:21 AM
+ * Created by Elias Fazel on 11/13/19 12:08 PM
+ * Last modified 11/13/19 11:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -2286,7 +2286,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         Drawable frontDrawableSearchIcon = layerDrawableSearchIcon.findDrawableByLayerId(R.id.frontDrawable);
         backgroundTemporarySearchIcon.setTint(PublicVariable.colorLightDarkOpposite);
         frontTemporarySearchIcon.setTint(PublicVariable.colorLightDark);
-        frontDrawableSearchIcon.setTint(PublicVariable.primaryColor);
+        frontDrawableSearchIcon.setTint(PublicVariable.themeLightDark ? functionsClass.manipulateColor(PublicVariable.primaryColor, 0.90f) : functionsClass.manipulateColor(PublicVariable.primaryColor, 3.00f));
 
         layerDrawableSearchIcon.setLayerInset(2,
                 functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13));

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/13/19 11:24 AM
- * Last modified 11/13/19 11:20 AM
+ * Created by Elias Fazel on 11/13/19 12:08 PM
+ * Last modified 11/13/19 11:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -3863,8 +3863,12 @@ public class FunctionsClass {
                 foregroundDrawable.setTint(extractVibrantColor(appIcon(PackageName)));
             }
         } else {
-            backgroundDrawable = returnAPI() >= 28 ? resizeDrawable(shapesDrawables().mutate(), 100, 100) : shapesDrawables().mutate();
-            backgroundDrawable.setTint(extractVibrantColor(appIcon(PackageName)));
+            try {
+                backgroundDrawable = returnAPI() >= 28 ? resizeDrawable(shapesDrawables().mutate(), 100, 100) : shapesDrawables().mutate();
+                backgroundDrawable.setTint(extractVibrantColor(appIcon(PackageName)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         if (loadCustomIcons()) {
             backgroundDrawable = returnAPI() >= 28 ? resizeDrawable(appIcon(customIconPackageName()).mutate(), 100, 100) : appIcon(customIconPackageName()).mutate();

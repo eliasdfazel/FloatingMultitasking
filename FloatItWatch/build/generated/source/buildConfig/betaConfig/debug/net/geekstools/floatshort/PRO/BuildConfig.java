@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 3:27 PM
- * Last modified 11/12/19 2:26 PM
+ * Created by Elias Fazel on 11/13/19 12:08 PM
+ * Last modified 11/13/19 10:56 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,5 +19,5 @@ public final class BuildConfig {
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "betaConfig";
   public static final int VERSION_CODE = 701;
-  public static final String VERSION_NAME = "7 | 11.12.2019-{701}-[PRO][WearOS][Watch][BETA]";
+  public static final String VERSION_NAME = "7 | 11.13.2019-{701}-[PRO][WearOS][Watch][BETA]";
 }

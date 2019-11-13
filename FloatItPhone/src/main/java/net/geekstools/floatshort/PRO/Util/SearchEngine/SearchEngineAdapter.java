@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 11/13/19 12:08 PM
+ * Last modified 11/13/19 12:04 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -113,6 +113,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
             viewHolder = new ViewHolder();
             viewHolder.searchItem = (RelativeLayout) convertView.findViewById(R.id.searchItem);
             viewHolder.itemAppIcon = (ShapesImage) convertView.findViewById(R.id.itemAppIcon);
+            viewHolder.itemInitialLetter = (TextView) convertView.findViewById(R.id.itemInitialLetter);
             viewHolder.itemAppName = (TextView) convertView.findViewById(R.id.itemAppName);
             convertView.setTag(viewHolder);
         } else {
@@ -134,13 +135,21 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
             case SearchResultType.SearchFolders: {
                 dominantColor = context.getColor(R.color.default_color);
 
-                viewHolder.itemAppIcon.setImageDrawable(functionsClass.writeOnDrawable(
-                        functionsClass.shapedDrablesResourceId(),
-                        String.valueOf(allSearchResultItems.get(position).getCategory().charAt(0)).toUpperCase(),
-                        PublicVariable.colorLightDark,
-                        functionsClass.DpToPixel(51),
-                        functionsClass.DpToPixel(79)));
                 viewHolder.itemAppName.setText(allSearchResultItems.get(position).getCategory());
+
+                viewHolder.itemInitialLetter.setText(String.valueOf(allSearchResultItems.get(position).getCategory().charAt(0)).toUpperCase());
+                viewHolder.itemInitialLetter.setTextColor(PublicVariable.colorLightDarkOpposite);
+
+                Drawable backgroundDrawable = null;
+                try {
+                    backgroundDrawable = functionsClass.shapesDrawables().mutate();
+                    backgroundDrawable.setTint(PublicVariable.primaryColor);
+
+                    viewHolder.itemAppIcon.setAlpha(0.59f);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                viewHolder.itemAppIcon.setImageDrawable(backgroundDrawable);
 
                 break;
             }
@@ -217,6 +226,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
     static class ViewHolder {
         RelativeLayout searchItem;
         ShapesImage itemAppIcon;
+        TextView itemInitialLetter;
         TextView itemAppName;
     }
 
