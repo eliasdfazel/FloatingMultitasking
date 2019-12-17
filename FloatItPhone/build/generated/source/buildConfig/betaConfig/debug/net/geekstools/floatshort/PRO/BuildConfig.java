@@ -1,8 +1,8 @@
 /*
  * Copyright © 2019 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/13/19 12:08 PM
- * Last modified 11/13/19 10:56 AM
+ * Created by Elias Fazel on 12/16/19 5:17 PM
+ * Last modified 12/16/19 5:16 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,6 +18,6 @@ public final class BuildConfig {
   public static final String APPLICATION_ID = "net.geekstools.floatshort.PRO";
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "betaConfig";
-  public static final int VERSION_CODE = 704;
-  public static final String VERSION_NAME = "7 | 11.13.2019-{704}-[PRO][Android][Phone][BETA]";
+  public static final int VERSION_CODE = 706;
+  public static final String VERSION_NAME = "7 | 12.16.2019-{706}-[PRO][Android][Phone][BETA]";
 }
