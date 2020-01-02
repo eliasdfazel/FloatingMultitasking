@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 8:36 PM
- * Last modified 1/1/20 5:09 PM
+ * Created by Elias Fazel on 1/1/20 9:10 PM
+ * Last modified 1/1/20 8:45 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -2494,10 +2494,12 @@ public class FunctionsClass {
                     }
 
                     Intent openAlias = context.getPackageManager().getLaunchIntentForPackage(PackageName);
-                    openAlias.setFlags(
-                            Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
-                                    Intent.FLAG_ACTIVITY_NEW_TASK |
-                                    Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    if (openAlias != null) {
+                        openAlias.setFlags(
+                                Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
+                                        Intent.FLAG_ACTIVITY_NEW_TASK |
+                                        Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    }
                     context.startActivity(openAlias, activityOptions.toBundle());
                 }
             }, 3000);

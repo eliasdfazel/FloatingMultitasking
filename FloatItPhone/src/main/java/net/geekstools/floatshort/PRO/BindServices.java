@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 8:36 PM
- * Last modified 1/1/20 8:36 PM
+ * Created by Elias Fazel on 1/1/20 9:10 PM
+ * Last modified 1/1/20 8:38 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -205,7 +205,7 @@ public class BindServices extends Service {
             }
         }
 
-        return functionsClass.serviceMode();
+        return Service.START_STICKY;
     }
 
     @Override
@@ -216,26 +216,6 @@ public class BindServices extends Service {
 
     @Override
     public void onDestroy() {
-        /*try {
-            if (functionsClass.SystemCache() || functionsClass.automationFeatureEnable()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(new Intent(getApplicationContext(), BindServices.class));
-                } else {
-                    startService(new Intent(getApplicationContext(), BindServices.class));
-                }
-            } else {
-                unregisterReceiver(broadcastReceiverONOFF);
-
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    stopForeground(Service.STOP_FOREGROUND_REMOVE);
-                    stopForeground(true);
-                }
-                stopSelf();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
         super.onDestroy();
     }
 }

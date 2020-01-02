@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 8:36 PM
- * Last modified 1/1/20 5:16 PM
+ * Created by Elias Fazel on 1/1/20 9:10 PM
+ * Last modified 1/1/20 8:51 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -761,6 +761,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                 try {
                     unregisterReceiver(broadcastReceiver);
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         } catch (Exception e) {

@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/1/20 9:10 PM
+ * Last modified 1/1/20 8:42 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -137,7 +137,7 @@ public class CheckPoint extends Activity {
         try {
             alertDialog.setIcon(getDrawable(R.drawable.ic_launcher));
         } catch (Exception e) {
-            alertDialog.setIcon(getResources().getDrawable(R.drawable.ic_launcher));
+            e.printStackTrace();
         }
         alertDialog.setCancelable(true);
 

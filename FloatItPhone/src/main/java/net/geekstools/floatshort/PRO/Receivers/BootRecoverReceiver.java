@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/1/20 9:10 PM
+ * Last modified 1/1/20 8:38 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -37,7 +37,7 @@ public class BootRecoverReceiver extends BroadcastReceiver {
 
         try {
             if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-                if (functionsClass.ControlPanel()) {
+                if (functionsClass.ControlPanel() || functionsClass.automationFeatureEnable()) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         context.startForegroundService(new Intent(context, BindServices.class));
                     } else {

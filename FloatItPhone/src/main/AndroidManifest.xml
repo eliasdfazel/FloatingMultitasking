@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright © 2019 By Geeks Empire.
+  ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 11/12/19 2:00 PM
-  ~ Last modified 11/12/19 1:32 PM
+  ~ Created by Elias Fazel on 1/1/20 9:10 PM
+  ~ Last modified 1/1/20 8:56 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -453,7 +453,8 @@
         <service
             android:name=".Util.RemoteTask.RecoveryWidgets"
             android:exported="true"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.NoDisplay"
+            android:foregroundServiceType="dataSync"/>
         <service
             android:name=".Util.RemoteTask.RecoveryAll"
             android:exported="true"
