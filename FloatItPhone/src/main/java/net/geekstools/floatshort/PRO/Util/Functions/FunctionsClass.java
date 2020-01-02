@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/13/19 12:08 PM
- * Last modified 11/13/19 11:47 AM
+ * Created by Elias Fazel on 1/1/20 8:36 PM
+ * Last modified 1/1/20 5:09 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -2235,23 +2235,6 @@ public class FunctionsClass {
         }
     }
 
-    public boolean lowRAM() {
-        boolean lowMemory = false;
-        try {
-            ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-            ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
-            if (activityManager != null) {
-                activityManager.getMemoryInfo(memoryInfo);
-                if (memoryInfo.lowMemory) {
-                    lowMemory = true;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return lowMemory;
-    }
-
     public int returnAPI() {
         return API;
     }
@@ -3479,7 +3462,7 @@ public class FunctionsClass {
                 BitmapDrawable wallpaper = (BitmapDrawable) wallpaperManager.getDrawable();
 
                 Bitmap bitmapWallpaper = wallpaper.getBitmap();
-                Bitmap inputBitmap = null;
+                Bitmap inputBitmap;
                 if (bitmapWallpaper.getWidth() < displayX() || bitmapWallpaper.getHeight() < displayY()) {
                     inputBitmap = Bitmap.createScaledBitmap(bitmapWallpaper, displayX(), displayY(), false);
                 } else {

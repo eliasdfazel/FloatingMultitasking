@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/1/20 8:36 PM
+ * Last modified 1/1/20 5:17 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -533,7 +533,6 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onPause() {
         super.onPause();
-        functionsClass.CheckSystemRAM(AppAutoFeatures.this);
 
         if (functionsClass.automationFeatureEnable()) {
             startService(new Intent(getApplicationContext(), BindServices.class));
@@ -549,6 +548,8 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         try {
+            functionsClass.CheckSystemRAM(AppAutoFeatures.this);
+
             functionsClass.overrideBackPressToMain(AppAutoFeatures.this);
             overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
         } catch (Exception e) {

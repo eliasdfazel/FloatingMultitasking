@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/13/19 12:08 PM
- * Last modified 11/13/19 11:32 AM
+ * Created by Elias Fazel on 1/1/20 8:36 PM
+ * Last modified 1/1/20 8:15 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -73,6 +73,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ConsumeParams;
 import com.android.billingclient.api.ConsumeResponseListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
@@ -152,7 +154,8 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
     RelativeLayout scrollRelativeLayout, fullActionViews, MainView, loadingSplash;
     LinearLayout indexView, freqView;
     ProgressBar loadingBarLTR;
-    ImageView loadLogo, actionButton, recoverFloatingCategories, recoverFloatingWidgets;
+    ImageView loadLogo, actionButton;
+    ShapesImage recoverFloatingCategories, recoverFloatingWidgets;
     TextView popupIndex;
     MaterialButton switchWidgets, switchCategories, recoveryAction, automationAction;
 
@@ -216,8 +219,8 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
         switchCategories = (MaterialButton) findViewById(R.id.switchCategories);
         recoveryAction = (MaterialButton) findViewById(R.id.recoveryAction);
         automationAction = (MaterialButton) findViewById(R.id.automationAction);
-        recoverFloatingCategories = (ImageView) findViewById(R.id.recoverFloatingCategories);
-        recoverFloatingWidgets = (ImageView) findViewById(R.id.recoverFloatingWidgets);
+        recoverFloatingCategories = (ShapesImage) findViewById(R.id.recoverFloatingCategories);
+        recoverFloatingWidgets = (ShapesImage) findViewById(R.id.recoverFloatingWidgets);
         popupIndex = (TextView) findViewById(R.id.popupIndex);
 
         /*Search Engine*/
@@ -599,21 +602,20 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
             if (functionsClass.alreadyDonated() && functionsClass.networkConnection()) {
                 BillingClient billingClient = BillingClient.newBuilder(HybridApplicationsView.this).setListener(new PurchasesUpdatedListener() {
                     @Override
-                    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
-                        if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
+                    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchaseList) {
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchaseList != null) {
 
-                        } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
+                        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
 
                         } else {
 
                         }
-
                     }
-                }).build();
+                }).enablePendingPurchases().build();
                 billingClient.startConnection(new BillingClientStateListener() {
                     @Override
-                    public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
-                        if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    public void onBillingSetupFinished(BillingResult billingResult) {
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                             List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
                             for (Purchase purchase : purchases) {
                                 FunctionsClassDebug.Companion.PrintDebug("*** Purchased Item: " + purchase + " ***");
@@ -622,15 +624,18 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                                 if (purchase.getSku().equals(BillingManager.iapDonation)) {
                                     ConsumeResponseListener consumeResponseListener = new ConsumeResponseListener() {
                                         @Override
-                                        public void onConsumeResponse(@BillingClient.BillingResponse int responseCode, String outToken) {
-                                            if (responseCode == BillingClient.BillingResponse.OK) {
-                                                FunctionsClassDebug.Companion.PrintDebug("*** Consumed Item: " + outToken + " ***");
+                                        public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
+                                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                                FunctionsClassDebug.Companion.PrintDebug("*** Consumed Item: " + purchaseToken + " ***");
 
                                                 functionsClass.savePreference(".PurchasedItem", purchase.getSku(), false);
                                             }
                                         }
                                     };
-                                    billingClient.consumeAsync(purchase.getPurchaseToken(), consumeResponseListener);
+
+                                    ConsumeParams.Builder consumeParams = ConsumeParams.newBuilder();
+                                    consumeParams.setPurchaseToken(purchase.getPurchaseToken());
+                                    billingClient.consumeAsync(consumeParams.build(), consumeResponseListener);
                                 }
                             }
                         }
@@ -650,21 +655,20 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
         if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.searchEngineSubscribed()) {
             BillingClient billingClient = BillingClient.newBuilder(HybridApplicationsView.this).setListener(new PurchasesUpdatedListener() {
                 @Override
-                public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
-                    if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
+                public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchaseList) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchaseList != null) {
 
-                    } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
+                    } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
 
                     } else {
 
                     }
-
                 }
-            }).build();
+            }).enablePendingPurchases().build();
             billingClient.startConnection(new BillingClientStateListener() {
                 @Override
-                public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
-                    if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                public void onBillingSetupFinished(BillingResult billingResult) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                         functionsClass.savePreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
 
                         List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
@@ -687,21 +691,22 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
             if (functionsClass.networkConnection()) {
                 BillingClient billingClient = BillingClient.newBuilder(HybridApplicationsView.this).setListener(new PurchasesUpdatedListener() {
                     @Override
-                    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
-                        if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
+                    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
 
-                        } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
+                        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
 
                         } else {
 
                         }
 
                     }
-                }).build();
+                }).enablePendingPurchases().build();
                 billingClient.startConnection(new BillingClientStateListener() {
+
                     @Override
-                    public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
-                        if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    public void onBillingSetupFinished(BillingResult billingResult) {
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                             functionsClass.savePreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
 
                             List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.SUBS).getPurchasesList();
@@ -950,7 +955,6 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
             functionsClass.closeActionMenuOption(fullActionViews, actionButton);
         }
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
-        functionsClass.CheckSystemRAM(HybridApplicationsView.this);
 
         if (functionsClass.SystemCache()) {
             startService(new Intent(getApplicationContext(), BindServices.class));
@@ -969,6 +973,8 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
         homeScreen.addCategory(Intent.CATEGORY_HOME);
         homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(homeScreen, ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+
+        functionsClass.CheckSystemRAM(HybridApplicationsView.this);
     }
 
     @Override

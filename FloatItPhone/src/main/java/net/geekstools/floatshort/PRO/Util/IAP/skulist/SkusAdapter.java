@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/1/20 8:36 PM
+ * Last modified 1/1/20 6:27 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -75,7 +75,6 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
                 case BillingManager.iapSecurityServices: {
                     rowViewHolder.purchaseItemIcon.setImageResource(R.drawable.draw_security);
                     rowViewHolder.purchaseItemPrice.setText(skuRowData.getPrice());
-
                     rowViewHolder.purchaseItemButton.setText(activity.getString(R.string.purchase));
 
                     break;
@@ -88,6 +87,7 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
                     rowViewHolder.purchaseItemDescription.append(activity.getString(R.string.thanks));
 
                     rowViewHolder.purchaseItemPrice.setText(skuRowData.getPrice());
+
                     break;
                 }
             }
@@ -102,7 +102,7 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
     @Override
     public void onButtonClicked(int position) {
         SkuRowData skuRowData = getData(position);
-        billingProvider.getBillingManager().startPurchaseFlow(skuRowData.getSkuDetails(), skuRowData.getSku(), skuRowData.getBillingType());
+        billingProvider.getBillingManager().startPurchaseFlow(skuRowData.getSkuDetails());
 
     }
 

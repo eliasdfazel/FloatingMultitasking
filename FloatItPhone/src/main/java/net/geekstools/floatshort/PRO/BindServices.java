@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/1/20 8:36 PM
+ * Last modified 1/1/20 8:36 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,7 +18,6 @@ import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.nfc.NfcManager;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.TypedValue;
@@ -217,8 +216,7 @@ public class BindServices extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        try {
+        /*try {
             if (functionsClass.SystemCache() || functionsClass.automationFeatureEnable()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     startForegroundService(new Intent(getApplicationContext(), BindServices.class));
@@ -237,6 +235,7 @@ public class BindServices extends Service {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
+        super.onDestroy();
     }
 }

@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/13/19 11:24 AM
- * Last modified 11/13/19 11:21 AM
+ * Created by Elias Fazel on 1/1/20 8:36 PM
+ * Last modified 1/1/20 8:36 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -38,6 +38,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.bumptech.glide.Glide;
@@ -334,10 +335,11 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                 inAppSkus,
                 new SkuDetailsResponseListener() {
                     @Override
-                    public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
-                        if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
+                    public void onSkuDetailsResponse(BillingResult billingResult, List<SkuDetails> skuDetailsListInApp) {
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsListInApp != null) {
                             List<SkuRowData> skuRowDataList = new ArrayList<>();
-                            for (SkuDetails skuDetails : skuDetailsList) {
+
+                            for (SkuDetails skuDetails : skuDetailsListInApp) {
                                 FunctionsClassDebug.Companion.PrintDebug("*** SKU List Product ::: " + skuDetails + " ***");
 
                                 if (skuDetails.getSku().equals(BillingManager.iapFloatingWidgets) && functionsClass.floatingWidgetsPurchased()) {
@@ -361,6 +363,8 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                 displayError();
                             } else {
                                 skusAdapter.updateData(skuRowDataList);
+
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
 
                             itemIABDemoList.setVisibility(View.VISIBLE);
@@ -368,14 +372,16 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                             itemIABDemoDescription.setVisibility(View.VISIBLE);
 
                             List<String> subsSkus = billingProvider.getBillingManager().getSkus(BillingClient.SkuType.SUBS);
+                            System.out.println(">>>>> " + subsSkus);
                             billingProvider.getBillingManager().querySkuDetailsAsync(BillingClient.SkuType.SUBS,
                                     subsSkus,
                                     new SkuDetailsResponseListener() {
+
                                         @Override
-                                        public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
-                                            if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
-                                                for (SkuDetails skuDetails : skuDetailsList) {
-                                                    FunctionsClassDebug.Companion.PrintDebug("*** SKU List Subscriptions ::: " + skuDetails + " ***");
+                                        public void onSkuDetailsResponse(BillingResult billingResult, List<SkuDetails> skuDetailsListSubs) {
+                                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                                for (SkuDetails skuDetails : skuDetailsListSubs) {
+                                                    FunctionsClassDebug.Companion.PrintDebug("*** 123 SKU List Subscriptions ::: " + skuDetails + " ***");
 
                                                     if (skuDetails.getSku().equals(BillingManager.iapSecurityServices) && functionsClass.securityServicesSubscribed()) {
                                                         itemIABDemoList.setVisibility(View.INVISIBLE);
@@ -402,11 +408,11 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                                             skuDetails.getType())
                                                     );
                                                 }
+
                                                 if (skuRowDataList.size() == 0) {
                                                     displayError();
                                                 } else {
                                                     skusAdapter.updateData(skuRowDataList);
-                                                    progressBar.setVisibility(View.INVISIBLE);
                                                 }
                                             }
                                         }

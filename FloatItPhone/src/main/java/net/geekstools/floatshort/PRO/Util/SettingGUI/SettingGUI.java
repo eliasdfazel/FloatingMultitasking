@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:53 PM
+ * Created by Elias Fazel on 1/1/20 8:36 PM
+ * Last modified 1/1/20 5:18 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1138,8 +1138,6 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         super.onPause();
         functionsClass.loadSavedColor();
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-
-        functionsClass.CheckSystemRAM(SettingGUI.this);
     }
 
     @Override
