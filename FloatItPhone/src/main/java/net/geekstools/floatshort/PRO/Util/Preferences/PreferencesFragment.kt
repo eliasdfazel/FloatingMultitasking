@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/3/20 12:15 AM
- * Last modified 1/3/20 12:11 AM
+ * Created by Elias Fazel on 1/3/20 1:39 AM
+ * Last modified 1/3/20 1:02 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,15 +13,30 @@ package net.geekstools.floatshort.PRO.Util.Preferences
 
 import android.app.ActivityOptions
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.text.Html
+import android.util.TypedValue
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
 import androidx.preference.*
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import net.geekstools.floatshort.PRO.BindServices
@@ -332,7 +347,112 @@ class PreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.OnShar
         }
 
         shapes.setOnPreferenceClickListener {
-            setupShapes(activity!!, sharedPreferences)
+            setupShapes(activity!!, sharedPreferences, functionsClass, shapes)
+
+            true
+        }
+
+        freeForm.setOnPreferenceClickListener{
+            if (functionsClass.FreeForm()) {
+                functionsClass.FreeFormInformation(activity, freeForm)
+            } else {
+                freeForm.isChecked = false
+            }
+
+            true
+        }
+
+        autotrans.setOnPreferenceClickListener {
+            val layoutParams = WindowManager.LayoutParams()
+            val dialogueWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300f, resources.displayMetrics).toInt()
+            val dialogueHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 270f, resources.displayMetrics).toInt()
+
+            layoutParams.width = dialogueWidth
+            layoutParams.height = dialogueHeight
+            layoutParams.windowAnimations = android.R.style.Animation_Dialog
+            layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+            layoutParams.dimAmount = 0.57f
+
+            val dialog = Dialog(activity!!.applicationContext)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.seekbar_preferences)
+            dialog.window!!.attributes = layoutParams
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+            dialog.setCancelable(true)
+
+            val seekBarView: View = dialog.findViewById<RelativeLayout>(R.id.seekBarView)
+            seekBarView.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)
+
+            val transparentIcon = dialog.findViewById<ImageView>(R.id.preferenceIcon)
+            val seekBarPreferences = dialog.findViewById<SeekBar>(R.id.seekBarPreferences)
+            val dialogueTitle = dialog.findViewById<TextView>(R.id.dialogueTitle)
+            val revertDefault = dialog.findViewById<TextView>(R.id.revertDefault)
+
+            seekBarPreferences.thumbTintList = ColorStateList.valueOf(PublicVariable.primaryColor)
+            seekBarPreferences.thumbTintMode = PorterDuff.Mode.SRC_IN
+            seekBarPreferences.progressTintList = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+            seekBarPreferences.progressTintMode = PorterDuff.Mode.SRC_IN
+
+            seekBarPreferences.max = 213
+            seekBarPreferences.progress = functionsClass.readDefaultPreference("autoTransProgress", 0)
+
+            var layerDrawableLoadLogo: Drawable?
+            try {
+                val backgroundDot = functionsClass.shapesDrawables().mutate()
+                backgroundDot.setTint(PublicVariable.primaryColorOpposite)
+                layerDrawableLoadLogo = LayerDrawable(arrayOf(
+                        backgroundDot,
+                        context!!.getDrawable(R.drawable.ic_launcher_dots)
+                ))
+            } catch (e: NullPointerException) {
+                e.printStackTrace()
+                layerDrawableLoadLogo = context!!.getDrawable(R.drawable.ic_launcher)
+            }
+
+            transparentIcon.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+            transparentIcon.setImageDrawable(layerDrawableLoadLogo)
+
+            dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.autotrans) + "</font>")
+            dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
+            revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite)
+
+            seekBarPreferences.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    val alpha = 255 - progress
+                    transparentIcon.imageAlpha = alpha
+                    functionsClass.saveDefaultPreference("autoTrans", alpha)
+                    functionsClass.saveDefaultPreference("autoTransProgress", progress)
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+                }
+            })
+
+            revertDefault.setOnClickListener {
+                functionsClass.saveDefaultPreference("autoTrans", 113)
+                functionsClass.saveDefaultPreference("autoTransProgress", 95)
+                transparentIcon.imageAlpha = 113
+                seekBarPreferences.progress = 95
+            }
+
+            dialog.setOnDismissListener {
+                val drawPrefAutoTrans = context!!.getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
+                val backPrefAutoTrans = drawPrefAutoTrans.findDrawableByLayerId(R.id.backtemp).mutate()
+                backPrefAutoTrans.setTint(PublicVariable.primaryColor)
+                backPrefAutoTrans.alpha = functionsClass.readDefaultPreference("autoTrans", 255)
+                autotrans.icon = drawPrefAutoTrans
+
+                PublicVariable.forceReload = false
+
+                dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            }
+            dialog.show()
 
             true
         }

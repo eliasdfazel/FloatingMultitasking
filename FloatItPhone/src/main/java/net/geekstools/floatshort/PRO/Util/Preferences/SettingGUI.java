@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/3/20 12:15 AM
- * Last modified 1/3/20 12:06 AM
+ * Created by Elias Fazel on 1/3/20 1:39 AM
+ * Last modified 1/3/20 1:39 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,8 +13,6 @@ package net.geekstools.floatshort.PRO.Util.Preferences;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.ActivityManager;
-import android.app.ActivityOptions;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,7 +25,6 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -41,7 +38,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
-import android.provider.Settings;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.GestureDetector;
@@ -89,10 +85,8 @@ import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.CustomIconsThemeAdapter;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutList;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
-import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
-import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import java.util.ArrayList;
@@ -120,16 +114,12 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
 
     @Override
     public Resources.Theme getTheme() {
-        FunctionsClass functionsClass = new FunctionsClass(getApplicationContext());
-
         Resources.Theme theme = super.getTheme();
-
         if (PublicVariable.themeLightDark) {
             theme.applyStyle(R.style.GeeksEmpire_Preference_Light, true);
         } else if (!PublicVariable.themeLightDark) {
             theme.applyStyle(R.style.GeeksEmpire_Preference_Dark, true);
         }
-
         return theme;
     }
 
@@ -340,169 +330,169 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
     public void onStart() {
         super.onStart();
 
-        LayerDrawable layerDrawableLoadLogo = (LayerDrawable) getDrawable(R.drawable.ic_launcher_layer);
-        BitmapDrawable gradientDrawableLoadLogo = (BitmapDrawable) layerDrawableLoadLogo.findDrawableByLayerId(R.id.ic_launcher_back_layer);
-        gradientDrawableLoadLogo.setTint(PublicVariable.primaryColorOpposite);
-        whatsnew.setIcon(layerDrawableLoadLogo);
-        whatsnew.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                functionsClass.ChangeLog(SettingGUI.this, betaChangeLog, betaVersionCode, true);
-
-                return true;
-            }
-        });
-
-        LayerDrawable layerDrawableAdApp = (LayerDrawable) getDrawable(R.drawable.ic_ad_app_layer);
-        BitmapDrawable gradientDrawableAdApp = (BitmapDrawable) layerDrawableAdApp.findDrawableByLayerId(R.id.ic_launcher_back_layer);
-        gradientDrawableAdApp.setTint(PublicVariable.primaryColorOpposite);
-        adApp.setIcon(layerDrawableAdApp);
-        adApp.setTitle(Html.fromHtml(getString(R.string.adApp)));
-        adApp.setSummary(Html.fromHtml(getString(R.string.adAppSummary)));
-        adApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_ad_app))));
-                return true;
-            }
-        });
-
-        pinPassword.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (functionsClass.securityServicesSubscribed()) {
-                    startActivity(new Intent(getApplicationContext(), HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
-                } else {
-                    InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
-
-                    startActivity(new Intent(getApplicationContext(), InAppBilling.class)
-                                    .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null))
-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
-                }
-
-                return true;
-            }
-        });
-
-        smart.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (!Settings.ACTION_USAGE_ACCESS_SETTINGS.isEmpty()) {
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    if (sharedPreferences.getBoolean("smart", true) == true) {
-                        smart.setChecked(true);
-
-                        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                        startActivity(intent);
-                        finish();
-                    } else if (sharedPreferences.getBoolean("smart", true) == false) {
-                        smart.setChecked(false);
-
-                        functionsClass.UsageAccess(SettingGUI.this, smart);
-                    }
-                }
-                return true;
-            }
-        });
-
-        observe.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                    functionsClass.AccessibilityService(SettingGUI.this, observe);
-                } else {
-                    Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-                return true;
-            }
-        });
-
-        boot.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                String[] remoteOptions = getResources().getStringArray(R.array.Boot);
-                AlertDialog.Builder builder = null;
-                if (PublicVariable.themeLightDark == true) {
-                    builder = new AlertDialog.Builder(SettingGUI.this, R.style.GeeksEmpire_Dialogue_Light);
-                } else if (PublicVariable.themeLightDark == false) {
-                    builder = new AlertDialog.Builder(SettingGUI.this, R.style.GeeksEmpire_Dialogue_Dark);
-                }
-                builder.setTitle(getString(R.string.boot));
-                builder.setSingleChoiceItems(remoteOptions, Integer.parseInt(sharedPreferences.getString("boot", "1")), null);
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                        editor.putString("boot", String.valueOf(selectedPosition));
-                        editor.apply();
-
-                        String b = sharedPreferences.getString("boot", "1");
-                        boot = (Preference) findPreference("boot");
-                        if (b.equals("0")) {
-                            boot.setSummary(getString(R.string.boot_none));
-                        } else if (b.equals("1")) {
-                            boot.setSummary(getString(R.string.shortcuts));
-                        } else if (b.equals("2")) {
-                            boot.setSummary(getString(R.string.floatingCategory));
-                        } else if (b.equals("3")) {
-                            boot.setSummary(getString(R.string.boot_warning));
-                        }
-                        functionsClass.addAppShortcuts();
-                    }
-                });
-                if (functionsClass.returnAPI() > 22) {
-                    builder.setNeutralButton(getString(R.string.read), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            functionsClass.RemoteRecovery(SettingGUI.this);
-                        }
-                    });
-                }
-
-                builder.show();
-                return true;
-            }
-        });
-
-        notification.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (functionsClass.NotificationAccess() && functionsClass.NotificationListenerRunning()) {
-                    Intent notification = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-                    notification.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(notification);
-                } else {
-                    functionsClass.NotificationAccessService(SettingGUI.this, notification);
-                }
-                return true;
-            }
-        });
-
-        shapes.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                setupShapes();
-
-                return true;
-            }
-        });
-
-        freeForm.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (functionsClass.FreeForm()) {
-                    functionsClass.FreeFormInformation(SettingGUI.this, freeForm);
-                } else {
-                    freeForm.setChecked(false);
-                }
-                return true;
-            }
-        });
+//        LayerDrawable layerDrawableLoadLogo = (LayerDrawable) getDrawable(R.drawable.ic_launcher_layer);
+//        BitmapDrawable gradientDrawableLoadLogo = (BitmapDrawable) layerDrawableLoadLogo.findDrawableByLayerId(R.id.ic_launcher_back_layer);
+//        gradientDrawableLoadLogo.setTint(PublicVariable.primaryColorOpposite);
+//        whatsnew.setIcon(layerDrawableLoadLogo);
+//        whatsnew.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                functionsClass.ChangeLog(SettingGUI.this, betaChangeLog, betaVersionCode, true);
+//
+//                return true;
+//            }
+//        });
+//
+//        LayerDrawable layerDrawableAdApp = (LayerDrawable) getDrawable(R.drawable.ic_ad_app_layer);
+//        BitmapDrawable gradientDrawableAdApp = (BitmapDrawable) layerDrawableAdApp.findDrawableByLayerId(R.id.ic_launcher_back_layer);
+//        gradientDrawableAdApp.setTint(PublicVariable.primaryColorOpposite);
+//        adApp.setIcon(layerDrawableAdApp);
+//        adApp.setTitle(Html.fromHtml(getString(R.string.adApp)));
+//        adApp.setSummary(Html.fromHtml(getString(R.string.adAppSummary)));
+//        adApp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_ad_app))));
+//                return true;
+//            }
+//        });
+//
+//        pinPassword.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                if (functionsClass.securityServicesSubscribed()) {
+//                    startActivity(new Intent(getApplicationContext(), HandlePinPassword.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+//                            ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+//                } else {
+//                    InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
+//
+//                    startActivity(new Intent(getApplicationContext(), InAppBilling.class)
+//                                    .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null))
+//                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+//                            ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+//                }
+//
+//                return true;
+//            }
+//        });
+//
+//        smart.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+//            @Override
+//            public boolean onPreferenceChange(Preference preference, Object newValue) {
+//                if (!Settings.ACTION_USAGE_ACCESS_SETTINGS.isEmpty()) {
+//                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//                    if (sharedPreferences.getBoolean("smart", true) == true) {
+//                        smart.setChecked(true);
+//
+//                        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+//                        startActivity(intent);
+//                        finish();
+//                    } else if (sharedPreferences.getBoolean("smart", true) == false) {
+//                        smart.setChecked(false);
+//
+//                        functionsClass.UsageAccess(SettingGUI.this, smart);
+//                    }
+//                }
+//                return true;
+//            }
+//        });
+//
+//        observe.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
+//                    functionsClass.AccessibilityService(SettingGUI.this, observe);
+//                } else {
+//                    Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
+//                }
+//                return true;
+//            }
+//        });
+//
+//        boot.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                String[] remoteOptions = getResources().getStringArray(R.array.Boot);
+//                AlertDialog.Builder builder = null;
+//                if (PublicVariable.themeLightDark == true) {
+//                    builder = new AlertDialog.Builder(SettingGUI.this, R.style.GeeksEmpire_Dialogue_Light);
+//                } else if (PublicVariable.themeLightDark == false) {
+//                    builder = new AlertDialog.Builder(SettingGUI.this, R.style.GeeksEmpire_Dialogue_Dark);
+//                }
+//                builder.setTitle(getString(R.string.boot));
+//                builder.setSingleChoiceItems(remoteOptions, Integer.parseInt(sharedPreferences.getString("boot", "1")), null);
+//                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int whichButton) {
+//                        SharedPreferences.Editor editor = sharedPreferences.edit();
+//                        int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+//                        editor.putString("boot", String.valueOf(selectedPosition));
+//                        editor.apply();
+//
+//                        String b = sharedPreferences.getString("boot", "1");
+//                        boot = (Preference) findPreference("boot");
+//                        if (b.equals("0")) {
+//                            boot.setSummary(getString(R.string.boot_none));
+//                        } else if (b.equals("1")) {
+//                            boot.setSummary(getString(R.string.shortcuts));
+//                        } else if (b.equals("2")) {
+//                            boot.setSummary(getString(R.string.floatingCategory));
+//                        } else if (b.equals("3")) {
+//                            boot.setSummary(getString(R.string.boot_warning));
+//                        }
+//                        functionsClass.addAppShortcuts();
+//                    }
+//                });
+//                if (functionsClass.returnAPI() > 22) {
+//                    builder.setNeutralButton(getString(R.string.read), new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            functionsClass.RemoteRecovery(SettingGUI.this);
+//                        }
+//                    });
+//                }
+//
+//                builder.show();
+//                return true;
+//            }
+//        });
+//
+//        notification.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                if (functionsClass.NotificationAccess() && functionsClass.NotificationListenerRunning()) {
+//                    Intent notification = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+//                    notification.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(notification);
+//                } else {
+//                    functionsClass.NotificationAccessService(SettingGUI.this, notification);
+//                }
+//                return true;
+//            }
+//        });
+//
+//        shapes.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                setupShapes();
+//
+//                return true;
+//            }
+//        });
+//
+//        freeForm.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                if (functionsClass.FreeForm()) {
+//                    functionsClass.FreeFormInformation(SettingGUI.this, freeForm);
+//                } else {
+//                    freeForm.setChecked(false);
+//                }
+//                return true;
+//            }
+//        });
 
         autotrans.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
@@ -1555,7 +1545,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
                     functionsClass.appIcon(packageName)
             ));
         }
-        CustomIconsThemeAdapter customIconsThemeAdapter = new CustomIconsThemeAdapter(SettingGUI.this, getApplicationContext(), adapterItems);
+        CustomIconsThemeAdapter customIconsThemeAdapter = new CustomIconsThemeAdapter(SettingGUI.this, getApplicationContext(), adapterItems, dialog);
         customIconList.setAdapter(customIconsThemeAdapter);
 
         defaultTheme.setOnClickListener(new View.OnClickListener() {

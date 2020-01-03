@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/3/20 1:39 AM
+ * Last modified 1/3/20 1:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -11,8 +11,8 @@
 package net.geekstools.floatshort.PRO.Util.GeneralAdapters;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesUtil;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 import java.util.ArrayList;
@@ -33,16 +34,22 @@ import java.util.ArrayList;
 public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThemeAdapter.ViewHolder> {
 
     FunctionsClass functionsClass;
+
+    private Activity activity;
+    private Context context;
+
     View view;
     ViewHolder viewHolder;
-    private Context context;
-    private Activity activity;
+
+    Dialog dialog;
+
     private ArrayList<AdapterItems> adapterItems;
 
-    public CustomIconsThemeAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems) {
+    public CustomIconsThemeAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems, Dialog dialog) {
         this.activity = activity;
         this.context = context;
         this.adapterItems = adapterItems;
+        this.dialog = dialog;
 
         functionsClass = new FunctionsClass(context, activity);
     }
@@ -74,7 +81,9 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
                 }
 
                 functionsClass.saveDefaultPreference("LitePreferences", false);
-                context.sendBroadcast(new Intent("CUSTOM_DIALOGUE_DISMISS"));
+
+                PreferencesUtil.Companion.getCUSTOM_DIALOGUE_DISMISS().setValue(true);
+                dialog.dismiss();
             }
         });
 
