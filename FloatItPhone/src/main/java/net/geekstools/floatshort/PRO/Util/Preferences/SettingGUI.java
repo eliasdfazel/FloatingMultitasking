@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/2/20 10:52 PM
- * Last modified 1/2/20 9:09 PM
+ * Created by Elias Fazel on 1/3/20 12:15 AM
+ * Last modified 1/3/20 12:06 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -106,9 +106,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
     ListPreference themeColor, stick;
     SwitchPreference stable, cache, themeTrans, smart, blur, observe, notification, floatingSplash, freeForm;
 
-    Preference pinPassword,
-            shapes, autotrans, sizes, delayPressHold, flingSensitivity, boot, lite,
-            support, whatsnew, adApp;
+    Preference pinPassword, shapes, autotrans, sizes, delayPressHold, flingSensitivity, boot, lite, support, whatsnew, adApp;
 
     Runnable runnablePressHold = null;
     Handler handlerPressHold = new Handler();
@@ -1339,9 +1337,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         int dialogueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 377, getResources().getDisplayMetrics());
         int dialogueHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 387, getResources().getDisplayMetrics());
 
-				/*layoutParams.gravity = Gravity.TOP | Gravity.START;
-				layoutParams.x = 0;
-				layoutParams.y = 0;*/
+
         layoutParams.width = dialogueWidth;
         layoutParams.height = dialogueHeight;
         layoutParams.windowAnimations = android.R.style.Animation_Dialog;

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/2/20 10:52 PM
- * Last modified 1/2/20 10:52 PM
+ * Created by Elias Fazel on 1/3/20 12:15 AM
+ * Last modified 1/3/20 12:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -68,7 +68,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -110,6 +109,7 @@ import androidx.core.graphics.ColorUtils;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.palette.graphics.Palette;
 import androidx.preference.PreferenceManager;
+import androidx.preference.SwitchPreference;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
