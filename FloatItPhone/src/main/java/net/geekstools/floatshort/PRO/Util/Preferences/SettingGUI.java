@@ -1,14 +1,14 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 8:36 PM
- * Last modified 1/1/20 5:18 PM
+ * Created by Elias Fazel on 1/2/20 10:52 PM
+ * Last modified 1/2/20 9:09 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Util.SettingGUI;
+package net.geekstools.floatshort.PRO.Util.Preferences;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -138,7 +138,7 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
     @Override
     protected void onCreate(Bundle saved) {
         super.onCreate(saved);
-        addPreferencesFromResource(R.xml.setting_gui);
+        addPreferencesFromResource(R.xml.preferences_screen);
         currentTheme = PublicVariable.themeLightDark;
         try {
             getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -158,11 +158,11 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         FromWidgetsConfigurations = getIntent().hasExtra("FromWidgetsConfigurations") ? getIntent().getBooleanExtra("FromWidgetsConfigurations", false) : false;
 
-        if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColorPreferences(this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
-        } else {
-            functionsClass.setThemeColorPreferences(this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
-        }
+//        if (functionsClass.appThemeTransparent() == true) {
+//            functionsClass.setThemeColorPreferences(this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
+//        } else {
+//            functionsClass.setThemeColorPreferences(this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
+//        }
 
         rootLayout = this.getWindow().getDecorView();
         rootLayout.setVisibility(View.INVISIBLE);
@@ -304,11 +304,11 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         themeTrans.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (functionsClass.appThemeTransparent() == true) {
-                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
-                } else {
-                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
-                }
+//                if (functionsClass.appThemeTransparent() == true) {
+//                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
+//                } else {
+//                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
+//                }
 
                 functionsClass.saveDefaultPreference("LitePreferences", false);
                 return false;
@@ -317,11 +317,11 @@ public class SettingGUI extends PreferenceActivity implements OnSharedPreference
         blur.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (functionsClass.appThemeTransparent() == true) {
-                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
-                } else {
-                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
-                }
+//                if (functionsClass.appThemeTransparent() == true) {
+//                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), true, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
+//                } else {
+//                    functionsClass.setThemeColorPreferences(SettingGUI.this.getListView(), false, getString(R.string.settingTitle), functionsClass.appVersionName(getPackageName()));
+//                }
 
                 functionsClass.saveDefaultPreference("LitePreferences", false);
                 return false;

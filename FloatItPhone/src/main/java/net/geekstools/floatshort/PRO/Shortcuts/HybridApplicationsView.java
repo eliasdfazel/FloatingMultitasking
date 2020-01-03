@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 8:36 PM
- * Last modified 1/1/20 8:15 PM
+ * Created by Elias Fazel on 1/2/20 10:52 PM
+ * Last modified 1/2/20 10:52 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -117,13 +117,13 @@ import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayou
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InAppUpdate.InAppUpdateProcess;
+import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.Util.RemoteProcess.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
 import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword;
-import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
@@ -496,7 +496,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                                 makeSceneTransitionAnimation(HybridApplicationsView.this, actionButton, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setClass(HybridApplicationsView.this, SettingGUI.class);
+                        intent.setClass(HybridApplicationsView.this, PreferencesActivity.class);
                         startActivity(intent, activityOptionsCompat.toBundle());
                     }
                 }, 113);

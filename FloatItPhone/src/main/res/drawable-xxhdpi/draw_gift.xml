@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright © 2019 By Geeks Empire.
+  ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 11/11/19 7:18 PM
-  ~ Last modified 11/11/19 7:16 PM
+  ~ Created by Elias Fazel on 1/2/20 10:52 PM
+  ~ Last modified 1/2/20 10:34 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -17,9 +17,9 @@
     </item>
 
     <item
-        android:top="3dp"
-        android:bottom="3dp"
-        android:left="3dp"
-        android:right="3dp"
-        android:drawable="@drawable/ic_gift"></item>
+        android:top="5dp"
+        android:bottom="5dp"
+        android:left="5dp"
+        android:right="5dp"
+        android:drawable="@drawable/ic_gift"/>
 </layer-list>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/2/20 10:52 PM
+  ~ Last modified 1/2/20 10:49 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fullPreferencesActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/preferencesToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent">
+
+            <ImageView
+                android:id="@+id/preferencesIcon"
+                android:layout_width="51dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="0dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/draw_gift"
+                android:background="@android:color/transparent"/>
+            <TextView
+                android:id="@+id/titlePreferences"
+                android:layout_width="wrap_content"
+                android:layout_height="31dp"
+                android:layout_toEndOf="@id/preferencesIcon"
+                android:paddingStart="1dp"
+                android:paddingEnd="13dp"
+                android:gravity="center_vertical"
+                android:text="@string/settingTitle"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/light"
+                android:background="@android:color/transparent"/>
+            <TextView
+                android:id="@+id/summaryPreferences"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_below="@id/titlePreferences"
+                android:layout_toEndOf="@id/preferencesIcon"
+                android:paddingStart="1dp"
+                android:paddingEnd="13dp"
+                android:gravity="center_vertical"
+                android:text="@string/settingTitle"
+                android:textSize="15sp"
+                android:textColor="@color/light"
+                android:background="@android:color/transparent"/>
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/containerPreferencesFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/preferencesToolbar"/>
+
+</RelativeLayout>

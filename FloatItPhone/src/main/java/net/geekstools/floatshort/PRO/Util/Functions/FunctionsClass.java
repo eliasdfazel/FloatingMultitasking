@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 9:10 PM
- * Last modified 1/1/20 8:45 PM
+ * Created by Elias Fazel on 1/2/20 10:52 PM
+ * Last modified 1/2/20 10:52 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,7 +13,6 @@ package net.geekstools.floatshort.PRO.Util.Functions;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityOptions;
@@ -104,6 +103,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.ColorUtils;
@@ -158,9 +158,9 @@ import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.OpenApplicationsLaunchPad;
+import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.FloatingWidgetHomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RemoteController;
-import net.geekstools.floatshort.PRO.Util.SettingGUI.SettingGUI;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingCategory;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingShortcuts;
@@ -3403,22 +3403,21 @@ public class FunctionsClass {
         }
     }
 
-    public void setThemeColorPreferences(View view, boolean transparent, String title, String subTitle) {
-        if (transparent == true) {
+    public void setThemeColorPreferences(View backgroundView, Toolbar preferencesToolbar, boolean transparent, String title, String subTitle) {
+        if (transparent) {
             try {
                 if (wallpaperStaticLive()) {
                     setBackgroundTheme();
                 }
-                view.setBackgroundColor(setColorAlpha(PublicVariable.colorLightDark, wallpaperStaticLive() ? 180 : 80));
+                backgroundView.setBackgroundColor(setColorAlpha(PublicVariable.colorLightDark, wallpaperStaticLive() ? 180 : 80));
 
-                ActionBar actionBar = activity.getActionBar();
-                actionBar.setBackgroundDrawable(new ColorDrawable(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), wallpaperStaticLive() ? 130 : 30)));
+                preferencesToolbar.setBackgroundColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), wallpaperStaticLive() ? 130 : 30));
                 if (PublicVariable.themeLightDark) {
-                    actionBar.setTitle(Html.fromHtml("<font color='" + context.getColor(R.color.dark) + "'>" + title + "</font>"));
-                    actionBar.setSubtitle(Html.fromHtml("<small><font color='" + context.getColor(R.color.dark) + "'>" + subTitle + "</font></small>"));
+                    ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setText(Html.fromHtml("<font color='" + context.getColor(R.color.dark) + "'>" + title + "</font>"));
+                    ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setText(Html.fromHtml("<small><font color='" + context.getColor(R.color.dark) + "'>" + subTitle + "</font></small>"));
                 } else {
-                    actionBar.setTitle(Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>"));
-                    actionBar.setSubtitle(Html.fromHtml("<small><font color='" + context.getColor(R.color.light) + "'>" + subTitle + "</font></small>"));
+                    ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setText(Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>"));
+                    ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setText(Html.fromHtml("<small><font color='" + context.getColor(R.color.light) + "'>" + subTitle + "</font></small>"));
                 }
 
                 Window window = activity.getWindow();
@@ -3435,25 +3434,28 @@ public class FunctionsClass {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (transparent == false) {
-            view.setBackgroundColor(PublicVariable.colorLightDark);
+        } else {
+            try {
+                backgroundView.setBackgroundColor(PublicVariable.colorLightDark);
 
-            ActionBar actionBar = activity.getActionBar();
-            actionBar.setBackgroundDrawable(new ColorDrawable(PublicVariable.primaryColor));
-            actionBar.setTitle(Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>"));
-            actionBar.setSubtitle(Html.fromHtml("<small><font color='" + context.getColor(R.color.light) + "'>" + subTitle + "</font></small>"));
+                preferencesToolbar.setBackgroundColor(PublicVariable.primaryColor);
+                ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setText(Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>"));
+                ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setText(Html.fromHtml("<small><font color='" + context.getColor(R.color.light) + "'>" + subTitle + "</font></small>"));
 
-            Window window = activity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (PublicVariable.themeLightDark) {
-                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (API > 25) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                Window window = activity.getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                if (PublicVariable.themeLightDark) {
+                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    if (API > 25) {
+                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                    }
                 }
+                window.setStatusBarColor(PublicVariable.primaryColor);
+                window.setNavigationBarColor(PublicVariable.colorLightDark);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            window.setStatusBarColor(PublicVariable.primaryColor);
-            window.setNavigationBarColor(PublicVariable.colorLightDark);
         }
     }
 
@@ -5397,7 +5399,7 @@ public class FunctionsClass {
                                 makeSceneTransitionAnimation(activity, preferencesView, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setClass(activity, SettingGUI.class);
+                        intent.setClass(activity, PreferencesActivity.class);
                         if (activity != null) {
                             if (activity.getClass().getSimpleName().equals(WidgetConfigurations.class.getSimpleName())) {
                                 intent.putExtra("FromWidgetsConfigurations", true);

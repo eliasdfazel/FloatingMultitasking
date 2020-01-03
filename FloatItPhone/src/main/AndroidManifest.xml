@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/1/20 9:10 PM
-  ~ Last modified 1/1/20 8:56 PM
+  ~ Created by Elias Fazel on 1/2/20 10:52 PM
+  ~ Last modified 1/2/20 7:32 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -145,9 +145,13 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/GeeksEmpire.AutomationFeatures"/>
         <activity
-            android:name=".Util.SettingGUI.SettingGUI"
+            android:name=".Util.Preferences.SettingGUI"
             android:label="@string/settingTitle"
-            android:theme="@style/GeeksEmpire.Preference.Dark"/>
+            android:theme="@style/GeeksEmpire.Preference.Dark" />
+        <activity
+            android:name=".Util.Preferences.PreferencesActivity"
+            android:label="@string/settingTitle"
+            android:theme="@style/GeeksEmpire.Preference.Dark" />
         <activity
             android:name=".Automation.Alarms.TimeDialogue"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"/>

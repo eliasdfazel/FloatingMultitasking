@@ -1,8 +1,8 @@
 <!--
-  ~ Copyright © 2019 By Geeks Empire.
+  ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 11/11/19 7:18 PM
-  ~ Last modified 11/11/19 7:16 PM
+  ~ Created by Elias Fazel on 1/2/20 10:52 PM
+  ~ Last modified 1/2/20 8:56 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -11,6 +11,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="GeeksEmpire" parent="@android:style/Theme.DeviceDefault.Light">
+        <item name="android:colorPrimary">@color/default_color</item>
+        <item name="android:colorPrimaryDark">@color/default_color_darker</item>
+        <item name="android:colorAccent">@color/default_color_light</item>
+    </style>
+
+    <style name="GeeksEmpire.AppCompat" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorPrimary">@color/default_color</item>
         <item name="android:colorPrimaryDark">@color/default_color_darker</item>
         <item name="android:colorAccent">@color/default_color_light</item>
@@ -28,7 +34,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="GeeksEmpire.Preference.Light" parent="@style/GeeksEmpire">
+    <style name="GeeksEmpire.Preference.Light" parent="@style/GeeksEmpire.AppCompat">
         <item name="android:textColorPrimary">@color/darker</item>
         <item name="android:textColorSecondary">@color/dark_transparent</item>
         <item name="android:alertDialogTheme">@style/GeeksEmpire.Dialogue.Light</item>
@@ -39,7 +45,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="GeeksEmpire.Preference.Dark" parent="@style/GeeksEmpire">
+    <style name="GeeksEmpire.Preference.Dark" parent="@style/GeeksEmpire.AppCompat">
         <item name="android:textColorPrimary">@color/light</item>
         <item name="android:textColorSecondary">@color/light_transparent</item>
         <item name="android:alertDialogTheme">@style/GeeksEmpire.Dialogue.Dark</item>
