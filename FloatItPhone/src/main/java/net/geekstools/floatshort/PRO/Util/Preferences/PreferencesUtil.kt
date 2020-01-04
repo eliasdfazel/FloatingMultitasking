@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/3/20 1:39 AM
- * Last modified 1/3/20 1:37 AM
+ * Created by Elias Fazel on 1/4/20 12:26 AM
+ * Last modified 1/4/20 12:01 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,16 +14,18 @@ import android.app.Dialog
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.text.Html
 import android.util.TypedValue
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
+import android.view.GestureDetector.SimpleOnGestureListener
 import android.widget.*
+import android.widget.SeekBar.OnSeekBarChangeListener
+import androidx.dynamicanimation.animation.DynamicAnimation
+import androidx.dynamicanimation.animation.FlingAnimation
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -48,12 +50,16 @@ class PreferencesUtil : ViewModel() {
     }
 }
 
-fun setupShapes(activity: FragmentActivity, sharedPreferences: SharedPreferences, functionsClass: FunctionsClass, shapes: Preference) {
-    val currentShape: Int = sharedPreferences.getInt("iconShape", 0)
+data class PreferencesDataUtilShape(var activity: FragmentActivity, var sharedPreferences: SharedPreferences, var functionsClass: FunctionsClass, var shapes: Preference)
+
+data class PreferencesDataUtilFling(var activity: FragmentActivity, var functionsClass: FunctionsClass)
+
+fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
+    val currentShape: Int = preferencesDataUtilShape.sharedPreferences.getInt("iconShape", 0)
 
     val layoutParams = WindowManager.LayoutParams()
-    val dialogueWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 377f, activity.resources.displayMetrics).toInt()
-    val dialogueHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 387f, activity.resources.displayMetrics).toInt()
+    val dialogueWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 377f, preferencesDataUtilShape.activity.resources.displayMetrics).toInt()
+    val dialogueHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 387f, preferencesDataUtilShape.activity.resources.displayMetrics).toInt()
 
     layoutParams.width = dialogueWidth
     layoutParams.height = dialogueHeight
@@ -61,7 +67,7 @@ fun setupShapes(activity: FragmentActivity, sharedPreferences: SharedPreferences
     layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
     layoutParams.dimAmount = 0.57f
 
-    val dialog = Dialog(activity)
+    val dialog = Dialog(preferencesDataUtilShape.activity)
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
     dialog.setContentView(net.geekstools.floatshort.PRO.R.layout.icons_shapes_preferences)
     dialog.window!!.attributes = layoutParams
@@ -69,18 +75,18 @@ fun setupShapes(activity: FragmentActivity, sharedPreferences: SharedPreferences
     dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
     dialog.setCancelable(true)
 
-    val drawableTeardrop: Drawable = activity.applicationContext.getDrawable(R.drawable.droplet_icon)!!
+    val drawableTeardrop: Drawable = preferencesDataUtilShape.activity.getDrawable(R.drawable.droplet_icon)!!
     drawableTeardrop.setTint(PublicVariable.primaryColor)
-    val drawableCircle: Drawable = activity.applicationContext.getDrawable(R.drawable.circle_icon)!!
+    val drawableCircle: Drawable = preferencesDataUtilShape.activity.getDrawable(R.drawable.circle_icon)!!
     drawableCircle.setTint(PublicVariable.primaryColor)
-    val drawableSquare: Drawable = activity.applicationContext.getDrawable(R.drawable.square_icon)!!
+    val drawableSquare: Drawable = preferencesDataUtilShape.activity.getDrawable(R.drawable.square_icon)!!
     drawableSquare.setTint(PublicVariable.primaryColor)
-    val drawableSquircle: Drawable = activity.applicationContext.getDrawable(R.drawable.squircle_icon)!!
+    val drawableSquircle: Drawable = preferencesDataUtilShape.activity.getDrawable(R.drawable.squircle_icon)!!
     drawableSquircle.setTint(PublicVariable.primaryColor)
 
 
     val dialogueTitle = dialog.findViewById<View>(R.id.dialogueTitle) as TextView
-    dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + activity.applicationContext.getString(R.string.shapedDesc) + "</font>")
+    dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + preferencesDataUtilShape.activity.getString(R.string.shapedDesc) + "</font>")
     dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
 
     val dialogueView: View = dialog.findViewById<ScrollView>(R.id.dialogueView)
@@ -118,62 +124,62 @@ fun setupShapes(activity: FragmentActivity, sharedPreferences: SharedPreferences
     noShape.setTextColor(PublicVariable.colorLightDarkOpposite)
 
     teardropShape.setOnClickListener {
-        functionsClass.saveDefaultPreference("customIcon", activity.packageName)
+        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
-        val editor = sharedPreferences.edit()
+        val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 1)
         editor.apply()
 
-        val layerDrawable = LayerDrawable(arrayOf(drawableTeardrop, activity.applicationContext.getDrawable(R.drawable.w_pref_gui)))
-        shapes.icon = layerDrawable
-        shapes.summary = activity.applicationContext.getString(R.string.droplet)
+        val layerDrawable = LayerDrawable(arrayOf(drawableTeardrop, preferencesDataUtilShape.activity.getDrawable(R.drawable.w_pref_gui)))
+        preferencesDataUtilShape.shapes.icon = layerDrawable
+        preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.activity.getString(R.string.droplet)
 
-        functionsClass.saveDefaultPreference("LitePreferences", false)
+        preferencesDataUtilShape.functionsClass.saveDefaultPreference("LitePreferences", false)
 
         dialog.dismiss()
     }
     circleShape.setOnClickListener {
-        functionsClass.saveDefaultPreference("customIcon", activity.packageName)
+        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
-        val editor = sharedPreferences.edit()
+        val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 2)
         editor.apply()
 
-        val layerDrawable = LayerDrawable(arrayOf(drawableCircle, activity.applicationContext.getDrawable(R.drawable.w_pref_gui)))
-        shapes.icon = layerDrawable
-        shapes.summary = activity.applicationContext.getString(R.string.circle)
+        val layerDrawable = LayerDrawable(arrayOf(drawableCircle, preferencesDataUtilShape.activity.getDrawable(R.drawable.w_pref_gui)))
+        preferencesDataUtilShape.shapes.icon = layerDrawable
+        preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.activity.getString(R.string.circle)
 
-        functionsClass.saveDefaultPreference("LitePreferences", false)
+        preferencesDataUtilShape.functionsClass.saveDefaultPreference("LitePreferences", false)
 
         dialog.dismiss()
     }
     squareShape.setOnClickListener {
-        functionsClass.saveDefaultPreference("customIcon", activity.packageName)
+        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
-        val editor = sharedPreferences.edit()
+        val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 3)
         editor.apply()
 
-        val layerDrawable = LayerDrawable(arrayOf(drawableSquare, activity.applicationContext.getDrawable(R.drawable.w_pref_gui)))
-        shapes.icon = layerDrawable
-        shapes.summary = activity.applicationContext.getString(R.string.square)
+        val layerDrawable = LayerDrawable(arrayOf(drawableSquare, preferencesDataUtilShape.activity.getDrawable(R.drawable.w_pref_gui)))
+        preferencesDataUtilShape.shapes.icon = layerDrawable
+        preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.activity.getString(R.string.square)
 
-        functionsClass.saveDefaultPreference("LitePreferences", false)
+        preferencesDataUtilShape.functionsClass.saveDefaultPreference("LitePreferences", false)
 
         dialog.dismiss()
     }
     squircleShape.setOnClickListener {
-        functionsClass.saveDefaultPreference("customIcon", activity.packageName)
+        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
-        val editor = sharedPreferences.edit()
+        val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 4)
         editor.apply()
 
-        val layerDrawable = LayerDrawable(arrayOf(drawableSquircle, activity.applicationContext.getDrawable(R.drawable.w_pref_gui)))
-        shapes.icon = layerDrawable
-        shapes.summary = activity.applicationContext.getString(R.string.squircle)
+        val layerDrawable = LayerDrawable(arrayOf(drawableSquircle, preferencesDataUtilShape.activity.getDrawable(R.drawable.w_pref_gui)))
+        preferencesDataUtilShape.shapes.icon = layerDrawable
+        preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.activity.getString(R.string.squircle)
 
-        functionsClass.saveDefaultPreference("LitePreferences", false)
+        preferencesDataUtilShape.functionsClass.saveDefaultPreference("LitePreferences", false)
 
         dialog.dismiss()
     }
@@ -181,27 +187,27 @@ fun setupShapes(activity: FragmentActivity, sharedPreferences: SharedPreferences
     customIconPack.setOnClickListener {
         dialog.dismiss()
 
-        listCustomIconsPackage(activity, sharedPreferences, functionsClass, shapes)
+        listCustomIconsPackage(preferencesDataUtilShape)
     }
 
     noShape.setOnClickListener {
-        functionsClass.saveDefaultPreference("customIcon", activity.packageName)
+        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
-        val editor = sharedPreferences.edit()
+        val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 0)
         editor.apply()
 
-        val drawableNoShape: Drawable = activity.applicationContext.getDrawable(R.drawable.w_pref_noshape) as Drawable
+        val drawableNoShape: Drawable = preferencesDataUtilShape.activity.getDrawable(R.drawable.w_pref_noshape) as Drawable
         drawableNoShape.setTint(PublicVariable.primaryColor)
-        shapes.icon = drawableNoShape
-        shapes.summary = ""
+        preferencesDataUtilShape.shapes.icon = drawableNoShape
+        preferencesDataUtilShape.shapes.summary = ""
 
         dialog.dismiss()
     }
 
     dialog.setOnDismissListener {
-        functionsClass.addAppShortcuts()
-        if (currentShape != sharedPreferences.getInt("iconShape", 0)) {
+        preferencesDataUtilShape.functionsClass.addAppShortcuts()
+        if (currentShape != preferencesDataUtilShape.sharedPreferences.getInt("iconShape", 0)) {
             PublicVariable.forceReload = true
             SearchEngineAdapter.allSearchResultItems.clear()
         }
@@ -210,11 +216,11 @@ fun setupShapes(activity: FragmentActivity, sharedPreferences: SharedPreferences
     dialog.show()
 }
 
-fun listCustomIconsPackage(activity: FragmentActivity, sharedPreferences: SharedPreferences, functionsClass: FunctionsClass, shapes: Preference) {
-    val currentCustomIconPack: String = sharedPreferences.getString("customIcon", activity.packageName)!!
+fun listCustomIconsPackage(preferencesDataUtilShape: PreferencesDataUtilShape) {
+    val currentCustomIconPack: String = preferencesDataUtilShape.sharedPreferences.getString("customIcon", preferencesDataUtilShape.activity.packageName)!!
 
     val layoutParams = WindowManager.LayoutParams()
-    val dialogueWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 377f, activity.resources.displayMetrics).toInt()
+    val dialogueWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 377f, preferencesDataUtilShape.activity.resources.displayMetrics).toInt()
 
     layoutParams.width = dialogueWidth
     layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -222,7 +228,7 @@ fun listCustomIconsPackage(activity: FragmentActivity, sharedPreferences: Shared
     layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
     layoutParams.dimAmount = 0.57f
 
-    val dialog = Dialog(activity)
+    val dialog = Dialog(preferencesDataUtilShape.activity)
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
     dialog.setContentView(R.layout.custom_icons)
     dialog.window!!.attributes = layoutParams
@@ -237,36 +243,36 @@ fun listCustomIconsPackage(activity: FragmentActivity, sharedPreferences: Shared
     val defaultTheme = dialog.findViewById<TextView>(R.id.setDefault)
     val customIconList = dialog.findViewById<RecyclerView>(R.id.customIconList)
 
-    dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + activity.applicationContext.getString(R.string.customIconTitle) + "</font>")
+    dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + preferencesDataUtilShape.activity.getString(R.string.customIconTitle) + "</font>")
     dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
     defaultTheme.setTextColor(PublicVariable.colorLightDarkOpposite)
 
-    val recyclerViewLayoutManager = RecycleViewSmoothLayoutList(activity, OrientationHelper.VERTICAL, false)
+    val recyclerViewLayoutManager = RecycleViewSmoothLayoutList(preferencesDataUtilShape.activity, OrientationHelper.VERTICAL, false)
     customIconList.layoutManager = recyclerViewLayoutManager
     customIconList.removeAllViews()
     val adapterItems = ArrayList<AdapterItems>()
     adapterItems.clear()
     for (packageName in PublicVariable.customIconsPackages) {
         adapterItems.add(AdapterItems(
-                functionsClass.appName(packageName),
+                preferencesDataUtilShape.functionsClass.appName(packageName),
                 packageName,
-                functionsClass.appIcon(packageName)
+                preferencesDataUtilShape.functionsClass.appIcon(packageName)
         ))
     }
-    val customIconsThemeAdapter = CustomIconsThemeAdapter(activity, activity.applicationContext, adapterItems, dialog)
+    val customIconsThemeAdapter = CustomIconsThemeAdapter(preferencesDataUtilShape.activity, preferencesDataUtilShape.activity, adapterItems, dialog)
     customIconList.adapter = customIconsThemeAdapter
 
     defaultTheme.setOnClickListener {
-        functionsClass.saveDefaultPreference("customIcon", activity.packageName)
+        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
-        val editor = sharedPreferences.edit()
+        val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 0)
         editor.apply()
 
-        val drawableNoShape: Drawable = activity.applicationContext.getDrawable(R.drawable.w_pref_noshape) as Drawable
+        val drawableNoShape: Drawable = preferencesDataUtilShape.activity.getDrawable(R.drawable.w_pref_noshape) as Drawable
         drawableNoShape.setTint(PublicVariable.primaryColor)
-        shapes.icon = drawableNoShape
-        shapes.summary = ""
+        preferencesDataUtilShape.shapes.icon = drawableNoShape
+        preferencesDataUtilShape.shapes.summary = ""
 
         dialog.dismiss()
     }
@@ -274,7 +280,7 @@ fun listCustomIconsPackage(activity: FragmentActivity, sharedPreferences: Shared
     dialog.setOnDismissListener {
         adapterItems.clear()
 
-        if (currentCustomIconPack != sharedPreferences.getString("customIcon", activity.packageName)) {
+        if (currentCustomIconPack != preferencesDataUtilShape.sharedPreferences.getString("customIcon", preferencesDataUtilShape.activity.packageName)) {
             PublicVariable.forceReload = true
             SearchEngineAdapter.allSearchResultItems.clear()
         }
@@ -282,19 +288,185 @@ fun listCustomIconsPackage(activity: FragmentActivity, sharedPreferences: Shared
     }
     dialog.show()
 
-    PreferencesUtil.CUSTOM_DIALOGUE_DISMISS.observe(activity,
+    PreferencesUtil.CUSTOM_DIALOGUE_DISMISS.observe(preferencesDataUtilShape.activity,
             Observer<Boolean> { dialogueDismiss ->
                 if (dialogueDismiss) {
                     PreferencesUtil.CUSTOM_DIALOGUE_DISMISS.value = false
 
-                    shapes.icon = functionsClass.appIcon(functionsClass.customIconPackageName())
-                    shapes.summary = functionsClass.appName(functionsClass.customIconPackageName())
+                    preferencesDataUtilShape.shapes.icon = preferencesDataUtilShape.functionsClass.appIcon(preferencesDataUtilShape.functionsClass.customIconPackageName())
+                    preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.functionsClass.appName(preferencesDataUtilShape.functionsClass.customIconPackageName())
 
-                    functionsClass.addAppShortcuts()
+                    preferencesDataUtilShape.functionsClass.addAppShortcuts()
 
-                    val editor = sharedPreferences.edit()
+                    val editor = preferencesDataUtilShape.sharedPreferences.edit()
                     editor.putInt("iconShape", 0)
                     editor.apply()
                 }
             })
+}
+
+fun setupFlingSensitivity(preferencesDataUtilFling: PreferencesDataUtilFling) {
+    val layoutParams = WindowManager.LayoutParams()
+    val dialogueWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300f, preferencesDataUtilFling.activity.resources.displayMetrics).toInt()
+    val dialogueHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 400f, preferencesDataUtilFling.activity.resources.displayMetrics).toInt()
+
+    layoutParams.width = dialogueWidth
+    layoutParams.height = dialogueHeight
+    layoutParams.windowAnimations = android.R.style.Animation_Dialog
+    layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+    layoutParams.dimAmount = 0.57f
+
+    val dialog = Dialog(preferencesDataUtilFling.activity)
+    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    dialog.setContentView(R.layout.seekbar_preferences_fling)
+    dialog.window!!.attributes = layoutParams
+    dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+    dialog.setCancelable(true)
+
+    val dialogueView: View = dialog.findViewById<RelativeLayout>(R.id.dialogueView)
+    dialogueView.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)
+
+    val flingingIcon = dialog.findViewById<ImageView>(R.id.preferenceIcon)
+    val seekBarPreferences = dialog.findViewById<SeekBar>(R.id.seekBarPreferences)
+    val dialogueTitle = dialog.findViewById<TextView>(R.id.dialogueTitle)
+    val revertDefault = dialog.findViewById<TextView>(R.id.revertDefault)
+
+    seekBarPreferences.thumbTintList = ColorStateList.valueOf(PublicVariable.primaryColor)
+    seekBarPreferences.thumbTintMode = PorterDuff.Mode.SRC_IN
+    seekBarPreferences.progressTintList = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+    seekBarPreferences.progressTintMode = PorterDuff.Mode.SRC_IN
+
+    seekBarPreferences.max = 50
+    seekBarPreferences.progress = preferencesDataUtilFling.functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValueProgress", 30)
+    if (seekBarPreferences.progress <= 10) {
+        seekBarPreferences.progressTintList = ColorStateList.valueOf(preferencesDataUtilFling.activity.getColor(R.color.red))
+    }
+
+    var layerDrawableLoadLogo: Drawable?
+    try {
+        val backgroundDot: Drawable = preferencesDataUtilFling.functionsClass.shapesDrawables().mutate()
+        backgroundDot.setTint(PublicVariable.primaryColorOpposite)
+        layerDrawableLoadLogo = LayerDrawable(arrayOf(
+                backgroundDot,
+                preferencesDataUtilFling.activity.getDrawable(R.drawable.ic_launcher_dots)
+        ))
+    } catch (e: NullPointerException) {
+        e.printStackTrace()
+        layerDrawableLoadLogo = preferencesDataUtilFling.activity.getDrawable(R.drawable.ic_launcher)
+    }
+
+    val iconHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, preferencesDataUtilFling.functionsClass.readDefaultPreference("floatingSize", 39).toFloat(), preferencesDataUtilFling.activity.resources.displayMetrics).toInt()
+    val layoutParamsIcon = RelativeLayout.LayoutParams(
+            iconHW,
+            iconHW
+    )
+    layoutParamsIcon.addRule(RelativeLayout.CENTER_IN_PARENT, R.id.preferenceIcon)
+    layoutParamsIcon.addRule(RelativeLayout.BELOW, R.id.dialogueTitle)
+    flingingIcon.layoutParams = layoutParamsIcon
+    flingingIcon.setImageDrawable(layerDrawableLoadLogo)
+
+    dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + preferencesDataUtilFling.activity.getString(R.string.flingSensitivityTitle) + "</font>")
+    dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
+    revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite)
+
+    val flingAnimationX = FlingAnimation(flingingIcon, DynamicAnimation.TRANSLATION_X)
+            .setFriction(preferencesDataUtilFling.functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
+    val flingAnimationY = FlingAnimation(flingingIcon, DynamicAnimation.TRANSLATION_Y)
+            .setFriction(preferencesDataUtilFling.functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
+
+    flingAnimationX.setMinValue(-preferencesDataUtilFling.functionsClass.DpToPixel(97f))
+    flingAnimationX.setMaxValue(preferencesDataUtilFling.functionsClass.DpToPixel(97f))
+
+    flingAnimationY.setMinValue(0f)
+    flingAnimationY.setMaxValue(preferencesDataUtilFling.functionsClass.DpToPixel(197f))
+
+    val simpleOnGestureListener: SimpleOnGestureListener = object : SimpleOnGestureListener() {
+        override fun onDown(motionEvent: MotionEvent): Boolean {
+            return true
+        }
+
+        override fun onFling(motionEventFirst: MotionEvent, motionEventLast: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+
+            flingAnimationX.setStartVelocity(velocityX)
+            flingAnimationY.setStartVelocity(velocityY)
+
+            flingAnimationX.addUpdateListener { animation, value, velocity ->
+
+            }
+            flingAnimationY.addUpdateListener { animation, value, velocity ->
+
+            }
+
+            flingAnimationX.start()
+            flingAnimationY.start()
+
+            return false
+        }
+    }
+
+    flingAnimationX.addEndListener { animation, canceled, value, velocity ->
+
+    }
+
+    flingAnimationY.addEndListener { animation, canceled, value, velocity ->
+
+    }
+
+    val gestureDetector = GestureDetector(preferencesDataUtilFling.activity, simpleOnGestureListener)
+
+    flingingIcon.setOnTouchListener { view, motionEvent ->
+        flingAnimationX.cancel()
+        flingAnimationY.cancel()
+
+        gestureDetector.onTouchEvent(motionEvent)
+    }
+
+    seekBarPreferences.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+            preferencesDataUtilFling.functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValueProgress", progress)
+            if (progress <= 10) {
+                seekBarPreferences.progressTintList = ColorStateList.valueOf(preferencesDataUtilFling.activity.getColor(R.color.red))
+                preferencesDataUtilFling.functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValue", 0.5f)
+                try {
+                    flingAnimationX.friction = 0.5f
+                    flingAnimationY.friction = 0.5f
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } else {
+                seekBarPreferences.progressTintList = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+                preferencesDataUtilFling.functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValue", (progress / 10).toFloat())
+                try {
+                    flingAnimationX.friction = preferencesDataUtilFling.functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)
+                    flingAnimationY.friction = preferencesDataUtilFling.functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
+        override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+        }
+        override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+        }
+    })
+
+
+
+    revertDefault.setOnClickListener {
+        preferencesDataUtilFling.functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValueProgress", 30)
+        preferencesDataUtilFling.functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)
+
+        seekBarPreferences.progress = 30
+        seekBarPreferences.progressTintList = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+    }
+
+    dialog.setOnDismissListener {
+        dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+    }
+
+    dialog.show()
 }

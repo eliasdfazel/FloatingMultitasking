@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/3/20 1:39 AM
- * Last modified 1/3/20 1:02 AM
+ * Created by Elias Fazel on 1/4/20 12:26 AM
+ * Last modified 1/4/20 12:14 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -11,9 +11,11 @@
 package net.geekstools.floatshort.PRO.Util.Preferences
 
 
+import android.app.ActivityManager
 import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
@@ -26,10 +28,13 @@ import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Vibrator
 import android.provider.Settings
 import android.text.Html
 import android.util.TypedValue
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
@@ -38,10 +43,16 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.preference.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
@@ -347,7 +358,9 @@ class PreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.OnShar
         }
 
         shapes.setOnPreferenceClickListener {
-            setupShapes(activity!!, sharedPreferences, functionsClass, shapes)
+            PreferencesDataUtilShape(activity!!, sharedPreferences, functionsClass, shapes).let {
+                setupShapes(it)
+            }
 
             true
         }
@@ -455,6 +468,308 @@ class PreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.OnShar
             dialog.show()
 
             true
+        }
+
+        sizes.setOnPreferenceClickListener {
+            val layoutParams = WindowManager.LayoutParams()
+            val dialogueWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300f, resources.displayMetrics).toInt()
+            val dialogueHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 270f, resources.displayMetrics).toInt()
+
+            layoutParams.width = dialogueWidth
+            layoutParams.height = dialogueHeight
+            layoutParams.windowAnimations = android.R.style.Animation_Dialog
+            layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+            layoutParams.dimAmount = 0.57f
+
+            val dialog = Dialog(activity!!)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.seekbar_preferences)
+            dialog.window!!.attributes = layoutParams
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+            dialog.setCancelable(true)
+
+            val seekBarView: View = dialog.findViewById<RelativeLayout>(R.id.seekBarView)
+            seekBarView.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)
+
+            val transparentIcon = dialog.findViewById<ImageView>(R.id.preferenceIcon)
+            val seekBarPreferences = dialog.findViewById<SeekBar>(R.id.seekBarPreferences)
+            val dialogueTitle = dialog.findViewById<TextView>(R.id.dialogueTitle)
+            val revertDefault = dialog.findViewById<TextView>(R.id.revertDefault)
+
+
+            seekBarPreferences.thumbTintList = ColorStateList.valueOf(PublicVariable.primaryColor)
+            seekBarPreferences.thumbTintMode = PorterDuff.Mode.SRC_IN
+            seekBarPreferences.progressTintList = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+            seekBarPreferences.progressTintMode = PorterDuff.Mode.SRC_IN
+
+            seekBarPreferences.max = 5
+            seekBarPreferences.progress = functionsClass.readDefaultPreference("floatingSizeProgress", 2)
+
+            var layerDrawableLoadLogo: Drawable?
+            try {
+                val backgroundDot = functionsClass.shapesDrawables().mutate()
+                backgroundDot.setTint(PublicVariable.primaryColorOpposite)
+                layerDrawableLoadLogo = LayerDrawable(arrayOf(
+                        backgroundDot,
+                        context!!.getDrawable(R.drawable.ic_launcher_dots)
+                ))
+            } catch (e: java.lang.NullPointerException) {
+                e.printStackTrace()
+                layerDrawableLoadLogo = context!!.getDrawable(R.drawable.ic_launcher)
+            }
+
+            val iconHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, functionsClass.readDefaultPreference("floatingSize", 39).toFloat(), resources.displayMetrics).toInt()
+            val layoutParamsIcon = RelativeLayout.LayoutParams(
+                    iconHW,
+                    iconHW
+            )
+            layoutParamsIcon.addRule(RelativeLayout.CENTER_HORIZONTAL, R.id.seekBarView)
+            layoutParamsIcon.addRule(RelativeLayout.BELOW, R.id.extraInfo)
+            transparentIcon.layoutParams = layoutParamsIcon
+            transparentIcon.setImageDrawable(layerDrawableLoadLogo)
+
+            dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.shortsizepref) + "</font>")
+            dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
+            revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite)
+
+            val progressTemp = intArrayOf(1, 2, 3, 4, 5, 6)
+            seekBarPreferences.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    val size = 13 * progressTemp[progress]
+                    functionsClass.saveDefaultPreference("floatingSize", size)
+                    functionsClass.saveDefaultPreference("floatingSizeProgress", progress)
+                    val iconHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size.toFloat(), resources.displayMetrics).toInt()
+                    val layoutParamsIcon = RelativeLayout.LayoutParams(
+                            iconHW,
+                            iconHW
+                    )
+                    layoutParamsIcon.addRule(RelativeLayout.CENTER_HORIZONTAL, R.id.seekBarView)
+                    layoutParamsIcon.addRule(RelativeLayout.BELOW, R.id.extraInfo)
+                    transparentIcon.layoutParams = layoutParamsIcon
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            })
+
+            revertDefault.setOnClickListener {
+                functionsClass.saveDefaultPreference("floatingSize", 39)
+                functionsClass.saveDefaultPreference("floatingSizeProgress", 2)
+
+                val iconHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 39f, resources.displayMetrics).toInt()
+                val layoutParamsIcon = RelativeLayout.LayoutParams(
+                        iconHW,
+                        iconHW
+                )
+                layoutParamsIcon.addRule(RelativeLayout.CENTER_HORIZONTAL, R.id.seekBarView)
+                layoutParamsIcon.addRule(RelativeLayout.BELOW, R.id.extraInfo)
+
+                transparentIcon.layoutParams = layoutParamsIcon
+                seekBarPreferences.progress = 2
+            }
+
+            dialog.setOnDismissListener {
+                PublicVariable.forceReload = false
+
+                dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            }
+            dialog.show()
+
+            true
+        }
+
+        delayPressHold.setOnPreferenceClickListener {
+            val layoutParams = WindowManager.LayoutParams()
+            val dialogueWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300f, resources.displayMetrics).toInt()
+            val dialogueHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 270f, resources.displayMetrics).toInt()
+
+            layoutParams.width = dialogueWidth
+            layoutParams.height = dialogueHeight
+            layoutParams.windowAnimations = android.R.style.Animation_Dialog
+            layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+            layoutParams.dimAmount = 0.57f
+
+            val dialog = Dialog(activity!!)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.seekbar_preferences)
+            dialog.window!!.attributes = layoutParams
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+            dialog.setCancelable(true)
+
+            val seekBarView: View = dialog.findViewById<View>(R.id.seekBarView) as RelativeLayout
+            seekBarView.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)
+
+            val extraInfo = dialog.findViewById<TextView>(R.id.extraInfo)
+            val delayIcon = dialog.findViewById<ImageView>(R.id.preferenceIcon)
+            val seekBarPreferences = dialog.findViewById<SeekBar>(R.id.seekBarPreferences)
+            val dialogueTitle = dialog.findViewById<TextView>(R.id.dialogueTitle)
+            val revertDefault = dialog.findViewById<TextView>(R.id.revertDefault)
+
+            extraInfo.visibility = View.VISIBLE
+            extraInfo.setTextColor(PublicVariable.colorLightDarkOpposite)
+            extraInfo.text = getString(R.string.delayPressHoldExtraInfo)
+
+            seekBarPreferences.thumbTintList = ColorStateList.valueOf(PublicVariable.primaryColor)
+            seekBarPreferences.thumbTintMode = PorterDuff.Mode.SRC_IN
+            seekBarPreferences.progressTintList = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+            seekBarPreferences.progressTintMode = PorterDuff.Mode.SRC_IN
+
+            seekBarPreferences.max = 1000
+            seekBarPreferences.progress = functionsClass.readDefaultPreference("delayPressHoldProgress", 0)
+
+            var layerDrawableLoadLogo: Drawable?
+            try {
+                val backgroundDot = functionsClass.shapesDrawables().mutate()
+                backgroundDot.setTint(PublicVariable.primaryColorOpposite)
+                layerDrawableLoadLogo = LayerDrawable(arrayOf(
+                        backgroundDot,
+                        context!!.getDrawable(R.drawable.ic_launcher_dots)
+                ))
+            } catch (e: java.lang.NullPointerException) {
+                e.printStackTrace()
+                layerDrawableLoadLogo = context!!.getDrawable(R.drawable.ic_launcher)
+            }
+
+
+            delayIcon.setImageDrawable(layerDrawableLoadLogo)
+
+            dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.delayPressHold) + "</font>")
+            dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
+            revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite)
+
+            delayIcon.setOnClickListener { }
+            delayIcon.onFocusChangeListener = OnFocusChangeListener { view, hasFocus -> }
+            delayIcon.setOnTouchListener { view, motionEvent ->
+                when (motionEvent.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        touchingDelay = true
+                        runnablePressHold = Runnable {
+                            if (touchingDelay) {
+                                val vibrator = context!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                vibrator.vibrate(333)
+                                /*
+                                                                         *
+                                                                         */PrintDebug("*** millis delay ::: " + functionsClass.readDefaultPreference("delayPressHold", 333))
+                            }
+                        }
+                        handlerPressHold.postDelayed(runnablePressHold, functionsClass.readDefaultPreference("delayPressHold", 333).toLong())
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        touchingDelay = false
+                        handlerPressHold.removeCallbacks(runnablePressHold)
+                    }
+                }
+
+                false
+            }
+
+            seekBarPreferences.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    val delay = 333 + progress
+                    functionsClass.saveDefaultPreference("delayPressHold", delay)
+                    functionsClass.saveDefaultPreference("delayPressHoldProgress", progress)
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            })
+
+            revertDefault.setOnClickListener {
+                functionsClass.saveDefaultPreference("delayPressHold", 333)
+                functionsClass.saveDefaultPreference("delayPressHoldProgress", 0)
+                seekBarPreferences.progress = 0
+            }
+
+            dialog.setOnDismissListener {
+                delayPressHold.summary = functionsClass.readDefaultPreference("delayPressHold", 333).toString() + " " + getString(R.string.millis)
+                PublicVariable.forceReload = false
+                dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            }
+            dialog.show()
+
+            true
+        }
+
+        flingSensitivity.setOnPreferenceClickListener {
+            PreferencesDataUtilFling(activity!!, functionsClass).let {
+                setupFlingSensitivity(it)
+            }
+
+            true
+        }
+
+        if (!context!!.getFileStreamPath(".LitePreferenceCheckpoint").exists()) {
+            val activityManager = context!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
+            val memoryInfo = ActivityManager.MemoryInfo()
+            if (activityManager != null) {
+                activityManager.getMemoryInfo(memoryInfo)
+                if (memoryInfo.totalMem <= 2000000000 || memoryInfo.lowMemory) {
+                    Handler().postDelayed({
+                        listView.smoothScrollToPosition(listView.bottom)
+
+                        Handler().postDelayed({
+                            functionsClass.litePreferenceConfirm()
+
+                            functionsClass.saveFileEmpty(".LitePreferenceCheckpoint")
+                        }, 555)
+                    }, 333)
+                }
+            }
+        }
+        lite.setOnPreferenceClickListener {
+            functionsClass.litePreferenceConfirm()
+
+            true
+        }
+
+        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
+        firebaseRemoteConfig.fetch(0).addOnSuccessListener {
+            firebaseRemoteConfig.activate().addOnSuccessListener {
+                if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(context!!.packageName)) {
+                    functionsClass.upcomingChangeLog(
+                            activity!!,
+                            firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
+                }
+                if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClass.appVersionCode(context!!.packageName)) {
+                    whatsnew.summary = getString(R.string.betaUpdateAvailable)
+                    betaChangeLog = firebaseRemoteConfig.getString(getString(R.string.BETAstringUpcomingChangeLogPhone))
+                    betaVersionCode = firebaseRemoteConfig.getString(getString(R.string.BETAintegerVersionCodeNewUpdatePhone))
+                }
+                if (firebaseRemoteConfig.getBoolean(getString(R.string.adAppForceLoad))) {
+                    Glide.with(context!!)
+                            .load(firebaseRemoteConfig.getString(getString(R.string.adAppIconLink)))
+                            .addListener(object : RequestListener<Drawable?> {
+                                override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
+                                    return false
+                                }
+
+                                override fun onResourceReady(resource: Drawable?, model: Any, target: Target<Drawable?>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+                                    activity!!.runOnUiThread {
+                                        adApp.setIcon(resource)
+                                    }
+                                    return false
+                                }
+                            }).submit()
+                    adApp.title = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle)))
+                    adApp.summary = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries)))
+
+                    adApp.setOnPreferenceClickListener {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(firebaseRemoteConfig.getString(getString(R.string.adAppLink)))))
+
+                        true
+                    }
+
+                    PrintDebug("*** " + firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) + " ***")
+                    if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > functionsClass.readPreference(".AdApp", "FetchTime", java.lang.Long.valueOf(0))) {
+                        this@PreferencesFragment.scrollToPreference("app")
+
+                        functionsClass.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)))
+                    }
+                }
+            }
         }
     }
 
