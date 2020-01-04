@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/2/20 10:52 PM
- * Last modified 1/2/20 10:52 PM
+ * Created by Elias Fazel on 1/4/20 2:01 AM
+ * Last modified 1/4/20 12:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,7 +27,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.Preferences.SettingGUI;
+import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 
@@ -120,7 +120,7 @@ public class ActionListAdapter extends BaseAdapter {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(intent);
                 } else {
-                    Intent intent = new Intent(context, SettingGUI.class);
+                    Intent intent = new Intent(context, PreferencesActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }

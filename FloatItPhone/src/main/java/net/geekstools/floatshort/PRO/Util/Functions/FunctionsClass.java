@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/3/20 12:15 AM
- * Last modified 1/3/20 12:15 AM
+ * Created by Elias Fazel on 1/4/20 2:01 AM
+ * Last modified 1/4/20 1:51 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -3411,14 +3411,17 @@ public class FunctionsClass {
                 }
                 backgroundView.setBackgroundColor(setColorAlpha(PublicVariable.colorLightDark, wallpaperStaticLive() ? 180 : 80));
 
-                preferencesToolbar.setBackgroundColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), wallpaperStaticLive() ? 130 : 30));
+                preferencesToolbar.setBackgroundColor(PublicVariable.primaryColor);
                 if (PublicVariable.themeLightDark) {
-                    ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setText(Html.fromHtml("<font color='" + context.getColor(R.color.dark) + "'>" + title + "</font>"));
-                    ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setText(Html.fromHtml("<small><font color='" + context.getColor(R.color.dark) + "'>" + subTitle + "</font></small>"));
+                    ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setTextColor(context.getColor(R.color.dark));
+                    ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setTextColor(context.getColor(R.color.dark));
                 } else {
-                    ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setText(Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>"));
-                    ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setText(Html.fromHtml("<small><font color='" + context.getColor(R.color.light) + "'>" + subTitle + "</font></small>"));
+                    ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setTextColor(context.getColor(R.color.light));
+                    ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setTextColor(context.getColor(R.color.light));
                 }
+                ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setText(title);
+                ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setText(subTitle);
+
 
                 Window window = activity.getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -3429,7 +3432,7 @@ public class FunctionsClass {
                         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                     }
                 }
-                window.setStatusBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.65f), wallpaperStaticLive() ? 130 : 30));
+                window.setStatusBarColor(PublicVariable.primaryColor);
                 window.setNavigationBarColor(setColorAlpha(PublicVariable.colorLightDark, wallpaperStaticLive() ? 180 : 80));
             } catch (Exception e) {
                 e.printStackTrace();

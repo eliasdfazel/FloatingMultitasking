@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/2/20 10:52 PM
- * Last modified 1/2/20 10:52 PM
+ * Created by Elias Fazel on 1/4/20 2:01 AM
+ * Last modified 1/4/20 12:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -96,7 +96,7 @@ import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutGrid;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
-import net.geekstools.floatshort.PRO.Util.Preferences.SettingGUI;
+import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
@@ -612,7 +612,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 makeSceneTransitionAnimation(WidgetConfigurations.this, actionButton, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setClass(WidgetConfigurations.this, SettingGUI.class);
+                        intent.setClass(WidgetConfigurations.this, PreferencesActivity.class);
                         startActivity(intent, activityOptionsCompat.toBundle());
                     }
                 }, 113);

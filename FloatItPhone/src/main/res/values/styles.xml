@@ -1,8 +1,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/2/20 10:52 PM
-  ~ Last modified 1/2/20 8:56 PM
+  ~ Created by Elias Fazel on 1/4/20 2:01 AM
+  ~ Last modified 1/4/20 1:16 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -37,8 +37,10 @@
     <style name="GeeksEmpire.Preference.Light" parent="@style/GeeksEmpire.AppCompat">
         <item name="android:textColorPrimary">@color/darker</item>
         <item name="android:textColorSecondary">@color/dark_transparent</item>
-        <item name="android:alertDialogTheme">@style/GeeksEmpire.Dialogue.Light</item>
         <item name="android:colorAccent">@color/default_color</item>
+
+        <item name="android:alertDialogTheme">@style/GeeksEmpire.Dialogue.Light</item>
+        <item name="alertDialogTheme">@style/GeeksEmpire.Dialogue.Light</item>
 
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -48,8 +50,10 @@
     <style name="GeeksEmpire.Preference.Dark" parent="@style/GeeksEmpire.AppCompat">
         <item name="android:textColorPrimary">@color/light</item>
         <item name="android:textColorSecondary">@color/light_transparent</item>
-        <item name="android:alertDialogTheme">@style/GeeksEmpire.Dialogue.Dark</item>
         <item name="android:colorAccent">@color/default_color</item>
+
+        <item name="android:alertDialogTheme">@style/GeeksEmpire.Dialogue.Dark</item>
+        <item name="alertDialogTheme">@style/GeeksEmpire.Dialogue.Dark</item>
 
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -61,7 +65,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="GeeksEmpire.Dialogue.Light" parent="@android:style/Theme.DeviceDefault.Dialog.Alert" tools:targetApi="22">
+    <style name="GeeksEmpire.Dialogue.Light" parent="@android:style/Theme.DeviceDefault.Dialog.Alert">
         <item name="android:colorPrimary">@color/default_color_darker</item>
         <item name="android:colorAccent">@color/default_color_darker</item>
         <item name="android:textColorPrimary">@color/default_color_darker</item>
@@ -77,9 +81,21 @@
         <item name="android:overlapAnchor">true</item>
         <item name="android:dropDownVerticalOffset">0dp</item>
         <item name="android:dropDownHorizontalOffset">107dp</item>
+
+
+        <item name="colorPrimary">@color/default_color_darker</item>
+        <item name="colorAccent">@color/default_color_darker</item>
+        <item name="colorPrimaryDark">@color/default_color_darker</item>
+        <item name="textColorAlertDialogListItem">@color/dark</item>
+        <item name="background">@color/light</item>
+        <item name="colorControlActivated">@color/default_color_light</item>
+
+        <item name="itemTextAppearance">@style/PopupTextColor.Light</item>
+
+        <item name="overlapAnchor">true</item>
     </style>
 
-    <style name="GeeksEmpire.Dialogue.Dark" parent="@android:style/Theme.DeviceDefault.Dialog.Alert" tools:targetApi="22">
+    <style name="GeeksEmpire.Dialogue.Dark" parent="@android:style/Theme.DeviceDefault.Dialog.Alert">
         <item name="android:colorPrimary">@color/default_color</item>
         <item name="android:colorAccent">@color/default_color</item>
         <item name="android:textColorPrimary">@color/default_color</item>
@@ -95,6 +111,17 @@
         <item name="android:overlapAnchor">true</item>
         <item name="android:dropDownVerticalOffset">0dp</item>
         <item name="android:dropDownHorizontalOffset">107dp</item>
+
+        <item name="colorPrimary">@color/default_color</item>
+        <item name="colorAccent">@color/default_color</item>
+        <item name="colorPrimaryDark">@color/default_color_light</item>
+        <item name="textColorAlertDialogListItem">@color/light</item>
+        <item name="background">@color/dark</item>
+        <item name="colorControlActivated">@color/default_color_darker</item>
+
+        <item name="itemTextAppearance">@style/PopupTextColor.Dark</item>
+
+        <item name="overlapAnchor">true</item>
     </style>
 
     <style name="GeeksEmpire.Dialogue.Category.Light" parent="@android:style/Theme.DeviceDefault.Dialog.Alert" tools:targetApi="22">

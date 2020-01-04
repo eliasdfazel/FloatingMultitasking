@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/2/20 10:52 PM
- * Last modified 1/2/20 7:30 PM
+ * Created by Elias Fazel on 1/4/20 2:01 AM
+ * Last modified 1/4/20 12:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,7 +34,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
-import net.geekstools.floatshort.PRO.Util.Preferences.SettingGUI
+import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity
 import java.util.*
 
 
@@ -223,7 +223,7 @@ class HandlePinPassword : Activity() {
     }
 
     override fun onBackPressed() {
-        startActivity(Intent(applicationContext, SettingGUI::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+        startActivity(Intent(applicationContext, PreferencesActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                 ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
         this@HandlePinPassword.finish()
     }

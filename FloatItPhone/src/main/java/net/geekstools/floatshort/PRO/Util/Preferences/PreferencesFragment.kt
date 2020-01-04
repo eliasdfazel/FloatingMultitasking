@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/4/20 12:26 AM
- * Last modified 1/4/20 12:14 AM
+ * Created by Elias Fazel on 1/4/20 2:01 AM
+ * Last modified 1/4/20 1:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -52,6 +52,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
@@ -59,8 +60,7 @@ import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword
 
-class PreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
-
+class PreferencesFragment : PreferenceFragmentCompat() {
 
     lateinit var functionsClass: FunctionsClass
 
@@ -230,6 +230,83 @@ class PreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.OnShar
             functionsClass.saveDefaultPreference("LitePreferences", false)
 
             false
+        }
+        blur.setOnPreferenceChangeListener { preference, newValue ->
+            if (sharedPreferences.getBoolean("transparent", true)) {
+                blur.isEnabled = true
+                if (!functionsClass.wallpaperStaticLive()) {
+                    blur.isChecked = false
+                    blur.isEnabled = false
+                }
+                functionsClass.saveDefaultPreference("LitePreferences", false)
+            } else if (!sharedPreferences.getBoolean("transparent", true)) {
+                blur.isChecked = false
+                blur.isEnabled = false
+            }
+
+            true
+        }
+
+        themeColor.setOnPreferenceChangeListener { preference, newValue ->
+            Handler().postDelayed({
+                functionsClass.checkLightDarkTheme().let {
+                    FunctionsClassDebug.PrintDebug("New Theme Value ${newValue}")
+                }
+
+                when (newValue.toString()) {
+                    "1" -> {
+                        themeColor.summary = getString(R.string.light)
+
+                        PublicVariable.forceReload = true
+                        PublicVariable.themeLightDark = true
+
+                        startActivity(Intent(context, PreferencesActivity::class.java).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        })
+
+                        functionsClass.saveDefaultPreference("LitePreferences", false)
+                    }
+                    "2" -> {
+                        themeColor.summary = getString(R.string.dark)
+
+                        PublicVariable.forceReload = true
+                        PublicVariable.themeLightDark = false
+
+                        startActivity(Intent(context, PreferencesActivity::class.java).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        })
+
+                        functionsClass.saveDefaultPreference("LitePreferences", false)
+                    }
+                    "3" -> {
+                        themeColor.summary = getString(R.string.dynamic)
+
+                        PublicVariable.forceReload = true
+                        functionsClass.checkLightDarkTheme()
+
+                        startActivity(Intent(context, PreferencesActivity::class.java).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        })
+
+                        functionsClass.saveDefaultPreference("LitePreferences", false)
+                    }
+                }
+            }, 357)
+
+            true
+        }
+
+        stick.setOnPreferenceChangeListener { preference, newValue ->
+            val sticky = sharedPreferences!!.getString("stick", "1")
+            if (sticky == "1") {
+                PublicVariable.forceReload = false
+                stick.summary = getString(R.string.leftEdge)
+            } else if (sticky == "2") {
+                PublicVariable.forceReload = false
+                stick.summary = getString(R.string.rightEdge)
+            }
+
+            true
         }
 
         support.setOnPreferenceClickListener {
@@ -775,17 +852,140 @@ class PreferencesFragment : PreferenceFragmentCompat(), SharedPreferences.OnShar
 
     override fun onResume() {
         super.onResume()
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this@PreferencesFragment)
 
+        val drawSecurity: LayerDrawable  = context!!.getDrawable(R.drawable.draw_security_preferences) as LayerDrawable
+        val backSecurity = drawSecurity.findDrawableByLayerId(R.id.backtemp)
+        backSecurity.setTint(PublicVariable.primaryColorOpposite)
+        pinPassword.icon = drawSecurity
+
+        val drawSmart: LayerDrawable = context!!.getDrawable(R.drawable.draw_smart) as LayerDrawable
+        val backSmart = drawSmart.findDrawableByLayerId(R.id.backtemp)
+
+        val drawPref: LayerDrawable  = context!!.getDrawable(R.drawable.draw_pref) as LayerDrawable
+        val backPref = drawPref.findDrawableByLayerId(R.id.backtemp)
+
+        val drawPrefAutoTrans: LayerDrawable  = context!!.getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
+        val backPrefAutoTrans = drawPrefAutoTrans.findDrawableByLayerId(R.id.backtemp).mutate()
+
+        val drawPrefLite: LayerDrawable  = context!!.getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
+        val backPrefLite = drawPrefLite.findDrawableByLayerId(R.id.backtemp).mutate()
+        val drawablePrefLite = drawPrefLite.findDrawableByLayerId(R.id.wPref)
+        backPrefLite.setTint(if (PublicVariable.themeLightDark) context!!.getColor(R.color.dark) else context!!.getColor(R.color.light))
+        drawablePrefLite.setTint(if (PublicVariable.themeLightDark) context!!.getColor(R.color.light) else context!!.getColor(R.color.dark))
+        lite.icon = drawPrefLite
+
+        val drawFloatIt: LayerDrawable = context!!.getDrawable(R.drawable.draw_floatit) as LayerDrawable
+        val backFloatIt = drawFloatIt.findDrawableByLayerId(R.id.backtemp)
+
+        val drawSupport: LayerDrawable  = context!!.getDrawable(R.drawable.draw_support) as LayerDrawable
+        val backSupport = drawSupport.findDrawableByLayerId(R.id.backtemp)
+
+        backSmart.setTint(PublicVariable.primaryColor)
+        backPref.setTint(PublicVariable.primaryColor)
+
+        backPrefAutoTrans.setTint(PublicVariable.primaryColor)
+        backPrefAutoTrans.alpha = functionsClass.readDefaultPreference("autoTrans", 255)
+
+        backFloatIt.setTint(PublicVariable.primaryColor)
+        backSupport.setTint(PublicVariable.primaryColorOpposite)
+
+        stable.icon = drawPref
+        cache.icon = drawPref
+        autotrans.icon = drawPrefAutoTrans
+        floatingSplash.icon = drawPref
+        themeColor.icon = drawPref
+        sizes.icon = drawPref
+        delayPressHold.icon = drawPref
+        flingSensitivity.icon = drawPref
+        themeTrans.icon = drawPref
+        blur.icon = drawPref
+        stick.icon = drawPref
+        notification.icon = drawPref
+
+        smart.icon = drawSmart
+        observe.icon = drawSmart
+        boot.icon = drawSmart
+        freeForm.icon = drawFloatIt
+
+        support.icon = drawSupport
+
+        when (sharedPreferences.getInt("iconShape", 0)) {
+            1 -> {
+                val drawableTeardrop: Drawable = context!!.getDrawable(R.drawable.droplet_icon)!!
+                drawableTeardrop.setTint(PublicVariable.primaryColor)
+                val layerDrawable1 = LayerDrawable(arrayOf(drawableTeardrop, context!!.getDrawable(R.drawable.w_pref_gui)))
+                shapes.icon = layerDrawable1
+                shapes.summary = getString(R.string.droplet)
+            }
+            2 -> {
+                val drawableCircle: Drawable = context!!.getDrawable(R.drawable.circle_icon)!!
+                drawableCircle.setTint(PublicVariable.primaryColor)
+                val layerDrawable2 = LayerDrawable(arrayOf(drawableCircle, context!!.getDrawable(R.drawable.w_pref_gui)))
+                shapes.icon = layerDrawable2
+                shapes.summary = getString(R.string.circle)
+            }
+            3 -> {
+                val drawableSquare: Drawable = context!!.getDrawable(R.drawable.square_icon)!!
+                drawableSquare.setTint(PublicVariable.primaryColor)
+                val layerDrawable3 = LayerDrawable(arrayOf(drawableSquare, context!!.getDrawable(R.drawable.w_pref_gui)))
+                shapes.icon = layerDrawable3
+                shapes.summary = getString(R.string.square)
+            }
+            4 -> {
+                val drawableSquircle: Drawable = context!!.getDrawable(R.drawable.squircle_icon)!!
+                drawableSquircle.setTint(PublicVariable.primaryColor)
+                val layerDrawable4 = LayerDrawable(arrayOf(drawableSquircle, context!!.getDrawable(R.drawable.w_pref_gui)))
+                shapes.icon = layerDrawable4
+                shapes.summary = getString(R.string.squircle)
+            }
+            0 -> {
+                val drawableNoShape: Drawable = context!!.getDrawable(R.drawable.w_pref_noshape)!!
+                drawableNoShape.setTint(PublicVariable.primaryColor)
+                shapes.icon = drawableNoShape
+            }
+        }
+
+        if (functionsClass.loadCustomIcons()) {
+            shapes.icon = functionsClass.appIcon(functionsClass.customIconPackageName())
+            shapes.summary = functionsClass.appName(functionsClass.customIconPackageName())
+        }
+
+        if (functionsClass.UsageStatsEnabled()) {
+            PublicVariable.forceReload = true
+            smart.isChecked = true
+        } else {
+            smart.isChecked = false
+        }
+
+        if (functionsClass.returnAPI() < 24) {
+            observe.summary = getString(R.string.observeSum)
+            observe.isEnabled = false
+            freeForm.summary = getString(R.string.observeSum)
+            freeForm.isEnabled = false
+        }
+
+        observe.isChecked = functionsClass.AccessibilityServiceEnabled() && functionsClass.SettingServiceRunning(InteractionObserver::class.java)
+
+        notification.isChecked = functionsClass.NotificationAccess() && functionsClass.NotificationListenerRunning()
+
+        if (!functionsClass.wallpaperStaticLive()) {
+            blur.isEnabled = false
+        }
+
+        freeForm.isChecked = functionsClass.freeFormSupport(context) && functionsClass.FreeForm()
     }
 
     override fun onPause() {
         super.onPause()
-        preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this@PreferencesFragment)
 
+        functionsClass.loadSavedColor()
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+    override fun onDestroy() {
+        super.onDestroy()
 
+        if (functionsClass.SystemCache() || functionsClass.automationFeatureEnable()) {
+            context!!.startService(Intent(context, BindServices::class.java))
+        }
     }
 }
