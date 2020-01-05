@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/5/20 4:41 AM
- * Last modified 1/5/20 4:40 AM
+ * Created by Elias Fazel on 1/5/20 4:42 AM
+ * Last modified 1/5/20 4:42 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -54,6 +54,7 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardHybridAdapter
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems
@@ -514,6 +515,11 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
         applicationInfoList = applicationContext.packageManager.getInstalledApplications(0)
         Collections.sort(applicationInfoList, ApplicationInfo.DisplayNameComparator(packageManager))
         limitedCountLine = (applicationInfoList.size / 3)
+
+        if (functionsClass.loadCustomIcons()) {
+            loadCustomIcons.load()
+            PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons())
+        }
 
 
     }
