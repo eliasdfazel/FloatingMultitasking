@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/4/20 2:01 AM
- * Last modified 1/4/20 12:43 AM
+ * Created by Elias Fazel on 1/5/20 4:41 AM
+ * Last modified 1/5/20 4:39 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -226,7 +226,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
         installedNestedIndexScrollView = (ScrollView) findViewById(R.id.installedNestedIndexScrollView);
 
-        indexView = (LinearLayout) findViewById(R.id.side_index);
+        indexView = (LinearLayout) findViewById(R.id.indexView);
         indexViewInstalled = (LinearLayout) findViewById(R.id.installed_side_index);
 
         /*Search Engine*/
@@ -297,7 +297,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
             }
 
-            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
+            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
             gx = (TextView) findViewById(R.id.gx);
             Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
             gx.setTypeface(face);
@@ -1291,7 +1291,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
             }
 
-            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
+            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
             gx = (TextView) findViewById(R.id.gx);
             Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
             gx.setTypeface(face);

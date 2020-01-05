@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 8:36 PM
- * Last modified 1/1/20 5:17 PM
+ * Created by Elias Fazel on 1/5/20 4:41 AM
+ * Last modified 1/5/20 4:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -221,7 +221,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
             loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
         }
 
-        loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
+        loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
         desc = (TextView) findViewById(R.id.desc);
         Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
         desc.setTypeface(face);
@@ -656,7 +656,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
                 loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
             }
 
-            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
+            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
             desc = (TextView) findViewById(R.id.desc);
             Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
             desc.setTypeface(face);

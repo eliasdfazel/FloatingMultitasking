@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 8:36 PM
- * Last modified 1/1/20 5:17 PM
+ * Created by Elias Fazel on 1/5/20 4:41 AM
+ * Last modified 1/5/20 4:39 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -111,7 +111,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
 
 
-        indexView = (LinearLayout) findViewById(R.id.side_index);
+        indexView = (LinearLayout) findViewById(R.id.indexView);
         autoIdentifier = (LinearLayout) findViewById(R.id.autoid);
         autoIdentifier.bringToFront();
         MainView = (RelativeLayout) findViewById(R.id.MainView);
@@ -248,7 +248,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
         }
 
-        loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
+        loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
         desc = (TextView) findViewById(R.id.desc);
         Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
         desc.setTypeface(face);
@@ -678,7 +678,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                 loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
             }
 
-            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
+            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
             desc = (TextView) findViewById(R.id.desc);
             Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
             desc.setTypeface(face);

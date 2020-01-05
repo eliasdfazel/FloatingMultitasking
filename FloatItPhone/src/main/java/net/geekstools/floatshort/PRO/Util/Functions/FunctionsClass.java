@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/4/20 2:01 AM
- * Last modified 1/4/20 1:51 AM
+ * Created by Elias Fazel on 1/5/20 4:41 AM
+ * Last modified 1/5/20 3:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -67,6 +67,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.renderscript.Allocation;
@@ -5317,7 +5318,15 @@ public class FunctionsClass {
 
     public void doVibrate(long millisecondVibrate) {
         Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
-        vibrator.vibrate(millisecondVibrate);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (vibrator != null) {
+                vibrator.vibrate(VibrationEffect.createOneShot(millisecondVibrate, VibrationEffect.DEFAULT_AMPLITUDE));
+            }
+        } else {
+            if (vibrator != null) {
+                vibrator.vibrate(millisecondVibrate);
+            }
+        }
     }
 
     public BitmapDrawable writeOnDrawable(int drawableId, String textToRender, int textColor,

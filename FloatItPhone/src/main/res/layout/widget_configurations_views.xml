@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/1/20 8:36 PM
-  ~ Last modified 1/1/20 8:25 PM
+  ~ Created by Elias Fazel on 1/5/20 4:41 AM
+  ~ Last modified 1/5/20 4:39 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -63,7 +63,7 @@
         android:visibility="invisible">
 
         <LinearLayout
-            android:id="@+id/side_index"
+            android:id="@+id/indexView"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -447,7 +447,7 @@
             android:src="@drawable/draw_floating_widgets" />
 
         <ProgressBar
-            android:id="@+id/loadingProgressltr"
+            android:id="@+id/loadingProgress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="33dp"

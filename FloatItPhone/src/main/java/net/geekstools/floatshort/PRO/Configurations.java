@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/5/20 4:41 AM
+ * Last modified 1/5/20 3:37 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -30,7 +30,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
+import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -226,7 +226,7 @@ public class Configurations extends Activity {
             }
         }
         functionsClass.updateRecoverShortcuts();
-        if (functionsClass.readPreference("OpenMode", "openClassName", HybridApplicationsView.class.getSimpleName()).equals(FoldersConfigurations.class.getSimpleName())) {
+        if (functionsClass.readPreference("OpenMode", "openClassName", ApplicationsView.class.getSimpleName()).equals(FoldersConfigurations.class.getSimpleName())) {
             try {
                 if (functionsClass.UsageStatsEnabled()) {
                     if (getFileStreamPath("Frequently").exists()) {
@@ -259,7 +259,7 @@ public class Configurations extends Activity {
                 }
             }
 
-            Intent AppIntent = new Intent(getApplicationContext(), HybridApplicationsView.class);
+            Intent AppIntent = new Intent(getApplicationContext(), ApplicationsView.class);
             try {
                 Intent goHome = getIntent();
                 if (goHome.hasExtra("goHome")) {

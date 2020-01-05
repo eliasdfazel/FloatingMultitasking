@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:53 PM
+ * Created by Elias Fazel on 1/5/20 4:41 AM
+ * Last modified 1/5/20 4:39 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -107,7 +107,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
         loadView = (RecyclerView) findViewById(R.id.listFav);
         popupAnchorView = (RelativeLayout) findViewById(R.id.popupAnchorView);
-        indexView = (LinearLayout) findViewById(R.id.side_index);
+        indexView = (LinearLayout) findViewById(R.id.indexView);
         splitView = (LinearLayout) findViewById(R.id.splitView);
         wholeAuto = (RelativeLayout) findViewById(R.id.wholeAuto);
         loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
@@ -157,7 +157,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         gradientDrawableLoadLogo.setTint(PublicVariable.primaryColor);
         loadIcon.setImageDrawable(layerDrawableLoadLogo);
 
-        ProgressBar loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
+        ProgressBar loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
         loadingBarLTR.getIndeterminateDrawable().setColorFilter(getColor(R.color.dark), PorterDuff.Mode.MULTIPLY);
 
         IntentFilter intentFilter = new IntentFilter();

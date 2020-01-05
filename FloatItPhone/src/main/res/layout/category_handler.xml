@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/1/20 9:10 PM
-  ~ Last modified 1/1/20 8:46 PM
+  ~ Created by Elias Fazel on 1/5/20 4:41 AM
+  ~ Last modified 1/5/20 4:33 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -331,7 +331,7 @@
             android:src="@drawable/draw_floating_logo"/>
 
         <ProgressBar
-            android:id="@+id/loadingProgressltr"
+            android:id="@+id/loadingProgress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="33dp"

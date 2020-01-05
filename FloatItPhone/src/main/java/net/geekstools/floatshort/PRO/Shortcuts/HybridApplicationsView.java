@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/2/20 10:52 PM
- * Last modified 1/2/20 10:52 PM
+ * Created by Elias Fazel on 1/5/20 4:41 AM
+ * Last modified 1/5/20 4:39 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -171,6 +171,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
     Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
     Map<Integer, String> mapRangeIndex;
     NavigableMap<String, Integer> indexItems;
+
     ArrayList<AdapterItems> adapterItems, searchAdapterItems;
 
     List<String> indexList;
@@ -178,14 +179,14 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
     RecyclerView.Adapter recyclerViewAdapter;
     GridLayoutManager recyclerViewLayoutManager;
 
-    String PackageName;
-    String AppName = "Application";
-    Drawable AppIcon;
+    String installedPackageName;
+    String installedAppName = "Application";
+    Drawable installedAppIcon;
 
     HorizontalScrollView freqlist;
     String[] freqApps;
     int limitedCountLine, hybridItem = 0, lastIntentItem = 0;
-    int[] counter;
+    int[] freqCounter;
     boolean loadFreq = false;
 
     SimpleGestureFilterSwitch simpleGestureFilterSwitch;
@@ -206,8 +207,8 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
         nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
         nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
         scrollRelativeLayout = (RelativeLayout) findViewById(R.id.scrollRelativeLayout);
-        loadView = (RecyclerView) findViewById(R.id.list);
-        indexView = (LinearLayout) findViewById(R.id.side_index);
+        loadView = (RecyclerView) findViewById(R.id.loadView);
+        indexView = (LinearLayout) findViewById(R.id.indexView);
         freqView = (LinearLayout) findViewById(R.id.freqItem);
         MainView = (RelativeLayout) findViewById(R.id.MainView);
         freqlist = (HorizontalScrollView) findViewById(R.id.freqList);
@@ -371,6 +372,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                 }
             }
         });
+
         switchCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -413,6 +415,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                 }
             }
         });
+
         automationAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -423,6 +426,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                 startActivity(intent, ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.up_down, android.R.anim.fade_out).toBundle());
             }
         });
+
         recoveryAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -504,6 +508,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                 return true;
             }
         });
+
         switchCategories.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -942,11 +947,6 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         functionsClass.addAppShortcuts();
@@ -1136,7 +1136,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
         try {
             freqView.removeAllViews();
 
-            counter = new int[25];
+            freqCounter = new int[25];
             freqApps = getIntent().getStringArrayExtra("freq");
             int freqLength = getIntent().getIntExtra("num", -1);
             if (getFileStreamPath("Frequently").exists()) {
@@ -1182,7 +1182,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                 loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
             }
 
-            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
+            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
             if (PublicVariable.themeLightDark) {
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
             } else if (!PublicVariable.themeLightDark) {
@@ -1226,11 +1226,11 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                                 }
                             }
 
-                            PackageName = applicationInfoList.get(appInfo).packageName;
-                            AppName = functionsClass.appName(PackageName);
-                            AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
+                            installedPackageName = applicationInfoList.get(appInfo).packageName;
+                            installedAppName = functionsClass.appName(installedPackageName);
+                            installedAppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(installedPackageName)) : functionsClass.shapedAppIcon(installedPackageName);
 
-                            adapterItems.add(new AdapterItems(AppName, PackageName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
+                            adapterItems.add(new AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
                             indexList.add(newChar);
                             indexItems.put(newChar, itemOfIndex++);
 
@@ -1345,11 +1345,11 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                                 }
                             }
 
-                            PackageName = applicationInfoList.get(appInfo).packageName;
-                            AppName = functionsClass.appName(PackageName);
-                            AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
+                            installedPackageName = applicationInfoList.get(appInfo).packageName;
+                            installedAppName = functionsClass.appName(installedPackageName);
+                            installedAppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(installedPackageName)) : functionsClass.shapedAppIcon(installedPackageName);
 
-                            adapterItems.add(new AdapterItems(AppName, PackageName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
+                            adapterItems.add(new AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
                             indexList.add(newChar);
                             indexItems.put(newChar, itemOfIndex++);
 
