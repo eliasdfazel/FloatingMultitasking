@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/5/20 4:42 AM
- * Last modified 1/5/20 4:42 AM
+ * Created by Elias Fazel on 1/5/20 6:28 AM
+ * Last modified 1/5/20 6:27 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,7 +14,8 @@ import android.animation.Animator
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
-import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -33,7 +34,7 @@ import android.view.WindowManager
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.HorizontalScrollView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -65,6 +66,7 @@ import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets
+import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
@@ -77,30 +79,28 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
     private lateinit var functionsClass: FunctionsClass
     private lateinit var functionsClassSecurity: FunctionsClassSecurity
 
-    private lateinit var applicationInfoList: List<ApplicationInfo>
+    private lateinit var applicationInfoList: List<ResolveInfo>
 
     private lateinit var mapIndexFirstItem: Map<String, Int>
     private lateinit var mapIndexLastItem: Map<String, Int>
     private lateinit var mapRangeIndex: Map<Int, String>
     private lateinit var indexItems: NavigableMap<String, Int>
-    private lateinit var indexList: List<String>
+    private lateinit var indexList: ArrayList<String?>
 
-    private lateinit var adapterItems: List<AdapterItems>
-    private lateinit var sections: List<HybridSectionedGridRecyclerViewAdapter.Section>
+    private lateinit var applicationsAdapterItems: ArrayList<AdapterItems>
+    private lateinit var sections: ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>
     private lateinit var recyclerViewAdapter: RecyclerView.Adapter<CardHybridAdapter.ViewHolder>
     private lateinit var recyclerViewLayoutManager: GridLayoutManager
 
-    private lateinit var searchAdapterItems: List<AdapterItems>
+    private lateinit var searchAdapterItems: ArrayList<AdapterItems>
 
     private var installedPackageName: String? = null
     private var installedAppName: String? = null
     private var installedAppIcon: Drawable? = null
 
-    var limitedCountLine: Int = 0
     var hybridItem: Int = 0
     var lastIntentItem: Int = 0
 
-    private lateinit var freqlist: HorizontalScrollView
     private lateinit var freqApps: Array<String>
     lateinit var freqCounter: IntArray
     var loadFreq = false
@@ -128,12 +128,12 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
         recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(105), OrientationHelper.VERTICAL, false)
         loadView.layoutManager = recyclerViewLayoutManager
 
-        indexList = ArrayList<String>()
+        indexList = ArrayList<String?>()
         sections = ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>()
         indexItems = TreeMap<String, Int>()
 
-        applicationInfoList = ArrayList<ApplicationInfo>()
-        adapterItems = ArrayList<AdapterItems>()
+        applicationInfoList = ArrayList<ResolveInfo>()
+        applicationsAdapterItems = ArrayList<AdapterItems>()
         mapIndexFirstItem = LinkedHashMap<String, Int>()
         mapIndexLastItem = LinkedHashMap<String, Int>()
         mapRangeIndex = LinkedHashMap<Int, String>()
@@ -512,15 +512,134 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
         loadApplicationsLimited()
     }
     private fun loadApplicationsLimited() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
-        applicationInfoList = applicationContext.packageManager.getInstalledApplications(0)
-        Collections.sort(applicationInfoList, ApplicationInfo.DisplayNameComparator(packageManager))
-        limitedCountLine = (applicationInfoList.size / 3)
-
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons.load()
             PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons())
         }
 
+        applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
+            this.action = Intent.ACTION_MAIN
+            this.addCategory(Intent.CATEGORY_LAUNCHER)
+        }, PackageManager.GET_RESOLVED_FILTER)
+        val applicationInfoListSorted = applicationInfoList.sortedWith(ResolveInfo.DisplayNameComparator(packageManager))
 
+        var itemOfIndex = 1
+        var oldChar: String? = null
+        applicationInfoListSorted.forEachIndexed { resolveInfoIndex, resolveInfo ->
+            try {
+                installedPackageName = resolveInfo.activityInfo.packageName
+                installedAppName = functionsClass.activityLabel(resolveInfo.activityInfo)
+
+                val newChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
+
+                if (resolveInfoIndex == 0) {
+                    sections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
+                } else {
+
+                    if (oldChar != newChar) {
+                        sections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
+
+                        indexList.add(newChar)
+                        itemOfIndex = 1
+                    }
+                }
+
+                installedAppIcon = if (functionsClass.loadCustomIcons()) {
+                    loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(installedPackageName))
+                } else {
+                    functionsClass.shapedAppIcon(installedPackageName)
+                }
+
+                applicationsAdapterItems.add(AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts))
+                indexList.add(newChar)
+                indexItems[newChar] = itemOfIndex++
+
+                hybridItem += 1
+
+                lastIntentItem = resolveInfoIndex
+                oldChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        recyclerViewAdapter = CardHybridAdapter(this@ApplicationsView, applicationContext, applicationsAdapterItems)
+
+        if (intent.getStringArrayExtra("freq") != null) {
+            freqApps = intent.getStringArrayExtra("freq")
+            val freqLength = intent.getIntExtra("num", -1)
+            PublicVariable.freqApps = freqApps
+            PublicVariable.freqLength = freqLength
+            if (freqLength > 1) {
+                loadFreq = true
+            }
+        }
+
+        if (!loadFreq) {
+            MainView.removeView(freqList)
+            val layoutParams = RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT
+            )
+            nestedScrollView.layoutParams = layoutParams
+        } else {
+            val layoutParams = RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT
+            )
+            layoutParams.addRule(RelativeLayout.ABOVE, R.id.freqList)
+            scrollRelativeLayout.setPadding(0, scrollRelativeLayout.paddingTop, 0, 0)
+            nestedScrollView.layoutParams = layoutParams
+            nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(66))
+        }
+
+        recyclerViewAdapter.notifyDataSetChanged()
+        val sectionsData = arrayOfNulls<HybridSectionedGridRecyclerViewAdapter.Section>(sections.size)
+        val hybridSectionedGridRecyclerViewAdapter = HybridSectionedGridRecyclerViewAdapter(
+                applicationContext,
+                R.layout.hybrid_sections,
+                R.id.section_text,
+                loadView,
+                recyclerViewAdapter
+        )
+
+        hybridSectionedGridRecyclerViewAdapter.setSections(sections.toArray(sectionsData))
+        loadView.adapter = hybridSectionedGridRecyclerViewAdapter
+
+        val splashAnimation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
+        loadingSplash.startAnimation(splashAnimation)
+        splashAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                if (loadFreq == true) {
+                    /*
+                     * Load Frequently Used Applications
+                     */
+                }
+                switchFloating.visibility = View.VISIBLE
+
+                /*
+                 * Load Rest Of Applications
+                 */
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                loadingSplash.visibility = View.INVISIBLE
+            }
+        })
+
+
+        /*
+        *
+        * Call Different Coroutine to Load
+        * Index Items
+        * Custom Icon Packages
+        * Search Items
+        *
+        *
+        *
+        * */
     }
 }
