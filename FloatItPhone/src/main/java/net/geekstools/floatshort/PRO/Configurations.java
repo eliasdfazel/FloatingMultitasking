@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/5/20 4:41 AM
- * Last modified 1/5/20 3:37 AM
+ * Created by Elias Fazel on 1/6/20 2:05 AM
+ * Last modified 1/6/20 2:00 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -280,6 +280,7 @@ public class Configurations extends Activity {
                 }
             }, 333);
         }
+
         finish();
     }
 

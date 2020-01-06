@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/5/20 6:28 AM
- * Last modified 1/5/20 6:27 AM
+ * Created by Elias Fazel on 1/6/20 2:05 AM
+ * Last modified 1/6/20 2:03 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -47,6 +47,7 @@ import kotlinx.android.synthetic.main.hybrid_view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
 import net.geekstools.floatshort.PRO.BuildConfig
@@ -142,7 +143,9 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
             loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
         }
 
-        initiateApplicationsLoadingProcess()
+        /*All Loading Process*/
+        initiateLoadingProcess()
+        /*All Loading Process*/
 
         val drawPreferenceAction: LayerDrawable = getDrawable(R.drawable.draw_pref_action) as LayerDrawable
         val backPreferenceAction: Drawable = drawPreferenceAction.findDrawableByLayerId(R.id.backtemp)
@@ -488,8 +491,7 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
 
     }
 
-
-    private fun initiateApplicationsLoadingProcess() {
+    private fun initiateLoadingProcess() {
         if (functionsClass.appThemeTransparent()) {
             loadingSplash.setBackgroundColor(Color.TRANSPARENT)
         } else {
@@ -509,9 +511,10 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
 
         indexView.removeAllViews()
 
-        loadApplicationsLimited()
+        loadApplicationsData()
     }
-    private fun loadApplicationsLimited() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+
+    private fun loadApplicationsData() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons.load()
             PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons())
@@ -524,44 +527,87 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
         val applicationInfoListSorted = applicationInfoList.sortedWith(ResolveInfo.DisplayNameComparator(packageManager))
 
         var itemOfIndex = 1
+        var newChar: String? = null
         var oldChar: String? = null
-        applicationInfoListSorted.forEachIndexed { resolveInfoIndex, resolveInfo ->
-            try {
-                installedPackageName = resolveInfo.activityInfo.packageName
-                installedAppName = functionsClass.activityLabel(resolveInfo.activityInfo)
 
-                val newChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
+        applicationInfoListSorted.asFlow()
+                .onEach {
 
-                if (resolveInfoIndex == 0) {
-                    sections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
-                } else {
+                }
+                .filter {
 
-                    if (oldChar != newChar) {
-                        sections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
+                    (packageManager.getLaunchIntentForPackage(it.activityInfo.packageName) != null)
+                }
+                .map {
 
+                    it
+                }
+                .onCompletion {
+                    val splashAnimation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
+                    loadingSplash.startAnimation(splashAnimation)
+                    splashAnimation.setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationStart(animation: Animation?) {
+                            if (loadFreq == true) {
+                                /*
+                                 * Load Frequently Used Applications
+                                 */
+                            }
+                            switchFloating.visibility = View.VISIBLE
+
+                            /*
+                             * Load Rest Of Applications
+                             */
+                        }
+
+                        override fun onAnimationRepeat(animation: Animation?) {
+
+                        }
+
+                        override fun onAnimationEnd(animation: Animation?) {
+                            loadingSplash.visibility = View.INVISIBLE
+                        }
+                    })
+                }
+                .withIndex().collect {
+                    try {
+                        installedPackageName = it.value.activityInfo.packageName
+                        installedAppName = functionsClass.activityLabel(it.value.activityInfo)
+
+                        newChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
+
+                        if (it.index == 0) {
+                            sections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
+                        } else {
+
+                            if (oldChar != newChar) {
+                                sections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
+
+                                indexList.add(newChar)
+                                itemOfIndex = 1
+                            }
+                        }
+
+                        installedAppIcon = if (functionsClass.loadCustomIcons()) {
+                            loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(installedPackageName))
+                        } else {
+                            functionsClass.shapedAppIcon(installedPackageName)
+                        }
+
+                        applicationsAdapterItems.add(AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts))
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    } finally {
                         indexList.add(newChar)
-                        itemOfIndex = 1
+                        indexItems[newChar] = itemOfIndex++
+
+                        hybridItem += 1
+
+                        lastIntentItem = it.index
+                        oldChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
                     }
                 }
 
-                installedAppIcon = if (functionsClass.loadCustomIcons()) {
-                    loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(installedPackageName))
-                } else {
-                    functionsClass.shapedAppIcon(installedPackageName)
-                }
-
-                applicationsAdapterItems.add(AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts))
-                indexList.add(newChar)
-                indexItems[newChar] = itemOfIndex++
-
-                hybridItem += 1
-
-                lastIntentItem = resolveInfoIndex
-                oldChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
         recyclerViewAdapter = CardHybridAdapter(this@ApplicationsView, applicationContext, applicationsAdapterItems)
 
         if (intent.getStringArrayExtra("freq") != null) {
@@ -605,30 +651,7 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
         hybridSectionedGridRecyclerViewAdapter.setSections(sections.toArray(sectionsData))
         loadView.adapter = hybridSectionedGridRecyclerViewAdapter
 
-        val splashAnimation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
-        loadingSplash.startAnimation(splashAnimation)
-        splashAnimation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-                if (loadFreq == true) {
-                    /*
-                     * Load Frequently Used Applications
-                     */
-                }
-                switchFloating.visibility = View.VISIBLE
 
-                /*
-                 * Load Rest Of Applications
-                 */
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {
-
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                loadingSplash.visibility = View.INVISIBLE
-            }
-        })
 
 
         /*
@@ -641,5 +664,21 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
         *
         *
         * */
+
+        try {
+            if (intent.hasExtra("goHome")) {
+                if (intent.getBooleanExtra("goHome", false)) {
+                    Intent(Intent.ACTION_MAIN).let {
+                        it.addCategory(Intent.CATEGORY_HOME)
+                        it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(it)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+
+            this@ApplicationsView.finish()
+        }
     }
 }
