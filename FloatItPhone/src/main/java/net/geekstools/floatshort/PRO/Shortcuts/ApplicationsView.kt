@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/6/20 2:05 AM
- * Last modified 1/6/20 2:03 AM
+ * Created by Elias Fazel on 1/6/20 6:26 AM
+ * Last modified 1/6/20 6:24 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -35,6 +35,7 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -44,11 +45,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.android.synthetic.main.hybrid_view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
@@ -71,8 +69,6 @@ import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.hypot
 
 class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
@@ -82,10 +78,10 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
 
     private lateinit var applicationInfoList: List<ResolveInfo>
 
-    private lateinit var mapIndexFirstItem: Map<String, Int>
-    private lateinit var mapIndexLastItem: Map<String, Int>
-    private lateinit var mapRangeIndex: Map<Int, String>
-    private lateinit var indexItems: NavigableMap<String, Int>
+    private lateinit var mapIndexFirstItem: LinkedHashMap<String, Int>
+    private lateinit var mapIndexLastItem: LinkedHashMap<String, Int>
+    private lateinit var mapRangeIndex: LinkedHashMap<Int, String>
+    private lateinit var indexItems: java.util.NavigableMap<String, Int>
     private lateinit var indexList: ArrayList<String?>
 
     private lateinit var applicationsAdapterItems: ArrayList<AdapterItems>
@@ -131,20 +127,22 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
 
         indexList = ArrayList<String?>()
         sections = ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>()
-        indexItems = TreeMap<String, Int>()
+        indexItems = java.util.TreeMap<String, Int>()
 
         applicationInfoList = ArrayList<ResolveInfo>()
         applicationsAdapterItems = ArrayList<AdapterItems>()
+
         mapIndexFirstItem = LinkedHashMap<String, Int>()
         mapIndexLastItem = LinkedHashMap<String, Int>()
         mapRangeIndex = LinkedHashMap<Int, String>()
+
 
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
         }
 
         /*All Loading Process*/
-        initiateLoadingProcess()
+        initiateLoadingProcessAll()
         /*All Loading Process*/
 
         val drawPreferenceAction: LayerDrawable = getDrawable(R.drawable.draw_pref_action) as LayerDrawable
@@ -491,7 +489,7 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
 
     }
 
-    private fun initiateLoadingProcess() {
+    private fun initiateLoadingProcessAll() {
         if (functionsClass.appThemeTransparent()) {
             loadingSplash.setBackgroundColor(Color.TRANSPARENT)
         } else {
@@ -509,12 +507,12 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
         gradientDrawableLoadLogo.setTint(PublicVariable.primaryColor)
         loadLogo.setImageDrawable(layerDrawableLoadLogo)
 
-        indexView.removeAllViews()
-
         loadApplicationsData()
     }
 
     private fun loadApplicationsData() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+        indexView.removeAllViews()
+
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons.load()
             PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons())
@@ -573,7 +571,7 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
                         installedPackageName = it.value.activityInfo.packageName
                         installedAppName = functionsClass.activityLabel(it.value.activityInfo)
 
-                        newChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
+                        newChar = installedAppName!!.substring(0, 1).toUpperCase(java.util.Locale.getDefault())
 
                         if (it.index == 0) {
                             sections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
@@ -597,6 +595,7 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
 
                     } catch (e: Exception) {
                         e.printStackTrace()
+                        this.cancel()
                     } finally {
                         indexList.add(newChar)
                         indexItems[newChar] = itemOfIndex++
@@ -604,7 +603,7 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
                         hybridItem += 1
 
                         lastIntentItem = it.index
-                        oldChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
+                        oldChar = installedAppName!!.substring(0, 1).toUpperCase(java.util.Locale.getDefault())
                     }
                 }
 
@@ -651,19 +650,16 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
         hybridSectionedGridRecyclerViewAdapter.setSections(sections.toArray(sectionsData))
         loadView.adapter = hybridSectionedGridRecyclerViewAdapter
 
+        recyclerViewLayoutManager.scrollToPosition(0)
+        nestedScrollView.scrollTo(0, 0)
 
+        loadApplicationsIndex().also {
+            if (it.isCompleted) {
+                loadInstalledCustomIconPackages()
+            }
+        }
 
-
-        /*
-        *
-        * Call Different Coroutine to Load
-        * Index Items
-        * Custom Icon Packages
-        * Search Items
-        *
-        *
-        *
-        * */
+        loadSearchEngineData()
 
         try {
             if (intent.hasExtra("goHome")) {
@@ -681,4 +677,157 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
             this@ApplicationsView.finish()
         }
     }
+
+    private fun loadApplicationsIndex() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+        indexView.removeAllViews()
+
+        val indexCount = indexList.size
+        for (indexNumber in 0 until indexCount) {
+            try {
+                val indexText = indexList[indexNumber]!!
+                if (mapIndexFirstItem[indexText] == null /*avoid duplication*/) {
+                    mapIndexFirstItem[indexText] = indexNumber
+                }
+                mapIndexLastItem[indexText] = indexNumber
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        val indexListFinal: List<String> = ArrayList(mapIndexFirstItem.keys)
+        indexListFinal.forEach { indexText ->
+            val sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
+            sideIndexItem.text = indexText.toUpperCase(java.util.Locale.getDefault())
+            sideIndexItem.setTextColor(PublicVariable.colorLightDarkOpposite)
+            indexView.addView(sideIndexItem)
+        }
+
+        val sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
+        Handler().postDelayed({
+            var upperRange = (indexView.y - sideIndexItem.height).toInt()
+            for (number in 0 until indexView.childCount) {
+                val indexText = (indexView.getChildAt(number) as TextView).text.toString()
+                val indexRange = (indexView.getChildAt(number).y + indexView.y + sideIndexItem.height).toInt()
+                for (jRange in upperRange..indexRange) {
+                    mapRangeIndex[jRange] = indexText
+                }
+
+                upperRange = indexRange
+            }
+
+            setupFastScrollingIndexing()
+        },700)
+    }
+
+    private fun loadInstalledCustomIconPackages() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+        try {
+            val packageManager = applicationContext.packageManager
+            //ACTION: com.novalauncher.THEME
+            //CATEGORY: com.novalauncher.category.CUSTOM_ICON_PICKER
+            val intentCustomIcons = Intent()
+            intentCustomIcons.action = "com.novalauncher.THEME"
+            intentCustomIcons.addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER")
+            val resolveInfos = packageManager.queryIntentActivities(intentCustomIcons, 0)
+            try {
+                PublicVariable.customIconsPackages.clear()
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+            for (resolveInfo in resolveInfos) {
+                PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
+                PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+            this.cancel()
+        }
+    }
+
+    /*Indexing*/
+    private fun setupFastScrollingIndexing() {
+        val popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon)!!.mutate()
+        popupIndexBackground.setTint(PublicVariable.primaryColorOpposite)
+        popupIndex.background = popupIndexBackground
+
+        nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+        nestedIndexScrollView.visibility = View.VISIBLE
+
+        val popupIndexOffsetY = (PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + if (functionsClass.UsageStatsEnabled()) functionsClass.DpToInteger(7) else functionsClass.DpToInteger(7)).toFloat()
+        nestedIndexScrollView.setOnTouchListener { view, motionEvent ->
+            when(motionEvent.action){
+                MotionEvent.ACTION_DOWN -> {
+                    if (!functionsClass.litePreferencesEnabled()) {
+                        val indexText = mapRangeIndex[motionEvent.y.toInt()]
+
+                        if (indexText != null) {
+                            popupIndex.y = motionEvent.rawY - popupIndexOffsetY
+                            popupIndex.text = indexText
+                            popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                            popupIndex.visibility = View.VISIBLE
+                        }
+                    }
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    if (!functionsClass.litePreferencesEnabled()) {
+                        val indexText = mapRangeIndex[motionEvent.y.toInt()]
+
+                        if (indexText != null) {
+                            if (!popupIndex.isShown) {
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                                popupIndex.visibility = View.VISIBLE
+                            }
+                            popupIndex.y = motionEvent.rawY - popupIndexOffsetY
+                            popupIndex.text = indexText
+                            try {
+                                nestedScrollView.smoothScrollTo(
+                                        0,
+                                        loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
+                                )
+                            } catch (e: java.lang.Exception) {
+                                e.printStackTrace()
+                            }
+                        } else {
+                            if (popupIndex.isShown) {
+                                popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                                popupIndex.visibility = View.INVISIBLE
+                            }
+                        }
+                    }
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (functionsClass.litePreferencesEnabled()) {
+                        try {
+                            nestedScrollView.smoothScrollTo(
+                                    0,
+                                    loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
+                            )
+                        } catch (e: java.lang.Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        if (popupIndex.isShown) {
+                            try {
+                                nestedScrollView.smoothScrollTo(
+                                        0,
+                                        loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
+                                )
+                            } catch (e: java.lang.Exception) {
+                                e.printStackTrace()
+                            }
+                            popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                            popupIndex.visibility = View.INVISIBLE
+                        }
+                    }
+                }
+            }
+            true
+        }
+    }
+    /*Indexing*/
+
+    /*Search Engine*/
+    private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+
+    }
+    /*Search Engine*/
 }
