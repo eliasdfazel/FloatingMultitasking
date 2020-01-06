@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/6/20 6:54 AM
- * Last modified 1/6/20 6:47 AM
+ * Created by Elias Fazel on 1/6/20 8:58 AM
+ * Last modified 1/6/20 8:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -11,29 +11,33 @@
 package net.geekstools.floatshort.PRO.Shortcuts
 
 import android.animation.Animator
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.ActivityOptions
+import android.appwidget.AppWidgetManager
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.*
 import android.os.Bundle
 import android.os.Handler
-import android.view.MotionEvent
-import android.view.View
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.*
 import android.view.View.OnLongClickListener
 import android.view.View.OnTouchListener
-import android.view.ViewAnimationUtils
-import android.view.WindowManager
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -41,6 +45,10 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -66,8 +74,10 @@ import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets
 import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter
+import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
 import kotlin.math.hypot
 
@@ -829,10 +839,45 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
     private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
 
         if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
-            searchAdapterItems = applicationsAdapterItems
+            searchAdapterItems = ArrayList<AdapterItems>()
 
+            //Loading Applications
+            applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
+                this.action = Intent.ACTION_MAIN
+                this.addCategory(Intent.CATEGORY_LAUNCHER)
+            }, PackageManager.GET_RESOLVED_FILTER)
+            val applicationInfoListSorted = applicationInfoList.sortedWith(ResolveInfo.DisplayNameComparator(packageManager))
+
+            applicationInfoListSorted.asFlow()
+                    .filter {
+
+                        (packageManager.getLaunchIntentForPackage(it.activityInfo.packageName) != null)
+                    }
+                    .map {
+
+                        it
+                    }
+                    .collect {
+                        try {
+                            installedPackageName = it.activityInfo.packageName
+                            installedAppName = functionsClass.activityLabel(it.activityInfo)
+
+                            installedAppIcon = if (functionsClass.loadCustomIcons()) {
+                                loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(installedPackageName))
+                            } else {
+                                functionsClass.shapedAppIcon(installedPackageName)
+                            }
+
+                            searchAdapterItems.add(AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts))
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        } finally {
+
+                        }
+                    }
+
+            //Loading Folders
             try {
-
                 getFileStreamPath(".categoryInfo").readLines().forEach {
                     try {
                         searchAdapterItems.add(AdapterItems(it, functionsClass.readFileLine(it), SearchEngineAdapter.SearchResultType.SearchFolders))
@@ -840,15 +885,379 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
                         e.printStackTrace()
                     }
                 }
-
-
-
             } catch (e: Exception) {
                 e.printStackTrace()
             }
 
+            //Loading Widgets
+            val appWidgetManager = AppWidgetManager.getInstance(this@ApplicationsView)
+            val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                    .fallbackToDestructiveMigration()
+                    .addCallback(object : RoomDatabase.Callback() {
+                        override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                            super.onCreate(supportSQLiteDatabase)
+                        }
+
+                        override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                            super.onOpen(supportSQLiteDatabase)
+                        }
+                    })
+                    .build()
+            val widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetDataCoroutines()
+
+            if (widgetDataModels.isNotEmpty()) {
+                widgetDataModels.forEach { widgetDataModel ->
+                    try {
+
+                        val appWidgetId: Int = widgetDataModel.WidgetId
+                        val packageName: String = widgetDataModel.PackageName
+                        val className: String = widgetDataModel.ClassNameProvider
+                        val configClassName: String? = widgetDataModel.ConfigClassName
+
+                        PrintDebug("*** $appWidgetId *** PackageName: $packageName - ClassName: $className - Configure: $configClassName ***")
+
+                        if (functionsClass.appIsInstalled(packageName)) {
+
+                            val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
+                            val newAppName = functionsClass.appName(packageName)
+                            val appIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+
+                            searchAdapterItems.add(AdapterItems(
+                                    newAppName,
+                                    packageName,
+                                    className,
+                                    configClassName,
+                                    widgetDataModel.WidgetLabel,
+                                    appIcon,
+                                    appWidgetProviderInfo,
+                                    appWidgetId,
+                                    widgetDataModel.Recovery!!,
+                                    SearchEngineAdapter.SearchResultType.SearchWidgets
+                            ))
+                        } else {
+                            widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            val searchRecyclerViewAdapter = SearchEngineAdapter(applicationContext, searchAdapterItems)
+            if (searchAdapterItems.size > 0) {
+                setupSearchView(searchRecyclerViewAdapter)
+            }
+        } else {
+            searchAdapterItems = SearchEngineAdapter.allSearchResultItems
+
+            val searchRecyclerViewAdapter = SearchEngineAdapter(applicationContext, searchAdapterItems)
+            if (searchAdapterItems.size > 0) {
+                setupSearchView(searchRecyclerViewAdapter)
+            }
+        }
+    }
+
+    private fun setupSearchView(searchRecyclerViewAdapter: SearchEngineAdapter) {
+        searchView.setAdapter(searchRecyclerViewAdapter)
+
+        searchView.setDropDownBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        searchView.isVerticalScrollBarEnabled = false
+        searchView.scrollBarSize = 0
+
+        searchView.setTextColor(PublicVariable.colorLightDarkOpposite)
+        searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
+
+        val layerDrawableSearchIcon = getDrawable(R.drawable.search_icon) as RippleDrawable?
+        val backgroundTemporarySearchIcon = layerDrawableSearchIcon!!.findDrawableByLayerId(R.id.backgroundTemporary)
+        val frontTemporarySearchIcon = layerDrawableSearchIcon.findDrawableByLayerId(R.id.frontTemporary)
+        val frontDrawableSearchIcon = layerDrawableSearchIcon.findDrawableByLayerId(R.id.frontDrawable)
+        backgroundTemporarySearchIcon.setTint(PublicVariable.colorLightDarkOpposite)
+        frontTemporarySearchIcon.setTint(PublicVariable.colorLightDark)
+        frontDrawableSearchIcon.setTint(if (PublicVariable.themeLightDark) functionsClass.manipulateColor(PublicVariable.primaryColor, 0.90f) else functionsClass.manipulateColor(PublicVariable.primaryColor, 3.00f))
+
+        layerDrawableSearchIcon.setLayerInset(2,
+                functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13))
+
+        searchIcon.setImageDrawable(layerDrawableSearchIcon)
+        searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+        searchIcon.visibility = View.VISIBLE
+
+        textInputSearchView.hintTextColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+        textInputSearchView.boxStrokeColor = PublicVariable.primaryColor
+
+        var backgroundTemporaryInput = GradientDrawable()
+        try {
+            val layerDrawableBackgroundInput = getDrawable(R.drawable.background_search_input) as LayerDrawable?
+            backgroundTemporaryInput = layerDrawableBackgroundInput!!.findDrawableByLayerId(R.id.backgroundTemporary) as GradientDrawable
+            backgroundTemporaryInput.setTint(PublicVariable.colorLightDark)
+            textInputSearchView.background = layerDrawableBackgroundInput
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+            textInputSearchView.background = null
         }
 
+        val finalBackgroundTemporaryInput = backgroundTemporaryInput
+        searchIcon.setOnClickListener {
+            val bundleSearchEngineUsed = Bundle()
+            bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.currentUser)
+            bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchEngineAdapter.SearchResultType.SearchFolders)
+
+            val firebaseAnalytics = FirebaseAnalytics.getInstance(applicationContext)
+            firebaseAnalytics.logEvent(SearchEngineAdapter.SEARCH_ENGINE_USED_LOG, bundleSearchEngineUsed)
+
+            if (functionsClass.securityServicesSubscribed()) {
+                if (functionsClass.readPreference(".Password", "Pin", "0") == "0" && functionsClass.securityServicesSubscribed()) {
+                    startActivity(Intent(applicationContext, HandlePinPassword::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                            ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+                } else {
+                    if (!SearchEngineAdapter.alreadyAuthenticatedSearchEngine) {
+                        if (functionsClass.securityServicesSubscribed()) {
+                            FunctionsClassSecurity.AuthOpenAppValues.authComponentName = getString(R.string.securityServices)
+                            FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName = packageName
+                            FunctionsClassSecurity.AuthOpenAppValues.authSearchEngine = true
+
+                            functionsClassSecurity.openAuthInvocation()
+
+                            val intentFilter = IntentFilter()
+                            intentFilter.addAction("SEARCH_ENGINE_AUTHENTICATED")
+                            val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+                                override fun onReceive(context: Context, intent: Intent) {
+                                    if (intent.action == "SEARCH_ENGINE_AUTHENTICATED") {
+                                        performSearchEngine(finalBackgroundTemporaryInput)
+                                    }
+                                }
+                            }
+                            try {
+                                registerReceiver(broadcastReceiver, intentFilter)
+                            } catch (e: java.lang.Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    } else {
+                        performSearchEngine(finalBackgroundTemporaryInput)
+                    }
+                }
+            } else {
+                performSearchEngine(finalBackgroundTemporaryInput)
+            }
+        }
+    }
+
+    private fun performSearchEngine(finalBackgroundTemporaryInput: GradientDrawable) {
+        Handler().postDelayed({
+            if (functionsClass.searchEngineSubscribed()) {
+                textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                textInputSearchView.visibility = View.VISIBLE
+
+                searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                searchIcon.visibility = View.INVISIBLE
+
+                val valueAnimatorCornerDown = ValueAnimator.ofInt(functionsClass.DpToInteger(51), functionsClass.DpToInteger(7))
+                valueAnimatorCornerDown.duration = 777
+                valueAnimatorCornerDown.addUpdateListener { animator ->
+                    val animatorValue = animator.animatedValue as Int
+
+                    textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                    finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
+                }
+                valueAnimatorCornerDown.start()
+
+                val valueAnimatorScalesUp = ValueAnimator.ofInt(functionsClass.DpToInteger(51), switchWidgets.width)
+                valueAnimatorScalesUp.duration = 777
+                valueAnimatorScalesUp.addUpdateListener { animator ->
+                    val animatorValue = animator.animatedValue as Int
+                    textInputSearchView.layoutParams.width = animatorValue
+                    textInputSearchView.requestLayout()
+                }
+                valueAnimatorScalesUp.addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(animation: Animator) {
+
+                    }
+
+                    override fun onAnimationEnd(animation: Animator) {
+                        searchView.requestFocus()
+                        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
+                        Handler().postDelayed({
+                            searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                            searchFloatIt.visibility = View.VISIBLE
+                            searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                            searchClose.visibility = View.VISIBLE
+                        }, 555)
+                    }
+
+                    override fun onAnimationCancel(animation: Animator) {
+
+                    }
+
+                    override fun onAnimationRepeat(animation: Animator) {
+
+                    }
+                })
+                valueAnimatorScalesUp.start()
+
+                searchFloatIt.setOnClickListener {
+                    if (!searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResultItems.size > 0 && searchView.text.toString().length >= 2) {
+                        SearchEngineAdapter.allSearchResultItems.forEach { searchResultItem ->
+                            when (searchResultItem.searchResultType) {
+                                SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
+                                    functionsClass.runUnlimitedShortcutsService(searchResultItem.packageName)
+                                }
+                                SearchEngineAdapter.SearchResultType.SearchFolders -> {
+                                    functionsClass.runUnlimitedFolderService(searchResultItem.category)
+                                }
+                                SearchEngineAdapter.SearchResultType.SearchWidgets -> {
+                                    functionsClass
+                                            .runUnlimitedWidgetService(searchResultItem.appWidgetId,
+                                                    searchResultItem.widgetLabel)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                searchView.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+                    }
+                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+                    }
+                    override fun afterTextChanged(s: Editable) {
+
+                    }
+                })
+
+                searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+                     override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                             if (SearchEngineAdapter.allSearchResultItems.size == 1 && !searchView.text.toString().isEmpty() && searchView.text.toString().length >= 2) {
+                                 when (SearchEngineAdapter.allSearchResultItems[0].searchResultType) {
+                                     SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
+                                         functionsClass.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems[0].packageName)
+                                     }
+                                     SearchEngineAdapter.SearchResultType.SearchFolders -> {
+                                         functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems[0].category)
+                                     }
+                                     SearchEngineAdapter.SearchResultType.SearchWidgets -> {
+                                         functionsClass
+                                                 .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResultItems[0].appWidgetId,
+                                                         SearchEngineAdapter.allSearchResultItems[0].widgetLabel)
+                                     }
+                                 }
+
+                                 searchView.setText("")
+
+                                 val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                 inputMethodManager.hideSoftInputFromWindow(searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
+                                 val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
+                                 valueAnimatorCornerUp.duration = 777
+                                 valueAnimatorCornerUp.addUpdateListener { animator ->
+                                     val animatorValue = animator.animatedValue as Int
+                                     textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                                     finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
+                                 }
+                                 valueAnimatorCornerUp.start()
+
+                                 val valueAnimatorScales = ValueAnimator.ofInt(textInputSearchView.width, functionsClass.DpToInteger(51))
+                                 valueAnimatorScales.duration = 777
+                                 valueAnimatorScales.addUpdateListener { animator ->
+                                     val animatorValue = animator.animatedValue as Int
+                                     textInputSearchView.layoutParams.width = animatorValue
+                                     textInputSearchView.requestLayout()
+                                 }
+                                 valueAnimatorScales.addListener(object : Animator.AnimatorListener {
+                                     override fun onAnimationStart(animation: Animator) {
+
+                                     }
+
+                                     override fun onAnimationEnd(animation: Animator) {
+                                         textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                                         textInputSearchView.visibility = View.INVISIBLE
+                                         searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                                         searchIcon.visibility = View.VISIBLE
+                                         searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                         searchFloatIt.visibility = View.INVISIBLE
+                                         searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                         searchClose.visibility = View.INVISIBLE
+                                     }
+
+                                     override fun onAnimationCancel(animation: Animator) {
+
+                                     }
+
+                                     override fun onAnimationRepeat(animation: Animator) {
+
+                                     }
+                                 })
+                                 valueAnimatorScales.start()
+                             } else {
+                                 if (SearchEngineAdapter.allSearchResultItems.size > 0 && searchView.text.toString().length >= 2) {
+                                     searchView.showDropDown()
+                                 }
+                             }
+                         }
+
+                         return false
+                     }
+                 })
+
+                searchClose.setOnClickListener {
+                    searchView.setText("")
+
+                    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
+                    val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
+                    valueAnimatorCornerUp.duration = 777
+                    valueAnimatorCornerUp.addUpdateListener { animator ->
+                        val animatorValue = animator.animatedValue as Int
+                        textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                        finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
+                    }
+                    valueAnimatorCornerUp.start()
+
+                    val valueAnimatorScales = ValueAnimator.ofInt(textInputSearchView.width, functionsClass.DpToInteger(51))
+                    valueAnimatorScales.duration = 777
+                    valueAnimatorScales.addUpdateListener { animator ->
+                        val animatorValue = animator.animatedValue as Int
+                        textInputSearchView.layoutParams.width = animatorValue
+                        textInputSearchView.requestLayout()
+                    }
+                    valueAnimatorScales.addListener(object : Animator.AnimatorListener {
+                        override fun onAnimationStart(animation: Animator) {
+
+                        }
+
+                        override fun onAnimationEnd(animation: Animator) {
+                            textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                            textInputSearchView.visibility = View.INVISIBLE
+                            searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                            searchIcon.visibility = View.VISIBLE
+                            searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                            searchFloatIt.visibility = View.INVISIBLE
+                            searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                            searchClose.visibility = View.INVISIBLE
+                        }
+
+                        override fun onAnimationCancel(animation: Animator) {
+
+                        }
+
+                        override fun onAnimationRepeat(animation: Animator) {
+
+                        }
+                    })
+                    valueAnimatorScales.start()
+                }
+            } else {
+                InAppBilling.ItemIAB = BillingManager.iapSearchEngines
+
+                startActivity(Intent(applicationContext, InAppBilling::class.java),
+                        ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+            }
+        }, 99)
     }
     /*Search Engine*/
 }

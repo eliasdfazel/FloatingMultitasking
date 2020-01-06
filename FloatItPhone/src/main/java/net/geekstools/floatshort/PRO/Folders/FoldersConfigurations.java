@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/5/20 4:41 AM
- * Last modified 1/5/20 4:33 AM
+ * Created by Elias Fazel on 1/6/20 8:58 AM
+ * Last modified 1/6/20 7:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1326,8 +1326,6 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                     for (int appInfo = 0; appInfo < applicationInfoList.size(); appInfo++) {
                         if (getPackageManager().getLaunchIntentForPackage(applicationInfoList.get(appInfo).packageName) != null) {
                             try {
-
-
                                 String PackageName = applicationInfoList.get(appInfo).packageName;
                                 String AppName = functionsClass.appName(PackageName);
                                 Drawable AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);

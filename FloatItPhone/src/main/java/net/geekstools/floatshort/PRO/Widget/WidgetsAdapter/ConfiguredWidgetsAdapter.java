@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/6/20 8:58 AM
+ * Last modified 1/6/20 7:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -131,9 +131,13 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     if (textView.length() > 0) {
+
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
+
+
+
                                 WidgetDataInterface widgetDataInterface = Room.databaseBuilder(context, WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                                         .fallbackToDestructiveMigration()
                                         .addCallback(new RoomDatabase.Callback() {
@@ -160,6 +164,8 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
                                         context.sendBroadcast(new Intent("FORCE_RELOAD"));
                                     }
                                 });
+
+
                             }
                         }).start();
                     }
