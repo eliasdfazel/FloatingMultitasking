@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/5/20 4:41 AM
- * Last modified 1/5/20 4:39 AM
+ * Created by Elias Fazel on 1/6/20 6:54 AM
+ * Last modified 1/6/20 6:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -172,7 +172,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
     Map<Integer, String> mapRangeIndex;
     NavigableMap<String, Integer> indexItems;
 
-    ArrayList<AdapterItems> adapterItems, searchAdapterItems;
+    ArrayList<AdapterItems> applicationsAdapterItems, searchAdapterItems;
 
     List<String> indexList;
     List<HybridSectionedGridRecyclerViewAdapter.Section> sections;
@@ -252,7 +252,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
         }
 
         applicationInfoList = new ArrayList<ApplicationInfo>();
-        adapterItems = new ArrayList<AdapterItems>();
+        applicationsAdapterItems = new ArrayList<AdapterItems>();
         mapIndexFirstItem = new LinkedHashMap<String, Integer>();
         mapIndexLastItem = new LinkedHashMap<String, Integer>();
         mapRangeIndex = new LinkedHashMap<Integer, String>();
@@ -1230,7 +1230,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                             installedAppName = functionsClass.appName(installedPackageName);
                             installedAppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(installedPackageName)) : functionsClass.shapedAppIcon(installedPackageName);
 
-                            adapterItems.add(new AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
+                            applicationsAdapterItems.add(new AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
                             indexList.add(newChar);
                             indexItems.put(newChar, itemOfIndex++);
 
@@ -1242,7 +1242,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                         }
                     }
                 }
-                recyclerViewAdapter = new CardHybridAdapter(HybridApplicationsView.this, getApplicationContext(), adapterItems);
+                recyclerViewAdapter = new CardHybridAdapter(HybridApplicationsView.this, getApplicationContext(), applicationsAdapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -1349,7 +1349,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                             installedAppName = functionsClass.appName(installedPackageName);
                             installedAppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(installedPackageName)) : functionsClass.shapedAppIcon(installedPackageName);
 
-                            adapterItems.add(new AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
+                            applicationsAdapterItems.add(new AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
                             indexList.add(newChar);
                             indexItems.put(newChar, itemOfIndex++);
 
@@ -1362,7 +1362,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                     }
                 }
 
-                recyclerViewAdapter = new CardHybridAdapter(HybridApplicationsView.this, getApplicationContext(), adapterItems);
+                recyclerViewAdapter = new CardHybridAdapter(HybridApplicationsView.this, getApplicationContext(), applicationsAdapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -1634,7 +1634,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
              */
             //Loading Shortcuts
             if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
-                searchAdapterItems = adapterItems;
+                searchAdapterItems = applicationsAdapterItems;
 
                 //Loading Folders
                 try {

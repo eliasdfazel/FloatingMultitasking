@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/6/20 6:26 AM
- * Last modified 1/6/20 6:24 AM
+ * Created by Elias Fazel on 1/6/20 6:54 AM
+ * Last modified 1/6/20 6:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -653,13 +653,13 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
         recyclerViewLayoutManager.scrollToPosition(0)
         nestedScrollView.scrollTo(0, 0)
 
-        loadApplicationsIndex().also {
-            if (it.isCompleted) {
+        loadApplicationsIndex().await().also {
+            if (it) {
                 loadInstalledCustomIconPackages()
             }
         }
 
-        loadSearchEngineData()
+        loadSearchEngineData().await()
 
         try {
             if (intent.hasExtra("goHome")) {
@@ -678,7 +678,7 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
         }
     }
 
-    private fun loadApplicationsIndex() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+    private fun loadApplicationsIndex() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
         indexView.removeAllViews()
 
         val indexCount = indexList.size
@@ -826,7 +826,28 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
     /*Indexing*/
 
     /*Search Engine*/
-    private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+    private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
+
+        if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
+            searchAdapterItems = applicationsAdapterItems
+
+            try {
+
+                getFileStreamPath(".categoryInfo").readLines().forEach {
+                    try {
+                        searchAdapterItems.add(AdapterItems(it, functionsClass.readFileLine(it), SearchEngineAdapter.SearchResultType.SearchFolders))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+
+
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
 
     }
     /*Search Engine*/
