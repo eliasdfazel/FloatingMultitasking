@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/6/20 6:54 AM
- * Last modified 1/6/20 6:43 AM
+ * Created by Elias Fazel on 1/7/20 8:01 AM
+ * Last modified 1/7/20 6:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -808,6 +808,19 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
                                     if (user == null) {
                                         functionsClass.savePreference(".UserInformation", "userEmail", null);
+
+                                        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                                .requestIdToken(getString(R.string.webClientId))
+                                                .requestEmail()
+                                                .build();
+
+                                        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(HybridApplicationsView.this, googleSignInOptions);
+                                        try {
+                                            googleSignInClient.signOut();
+                                            googleSignInClient.revokeAccess();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                     } else {
 
                                     }
@@ -828,12 +841,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                             .build();
 
                     GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-                    try {
-                        googleSignInClient.signOut();
-                        googleSignInClient.revokeAccess();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+
                     Intent signInIntent = googleSignInClient.getSignInIntent();
                     startActivityForResult(signInIntent, 666);
 
@@ -851,7 +859,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
             e.printStackTrace();
         }
 
-        ImageView shareIt = (ImageView) findViewById(R.id.share);
+        ImageView shareIt = (ImageView) findViewById(R.id.shareIt);
         LayerDrawable drawableShare = (LayerDrawable) getDrawable(R.drawable.draw_share);
         Drawable backgroundShare = drawableShare.findDrawableByLayerId(R.id.backtemp);
         backgroundShare.setTint(PublicVariable.primaryColor);

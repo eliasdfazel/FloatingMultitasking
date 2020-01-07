@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/6/20 8:58 AM
- * Last modified 1/6/20 8:43 AM
+ * Created by Elias Fazel on 1/7/20 8:01 AM
+ * Last modified 1/7/20 7:56 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,6 +14,7 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.ActivityOptions
+import android.app.Dialog
 import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -26,6 +27,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.*
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -38,24 +40,33 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.hybrid_view.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
+import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.R
@@ -64,12 +75,18 @@ import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedG
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authComponentName
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authHW
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionX
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionY
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
+import net.geekstools.floatshort.PRO.Util.InAppUpdate.InAppUpdateProcess
 import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity
+import net.geekstools.floatshort.PRO.Util.RemoteProcess.LicenseValidator
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets
@@ -77,11 +94,17 @@ import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch
+import net.geekstools.floatshort.PRO.Util.UI.WaitingDialogue
+import net.geekstools.floatshort.PRO.Util.UI.WaitingDialogueLiveData
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
+import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.LinkedHashMap
 import kotlin.math.hypot
 
-class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
+class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickListener, OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
     private lateinit var functionsClass: FunctionsClass
     private lateinit var functionsClassSecurity: FunctionsClassSecurity
@@ -116,9 +139,11 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
 
     private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
 
-    private lateinit var loadCustomIcons: LoadCustomIcons
-
     private lateinit var firebaseAuth: FirebaseAuth
+
+    var waitingDialogue: Dialog? = null
+
+    private lateinit var loadCustomIcons: LoadCustomIcons
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -436,10 +461,6 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
             true
         }
 
-        /*Search Engine*/
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        /*Search Engine*/
-
         firebaseAuth = FirebaseAuth.getInstance()
 
         if (BuildConfig.VERSION_NAME.contains("[BETA]") && !functionsClass.readPreference(".UserInformation", "SubscribeToBeta", false)) {
@@ -453,22 +474,167 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
 
     override fun onStart() {
         super.onStart()
+
+        if (!getFileStreamPath(".License").exists() && functionsClass.networkConnection()) {
+            startService(Intent(applicationContext, LicenseValidator::class.java))
+
+            val intentFilter = IntentFilter()
+            intentFilter.addAction(getString(R.string.license))
+            val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    if (intent.action == getString(R.string.license)) {
+                        functionsClass.dialogueLicense(this@ApplicationsView)
+
+                        Handler().postDelayed({
+                            stopService(Intent(applicationContext, LicenseValidator::class.java))
+                        }, 1000)
+
+                        unregisterReceiver(this)
+                    }
+                }
+            }
+            registerReceiver(broadcastReceiver, intentFilter)
+        }
+
+        if (functionsClass.networkConnection()
+                && functionsClass.readPreference(".UserInformation", "userEmail", null) == null
+                && firebaseAuth.currentUser == null) {
+
+            val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.webClientId))
+                    .requestEmail()
+                    .build()
+
+            val googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
+            googleSignInClient.signInIntent.run {
+                startActivityForResult(this, 666)
+            }
+
+            ViewModelProviders.of(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
+                this.dialogueTitle.value = getString(R.string.signinTitle)
+                this.dialogueMessage.value = getString(R.string.signinMessage)
+
+                waitingDialogue = WaitingDialogue().initShow(this@ApplicationsView)
+            }
+        }
+
+        val drawableShare: LayerDrawable? = getDrawable(R.drawable.draw_share) as LayerDrawable
+        val backgroundShare = drawableShare!!.findDrawableByLayerId(R.id.backtemp)
+        backgroundShare.setTint(PublicVariable.primaryColor)
+
+        shareIt.setImageDrawable(drawableShare)
+        shareIt.setOnClickListener {
+            functionsClass.doVibrate(50)
+
+            val shareText = getString(R.string.shareTitle) +
+                    "\n" + getString(R.string.shareSummary) +
+                    "\n" + getString(R.string.play_store_link) + packageName
+            val sharingIntent = Intent(Intent.ACTION_SEND).apply {
+                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                this.putExtra(Intent.EXTRA_TEXT, shareText)
+                this.type = "text/plain"
+            }
+            startActivity(sharingIntent)
+        }
     }
 
     override fun onResume() {
         super.onResume()
+        PublicVariable.inMemory = true
+
+        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
+        firebaseRemoteConfig.fetch(0)
+                .addOnSuccessListener {
+                    firebaseRemoteConfig.activate().addOnSuccessListener {
+                        if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(packageName)) {
+                            val layerDrawableNewUpdate = getDrawable(R.drawable.ic_update) as LayerDrawable?
+                            val gradientDrawableNewUpdate = layerDrawableNewUpdate!!.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
+                            gradientDrawableNewUpdate.setTint(PublicVariable.primaryColor)
+                            val newUpdate = findViewById<View>(R.id.newUpdate) as ImageView
+                            newUpdate.setImageDrawable(layerDrawableNewUpdate)
+                            newUpdate.visibility = View.VISIBLE
+                            newUpdate.setOnClickListener {
+                                functionsClass.upcomingChangeLog(
+                                        this@ApplicationsView,
+                                        firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
+                            }
+                            functionsClass.notificationCreator(
+                                    getString(R.string.updateAvailable),
+                                    firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogSummaryConfigKey()),
+                                    firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toInt()
+                            )
+                            val inAppUpdateTriggeredTime =
+                                    (Calendar.getInstance()[Calendar.YEAR].toString() + Calendar.getInstance()[Calendar.MONTH].toString() + Calendar.getInstance()[Calendar.DATE].toString())
+                                            .toInt()
+                            if (firebaseAuth.currentUser != null
+                                    && functionsClass.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
+                                startActivity(Intent(applicationContext, InAppUpdateProcess::class.java)
+                                        .putExtra("UPDATE_CHANGE_LOG", firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()))
+                                        .putExtra("UPDATE_VERSION", firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                                        ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+                            }
+                        } else {
+                        }
+                    }
+                }
+
+        functionsClassSecurity.resetAuthAppValues()
     }
 
     override fun onPause() {
         super.onPause()
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        firebaseUser?.reload()?.addOnCompleteListener {
+            firebaseAuth.addAuthStateListener { firebaseAuth ->
+                val user = firebaseAuth.currentUser
+                if (user == null) {
+                    functionsClass.savePreference(".UserInformation", "userEmail", null)
+
+                    val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestIdToken(getString(R.string.webClientId))
+                            .requestEmail()
+                            .build()
+
+                    val googleSignInClient = GoogleSignIn.getClient(this@ApplicationsView, googleSignInOptions)
+                    try {
+                        googleSignInClient.signOut()
+                        googleSignInClient.revokeAccess()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+
+                }
+            }
+        }
+
+        functionsClass.addAppShortcuts()
+        functionsClass.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition())
+        if (PublicVariable.actionCenter) {
+            functionsClass.closeActionMenuOption(fullActionViews, actionButton)
+        }
+        functionsClass.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
+
+        if (functionsClass.SystemCache()) {
+            startService(Intent(applicationContext, BindServices::class.java))
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        PublicVariable.inMemory = false
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
+        val homeScreen = Intent(Intent.ACTION_MAIN).apply {
+            this.addCategory(Intent.CATEGORY_HOME)
+            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(homeScreen, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
+        functionsClass.CheckSystemRAM(this@ApplicationsView)
     }
 
     override fun onTouch(view: View?, event: MotionEvent?): Boolean {
@@ -477,11 +643,27 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
     }
 
     override fun onClick(view: View?) {
-
+        if (view is ImageView) {
+            val position = view.id
+            functionsClass.runUnlimitedShortcutsService(freqApps[position])
+        }
     }
 
     override fun onLongClick(view: View?): Boolean {
+        if (view is ImageView) {
+            val position = view.id
+            if (functionsClassSecurity.isAppLocked(freqApps[position])) {
+                authComponentName = freqApps[position]
 
+                authPositionX = functionsClass.displayX() / 2
+                authPositionY = functionsClass.displayY() / 2
+                authHW = PublicVariable.HW
+
+                functionsClassSecurity.openAuthInvocation()
+            } else {
+                functionsClass.appsLaunchPad(freqApps[position])
+            }
+        }
         return true
     }
 
@@ -490,13 +672,59 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
     }
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent?): Boolean {
+        simpleGestureFilterSwitch.onTouchEvent(motionEvent)
+
         return super.dispatchTouchEvent(motionEvent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                666 -> {
+                    val googleSignInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
+                    val googleSignInAccount = googleSignInAccountTask.getResult(ApiException::class.java)
 
+                    val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
+                    firebaseAuth.signInWithCredential(authCredential).addOnSuccessListener {
+                        val firebaseUser = firebaseAuth.currentUser
+                        if (firebaseUser != null) {
+                            functionsClass.savePreference(".UserInformation", "userEmail", firebaseUser.email)
+
+                            try {
+                                val betaFile = File("/data/data/$packageName/shared_prefs/.UserInformation.xml")
+                                val uriBetaFile = Uri.fromFile(betaFile)
+                                val firebaseStorage = FirebaseStorage.getInstance()
+                                val storageReference = firebaseStorage.getReference("/Users/" + "API" + functionsClass.returnAPI() + "/" +
+                                        functionsClass.readPreference(".UserInformation", "userEmail", null))
+                                val uploadTask = storageReference.putFile(uriBetaFile)
+                                uploadTask.addOnFailureListener { exception ->
+                                    exception.printStackTrace()
+
+                                    ViewModelProviders.of(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
+                                        this.dialogueTitle.value = getString(R.string.error)
+                                        this.dialogueMessage.value = exception.message
+                                    }
+                                }.addOnSuccessListener {
+                                    PrintDebug("Firebase Activities Done Successfully")
+                                    functionsClass.Toast(getString(R.string.signinFinished), Gravity.TOP)
+
+                                    waitingDialogue?.dismiss()
+                                }
+                            } finally {
+                                functionsClassSecurity.downloadLockedAppsData()
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            ViewModelProviders.of(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
+                this.dialogueTitle.value = getString(R.string.error)
+                this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
+            }
+        }
     }
 
     private fun initiateLoadingProcessAll() {
@@ -556,15 +784,9 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
                     splashAnimation.setAnimationListener(object : Animation.AnimationListener {
                         override fun onAnimationStart(animation: Animation?) {
                             if (loadFreq == true) {
-                                /*
-                                 * Load Frequently Used Applications
-                                 */
+                                loadFrequentlyUsedApplications()
                             }
                             switchFloating.visibility = View.VISIBLE
-
-                            /*
-                             * Load Rest Of Applications
-                             */
                         }
 
                         override fun onAnimationRepeat(animation: Animation?) {
@@ -686,6 +908,36 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
 
             this@ApplicationsView.finish()
         }
+    }
+
+    private fun loadFrequentlyUsedApplications() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+        freqItem.removeAllViews()
+
+        freqCounter = IntArray(25)
+        freqApps = intent.getStringArrayExtra("freq")
+        val freqLength = intent.getIntExtra("num", -1)
+        if (getFileStreamPath("Frequently").exists()) {
+            functionsClass.removeLine(".categoryInfo", "Frequently")
+            deleteFile("Frequently")
+        }
+        functionsClass.saveFileAppendLine(".categoryInfo", "Frequently")
+
+        freqList.visibility = View.VISIBLE
+
+        for (i in 0 until freqLength) {
+            val freqLayout = layoutInflater.inflate(R.layout.freq_item, null) as RelativeLayout
+            val shapesImage = functionsClass.initShapesImage(freqLayout, R.id.freqItems)
+            shapesImage.id = i
+            shapesImage.setOnClickListener(this@ApplicationsView)
+            shapesImage.setOnLongClickListener(this@ApplicationsView)
+            shapesImage.setImageDrawable(if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(freqApps[i], functionsClass.shapedAppIcon(freqApps[i])) else functionsClass.shapedAppIcon(freqApps[i]))
+            freqItem.addView(freqLayout)
+
+            functionsClass.saveFileAppendLine("Frequently", freqApps[i])
+            functionsClass.saveFile(freqApps[i] + "Frequently", freqApps[i])
+        }
+
+        functionsClass.addAppShortcuts()
     }
 
     private fun loadApplicationsIndex() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
@@ -837,6 +1089,9 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
 
     /*Search Engine*/
     private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
+        /*Search Engine*/
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        /*Search Engine*/
 
         if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
             searchAdapterItems = ArrayList<AdapterItems>()
@@ -958,6 +1213,29 @@ class ApplicationsView : Activity(), View.OnClickListener, OnLongClickListener, 
     }
 
     private fun setupSearchView(searchRecyclerViewAdapter: SearchEngineAdapter) {
+        if (loadFreq) {
+            val layoutParamsAbove = textInputSearchView.layoutParams as RelativeLayout.LayoutParams
+            layoutParamsAbove.addRule(RelativeLayout.ABOVE, R.id.freqList)
+
+            textInputSearchView.layoutParams = layoutParamsAbove
+            textInputSearchView.bringToFront()
+            searchIcon.layoutParams = layoutParamsAbove
+            searchIcon.bringToFront()
+
+            val layoutParamsAlignEnd = searchFloatIt.layoutParams as RelativeLayout.LayoutParams
+            layoutParamsAlignEnd.addRule(RelativeLayout.END_OF, R.id.textInputSearchView)
+            layoutParamsAlignEnd.addRule(RelativeLayout.ABOVE, R.id.freqList)
+
+            searchFloatIt.layoutParams = layoutParamsAlignEnd
+            searchFloatIt.bringToFront()
+
+            val layoutParamsAlignStart = searchClose.layoutParams as RelativeLayout.LayoutParams
+            layoutParamsAlignStart.addRule(RelativeLayout.START_OF, R.id.textInputSearchView)
+            layoutParamsAlignStart.addRule(RelativeLayout.ABOVE, R.id.freqList)
+
+            searchClose.layoutParams = layoutParamsAlignStart
+            searchClose.bringToFront()
+        }
         searchView.setAdapter(searchRecyclerViewAdapter)
 
         searchView.setDropDownBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

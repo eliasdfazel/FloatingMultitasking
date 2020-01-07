@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/6/20 8:58 AM
- * Last modified 1/6/20 7:17 AM
+ * Created by Elias Fazel on 1/7/20 8:01 AM
+ * Last modified 1/7/20 5:03 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -828,7 +828,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
             e.printStackTrace();
         }
 
-        ImageView shareIt = (ImageView) findViewById(R.id.share);
+        ImageView shareIt = (ImageView) findViewById(R.id.shareIt);
         LayerDrawable drawableShare = (LayerDrawable) getDrawable(R.drawable.draw_share);
         Drawable backgroundShare = drawableShare.findDrawableByLayerId(R.id.backtemp);
         backgroundShare.setTint(PublicVariable.primaryColor);
