@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/7/20 8:01 AM
- * Last modified 1/7/20 5:04 AM
+ * Created by Elias Fazel on 1/7/20 8:15 AM
+ * Last modified 1/7/20 8:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -96,7 +96,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
@@ -5401,7 +5401,7 @@ public class FunctionsClass {
 
     /*Action Center*/
     public void Preferences(boolean visibility) {
-        final Button preferencesView = activity.findViewById(R.id.preferences);
+        final ImageView preferencesView = activity.findViewById(R.id.preferences);
         if (visibility == true && !preferencesView.isShown()) {
             LayerDrawable drawPrefAction = (LayerDrawable) context.getDrawable(R.drawable.draw_pref_action);
             Drawable backPrefAction = drawPrefAction.findDrawableByLayerId(R.id.backtemp);
