@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/8/20 4:26 AM
- * Last modified 1/8/20 4:17 AM
+ * Created by Elias Fazel on 1/8/20 4:34 AM
+ * Last modified 1/8/20 4:32 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -12,6 +12,7 @@ package net.geekstools.floatshort.PRO.Shortcuts
 
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.app.Dialog
@@ -641,6 +642,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         functionsClass.CheckSystemRAM(this@ApplicationsView)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View?, event: MotionEvent?): Boolean {
 
         return false
@@ -929,7 +931,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         }
     }
 
-    private fun loadFrequentlyUsedApplications() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+    private fun loadFrequentlyUsedApplications() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
         freqItem.removeAllViews()
 
         freqCounter = IntArray(25)
@@ -1000,7 +1002,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         },700)
     }
 
-    private fun loadInstalledCustomIconPackages() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+    private fun loadInstalledCustomIconPackages() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
         try {
             val packageManager = applicationContext.packageManager
             //ACTION: com.novalauncher.THEME
