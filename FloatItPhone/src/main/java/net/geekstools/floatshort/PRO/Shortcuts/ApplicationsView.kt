@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/7/20 8:01 AM
- * Last modified 1/7/20 7:56 AM
+ * Created by Elias Fazel on 1/8/20 4:26 AM
+ * Last modified 1/8/20 4:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -72,14 +72,12 @@ import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardHybridAdapter
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Util.Functions.*
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authComponentName
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authHW
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionX
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionY
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
@@ -106,8 +104,11 @@ import kotlin.math.hypot
 
 class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickListener, OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
+    private lateinit var functionsClassDataActivity: FunctionsClassDataActivity
+
     private lateinit var functionsClass: FunctionsClass
     private lateinit var functionsClassSecurity: FunctionsClassSecurity
+    private lateinit var functionsClassUI: FunctionsClassUI
 
     private lateinit var applicationInfoList: List<ResolveInfo>
 
@@ -149,11 +150,14 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         super.onCreate(savedInstanceState)
         setContentView(R.layout.hybrid_view)
 
+        functionsClassDataActivity = FunctionsClassDataActivity(this@ApplicationsView)
+
         functionsClass = FunctionsClass(applicationContext, this@ApplicationsView)
         functionsClassSecurity = FunctionsClassSecurity(this@ApplicationsView, applicationContext)
+        functionsClassUI = FunctionsClassUI(functionsClassDataActivity, functionsClass)
 
         functionsClass.setThemeColorFloating(MainView, functionsClass.appThemeTransparent())
-        functionsClass.ChangeLog(this@ApplicationsView, false)
+        functionsClassUI.ChangeLog()
 
         simpleGestureFilterSwitch = SimpleGestureFilterSwitch(applicationContext, this@ApplicationsView)
 
@@ -668,7 +672,22 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     }
 
     override fun onSwipe(direction: Int) {
-
+        when (direction) {
+            SimpleGestureFilterSwitch.SWIPE_RIGHT -> {
+                if (functionsClass.floatingWidgetsPurchased()) {
+                    functionsClass.navigateToClass(WidgetConfigurations::class.java,
+                            ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+                } else {
+                    InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
+                    functionsClass.navigateToClass(InAppBilling::class.java,
+                            ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+                }
+            }
+            SimpleGestureFilterSwitch.SWIPE_LEFT -> {
+                functionsClass.navigateToClass(FoldersConfigurations::class.java,
+                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
+            }
+        }
     }
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent?): Boolean {

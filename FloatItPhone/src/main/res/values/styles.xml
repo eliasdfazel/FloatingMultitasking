@@ -1,8 +1,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/4/20 2:01 AM
-  ~ Last modified 1/4/20 1:16 AM
+  ~ Created by Elias Fazel on 1/8/20 4:26 AM
+  ~ Last modified 1/8/20 4:22 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -34,7 +34,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="GeeksEmpire.Preference.Light" parent="@style/GeeksEmpire.AppCompat">
+    <style name="GeeksEmpire.Preference.Light" parent="@style/GeeksEmpire.Material">
         <item name="android:textColorPrimary">@color/darker</item>
         <item name="android:textColorSecondary">@color/dark_transparent</item>
         <item name="android:colorAccent">@color/default_color</item>
@@ -47,7 +47,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="GeeksEmpire.Preference.Dark" parent="@style/GeeksEmpire.AppCompat">
+    <style name="GeeksEmpire.Preference.Dark" parent="@style/GeeksEmpire.Material">
         <item name="android:textColorPrimary">@color/light</item>
         <item name="android:textColorSecondary">@color/light_transparent</item>
         <item name="android:colorAccent">@color/default_color</item>

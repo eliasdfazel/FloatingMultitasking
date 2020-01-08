@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/4/20 2:01 AM
- * Last modified 1/4/20 1:57 AM
+ * Created by Elias Fazel on 1/8/20 4:26 AM
+ * Last modified 1/8/20 4:19 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -51,10 +51,8 @@ import com.bumptech.glide.request.target.Target
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug
+import net.geekstools.floatshort.PRO.Util.Functions.*
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver
@@ -62,7 +60,10 @@ import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPas
 
 class PreferencesFragment : PreferenceFragmentCompat() {
 
+    lateinit var functionsClassDataActivity: FunctionsClassDataActivity
+
     lateinit var functionsClass: FunctionsClass
+    lateinit var functionsClassUI: FunctionsClassUI
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -94,7 +95,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     lateinit var runnablePressHold: Runnable
     val handlerPressHold = Handler()
 
-    var touchingDelay = false
+    var touchingDelay: Boolean = false
     var FromWidgetsConfigurations: Boolean = false
     var currentTheme: Boolean = false
 
@@ -105,7 +106,10 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_screen, rootKey)
 
+        functionsClassDataActivity = FunctionsClassDataActivity(activity!!)
+
         functionsClass = FunctionsClass(context, activity)
+        functionsClassUI = FunctionsClassUI(functionsClassDataActivity, functionsClass)
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -324,7 +328,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         gradientDrawableLoadLogo.setTint(PublicVariable.primaryColorOpposite)
         whatsnew.icon = layerDrawableLoadLogo
         whatsnew.setOnPreferenceClickListener {
-            functionsClass.ChangeLog(activity, betaChangeLog, betaVersionCode, true)
+            functionsClassUI.ChangeLogPreference(betaChangeLog, betaVersionCode)
 
             true
         }

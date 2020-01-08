@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/7/20 8:01 AM
- * Last modified 1/7/20 6:13 AM
+ * Created by Elias Fazel on 1/8/20 4:26 AM
+ * Last modified 1/8/20 3:48 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -234,7 +234,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
 
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
-        functionsClass.ChangeLog(HybridApplicationsView.this, false);
+        //functionsClass.ChangeLog(HybridApplicationsView.this);
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
 

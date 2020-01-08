@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/7/20 8:01 AM
- * Last modified 1/7/20 5:03 AM
+ * Created by Elias Fazel on 1/8/20 4:26 AM
+ * Last modified 1/8/20 4:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -106,8 +106,10 @@ import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.FoldersListAdapter;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDataActivity;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassUI;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
@@ -137,8 +139,11 @@ import java.util.List;
 
 public class FoldersConfigurations extends Activity implements View.OnClickListener, View.OnLongClickListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
+    FunctionsClassDataActivity functionsClassDataActivity;
+
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
+    FunctionsClassUI functionsClassUI;
 
     RelativeLayout fullActionViews, wholeCategory;
     RecyclerView categorylist;
@@ -177,6 +182,8 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_handler);
 
+        functionsClassDataActivity = new FunctionsClassDataActivity(FoldersConfigurations.this);
+
         wholeCategory = (RelativeLayout) findViewById(R.id.wholeCategory);
         categorylist = (RecyclerView) findViewById(R.id.categorylist);
         fullActionViews = (RelativeLayout) findViewById(R.id.fullActionViews);
@@ -199,15 +206,12 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
 
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
-        functionsClass.ChangeLog(FoldersConfigurations.this, false);
+        functionsClassUI = new FunctionsClassUI(functionsClassDataActivity, functionsClass);
+
+        functionsClass.setThemeColorFloating(wholeCategory, functionsClass.appThemeTransparent());
+        functionsClassUI.ChangeLog();
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
-
-        if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColorFloating(wholeCategory, true);
-        } else {
-            functionsClass.setThemeColorFloating(wholeCategory, false);
-        }
 
         adapterItems = new ArrayList<AdapterItems>();
 

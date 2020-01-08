@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/7/20 8:15 AM
- * Last modified 1/7/20 8:15 AM
+ * Created by Elias Fazel on 1/8/20 4:26 AM
+ * Last modified 1/8/20 4:26 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -124,11 +124,6 @@ import com.google.firebase.appindexing.FirebaseAppIndex;
 import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Actions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import net.geekstools.floatshort.PRO.App_Unlimited_Bluetooth;
 import net.geekstools.floatshort.PRO.App_Unlimited_Gps;
@@ -1549,210 +1544,6 @@ public class FunctionsClass {
         }
     }
 
-    public void ChangeLog(Activity activity, boolean showChangeLog) {
-        try {
-            AlertDialog.Builder alertDialog = null;
-            if (PublicVariable.themeLightDark == true) {
-                alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
-            } else if (PublicVariable.themeLightDark == false) {
-                alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
-            }
-            alertDialog.setTitle(Html.fromHtml(context.getString(R.string.whatsnew)));
-            alertDialog.setMessage(Html.fromHtml(context.getString(R.string.changelog)));
-
-            alertDialog.setIcon(R.drawable.ic_launcher);
-            alertDialog.setCancelable(true);
-            alertDialog.setPositiveButton(context.getString(R.string.like), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_facebook_app)))
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                }
-            });
-
-            alertDialog.setNeutralButton(context.getString(R.string.shareit), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int i) {
-                    dialog.dismiss();
-                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()))
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                }
-            });
-            alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    saveFile(".Updated", String.valueOf(appVersionCode(context.getPackageName())));
-
-                    dialog.dismiss();
-                }
-            });
-
-            if (showChangeLog == true) {
-                alertDialog.show();
-            } else if (!context.getFileStreamPath(".Updated").exists()) {
-                alertDialog.show();
-            } else {
-                if (appVersionCode(context.getPackageName()) > Integer.parseInt(readFile(".Updated"))) {
-                    alertDialog.show();
-
-                    if (!BuildConfig.DEBUG && networkConnection()) {
-                        FirebaseAuth.getInstance().addAuthStateListener(
-                                new FirebaseAuth.AuthStateListener() {
-                                    @Override
-                                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                                        if (user == null) {
-                                            savePreference(".UserInformation", "userEmail", null);
-
-                                        } else {
-                                            new Handler().postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    try {
-                                                        File betaFile = new File("/data/data/" + context.getPackageName() + "/shared_prefs/.UserInformation.xml");
-                                                        Uri uriBetaFile = Uri.fromFile(betaFile);
-                                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-
-                                                        StorageReference storageReference = firebaseStorage.getReference("/Users/" + "API" + returnAPI() + "/" +
-                                                                readPreference(".UserInformation", "userEmail", null));
-                                                        UploadTask uploadTask = storageReference.putFile(uriBetaFile);
-
-                                                        uploadTask.addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception exception) {
-                                                                exception.printStackTrace();
-                                                            }
-                                                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                                            @Override
-                                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                                FunctionsClassDebug.Companion.PrintDebug("Firebase Activities Done Successfully");
-                                                            }
-                                                        });
-
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                            }, 333);
-                                        }
-                                    }
-                                }
-                        );
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void ChangeLog(Activity activity, String betaChangeLog, String betaVersionCode, boolean showChangeLog) {
-        try {
-            AlertDialog.Builder alertDialog = null;
-            if (PublicVariable.themeLightDark == true) {
-                alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
-            } else if (PublicVariable.themeLightDark == false) {
-                alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
-            }
-            alertDialog.setTitle(Html.fromHtml(context.getString(R.string.whatsnew)));
-            alertDialog.setMessage(Html.fromHtml(context.getString(R.string.changelog)));
-
-            alertDialog.setIcon(R.drawable.ic_launcher);
-            alertDialog.setCancelable(true);
-            alertDialog.setPositiveButton(context.getString(R.string.like), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_facebook_app)))
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                }
-            });
-
-            String neutralButtonText;
-            if (betaChangeLog.contains(context.getPackageName())) {
-                neutralButtonText = context.getString(R.string.shareit);
-            } else {
-                neutralButtonText = context.getString(R.string.betaUpdate);
-            }
-            alertDialog.setNeutralButton(neutralButtonText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int i) {
-                    dialog.dismiss();
-                    if (neutralButtonText.equals(context.getString(R.string.shareit))) {
-                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()))
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                    } else if (neutralButtonText.equals(context.getString(R.string.betaUpdate))) {
-                        upcomingChangeLog(activity, betaChangeLog, betaVersionCode);
-                    }
-                }
-            });
-            alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    saveFile(".Updated", String.valueOf(appVersionCode(context.getPackageName())));
-
-                    dialog.dismiss();
-                }
-            });
-
-            if (showChangeLog == true) {
-                alertDialog.show();
-            } else if (!context.getFileStreamPath(".Updated").exists()) {
-                alertDialog.show();
-            } else {
-                if (appVersionCode(context.getPackageName()) > Integer.parseInt(readFile(".Updated"))) {
-                    alertDialog.show();
-
-                    if (!BuildConfig.DEBUG && networkConnection()) {
-                        FirebaseAuth.getInstance().addAuthStateListener(
-                                new FirebaseAuth.AuthStateListener() {
-                                    @Override
-                                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                                        if (user == null) {
-                                            savePreference(".UserInformation", "userEmail", null);
-
-                                        } else {
-                                            new Handler().postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    try {
-                                                        File betaFile = new File("/data/data/" + context.getPackageName() + "/shared_prefs/.UserInformation.xml");
-                                                        Uri uriBetaFile = Uri.fromFile(betaFile);
-                                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-
-                                                        StorageReference storageReference = firebaseStorage.getReference("/Users/" + "API" + returnAPI() + "/" +
-                                                                readPreference(".UserInformation", "userEmail", null));
-                                                        UploadTask uploadTask = storageReference.putFile(uriBetaFile);
-
-                                                        uploadTask.addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception exception) {
-                                                                exception.printStackTrace();
-                                                            }
-                                                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                                            @Override
-                                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                                FunctionsClassDebug.Companion.PrintDebug("Firebase Activities Done Successfully");
-                                                            }
-                                                        });
-
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                            }, 333);
-                                        }
-                                    }
-                                }
-                        );
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void upcomingChangeLog(Activity activity, String updateInfo, String versionCode) {
         AlertDialog.Builder alertDialog = null;
         if (PublicVariable.themeLightDark == true) {
@@ -1769,14 +1560,14 @@ public class FunctionsClass {
 
         alertDialog.setIcon(layerDrawableNewUpdate);
         alertDialog.setCancelable(true);
-        alertDialog.setPositiveButton(context.getString(R.string.like), new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(context.getString(R.string.followIt), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_facebook_app)))
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });
-        alertDialog.setNeutralButton(context.getString(R.string.newupdate), new DialogInterface.OnClickListener() {
+        alertDialog.setNeutralButton(context.getString(R.string.newUpdate), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 dialog.dismiss();
@@ -1846,8 +1637,9 @@ public class FunctionsClass {
                 }
             }
         });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
+
             }
         });
         builder.show();
