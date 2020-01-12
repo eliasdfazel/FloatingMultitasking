@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/12/20 11:43 AM
+ * Last modified 1/12/20 11:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -30,7 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItemsApplications;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.util.ArrayList;
@@ -40,17 +40,17 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
     FunctionsClass functionsClass;
     Activity activity;
     Context context;
-    ArrayList<AdapterItems> adapterItems;
+    ArrayList<AdapterItemsApplications> adapterItemsApplications;
 
     int layoutInflater, idRippleShape;
 
     View view;
     ViewHolder viewHolder;
 
-    public CardHybridAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems) {
+    public CardHybridAdapter(Activity activity, Context context, ArrayList<AdapterItemsApplications> adapterItemsApplications) {
         this.context = context;
         this.activity = activity;
-        this.adapterItems = adapterItems;
+        this.adapterItemsApplications = adapterItemsApplications;
         functionsClass = new FunctionsClass(context, activity);
 
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
@@ -97,18 +97,18 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
         final Drawable backIndicator = drawIndicator.findDrawableByLayerId(R.id.backtemp);
         backIndicator.setTint(PublicVariable.primaryColor);
 
-        viewHolderBinder.shapedIcon.setImageDrawable(adapterItems.get(position).getAppIcon());
-        viewHolderBinder.appName.setText(adapterItems.get(position).getAppName());
+        viewHolderBinder.shapedIcon.setImageDrawable(adapterItemsApplications.get(position).getAppIcon());
+        viewHolderBinder.appName.setText(adapterItemsApplications.get(position).getAppName());
         viewHolderBinder.appName.setTextColor(PublicVariable.colorLightDarkOpposite);
 
         RippleDrawable drawItemRippleDrawable = (RippleDrawable) context.getDrawable(idRippleShape);
-        drawItemRippleDrawable.setColor(ColorStateList.valueOf(functionsClass.extractDominantColor(adapterItems.get(position).getAppIcon())));
+        drawItemRippleDrawable.setColor(ColorStateList.valueOf(functionsClass.extractDominantColor(adapterItemsApplications.get(position).getAppIcon())));
         viewHolderBinder.item.setBackground(drawItemRippleDrawable);
 
         try {
             //  viewHolderBinder.recoveryIndicator = viewHolderBinder.recoveryIndicator;
             viewHolderBinder.recoveryIndicator.setVisibility(View.INVISIBLE);
-            if (functionsClass.loadRecoveryIndicator(adapterItems.get(position).getPackageName()) == true) {
+            if (functionsClass.loadRecoveryIndicator(adapterItemsApplications.get(position).getPackageName()) == true) {
                 viewHolderBinder.recoveryIndicator.setVisibility(View.VISIBLE);
                 viewHolderBinder.recoveryIndicator.setBackground(drawIndicator);
 
@@ -118,7 +118,7 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
             viewHolderBinder.recoveryIndicator.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    functionsClass.removeLine(".uFile", adapterItems.get(position).getPackageName());
+                    functionsClass.removeLine(".uFile", adapterItemsApplications.get(position).getPackageName());
                     try {
                         viewHolderBinder.recoveryIndicator.setVisibility(View.INVISIBLE);
                         notifyDataSetChanged();
@@ -134,7 +134,7 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
         viewHolderBinder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String PackageName = adapterItems.get(position).getPackageName();
+                String PackageName = adapterItemsApplications.get(position).getPackageName();
                 functionsClass.runUnlimitedShortcutsService(PackageName);
 
                 new Handler().postDelayed(new Runnable() {
@@ -154,7 +154,7 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
         viewHolderBinder.item.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                String PackageName = adapterItems.get(position).getPackageName();
+                String PackageName = adapterItemsApplications.get(position).getPackageName();
                 functionsClass.popupOptionShortcuts(context, view, PackageName);
                 return true;
             }
@@ -163,7 +163,7 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return adapterItems.size();
+        return adapterItemsApplications.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

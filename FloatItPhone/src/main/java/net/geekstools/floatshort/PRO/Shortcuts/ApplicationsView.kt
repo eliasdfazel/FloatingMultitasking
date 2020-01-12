@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/12/20 11:07 AM
- * Last modified 1/12/20 10:11 AM
+ * Created by Elias Fazel on 1/12/20 11:43 AM
+ * Last modified 1/12/20 11:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -80,6 +80,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthO
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionX
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionY
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems
+import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItemsApplications
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
@@ -119,7 +120,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     private lateinit var indexItems: NavigableMap<String, Int>
     private lateinit var indexList: ArrayList<String?>
 
-    private lateinit var applicationsAdapterItems: ArrayList<AdapterItems>
+    private lateinit var applicationsAdapterItems: ArrayList<AdapterItemsApplications>
     private lateinit var sections: ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>
     private lateinit var recyclerViewAdapter: RecyclerView.Adapter<CardHybridAdapter.ViewHolder>
     private lateinit var recyclerViewLayoutManager: GridLayoutManager
@@ -170,7 +171,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         indexItems = TreeMap<String, Int>()
 
         applicationInfoList = ArrayList<ResolveInfo>()
-        applicationsAdapterItems = ArrayList<AdapterItems>()
+        applicationsAdapterItems = ArrayList<AdapterItemsApplications>()
 
         mapIndexFirstItem = LinkedHashMap<String, Int>()
         mapIndexLastItem = LinkedHashMap<String, Int>()
@@ -846,7 +847,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                             functionsClass.shapedAppIcon(installedPackageName)
                         }
 
-                        applicationsAdapterItems.add(AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts))
+                        applicationsAdapterItems.add(AdapterItemsApplications(installedAppName!!, installedPackageName!!, installedAppIcon!!, SearchEngineAdapter.SearchResultType.SearchShortcuts))
 
                     } catch (e: Exception) {
                         e.printStackTrace()

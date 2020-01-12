@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/8/20 4:26 AM
- * Last modified 1/8/20 3:48 AM
+ * Created by Elias Fazel on 1/12/20 11:43 AM
+ * Last modified 1/12/20 11:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -106,7 +106,6 @@ import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardHybridAdapter;
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
@@ -1250,7 +1249,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                         }
                     }
                 }
-                recyclerViewAdapter = new CardHybridAdapter(HybridApplicationsView.this, getApplicationContext(), applicationsAdapterItems);
+         //       recyclerViewAdapter = new CardHybridAdapter(HybridApplicationsView.this, getApplicationContext(), applicationsAdapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -1370,7 +1369,7 @@ public class HybridApplicationsView extends Activity implements View.OnClickList
                     }
                 }
 
-                recyclerViewAdapter = new CardHybridAdapter(HybridApplicationsView.this, getApplicationContext(), applicationsAdapterItems);
+          //      recyclerViewAdapter = new CardHybridAdapter(HybridApplicationsView.this, getApplicationContext(), applicationsAdapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
