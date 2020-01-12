@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/12/20 9:35 AM
- * Last modified 1/12/20 9:34 AM
+ * Created by Elias Fazel on 1/12/20 11:07 AM
+ * Last modified 1/12/20 10:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -116,7 +116,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     private lateinit var mapIndexFirstItem: LinkedHashMap<String, Int>
     private lateinit var mapIndexLastItem: LinkedHashMap<String, Int>
     private lateinit var mapRangeIndex: LinkedHashMap<Int, String>
-    private lateinit var indexItems: java.util.NavigableMap<String, Int>
+    private lateinit var indexItems: NavigableMap<String, Int>
     private lateinit var indexList: ArrayList<String?>
 
     private lateinit var applicationsAdapterItems: ArrayList<AdapterItems>
@@ -167,7 +167,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
         indexList = ArrayList<String?>()
         sections = ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>()
-        indexItems = java.util.TreeMap<String, Int>()
+        indexItems = TreeMap<String, Int>()
 
         applicationInfoList = ArrayList<ResolveInfo>()
         applicationsAdapterItems = ArrayList<AdapterItems>()
@@ -297,7 +297,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                         try {
                             functionsClass.navigateToClass(WidgetConfigurations::class.java,
                                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
-                        } catch (e: java.lang.Exception) {
+                        } catch (e: Exception) {
                             e.printStackTrace()
                         }
                     } else {
@@ -826,7 +826,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                         installedPackageName = it.value.activityInfo.packageName
                         installedAppName = functionsClass.activityLabel(it.value.activityInfo)
 
-                        newChar = installedAppName!!.substring(0, 1).toUpperCase(java.util.Locale.getDefault())
+                        newChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
 
                         if (it.index == 0) {
                             sections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
@@ -858,7 +858,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                         hybridItem += 1
 
                         lastIntentItem = it.index
-                        oldChar = installedAppName!!.substring(0, 1).toUpperCase(java.util.Locale.getDefault())
+                        oldChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
                     }
                 }
 
@@ -963,26 +963,45 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         functionsClass.addAppShortcuts()
     }
 
+    private fun loadInstalledCustomIconPackages() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
+        val packageManager = applicationContext.packageManager
+        //ACTION: com.novalauncher.THEME
+        //CATEGORY: com.novalauncher.category.CUSTOM_ICON_PICKER
+        val intentCustomIcons = Intent()
+        intentCustomIcons.action = "com.novalauncher.THEME"
+        intentCustomIcons.addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER")
+        val resolveInfos = packageManager.queryIntentActivities(intentCustomIcons, 0)
+
+        PublicVariable.customIconsPackages.clear()
+        for (resolveInfo in resolveInfos) {
+            PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
+            PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
+        }
+    }
+
+    /*Indexing*/
     private fun loadApplicationsIndex() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
         indexView.removeAllViews()
 
-        val indexCount = indexList.size
-        for (indexNumber in 0 until indexCount) {
-            try {
-                val indexText = indexList[indexNumber]!!
-                if (mapIndexFirstItem[indexText] == null /*avoid duplication*/) {
-                    mapIndexFirstItem[indexText] = indexNumber
+        withContext(Dispatchers.Default) {
+            val indexCount = indexList.size
+            for (indexNumber in 0 until indexCount) {
+                try {
+                    val indexText = indexList[indexNumber]!!
+                    if (mapIndexFirstItem[indexText] == null /*avoid duplication*/) {
+                        mapIndexFirstItem[indexText] = indexNumber
+                    }
+                    mapIndexLastItem[indexText] = indexNumber
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-                mapIndexLastItem[indexText] = indexNumber
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
 
         val indexListFinal: List<String> = ArrayList(mapIndexFirstItem.keys)
         indexListFinal.forEach { indexText ->
             val sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
-            sideIndexItem.text = indexText.toUpperCase(java.util.Locale.getDefault())
+            sideIndexItem.text = indexText.toUpperCase(Locale.getDefault())
             sideIndexItem.setTextColor(PublicVariable.colorLightDarkOpposite)
             indexView.addView(sideIndexItem)
         }
@@ -1004,23 +1023,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         },700)
     }
 
-    private fun loadInstalledCustomIconPackages() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
-        val packageManager = applicationContext.packageManager
-        //ACTION: com.novalauncher.THEME
-        //CATEGORY: com.novalauncher.category.CUSTOM_ICON_PICKER
-        val intentCustomIcons = Intent()
-        intentCustomIcons.action = "com.novalauncher.THEME"
-        intentCustomIcons.addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER")
-        val resolveInfos = packageManager.queryIntentActivities(intentCustomIcons, 0)
-
-        PublicVariable.customIconsPackages.clear()
-        for (resolveInfo in resolveInfos) {
-            PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
-            PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
-        }
-    }
-
-    /*Indexing*/
     private fun setupFastScrollingIndexing() {
         val popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon)!!.mutate()
         popupIndexBackground.setTint(PublicVariable.primaryColorOpposite)
@@ -1060,7 +1062,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                                         0,
                                         loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
                                 )
-                            } catch (e: java.lang.Exception) {
+                            } catch (e: Exception) {
                                 e.printStackTrace()
                             }
                         } else {
@@ -1078,7 +1080,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                                     0,
                                     loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
                             )
-                        } catch (e: java.lang.Exception) {
+                        } catch (e: Exception) {
                             e.printStackTrace()
                         }
                     } else {
@@ -1088,7 +1090,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                                         0,
                                         loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
                                 )
-                            } catch (e: java.lang.Exception) {
+                            } catch (e: Exception) {
                                 e.printStackTrace()
                             }
                             popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
@@ -1289,7 +1291,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             backgroundTemporaryInput = layerDrawableBackgroundInput!!.findDrawableByLayerId(R.id.backgroundTemporary) as GradientDrawable
             backgroundTemporaryInput.setTint(PublicVariable.colorLightDark)
             textInputSearchView.background = layerDrawableBackgroundInput
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             textInputSearchView.background = null
         }
@@ -1327,7 +1329,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                             }
                             try {
                                 registerReceiver(broadcastReceiver, intentFilter)
-                            } catch (e: java.lang.Exception) {
+                            } catch (e: Exception) {
                                 e.printStackTrace()
                             }
                         }

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/8/20 4:26 AM
- * Last modified 1/8/20 4:26 AM
+ * Created by Elias Fazel on 1/12/20 11:07 AM
+ * Last modified 1/12/20 10:28 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -5679,25 +5679,20 @@ public class FunctionsClass {
     /*Let Me Know*/
     public List<String> letMeKnow(Context context, int maxValue, long startTime /*‪86400000‬ = 1 days*/, long endTime  /*System.currentTimeMillis()*/) {
         /*‪86400000 = 24h --- 82800000 = 23h‬*/
-        List<String> freqApps = new ArrayList<String>();
+        List<String> frequentlyUsedApps = new ArrayList<String>();
         try {
             if (UsageStatsEnabled()) {
-                UsageStatsManager mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
-                List<UsageStats> queryUsageStats = mUsageStatsManager
+                UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+                List<UsageStats> queryUsageStats = usageStatsManager
                         .queryUsageStats(UsageStatsManager.INTERVAL_BEST,
                                 System.currentTimeMillis() - startTime,
                                 endTime);
-                Collections.sort(
-                        queryUsageStats,
-                        new Comparator<UsageStats>() {
-                            @Override
-                            public int compare(UsageStats left, UsageStats right) {
-                                return Long.compare(
-                                        right.getTotalTimeInForeground(), left.getTotalTimeInForeground()
-                                );
-                            }
-                        }
-                );
+                Collections.sort(queryUsageStats, new Comparator<UsageStats>() {
+                    @Override
+                    public int compare(UsageStats left, UsageStats right) {
+                        return Long.compare(right.getTotalTimeInForeground(), left.getTotalTimeInForeground());
+                    }
+                });
                 for (int i = 0; i < maxValue; i++) {
                     String aPackageName = queryUsageStats.get(i).getPackageName();
                     try {
@@ -5706,7 +5701,7 @@ public class FunctionsClass {
                                 if (!ifSystem(aPackageName)) {
                                     if (!isDefaultLauncher(aPackageName)) {
                                         if (canLaunch(aPackageName)) {
-                                            freqApps.add(aPackageName);
+                                            frequentlyUsedApps.add(aPackageName);
                                         }
                                     }
                                 }
@@ -5717,14 +5712,14 @@ public class FunctionsClass {
                     }
                 }
 
-                Set<String> stringHashSet = new LinkedHashSet<>(freqApps);
-                freqApps.clear();
-                freqApps.addAll(stringHashSet);
+                Set<String> stringHashSet = new LinkedHashSet<>(frequentlyUsedApps);
+                frequentlyUsedApps.clear();
+                frequentlyUsedApps.addAll(stringHashSet);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return freqApps;
+        return frequentlyUsedApps;
     }
 
     /*Firebase Remote Config*/

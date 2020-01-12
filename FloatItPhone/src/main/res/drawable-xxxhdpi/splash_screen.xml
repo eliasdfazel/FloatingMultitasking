@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/12/20 9:35 AM
-  ~ Last modified 1/12/20 9:20 AM
+  ~ Created by Elias Fazel on 1/12/20 11:07 AM
+  ~ Last modified 1/12/20 10:04 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -13,9 +13,18 @@
 
     <item
         android:drawable="@color/default_color" />
+
     <item>
         <bitmap
             android:gravity="center"
             android:src="@drawable/ic_launcher" />
     </item>
+
+    <item
+        android:bottom="77dp">
+        <bitmap
+            android:gravity="bottom"
+            android:src="@drawable/float_it_icon_text" />
+    </item>
+
 </layer-list>
