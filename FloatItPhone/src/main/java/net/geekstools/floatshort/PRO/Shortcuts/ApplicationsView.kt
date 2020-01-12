@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/8/20 4:34 AM
- * Last modified 1/8/20 4:32 AM
+ * Created by Elias Fazel on 1/12/20 8:52 AM
+ * Last modified 1/12/20 8:52 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1002,27 +1002,19 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         },700)
     }
 
-    private fun loadInstalledCustomIconPackages() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
-        try {
-            val packageManager = applicationContext.packageManager
-            //ACTION: com.novalauncher.THEME
-            //CATEGORY: com.novalauncher.category.CUSTOM_ICON_PICKER
-            val intentCustomIcons = Intent()
-            intentCustomIcons.action = "com.novalauncher.THEME"
-            intentCustomIcons.addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER")
-            val resolveInfos = packageManager.queryIntentActivities(intentCustomIcons, 0)
-            try {
-                PublicVariable.customIconsPackages.clear()
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
-            }
-            for (resolveInfo in resolveInfos) {
-                PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
-                PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
-            }
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-            this.cancel()
+    private fun loadInstalledCustomIconPackages() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
+        val packageManager = applicationContext.packageManager
+        //ACTION: com.novalauncher.THEME
+        //CATEGORY: com.novalauncher.category.CUSTOM_ICON_PICKER
+        val intentCustomIcons = Intent()
+        intentCustomIcons.action = "com.novalauncher.THEME"
+        intentCustomIcons.addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER")
+        val resolveInfos = packageManager.queryIntentActivities(intentCustomIcons, 0)
+
+        PublicVariable.customIconsPackages.clear()
+        for (resolveInfo in resolveInfos) {
+            PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
+            PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
         }
     }
 
