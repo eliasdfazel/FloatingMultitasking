@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/8/20 4:26 AM
- * Last modified 1/8/20 1:31 AM
+ * Created by Elias Fazel on 1/12/20 9:35 AM
+ * Last modified 1/12/20 8:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,5 +19,5 @@ public final class BuildConfig {
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "betaConfig";
   public static final int VERSION_CODE = 708;
-  public static final String VERSION_NAME = "7.01.08.2020.708[PRO][Android][Phone][BETA]";
+  public static final String VERSION_NAME = "7.01.12.2020.708[PRO][Android][Phone][BETA]";
 }

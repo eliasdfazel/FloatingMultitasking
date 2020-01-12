@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/12/20 8:52 AM
- * Last modified 1/12/20 8:52 AM
+ * Created by Elias Fazel on 1/12/20 9:35 AM
+ * Last modified 1/12/20 9:34 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -805,7 +805,9 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     splashAnimation.setAnimationListener(object : Animation.AnimationListener {
                         override fun onAnimationStart(animation: Animation?) {
                             if (loadFreq == true) {
-                                loadFrequentlyUsedApplications()
+                                launch {
+                                    loadFrequentlyUsedApplications().await()
+                                }
                             }
                             switchFloating.visibility = View.VISIBLE
                         }
@@ -908,7 +910,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
         loadApplicationsIndex().await().also {
             if (it) {
-                loadInstalledCustomIconPackages()
+                loadInstalledCustomIconPackages().await()
             }
         }
 
@@ -1101,11 +1103,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     /*Indexing*/
 
     /*Search Engine*/
-    private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
-        /*Search Engine*/
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        /*Search Engine*/
-
+    private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Default).async {
         if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
             searchAdapterItems = ArrayList<AdapterItems>()
 
@@ -1176,7 +1174,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             if (widgetDataModels.isNotEmpty()) {
                 widgetDataModels.forEach { widgetDataModel ->
                     try {
-
                         val appWidgetId: Int = widgetDataModel.WidgetId
                         val packageName: String = widgetDataModel.PackageName
                         val className: String = widgetDataModel.ClassNameProvider
@@ -1212,15 +1209,25 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             }
 
             val searchRecyclerViewAdapter = SearchEngineAdapter(applicationContext, searchAdapterItems)
-            if (searchAdapterItems.size > 0) {
-                setupSearchView(searchRecyclerViewAdapter)
+
+            withContext(Dispatchers.Main) {
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+
+                if (searchAdapterItems.size > 0) {
+                    setupSearchView(searchRecyclerViewAdapter)
+                }
             }
         } else {
             searchAdapterItems = SearchEngineAdapter.allSearchResultItems
 
             val searchRecyclerViewAdapter = SearchEngineAdapter(applicationContext, searchAdapterItems)
-            if (searchAdapterItems.size > 0) {
-                setupSearchView(searchRecyclerViewAdapter)
+
+            withContext(Dispatchers.Main) {
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+
+                if (searchAdapterItems.size > 0) {
+                    setupSearchView(searchRecyclerViewAdapter)
+                }
             }
         }
     }
