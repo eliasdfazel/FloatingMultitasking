@@ -1,14 +1,14 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:20 PM
- * Last modified 11/12/19 2:18 PM
+ * Created by Elias Fazel on 1/13/20 9:58 AM
+ * Last modified 1/13/20 9:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Util.RemoteTask;
+package net.geekstools.floatshort.PRO.Util.RemoteTask.Create;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -27,6 +27,7 @@ import com.google.firebase.appindexing.FirebaseAppIndex;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassRunServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
@@ -34,6 +35,7 @@ import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 public class RecoveryShortcuts extends Service {
 
     FunctionsClass functionsClass;
+    FunctionsClassRunServices functionsClassRunServices;
     FunctionsClassSecurity functionsClassSecurity;
 
     String packageName;
@@ -84,7 +86,7 @@ public class RecoveryShortcuts extends Service {
                                     if (runService == true) {
                                         try {
                                             packageName = anAppData;
-                                            functionsClass.runUnlimitedShortcutsService(packageName);
+                                            functionsClassRunServices.runUnlimitedShortcutsServicePackage(packageName);
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -127,7 +129,7 @@ public class RecoveryShortcuts extends Service {
                         if (runService == true) {
                             try {
                                 packageName = anAppData;
-                                functionsClass.runUnlimitedShortcutsService(packageName);
+                                functionsClassRunServices.runUnlimitedShortcutsServicePackage(packageName);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -172,6 +174,7 @@ public class RecoveryShortcuts extends Service {
         super.onCreate();
 
         functionsClass = new FunctionsClass(getApplicationContext());
+        functionsClassRunServices = new FunctionsClassRunServices(getApplicationContext());
         functionsClassSecurity = new FunctionsClassSecurity(getApplicationContext());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

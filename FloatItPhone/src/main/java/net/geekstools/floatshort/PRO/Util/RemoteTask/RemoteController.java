@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/13/20 9:58 AM
+ * Last modified 1/13/20 9:54 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryAll;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.Remove.RemoveAll;
 
 public class RemoteController extends Service {
 

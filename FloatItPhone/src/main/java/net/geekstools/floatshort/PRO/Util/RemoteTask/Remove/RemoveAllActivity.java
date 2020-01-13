@@ -1,20 +1,18 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:16 AM
- * Last modified 1/13/20 8:18 AM
+ * Created by Elias Fazel on 1/13/20 9:58 AM
+ * Last modified 1/13/20 9:54 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Util.RemoteTask;
+package net.geekstools.floatshort.PRO.Util.RemoteTask.Remove;
 
-import android.app.Service;
+import android.app.Activity;
 import android.content.Intent;
-import android.os.IBinder;
-
-import androidx.annotation.Nullable;
+import android.os.Bundle;
 
 import net.geekstools.floatshort.PRO.Folder_Unlimited_Bluetooth;
 import net.geekstools.floatshort.PRO.Folder_Unlimited_Floating;
@@ -23,14 +21,13 @@ import net.geekstools.floatshort.PRO.Folder_Unlimited_Nfc;
 import net.geekstools.floatshort.PRO.Folder_Unlimited_Time;
 import net.geekstools.floatshort.PRO.Folder_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 
-public class RemoveAll extends Service {
-
-    FunctionsClass functionsClass;
+public class RemoveAllActivity extends Activity {
 
     @Override
-    public int onStartCommand(Intent intent, int flags, final int startId) {
+    protected void onCreate(Bundle Saved) {
+        super.onCreate(Saved);
+
         /*Apps*/
         Intent App_Unlimited_Shortcuts = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Shortcuts.class);
         App_Unlimited_Shortcuts.putExtra("PackageName", getString(R.string.remove_all_floatings));
@@ -96,19 +93,6 @@ public class RemoveAll extends Service {
         App_Unlimited_Shortcuts_Frequently.putExtra("PackageName", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Shortcuts_Frequently);
 
-        stopSelf();
-        return Service.START_NOT_STICKY;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        functionsClass = new FunctionsClass(getApplicationContext());
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+        finish();
     }
 }

@@ -1,14 +1,14 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:20 PM
- * Last modified 11/12/19 2:14 PM
+ * Created by Elias Fazel on 1/13/20 9:58 AM
+ * Last modified 1/13/20 9:54 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Util.RemoteTask
+package net.geekstools.floatshort.PRO.Util.RemoteTask.Create
 
 import android.app.ActivityOptions
 import android.app.Service

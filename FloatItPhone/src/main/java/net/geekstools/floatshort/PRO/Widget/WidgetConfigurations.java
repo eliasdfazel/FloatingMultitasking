@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:25 AM
- * Last modified 1/13/20 9:23 AM
+ * Created by Elias Fazel on 1/13/20 9:58 AM
+ * Last modified 1/13/20 9:54 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -101,9 +101,9 @@ import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayou
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryFolders;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryShortcuts;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryWidgets;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;

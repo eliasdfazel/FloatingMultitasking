@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/6/20 2:05 AM
- * Last modified 1/6/20 2:00 AM
+ * Created by Elias Fazel on 1/13/20 9:58 AM
+ * Last modified 1/13/20 9:54 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,9 +34,9 @@ import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryAll;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryAll;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryFolders;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryShortcuts;
 
 import java.util.Collections;
 import java.util.Comparator;

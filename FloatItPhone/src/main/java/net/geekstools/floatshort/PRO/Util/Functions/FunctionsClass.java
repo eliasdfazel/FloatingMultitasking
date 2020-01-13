@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:16 AM
- * Last modified 1/13/20 8:07 AM
+ * Created by Elias Fazel on 1/13/20 9:58 AM
+ * Last modified 1/13/20 9:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -129,7 +129,6 @@ import net.geekstools.floatshort.PRO.App_Unlimited_Bluetooth;
 import net.geekstools.floatshort.PRO.App_Unlimited_Gps;
 import net.geekstools.floatshort.PRO.App_Unlimited_HIS;
 import net.geekstools.floatshort.PRO.App_Unlimited_Nfc;
-import net.geekstools.floatshort.PRO.App_Unlimited_Shortcuts;
 import net.geekstools.floatshort.PRO.App_Unlimited_Time;
 import net.geekstools.floatshort.PRO.App_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.Automation.Alarms.AlarmAlertBroadcastReceiver;
@@ -157,7 +156,7 @@ import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.OpenApplicationsLaunchPad;
 import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.FloatingWidgetHomeScreenShortcuts;
+import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.FloatingWidgetHomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RemoteController;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingCategory;
@@ -486,38 +485,6 @@ public class FunctionsClass {
     }
 
     /*Unlimited Shortcuts Function*/
-    public void runUnlimitedShortcutsService(String packageName) {
-        if (API > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
-        }
-        try {
-            PublicVariable.floatingCounter++;
-            PublicVariable.shortcutsCounter++;
-            PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName);
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-
-            PublicVariable.floatingCounter = PublicVariable.floatingCounter + 1;
-            PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter + 1;
-            PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName);
-        }
-
-        Intent u = new Intent(context, App_Unlimited_Shortcuts.class);
-        u.putExtra("pack", packageName);
-        u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(u);
-        if (PublicVariable.floatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
-    }
-
     public void saveUnlimitedShortcutsService(String packageName) {
         boolean duplicated = false;
         String fileName = ".uFile";
