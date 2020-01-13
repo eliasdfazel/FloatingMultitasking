@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:16 AM
- * Last modified 1/13/20 9:16 AM
+ * Created by Elias Fazel on 1/13/20 9:25 AM
+ * Last modified 1/13/20 9:24 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -111,6 +111,7 @@ import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsSearchEng
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDataActivity;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassRunServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassUI;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -144,6 +145,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
     FunctionsClassUI functionsClassUI;
+    FunctionsClassRunServices functionsClassRunServices;
 
     RelativeLayout fullActionViews, wholeCategory;
     RecyclerView categorylist;
@@ -208,6 +210,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
         functionsClassUI = new FunctionsClassUI(functionsClassDataActivity, functionsClass);
+        functionsClassRunServices = new FunctionsClassRunServices(getApplicationContext());
 
         functionsClass.setThemeColorFloating(wholeCategory, functionsClass.appThemeTransparent());
         functionsClassUI.ChangeLog();
@@ -1599,7 +1602,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                                 for (AdapterItemsSearchEngine searchResultItem : SearchEngineAdapter.allSearchResultItems) {
                                     switch (searchResultItem.getSearchResultType()) {
                                         case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
-                                            functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
+                                            functionsClassRunServices.runUnlimitedShortcutsService(searchResultItem.getPackageName(), searchResultItem.getClassName());
 
                                             break;
                                         }
@@ -1645,7 +1648,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                                 if (SearchEngineAdapter.allSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && (searchView.getText().toString().length() >= 2)) {
                                     switch (SearchEngineAdapter.allSearchResultItems.get(0).getSearchResultType()) {
                                         case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
-                                            functionsClass.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems.get(0).getPackageName());
+                                            functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems.get(0).getPackageName(), SearchEngineAdapter.allSearchResultItems.get(0).getClassName());
 
                                             break;
                                         }

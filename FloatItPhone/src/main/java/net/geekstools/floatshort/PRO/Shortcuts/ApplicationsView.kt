@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:16 AM
- * Last modified 1/13/20 9:16 AM
+ * Created by Elias Fazel on 1/13/20 9:25 AM
+ * Last modified 1/13/20 9:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -624,6 +624,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         if (PublicVariable.actionCenter) {
             functionsClass.closeActionMenuOption(fullActionViews, actionButton)
         }
+
         functionsClass.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
 
         if (functionsClass.SystemCache()) {

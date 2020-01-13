@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:16 AM
- * Last modified 1/13/20 9:16 AM
+ * Created by Elias Fazel on 1/13/20 9:25 AM
+ * Last modified 1/13/20 9:23 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -94,6 +94,7 @@ import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsSearchEngine;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassRunServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutGrid;
@@ -127,6 +128,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
+    FunctionsClassRunServices functionsClassRunServices;
 
     RelativeLayout wholeWidget, fullActionViews;
     ImageView addWidget,
@@ -193,6 +195,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         functionsClass = new FunctionsClass(getApplicationContext(), WidgetConfigurations.this);
         functionsClassSecurity = new FunctionsClassSecurity(WidgetConfigurations.this, getApplicationContext());
+        functionsClassRunServices = new FunctionsClassRunServices(getApplicationContext());
 
         if (!functionsClass.readPreference("WidgetsInformation", "Reallocated", true) && getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
             startActivity(new Intent(getApplicationContext(), WidgetsReallocationProcess.class),
@@ -2401,7 +2404,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                         for (AdapterItemsSearchEngine searchResultItem : SearchEngineAdapter.allSearchResultItems) {
                                             switch (searchResultItem.getSearchResultType()) {
                                                 case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
-                                                    functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
+                                                    functionsClassRunServices.runUnlimitedShortcutsService(searchResultItem.getPackageName(), searchResultItem.getClassName());
 
                                                     break;
                                                 }
@@ -2447,7 +2450,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                         if (SearchEngineAdapter.allSearchResultItems.size() == 1 && !searchView.getText().toString().isEmpty() && (searchView.getText().toString().length() >= 2)) {
                                             switch (SearchEngineAdapter.allSearchResultItems.get(0).getSearchResultType()) {
                                                 case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
-                                                    functionsClass.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems.get(0).getPackageName());
+                                                    functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems.get(0).getPackageName(), SearchEngineAdapter.allSearchResultItems.get(0).getClassName());
 
                                                     break;
                                                 }
