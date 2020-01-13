@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/13/20 9:45 AM
-  ~ Last modified 1/13/20 9:45 AM
+  ~ Created by Elias Fazel on 1/13/20 10:06 AM
+  ~ Last modified 1/13/20 10:02 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -122,13 +122,11 @@
     <string name="BETAstringUpcomingChangeLogPhone" translatable="false">beta_string_upcoming_change_log_phone</string>
     <string name="BETAstringUpcomingChangeLogSummaryPhone" translatable="false">beta_string_upcoming_change_log_summary_phone</string>
 
-    <string name="adAppForceLoad">ad_app_force_load</string>
-    <string name="adAppForceTime">ad_app_force_time</string>
-    <string name="adAppTitle">ad_app_title</string>
-    <string name="adAppSummaries">ad_app_summaries</string>
-    <string name="adAppLink">ad_app_link</string>
-    <string name="adAppIconLink">ad_app_icon_link</string>
-
-    <string name="webClientId" translatable="false">517247283133-7nnl7jtfc6ocg64eopqsjqbpnmc0iqq0.apps.googleusercontent.com</string>
+    <string name="adAppForceLoad" translatable="false">ad_app_force_load</string>
+    <string name="adAppForceTime" translatable="false">ad_app_force_time</string>
+    <string name="adAppTitle" translatable="false">ad_app_title</string>
+    <string name="adAppSummaries" translatable="false">ad_app_summaries</string>
+    <string name="adAppLink" translatable="false">ad_app_link</string>
+    <string name="adAppIconLink" translatable="false">ad_app_icon_link</string>
 
 </resources>
