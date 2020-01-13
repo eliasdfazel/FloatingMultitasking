@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/6/20 8:58 AM
- * Last modified 1/6/20 8:36 AM
+ * Created by Elias Fazel on 1/13/20 5:17 AM
+ * Last modified 1/13/20 5:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -96,16 +96,19 @@ dependencies {
     implementation 'com.android.billingclient:billing:2.1.0'
 
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.preference:preference:1.1.0'
     implementation 'androidx.preference:preference-ktx:1.1.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+
     implementation 'androidx.palette:palette:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
+
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-rc03'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc03'
 
     implementation 'androidx.room:room-runtime:2.2.3'
     implementation 'androidx.room:room-ktx:2.2.3'

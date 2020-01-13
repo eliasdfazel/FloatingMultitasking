@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/5/20 4:41 AM
- * Last modified 1/5/20 4:39 AM
+ * Created by Elias Fazel on 1/13/20 5:17 AM
+ * Last modified 1/13/20 5:08 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -87,7 +87,7 @@ import net.geeksempire.loadingspin.SpinKitView;
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
+import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
@@ -525,7 +525,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         switchApps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), HybridApplicationsView.class),
+                startActivity(new Intent(getApplicationContext(), ApplicationsView.class),
                         ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left).toBundle());
             }
         });
@@ -1088,7 +1088,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             }
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
                 try {
-                    functionsClass.navigateToClass(HybridApplicationsView.class,
+                    functionsClass.navigateToClass(ApplicationsView.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                 } catch (Exception e) {
                     e.printStackTrace();

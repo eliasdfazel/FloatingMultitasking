@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/12/20 11:07 AM
- * Last modified 1/12/20 10:28 AM
+ * Created by Elias Fazel on 1/13/20 5:17 AM
+ * Last modified 1/13/20 5:08 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -150,7 +150,7 @@ import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
+import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
@@ -1785,7 +1785,7 @@ public class FunctionsClass {
 
     public void navigateToClass(Class returnClass, ActivityOptions activityOptions) throws Exception {
         Intent intentOverride = new Intent(context, returnClass);
-        if (returnClass.getSimpleName().equals(HybridApplicationsView.class.getSimpleName())) {
+        if (returnClass.getSimpleName().equals(ApplicationsView.class.getSimpleName())) {
             intentOverride.putExtra("freq", PublicVariable.freqApps);
             intentOverride.putExtra("num", PublicVariable.freqLength);
         }
@@ -1793,11 +1793,11 @@ public class FunctionsClass {
     }
 
     public void overrideBackPressToMain(final Activity activityToFinish) throws Exception {
-        if (readPreference("OpenMode", "openClassName", HybridApplicationsView.class.getSimpleName()).equals(FoldersConfigurations.class.getSimpleName())) {
+        if (readPreference("OpenMode", "openClassName", ApplicationsView.class.getSimpleName()).equals(FoldersConfigurations.class.getSimpleName())) {
             Intent categoryInten = new Intent(context, FoldersConfigurations.class);
             activity.startActivity(categoryInten);
         } else {
-            Intent hybridViewOff = new Intent(context, HybridApplicationsView.class);
+            Intent hybridViewOff = new Intent(context, ApplicationsView.class);
             hybridViewOff.putExtra("freq", PublicVariable.freqApps);
             hybridViewOff.putExtra("num", PublicVariable.freqLength);
             hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
@@ -1812,7 +1812,7 @@ public class FunctionsClass {
     }
 
     public void overrideBackPressToShortcuts(final Activity activityToFinish) throws Exception {
-        Intent hybridViewOff = new Intent(context, HybridApplicationsView.class);
+        Intent hybridViewOff = new Intent(context, ApplicationsView.class);
         hybridViewOff.putExtra("freq", PublicVariable.freqApps);
         hybridViewOff.putExtra("num", PublicVariable.freqLength);
         hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);

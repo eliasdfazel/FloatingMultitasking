@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/8/20 4:26 AM
- * Last modified 1/8/20 4:17 AM
+ * Created by Elias Fazel on 1/13/20 5:17 AM
+ * Last modified 1/13/20 5:08 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -104,7 +104,7 @@ import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.FoldersListAdapter;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.HybridApplicationsView;
+import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDataActivity;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
@@ -360,7 +360,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 try {
-                    functionsClass.navigateToClass(HybridApplicationsView.class,
+                    functionsClass.navigateToClass(ApplicationsView.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -982,7 +982,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
         switch (direction) {
             case SimpleGestureFilterSwitch.SWIPE_RIGHT: {
                 try {
-                    functionsClass.navigateToClass(HybridApplicationsView.class,
+                    functionsClass.navigateToClass(ApplicationsView.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
