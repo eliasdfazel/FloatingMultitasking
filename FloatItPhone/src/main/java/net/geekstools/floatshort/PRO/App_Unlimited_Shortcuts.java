@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:33 AM
- * Last modified 1/13/20 9:33 AM
+ * Created by Elias Fazel on 1/13/20 9:45 AM
+ * Last modified 1/13/20 9:34 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -67,7 +67,6 @@ public class App_Unlimited_Shortcuts extends Service {
 
     int array, xPos, yPos, xInit = 13, yInit = 13, xMove, yMove;
 
-    ComponentName componentName;
     ActivityInfo[] activityInfo;
 
     String[] packageNames, classNames;
@@ -162,8 +161,7 @@ public class App_Unlimited_Shortcuts extends Service {
             if (!packageNames[startId].equals(getString(R.string.remove_all_floatings))) {
                 classNames[startId] = intent.getStringExtra("ClassName");
 
-                componentName = new ComponentName(packageNames[startId], classNames[startId]);
-                activityInfo[startId] = getPackageManager().getActivityInfo(componentName, 0);
+                activityInfo[startId] = getPackageManager().getActivityInfo(new ComponentName(packageNames[startId], classNames[startId]), 0);
 
                 floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_shortcuts, null, false);
                 controlIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.controlIcon);
