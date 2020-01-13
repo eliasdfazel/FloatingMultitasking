@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:16 AM
- * Last modified 1/13/20 8:01 AM
+ * Created by Elias Fazel on 1/13/20 9:33 AM
+ * Last modified 1/13/20 9:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -67,7 +67,7 @@ public class App_Unlimited_Shortcuts extends Service {
 
     int array, xPos, yPos, xInit = 13, yInit = 13, xMove, yMove;
 
-    ComponentName[] componentName;
+    ComponentName componentName;
     ActivityInfo[] activityInfo;
 
     String[] packageNames, classNames;
@@ -158,19 +158,20 @@ public class App_Unlimited_Shortcuts extends Service {
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         try {
-            allowMove[startId] = true;
             packageNames[startId] = intent.getStringExtra("PackageName");
             if (!packageNames[startId].equals(getString(R.string.remove_all_floatings))) {
                 classNames[startId] = intent.getStringExtra("ClassName");
 
-                componentName[startId] = new ComponentName(packageNames[startId], classNames[startId]);
-                activityInfo[startId] = getPackageManager().getActivityInfo(componentName[startId], 0);
+                componentName = new ComponentName(packageNames[startId], classNames[startId]);
+                activityInfo[startId] = getPackageManager().getActivityInfo(componentName, 0);
 
                 floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_shortcuts, null, false);
                 controlIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.controlIcon);
                 shapedIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.shapedIcon);
                 notificationDot[startId] = functionsClass.initShapesImage(floatingView[startId],
                         functionsClass.checkStickyEdge() ? R.id.notificationDotEnd : R.id.notificationDotStart);
+
+                allowMove[startId] = true;
 
                 touchingDelay[startId] = false;
                 StickyEdge[startId] = false;
@@ -1012,7 +1013,6 @@ public class App_Unlimited_Shortcuts extends Service {
             flingAnimationY = new FlingAnimation[array];
         }
 
-        componentName = new ComponentName[array];
         activityInfo = new ActivityInfo[array];
 
         mapPackageNameStartId = new LinkedHashMap<String, Integer>();
