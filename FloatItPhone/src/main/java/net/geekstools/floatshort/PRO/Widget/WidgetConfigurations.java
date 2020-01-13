@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 1/13/20 9:16 AM
+ * Last modified 1/13/20 9:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,8 +24,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -87,8 +87,11 @@ import net.geeksempire.loadingspin.SpinKitView;
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
 import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsSearchEngine;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
@@ -100,8 +103,6 @@ import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets;
-import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
-import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
@@ -142,7 +143,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     /*Search Engine*/
     SearchEngineAdapter searchRecyclerViewAdapter;
-    ArrayList<AdapterItems> searchAdapterItems;
+    ArrayList<AdapterItemsSearchEngine> searchAdapterItems;
     TextInputLayout textInputSearchView;
     AppCompatAutoCompleteTextView searchView;
     ImageView searchIcon, searchFloatIt,
@@ -2132,7 +2133,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
              * Search Engine
              */
             if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
-                searchAdapterItems = new ArrayList<AdapterItems>();
+                searchAdapterItems = new ArrayList<AdapterItemsSearchEngine>();
 
                 //Loading Folders
                 if (getFileStreamPath(".categoryInfo").exists()) {
@@ -2144,7 +2145,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                             String folderData = "";
                             while ((folderData = bufferedReader.readLine()) != null) {
                                 try {
-                                    searchAdapterItems.add(new AdapterItems(folderData,
+                                    searchAdapterItems.add(new AdapterItemsSearchEngine(folderData,
                                             functionsClass.readFileLine(folderData), SearchEngineAdapter.SearchResultType.SearchFolders));
 
                                 } catch (Exception e) {
@@ -2167,19 +2168,21 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                 //Loading Shortcuts
                 try {
-                    List<ApplicationInfo> applicationInfoList = getApplicationContext().getPackageManager().getInstalledApplications(0);
-                    Collections.sort(applicationInfoList, new ApplicationInfo.DisplayNameComparator(getPackageManager()));
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    List<ResolveInfo> applicationInfoList = getApplicationContext().getPackageManager().queryIntentActivities(intent,0);
+                    Collections.sort(applicationInfoList, new ResolveInfo.DisplayNameComparator(getPackageManager()));
 
                     for (int appInfo = 0; appInfo < applicationInfoList.size(); appInfo++) {
-                        if (getPackageManager().getLaunchIntentForPackage(applicationInfoList.get(appInfo).packageName) != null) {
+                        if (getPackageManager().getLaunchIntentForPackage(applicationInfoList.get(appInfo).activityInfo.packageName) != null) {
                             try {
-
-
-                                String PackageName = applicationInfoList.get(appInfo).packageName;
+                                String PackageName = applicationInfoList.get(appInfo).activityInfo.packageName;
+                                String ClassName = applicationInfoList.get(appInfo).activityInfo.name;
                                 String AppName = functionsClass.appName(PackageName);
                                 Drawable AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
 
-                                searchAdapterItems.add(new AdapterItems(AppName, PackageName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
+                                searchAdapterItems.add(new AdapterItemsSearchEngine(AppName, PackageName, ClassName, AppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts));
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -2225,7 +2228,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 Drawable appIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
 
 
-                                searchAdapterItems.add(new AdapterItems(
+                                searchAdapterItems.add(new AdapterItemsSearchEngine(
                                         newAppName,
                                         packageName,
                                         className,
@@ -2234,7 +2237,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                         appIcon,
                                         appWidgetProviderInfo,
                                         appWidgetId,
-                                        widgetDataModel.getRecovery(),
                                         SearchEngineAdapter.SearchResultType.SearchWidgets
                                 ));
 
@@ -2396,7 +2398,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 @Override
                                 public void onClick(View view) {
                                     if (!searchView.getText().toString().isEmpty() && (SearchEngineAdapter.allSearchResultItems.size() > 0) && (searchView.getText().toString().length() >= 2)) {
-                                        for (AdapterItems searchResultItem : SearchEngineAdapter.allSearchResultItems) {
+                                        for (AdapterItemsSearchEngine searchResultItem : SearchEngineAdapter.allSearchResultItems) {
                                             switch (searchResultItem.getSearchResultType()) {
                                                 case SearchEngineAdapter.SearchResultType.SearchShortcuts: {
                                                     functionsClass.runUnlimitedShortcutsService(searchResultItem.getPackageName());
@@ -2404,7 +2406,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                                     break;
                                                 }
                                                 case SearchEngineAdapter.SearchResultType.SearchFolders: {
-                                                    functionsClass.runUnlimitedFolderService(searchResultItem.getCategory());
+                                                    functionsClass.runUnlimitedFolderService(searchResultItem.getFolderName());
 
                                                     break;
                                                 }
@@ -2450,7 +2452,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                                     break;
                                                 }
                                                 case SearchEngineAdapter.SearchResultType.SearchFolders: {
-                                                    functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems.get(0).getCategory());
+                                                    functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems.get(0).getFolderName());
 
                                                     break;
                                                 }

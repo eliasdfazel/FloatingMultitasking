@@ -1,14 +1,14 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 1/13/20 9:16 AM
+ * Last modified 1/13/20 9:14 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Util.SearchEngine;
+package net.geekstools.floatshort.PRO.SearchEngine;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,8 +29,9 @@ import android.widget.TextView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsSearchEngine;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassRunServices;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -41,24 +42,26 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
     private Context context;
 
     FunctionsClass functionsClass;
+    FunctionsClassRunServices functionsClassRunServices;
 
     int layoutInflater;
 
-    private ArrayList<AdapterItems> dataListAllItems;
+    private ArrayList<AdapterItemsSearchEngine> dataListAllItems;
 
-    public static ArrayList<AdapterItems> allSearchResultItems = new ArrayList<AdapterItems>();
+    public static ArrayList<AdapterItemsSearchEngine> allSearchResultItems = new ArrayList<AdapterItemsSearchEngine>();
 
     public static boolean alreadyAuthenticatedSearchEngine = false;
 
     public static String SEARCH_ENGINE_USED_LOG = "search_engine_used";
     public static String SEARCH_ENGINE_Query_LOG = "search_engine_query";
 
-    public SearchEngineAdapter(Context context, ArrayList<AdapterItems> allSearchResultItems) {
+    public SearchEngineAdapter(Context context, ArrayList<AdapterItemsSearchEngine> allSearchResultItems) {
         this.context = context;
 
         SearchEngineAdapter.allSearchResultItems = allSearchResultItems;
 
         functionsClass = new FunctionsClass(context);
+        functionsClassRunServices = new FunctionsClassRunServices(context);
 
         switch (functionsClass.shapesImageId()) {
             case 1:
@@ -135,9 +138,9 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
             case SearchResultType.SearchFolders: {
                 dominantColor = context.getColor(R.color.default_color);
 
-                viewHolder.itemAppName.setText(allSearchResultItems.get(position).getCategory());
+                viewHolder.itemAppName.setText(allSearchResultItems.get(position).getFolderName());
 
-                viewHolder.itemInitialLetter.setText(String.valueOf(allSearchResultItems.get(position).getCategory().charAt(0)).toUpperCase());
+                viewHolder.itemInitialLetter.setText(String.valueOf(allSearchResultItems.get(position).getFolderName().charAt(0)).toUpperCase());
                 viewHolder.itemInitialLetter.setTextColor(PublicVariable.colorLightDarkOpposite);
 
                 Drawable backgroundDrawable = null;
@@ -184,8 +187,8 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
                 switch (allSearchResultItems.get(position).getSearchResultType()) {
                     case SearchResultType.SearchShortcuts: {
-                        functionsClass
-                                .runUnlimitedShortcutsService(allSearchResultItems.get(position).getPackageName());
+                        functionsClassRunServices
+                                .runUnlimitedShortcutsService(allSearchResultItems.get(position).getPackageName(), allSearchResultItems.get(position).getClassName());
 
                         bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", allSearchResultItems.get(position).getPackageName());
 
@@ -193,9 +196,9 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                     }
                     case SearchResultType.SearchFolders: {
                         functionsClass
-                                .runUnlimitedFolderService(allSearchResultItems.get(position).getCategory());
+                                .runUnlimitedFolderService(allSearchResultItems.get(position).getFolderName());
 
-                        bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", allSearchResultItems.get(position).getCategory());
+                        bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", allSearchResultItems.get(position).getFolderName());
 
                         break;
                     }
@@ -245,7 +248,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
             FilterResults results = new FilterResults();
             if (dataListAllItems == null) {
                 synchronized (lock) {
-                    dataListAllItems = new ArrayList<AdapterItems>(allSearchResultItems);
+                    dataListAllItems = new ArrayList<AdapterItemsSearchEngine>(allSearchResultItems);
                 }
             }
 
@@ -257,8 +260,8 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
             } else {
                 final String searchStrLowerCase = prefix.toString().toLowerCase();
 
-                ArrayList<AdapterItems> matchValues = new ArrayList<AdapterItems>();
-                for (AdapterItems dataItem : dataListAllItems) {
+                ArrayList<AdapterItemsSearchEngine> matchValues = new ArrayList<AdapterItemsSearchEngine>();
+                for (AdapterItemsSearchEngine dataItem : dataListAllItems) {
                     /*Add Switch To Change for Different Type: Apps/Folders/Widgets*/
                     switch (dataItem.getSearchResultType()) {
                         case SearchResultType.SearchShortcuts: {
@@ -269,7 +272,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                             break;
                         }
                         case SearchResultType.SearchFolders: {
-                            if (dataItem.getCategory().toLowerCase().contains(searchStrLowerCase)) {
+                            if (dataItem.getFolderName().toLowerCase().contains(searchStrLowerCase)) {
                                 matchValues.add(dataItem);
                             }
 
@@ -296,7 +299,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             if (results.values != null) {
-                allSearchResultItems = (ArrayList<AdapterItems>) results.values;
+                allSearchResultItems = (ArrayList<AdapterItemsSearchEngine>) results.values;
             } else {
                 allSearchResultItems = null;
             }

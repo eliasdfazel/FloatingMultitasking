@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 1/13/20 9:16 AM
+ * Last modified 1/13/20 9:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,10 +34,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.Folders.AppSelectionList;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
 import java.io.File;

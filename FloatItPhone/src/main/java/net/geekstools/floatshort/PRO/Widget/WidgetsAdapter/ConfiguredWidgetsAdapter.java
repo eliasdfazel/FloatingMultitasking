@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 1/13/20 9:16 AM
+ * Last modified 1/13/20 9:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -37,10 +37,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.google.android.material.textfield.TextInputEditText;
 
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataDAO;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;

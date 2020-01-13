@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 6:08 AM
+ * Created by Elias Fazel on 1/13/20 9:16 AM
+ * Last modified 1/13/20 8:07 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -3641,7 +3641,7 @@ public class FunctionsClass {
         return layoutParams;
     }
 
-    public void popupOptionShortcuts(final Context context, View anchorView, final String PackageName, String ClassName) {
+    public void popupOptionShortcuts(FunctionsClassRunServices functionsClassRunServices, final Context context, View anchorView, final String PackageName, String ClassName) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -3708,7 +3708,7 @@ public class FunctionsClass {
                     PublicVariable.size = 26;
                     PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
 
-                    runUnlimitedShortcutsService(PackageName);
+                    functionsClassRunServices.runUnlimitedShortcutsService(PackageName, ClassName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -3720,7 +3720,7 @@ public class FunctionsClass {
                     PublicVariable.size = 39;
                     PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
 
-                    runUnlimitedShortcutsService(PackageName);
+                    functionsClassRunServices.runUnlimitedShortcutsService(PackageName, ClassName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -3732,7 +3732,7 @@ public class FunctionsClass {
                     PublicVariable.size = 52;
                     PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
 
-                    runUnlimitedShortcutsService(PackageName);
+                    functionsClassRunServices.runUnlimitedShortcutsService(PackageName, ClassName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override

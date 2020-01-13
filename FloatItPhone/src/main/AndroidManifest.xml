@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/13/20 7:13 AM
-  ~ Last modified 1/13/20 6:58 AM
+  ~ Created by Elias Fazel on 1/13/20 9:16 AM
+  ~ Last modified 1/13/20 9:16 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -325,12 +325,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.SecurityServices.Authentication.AuthActivityHelper"
+            android:name="net.geekstools.floatshort.PRO.SecurityServices.Authentication.AuthActivityHelper"
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:theme="@style/AuthTransparent" />
         <activity
-            android:name=".Util.SecurityServices.Authentication.PinPassword.HandlePinPassword"
+            android:name="net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword"
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:theme="@style/GeeksEmpire.Material"
@@ -349,7 +349,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.SecurityServices.Authentication.PinPassword.PasswordVerification"
+            android:name="net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.PasswordVerification"
             android:label="@string/app_name"
             android:noHistory="true"
             android:excludeFromRecents="true"
@@ -372,7 +372,7 @@
 
         <activity-alias
             android:name=".Alias.FoldersConfigurations"
-            android:enabled="true"
+            android:enabled="false"
             android:icon="@drawable/alias_categories"
             android:label="@string/floatingCategory"
             android:targetActivity=".Folders.FoldersConfigurations">
@@ -481,9 +481,9 @@
             android:foregroundServiceType="dataSync"/>
         <!-- Float It -->
         <service
-            android:name=".App_Unlimited_Shortcuts_Temp"/>
-        <service
             android:name=".App_Unlimited_Shortcuts"/>
+        <service
+            android:name=".App_Unlimited_Shortcuts_Frequently"/>
         <service
             android:name=".App_Unlimited_Wifi"/>
         <service

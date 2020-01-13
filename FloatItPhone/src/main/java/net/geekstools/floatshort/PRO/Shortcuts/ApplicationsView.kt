@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 1/13/20 9:16 AM
+ * Last modified 1/13/20 9:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -71,10 +71,12 @@ import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardHybridAdapter
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsApplications
+import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsSearchEngine
 import net.geekstools.floatshort.PRO.Util.Functions.*
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authComponentName
@@ -90,8 +92,6 @@ import net.geekstools.floatshort.PRO.Util.RemoteProcess.LicenseValidator
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryFolders
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RecoveryWidgets
-import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter
-import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch
 import net.geekstools.floatshort.PRO.Util.UI.WaitingDialogue
@@ -109,6 +109,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     private lateinit var functionsClassDataActivity: FunctionsClassDataActivity
 
     private lateinit var functionsClass: FunctionsClass
+    private lateinit var functionsClassRunServices: FunctionsClassRunServices
     private lateinit var functionsClassSecurity: FunctionsClassSecurity
     private lateinit var functionsClassUI: FunctionsClassUI
 
@@ -125,7 +126,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     private lateinit var recyclerViewAdapter: RecyclerView.Adapter<CardHybridAdapter.ViewHolder>
     private lateinit var recyclerViewLayoutManager: GridLayoutManager
 
-    private lateinit var searchAdapterItems: ArrayList<AdapterItems>
+    private lateinit var searchAdapterItems: ArrayList<AdapterItemsSearchEngine>
 
     private var installedPackageName: String? = null
     private var installedClassName: String? = null
@@ -156,6 +157,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         functionsClassDataActivity = FunctionsClassDataActivity(this@ApplicationsView)
 
         functionsClass = FunctionsClass(applicationContext, this@ApplicationsView)
+        functionsClassRunServices = FunctionsClassRunServices(applicationContext)
         functionsClassSecurity = FunctionsClassSecurity(this@ApplicationsView, applicationContext)
         functionsClassUI = FunctionsClassUI(functionsClassDataActivity, functionsClass)
 
@@ -653,7 +655,8 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     override fun onClick(view: View?) {
         if (view is ImageView) {
             val position = view.id
-            functionsClass.runUnlimitedShortcutsService(frequentlyUsedAppsList[position])
+
+            functionsClassRunServices.runUnlimitedShortcutsServiceFrequently(frequentlyUsedAppsList[position])
         }
     }
 
@@ -1107,7 +1110,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     /*Search Engine*/
     private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Default).async {
         if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
-            searchAdapterItems = ArrayList<AdapterItems>()
+            searchAdapterItems = ArrayList<AdapterItemsSearchEngine>()
 
             //Loading Applications
             applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
@@ -1128,15 +1131,16 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     .collect {
                         try {
                             installedPackageName = it.activityInfo.packageName
+                            installedClassName= it.activityInfo.name
                             installedAppName = functionsClass.activityLabel(it.activityInfo)
 
                             installedAppIcon = if (functionsClass.loadCustomIcons()) {
-                                loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(installedPackageName))
+                                loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(it.activityInfo))
                             } else {
-                                functionsClass.shapedAppIcon(installedPackageName)
+                                functionsClass.shapedAppIcon(it.activityInfo)
                             }
 
-                            searchAdapterItems.add(AdapterItems(installedAppName, installedPackageName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts))
+                            searchAdapterItems.add(AdapterItemsSearchEngine(installedAppName, installedPackageName, installedClassName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts))
                         } catch (e: Exception) {
                             e.printStackTrace()
                         } finally {
@@ -1148,7 +1152,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             try {
                 getFileStreamPath(".categoryInfo").readLines().forEach {
                     try {
-                        searchAdapterItems.add(AdapterItems(it, functionsClass.readFileLine(it), SearchEngineAdapter.SearchResultType.SearchFolders))
+                        searchAdapterItems.add(AdapterItemsSearchEngine(it, functionsClass.readFileLine(it), SearchEngineAdapter.SearchResultType.SearchFolders))
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -1189,7 +1193,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                             val newAppName = functionsClass.appName(packageName)
                             val appIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
 
-                            searchAdapterItems.add(AdapterItems(
+                            searchAdapterItems.add(AdapterItemsSearchEngine(
                                     newAppName,
                                     packageName,
                                     className,
@@ -1198,7 +1202,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                                     appIcon,
                                     appWidgetProviderInfo,
                                     appWidgetId,
-                                    widgetDataModel.Recovery!!,
                                     SearchEngineAdapter.SearchResultType.SearchWidgets
                             ))
                         } else {
@@ -1401,14 +1404,14 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                         SearchEngineAdapter.allSearchResultItems.forEach { searchResultItem ->
                             when (searchResultItem.searchResultType) {
                                 SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
-                                    functionsClass.runUnlimitedShortcutsService(searchResultItem.packageName)
+                                    functionsClassRunServices.runUnlimitedShortcutsService(searchResultItem.PackageName!!, searchResultItem.ClassName!!)
                                 }
                                 SearchEngineAdapter.SearchResultType.SearchFolders -> {
-                                    functionsClass.runUnlimitedFolderService(searchResultItem.category)
+                                    functionsClass.runUnlimitedFolderService(searchResultItem.folderName)
                                 }
                                 SearchEngineAdapter.SearchResultType.SearchWidgets -> {
                                     functionsClass
-                                            .runUnlimitedWidgetService(searchResultItem.appWidgetId,
+                                            .runUnlimitedWidgetService(searchResultItem.appWidgetId!!,
                                                     searchResultItem.widgetLabel)
                                 }
                             }
@@ -1434,14 +1437,14 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                              if (SearchEngineAdapter.allSearchResultItems.size == 1 && !searchView.text.toString().isEmpty() && searchView.text.toString().length >= 2) {
                                  when (SearchEngineAdapter.allSearchResultItems[0].searchResultType) {
                                      SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
-                                         functionsClass.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems[0].packageName)
+                                         functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems[0].PackageName!!, SearchEngineAdapter.allSearchResultItems[0].ClassName!!)
                                      }
                                      SearchEngineAdapter.SearchResultType.SearchFolders -> {
-                                         functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems[0].category)
+                                         functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems[0].folderName)
                                      }
                                      SearchEngineAdapter.SearchResultType.SearchWidgets -> {
                                          functionsClass
-                                                 .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResultItems[0].appWidgetId,
+                                                 .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResultItems[0].appWidgetId!!,
                                                          SearchEngineAdapter.allSearchResultItems[0].widgetLabel)
                                      }
                                  }

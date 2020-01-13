@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 6:19 AM
+ * Created by Elias Fazel on 1/13/20 9:16 AM
+ * Last modified 1/13/20 8:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -87,6 +87,11 @@ public class RemoveAllActivity extends Activity {
         Intent Widget_Unlimited_Floating = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Widget_Unlimited_Floating.class);
         Widget_Unlimited_Floating.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(Widget_Unlimited_Floating);
+
+        /*Frequently*/
+        Intent App_Unlimited_Shortcuts_Frequently = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Shortcuts_Frequently.class);
+        App_Unlimited_Shortcuts_Frequently.putExtra("PackageName", getString(R.string.remove_all_floatings));
+        startService(App_Unlimited_Shortcuts_Frequently);
 
         finish();
     }

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 5:40 AM
+ * Created by Elias Fazel on 1/13/20 9:16 AM
+ * Last modified 1/13/20 9:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -51,12 +51,12 @@ import com.bumptech.glide.request.target.Target
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Util.Functions.*
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver
-import net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication.PinPassword.HandlePinPassword
 
 class PreferencesFragment : PreferenceFragmentCompat() {
 
