@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/3/20 1:39 AM
- * Last modified 1/3/20 1:36 AM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 5:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,6 +24,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesUtil;

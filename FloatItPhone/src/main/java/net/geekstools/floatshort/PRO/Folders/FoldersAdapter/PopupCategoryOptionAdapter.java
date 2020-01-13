@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:32 PM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 7:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,10 +27,10 @@ import android.widget.TextView;
 import net.geekstools.floatshort.PRO.CheckPoint;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.Splash.FloatingSplash;

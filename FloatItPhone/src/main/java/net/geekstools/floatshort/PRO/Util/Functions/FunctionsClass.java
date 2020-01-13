@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 5:17 AM
- * Last modified 1/13/20 5:08 AM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 6:08 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -151,7 +151,7 @@ import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNoti
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
-import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
@@ -3641,7 +3641,7 @@ public class FunctionsClass {
         return layoutParams;
     }
 
-    public void popupOptionShortcuts(final Context context, View anchorView, final String PackageName) {
+    public void popupOptionShortcuts(final Context context, View anchorView, final String PackageName, String ClassName) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -4393,18 +4393,18 @@ public class FunctionsClass {
                 int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                 switch (selectedPosition) {
                     case 0:
-//                        appToDesktop(className, shortcutName, drawableId);
+                        //appToDesktop(className, shortcutName, drawableId);
                         break;
                     case 1:
-//                        if (aliasButton.equals(context.getString(R.string.deleteAlias))) {
-//                            context.getPackageManager().setComponentEnabledSetting(
-//                                    new ComponentName(context.getPackageName(), context.getPackageName() + activityAlias),
-//                                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-//                        } else if (aliasButton.equals(context.getString(R.string.createAlias))) {
-//                            context.getPackageManager().setComponentEnabledSetting(
-//                                    new ComponentName(context.getPackageName(), context.getPackageName() + activityAlias),
-//                                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-//                        }
+                        if (aliasButton.equals(context.getString(R.string.deleteAlias))) {
+                            context.getPackageManager().setComponentEnabledSetting(
+                                    new ComponentName(context.getPackageName(), context.getPackageName() + activityAlias),
+                                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                        } else if (aliasButton.equals(context.getString(R.string.createAlias))) {
+                            context.getPackageManager().setComponentEnabledSetting(
+                                    new ComponentName(context.getPackageName(), context.getPackageName() + activityAlias),
+                                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                        }
                         break;
                 }
                 dialog.dismiss();

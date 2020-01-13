@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright © 2019 By Geeks Empire.
+  ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 11/11/19 7:18 PM
-  ~ Last modified 11/11/19 7:16 PM
+  ~ Created by Elias Fazel on 1/13/20 7:13 AM
+  ~ Last modified 1/13/20 5:44 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -150,24 +150,24 @@
         <Button
             android:id="@+id/noShape"
             android:layout_width="113dp"
-            android:layout_height="53dp"
+            android:layout_height="49dp"
             android:layout_below="@id/squircleShape"
             android:layout_alignParentStart="true"
             android:layout_marginTop="7dp"
             android:background="@android:color/transparent"
             android:text="@string/noshape"
-            android:textSize="15sp"/>
+            android:textSize="12sp"/>
 
         <Button
             android:id="@+id/customIconPack"
             android:layout_width="173dp"
-            android:layout_height="53dp"
+            android:layout_height="49dp"
             android:layout_below="@id/squircleShape"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="7dp"
             android:background="@android:color/transparent"
             android:text="@string/iconPack"
-            android:textSize="15sp"/>
+            android:textSize="12sp"/>
 
     </RelativeLayout>
 </ScrollView>

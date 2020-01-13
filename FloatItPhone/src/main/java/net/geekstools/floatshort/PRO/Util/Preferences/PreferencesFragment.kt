@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/8/20 4:26 AM
- * Last modified 1/8/20 4:19 AM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 5:40 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -467,7 +467,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
             layoutParams.dimAmount = 0.57f
 
-            val dialog = Dialog(activity!!.applicationContext)
+            val dialog = Dialog(activity!!)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(R.layout.seekbar_preferences)
             dialog.window!!.attributes = layoutParams

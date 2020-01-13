@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:32 PM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 7:10 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -106,6 +106,8 @@ class FunctionsClassSecurity {
 
         var authWidgetProviderClassName: String? = null
 
+        var authFloatingShortcuts: Boolean = false
+
         var authSingleUnlockIt: Boolean = false
         var authFolderUnlockIt: Boolean = false
         var authForgotPinPassword: Boolean = false
@@ -142,6 +144,8 @@ class FunctionsClassSecurity {
             AuthOpenAppValues.authHW = 0
 
             AuthOpenAppValues.authWidgetProviderClassName = null
+
+            AuthOpenAppValues.authFloatingShortcuts = false
 
             AuthOpenAppValues.authSingleUnlockIt = false
             AuthOpenAppValues.authFolderUnlockIt = false
@@ -202,27 +206,27 @@ class FunctionsClassSecurity {
     }
 
     fun initCipher(cipher: Cipher, keyName: String): Boolean {
-        try {
+        return try {
             AuthOpenAppValues.keyStore!!.load(null)
             val key = AuthOpenAppValues.keyStore!!.getKey(keyName, null) as SecretKey
             cipher.init(Cipher.ENCRYPT_MODE, key)
-            return true
+            true
         } catch (e: KeyPermanentlyInvalidatedException) {
-            return false
+            false
         } catch (e: KeyStoreException) {
-            return false
+            false
         } catch (e: CertificateException) {
-            return false
+            false
         } catch (e: UnrecoverableKeyException) {
-            return false
+            false
         } catch (e: IOException) {
-            return false
+            false
         } catch (e: NoSuchAlgorithmException) {
-            return false
+            false
         } catch (e: InvalidKeyException) {
-            return false
+            false
         } catch (e: KotlinNullPointerException) {
-            return false
+            false
         }
     }
 
@@ -238,7 +242,33 @@ class FunctionsClassSecurity {
     private fun authConfirmed(encrypted: ByteArray?) {
         if (encrypted != null) {
 
-            if (AuthOpenAppValues.authSingleUnlockIt) {
+            if (AuthOpenAppValues.authFloatingShortcuts) {
+                FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Opening... ***")
+
+                if (FunctionsClass(context).splashReveal()) {
+                    val splashReveal = Intent(context, FloatingSplash::class.java)
+                    splashReveal.putExtra("packageName", FunctionsClassSecurity.authComponentName)
+                    splashReveal.putExtra("className", FunctionsClassSecurity.authSecondComponentName)
+                    splashReveal.putExtra("X", FunctionsClassSecurity.authPositionX)
+                    splashReveal.putExtra("Y", FunctionsClassSecurity.authPositionY)
+                    splashReveal.putExtra("HW", FunctionsClassSecurity.authHW)
+                    context.startService(splashReveal)
+                } else {
+                    if (FunctionsClass(context).FreeForm()) {
+                        FunctionsClass(context).openApplicationFreeForm(FunctionsClassSecurity.authComponentName,
+                                FunctionsClassSecurity.authPositionX,
+                                FunctionsClass(context).displayX() / 2,
+                                FunctionsClassSecurity.authPositionY,
+                                FunctionsClass(context).displayY() / 2
+                        )
+                    } else {
+                        FunctionsClass(context).appsLaunchPad(FunctionsClassSecurity.authComponentName, FunctionsClassSecurity.authSecondComponentName)
+                    }
+                }
+
+
+
+            } else if (AuthOpenAppValues.authSingleUnlockIt) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Single Unlock It ***")
 
                 if (FunctionsClassSecurity.authWidgetConfigurationsUnlock) {
@@ -436,11 +466,7 @@ class FunctionsClassSecurity {
         val encryptedPassword = encryptEncodedData(plainTextPassword, FirebaseAuth.getInstance().currentUser!!.uid).asList().toString()
         val currentPassword = FunctionsClass(context).readPreference(".Password", "Pin", "0")
 
-        if (encryptedPassword == currentPassword) {
-            passwordEqual = true
-        } else {
-            passwordEqual = false
-        }
+        passwordEqual = (encryptedPassword == currentPassword)
 
         return passwordEqual
     }

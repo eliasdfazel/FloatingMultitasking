@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:56 PM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 7:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,10 +13,13 @@ package net.geekstools.floatshort.PRO.Util.SecurityServices.Authentication;
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -142,9 +145,8 @@ public class AuthenticationDialogFragment extends DialogFragment {
                 || FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations()
                 || FunctionsClassSecurity.AuthOpenAppValues.getAuthSearchEngine()
                 || FunctionsClassSecurity.AuthOpenAppValues.getAuthForgotPinPassword()) {
-            dialogueIcon.setImageDrawable(
-                    functionsClass.shapedAppIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName())
-            );
+            dialogueIcon.setImageDrawable(functionsClass
+                    .shapedAppIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName()));
 
             dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
             fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName())));
@@ -156,6 +158,30 @@ public class AuthenticationDialogFragment extends DialogFragment {
 
             textInputPassword.setHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName()))));
             textInputPassword.setDefaultHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName()))));
+        } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthFloatingShortcuts()) {
+            try {
+                ComponentName componentNameApplication = ComponentName.createRelative(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName(),
+                        FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName());
+                ActivityInfo activityInfo = getActivity().getPackageManager().getActivityInfo(componentNameApplication, 0);
+
+                dialogueIcon.setImageDrawable(
+                        componentName.equals("null") ?
+                                null : functionsClass.shapedAppIcon(activityInfo)
+                );
+
+                dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
+                fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(activityInfo)));
+                cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
+                cancelAuth.setBackgroundColor(PublicVariable.colorLightDark);
+
+                password.setHintTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(activityInfo)));
+                password.setTextColor(PublicVariable.colorLightDarkOpposite);
+
+                textInputPassword.setHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(activityInfo))));
+                textInputPassword.setDefaultHintTextColor(ColorStateList.valueOf(functionsClass.extractVibrantColor(functionsClass.appIcon(activityInfo))));
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
         } else {
             dialogueIcon.setImageDrawable(
                     componentName.equals("null") ?
@@ -189,7 +215,30 @@ public class AuthenticationDialogFragment extends DialogFragment {
                     try {
                         if (password.getText() != null) {
                             if (functionsClassSecurity.isEncryptedPinPasswordEqual(password.getText().toString())) {
-                                if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSingleUnlockIt()) {
+                                if (FunctionsClassSecurity.AuthOpenAppValues.getAuthFloatingShortcuts()) {
+                                    FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Open Application ***");
+
+                                    if (functionsClass.splashReveal()) {
+                                        Intent splashReveal = new Intent(getContext(), FloatingSplash.class);
+                                        splashReveal.putExtra("packageName", FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
+                                        splashReveal.putExtra("className", FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName());
+                                        splashReveal.putExtra("X", FunctionsClassSecurity.AuthOpenAppValues.getAuthPositionX());
+                                        splashReveal.putExtra("Y", FunctionsClassSecurity.AuthOpenAppValues.getAuthPositionY());
+                                        splashReveal.putExtra("HW", FunctionsClassSecurity.AuthOpenAppValues.getAuthHW());
+                                        getContext().startService(splashReveal);
+                                    } else {
+                                        if (functionsClass.FreeForm()) {
+                                            functionsClass.openApplicationFreeForm(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName(),
+                                                    FunctionsClassSecurity.AuthOpenAppValues.getAuthPositionX(),
+                                                    (functionsClass.displayX() / 2),
+                                                    FunctionsClassSecurity.AuthOpenAppValues.getAuthPositionY(),
+                                                    (functionsClass.displayY() / 2)
+                                            );
+                                        } else {
+                                            functionsClass.appsLaunchPad(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName(), FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName());
+                                        }
+                                    }
+                                } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSingleUnlockIt()) {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Single Unlock It ***");
 
                                     if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurationsUnlock()) {
@@ -304,6 +353,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                     getContext().sendBroadcast(new Intent("RECOVERY_AUTHENTICATED"));
                                 } else {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Open Application ***");
+
                                     if (functionsClass.splashReveal()) {
                                         Intent splashReveal = new Intent(getContext(), FloatingSplash.class);
                                         splashReveal.putExtra("packageName", FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());

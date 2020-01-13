@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/4/20 12:26 AM
- * Last modified 1/4/20 12:01 AM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 7:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,9 +34,9 @@ import androidx.preference.Preference
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
-import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.CustomIconsThemeAdapter
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutList
 import net.geekstools.floatshort.PRO.Util.SearchEngine.SearchEngineAdapter

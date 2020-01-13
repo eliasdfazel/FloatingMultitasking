@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/13/20 5:17 AM
-  ~ Last modified 1/13/20 5:09 AM
+  ~ Created by Elias Fazel on 1/13/20 7:13 AM
+  ~ Last modified 1/13/20 6:58 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -372,7 +372,7 @@
 
         <activity-alias
             android:name=".Alias.FoldersConfigurations"
-            android:enabled="false"
+            android:enabled="true"
             android:icon="@drawable/alias_categories"
             android:label="@string/floatingCategory"
             android:targetActivity=".Folders.FoldersConfigurations">
@@ -480,6 +480,8 @@
             android:name=".Automation.Alarms.SetupAlarms"
             android:foregroundServiceType="dataSync"/>
         <!-- Float It -->
+        <service
+            android:name=".App_Unlimited_Shortcuts_Temp"/>
         <service
             android:name=".App_Unlimited_Shortcuts"/>
         <service

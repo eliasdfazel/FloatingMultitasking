@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 5:34 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -12,6 +12,7 @@ package net.geekstools.floatshort.PRO.Util.UI.CustomIconManager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -46,7 +47,7 @@ public class LoadCustomIcons {
     public float mFactor = 1.0f;
     public int totalIcons = 0;
     FunctionsClass functionsClass;
-    Resources iconPackres = null;
+    Resources iconPackResources = null;
 
     public LoadCustomIcons(Context context, String iconsPackageName) {
         this.context = context;
@@ -64,14 +65,14 @@ public class LoadCustomIcons {
         try {
             XmlPullParser xpp = null;
 
-            iconPackres = packageManager.getResourcesForApplication(packageNameIconPack);
-            int appfilterid = iconPackres.getIdentifier("appfilter", "xml", packageNameIconPack);
+            iconPackResources = packageManager.getResourcesForApplication(packageNameIconPack);
+            int appfilterid = iconPackResources.getIdentifier("appfilter", "xml", packageNameIconPack);
             if (appfilterid > 0) {
-                xpp = iconPackres.getXml(appfilterid);
+                xpp = iconPackResources.getXml(appfilterid);
             } else {
                 // no resource found, try to open it from assests folder
                 try {
-                    InputStream appfilterstream = iconPackres.getAssets().open("appfilter.xml");
+                    InputStream appfilterstream = iconPackResources.getAssets().open("appfilter.xml");
 
                     XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                     factory.setNamespaceAware(true);
@@ -148,9 +149,9 @@ public class LoadCustomIcons {
     }
 
     private Bitmap loadBitmap(String drawableName) {
-        int id = iconPackres.getIdentifier(drawableName, "drawable", packageNameIconPack);
+        int id = iconPackResources.getIdentifier(drawableName, "drawable", packageNameIconPack);
         if (id > 0) {
-            Drawable bitmap = iconPackres.getDrawable(id, iconPackres.newTheme());
+            Drawable bitmap = iconPackResources.getDrawable(id, iconPackResources.newTheme());
             if (bitmap instanceof BitmapDrawable) {
                 return ((BitmapDrawable) bitmap).getBitmap();
             } else {
@@ -161,9 +162,9 @@ public class LoadCustomIcons {
     }
 
     private Bitmap loadBitmap(String appPackageName, String drawableName) {
-        int id = iconPackres.getIdentifier(drawableName, "drawable", packageNameIconPack);
+        int id = iconPackResources.getIdentifier(drawableName, "drawable", packageNameIconPack);
         if (id > 0) {
-            Drawable bitmap = iconPackres.getDrawable(id, iconPackres.newTheme());
+            Drawable bitmap = iconPackResources.getDrawable(id, iconPackResources.newTheme());
             if (bitmap instanceof BitmapDrawable) {
                 return ((BitmapDrawable) bitmap).getBitmap();
             } else {
@@ -189,9 +190,9 @@ public class LoadCustomIcons {
     }
 
     private Drawable loadDrawable(String appPackageName, String drawableName) {
-        int id = iconPackres.getIdentifier(drawableName, "drawable", packageNameIconPack);
+        int id = iconPackResources.getIdentifier(drawableName, "drawable", packageNameIconPack);
         if (id > 0) {
-            Drawable bitmap = iconPackres.getDrawable(id, iconPackres.newTheme());
+            Drawable bitmap = iconPackResources.getDrawable(id, iconPackResources.newTheme());
             return bitmap;
         } else {
             try {
@@ -208,6 +209,30 @@ public class LoadCustomIcons {
                 e.printStackTrace();
 
                 return functionsClass.shapedAppIcon(appPackageName);
+            }
+        }
+    }
+
+    private Drawable loadDrawable(ActivityInfo activityInfo, String drawableName) {
+        int id = iconPackResources.getIdentifier(drawableName, "drawable", packageNameIconPack);
+        if (id > 0) {
+            Drawable bitmap = iconPackResources.getDrawable(id, iconPackResources.newTheme());
+            return bitmap;
+        } else {
+            try {
+                Drawable iconback = functionsClass.bitmapToDrawable(backIconMask);
+                Drawable appIcon = functionsClass.appIcon(activityInfo);
+                LayerDrawable layerDrawableIcon = new LayerDrawable(new Drawable[]{
+                        iconback,
+                        appIcon
+                });
+                layerDrawableIcon.setLayerInset(1, 77, 77, 77, 77);
+
+                return layerDrawableIcon;
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                return functionsClass.shapedAppIcon(activityInfo);
             }
         }
     }
@@ -238,8 +263,42 @@ public class LoadCustomIcons {
                     int end = componentName.indexOf("}", start);
                     if (end > start) {
                         drawable = componentName.substring(start, end).toLowerCase(Locale.getDefault()).replace(".", "_").replace("/", "_");
-                        if (iconPackres.getIdentifier(drawable, "drawable", packageNameIconPack) > 0)
+                        if (iconPackResources.getIdentifier(drawable, "drawable", packageNameIconPack) > 0)
                             return loadDrawable(appPackageName, drawable);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defaultDrawable;
+    }
+
+    public Drawable getDrawableIconForPackage(ActivityInfo activityInfo, Drawable defaultDrawable) {
+        if (!iconsLoaded) {
+            load();
+        }
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            Intent launchIntent = packageManager.getLaunchIntentForPackage(activityInfo.packageName);
+
+            String componentName = null;
+            if (launchIntent != null) {
+                componentName = packageManager.getLaunchIntentForPackage(activityInfo.packageName).getComponent().toString();
+            }
+
+            String drawable = mapPackagesDrawables.get(componentName);
+            if (drawable != null) {
+                return loadDrawable(activityInfo, drawable);
+            } else {
+                // try to get a resource with the component filename
+                if (componentName != null) {
+                    int start = componentName.indexOf("{") + 1;
+                    int end = componentName.indexOf("}", start);
+                    if (end > start) {
+                        drawable = componentName.substring(start, end).toLowerCase(Locale.getDefault()).replace(".", "_").replace("/", "_");
+                        if (iconPackResources.getIdentifier(drawable, "drawable", packageNameIconPack) > 0)
+                            return loadDrawable(activityInfo, drawable);
                     }
                 }
             }
@@ -274,7 +333,7 @@ public class LoadCustomIcons {
                     int end = componentName.indexOf("}", start);
                     if (end > start) {
                         drawable = componentName.substring(start, end).toLowerCase(Locale.getDefault()).replace(".", "_").replace("/", "_");
-                        if (iconPackres.getIdentifier(drawable, "drawable", packageNameIconPack) > 0)
+                        if (iconPackResources.getIdentifier(drawable, "drawable", packageNameIconPack) > 0)
                             return loadBitmap(appPackageName, drawable);
                     }
                 }

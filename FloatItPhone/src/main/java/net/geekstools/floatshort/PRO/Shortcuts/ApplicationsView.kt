@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/12/20 11:43 AM
- * Last modified 1/12/20 11:43 AM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 7:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -73,14 +73,14 @@ import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardHybridAdapter
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
+import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems
+import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsApplications
 import net.geekstools.floatshort.PRO.Util.Functions.*
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authComponentName
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authHW
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionX
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionY
-import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItems
-import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItemsApplications
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
@@ -128,14 +128,15 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     private lateinit var searchAdapterItems: ArrayList<AdapterItems>
 
     private var installedPackageName: String? = null
+    private var installedClassName: String? = null
     private var installedAppName: String? = null
     private var installedAppIcon: Drawable? = null
 
     var hybridItem: Int = 0
     var lastIntentItem: Int = 0
 
-    private lateinit var freqApps: Array<String>
-    lateinit var freqCounter: IntArray
+    private lateinit var frequentlyUsedAppsList: Array<String>
+    private lateinit var frequentlyUsedAppsCounter: IntArray
     var loadFreq = false
 
     private lateinit var simpleGestureFilterSwitch: SimpleGestureFilterSwitch
@@ -652,15 +653,15 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     override fun onClick(view: View?) {
         if (view is ImageView) {
             val position = view.id
-            functionsClass.runUnlimitedShortcutsService(freqApps[position])
+            functionsClass.runUnlimitedShortcutsService(frequentlyUsedAppsList[position])
         }
     }
 
     override fun onLongClick(view: View?): Boolean {
         if (view is ImageView) {
             val position = view.id
-            if (functionsClassSecurity.isAppLocked(freqApps[position])) {
-                authComponentName = freqApps[position]
+            if (functionsClassSecurity.isAppLocked(frequentlyUsedAppsList[position])) {
+                authComponentName = frequentlyUsedAppsList[position]
 
                 authPositionX = functionsClass.displayX() / 2
                 authPositionY = functionsClass.displayY() / 2
@@ -668,7 +669,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
                 functionsClassSecurity.openAuthInvocation()
             } else {
-                functionsClass.appsLaunchPad(freqApps[position])
+                functionsClass.appsLaunchPad(frequentlyUsedAppsList[position])
             }
         }
         return true
@@ -825,6 +826,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 .withIndex().collect {
                     try {
                         installedPackageName = it.value.activityInfo.packageName
+                        installedClassName = it.value.activityInfo.name
                         installedAppName = functionsClass.activityLabel(it.value.activityInfo)
 
                         newChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
@@ -842,16 +844,13 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                         }
 
                         installedAppIcon = if (functionsClass.loadCustomIcons()) {
-                            loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(installedPackageName))
+                            loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(it.value.activityInfo))
                         } else {
-                            functionsClass.shapedAppIcon(installedPackageName)
+                            functionsClass.shapedAppIcon(it.value.activityInfo)
                         }
 
-                        applicationsAdapterItems.add(AdapterItemsApplications(installedAppName!!, installedPackageName!!, installedAppIcon!!, SearchEngineAdapter.SearchResultType.SearchShortcuts))
-
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        this.cancel()
+                        applicationsAdapterItems.add(AdapterItemsApplications(installedAppName!!, installedPackageName!!, installedClassName!!, installedAppIcon!!,
+                                SearchEngineAdapter.SearchResultType.SearchShortcuts))
                     } finally {
                         indexList.add(newChar)
                         indexItems[newChar] = itemOfIndex++
@@ -866,9 +865,9 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         recyclerViewAdapter = CardHybridAdapter(this@ApplicationsView, applicationContext, applicationsAdapterItems)
 
         if (intent.getStringArrayExtra("freq") != null) {
-            freqApps = intent.getStringArrayExtra("freq")
+            frequentlyUsedAppsList = intent.getStringArrayExtra("freq")
             val freqLength = intent.getIntExtra("num", -1)
-            PublicVariable.freqApps = freqApps
+            PublicVariable.freqApps = frequentlyUsedAppsList
             PublicVariable.freqLength = freqLength
             if (freqLength > 1) {
                 loadFreq = true
@@ -937,8 +936,8 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     private fun loadFrequentlyUsedApplications() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
         freqItem.removeAllViews()
 
-        freqCounter = IntArray(25)
-        freqApps = intent.getStringArrayExtra("freq")
+        frequentlyUsedAppsCounter = IntArray(25)
+        frequentlyUsedAppsList = intent.getStringArrayExtra("freq")
         val freqLength = intent.getIntExtra("num", -1)
         if (getFileStreamPath("Frequently").exists()) {
             functionsClass.removeLine(".categoryInfo", "Frequently")
@@ -954,11 +953,11 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             shapesImage.id = i
             shapesImage.setOnClickListener(this@ApplicationsView)
             shapesImage.setOnLongClickListener(this@ApplicationsView)
-            shapesImage.setImageDrawable(if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(freqApps[i], functionsClass.shapedAppIcon(freqApps[i])) else functionsClass.shapedAppIcon(freqApps[i]))
+            shapesImage.setImageDrawable(if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(frequentlyUsedAppsList[i], functionsClass.shapedAppIcon(frequentlyUsedAppsList[i])) else functionsClass.shapedAppIcon(frequentlyUsedAppsList[i]))
             freqItem.addView(freqLayout)
 
-            functionsClass.saveFileAppendLine("Frequently", freqApps[i])
-            functionsClass.saveFile(freqApps[i] + "Frequently", freqApps[i])
+            functionsClass.saveFileAppendLine("Frequently", frequentlyUsedAppsList[i])
+            functionsClass.saveFile(frequentlyUsedAppsList[i] + "Frequently", frequentlyUsedAppsList[i])
         }
 
         functionsClass.addAppShortcuts()

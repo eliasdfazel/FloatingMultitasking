@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 2:00 PM
- * Last modified 11/12/19 1:32 PM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 6:54 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -64,14 +64,16 @@ public class FloatingSplash extends Service {
         }
 
         packageName = intent.getStringExtra("packageName");
-        Drawable appIcon = functionsClass.loadCustomIcons() ?
-                loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName).mutate())
-                :
-                functionsClass.shapedAppIcon(packageName).mutate();
+        Drawable appIcon = getDrawable(R.drawable.ic_launcher_balloon);
         try {
             if (intent.hasExtra("className")) {
                 className = intent.getStringExtra("className");
                 appIcon = functionsClass.shapedAppIcon(getPackageManager().getActivityInfo(new ComponentName(packageName, className), 0)).mutate();
+            } else {
+                appIcon = functionsClass.loadCustomIcons() ?
+                        loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName).mutate())
+                        :
+                        functionsClass.shapedAppIcon(packageName).mutate();
             }
         } catch (Exception e) {
             e.printStackTrace();

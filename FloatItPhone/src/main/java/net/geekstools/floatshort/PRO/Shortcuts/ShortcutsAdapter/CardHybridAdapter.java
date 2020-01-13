@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/12/20 11:43 AM
- * Last modified 1/12/20 11:33 AM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 7:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,18 +28,22 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsApplications;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassRunServices;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.GeneralAdapters.AdapterItemsApplications;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.util.ArrayList;
 
 public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.ViewHolder> {
 
-    FunctionsClass functionsClass;
     Activity activity;
     Context context;
+
+    FunctionsClass functionsClass;
+    FunctionsClassRunServices functionsClassRunServices;
+
     ArrayList<AdapterItemsApplications> adapterItemsApplications;
 
     int layoutInflater, idRippleShape;
@@ -51,7 +55,9 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
         this.context = context;
         this.activity = activity;
         this.adapterItemsApplications = adapterItemsApplications;
+
         functionsClass = new FunctionsClass(context, activity);
+        functionsClassRunServices = new FunctionsClassRunServices(context);
 
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
         PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
@@ -131,11 +137,14 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         viewHolderBinder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String PackageName = adapterItemsApplications.get(position).getPackageName();
-                functionsClass.runUnlimitedShortcutsService(PackageName);
+                String packageName = adapterItemsApplications.get(position).getPackageName();
+                String className = adapterItemsApplications.get(position).getClassName();
+
+                functionsClassRunServices.runUnlimitedShortcutsService(packageName, className);
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -154,8 +163,10 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
         viewHolderBinder.item.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                String PackageName = adapterItemsApplications.get(position).getPackageName();
-                functionsClass.popupOptionShortcuts(context, view, PackageName);
+                String packageName = adapterItemsApplications.get(position).getPackageName();
+                String className = adapterItemsApplications.get(position).getClassName();
+
+                functionsClass.popupOptionShortcuts(context, view, packageName, className);
                 return true;
             }
         });

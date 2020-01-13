@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/13/20 7:13 AM
+ * Last modified 1/13/20 6:19 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,8 +28,9 @@ public class RemoveAllActivity extends Activity {
     protected void onCreate(Bundle Saved) {
         super.onCreate(Saved);
 
+        /*Apps*/
         Intent App_Unlimited_Shortcuts = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Shortcuts.class);
-        App_Unlimited_Shortcuts.putExtra("pack", getString(R.string.remove_all_floatings));
+        App_Unlimited_Shortcuts.putExtra("PackageName", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Shortcuts);
 
         Intent App_Unlimited_Wifi = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Wifi.class);
@@ -51,7 +52,8 @@ public class RemoveAllActivity extends Activity {
         Intent App_Unlimited_Time = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Time.class);
         App_Unlimited_Time.putExtra("pack", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Time);
-        /**/
+
+        /*Categories*/
         Intent Category_Unlimited_Category = new Intent(getApplicationContext(), Folder_Unlimited_Floating.class);
         Category_Unlimited_Category.putExtra("categoryName", getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Category);
@@ -75,6 +77,16 @@ public class RemoveAllActivity extends Activity {
         Intent Category_Unlimited_Time = new Intent(getApplicationContext(), Folder_Unlimited_Time.class);
         Category_Unlimited_Time.putExtra("categoryName", getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Time);
+
+        /*HIS*/
+        Intent App_Unlimited_HIS = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_HIS.class);
+        App_Unlimited_HIS.putExtra("packageName", getString(R.string.remove_all_floatings));
+        startService(App_Unlimited_HIS);
+
+        /*Widgets*/
+        Intent Widget_Unlimited_Floating = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Widget_Unlimited_Floating.class);
+        Widget_Unlimited_Floating.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
+        startService(Widget_Unlimited_Floating);
 
         finish();
     }
