@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 3:27 PM
- * Last modified 11/12/19 3:16 PM
+ * Created by Elias Fazel on 1/14/20 6:32 AM
+ * Last modified 1/14/20 6:28 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -778,35 +778,50 @@ public class App_Unlimited_Gps extends Service {
                     allowMove[intent.getIntExtra("startId", 1)] = true;
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(null);
                 } else if (intent.getAction().equals("Float_It_" + className)) {
-                    if (functionsClass.splashReveal()) {
-                        if (!functionsClass.FreeForm()) {
-                            functionsClass.saveDefaultPreference("freeForm", true);
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    functionsClass.saveDefaultPreference("freeForm", false);
-                                }
-                            }, 1000);
-                        }
+                    if (functionsClassSecurity.isAppLocked(packages[intent.getIntExtra("startId", 1)])) {
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packages[intent.getIntExtra("startId", 1)]);
 
-                        Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);
-                        splashReveal.putExtra("packageName", packages[intent.getIntExtra("startId", 1)]);
                         if (moveDetection != null) {
-                            splashReveal.putExtra("X", moveDetection.x);
-                            splashReveal.putExtra("Y", moveDetection.y);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(moveDetection.x);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(moveDetection.y);
                         } else {
-                            splashReveal.putExtra("X", layoutParams[intent.getIntExtra("startId", 1)].x);
-                            splashReveal.putExtra("Y", layoutParams[intent.getIntExtra("startId", 1)].y);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(layoutParams[intent.getIntExtra("startId", 1)].x);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(layoutParams[intent.getIntExtra("startId", 1)].y);
                         }
-                        splashReveal.putExtra("HW", layoutParams[intent.getIntExtra("startId", 1)].width);
-                        startService(splashReveal);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthHW(layoutParams[intent.getIntExtra("startId", 1)].width);
+
+                        functionsClassSecurity.openAuthInvocation();
                     } else {
-                        functionsClass.openApplicationFreeForm(packages[intent.getIntExtra("startId", 1)],
-                                layoutParams[intent.getIntExtra("startId", 1)].x,
-                                (functionsClass.displayX() / 2),
-                                layoutParams[intent.getIntExtra("startId", 1)].y,
-                                (functionsClass.displayY() / 2)
-                        );
+                        if (functionsClass.splashReveal()) {
+                            if (!functionsClass.FreeForm()) {
+                                functionsClass.saveDefaultPreference("freeForm", true);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        functionsClass.saveDefaultPreference("freeForm", false);
+                                    }
+                                }, 1000);
+                            }
+
+                            Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);
+                            splashReveal.putExtra("packageName", packages[intent.getIntExtra("startId", 1)]);
+                            if (moveDetection != null) {
+                                splashReveal.putExtra("X", moveDetection.x);
+                                splashReveal.putExtra("Y", moveDetection.y);
+                            } else {
+                                splashReveal.putExtra("X", layoutParams[intent.getIntExtra("startId", 1)].x);
+                                splashReveal.putExtra("Y", layoutParams[intent.getIntExtra("startId", 1)].y);
+                            }
+                            splashReveal.putExtra("HW", layoutParams[intent.getIntExtra("startId", 1)].width);
+                            startService(splashReveal);
+                        } else {
+                            functionsClass.openApplicationFreeForm(packages[intent.getIntExtra("startId", 1)],
+                                    layoutParams[intent.getIntExtra("startId", 1)].x,
+                                    (functionsClass.displayX() / 2),
+                                    layoutParams[intent.getIntExtra("startId", 1)].y,
+                                    (functionsClass.displayY() / 2)
+                            );
+                        }
                     }
                 } else if (intent.getAction().equals("Remove_App_" + className)) {
                     if (floatingView[intent.getIntExtra("startId", 1)] == null) {

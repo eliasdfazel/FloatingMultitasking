@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 3:27 PM
- * Last modified 11/12/19 3:16 PM
+ * Created by Elias Fazel on 1/14/20 6:32 AM
+ * Last modified 1/14/20 5:55 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -814,7 +814,7 @@ public class App_Unlimited_HIS extends Service {
                         startService(splashReveal);
                     } else {
                         functionsClass.openApplicationFreeForm(packageNames[intent.getIntExtra("startId", 1)],
-                                App_Unlimited_HIS.this.classNames[intent.getIntExtra("startId", 1)],
+                                classNames[intent.getIntExtra("startId", 1)],
                                 layoutParams[intent.getIntExtra("startId", 1)].x,
                                 (functionsClass.displayX() / 2),
                                 layoutParams[intent.getIntExtra("startId", 1)].y,

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:45 AM
- * Last modified 1/13/20 9:34 AM
+ * Created by Elias Fazel on 1/14/20 6:32 AM
+ * Last modified 1/14/20 6:23 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -669,6 +669,7 @@ public class App_Unlimited_Shortcuts extends Service {
                             } else {
                                 if (functionsClass.FreeForm()) {
                                     functionsClass.openApplicationFreeForm(packageNames[startId],
+                                            classNames[startId],
                                             layoutParams[startId].x,
                                             (functionsClass.displayX() / 2),
                                             layoutParams[startId].y,
@@ -808,39 +809,56 @@ public class App_Unlimited_Shortcuts extends Service {
                     allowMove[intent.getIntExtra("startId", 1)] = true;
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(null);
                 } else if (intent.getAction().equals("Float_It_" + className)) {
-                    if (functionsClass.splashReveal()) {
-                        if (!functionsClass.FreeForm()) {
-                            functionsClass.saveDefaultPreference("freeForm", true);
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    functionsClass.saveDefaultPreference("freeForm", false);
-                                }
-                            }, 1000);
-                        }
+                    if (functionsClassSecurity.isAppLocked(packageNames[intent.getIntExtra("startId", 1)])) {
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthFloatingShortcuts(true);
 
-                        Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);
-                        splashReveal.putExtra("packageName", packageNames[intent.getIntExtra("startId", 1)]);
-                        splashReveal.putExtra("className", classNames[intent.getIntExtra("startId", 1)]);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packageNames[intent.getIntExtra("startId", 1)]);
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(classNames[intent.getIntExtra("startId", 1)]);
+
                         if (moveDetection != null) {
-                            splashReveal.putExtra("X", moveDetection.x);
-                            splashReveal.putExtra("Y", moveDetection.y);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(moveDetection.x);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(moveDetection.y);
                         } else {
-                            splashReveal.putExtra("X", layoutParams[intent.getIntExtra("startId", 1)].x);
-                            splashReveal.putExtra("Y", layoutParams[intent.getIntExtra("startId", 1)].y);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(layoutParams[intent.getIntExtra("startId", 1)].x);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(layoutParams[intent.getIntExtra("startId", 1)].y);
                         }
-                        splashReveal.putExtra("HW", layoutParams[intent.getIntExtra("startId", 1)].width);
-                        startService(splashReveal);
-                    } else {
-                        functionsClass.openApplicationFreeForm(packageNames[intent.getIntExtra("startId", 1)],
-                                App_Unlimited_Shortcuts.this.classNames[intent.getIntExtra("startId", 1)],
-                                layoutParams[intent.getIntExtra("startId", 1)].x,
-                                (functionsClass.displayX() / 2),
-                                layoutParams[intent.getIntExtra("startId", 1)].y,
-                                (functionsClass.displayY() / 2)
-                        );
-                    }
+                        FunctionsClassSecurity.AuthOpenAppValues.setAuthHW(layoutParams[intent.getIntExtra("startId", 1)].width);
 
+                        functionsClassSecurity.openAuthInvocation();
+                    } else {
+                        if (functionsClass.splashReveal()) {
+                            if (!functionsClass.FreeForm()) {
+                                functionsClass.saveDefaultPreference("freeForm", true);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        functionsClass.saveDefaultPreference("freeForm", false);
+                                    }
+                                }, 1000);
+                            }
+
+                            Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);
+                            splashReveal.putExtra("packageName", packageNames[intent.getIntExtra("startId", 1)]);
+                            splashReveal.putExtra("className", classNames[intent.getIntExtra("startId", 1)]);
+                            if (moveDetection != null) {
+                                splashReveal.putExtra("X", moveDetection.x);
+                                splashReveal.putExtra("Y", moveDetection.y);
+                            } else {
+                                splashReveal.putExtra("X", layoutParams[intent.getIntExtra("startId", 1)].x);
+                                splashReveal.putExtra("Y", layoutParams[intent.getIntExtra("startId", 1)].y);
+                            }
+                            splashReveal.putExtra("HW", layoutParams[intent.getIntExtra("startId", 1)].width);
+                            startService(splashReveal);
+                        } else {
+                            functionsClass.openApplicationFreeForm(packageNames[intent.getIntExtra("startId", 1)],
+                                    classNames[intent.getIntExtra("startId", 1)],
+                                    layoutParams[intent.getIntExtra("startId", 1)].x,
+                                    (functionsClass.displayX() / 2),
+                                    layoutParams[intent.getIntExtra("startId", 1)].y,
+                                    (functionsClass.displayY() / 2)
+                            );
+                        }
+                    }
                 } else if (intent.getAction().equals("Remove_App_" + className)) {
                     if (floatingView[intent.getIntExtra("startId", 1)] == null) {
                         return;

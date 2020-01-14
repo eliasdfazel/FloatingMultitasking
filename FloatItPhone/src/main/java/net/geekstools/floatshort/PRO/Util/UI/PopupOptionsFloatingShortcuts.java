@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 1/14/20 6:32 AM
+ * Last modified 1/14/20 6:32 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,7 +26,7 @@ import android.widget.RelativeLayout;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.PopupShortcutsOptionAdapter;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsFloatingShortcutsPopuiOptions;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 
@@ -91,7 +91,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
         }
 
         try {
-            ArrayList<AdapterItems> navDrawerItemsSaved = new ArrayList<AdapterItems>();
+            ArrayList<AdapterItemsFloatingShortcutsPopuiOptions> navDrawerItemsSaved = new ArrayList<AdapterItemsFloatingShortcutsPopuiOptions>();
             navDrawerItemsSaved.clear();
 
             List<String> popupItems = new ArrayList<String>();
@@ -230,7 +230,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
             }
 
             for (int i = 0; i < popupItems.size(); i++) {
-                navDrawerItemsSaved.add(new AdapterItems(
+                navDrawerItemsSaved.add(new AdapterItemsFloatingShortcutsPopuiOptions(
                         popupItems.get(i),
                         popupItemsIcon));
             }

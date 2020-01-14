@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/12/20 11:07 AM
- * Last modified 1/12/20 10:43 AM
+ * Created by Elias Fazel on 1/14/20 6:32 AM
+ * Last modified 1/14/20 6:32 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,16 +10,13 @@
 
 package net.geekstools.floatshort.PRO.Util.Functions
 
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 
-class FunctionsClassApplicationsData(initContext: Context) {
-
-    val context: Context = initContext
+class FunctionsClassApplicationsData(var functionsClassDataContext: FunctionsClassDataContext) {
 
     fun appIsInstalled(packageName: String): Boolean {
-        val packageManager: PackageManager = context.packageManager
+        val packageManager: PackageManager = functionsClassDataContext.context.packageManager
         return try {
             packageManager.getPackageInfo(packageName, 0)
             true
@@ -33,7 +30,7 @@ class FunctionsClassApplicationsData(initContext: Context) {
     }
 
     fun isSystemApplication(packageName: String): Boolean {
-        val packageManager = context.packageManager
+        val packageManager = functionsClassDataContext.context.packageManager
 
         return  try {
             val targetPkgInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
@@ -52,12 +49,12 @@ class FunctionsClassApplicationsData(initContext: Context) {
     fun isDefaultLauncher(packageName: String): Boolean {
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_HOME)
-        val defaultLauncher = context.packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+        val defaultLauncher = functionsClassDataContext.context.packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
         val defaultLauncherPackageName = defaultLauncher?.activityInfo?.packageName
         return (defaultLauncherPackageName == packageName)
     }
 
     fun canLaunch(packageName: String?): Boolean {
-        return context.packageManager.getLaunchIntentForPackage(packageName!!) != null
+        return functionsClassDataContext.context.packageManager.getLaunchIntentForPackage(packageName!!) != null
     }
 }

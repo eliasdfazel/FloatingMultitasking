@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/12/20 11:07 AM
- * Last modified 1/12/20 11:06 AM
+ * Created by Elias Fazel on 1/14/20 6:32 AM
+ * Last modified 1/14/20 4:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,7 +34,8 @@ class FunctionsClassSmartFeatures() {
             left, right -> right.totalTimeInForeground.compareTo(left.totalTimeInForeground)
         })
 
-        val functionsClassApplicationsData = FunctionsClassApplicationsData(context)
+        val functionsClassApplicationsData = FunctionsClassApplicationsData(FunctionsClassDataContext(context))
+
         queryUsageStats.asFlow()
                 .map {
                     val packageNameUsedApplication = it.packageName
