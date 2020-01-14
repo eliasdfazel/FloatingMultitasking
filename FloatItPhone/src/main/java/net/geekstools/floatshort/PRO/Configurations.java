@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 6:50 AM
- * Last modified 1/14/20 6:47 AM
+ * Created by Elias Fazel on 1/14/20 7:37 AM
+ * Last modified 1/14/20 7:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -95,17 +95,8 @@ public class Configurations extends Activity {
         PublicVariable.statusBarHeight = result;
         PublicVariable.navigationBarHeight = getResources().getDimensionPixelSize(getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
 
-        if (functionsClass.returnAPI() >= 26) {
-            functionsClass.extractWallpaperColor();
-            functionsClass.loadSavedColor();
-        } else if (!getFileStreamPath(".colors").exists()) {
-            functionsClass.extractWallpaperColor();
-            functionsClass.saveFile(".colors", "Theme Color Extracted");
-            functionsClass.loadSavedColor();
-        } else {
-            functionsClass.loadSavedColor();
-        }
-
+        functionsClass.extractWallpaperColor();
+        functionsClass.loadSavedColor();
         functionsClass.checkLightDarkTheme();
 
         if (sharedPreferences.getBoolean("stable", true) == true) {

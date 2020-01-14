@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:58 AM
- * Last modified 1/13/20 9:54 AM
+ * Created by Elias Fazel on 1/14/20 7:37 AM
+ * Last modified 1/14/20 7:07 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -111,7 +111,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     private lateinit var functionsClass: FunctionsClass
     private lateinit var functionsClassRunServices: FunctionsClassRunServices
     private lateinit var functionsClassSecurity: FunctionsClassSecurity
-    private lateinit var functionsClassUI: FunctionsClassUI
+    private lateinit var functionsClassDialogues: FunctionsClassDialogues
 
     private lateinit var applicationInfoList: List<ResolveInfo>
 
@@ -159,10 +159,10 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         functionsClass = FunctionsClass(applicationContext, this@ApplicationsView)
         functionsClassRunServices = FunctionsClassRunServices(applicationContext)
         functionsClassSecurity = FunctionsClassSecurity(this@ApplicationsView, applicationContext)
-        functionsClassUI = FunctionsClassUI(functionsClassDataActivity, functionsClass)
+        functionsClassDialogues = FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
 
         functionsClass.setThemeColorFloating(MainView, functionsClass.appThemeTransparent())
-        functionsClassUI.ChangeLog()
+        functionsClassDialogues.changeLog()
 
         simpleGestureFilterSwitch = SimpleGestureFilterSwitch(applicationContext, this@ApplicationsView)
 

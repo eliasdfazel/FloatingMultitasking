@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:16 AM
- * Last modified 1/13/20 9:16 AM
+ * Created by Elias Fazel on 1/14/20 7:37 AM
+ * Last modified 1/14/20 7:37 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -52,8 +52,11 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
-import net.geekstools.floatshort.PRO.Util.Functions.*
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDataActivity
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDialogues
+import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver
@@ -63,7 +66,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     lateinit var functionsClassDataActivity: FunctionsClassDataActivity
 
     lateinit var functionsClass: FunctionsClass
-    lateinit var functionsClassUI: FunctionsClassUI
+    lateinit var functionsClassDialogues: FunctionsClassDialogues
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -109,7 +112,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         functionsClassDataActivity = FunctionsClassDataActivity(activity!!)
 
         functionsClass = FunctionsClass(context, activity)
-        functionsClassUI = FunctionsClassUI(functionsClassDataActivity, functionsClass)
+        functionsClassDialogues = FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -253,9 +256,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         themeColor.setOnPreferenceChangeListener { preference, newValue ->
             Handler().postDelayed({
-                functionsClass.checkLightDarkTheme().let {
-                    FunctionsClassDebug.PrintDebug("New Theme Value ${newValue}")
-                }
+                functionsClass.checkLightDarkTheme()
 
                 when (newValue.toString()) {
                     "1" -> {
@@ -328,7 +329,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         gradientDrawableLoadLogo.setTint(PublicVariable.primaryColorOpposite)
         whatsnew.icon = layerDrawableLoadLogo
         whatsnew.setOnPreferenceClickListener {
-            functionsClassUI.ChangeLogPreference(betaChangeLog, betaVersionCode)
+            functionsClassDialogues.changeLogPreference(betaChangeLog, betaVersionCode)
 
             true
         }

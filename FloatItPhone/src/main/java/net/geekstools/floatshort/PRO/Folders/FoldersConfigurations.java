@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:58 AM
- * Last modified 1/13/20 9:54 AM
+ * Created by Elias Fazel on 1/14/20 7:37 AM
+ * Last modified 1/14/20 7:37 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -111,9 +111,9 @@ import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsSearchEng
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDataActivity;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDialogues;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassRunServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassUI;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
@@ -144,7 +144,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
 
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
-    FunctionsClassUI functionsClassUI;
+    FunctionsClassDialogues functionsClassDialogues;
     FunctionsClassRunServices functionsClassRunServices;
 
     RelativeLayout fullActionViews, wholeCategory;
@@ -209,11 +209,11 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
 
         functionsClass = new FunctionsClass(getApplicationContext(), this);
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
-        functionsClassUI = new FunctionsClassUI(functionsClassDataActivity, functionsClass);
+        functionsClassDialogues = new FunctionsClassDialogues(functionsClassDataActivity, functionsClass);
         functionsClassRunServices = new FunctionsClassRunServices(getApplicationContext());
 
         functionsClass.setThemeColorFloating(wholeCategory, functionsClass.appThemeTransparent());
-        functionsClassUI.ChangeLog();
+        functionsClassDialogues.changeLog();
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
 

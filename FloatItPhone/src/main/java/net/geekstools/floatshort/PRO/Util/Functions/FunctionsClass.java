@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 7:01 AM
- * Last modified 1/14/20 6:56 AM
+ * Created by Elias Fazel on 1/14/20 7:37 AM
+ * Last modified 1/14/20 7:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -4864,7 +4864,7 @@ public class FunctionsClass {
             WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
 
             final Drawable currentWallpaper = wallpaperManager.getDrawable();
-            final Bitmap bitmap = ((BitmapDrawable) currentWallpaper).getBitmap();
+            Bitmap bitmap = ((BitmapDrawable) currentWallpaper).getBitmap();
 
             if (bitmap != null && !bitmap.isRecycled()) {
                 currentColor = Palette.from(bitmap).generate();
@@ -4889,7 +4889,6 @@ public class FunctionsClass {
 
             dominantColor = context.getColor(R.color.default_color);
         }
-
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(".themeColor", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
