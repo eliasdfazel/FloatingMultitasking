@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 7:37 AM
- * Last modified 1/14/20 7:37 AM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 12:14 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -98,10 +98,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import net.geekstools.floatshort.PRO.Automation.Categories.CategoryAutoFeatures;
+import net.geekstools.floatshort.PRO.Automation.Folders.FolderAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.FoldersListAdapter;
+import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword;
@@ -118,7 +119,6 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InAppUpdate.InAppUpdateProcess;
-import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.Util.RemoteProcess.LicenseValidator;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryShortcuts;
@@ -211,6 +211,9 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
         functionsClassDialogues = new FunctionsClassDialogues(functionsClassDataActivity, functionsClass);
         functionsClassRunServices = new FunctionsClassRunServices(getApplicationContext());
+
+        functionsClass.loadSavedColor();
+        functionsClass.checkLightDarkTheme();
 
         functionsClass.setThemeColorFloating(wholeCategory, functionsClass.appThemeTransparent());
         functionsClassDialogues.changeLog();
@@ -407,7 +410,7 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
             public void onClick(View view) {
                 functionsClass.doVibrate(50);
 
-                Intent intent = new Intent(getApplicationContext(), CategoryAutoFeatures.class);
+                Intent intent = new Intent(getApplicationContext(), FolderAutoFeatures.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent, ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.up_down, android.R.anim.fade_out).toBundle());
             }
@@ -1119,10 +1122,10 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
             gx.setTypeface(face);
 
             if (PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
                 gx.setTextColor(getColor(R.color.dark));
             } else {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
                 gx.setTextColor(getColor(R.color.light));
             }
             if (!getFileStreamPath(".categoryInfo").exists()) {
@@ -1140,54 +1143,54 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
         @Override
         protected Void doInBackground(Void... params) {
             try {
+                adapterItems.clear();
+
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
                     FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
                 }
 
-                if (getFileStreamPath(".categoryInfo").exists() && functionsClass.countLineInnerFile(".categoryInfo") > 0) {
+                if (getFileStreamPath(".categoryInfo").exists()) {
                     try {
-                        try {
-                            FileInputStream fileInputStream = new FileInputStream(getFileStreamPath(".categoryInfo"));
-                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+                        FileInputStream fileInputStream = new FileInputStream(getFileStreamPath(".categoryInfo"));
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
-                            int linesNumber = 0;
-                            String folderData = "";
-                            while ((folderData = bufferedReader.readLine()) != null) {
-                                try {
-                                    adapterItems.add(new AdapterItems(folderData,
-                                            functionsClass.readFileLine(folderData), SearchEngineAdapter.SearchResultType.SearchFolders));
+                        int linesNumber = 0;
+                        String folderData = "";
+                        while ((folderData = bufferedReader.readLine()) != null) {
+                            try {
+                                adapterItems.add(new AdapterItems(folderData,
+                                        functionsClass.readFileLine(folderData), SearchEngineAdapter.SearchResultType.SearchFolders));
 
-                                    linesNumber++;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                } finally {
-                                    functionsClass.IndexAppInfoCategory(folderData + " | " + getString(R.string.floatingCategory));
-                                }
+                                linesNumber++;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            } finally {
+                                functionsClass.IndexAppInfoCategory(folderData + " | " + getString(R.string.floatingCategory));
                             }
+                        }
 
-                            fileInputStream.close();
-                            bufferedReader.close();
+                        fileInputStream.close();
+                        bufferedReader.close();
 
-                            if (linesNumber > 0) {
-                                adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                                categoryListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
-                            } else {
-                                adapterItems = new ArrayList<AdapterItems>();
-                                adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                                categoryListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        if (linesNumber > 0) {
+                            adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
+                            categoryListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
+                        } else {
+                            adapterItems = new ArrayList<AdapterItems>();
+                            adapterItems.clear();
+
+                            adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
+                            categoryListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                         this.cancel(true);
-                    } finally {
-
                     }
                 } else {
                     adapterItems = new ArrayList<AdapterItems>();
+                    adapterItems.clear();
+
                     adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
                     categoryListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
                 }

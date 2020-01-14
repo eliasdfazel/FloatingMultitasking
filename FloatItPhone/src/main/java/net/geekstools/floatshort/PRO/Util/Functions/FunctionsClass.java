@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 7:37 AM
- * Last modified 1/14/20 7:33 AM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 12:14 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -128,7 +128,7 @@ import com.google.firebase.appindexing.builders.Actions;
 import net.geekstools.floatshort.PRO.Automation.Alarms.AlarmAlertBroadcastReceiver;
 import net.geekstools.floatshort.PRO.Automation.Alarms.SetupAlarms;
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
-import net.geekstools.floatshort.PRO.Automation.Categories.CategoryAutoFeatures;
+import net.geekstools.floatshort.PRO.Automation.Folders.FolderAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Checkpoint;
@@ -142,6 +142,7 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_W
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
+import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Bluetooth;
@@ -155,7 +156,6 @@ import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Util.OpenApplicationsLaunchPad;
-import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.FloatingWidgetHomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.RemoteController;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
@@ -205,9 +205,6 @@ public class FunctionsClass {
         this.context = context;
 
         functionsClassSecurity = new FunctionsClassSecurity(context);
-
-        loadSavedColor();
-        checkLightDarkTheme();
     }
 
     public FunctionsClass(Context context, Activity activity) {
@@ -215,9 +212,6 @@ public class FunctionsClass {
         this.activity = activity;
 
         functionsClassSecurity = new FunctionsClassSecurity(activity, context);
-
-        loadSavedColor();
-        checkLightDarkTheme();
     }
 
     public static boolean ComponentEnabled(PackageManager packageManager, String packageName, String className) {
@@ -1561,7 +1555,7 @@ public class FunctionsClass {
         }
         LayerDrawable drawSupport = (LayerDrawable) context.getDrawable(R.drawable.draw_support);
         Drawable backSupport = drawSupport.findDrawableByLayerId(R.id.backtemp);
-        backSupport.setTint(PublicVariable.themeTextColor);
+        backSupport.setTint(PublicVariable.darkMutedColor);
         builder.setIcon(drawSupport);
         builder.setTitle(context.getString(R.string.supportCategory));
         builder.setSingleChoiceItems(contactOption, 0, null);
@@ -1747,7 +1741,7 @@ public class FunctionsClass {
     public void navigateToClass(Class returnClass, ActivityOptions activityOptions) throws Exception {
         Intent intentOverride = new Intent(context, returnClass);
         if (returnClass.getSimpleName().equals(ApplicationsView.class.getSimpleName())) {
-            intentOverride.putExtra("freq", PublicVariable.freqApps);
+            intentOverride.putExtra("freq", PublicVariable.frequentlyUsedApps);
             intentOverride.putExtra("num", PublicVariable.freqLength);
         }
         activity.startActivity(intentOverride, activityOptions.toBundle());
@@ -1759,7 +1753,7 @@ public class FunctionsClass {
             activity.startActivity(categoryInten);
         } else {
             Intent hybridViewOff = new Intent(context, ApplicationsView.class);
-            hybridViewOff.putExtra("freq", PublicVariable.freqApps);
+            hybridViewOff.putExtra("freq", PublicVariable.frequentlyUsedApps);
             hybridViewOff.putExtra("num", PublicVariable.freqLength);
             hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
             activity.startActivity(hybridViewOff);
@@ -1774,7 +1768,7 @@ public class FunctionsClass {
 
     public void overrideBackPressToShortcuts(final Activity activityToFinish) throws Exception {
         Intent hybridViewOff = new Intent(context, ApplicationsView.class);
-        hybridViewOff.putExtra("freq", PublicVariable.freqApps);
+        hybridViewOff.putExtra("freq", PublicVariable.frequentlyUsedApps);
         hybridViewOff.putExtra("num", PublicVariable.freqLength);
         hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
         activity.startActivity(hybridViewOff);
@@ -4838,27 +4832,28 @@ public class FunctionsClass {
     public void loadSavedColor() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(".themeColor", Context.MODE_PRIVATE);
 
-        PublicVariable.themeColor = sharedPreferences.getInt("themeColor", context.getColor(R.color.default_color));//getVibrantColor
-        PublicVariable.themeTextColor = sharedPreferences.getInt("themeTextColor", context.getColor(R.color.default_color));//getDarkMutedColor
-        PublicVariable.themeColorString = sharedPreferences.getString("themeColorString", String.valueOf((context.getColor(R.color.default_color))));
+        PublicVariable.vibrantColor = sharedPreferences.getInt("vibrantColor", context.getColor(R.color.default_color));//getVibrantColor
+        PublicVariable.darkMutedColor = sharedPreferences.getInt("darkMutedColor", context.getColor(R.color.default_color));//getDarkMutedColor
+        PublicVariable.darkMutedColorString = sharedPreferences.getString("darkMutedColorString", String.valueOf((context.getColor(R.color.default_color))));
 
         if (PublicVariable.themeLightDark) {
-            PublicVariable.primaryColor = PublicVariable.themeColor;
-            PublicVariable.primaryColorOpposite = PublicVariable.themeTextColor;
+            PublicVariable.primaryColor = sharedPreferences.getInt("vibrantColor", context.getColor(R.color.default_color));//getVibrantColor
+            PublicVariable.primaryColorOpposite = sharedPreferences.getInt("darkMutedColor", context.getColor(R.color.default_color));//getDarkMutedColor
             PublicVariable.colorLightDark = context.getColor(R.color.light);
             PublicVariable.colorLightDarkOpposite = context.getColor(R.color.dark);
         } else if (!PublicVariable.themeLightDark) {
-            PublicVariable.primaryColor = PublicVariable.themeTextColor;
-            PublicVariable.primaryColorOpposite = PublicVariable.themeColor;
+            PublicVariable.primaryColor = sharedPreferences.getInt("darkMutedColor", context.getColor(R.color.default_color));//getDarkMutedColor
+            PublicVariable.primaryColorOpposite = sharedPreferences.getInt("vibrantColor", context.getColor(R.color.default_color));//getVibrantColor
             PublicVariable.colorLightDark = context.getColor(R.color.dark);
             PublicVariable.colorLightDarkOpposite = context.getColor(R.color.light);
         }
+
         PublicVariable.dominantColor = sharedPreferences.getInt("dominantColor", context.getColor(R.color.default_color));
     }
 
     public void extractWallpaperColor() {
-        int themeColor, themeTextColor, dominantColor;
-        String themeColorString;
+        int vibrantColor, darkMutedColor, dominantColor;
+        String darkMutedColorString;
         Palette currentColor;
         try {
             WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
@@ -4875,26 +4870,26 @@ public class FunctionsClass {
 
             int defaultColor = context.getColor(R.color.default_color);
 
-            themeColor = currentColor.getVibrantColor(defaultColor);
-            themeTextColor = currentColor.getDarkMutedColor(defaultColor);
-            themeColorString = "#" + Integer.toHexString(currentColor.getDarkMutedColor(defaultColor)).substring(2);
+            vibrantColor = currentColor.getVibrantColor(defaultColor);
+            darkMutedColor = currentColor.getDarkMutedColor(defaultColor);
+            darkMutedColorString = "#" + Integer.toHexString(currentColor.getDarkMutedColor(defaultColor)).substring(2);
 
             dominantColor = currentColor.getDominantColor(defaultColor);
         } catch (Exception e) {
             e.printStackTrace();
 
-            themeColor = context.getColor(R.color.default_color);
-            themeTextColor = context.getColor(R.color.default_color);
-            themeColorString = "" + context.getColor(R.color.default_color);
+            vibrantColor = context.getColor(R.color.default_color);
+            darkMutedColor = context.getColor(R.color.default_color);
+            darkMutedColorString = "" + context.getColor(R.color.default_color);
 
             dominantColor = context.getColor(R.color.default_color);
         }
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(".themeColor", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("themeColor", themeColor);
-        editor.putInt("themeTextColor", themeTextColor);
-        editor.putString("themeColorString", themeColorString);
+        editor.putInt("vibrantColor", vibrantColor);
+        editor.putInt("darkMutedColor", darkMutedColor);
+        editor.putString("darkMutedColorString", darkMutedColorString);
         editor.putInt("dominantColor", dominantColor);
         editor.apply();
     }
@@ -5044,8 +5039,8 @@ public class FunctionsClass {
         boolean LightDark = false;
         try {
             SharedPreferences sharedPreferences = context.getSharedPreferences(".themeColor", Context.MODE_PRIVATE);
-            int vibrantColor = sharedPreferences.getInt("themeColor", context.getColor(R.color.default_color));
-            int darkMutedColor = sharedPreferences.getInt("themeTextColor", context.getColor(R.color.default_color));
+            int vibrantColor = sharedPreferences.getInt("vibrantColor", context.getColor(R.color.default_color));
+            int darkMutedColor = sharedPreferences.getInt("darkMutedColor", context.getColor(R.color.default_color));
             int dominantColor = sharedPreferences.getInt("dominantColor", context.getColor(R.color.default_color));
 
             int initMix = mixColors(vibrantColor, darkMutedColor, 0.50f);
@@ -5257,7 +5252,7 @@ public class FunctionsClass {
         backFloating.setTint(PublicVariable.primaryColor);
 
         CharSequence[] charSequence = new CharSequence[]{
-                activity.getClass().getSimpleName().equals(AppAutoFeatures.class.getSimpleName()) || activity.getClass().getSimpleName().equals(CategoryAutoFeatures.class.getSimpleName())
+                activity.getClass().getSimpleName().equals(AppAutoFeatures.class.getSimpleName()) || activity.getClass().getSimpleName().equals(FolderAutoFeatures.class.getSimpleName())
                         ? context.getString(R.string.floatingCategory) : context.getString(R.string.automation),
         };
         Drawable[] drawables = new Drawable[]{
@@ -5575,7 +5570,7 @@ public class FunctionsClass {
         context.stopService(new Intent(context, BindServices.class));
 
         /*Dark App Theme*/
-        defaultSharedPreferencesEditor.putString("themeColor", "2");
+        defaultSharedPreferencesEditor.putString(".themeColor", "2");
 
         /*OFF Blurry Theme*/
         defaultSharedPreferencesEditor.putBoolean("blur", false);

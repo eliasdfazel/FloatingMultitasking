@@ -1,14 +1,14 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 10:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Automation.Categories;
+package net.geekstools.floatshort.PRO.Automation.Folders;
 
 import android.app.Activity;
 import android.content.Context;
@@ -39,7 +39,7 @@ import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import java.io.File;
 import java.util.ArrayList;
 
-public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoListAdapter.ViewHolder> {
+public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAdapter.ViewHolder> {
 
     private Context context;
     private Activity activity;
@@ -58,7 +58,7 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
 
     private ArrayList<AdapterItems> adapterItems;
 
-    public CategoryAutoListAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems) {
+    public FolderAutoListAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems) {
         this.activity = activity;
         this.context = context;
         this.adapterItems = adapterItems;
@@ -85,7 +85,7 @@ public class CategoryAutoListAdapter extends RecyclerView.Adapter<CategoryAutoLi
     }
 
     @Override
-    public CategoryAutoListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FolderAutoListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         view = LayoutInflater.from(context).inflate(R.layout.auto_categories_items, parent, false);
         viewHolder = new ViewHolder(view);
         return viewHolder;

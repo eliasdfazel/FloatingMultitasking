@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 7:37 AM
- * Last modified 1/14/20 7:07 AM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 11:42 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -70,6 +70,7 @@ import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
+import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
@@ -87,7 +88,6 @@ import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayou
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
 import net.geekstools.floatshort.PRO.Util.InAppUpdate.InAppUpdateProcess
-import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.Util.RemoteProcess.LicenseValidator
 import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryFolders
 import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryShortcuts
@@ -161,6 +161,9 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         functionsClassSecurity = FunctionsClassSecurity(this@ApplicationsView, applicationContext)
         functionsClassDialogues = FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
 
+        functionsClass.loadSavedColor()
+        functionsClass.checkLightDarkTheme()
+
         functionsClass.setThemeColorFloating(MainView, functionsClass.appThemeTransparent())
         functionsClassDialogues.changeLog()
 
@@ -179,7 +182,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         mapIndexFirstItem = LinkedHashMap<String, Int>()
         mapIndexLastItem = LinkedHashMap<String, Int>()
         mapRangeIndex = LinkedHashMap<Int, String>()
-
 
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
@@ -762,9 +764,9 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         }
 
         if (PublicVariable.themeLightDark) {
-            loadingProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(PublicVariable.themeTextColor, PorterDuff.Mode.MULTIPLY)
+            loadingProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(PublicVariable.darkMutedColor, PorterDuff.Mode.MULTIPLY)
         } else if (!PublicVariable.themeLightDark) {
-            loadingProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(PublicVariable.themeColor, PorterDuff.Mode.MULTIPLY)
+            loadingProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(PublicVariable.vibrantColor, PorterDuff.Mode.MULTIPLY)
         }
 
         val layerDrawableLoadLogo: LayerDrawable = getDrawable(R.drawable.ic_launcher_layer) as LayerDrawable
@@ -871,7 +873,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         if (intent.getStringArrayExtra("freq") != null) {
             frequentlyUsedAppsList = intent.getStringArrayExtra("freq")
             val freqLength = intent.getIntExtra("num", -1)
-            PublicVariable.freqApps = frequentlyUsedAppsList
+            PublicVariable.frequentlyUsedApps = frequentlyUsedAppsList
             PublicVariable.freqLength = freqLength
             if (freqLength > 1) {
                 loadFreq = true

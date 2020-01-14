@@ -1,14 +1,14 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/4/20 2:01 AM
- * Last modified 1/4/20 1:48 AM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 10:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Util.Preferences
+package net.geekstools.floatshort.PRO.Preferences
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -55,6 +55,9 @@ class PreferencesActivity : AppCompatActivity() {
         setContentView(R.layout.preferences_activity_view)
 
         functionsClass = FunctionsClass(applicationContext, this@PreferencesActivity)
+
+        functionsClass.loadSavedColor()
+        functionsClass.checkLightDarkTheme()
 
         if (functionsClass.appThemeTransparent()) {
             functionsClass.setThemeColorPreferences(fullPreferencesActivity, preferencesToolbar, true, getString(R.string.settingTitle), "${BuildConfig.VERSION_NAME}")

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 11:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -12,7 +12,6 @@ package net.geekstools.floatshort.PRO.Automation.Apps;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,7 +49,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import net.geekstools.floatshort.PRO.Automation.Categories.CategoryAutoFeatures;
+import net.geekstools.floatshort.PRO.Automation.Folders.FolderAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
@@ -68,8 +67,8 @@ import java.util.Map;
 
 public class AppAutoFeatures extends AppCompatActivity implements View.OnClickListener, SimpleGestureFilterFull.SimpleGestureListener {
 
-    Activity activity;
     FunctionsClass functionsClass;
+
     ListView actionElementsList;
     RelativeLayout fullActionButton, MainView;
     LinearLayout indexView, autoIdentifier;
@@ -131,8 +130,10 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
 
         simpleGestureFilterFull = new SimpleGestureFilterFull(getApplicationContext(), this);
+
         functionsClass = new FunctionsClass(getApplicationContext(), this);
-        activity = this;
+        functionsClass.loadSavedColor();
+        functionsClass.checkLightDarkTheme();
 
         recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);
         loadView.setLayoutManager(recyclerViewLayoutManager);
@@ -254,10 +255,10 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         desc.setTypeface(face);
 
         if (PublicVariable.themeLightDark) {
-            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
             desc.setTextColor(getColor(R.color.dark));
         } else if (!PublicVariable.themeLightDark) {
-            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
             desc.setTextColor(getColor(R.color.light));
         }
 
@@ -266,7 +267,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             public void onClick(View view) {
                 PublicVariable.autoID = null;
                 try {
-                    functionsClass.navigateToClass(CategoryAutoFeatures.class,
+                    functionsClass.navigateToClass(FolderAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     finish();
                 } catch (Exception e) {
@@ -281,11 +282,11 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         super.onResume();
 
         if (PublicVariable.themeLightDark) {
-            color = PublicVariable.themeColor;
-            pressColor = PublicVariable.themeTextColor;
+            color = PublicVariable.vibrantColor;
+            pressColor = PublicVariable.darkMutedColor;
         } else if (!PublicVariable.themeLightDark) {
-            color = PublicVariable.themeTextColor;
-            pressColor = PublicVariable.themeColor;
+            color = PublicVariable.darkMutedColor;
+            pressColor = PublicVariable.vibrantColor;
         }
 
         if (PublicVariable.autoID != null) {
@@ -409,11 +410,11 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         final Drawable backTime = drawTime.findDrawableByLayerId(R.id.backtemp);
 
         if (PublicVariable.themeLightDark) {
-            color = PublicVariable.themeColor;
-            pressColor = PublicVariable.themeTextColor;
+            color = PublicVariable.vibrantColor;
+            pressColor = PublicVariable.darkMutedColor;
         } else if (!PublicVariable.themeLightDark) {
-            color = PublicVariable.themeTextColor;
-            pressColor = PublicVariable.themeColor;
+            color = PublicVariable.darkMutedColor;
+            pressColor = PublicVariable.vibrantColor;
         }
 
         backWifi.setTint(color);
@@ -573,7 +574,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             case SimpleGestureFilterFull.SWIPE_LEFT: {
                 FunctionsClassDebug.Companion.PrintDebug("Swipe Left");
                 try {
-                    functionsClass.navigateToClass(CategoryAutoFeatures.class,
+                    functionsClass.navigateToClass(FolderAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     finish();
                 } catch (Exception e) {
@@ -684,9 +685,9 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             desc.setTypeface(face);
 
             if (PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
             } else if (!PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
             }
 
 
@@ -729,7 +730,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                         }
                     }
                 }
-                adapter = new AppAutoListAdapter(activity, getApplicationContext(), adapterItems);
+                adapter = new AppAutoListAdapter(AppAutoFeatures.this, getApplicationContext(), adapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
             }

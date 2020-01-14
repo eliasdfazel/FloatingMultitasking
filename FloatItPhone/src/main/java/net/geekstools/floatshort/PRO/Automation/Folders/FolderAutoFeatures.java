@@ -1,17 +1,16 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 12:14 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Automation.Categories;
+package net.geekstools.floatshort.PRO.Automation.Folders;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -58,13 +57,12 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterFull;
 
-import java.io.File;
 import java.util.ArrayList;
 
-public class CategoryAutoFeatures extends AppCompatActivity implements View.OnClickListener, SimpleGestureFilterFull.SimpleGestureListener {
+public class FolderAutoFeatures extends AppCompatActivity implements View.OnClickListener, SimpleGestureFilterFull.SimpleGestureListener {
 
-    Activity activity;
     FunctionsClass functionsClass;
+
     RecyclerView categorylist;
     ListView actionElementsList;
     RelativeLayout fullActionButton, MainView;
@@ -90,6 +88,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         super.onCreate(Saved);
         setContentView(R.layout.auto_categories);
 
+
         categorylist = (RecyclerView) findViewById(R.id.listFav);
         autoIdentifier = (LinearLayout) findViewById(R.id.autoid);
         autoIdentifier.bringToFront();
@@ -107,8 +106,20 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         time = (Button) findViewById(R.id.time);
 
         simpleGestureFilterFull = new SimpleGestureFilterFull(getApplicationContext(), this);
+
         functionsClass = new FunctionsClass(getApplicationContext(), this);
-        activity = this;
+        functionsClass.loadSavedColor();
+        functionsClass.checkLightDarkTheme();
+
+        if (!getFileStreamPath(".categoryInfo").exists()
+                || !(functionsClass.countLineInnerFile(".categoryInfo") > 0)) {
+            startActivity(new Intent(getApplicationContext(), FoldersConfigurations.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+
+            finish();
+            return;
+        }
 
         if (functionsClass.returnAPI() >= 26) {
             if (!functionsClass.ControlPanel()) {
@@ -227,10 +238,10 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         desc.setTypeface(face);
 
         if (PublicVariable.themeLightDark) {
-            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
             desc.setTextColor(getColor(R.color.dark));
         } else if (!PublicVariable.themeLightDark) {
-            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
             desc.setTextColor(getColor(R.color.light));
         }
 
@@ -254,11 +265,11 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         super.onResume();
 
         if (PublicVariable.themeLightDark) {
-            color = PublicVariable.themeColor;
-            pressColor = PublicVariable.themeTextColor;
+            color = PublicVariable.vibrantColor;
+            pressColor = PublicVariable.darkMutedColor;
         } else if (!PublicVariable.themeLightDark) {
-            color = PublicVariable.themeTextColor;
-            pressColor = PublicVariable.themeColor;
+            color = PublicVariable.darkMutedColor;
+            pressColor = PublicVariable.vibrantColor;
         }
 
         if (PublicVariable.autoID != null) {
@@ -382,11 +393,11 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         final Drawable backTime = drawTime.findDrawableByLayerId(R.id.backtemp);
 
         if (PublicVariable.themeLightDark) {
-            color = PublicVariable.themeColor;
-            pressColor = PublicVariable.themeTextColor;
+            color = PublicVariable.vibrantColor;
+            pressColor = PublicVariable.darkMutedColor;
         } else if (!PublicVariable.themeLightDark) {
-            color = PublicVariable.themeTextColor;
-            pressColor = PublicVariable.themeColor;
+            color = PublicVariable.darkMutedColor;
+            pressColor = PublicVariable.vibrantColor;
         }
 
         backWifi.setTint(color);
@@ -521,9 +532,9 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
     @Override
     public void onBackPressed() {
         try {
-            functionsClass.CheckSystemRAM(CategoryAutoFeatures.this);
+            functionsClass.CheckSystemRAM(FolderAutoFeatures.this);
 
-            functionsClass.overrideBackPressToMain(CategoryAutoFeatures.this);
+            functionsClass.overrideBackPressToMain(FolderAutoFeatures.this);
             overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
         } catch (Exception e) {
             e.printStackTrace();
@@ -545,7 +556,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
             case SimpleGestureFilterFull.SWIPE_LEFT: {
                 FunctionsClassDebug.Companion.PrintDebug("Swipe Left");
                 try {
-                    functionsClass.navigateToClass(CategoryAutoFeatures.class,
+                    functionsClass.navigateToClass(FolderAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     finish();
                 } catch (Exception e) {
@@ -642,12 +653,6 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
         protected void onPreExecute() {
             super.onPreExecute();
 
-            File f = getApplicationContext().getFileStreamPath(".categoryInfo");
-            if (!f.exists()) {
-                finish();
-                return;
-            }
-
             loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
             loadingSplash.setVisibility(View.VISIBLE);
             if (functionsClass.appThemeTransparent() == true) {
@@ -662,9 +667,9 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
             desc.setTypeface(face);
 
             if (PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
             } else if (!PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
 
@@ -698,7 +703,7 @@ public class CategoryAutoFeatures extends AppCompatActivity implements View.OnCl
                         e.printStackTrace();
                     }
                 }
-                categoryAutoListAdapter = new CategoryAutoListAdapter(activity, getApplicationContext(), adapterItems);
+                categoryAutoListAdapter = new FolderAutoListAdapter(FolderAutoFeatures.this, getApplicationContext(), adapterItems);
             } catch (Exception e) {
                 e.printStackTrace();
                 startActivity(new Intent(getApplicationContext(), FoldersConfigurations.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

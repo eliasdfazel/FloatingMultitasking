@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:58 AM
- * Last modified 1/13/20 9:54 AM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 12:14 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -86,6 +86,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import net.geeksempire.loadingspin.SpinKitView;
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
+import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword;
@@ -100,7 +101,6 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutGrid;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
-import net.geekstools.floatshort.PRO.Util.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryWidgets;
@@ -196,6 +196,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         functionsClass = new FunctionsClass(getApplicationContext(), WidgetConfigurations.this);
         functionsClassSecurity = new FunctionsClassSecurity(WidgetConfigurations.this, getApplicationContext());
         functionsClassRunServices = new FunctionsClassRunServices(getApplicationContext());
+
+        functionsClass.loadSavedColor();
+        functionsClass.checkLightDarkTheme();
 
         if (!functionsClass.readPreference("WidgetsInformation", "Reallocated", true) && getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
             startActivity(new Intent(getApplicationContext(), WidgetsReallocationProcess.class),
@@ -307,10 +310,10 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             gx.setTypeface(face);
 
             if (PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
                 gx.setTextColor(getColor(R.color.dark));
             } else if (!PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
                 gx.setTextColor(getColor(R.color.light));
             }
         }
@@ -1301,10 +1304,10 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             gx.setTypeface(face);
 
             if (PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeTextColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
                 gx.setTextColor(getColor(R.color.dark));
             } else if (!PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.themeColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
                 gx.setTextColor(getColor(R.color.light));
             }
         }

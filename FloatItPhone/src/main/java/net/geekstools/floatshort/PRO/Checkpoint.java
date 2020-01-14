@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 6:50 AM
- * Last modified 1/14/20 6:47 AM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 11:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -74,15 +74,15 @@ public class Checkpoint extends Activity {
         if (functionsClass.returnAPI() >= 26) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                window.setStatusBarColor(PublicVariable.themeColor);
-                window.setNavigationBarColor(PublicVariable.themeColor);
+                window.setStatusBarColor(PublicVariable.vibrantColor);
+                window.setNavigationBarColor(PublicVariable.vibrantColor);
             } else {
                 window.setStatusBarColor(Color.TRANSPARENT);
                 window.setNavigationBarColor(Color.TRANSPARENT);
             }
         } else {
-            window.setStatusBarColor(PublicVariable.themeColor);
-            window.setNavigationBarColor(PublicVariable.themeColor);
+            window.setStatusBarColor(PublicVariable.vibrantColor);
+            window.setNavigationBarColor(PublicVariable.vibrantColor);
         }
 
         if (getIntent().hasExtra(getString(R.string.splitIt))) {
@@ -129,10 +129,10 @@ public class Checkpoint extends Activity {
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.wait), Toast.LENGTH_LONG).show();
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this, R.style.GeeksEmpire_Dialogue_Light);
-        alertDialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.themeColor + "'>" +
+        alertDialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.vibrantColor + "'>" +
                 getResources().getString(R.string.permTitle) + "</font>"));
         alertDialog.setMessage(
-                Html.fromHtml("<font color='" + PublicVariable.themeColorString + "'>" +
+                Html.fromHtml("<font color='" + PublicVariable.darkMutedColorString + "'>" +
                         getResources().getString(R.string.permDesc) + "</font>"));
         try {
             alertDialog.setIcon(getDrawable(R.drawable.ic_launcher));

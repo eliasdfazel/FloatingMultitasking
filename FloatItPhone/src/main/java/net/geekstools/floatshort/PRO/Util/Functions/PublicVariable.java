@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 11:42 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -39,20 +39,23 @@ public class PublicVariable {
     public static int actionBarHeight;
     public static int statusBarHeight;
     public static int navigationBarHeight;
+
     public static int primaryColor;
     public static int primaryColorOpposite;
     public static int colorLightDark;
     public static int colorLightDarkOpposite;
     public static int dominantColor;
-    public static int themeColor;
-    public static int themeTextColor;
+
+    public static int vibrantColor;
+    public static int darkMutedColor;
+    public static String darkMutedColorString;
+
     public static int itemPosition;
     public static int freqLength;
 
     public static float confirmButtonX;
     public static float confirmButtonY;
 
-    public static String themeColorString;
     public static String autoID = null;
     public static String categoryName = "FloatingCategory";
     public static String splitPairPackage;
@@ -76,7 +79,7 @@ public class PublicVariable {
     public static boolean forceReload = false;
     public static boolean updateCancelByUser = false;
 
-    public static String[] freqApps;
+    public static String[] frequentlyUsedApps;
 
     public static ArrayList<String> FloatingShortcuts = new ArrayList<String>();
     public static ArrayList<String> RecoveryShortcuts = new ArrayList<String>();

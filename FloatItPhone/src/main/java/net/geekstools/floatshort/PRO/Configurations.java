@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 7:37 AM
- * Last modified 1/14/20 7:20 AM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 11:42 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -225,7 +225,7 @@ public class Configurations extends Activity {
                         deleteFile("Frequently");
                     }
                     String[] frequentApps = retrieveFreqUsedApp();
-                    PublicVariable.freqApps = frequentApps;
+                    PublicVariable.frequentlyUsedApps = frequentApps;
                     PublicVariable.freqLength = frequentApps.length;
 
                     for (String frequentApp : frequentApps) {
@@ -243,8 +243,8 @@ public class Configurations extends Activity {
         } else {
             if (functionsClass.UsageStatsEnabled()) {
                 try {
-                    PublicVariable.freqApps = retrieveFreqUsedApp();
-                    PublicVariable.freqLength = PublicVariable.freqApps.length;
+                    PublicVariable.frequentlyUsedApps = retrieveFreqUsedApp();
+                    PublicVariable.freqLength = PublicVariable.frequentlyUsedApps.length;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

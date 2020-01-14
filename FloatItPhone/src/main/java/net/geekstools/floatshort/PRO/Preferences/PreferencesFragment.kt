@@ -1,14 +1,14 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 7:37 AM
- * Last modified 1/14/20 7:37 AM
+ * Created by Elias Fazel on 1/14/20 12:14 PM
+ * Last modified 1/14/20 11:53 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Util.Preferences
+package net.geekstools.floatshort.PRO.Preferences
 
 
 import android.app.ActivityManager
@@ -167,7 +167,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             }
         }
 
-        functionsClass.checkLightDarkTheme()
         val appTheme = sharedPreferences.getString("themeColor", "2")
         if (appTheme == "1") {
             themeColor.summary = getString(R.string.light)
