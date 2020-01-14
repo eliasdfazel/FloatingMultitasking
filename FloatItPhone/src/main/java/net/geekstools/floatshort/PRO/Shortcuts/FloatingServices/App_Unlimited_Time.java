@@ -1,14 +1,14 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 6:32 AM
- * Last modified 1/14/20 6:28 AM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:44 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO;
+package net.geekstools.floatshort.PRO.Shortcuts.FloatingServices;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -39,6 +39,8 @@ import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import androidx.preference.PreferenceManager;
 
+import net.geekstools.floatshort.PRO.BindServices;
+import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
@@ -52,7 +54,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class App_Unlimited_Nfc extends Service {
+public class App_Unlimited_Time extends Service {
 
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
@@ -400,7 +402,7 @@ public class App_Unlimited_Nfc extends Service {
                                     functionsClass.PopupOptionShortcuts(
                                             floatingView[startId],
                                             packages[startId],
-                                            App_Unlimited_Nfc.class.getSimpleName(),
+                                            App_Unlimited_Time.class.getSimpleName(),
                                             startId,
                                             initialX,
                                             initialY + PublicVariable.statusBarHeight
@@ -666,7 +668,7 @@ public class App_Unlimited_Nfc extends Service {
                 functionsClass.PopupNotificationShortcuts(
                         floatingView[startId],
                         packages[startId],
-                        App_Unlimited_Nfc.class.getSimpleName(),
+                        App_Unlimited_Time.class.getSimpleName(),
                         startId,
                         iconColor[startId],
                         xMove,
@@ -702,7 +704,7 @@ public class App_Unlimited_Nfc extends Service {
             }
         });
 
-        final String className = App_Unlimited_Nfc.class.getSimpleName();
+        final String className = App_Unlimited_Time.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Single_" + className);
         intentFilter.addAction("Pin_App_" + className);

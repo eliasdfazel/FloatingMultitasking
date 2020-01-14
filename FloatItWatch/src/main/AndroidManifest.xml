@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright © 2019 By Geeks Empire.
+  ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 11/11/19 7:18 PM
-  ~ Last modified 11/11/19 7:16 PM
+  ~ Created by Elias Fazel on 1/14/20 6:50 AM
+  ~ Last modified 1/14/20 6:49 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -103,7 +103,7 @@
             android:name=".BindServices"
             android:foregroundServiceType="dataSync"/>
         <service
-            android:name=".LicenseValidator"
+            android:name=".Util.RemoteProcess.LicenseValidator"
             android:foregroundServiceType="dataSync"/>
         <service
             android:name=".Automation.RecoveryShortcuts"
@@ -116,14 +116,14 @@
         </service>
         <!-- Float It -->
         <service
-            android:name=".App_Unlimited_Shortcuts"/>
+            android:name=".Shortcuts.FloatingServices.App_Unlimited_Shortcuts"/>
         <service
-            android:name=".App_Unlimited_HIS"/>
+            android:name=".Shortcuts.FloatingServices.App_Unlimited_HIS"/>
         <service
-            android:name=".Category_Unlimited_Category"/>
+            android:name=".Folders.FloatingServices.Category_Unlimited_Category"/>
         <!-- Float It -->
         <service
-            android:name=".CloudNotificationHandler"
+            android:name=".Util.RemoteProcess.CloudNotificationHandler"
             android:icon="@drawable/ic_launcher">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>

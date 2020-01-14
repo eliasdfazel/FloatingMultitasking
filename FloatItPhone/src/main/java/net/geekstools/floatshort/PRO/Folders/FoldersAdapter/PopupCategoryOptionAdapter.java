@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,7 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import net.geekstools.floatshort.PRO.CheckPoint;
+import net.geekstools.floatshort.PRO.Checkpoint;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
@@ -249,7 +249,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                             functionsClassSecurity.openAuthInvocation();
                         } else {
                             if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                                context.startActivity(new Intent(context, CheckPoint.class)
+                                context.startActivity(new Intent(context, Checkpoint.class)
                                         .putExtra(context.getString(R.string.splitIt), context.getPackageName())
                                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                             } else {
@@ -304,7 +304,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
             public boolean onLongClick(View view) {
                 if (functionsClass.returnAPI() >= 24) {
                     if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                        context.startActivity(new Intent(context, CheckPoint.class)
+                        context.startActivity(new Intent(context, Checkpoint.class)
                                 .putExtra(context.getString(R.string.splitIt), context.getPackageName())
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     } else {

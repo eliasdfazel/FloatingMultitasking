@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/13/20 9:58 AM
-  ~ Last modified 1/13/20 9:54 AM
+  ~ Created by Elias Fazel on 1/14/20 6:50 AM
+  ~ Last modified 1/14/20 6:47 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -90,7 +90,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CheckPoint"
+            android:name=".Checkpoint"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper.NoTitleBar"/>
@@ -481,37 +481,37 @@
             android:foregroundServiceType="dataSync"/>
         <!-- Float It -->
         <service
-            android:name=".App_Unlimited_Shortcuts"/>
+            android:name=".Shortcuts.FloatingServices.App_Unlimited_Shortcuts"/>
         <service
-            android:name=".App_Unlimited_Shortcuts_Package"/>
+            android:name=".Shortcuts.FloatingServices.App_Unlimited_Shortcuts_Package"/>
         <service
-            android:name=".App_Unlimited_Shortcuts_Frequently"/>
+            android:name=".Shortcuts.FloatingServices.App_Unlimited_Shortcuts_Frequently"/>
         <service
-            android:name=".App_Unlimited_Wifi"/>
+            android:name=".Shortcuts.FloatingServices.App_Unlimited_Wifi"/>
         <service
-            android:name=".App_Unlimited_Bluetooth"/>
+            android:name=".Shortcuts.FloatingServices.App_Unlimited_Bluetooth"/>
         <service
-            android:name=".App_Unlimited_Gps"/>
+            android:name=".Shortcuts.FloatingServices.App_Unlimited_Gps"/>
         <service
-            android:name=".App_Unlimited_Nfc"/>
+            android:name=".Shortcuts.FloatingServices.App_Unlimited_Nfc"/>
         <service
-            android:name=".App_Unlimited_Time"/>
+            android:name=".Shortcuts.FloatingServices.App_Unlimited_Time"/>
         <service
-            android:name=".Folder_Unlimited_Floating" />
+            android:name=".Folders.FloatingServices.Folder_Unlimited_Floating" />
         <service
-            android:name=".Folder_Unlimited_Wifi" />
+            android:name=".Folders.FloatingServices.Folder_Unlimited_Wifi" />
         <service
-            android:name=".Folder_Unlimited_Bluetooth" />
+            android:name=".Folders.FloatingServices.Folder_Unlimited_Bluetooth" />
         <service
-            android:name=".Folder_Unlimited_Gps" />
+            android:name=".Folders.FloatingServices.Folder_Unlimited_Gps" />
         <service
-            android:name=".Folder_Unlimited_Nfc" />
+            android:name=".Folders.FloatingServices.Folder_Unlimited_Nfc" />
         <service
-            android:name=".Folder_Unlimited_Time" />
+            android:name=".Folders.FloatingServices.Folder_Unlimited_Time" />
         <service
-            android:name=".Widget_Unlimited_Floating"/>
+            android:name=".Widget.FloatingServices.Widget_Unlimited_Floating"/>
         <service
-            android:name=".App_Unlimited_HIS"/>
+            android:name=".Shortcuts.FloatingServices.App_Unlimited_HIS"/>
         <!-- Float It -->
         <service
             android:name=".Util.RemoteProcess.CloudNotificationHandler">

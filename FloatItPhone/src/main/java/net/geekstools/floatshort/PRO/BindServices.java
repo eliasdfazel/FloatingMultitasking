@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 9:10 PM
- * Last modified 1/1/20 8:38 PM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:45 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,6 +25,12 @@ import android.util.TypedValue;
 import net.geekstools.floatshort.PRO.Automation.RecoveryGps;
 import net.geekstools.floatshort.PRO.Automation.RecoveryNfc;
 import net.geekstools.floatshort.PRO.Automation.RecoveryWifi;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Gps;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Nfc;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Gps;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Nfc;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;

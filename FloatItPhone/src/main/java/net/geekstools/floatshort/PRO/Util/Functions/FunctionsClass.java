@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 6:32 AM
- * Last modified 1/14/20 6:06 AM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -125,31 +125,31 @@ import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Actions;
 
-import net.geekstools.floatshort.PRO.App_Unlimited_Bluetooth;
-import net.geekstools.floatshort.PRO.App_Unlimited_Gps;
-import net.geekstools.floatshort.PRO.App_Unlimited_HIS;
-import net.geekstools.floatshort.PRO.App_Unlimited_Nfc;
-import net.geekstools.floatshort.PRO.App_Unlimited_Time;
-import net.geekstools.floatshort.PRO.App_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.Automation.Alarms.AlarmAlertBroadcastReceiver;
 import net.geekstools.floatshort.PRO.Automation.Alarms.SetupAlarms;
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Automation.Categories.CategoryAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.BuildConfig;
-import net.geekstools.floatshort.PRO.CheckPoint;
+import net.geekstools.floatshort.PRO.Checkpoint;
 import net.geekstools.floatshort.PRO.Configurations;
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Bluetooth;
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Floating;
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Gps;
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Nfc;
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Time;
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Wifi;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Bluetooth;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Floating;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Gps;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Nfc;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Time;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Bluetooth;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Gps;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_HIS;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Nfc;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Time;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
@@ -162,9 +162,9 @@ import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingCategory;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingShortcuts;
 import net.geekstools.floatshort.PRO.Util.UI.Splash.FloatingSplash;
+import net.geekstools.floatshort.PRO.Widget.FloatingServices.Widget_Unlimited_Floating;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
-import net.geekstools.floatshort.PRO.Widget_Unlimited_Floating;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.io.BufferedReader;
@@ -510,7 +510,7 @@ public class FunctionsClass {
     public void runUnlimitedWifi(String packageName) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -532,7 +532,7 @@ public class FunctionsClass {
     public void runUnlimitedBluetooth(String packageName) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -554,7 +554,7 @@ public class FunctionsClass {
     public void runUnlimitedGps(String packageName) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -576,7 +576,7 @@ public class FunctionsClass {
     public void runUnlimitedNfc(String packageName) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -598,7 +598,7 @@ public class FunctionsClass {
     public void runUnlimitedTime(String packageName) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -620,7 +620,7 @@ public class FunctionsClass {
     public void runUnlimitedShortcutsServiceHIS(String packageName, String className) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -715,7 +715,7 @@ public class FunctionsClass {
     public void runUnlimitedFolderService(String categoryName) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -749,7 +749,7 @@ public class FunctionsClass {
     public void runUnlimitedFolderWifi(String categoryName, String[] categoryNamePackages) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -773,7 +773,7 @@ public class FunctionsClass {
     public void runUnlimitedFolderBluetooth(String categoryName, String[] categoryNamePackages) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -797,7 +797,7 @@ public class FunctionsClass {
     public void runUnlimitedFolderGps(String categoryName, String[] categoryNamePackages) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -821,7 +821,7 @@ public class FunctionsClass {
     public void runUnlimitedFolderNfc(String categoryName, String[] categoryNamePackages) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -845,7 +845,7 @@ public class FunctionsClass {
     public void runUnlimitedFolderTime(String categoryName, String[] categoryNamePackages) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }
@@ -954,7 +954,7 @@ public class FunctionsClass {
     public void runUnlimitedWidgetService(int WidgetId, String widgetLabel) {
         if (API > 22) {
             if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, CheckPoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
             }
         }

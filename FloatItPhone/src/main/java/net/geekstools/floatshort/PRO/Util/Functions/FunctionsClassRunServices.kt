@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:58 AM
- * Last modified 1/13/20 9:55 AM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,16 +14,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
-import net.geekstools.floatshort.PRO.App_Unlimited_Shortcuts
-import net.geekstools.floatshort.PRO.App_Unlimited_Shortcuts_Frequently
 import net.geekstools.floatshort.PRO.BindServices
-import net.geekstools.floatshort.PRO.CheckPoint
+import net.geekstools.floatshort.PRO.Checkpoint
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Shortcuts
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Shortcuts_Frequently
 
 class FunctionsClassRunServices(var context: Context) {
 
     fun runUnlimitedShortcutsService(packageName: String, className: String) {
         if (!Settings.canDrawOverlays(context)) {
-            context.startActivity(Intent(context, CheckPoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             return
         }
 
@@ -58,7 +58,7 @@ class FunctionsClassRunServices(var context: Context) {
 
     fun runUnlimitedShortcutsServicePackage(packageName: String) {
         if (!Settings.canDrawOverlays(context)) {
-            context.startActivity(Intent(context, CheckPoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             return
         }
 
@@ -92,7 +92,7 @@ class FunctionsClassRunServices(var context: Context) {
 
     fun runUnlimitedShortcutsServiceFrequently(packageName: String) {
         if (!Settings.canDrawOverlays(context)) {
-            context.startActivity(Intent(context, CheckPoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             return
         }
 

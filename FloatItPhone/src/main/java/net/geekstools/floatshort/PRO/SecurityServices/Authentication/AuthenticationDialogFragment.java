@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 6:32 AM
- * Last modified 1/14/20 6:13 AM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -53,7 +53,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import net.geekstools.floatshort.PRO.CheckPoint;
+import net.geekstools.floatshort.PRO.Checkpoint;
 import net.geekstools.floatshort.PRO.Configurations;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
@@ -276,7 +276,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Single Split It ***");
 
                                     if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                                        getContext().startActivity(new Intent(getContext(), CheckPoint.class)
+                                        getContext().startActivity(new Intent(getContext(), Checkpoint.class)
                                                 .putExtra(getContext().getString(R.string.splitIt), getContext().getPackageName())
                                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                                     } else {
@@ -295,7 +295,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Pair Split It ***");
 
                                     if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                                        getContext().startActivity(new Intent(getContext(), CheckPoint.class)
+                                        getContext().startActivity(new Intent(getContext(), Checkpoint.class)
                                                 .putExtra(getContext().getString(R.string.splitIt), getContext().getPackageName())
                                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                                     } else {

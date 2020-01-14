@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:58 AM
- * Last modified 1/13/20 9:54 AM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,12 +14,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Bluetooth;
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Floating;
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Gps;
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Nfc;
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Time;
-import net.geekstools.floatshort.PRO.Folder_Unlimited_Wifi;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Bluetooth;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Floating;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Gps;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Nfc;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Time;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.R;
 
 public class RemoveAllActivity extends Activity {
@@ -29,27 +29,27 @@ public class RemoveAllActivity extends Activity {
         super.onCreate(Saved);
 
         /*Apps*/
-        Intent App_Unlimited_Shortcuts = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Shortcuts.class);
+        Intent App_Unlimited_Shortcuts = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Shortcuts.class);
         App_Unlimited_Shortcuts.putExtra("PackageName", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Shortcuts);
 
-        Intent App_Unlimited_Wifi = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Wifi.class);
+        Intent App_Unlimited_Wifi = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Wifi.class);
         App_Unlimited_Wifi.putExtra("pack", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Wifi);
 
-        Intent App_Unlimited_Bluetooth = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Bluetooth.class);
+        Intent App_Unlimited_Bluetooth = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Bluetooth.class);
         App_Unlimited_Bluetooth.putExtra("pack", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Bluetooth);
 
-        Intent App_Unlimited_Gps = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Gps.class);
+        Intent App_Unlimited_Gps = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Gps.class);
         App_Unlimited_Gps.putExtra("pack", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Gps);
 
-        Intent App_Unlimited_Nfc = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Nfc.class);
+        Intent App_Unlimited_Nfc = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Nfc.class);
         App_Unlimited_Nfc.putExtra("pack", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Nfc);
 
-        Intent App_Unlimited_Time = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Time.class);
+        Intent App_Unlimited_Time = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Time.class);
         App_Unlimited_Time.putExtra("pack", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Time);
 
@@ -79,17 +79,17 @@ public class RemoveAllActivity extends Activity {
         startService(Category_Unlimited_Time);
 
         /*HIS*/
-        Intent App_Unlimited_HIS = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_HIS.class);
+        Intent App_Unlimited_HIS = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_HIS.class);
         App_Unlimited_HIS.putExtra("packageName", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_HIS);
 
         /*Widgets*/
-        Intent Widget_Unlimited_Floating = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Widget_Unlimited_Floating.class);
+        Intent Widget_Unlimited_Floating = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Widget.FloatingServices.Widget_Unlimited_Floating.class);
         Widget_Unlimited_Floating.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(Widget_Unlimited_Floating);
 
         /*Frequently*/
-        Intent App_Unlimited_Shortcuts_Frequently = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.App_Unlimited_Shortcuts_Frequently.class);
+        Intent App_Unlimited_Shortcuts_Frequently = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Shortcuts_Frequently.class);
         App_Unlimited_Shortcuts_Frequently.putExtra("PackageName", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Shortcuts_Frequently);
 

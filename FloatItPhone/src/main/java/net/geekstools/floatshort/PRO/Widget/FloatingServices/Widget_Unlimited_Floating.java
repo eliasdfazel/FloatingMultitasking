@@ -1,14 +1,14 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO;
+package net.geekstools.floatshort.PRO.Widget.FloatingServices;
 
 import android.app.Service;
 import android.appwidget.AppWidgetHost;
@@ -36,6 +36,8 @@ import android.widget.TextView;
 
 import androidx.preference.PreferenceManager;
 
+import net.geekstools.floatshort.PRO.BindServices;
+import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;

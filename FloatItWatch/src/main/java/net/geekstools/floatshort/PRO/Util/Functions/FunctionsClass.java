@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -61,12 +61,12 @@ import android.widget.Toast;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.palette.graphics.Palette;
 
-import net.geekstools.floatshort.PRO.App_Unlimited_HIS;
-import net.geekstools.floatshort.PRO.App_Unlimited_Shortcuts;
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.Category_Unlimited_Category;
 import net.geekstools.floatshort.PRO.Configurations;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Category_Unlimited_Category;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_HIS;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Shortcuts;
 import net.geekstools.floatshort.PRO.Util.OpenApplications;
 import net.geekstools.floatshort.PRO.Util.UI.FloatingSplash;
 import net.geekstools.floatshort.PRO.Util.UI.PopupOptionsFloatingCategory;

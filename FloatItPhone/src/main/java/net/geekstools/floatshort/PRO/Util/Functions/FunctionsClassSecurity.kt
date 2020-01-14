@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:16 AM
- * Last modified 1/13/20 9:16 AM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -33,7 +33,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
-import net.geekstools.floatshort.PRO.CheckPoint
+import net.geekstools.floatshort.PRO.Checkpoint
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.AuthActivityHelper
@@ -296,7 +296,7 @@ class FunctionsClassSecurity {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Split It ***")
 
                 if (!FunctionsClass(context).AccessibilityServiceEnabled() && !FunctionsClass(context).SettingServiceRunning(InteractionObserver::class.java)) {
-                    context.startActivity(Intent(context, CheckPoint::class.java)
+                    context.startActivity(Intent(context, Checkpoint::class.java)
                             .putExtra(context.getString(R.string.splitIt), context.packageName)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 } else {
@@ -313,7 +313,7 @@ class FunctionsClassSecurity {
                 }
             } else if (AuthOpenAppValues.authPairSplitIt) {
                 if (!FunctionsClass(context).AccessibilityServiceEnabled() && !FunctionsClass(context).SettingServiceRunning(InteractionObserver::class.java)) {
-                    context.startActivity(Intent(context, CheckPoint::class.java)
+                    context.startActivity(Intent(context, Checkpoint::class.java)
                             .putExtra(context.getString(R.string.splitIt), context.packageName)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 } else {

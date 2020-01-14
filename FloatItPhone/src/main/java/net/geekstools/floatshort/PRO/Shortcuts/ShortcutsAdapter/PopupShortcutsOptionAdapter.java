@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 6:32 AM
- * Last modified 1/14/20 6:32 AM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,7 +28,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import net.geekstools.floatshort.PRO.CheckPoint;
+import net.geekstools.floatshort.PRO.Checkpoint;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsFloatingShortcutsPopuiOptions;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
@@ -146,7 +146,7 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
                         functionsClassSecurity.openAuthInvocation();
                     } else {
                         if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                            context.startActivity(new Intent(context, CheckPoint.class)
+                            context.startActivity(new Intent(context, Checkpoint.class)
                                     .putExtra(context.getString(R.string.splitIt), context.getPackageName())
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         } else {

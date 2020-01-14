@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 9:10 PM
- * Last modified 1/1/20 8:42 PM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,7 +34,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 
 import java.util.ArrayList;
 
-public class CheckPoint extends Activity {
+public class Checkpoint extends Activity {
 
     FunctionsClass functionsClass;
 
@@ -50,7 +50,7 @@ public class CheckPoint extends Activity {
                             && Settings.canDrawOverlays(getApplicationContext())) {
                         functionsClass.savePreference(".Configuration", "Permissions", true);
                         startActivity(new Intent(getApplicationContext(), Configurations.class));
-                        CheckPoint.this.finish();
+                        Checkpoint.this.finish();
                     }
                 }
                 break;
@@ -64,7 +64,7 @@ public class CheckPoint extends Activity {
         setContentView(R.layout.check_point);
         entry = (RelativeLayout) findViewById(R.id.entry);
 
-        functionsClass = new FunctionsClass(getApplicationContext(), CheckPoint.this);
+        functionsClass = new FunctionsClass(getApplicationContext(), Checkpoint.this);
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.wait), Toast.LENGTH_LONG).show();
 
         Window window = this.getWindow();
@@ -86,7 +86,7 @@ public class CheckPoint extends Activity {
         }
 
         if (getIntent().hasExtra(getString(R.string.splitIt))) {
-            functionsClass.AccessibilityService(CheckPoint.this);
+            functionsClass.AccessibilityService(Checkpoint.this);
         } else {
             ArrayList<String> Permissions = new ArrayList<String>();
             Permissions.add(Manifest.permission.INTERNET);

@@ -1,14 +1,14 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/12/19 3:27 PM
- * Last modified 11/12/19 3:24 PM
+ * Created by Elias Fazel on 1/14/20 6:50 AM
+ * Last modified 1/14/20 6:45 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO;
+package net.geekstools.floatshort.PRO.Folders.FloatingServices;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -38,6 +38,9 @@ import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import androidx.preference.PreferenceManager;
 
+import net.geekstools.floatshort.PRO.BindServices;
+import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Shortcuts;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
@@ -49,7 +52,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Folder_Unlimited_Wifi extends Service {
+public class Folder_Unlimited_Floating extends Service {
 
     FunctionsClass functionsClass;
     WindowManager windowManager;
@@ -322,7 +325,7 @@ public class Folder_Unlimited_Wifi extends Service {
         xMove = xPos;
         yMove = yPos;
 
-        final String className = Folder_Unlimited_Wifi.class.getSimpleName();
+        final String className = Folder_Unlimited_Floating.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Pair_" + className);
         intentFilter.addAction("Split_Apps_Single_" + className);
@@ -457,7 +460,7 @@ public class Folder_Unlimited_Wifi extends Service {
                                 } finally {
                                     PublicVariable.FloatingCategories.remove(categoryName[intent.getIntExtra("startId", 1)]);
                                     PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
-                                    PublicVariable.floatingCategoryCounter_wifi = PublicVariable.floatingCategoryCounter_wifi - 1;
+                                    PublicVariable.floatingCategoryCounter_category = PublicVariable.floatingCategoryCounter_category - 1;
                                     PublicVariable.categoriesCounter = PublicVariable.categoriesCounter - 1;
 
                                     if (PublicVariable.floatingCounter == 0) {
@@ -466,7 +469,7 @@ public class Folder_Unlimited_Wifi extends Service {
                                             stopService(new Intent(getApplicationContext(), BindServices.class));
                                         }
                                     }
-                                    if (PublicVariable.floatingCategoryCounter_wifi == 0) {
+                                    if (PublicVariable.floatingCategoryCounter_category == 0) {
                                         if (broadcastReceiver != null) {
                                             try {
                                                 unregisterReceiver(broadcastReceiver);
@@ -683,8 +686,8 @@ public class Folder_Unlimited_Wifi extends Service {
                         initialTouchX = motionEvent.getRawX();
                         initialTouchY = motionEvent.getRawY();
 
-                        xMove = Math.round(initialTouchX);
-                        yMove = Math.round(initialTouchY);
+                        xMove = layoutParamsOnTouch.x;
+                        yMove = layoutParamsOnTouch.y;
 
                         touchingDelay[startId] = true;
                         runnablePressHold = new Runnable() {
@@ -721,8 +724,8 @@ public class Folder_Unlimited_Wifi extends Service {
                             layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);
                             FunctionsClassDebug.Companion.PrintDebug("X :: " + layoutParamsOnTouch.x + "\n" + " Y :: " + layoutParamsOnTouch.y);
 
-                            xMove = Math.round(layoutParamsOnTouch.x);
-                            yMove = Math.round(layoutParamsOnTouch.y);
+                            xMove = layoutParamsOnTouch.x;
+                            yMove = layoutParamsOnTouch.y;
 
                             String nameForPosition = categoryName[startId];
                             SharedPreferences sharedPrefPosition = getSharedPreferences(nameForPosition, MODE_PRIVATE);
