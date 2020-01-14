@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 6:50 AM
- * Last modified 1/14/20 6:44 AM
+ * Created by Elias Fazel on 1/14/20 7:01 AM
+ * Last modified 1/14/20 6:59 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -232,7 +232,6 @@ public class App_Unlimited_HIS extends Service {
         if (functionsClass.appIsInstalled(packageNames[startId]) == false) {
             return START_NOT_STICKY;
         }
-        functionsClass.saveUnlimitedShortcutsService(packageNames[startId]);
 
         appIcon[startId] = functionsClass.shapedAppIcon(activityInfo[startId]);
         iconColor[startId] = functionsClass.extractDominantColor(functionsClass.appIcon(activityInfo[startId]));

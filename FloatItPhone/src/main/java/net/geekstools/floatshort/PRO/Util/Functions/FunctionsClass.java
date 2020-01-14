@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 6:50 AM
- * Last modified 1/14/20 6:50 AM
+ * Created by Elias Fazel on 1/14/20 7:01 AM
+ * Last modified 1/14/20 6:56 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -196,18 +196,13 @@ import static android.content.Context.VIBRATOR_SERVICE;
 
 public class FunctionsClass {
 
-    int API;
-
     Activity activity;
     Context context;
 
     FunctionsClassSecurity functionsClassSecurity;
 
-    ArrayList<AdapterItems> adapterItems;
-
     public FunctionsClass(Context context) {
         this.context = context;
-        API = Build.VERSION.SDK_INT;
 
         functionsClassSecurity = new FunctionsClassSecurity(context);
 
@@ -218,7 +213,6 @@ public class FunctionsClass {
     public FunctionsClass(Context context, Activity activity) {
         this.context = context;
         this.activity = activity;
-        API = Build.VERSION.SDK_INT;
 
         functionsClassSecurity = new FunctionsClassSecurity(activity, context);
 
@@ -508,7 +502,7 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedWifi(String packageName) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -530,7 +524,7 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedBluetooth(String packageName) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -552,7 +546,7 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedGps(String packageName) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -574,7 +568,7 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedNfc(String packageName) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -596,7 +590,7 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedTime(String packageName) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -618,7 +612,7 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedShortcutsServiceHIS(String packageName, String className) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -713,7 +707,7 @@ public class FunctionsClass {
 
     /*Category Function*/
     public void runUnlimitedFolderService(String categoryName) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -747,7 +741,7 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedFolderWifi(String categoryName, String[] categoryNamePackages) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -771,7 +765,7 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedFolderBluetooth(String categoryName, String[] categoryNamePackages) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -795,7 +789,7 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedFolderGps(String categoryName, String[] categoryNamePackages) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -819,7 +813,7 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedFolderNfc(String categoryName, String[] categoryNamePackages) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -843,7 +837,7 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedFolderTime(String categoryName, String[] categoryNamePackages) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -952,7 +946,7 @@ public class FunctionsClass {
 
     /*Floating Widgets Function*/
     public void runUnlimitedWidgetService(int WidgetId, String widgetLabel) {
-        if (API > 22) {
+        if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
                 context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return;
@@ -978,7 +972,7 @@ public class FunctionsClass {
         w.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(w);
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
+            if (Build.VERSION.SDK_INT < 26) {
                 context.startService(new Intent(context, BindServices.class));
             } else {
                 context.startForegroundService(new Intent(context, BindServices.class));
@@ -2013,7 +2007,7 @@ public class FunctionsClass {
     }
 
     public int returnAPI() {
-        return API;
+        return Build.VERSION.SDK_INT;
     }
 
     public boolean appIsInstalled(String packName) {
@@ -3114,7 +3108,7 @@ public class FunctionsClass {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
                 window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (API > 25) {
+                if (Build.VERSION.SDK_INT > 25) {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
@@ -3128,7 +3122,7 @@ public class FunctionsClass {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
                 window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (API > 25) {
+                if (Build.VERSION.SDK_INT > 25) {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
@@ -3149,7 +3143,7 @@ public class FunctionsClass {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
                 window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (API > 25) {
+                if (Build.VERSION.SDK_INT > 25) {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
@@ -3169,7 +3163,7 @@ public class FunctionsClass {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
                 window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (API > 25) {
+                if (Build.VERSION.SDK_INT > 25) {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
@@ -3203,7 +3197,7 @@ public class FunctionsClass {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 if (PublicVariable.themeLightDark) {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    if (API > 25) {
+                    if (Build.VERSION.SDK_INT > 25) {
                         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                     }
                 }
@@ -3225,7 +3219,7 @@ public class FunctionsClass {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 if (PublicVariable.themeLightDark) {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    if (API > 25) {
+                    if (Build.VERSION.SDK_INT > 25) {
                         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                     }
                 }
@@ -5271,7 +5265,7 @@ public class FunctionsClass {
                 drawFloating,
         };
 
-        adapterItems = new ArrayList<AdapterItems>();
+        ArrayList<AdapterItems> adapterItems = new ArrayList<AdapterItems>();
         for (int navItem = 0; navItem < charSequence.length; navItem++) {
             CharSequence itemText = charSequence[navItem];
             Drawable itemIcon = drawables[navItem];
@@ -5288,7 +5282,7 @@ public class FunctionsClass {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 if (PublicVariable.themeLightDark) {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    if (API > 25) {
+                    if (Build.VERSION.SDK_INT > 25) {
                         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                     }
                 }
@@ -5324,7 +5318,7 @@ public class FunctionsClass {
             if (PublicVariable.themeLightDark) {
                 fullActionElements.setBackground(new ColorDrawable(context.getColor(R.color.transparent_light)));
                 if (PublicVariable.themeLightDark) {
-                    if (API > 25) {
+                    if (Build.VERSION.SDK_INT > 25) {
                         activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                     }
                 }
@@ -5374,7 +5368,7 @@ public class FunctionsClass {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
                 window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (API > 25) {
+                if (Build.VERSION.SDK_INT > 25) {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                 }
             }
@@ -5396,7 +5390,7 @@ public class FunctionsClass {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 if (PublicVariable.themeLightDark) {
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    if (API > 25) {
+                    if (Build.VERSION.SDK_INT > 25) {
                         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                     }
                 }
