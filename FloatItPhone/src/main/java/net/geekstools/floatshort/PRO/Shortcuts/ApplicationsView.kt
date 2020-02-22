@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/22/20 2:15 PM
- * Last modified 2/22/20 1:57 PM
+ * Created by Elias Fazel on 2/22/20 2:30 PM
+ * Last modified 2/22/20 2:22 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -300,12 +300,10 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             if (functionsClass.networkConnection() && firebaseAuth.currentUser != null) {
 
                 if (functionsClass.floatingWidgetsPurchased()) {
-                    try {
-                        functionsClass.navigateToClass(WidgetConfigurations::class.java,
-                                ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
+
+                    functionsClass.navigateToClass(WidgetConfigurations::class.java,
+                            ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+
                 } else {
                     InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
 

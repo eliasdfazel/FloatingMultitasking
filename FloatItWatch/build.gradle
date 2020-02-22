@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/21/20 8:03 PM
- * Last modified 2/21/20 8:00 PM
+ * Created by Elias Fazel on 2/22/20 2:30 PM
+ * Last modified 2/22/20 2:17 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,7 +13,7 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    buildToolsVersion '29.0.3'
 
     defaultConfig {
         applicationId "net.geekstools.floatshort.PRO"

@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel on 2/22/20 2:30 PM
+ * Last modified 2/22/20 2:20 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -145,10 +145,6 @@ public class AppsConfirmButton extends Button
 
     @Override
     public void onSingleTapUp() {
-        try {
-            functionsClass.navigateToClass(FoldersConfigurations.class, activity);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        functionsClass.navigateToClass(FoldersConfigurations.class, activity);
     }
 }

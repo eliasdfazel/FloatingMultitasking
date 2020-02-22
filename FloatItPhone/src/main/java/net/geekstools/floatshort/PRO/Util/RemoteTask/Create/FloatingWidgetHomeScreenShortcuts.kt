@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 10:06 AM
- * Last modified 1/13/20 9:58 AM
+ * Created by Elias Fazel on 2/22/20 2:30 PM
+ * Last modified 2/22/20 2:26 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,7 +34,8 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
         functionsClass = FunctionsClass(applicationContext, this@FloatingWidgetHomeScreenShortcuts)
         functionsClassSecurity = FunctionsClassSecurity(this@FloatingWidgetHomeScreenShortcuts, applicationContext)
 
-        if (!functionsClass.readPreference("WidgetsInformation", "Reallocated", true) && getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+        if (!functionsClass.readPreference("WidgetsInformation", "Reallocated", true)
+                && getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
             startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                     ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/22/20 2:15 PM
- * Last modified 2/22/20 1:57 PM
+ * Created by Elias Fazel on 2/22/20 2:30 PM
+ * Last modified 2/22/20 2:21 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -379,12 +379,10 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
             public void onClick(View view) {
                 if (functionsClass.networkConnection() && firebaseAuth.getCurrentUser() != null) {
                     if (functionsClass.floatingWidgetsPurchased()) {
-                        try {
-                            functionsClass.navigateToClass(WidgetConfigurations.class,
-                                    ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+
+                        functionsClass.navigateToClass(WidgetConfigurations.class,
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
+
                     } else {
                         InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
 

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 2/22/20 2:30 PM
+ * Last modified 2/22/20 2:21 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -403,11 +403,8 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        try {
-            functionsClass.navigateToClass(FoldersConfigurations.class, AppSelectionList.this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        functionsClass.navigateToClass(FoldersConfigurations.class, AppSelectionList.this);
     }
 
     @Override

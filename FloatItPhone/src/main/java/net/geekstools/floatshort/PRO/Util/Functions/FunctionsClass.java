@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 12:14 PM
- * Last modified 1/14/20 12:14 PM
+ * Created by Elias Fazel on 2/22/20 2:30 PM
+ * Last modified 2/22/20 2:20 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1728,7 +1728,7 @@ public class FunctionsClass {
         return networkAvailable;
     }
 
-    public void navigateToClass(Class returnClass, final Activity activityToFinish) throws Exception {
+    public void navigateToClass(Class returnClass, final Activity activityToFinish) {
         context.startActivity(new Intent(context, returnClass).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -1738,7 +1738,7 @@ public class FunctionsClass {
         }, 313);
     }
 
-    public void navigateToClass(Class returnClass, ActivityOptions activityOptions) throws Exception {
+    public void navigateToClass(Class returnClass, ActivityOptions activityOptions) {
         Intent intentOverride = new Intent(context, returnClass);
         if (returnClass.getSimpleName().equals(ApplicationsView.class.getSimpleName())) {
             intentOverride.putExtra("freq", PublicVariable.frequentlyUsedApps);
