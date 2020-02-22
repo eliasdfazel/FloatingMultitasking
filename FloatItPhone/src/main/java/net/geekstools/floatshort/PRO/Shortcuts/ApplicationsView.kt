@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 12:14 PM
- * Last modified 1/14/20 11:42 AM
+ * Created by Elias Fazel on 2/22/20 2:15 PM
+ * Last modified 2/22/20 1:57 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -54,6 +54,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.android.billingclient.api.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -296,31 +297,30 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             }
         }
         switchWidgets.setOnClickListener {
-            try {
-                if (functionsClass.networkConnection() && firebaseAuth.currentUser != null) {
+            if (functionsClass.networkConnection() && firebaseAuth.currentUser != null) {
 
-                    if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(packageName).contains("[BETA]")) {
-                        try {
-                            functionsClass.navigateToClass(WidgetConfigurations::class.java,
-                                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
-                        startActivity(Intent(applicationContext, InAppBilling::class.java)
-                                .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
-                                ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
+                if (functionsClass.floatingWidgetsPurchased()) {
+                    try {
+                        functionsClass.navigateToClass(WidgetConfigurations::class.java,
+                                ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 } else {
-                    Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
+                    InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
 
-                    if (firebaseAuth.currentUser == null) {
-                        Toast.makeText(applicationContext, getString(R.string.authError), Toast.LENGTH_LONG).show()
-                    }
+                    startActivity(Intent(applicationContext, InAppBilling::class.java)
+                            .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
+                            ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
+            } else {
+                if (functionsClass.networkConnection()) {
+                    Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
+                }
+
+                if (firebaseAuth.currentUser == null) {
+                    Toast.makeText(applicationContext, getString(R.string.authError), Toast.LENGTH_LONG).show()
+                }
             }
         }
 
@@ -471,6 +471,97 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
             true
         }
+
+        //Consume Donation
+        try {
+            if (functionsClass.alreadyDonated() && functionsClass.networkConnection()) {
+                val billingClient = BillingClient.newBuilder(this@ApplicationsView).setListener { billingResult, purchaseList ->
+                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchaseList != null) {
+                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+                    } else {
+                    }
+                }.enablePendingPurchases().build()
+                billingClient.startConnection(object : BillingClientStateListener {
+                    override fun onBillingSetupFinished(billingResult: BillingResult) {
+                        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                            val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
+                            for (purchase in purchases) {
+                                PrintDebug("*** Purchased Item: $purchase ***")
+                                if (purchase.sku == BillingManager.iapDonation) {
+                                    val consumeResponseListener = ConsumeResponseListener { billingResult, purchaseToken ->
+                                        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                                            PrintDebug("*** Consumed Item: $purchaseToken ***")
+                                            functionsClass.savePreference(".PurchasedItem", purchase.sku, false)
+                                        }
+                                    }
+                                    val consumeParams = ConsumeParams.newBuilder()
+                                    consumeParams.setPurchaseToken(purchase.purchaseToken)
+                                    billingClient.consumeAsync(consumeParams.build(), consumeResponseListener)
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onBillingServiceDisconnected() {}
+                })
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+
+        //Restore Purchased Item
+        if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.searchEngineSubscribed()) {
+            val billingClient = BillingClient.newBuilder(this@ApplicationsView).setListener { billingResult, purchaseList ->
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchaseList != null) {
+                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+                } else {
+                }
+            }.enablePendingPurchases().build()
+            billingClient.startConnection(object : BillingClientStateListener {
+                override fun onBillingSetupFinished(billingResult: BillingResult) {
+                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                        functionsClass.savePreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false)
+                        val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
+                        for (purchase in purchases) {
+                            PrintDebug("*** Purchased Item: $purchase ***")
+                            functionsClass.savePreference(".PurchasedItem", purchase.sku, true)
+                        }
+                    }
+                }
+
+                override fun onBillingServiceDisconnected() {}
+            })
+        }
+
+        //Restore Subscribed Item
+        try {
+            if (functionsClass.networkConnection()) {
+                val billingClient = BillingClient.newBuilder(this@ApplicationsView).setListener { billingResult, purchases ->
+                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+                    } else {
+                    }
+                }.enablePendingPurchases().build()
+                billingClient.startConnection(object : BillingClientStateListener {
+                    override fun onBillingSetupFinished(billingResult: BillingResult) {
+                        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                            functionsClass.savePreference(".SubscribedItem", BillingManager.iapSecurityServices, false)
+                            val purchases = billingClient.queryPurchases(BillingClient.SkuType.SUBS).purchasesList
+                            for (purchase in purchases) {
+                                PrintDebug("*** Subscribed Item: $purchase ***")
+                                functionsClass.savePreference(".SubscribedItem", purchase.sku, true)
+                            }
+                        }
+                    }
+
+                    override fun onBillingServiceDisconnected() {}
+                })
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+
+
 
         firebaseAuth = FirebaseAuth.getInstance()
 
@@ -689,6 +780,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                             ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
                 } else {
                     InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
+
                     functionsClass.navigateToClass(InAppBilling::class.java,
                             ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
                 }
@@ -1165,53 +1257,55 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             }
 
             //Loading Widgets
-            val appWidgetManager = AppWidgetManager.getInstance(this@ApplicationsView)
-            val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
-                    .fallbackToDestructiveMigration()
-                    .addCallback(object : RoomDatabase.Callback() {
-                        override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                            super.onCreate(supportSQLiteDatabase)
+            if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+                val appWidgetManager = AppWidgetManager.getInstance(this@ApplicationsView)
+                val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                        .fallbackToDestructiveMigration()
+                        .addCallback(object : RoomDatabase.Callback() {
+                            override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                super.onCreate(supportSQLiteDatabase)
+                            }
+
+                            override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                super.onOpen(supportSQLiteDatabase)
+                            }
+                        })
+                        .build()
+                val widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetDataCoroutines()
+
+                if (widgetDataModels.isNotEmpty()) {
+                    widgetDataModels.forEach { widgetDataModel ->
+                        try {
+                            val appWidgetId: Int = widgetDataModel.WidgetId
+                            val packageName: String = widgetDataModel.PackageName
+                            val className: String = widgetDataModel.ClassNameProvider
+                            val configClassName: String? = widgetDataModel.ConfigClassName
+
+                            PrintDebug("*** $appWidgetId *** PackageName: $packageName - ClassName: $className - Configure: $configClassName ***")
+
+                            if (functionsClass.appIsInstalled(packageName)) {
+
+                                val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
+                                val newAppName = functionsClass.appName(packageName)
+                                val appIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+
+                                searchAdapterItems.add(AdapterItemsSearchEngine(
+                                        newAppName,
+                                        packageName,
+                                        className,
+                                        configClassName,
+                                        widgetDataModel.WidgetLabel,
+                                        appIcon,
+                                        appWidgetProviderInfo,
+                                        appWidgetId,
+                                        SearchEngineAdapter.SearchResultType.SearchWidgets
+                                ))
+                            } else {
+                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
-
-                        override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                            super.onOpen(supportSQLiteDatabase)
-                        }
-                    })
-                    .build()
-            val widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetDataCoroutines()
-
-            if (widgetDataModels.isNotEmpty()) {
-                widgetDataModels.forEach { widgetDataModel ->
-                    try {
-                        val appWidgetId: Int = widgetDataModel.WidgetId
-                        val packageName: String = widgetDataModel.PackageName
-                        val className: String = widgetDataModel.ClassNameProvider
-                        val configClassName: String? = widgetDataModel.ConfigClassName
-
-                        PrintDebug("*** $appWidgetId *** PackageName: $packageName - ClassName: $className - Configure: $configClassName ***")
-
-                        if (functionsClass.appIsInstalled(packageName)) {
-
-                            val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
-                            val newAppName = functionsClass.appName(packageName)
-                            val appIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
-
-                            searchAdapterItems.add(AdapterItemsSearchEngine(
-                                    newAppName,
-                                    packageName,
-                                    className,
-                                    configClassName,
-                                    widgetDataModel.WidgetLabel,
-                                    appIcon,
-                                    appWidgetProviderInfo,
-                                    appWidgetId,
-                                    SearchEngineAdapter.SearchResultType.SearchWidgets
-                            ))
-                        } else {
-                            widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className)
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
                     }
                 }
             }

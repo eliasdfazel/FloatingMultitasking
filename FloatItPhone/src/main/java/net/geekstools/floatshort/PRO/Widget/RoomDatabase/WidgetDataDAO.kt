@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/6/20 8:58 AM
- * Last modified 1/6/20 8:20 AM
+ * Created by Elias Fazel on 2/22/20 2:15 PM
+ * Last modified 2/22/20 1:53 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -52,4 +52,7 @@ interface WidgetDataDAO {
 
     @Query("DELETE FROM WidgetData WHERE PackageName = :PackageName AND ClassNameProvider = :ClassNameWidgetProvider")
     fun deleteByWidgetClassNameProviderWidget(PackageName: String, ClassNameWidgetProvider: String)
+
+    @Query("SELECT COUNT(WidgetNumber) FROM WidgetData")
+    fun getRowCount(): Int
 }

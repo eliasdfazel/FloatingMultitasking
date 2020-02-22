@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 12:14 PM
- * Last modified 1/14/20 12:14 PM
+ * Created by Elias Fazel on 2/22/20 2:15 PM
+ * Last modified 2/22/20 1:57 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -377,31 +377,29 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
         switchWidgets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    if (functionsClass.networkConnection() && firebaseAuth.getCurrentUser() != null) {
-                        if (functionsClass.floatingWidgetsPurchased() || functionsClass.appVersionName(getPackageName()).contains("[BETA]")) {
-                            try {
-                                functionsClass.navigateToClass(WidgetConfigurations.class,
-                                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
-
-                            startActivity(new Intent(getApplicationContext(), InAppBilling.class)
-                                            .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
-                                    ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
+                if (functionsClass.networkConnection() && firebaseAuth.getCurrentUser() != null) {
+                    if (functionsClass.floatingWidgetsPurchased()) {
+                        try {
+                            functionsClass.navigateToClass(WidgetConfigurations.class,
+                                    ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.internetError), Toast.LENGTH_LONG).show();
+                        InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
 
-                        if (firebaseAuth.getCurrentUser() == null) {
-                            Toast.makeText(getApplicationContext(), getString(R.string.authError), Toast.LENGTH_LONG).show();
-                        }
+                        startActivity(new Intent(getApplicationContext(), InAppBilling.class)
+                                        .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.down_up, android.R.anim.fade_out).toBundle());
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } else {
+                    if (functionsClass.networkConnection()) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.internetError), Toast.LENGTH_LONG).show();
+                    }
+
+                    if (firebaseAuth.getCurrentUser() == null) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.authError), Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -1357,62 +1355,65 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
                 }
 
                 //Loading Widgets
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(FoldersConfigurations.this);
-                WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
-                        .fallbackToDestructiveMigration()
-                        .addCallback(new RoomDatabase.Callback() {
-                            @Override
-                            public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
-                                super.onCreate(supportSQLiteDatabase);
+                if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(FoldersConfigurations.this);
+                    WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                            .fallbackToDestructiveMigration()
+                            .addCallback(new RoomDatabase.Callback() {
+                                @Override
+                                public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                    super.onCreate(supportSQLiteDatabase);
+                                }
+
+                                @Override
+                                public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
+                                    super.onOpen(supportSQLiteDatabase);
+
+                                }
+                            })
+                            .build();
+
+                    List<WidgetDataModel> widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetData();
+                    if (widgetDataModels.size() > 0) {
+                        for (WidgetDataModel widgetDataModel : widgetDataModels) {
+                            try {
+                                int appWidgetId = widgetDataModel.getWidgetId();
+                                String packageName = widgetDataModel.getPackageName();
+                                String className = widgetDataModel.getClassNameProvider();
+                                String configClassName = widgetDataModel.getConfigClassName();
+
+                                FunctionsClassDebug.Companion.PrintDebug("*** " + appWidgetId + " *** PackageName: " + packageName + " - ClassName: " + className + " - Configure: " + configClassName + " ***");
+
+                                if (functionsClass.appIsInstalled(packageName)) {
+                                    AppWidgetProviderInfo appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
+                                    String newAppName = functionsClass.appName(packageName);
+                                    Drawable appIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
+
+
+                                    searchAdapterItems.add(new AdapterItemsSearchEngine(
+                                            newAppName,
+                                            packageName,
+                                            className,
+                                            configClassName,
+                                            widgetDataModel.getWidgetLabel(),
+                                            appIcon,
+                                            appWidgetProviderInfo,
+                                            appWidgetId,
+                                            SearchEngineAdapter.SearchResultType.SearchWidgets
+                                    ));
+
+                                } else {
+                                    widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
-                            @Override
-                            public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
-                                super.onOpen(supportSQLiteDatabase);
-
-                            }
-                        })
-                        .build();
-
-                List<WidgetDataModel> widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetData();
-                if (widgetDataModels.size() > 0) {
-                    for (WidgetDataModel widgetDataModel : widgetDataModels) {
-                        try {
-                            int appWidgetId = widgetDataModel.getWidgetId();
-                            String packageName = widgetDataModel.getPackageName();
-                            String className = widgetDataModel.getClassNameProvider();
-                            String configClassName = widgetDataModel.getConfigClassName();
-
-                            FunctionsClassDebug.Companion.PrintDebug("*** " + appWidgetId + " *** PackageName: " + packageName + " - ClassName: " + className + " - Configure: " + configClassName + " ***");
-
-                            if (functionsClass.appIsInstalled(packageName)) {
-                                AppWidgetProviderInfo appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
-                                String newAppName = functionsClass.appName(packageName);
-                                Drawable appIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
-
-
-                                searchAdapterItems.add(new AdapterItemsSearchEngine(
-                                        newAppName,
-                                        packageName,
-                                        className,
-                                        configClassName,
-                                        widgetDataModel.getWidgetLabel(),
-                                        appIcon,
-                                        appWidgetProviderInfo,
-                                        appWidgetId,
-                                        SearchEngineAdapter.SearchResultType.SearchWidgets
-                                ));
-
-                            } else {
-                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
-                } else {
+                    } else {
 
+                    }
                 }
+
                 searchRecyclerViewAdapter = new SearchEngineAdapter(getApplicationContext(), searchAdapterItems);
             } else {
                 searchAdapterItems = SearchEngineAdapter.allSearchResultItems;
