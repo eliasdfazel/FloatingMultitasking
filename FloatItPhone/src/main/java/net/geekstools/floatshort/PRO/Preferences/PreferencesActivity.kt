@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 12:14 PM
- * Last modified 1/14/20 10:50 AM
+ * Created by Elias Fazel on 2/23/20 10:26 AM
+ * Last modified 2/23/20 9:53 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -12,6 +12,7 @@ package net.geekstools.floatshort.PRO.Preferences
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.app.ActivityOptions
 import android.content.Intent
 import android.content.res.Resources.Theme
 import android.net.Uri
@@ -116,8 +117,11 @@ class PreferencesActivity : AppCompatActivity() {
         super.onStart()
 
         giftIcon.setOnClickListener {
+
             startActivity(Intent(applicationContext, InAppBilling::class.java)
-                    .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)))
+                    .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
+                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
+
         }
 
         facebookIcon.setOnClickListener {

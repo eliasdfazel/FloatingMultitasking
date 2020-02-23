@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/23/20 9:33 AM
- * Last modified 2/23/20 9:19 AM
+ * Created by Elias Fazel on 2/23/20 10:26 AM
+ * Last modified 2/23/20 10:26 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -50,6 +50,7 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -115,10 +116,13 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
         View root = inflater.inflate(R.layout.iap_fragment, container, false);
 
         recyclerView = (RecyclerView) root.findViewById(R.id.list);
+
         progressBar = (ProgressBar) root.findViewById(R.id.progress_circular);
+
         itemIABDemo = (HorizontalScrollView) root.findViewById(R.id.itemIABDemo);
         itemIABDemoList = (LinearLayout) root.findViewById(R.id.itemIABDemoList);
         itemIABDemoDescription = (TextView) root.findViewById(R.id.itemIABDemoDescription);
+
         materialButtonShare = (MaterialButton) root.findViewById(R.id.shareNow);
 
         root.findViewById(R.id.backgroundFull).setBackgroundColor(PublicVariable.themeLightDark ? context.getColor(R.color.light) : context.getColor(R.color.dark));
@@ -126,7 +130,38 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
         onManagerReady((BillingProvider) activity);
 
         if (InAppBilling.ItemIAB != null) {
-            if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.securityServicesSubscribed() || !functionsClass.searchEngineSubscribed()) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction("LOAD_SCREENSHOTS");
+            BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+
+                    if (intent.getAction().equals("LOAD_SCREENSHOTS")) {
+
+                        for (int i = 1; i <= screenshotsNumber; i++) {
+                            FunctionsClassDebug.Companion.PrintDebug(">>> " + mapIndexURI.get(i) + " <<<");
+
+                            RelativeLayout demoLayout = (RelativeLayout) activity.getLayoutInflater().inflate(R.layout.iap_demo_layout, null);
+                            ImageView demoItem = (ImageView) demoLayout.findViewById(R.id.DemoItem);
+
+                            demoItem.setImageDrawable(mapIndexDrawable.get(i));
+                            demoItem.setOnClickListener(AcquireFragment.this);
+                            demoItem.setTag(mapIndexURI.get(i));
+                            itemIABDemoList.addView(demoLayout);
+                        }
+                    }
+                }
+            };
+            try {
+                context.registerReceiver(broadcastReceiver, intentFilter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (!functionsClass.floatingWidgetsPurchased()
+                    || !functionsClass.securityServicesSubscribed()
+                    || !functionsClass.searchEngineSubscribed()) {
+
                 itemIABDemoDescription.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
                 if (InAppBilling.ItemIAB.equals(BillingManager.iapFloatingWidgets)) {
                     itemIABDemoDescription.setText(Html.fromHtml(getString(R.string.floatingWidgetsDemoDescriptions)));
@@ -140,6 +175,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
 
                 FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
                 firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
+                firebaseRemoteConfig.setConfigSettingsAsync(new FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(1).build());
                 firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
                     @Override
                     public void onSuccess(Boolean aBoolean) {
@@ -147,10 +183,12 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                             itemIABDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("floating_widgets_description")));
                             screenshotsNumber = (int) firebaseRemoteConfig.getLong("floating_widgets_demo_screenshots");
                         }
+
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngines)) {
                             itemIABDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("search_engine_description")));
                             screenshotsNumber = (int) firebaseRemoteConfig.getLong("search_engine_demo_screenshots");
                         }
+
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapSecurityServices)) {
                             itemIABDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("security_services_description")));
                             screenshotsNumber = (int) firebaseRemoteConfig.getLong("security_services_demo_screenshots");
@@ -160,9 +198,11 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapFloatingWidgets)) {
                             ItemIAB = "FloatingWidgets";
                         }
+
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngines)) {
                             ItemIAB = "SearchEngine";
                         }
+
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapSecurityServices)) {
                             ItemIAB = "SecurityServices";
                         }
@@ -177,6 +217,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                             storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri screenshotURI) {
+
                                     requestManager.load(screenshotURI)
                                             .addListener(new RequestListener<Drawable>() {
                                                 @Override
@@ -217,32 +258,6 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                         }
                     }
                 });
-
-                IntentFilter intentFilter = new IntentFilter();
-                intentFilter.addAction("LOAD_SCREENSHOTS");
-                BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-                    @Override
-                    public void onReceive(Context context, Intent intent) {
-                        if (intent.getAction().equals("LOAD_SCREENSHOTS")) {
-                            for (int i = 1; i <= screenshotsNumber; i++) {
-                                FunctionsClassDebug.Companion.PrintDebug(">>> " + mapIndexURI.get(i) + " <<<");
-
-                                RelativeLayout demoLayout = (RelativeLayout) activity.getLayoutInflater().inflate(R.layout.iap_demo_layout, null);
-                                ImageView demoItem = (ImageView) demoLayout.findViewById(R.id.DemoItem);
-
-                                demoItem.setImageDrawable(mapIndexDrawable.get(i));
-                                demoItem.setOnClickListener(AcquireFragment.this);
-                                demoItem.setTag(mapIndexURI.get(i));
-                                itemIABDemoList.addView(demoLayout);
-                            }
-                        }
-                    }
-                };
-                try {
-                    context.registerReceiver(broadcastReceiver, intentFilter);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
         }
 
@@ -343,9 +358,6 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                 FunctionsClassDebug.Companion.PrintDebug("*** SKU List Product ::: " + skuDetails + " ***");
 
                                 if (skuDetails.getSku().equals(BillingManager.iapFloatingWidgets) && functionsClass.floatingWidgetsPurchased()) {
-                                    itemIABDemoList.setVisibility(View.INVISIBLE);
-                                    itemIABDemo.setVisibility(View.INVISIBLE);
-                                    itemIABDemoDescription.setVisibility(View.INVISIBLE);
 
                                     continue;
                                 }
@@ -367,10 +379,6 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
 
-                            itemIABDemoList.setVisibility(View.VISIBLE);
-                            itemIABDemo.setVisibility(View.VISIBLE);
-                            itemIABDemoDescription.setVisibility(View.VISIBLE);
-
                             List<String> subsSkus = billingProvider.getBillingManager().getSkus(BillingClient.SkuType.SUBS);
                             billingProvider.getBillingManager().querySkuDetailsAsync(BillingClient.SkuType.SUBS,
                                     subsSkus,
@@ -383,17 +391,11 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                                     FunctionsClassDebug.Companion.PrintDebug("*** 123 SKU List Subscriptions ::: " + skuDetails + " ***");
 
                                                     if (skuDetails.getSku().equals(BillingManager.iapSecurityServices) && functionsClass.securityServicesSubscribed()) {
-                                                        itemIABDemoList.setVisibility(View.INVISIBLE);
-                                                        itemIABDemo.setVisibility(View.INVISIBLE);
-                                                        itemIABDemoDescription.setVisibility(View.INVISIBLE);
 
                                                         continue;
                                                     }
 
                                                     if (skuDetails.getSku().equals(BillingManager.iapSearchEngines) && functionsClass.searchEngineSubscribed()) {
-                                                        itemIABDemoList.setVisibility(View.INVISIBLE);
-                                                        itemIABDemo.setVisibility(View.INVISIBLE);
-                                                        itemIABDemoDescription.setVisibility(View.INVISIBLE);
 
                                                         continue;
                                                     }
