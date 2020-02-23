@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/22/20 2:30 PM
- * Last modified 2/22/20 2:17 PM
+ * Created by Elias Fazel on 2/23/20 10:27 AM
+ * Last modified 2/23/20 10:27 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,7 +21,7 @@ android {
         minSdkVersion 25
         targetSdkVersion 29
 
-        versionCode 707
+        versionCode 711
         versionName "${majorVersion}." + getDateMonth() + "." + getDateDay() + "." + getDateYear() + ".${versionCode}"
     }
 
