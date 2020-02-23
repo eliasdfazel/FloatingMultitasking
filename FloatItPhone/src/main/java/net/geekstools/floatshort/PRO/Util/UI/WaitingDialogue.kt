@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/7/20 8:01 AM
- * Last modified 1/7/20 8:01 AM
+ * Created by Elias Fazel on 2/23/20 9:33 AM
+ * Last modified 2/23/20 9:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.waiting_dialogue.*
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
@@ -38,7 +38,7 @@ class WaitingDialogueLiveData() : ViewModel() {
 class WaitingDialogue {
 
     fun initShow(initActivity: AppCompatActivity) : Dialog {
-        val waitingDialogueLiveData = ViewModelProviders.of(initActivity).get(WaitingDialogueLiveData::class.java)
+        val waitingDialogueLiveData = ViewModelProvider(initActivity).get(WaitingDialogueLiveData::class.java)
 
         val layoutParams = WindowManager.LayoutParams()
         val dialogueWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 363f, initActivity.resources.displayMetrics).toInt()

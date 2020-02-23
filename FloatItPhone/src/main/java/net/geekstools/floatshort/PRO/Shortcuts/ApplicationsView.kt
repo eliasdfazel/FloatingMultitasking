@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/22/20 2:30 PM
- * Last modified 2/22/20 2:22 PM
+ * Created by Elias Fazel on 2/23/20 9:33 AM
+ * Last modified 2/23/20 9:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -47,7 +47,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -310,6 +310,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     startActivity(Intent(applicationContext, InAppBilling::class.java)
                             .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
                             ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
+
                 }
             } else {
                 if (functionsClass.networkConnection()) {
@@ -610,7 +611,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 startActivityForResult(this, 666)
             }
 
-            ViewModelProviders.of(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
+            ViewModelProvider(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
                 this.dialogueTitle.value = getString(R.string.signinTitle)
                 this.dialogueMessage.value = getString(R.string.signinMessage)
 
@@ -821,7 +822,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                                 uploadTask.addOnFailureListener { exception ->
                                     exception.printStackTrace()
 
-                                    ViewModelProviders.of(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
+                                    ViewModelProvider(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
                                         this.dialogueTitle.value = getString(R.string.error)
                                         this.dialogueMessage.value = exception.message
                                     }
@@ -839,7 +840,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 }
             }
         } else {
-            ViewModelProviders.of(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
+            ViewModelProvider(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
                 this.dialogueTitle.value = getString(R.string.error)
                 this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
             }

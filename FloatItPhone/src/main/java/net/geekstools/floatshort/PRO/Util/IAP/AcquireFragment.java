@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 8:36 PM
- * Last modified 1/1/20 8:36 PM
+ * Created by Elias Fazel on 2/23/20 9:33 AM
+ * Last modified 2/23/20 9:19 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -372,7 +372,6 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                             itemIABDemoDescription.setVisibility(View.VISIBLE);
 
                             List<String> subsSkus = billingProvider.getBillingManager().getSkus(BillingClient.SkuType.SUBS);
-                            System.out.println(">>>>> " + subsSkus);
                             billingProvider.getBillingManager().querySkuDetailsAsync(BillingClient.SkuType.SUBS,
                                     subsSkus,
                                     new SkuDetailsResponseListener() {
