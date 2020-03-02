@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 12/16/19 5:17 PM
- * Last modified 12/16/19 5:14 PM
+ * Created by Elias Fazel on 3/1/20 11:37 PM
+ * Last modified 3/1/20 11:31 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -22,7 +22,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.1'
         classpath 'com.google.gms:google-services:4.3.3'
 
         classpath 'io.fabric.tools:gradle:1.31.2'
