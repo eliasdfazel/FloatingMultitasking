@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/22/20 2:30 PM
- * Last modified 2/22/20 2:21 PM
+ * Created by Elias Fazel on 3/8/20 7:23 AM
+ * Last modified 3/8/20 7:23 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -12,7 +12,6 @@ package net.geekstools.floatshort.PRO.Folders;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
@@ -58,7 +57,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -68,13 +67,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ConsumeParams;
-import com.android.billingclient.api.ConsumeResponseListener;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -117,6 +109,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassRunServices;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
+import net.geekstools.floatshort.PRO.Util.IAP.Util.PurchasesCheckpoint;
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Util.InAppUpdate.InAppUpdateProcess;
 import net.geekstools.floatshort.PRO.Util.RemoteProcess.LicenseValidator;
@@ -138,7 +131,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-public class FoldersConfigurations extends Activity implements View.OnClickListener, View.OnLongClickListener, SimpleGestureFilterSwitch.SimpleGestureListener {
+public class FoldersConfigurations extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, SimpleGestureFilterSwitch.SimpleGestureListener {
 
     FunctionsClassDataActivity functionsClassDataActivity;
 
@@ -585,135 +578,8 @@ public class FoldersConfigurations extends Activity implements View.OnClickListe
             }
         });
 
-        //Consume Donation
-        try {
-            if (functionsClass.alreadyDonated() && functionsClass.networkConnection()) {
-                BillingClient billingClient = BillingClient.newBuilder(FoldersConfigurations.this).setListener(new PurchasesUpdatedListener() {
-                    @Override
-                    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchaseList) {
-                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchaseList != null) {
-
-                        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-
-                        } else {
-
-                        }
-                    }
-                }).enablePendingPurchases().build();
-                billingClient.startConnection(new BillingClientStateListener() {
-                    @Override
-                    public void onBillingSetupFinished(BillingResult billingResult) {
-                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                            List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
-                            for (Purchase purchase : purchases) {
-                                FunctionsClassDebug.Companion.PrintDebug("*** Purchased Item: " + purchase + " ***");
-
-
-                                if (purchase.getSku().equals(BillingManager.iapDonation)) {
-                                    ConsumeResponseListener consumeResponseListener = new ConsumeResponseListener() {
-                                        @Override
-                                        public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
-                                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                                                FunctionsClassDebug.Companion.PrintDebug("*** Consumed Item: " + purchaseToken + " ***");
-
-                                                functionsClass.savePreference(".PurchasedItem", purchase.getSku(), false);
-                                            }
-                                        }
-                                    };
-
-                                    ConsumeParams.Builder consumeParams = ConsumeParams.newBuilder();
-                                    consumeParams.setPurchaseToken(purchase.getPurchaseToken());
-                                    billingClient.consumeAsync(consumeParams.build(), consumeResponseListener);
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onBillingServiceDisconnected() {
-
-                    }
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //Restore Purchased Item
-        if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.searchEngineSubscribed()) {
-            BillingClient billingClient = BillingClient.newBuilder(FoldersConfigurations.this).setListener(new PurchasesUpdatedListener() {
-                @Override
-                public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchaseList) {
-                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchaseList != null) {
-
-                    } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-
-                    } else {
-
-                    }
-                }
-            }).enablePendingPurchases().build();
-            billingClient.startConnection(new BillingClientStateListener() {
-                @Override
-                public void onBillingSetupFinished(BillingResult billingResult) {
-                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                        functionsClass.savePreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
-
-                        List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
-                        for (Purchase purchase : purchases) {
-                            FunctionsClassDebug.Companion.PrintDebug("*** Purchased Item: " + purchase + " ***");
-                            functionsClass.savePreference(".PurchasedItem", purchase.getSku(), true);
-                        }
-                    }
-                }
-
-                @Override
-                public void onBillingServiceDisconnected() {
-
-                }
-            });
-        }
-
-        //Restore Subscribed Item
-        try {
-            if (functionsClass.networkConnection()) {
-                BillingClient billingClient = BillingClient.newBuilder(FoldersConfigurations.this).setListener(new PurchasesUpdatedListener() {
-                    @Override
-                    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
-                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
-
-                        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-
-                        } else {
-
-                        }
-
-                    }
-                }).enablePendingPurchases().build();
-                billingClient.startConnection(new BillingClientStateListener() {
-
-                    @Override
-                    public void onBillingSetupFinished(BillingResult billingResult) {
-                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                            functionsClass.savePreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
-
-                            List<Purchase> purchases = billingClient.queryPurchases(BillingClient.SkuType.SUBS).getPurchasesList();
-                            for (Purchase purchase : purchases) {
-                                FunctionsClassDebug.Companion.PrintDebug("*** Subscribed Item: " + purchase + " ***");
-                                functionsClass.savePreference(".SubscribedItem", purchase.getSku(), true);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onBillingServiceDisconnected() {
-
-                    }
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //In-App Billing
+        new PurchasesCheckpoint(FoldersConfigurations.this).trigger();
 
         /*Search Engine*/
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);

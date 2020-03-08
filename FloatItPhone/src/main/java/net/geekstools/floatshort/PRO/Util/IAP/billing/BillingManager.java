@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/1/20 8:36 PM
- * Last modified 1/1/20 6:25 PM
+ * Created by Elias Fazel on 3/8/20 7:23 AM
+ * Last modified 3/8/20 7:08 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,14 +10,10 @@
 
 package net.geekstools.floatshort.PRO.Util.IAP.billing;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.util.Log;
-
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
@@ -28,7 +24,7 @@ import com.android.billingclient.api.SkuDetailsResponseListener;
 
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
+import net.geekstools.floatshort.PRO.Util.IAP.Util.PurchasesCheckpoint;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,7 +37,7 @@ public class BillingManager implements PurchasesUpdatedListener {
     FunctionsClass functionsClass;
 
     private BillingClient billingClient;
-    private Activity activity;
+    private AppCompatActivity appCompatActivity;
 
     String UserEmailAddress = null;
 
@@ -62,36 +58,13 @@ public class BillingManager implements PurchasesUpdatedListener {
         return SKUS.get(type);
     }
 
-    public BillingManager(Activity activity, String UserEmailAddress) {
-        this.activity = activity;
+    public BillingManager(AppCompatActivity appCompatActivity, String UserEmailAddress) {
+        this.appCompatActivity = appCompatActivity;
         this.UserEmailAddress = UserEmailAddress;
 
-        functionsClass = new FunctionsClass(activity.getApplicationContext(), activity);
+        functionsClass = new FunctionsClass(appCompatActivity.getApplicationContext(), appCompatActivity);
 
-        billingClient = BillingClient.newBuilder(this.activity).setListener(this).enablePendingPurchases().build();
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    List<Purchase> purchasesItems = billingClient.queryPurchases(BillingClient.SkuType.INAPP).getPurchasesList();
-                    for (Purchase purchase : purchasesItems) {
-                        FunctionsClassDebug.Companion.PrintDebug("*** Purchased Item: " + purchase + " ***");
-                        functionsClass.savePreference(".PurchasedItem", purchase.getSku(), true);
-                    }
-
-                    List<Purchase> subscribedItem = billingClient.queryPurchases(BillingClient.SkuType.SUBS).getPurchasesList();
-                    for (Purchase purchase : subscribedItem) {
-                        FunctionsClassDebug.Companion.PrintDebug("*** Subscribed Item: " + purchase + " ***");
-                        functionsClass.savePreference(".SubscribedItem", purchase.getSku(), true);
-                    }
-                }
-            }
-
-            @Override
-            public void onBillingServiceDisconnected() {
-
-            }
-        });
+        billingClient = new PurchasesCheckpoint(appCompatActivity).trigger();
     }
 
     public BillingResult startPurchaseFlow(SkuDetails skuDetails) {
@@ -100,15 +73,17 @@ public class BillingManager implements PurchasesUpdatedListener {
                 .setAccountId(UserEmailAddress)
                 .build();
 
-        return billingClient.launchBillingFlow(activity, billingFlowParams);
+        return billingClient.launchBillingFlow(appCompatActivity, billingFlowParams);
     }
 
-    public void querySkuDetailsAsync(@BillingClient.SkuType final String itemType, final List<String> skuList, final SkuDetailsResponseListener listener) {
+    public void querySkuDetailsAsync(@BillingClient.SkuType final String itemType, final List<String> skuList, final SkuDetailsResponseListener skuDetailsResponseListener) {
         SkuDetailsParams skuDetailsParams = SkuDetailsParams.newBuilder().setSkusList(skuList).setType(itemType).build();
+
         billingClient.querySkuDetailsAsync(skuDetailsParams, new SkuDetailsResponseListener() {
+
             @Override
             public void onSkuDetailsResponse(BillingResult billingResult, List<SkuDetails> skuDetailsList) {
-                listener.onSkuDetailsResponse(billingResult, skuDetailsList);
+                skuDetailsResponseListener.onSkuDetailsResponse(billingResult, skuDetailsList);
             }
         });
     }
@@ -116,11 +91,8 @@ public class BillingManager implements PurchasesUpdatedListener {
     @Override
     public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> list) {
         //ResponseCode 7 = Item Owned
-        Log.d(TAG, "onPurchasesUpdated() Response: " + billingResult.getResponseCode());
+        FunctionsClassDebug.Companion.PrintDebug("*** Purchases Updated Response: " + billingResult.getResponseCode() + " ***");
 
-        activity.finish();
-        activity.startActivity(new Intent(activity.getApplicationContext(), InAppBilling.class)
-                .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null))
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        new PurchasesCheckpoint(appCompatActivity).trigger();
     }
 }

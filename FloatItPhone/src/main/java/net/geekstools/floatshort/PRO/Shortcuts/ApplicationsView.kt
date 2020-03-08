@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/23/20 9:33 AM
- * Last modified 2/23/20 9:33 AM
+ * Created by Elias Fazel on 3/8/20 7:23 AM
+ * Last modified 3/8/20 7:23 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -54,7 +54,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.android.billingclient.api.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -87,6 +86,7 @@ import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthO
 import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionY
 import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
+import net.geekstools.floatshort.PRO.Util.IAP.Util.PurchasesCheckpoint
 import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
 import net.geekstools.floatshort.PRO.Util.InAppUpdate.InAppUpdateProcess
 import net.geekstools.floatshort.PRO.Util.RemoteProcess.LicenseValidator
@@ -471,96 +471,8 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             true
         }
 
-        //Consume Donation
-        try {
-            if (functionsClass.alreadyDonated() && functionsClass.networkConnection()) {
-                val billingClient = BillingClient.newBuilder(this@ApplicationsView).setListener { billingResult, purchaseList ->
-                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchaseList != null) {
-                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
-                    } else {
-                    }
-                }.enablePendingPurchases().build()
-                billingClient.startConnection(object : BillingClientStateListener {
-                    override fun onBillingSetupFinished(billingResult: BillingResult) {
-                        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                            val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
-                            for (purchase in purchases) {
-                                PrintDebug("*** Purchased Item: $purchase ***")
-                                if (purchase.sku == BillingManager.iapDonation) {
-                                    val consumeResponseListener = ConsumeResponseListener { billingResult, purchaseToken ->
-                                        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                                            PrintDebug("*** Consumed Item: $purchaseToken ***")
-                                            functionsClass.savePreference(".PurchasedItem", purchase.sku, false)
-                                        }
-                                    }
-                                    val consumeParams = ConsumeParams.newBuilder()
-                                    consumeParams.setPurchaseToken(purchase.purchaseToken)
-                                    billingClient.consumeAsync(consumeParams.build(), consumeResponseListener)
-                                }
-                            }
-                        }
-                    }
-
-                    override fun onBillingServiceDisconnected() {}
-                })
-            }
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-        }
-
-        //Restore Purchased Item
-        if (!functionsClass.floatingWidgetsPurchased() || !functionsClass.searchEngineSubscribed()) {
-            val billingClient = BillingClient.newBuilder(this@ApplicationsView).setListener { billingResult, purchaseList ->
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchaseList != null) {
-                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
-                } else {
-                }
-            }.enablePendingPurchases().build()
-            billingClient.startConnection(object : BillingClientStateListener {
-                override fun onBillingSetupFinished(billingResult: BillingResult) {
-                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        functionsClass.savePreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false)
-                        val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
-                        for (purchase in purchases) {
-                            PrintDebug("*** Purchased Item: $purchase ***")
-                            functionsClass.savePreference(".PurchasedItem", purchase.sku, true)
-                        }
-                    }
-                }
-
-                override fun onBillingServiceDisconnected() {}
-            })
-        }
-
-        //Restore Subscribed Item
-        try {
-            if (functionsClass.networkConnection()) {
-                val billingClient = BillingClient.newBuilder(this@ApplicationsView).setListener { billingResult, purchases ->
-                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
-                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
-                    } else {
-                    }
-                }.enablePendingPurchases().build()
-                billingClient.startConnection(object : BillingClientStateListener {
-                    override fun onBillingSetupFinished(billingResult: BillingResult) {
-                        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                            functionsClass.savePreference(".SubscribedItem", BillingManager.iapSecurityServices, false)
-                            val purchases = billingClient.queryPurchases(BillingClient.SkuType.SUBS).purchasesList
-                            for (purchase in purchases) {
-                                PrintDebug("*** Subscribed Item: $purchase ***")
-                                functionsClass.savePreference(".SubscribedItem", purchase.sku, true)
-                            }
-                        }
-                    }
-
-                    override fun onBillingServiceDisconnected() {}
-                })
-            }
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-        }
-
-
+        //In-App Billing
+        PurchasesCheckpoint(this@ApplicationsView).trigger()
 
         firebaseAuth = FirebaseAuth.getInstance()
 

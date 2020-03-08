@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/22/20 2:30 PM
- * Last modified 2/22/20 2:20 PM
+ * Created by Elias Fazel on 3/8/20 7:23 AM
+ * Last modified 3/8/20 5:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -5733,7 +5733,7 @@ public class FunctionsClass {
 
     public boolean searchEngineSubscribed() {
 
-        return BuildConfig.VERSION_NAME.contains("[BETA]") ? true : readPreference(".SubscribedItem", BillingManager.iapSearchEngines, false);
+        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".SubscribedItem", BillingManager.iapSearchEngines, false);
     }
 
     public boolean alreadyDonated() {

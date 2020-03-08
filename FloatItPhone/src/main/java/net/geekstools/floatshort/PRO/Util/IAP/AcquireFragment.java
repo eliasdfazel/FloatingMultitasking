@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/23/20 10:26 AM
- * Last modified 2/23/20 10:26 AM
+ * Created by Elias Fazel on 3/8/20 7:23 AM
+ * Last modified 3/8/20 6:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -44,6 +44,7 @@ import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -218,7 +219,9 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                 @Override
                                 public void onSuccess(Uri screenshotURI) {
 
-                                    requestManager.load(screenshotURI)
+                                    requestManager
+                                            .load(screenshotURI)
+                                            .diskCacheStrategy(DiskCacheStrategy.DATA)
                                             .addListener(new RequestListener<Drawable>() {
                                                 @Override
                                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -388,7 +391,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                         public void onSkuDetailsResponse(BillingResult billingResult, List<SkuDetails> skuDetailsListSubs) {
                                             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                                                 for (SkuDetails skuDetails : skuDetailsListSubs) {
-                                                    FunctionsClassDebug.Companion.PrintDebug("*** 123 SKU List Subscriptions ::: " + skuDetails + " ***");
+                                                    FunctionsClassDebug.Companion.PrintDebug("*** SKU List Subscriptions ::: " + skuDetails + " ***");
 
                                                     if (skuDetails.getSku().equals(BillingManager.iapSecurityServices) && functionsClass.securityServicesSubscribed()) {
 
