@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/14/20 6:50 AM
-  ~ Last modified 1/14/20 6:49 AM
+  ~ Created by Elias Fazel on 3/24/20 1:15 PM
+  ~ Last modified 3/24/20 10:35 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -77,7 +77,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.DeviceDefault.Light"/>
         <activity
-            android:name=".Util.SettingGUI"
+            android:name=".Utils.SettingGUI"
             android:label="@string/settingTitle"
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper"/>
         <activity
@@ -85,11 +85,11 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper"/>
         <activity
-            android:name=".Util.OpenApplications"
+            android:name=".Utils.OpenApplications"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:theme="@style/Transparent"/>
         <activity
-            android:name=".Util.RemoteTask.CreateFloatingShortcuts"
+            android:name=".Utils.RemoteTask.CreateFloatingShortcuts"
             android:exported="true"
             android:theme="@style/Transparent">
             <intent-filter>
@@ -103,7 +103,7 @@
             android:name=".BindServices"
             android:foregroundServiceType="dataSync"/>
         <service
-            android:name=".Util.RemoteProcess.LicenseValidator"
+            android:name=".Utils.RemoteProcess.LicenseValidator"
             android:foregroundServiceType="dataSync"/>
         <service
             android:name=".Automation.RecoveryShortcuts"
@@ -123,16 +123,16 @@
             android:name=".Folders.FloatingServices.Category_Unlimited_Category"/>
         <!-- Float It -->
         <service
-            android:name=".Util.RemoteProcess.CloudNotificationHandler"
+            android:name=".Utils.RemoteProcess.CloudNotificationHandler"
             android:icon="@drawable/ic_launcher">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
         <service
-            android:name=".Util.UI.FloatingSplash"/>
+            android:name=".Utils.UI.FloatingSplash"/>
         <service
-            android:name=".Util.RemoteTask.RecoveryComplication"
+            android:name=".Utils.RemoteTask.RecoveryComplication"
             android:icon="@drawable/draw_recovery"
             android:label="@string/bootRecovery"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
@@ -148,9 +148,9 @@
                 android:value="300"/>
         </service>
         <service
-            android:name=".Util.UI.PopupOptionsFloatingShortcuts"/>
+            android:name=".Utils.UI.PopupOptionsFloatingShortcuts"/>
         <service
-            android:name=".Util.UI.PopupOptionsFloatingCategory"/>
+            android:name=".Utils.UI.PopupOptionsFloatingCategory"/>
 
         <receiver android:name=".Receivers.BootRecoverReceiver">
             <intent-filter>

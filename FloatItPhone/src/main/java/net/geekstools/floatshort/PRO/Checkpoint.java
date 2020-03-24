@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 12:14 PM
- * Last modified 1/14/20 11:41 AM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 10:35 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,9 +28,9 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 
 import java.util.ArrayList;
 

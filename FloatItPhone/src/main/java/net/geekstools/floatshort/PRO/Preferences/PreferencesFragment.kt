@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 12:14 PM
- * Last modified 1/14/20 11:53 AM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 12:47 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -52,14 +52,14 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDataActivity
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDialogues
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
-import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
-import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
-import net.geekstools.floatshort.PRO.Util.InteractionObserver.InteractionObserver
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDataActivity
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDialogues
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
+import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager
+import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 
 class PreferencesFragment : PreferenceFragmentCompat() {
 
@@ -537,7 +537,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
             dialog.setOnDismissListener {
                 val drawPrefAutoTrans = context!!.getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
-                val backPrefAutoTrans = drawPrefAutoTrans.findDrawableByLayerId(R.id.backtemp).mutate()
+                val backPrefAutoTrans = drawPrefAutoTrans.findDrawableByLayerId(R.id.backgroundTemporary).mutate()
                 backPrefAutoTrans.setTint(PublicVariable.primaryColor)
                 backPrefAutoTrans.alpha = functionsClass.readDefaultPreference("autoTrans", 255)
                 autotrans.icon = drawPrefAutoTrans
@@ -858,31 +858,31 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         super.onResume()
 
         val drawSecurity: LayerDrawable  = context!!.getDrawable(R.drawable.draw_security_preferences) as LayerDrawable
-        val backSecurity = drawSecurity.findDrawableByLayerId(R.id.backtemp)
+        val backSecurity = drawSecurity.findDrawableByLayerId(R.id.backgroundTemporary)
         backSecurity.setTint(PublicVariable.primaryColorOpposite)
         pinPassword.icon = drawSecurity
 
         val drawSmart: LayerDrawable = context!!.getDrawable(R.drawable.draw_smart) as LayerDrawable
-        val backSmart = drawSmart.findDrawableByLayerId(R.id.backtemp)
+        val backSmart = drawSmart.findDrawableByLayerId(R.id.backgroundTemporary)
 
         val drawPref: LayerDrawable  = context!!.getDrawable(R.drawable.draw_pref) as LayerDrawable
-        val backPref = drawPref.findDrawableByLayerId(R.id.backtemp)
+        val backPref = drawPref.findDrawableByLayerId(R.id.backgroundTemporary)
 
         val drawPrefAutoTrans: LayerDrawable  = context!!.getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
-        val backPrefAutoTrans = drawPrefAutoTrans.findDrawableByLayerId(R.id.backtemp).mutate()
+        val backPrefAutoTrans = drawPrefAutoTrans.findDrawableByLayerId(R.id.backgroundTemporary).mutate()
 
         val drawPrefLite: LayerDrawable  = context!!.getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
-        val backPrefLite = drawPrefLite.findDrawableByLayerId(R.id.backtemp).mutate()
+        val backPrefLite = drawPrefLite.findDrawableByLayerId(R.id.backgroundTemporary).mutate()
         val drawablePrefLite = drawPrefLite.findDrawableByLayerId(R.id.wPref)
         backPrefLite.setTint(if (PublicVariable.themeLightDark) context!!.getColor(R.color.dark) else context!!.getColor(R.color.light))
         drawablePrefLite.setTint(if (PublicVariable.themeLightDark) context!!.getColor(R.color.light) else context!!.getColor(R.color.dark))
         lite.icon = drawPrefLite
 
         val drawFloatIt: LayerDrawable = context!!.getDrawable(R.drawable.draw_floatit) as LayerDrawable
-        val backFloatIt = drawFloatIt.findDrawableByLayerId(R.id.backtemp)
+        val backFloatIt = drawFloatIt.findDrawableByLayerId(R.id.backgroundTemporary)
 
         val drawSupport: LayerDrawable  = context!!.getDrawable(R.drawable.draw_support) as LayerDrawable
-        val backSupport = drawSupport.findDrawableByLayerId(R.id.backtemp)
+        val backSupport = drawSupport.findDrawableByLayerId(R.id.backgroundTemporary)
 
         backSmart.setTint(PublicVariable.primaryColor)
         backPref.setTint(PublicVariable.primaryColor)

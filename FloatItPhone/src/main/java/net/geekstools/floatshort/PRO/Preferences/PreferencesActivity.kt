@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/23/20 10:26 AM
- * Last modified 2/23/20 9:53 AM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 10:35 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,9 +26,9 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.preferences_activity_view.*
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable
-import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
 import kotlin.math.hypot
 

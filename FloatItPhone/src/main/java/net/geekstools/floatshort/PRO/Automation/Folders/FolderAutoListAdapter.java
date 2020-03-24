@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 12:14 PM
- * Last modified 1/14/20 10:46 AM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 10:35 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -31,10 +31,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.Automation.Alarms.TimeDialogue;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
 import java.io.File;
 import java.util.ArrayList;

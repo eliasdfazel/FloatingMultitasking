@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/23/20 3:18 PM
- * Last modified 3/23/20 3:17 PM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 11:30 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,7 +27,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
 
-        versionCode 716
+        versionCode 718
         versionName "${majorVersion}." + getDateMonth() + "." + getDateDay() + "." + getDateYear() + ".${versionCode}"
 
         wearAppUnbundled true
@@ -46,6 +46,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    viewBinding {
+        enabled = true
     }
 
     flavorDimensions "FloatingShortcutsPro"

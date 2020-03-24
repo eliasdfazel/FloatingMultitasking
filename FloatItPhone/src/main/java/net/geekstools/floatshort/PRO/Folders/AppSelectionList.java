@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/22/20 2:30 PM
- * Last modified 2/22/20 2:21 PM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 12:41 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -49,10 +49,10 @@ import com.google.android.material.button.MaterialButton;
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSavedListAdapter;
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSelectionListAdapter;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.util.ArrayList;
@@ -102,7 +102,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         listPopupWindow = new ListPopupWindow(AppSelectionList.this);
         desc = (TextView) findViewById(R.id.desc);
         counterView = (TextView) findViewById(R.id.counter);
-        loadIcon = (ImageView) findViewById(R.id.loadLogo);
+        loadIcon = (ImageView) findViewById(R.id.loadingLogo);
         nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
         nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
         loadView = (RecyclerView) findViewById(R.id.listFav);

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/22/20 2:30 PM
- * Last modified 2/22/20 2:20 PM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 12:47 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,8 +26,8 @@ import android.widget.Button;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.Folders.SimpleGestureFilterAdvance;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 
 public class AppsConfirmButton extends Button
         implements SimpleGestureFilterAdvance.SimpleGestureListener {
@@ -57,11 +57,11 @@ public class AppsConfirmButton extends Button
         detector = new SimpleGestureFilterAdvance(context, this);
 
         drawShow = (LayerDrawable) context.getDrawable(R.drawable.draw_saved_show);
-        Drawable backShow = drawShow.findDrawableByLayerId(R.id.backtemp);
+        Drawable backShow = drawShow.findDrawableByLayerId(R.id.backgroundTemporary);
         backShow.setTint(PublicVariable.primaryColorOpposite);
 
         drawDismiss = (LayerDrawable) context.getDrawable(R.drawable.draw_saved_dismiss);
-        Drawable backDismiss = drawDismiss.findDrawableByLayerId(R.id.backtemp);
+        Drawable backDismiss = drawDismiss.findDrawableByLayerId(R.id.backgroundTemporary);
         backDismiss.setTint(PublicVariable.primaryColor);
 
         IntentFilter intentFilter = new IntentFilter();

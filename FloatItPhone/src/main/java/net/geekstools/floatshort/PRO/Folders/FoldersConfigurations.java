@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/8/20 7:23 AM
- * Last modified 3/8/20 7:23 AM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 12:47 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -99,25 +99,25 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsSearchEngine;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDataActivity;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDialogues;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassRunServices;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
-import net.geekstools.floatshort.PRO.Util.IAP.Util.PurchasesCheckpoint;
-import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
-import net.geekstools.floatshort.PRO.Util.InAppUpdate.InAppUpdateProcess;
-import net.geekstools.floatshort.PRO.Util.RemoteProcess.LicenseValidator;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryFolders;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryShortcuts;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryWidgets;
-import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
-import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDataActivity;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDialogues;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling;
+import net.geekstools.floatshort.PRO.Utils.IAP.Util.PurchasesCheckpoint;
+import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager;
+import net.geekstools.floatshort.PRO.Utils.InAppUpdate.InAppUpdateProcess;
+import net.geekstools.floatshort.PRO.Utils.RemoteProcess.LicenseValidator;
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders;
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts;
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryWidgets;
+import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SimpleGestureFilterSwitch;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
@@ -218,9 +218,9 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
         LinearLayoutManager recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);
         categorylist.setLayoutManager(recyclerViewLayoutManager);
 
-        ImageView floatingLogo = (ImageView) findViewById(R.id.loadLogo);
+        ImageView floatingLogo = (ImageView) findViewById(R.id.loadingLogo);
         LayerDrawable drawFloatingLogo = (LayerDrawable) getDrawable(R.drawable.draw_floating_logo);
-        Drawable backFloatingLogo = drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
+        Drawable backFloatingLogo = drawFloatingLogo.findDrawableByLayerId(R.id.backgroundTemporary);
         backFloatingLogo.setTint(PublicVariable.primaryColorOpposite);
         floatingLogo.setImageDrawable(drawFloatingLogo);
 
@@ -249,7 +249,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
         }
 
         LayerDrawable drawPreferenceAction = (LayerDrawable) getDrawable(R.drawable.draw_pref_action);
-        Drawable backPreferenceAction = drawPreferenceAction.findDrawableByLayerId(R.id.backtemp);
+        Drawable backPreferenceAction = drawPreferenceAction.findDrawableByLayerId(R.id.backgroundTemporary);
         backPreferenceAction.setTint(PublicVariable.primaryColorOpposite);
         actionButton.setImageDrawable(drawPreferenceAction);
 
@@ -274,11 +274,11 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
 
         try {
             LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
-            Drawable backRecoverFloatingCategories = drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
+            Drawable backRecoverFloatingCategories = drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backgroundTemporary).mutate();
             backRecoverFloatingCategories.setTint(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
 
             LayerDrawable drawRecoverFloatingWidgets = (LayerDrawable) getDrawable(R.drawable.draw_recovery_widgets).mutate();
-            Drawable backRecoverFloatingWidgets = drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backtemp).mutate();
+            Drawable backRecoverFloatingWidgets = drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backgroundTemporary).mutate();
             backRecoverFloatingWidgets.setTint(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
 
             recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories);
@@ -703,7 +703,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
 
         ImageView shareIt = (ImageView) findViewById(R.id.shareIt);
         LayerDrawable drawableShare = (LayerDrawable) getDrawable(R.drawable.draw_share);
-        Drawable backgroundShare = drawableShare.findDrawableByLayerId(R.id.backtemp);
+        Drawable backgroundShare = drawableShare.findDrawableByLayerId(R.id.backgroundTemporary);
         backgroundShare.setTint(PublicVariable.primaryColor);
         shareIt.setImageDrawable(drawableShare);
         shareIt.setOnClickListener(new View.OnClickListener() {
@@ -979,7 +979,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
             }
 
             loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
-            gx = (TextView) findViewById(R.id.gx);
+            gx = (TextView) findViewById(R.id.loadingText);
             Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
             gx.setTypeface(face);
 
@@ -1009,7 +1009,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
-                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
+                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }
 
                 if (getFileStreamPath(".categoryInfo").exists()) {

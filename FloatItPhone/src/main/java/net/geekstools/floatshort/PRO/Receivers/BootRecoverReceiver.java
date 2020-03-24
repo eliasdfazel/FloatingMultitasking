@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:58 AM
- * Last modified 1/13/20 9:54 AM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 10:39 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,11 +20,11 @@ import android.os.Handler;
 import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryFolders;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryShortcuts;
-import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders;
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts;
+import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
 public class BootRecoverReceiver extends BroadcastReceiver {
 
@@ -48,7 +48,7 @@ public class BootRecoverReceiver extends BroadcastReceiver {
                 if (functionsClass.loadCustomIcons()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
                     loadCustomIcons.load();
-                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
+                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }
 
                 SharedPreferences sharedPrefBoot = PreferenceManager.getDefaultSharedPreferences(context);

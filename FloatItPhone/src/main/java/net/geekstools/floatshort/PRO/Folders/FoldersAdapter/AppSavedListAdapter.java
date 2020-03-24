@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 7:13 AM
- * Last modified 1/13/20 7:13 AM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 12:47 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,9 +27,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 
 import java.util.ArrayList;
 
@@ -106,7 +106,7 @@ public class AppSavedListAdapter extends BaseAdapter {
         }
 
         LayerDrawable drawConfirm = (LayerDrawable) context.getDrawable(R.drawable.ripple_effect_confirm);
-        Drawable backConfirm = drawConfirm.findDrawableByLayerId(R.id.backtemp);
+        Drawable backConfirm = drawConfirm.findDrawableByLayerId(R.id.backgroundTemporary);
         backConfirm.setTint(PublicVariable.primaryColorOpposite);
         viewHolder.confirmItem.setBackground(drawConfirm);
         viewHolder.textAppName.setTextColor(context.getColor(R.color.light));
@@ -145,7 +145,7 @@ public class AppSavedListAdapter extends BaseAdapter {
         });
 
         RippleDrawable rippleDrawableBack = (RippleDrawable) context.getDrawable(R.drawable.saved_app_shortcut_whole);
-        Drawable gradientDrawableBack = rippleDrawableBack.findDrawableByLayerId(R.id.backtemp);
+        Drawable gradientDrawableBack = rippleDrawableBack.findDrawableByLayerId(R.id.backgroundTemporary);
         Drawable gradientDrawableBackMask = rippleDrawableBack.findDrawableByLayerId(android.R.id.mask);
 
         rippleDrawableBack.setColor(ColorStateList.valueOf(PublicVariable.colorLightDark));

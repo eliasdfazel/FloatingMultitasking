@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright © 2019 By Geeks Empire.
+  ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 11/11/19 7:18 PM
-  ~ Last modified 11/11/19 7:16 PM
+  ~ Created by Elias Fazel on 3/24/20 1:15 PM
+  ~ Last modified 3/24/20 12:47 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -14,7 +14,7 @@
     android:color="@color/default_color">
 
     <item
-        android:id="@+id/backtemp"
+        android:id="@+id/backgroundTemporary"
         android:bottom="5dp"
         android:left="4dp"
         android:right="5dp"

@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 3/24/20 1:15 PM
+  ~ Last modified 3/24/20 12:41 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MainView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_transparent_high"
+    tools:context=".Shortcuts.ApplicationsView">
+
+    <HorizontalScrollView
+        android:id="@+id/freqList"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="56dp"
+        android:paddingStart="11dp"
+        android:paddingEnd="11dp"
+        android:cacheColorHint="@android:color/transparent"
+        android:fadeScrollbars="true"
+        android:fadingEdge="horizontal"
+        android:fadingEdgeLength="39dp"
+        android:requiresFadingEdge="horizontal"
+        android:scrollbars="none"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:id="@+id/freqItem"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@android:color/transparent" />
+    </HorizontalScrollView>
+
+    <ScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="37dp"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none"
+        android:smoothScrollbar="true">
+
+        <RelativeLayout
+            android:id="@+id/scrollRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="37dp"
+            android:paddingBottom="47dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/loadView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alwaysDrawnWithCache="true"
+                android:drawSelectorOnTop="true"
+                android:isScrollContainer="false"
+                android:nestedScrollingEnabled="false"
+                android:listSelector="@color/default_color_transparent_twice"
+                android:paddingStart="3dp"
+                android:paddingEnd="27dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="51dp"
+                android:persistentDrawingCache="animation|scrolling"
+                android:saveEnabled="true" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/nestedIndexScrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignEnd="@id/nestedScrollView"
+        android:foregroundGravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:id="@+id/indexView"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:background="@android:color/transparent"
+            android:orientation="vertical"/>
+    </ScrollView>
+
+    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
+        apps:shape="light_bulb"
+        android:id="@+id/recoverFloatingCategories"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="43dp"
+        android:layout_marginEnd="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/draw_recovery"
+        android:visibility="invisible"
+        android:contentDescription="@string/recover_category" />
+
+    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
+        apps:shape="light_bulb"
+        android:id="@+id/recoverFloatingWidgets"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="43dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/draw_recovery_widgets"
+        android:visibility="invisible"
+        android:contentDescription="@string/recover_widgets" />
+
+    <LinearLayout
+        android:id="@+id/switchFloating"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_alignParentBottom="true"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:visibility="invisible"
+        android:background="@android:color/transparent"
+        android:weightSum="2">
+
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/switchWidgets"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:ellipsize="start"
+            android:singleLine="true"
+            android:textAllCaps="false"
+            android:text="@string/widgetHint"
+            android:textSize="19sp"
+            android:fontFamily="@font/upcil"
+            apps:elevation="7dp"
+            apps:cornerRadius="7dp"
+            apps:backgroundTint="@color/default_color" />
+
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/switchCategories"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:ellipsize="start"
+            android:singleLine="true"
+            android:textAllCaps="false"
+            android:text="@string/categoryHint"
+            android:textSize="19sp"
+            android:fontFamily="@font/upcil"
+            apps:elevation="7dp"
+            apps:cornerRadius="7dp"
+            apps:backgroundTint="@color/default_color" />
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/recoveryAction"
+        android:layout_width="247dp"
+        android:layout_height="49dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="61dp"
+        android:gravity="center"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:text="@string/recoveryShortcuts"
+        android:textAllCaps="false"
+        android:textColor="@color/light"
+        android:textSize="19sp"
+        android:fontFamily="@font/upcil"
+        apps:elevation="3dp"
+        apps:backgroundTint="@color/default_color"
+        apps:rippleColor="@color/light"
+        apps:cornerRadius="57dp"
+        apps:icon="@drawable/w_recovery"
+        apps:iconGravity="start"
+        apps:iconSize="29dp"
+        apps:iconPadding="1dp" />
+
+    <RelativeLayout
+        android:id="@+id/fullActionViews"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_light"
+        android:visibility="invisible">
+
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/automationAction"
+            android:layout_width="247dp"
+            android:layout_height="49dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="61dp"
+            android:gravity="center"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            android:text="@string/automation"
+            android:textAllCaps="false"
+            android:textColor="@color/light"
+            android:textSize="19sp"
+            android:fontFamily="@font/upcil"
+            apps:elevation="3dp"
+            apps:backgroundTint="@color/default_color"
+            apps:rippleColor="@color/light"
+            apps:cornerRadius="57dp"
+            apps:icon="@drawable/w_floating"
+            apps:iconGravity="start"
+            apps:iconSize="29dp"
+            apps:iconPadding="1dp" />
+
+        <ImageView
+            android:id="@+id/preferences"
+            android:layout_width="87dp"
+            android:layout_height="87dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/draw_pref_action"
+            android:background="@android:color/transparent"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/actionButton"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/draw_pref_action" />
+
+    <ImageView
+        android:id="@+id/shareIt"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginStart="7dp"
+        android:padding="3dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/draw_share" />
+
+    <ImageView
+        android:id="@+id/newUpdate"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_update"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/popupIndex"
+        android:layout_width="77dp"
+        android:layout_height="77dp"
+        android:layout_toStartOf="@id/nestedIndexScrollView"
+        android:gravity="center"
+        android:textColor="@color/light"
+        android:textSize="29sp"
+        android:typeface="monospace"
+        android:background="@drawable/ic_launcher_balloon"
+        android:visibility="invisible" />
+
+    <!-- Search Engine -->
+    <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/textInputSearchView"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/switchFloating"
+        android:layout_marginBottom="3dp"
+        android:gravity="center|start"
+        android:imeOptions="actionSearch"
+        android:hint="@string/searchHint"
+        android:textColorHint="@color/default_color_light"
+        android:visibility="invisible"
+        apps:boxBackgroundMode="outline"
+        apps:boxBackgroundColor="@android:color/transparent"
+        apps:boxCornerRadiusTopStart="51dp"
+        apps:boxCornerRadiusTopEnd="51dp"
+        apps:boxCornerRadiusBottomStart="51dp"
+        apps:boxCornerRadiusBottomEnd="51dp"
+        apps:boxStrokeColor="@color/default_color"
+        apps:boxStrokeWidth="2dp"
+        apps:boxStrokeWidthFocused="2dp"
+        apps:hintTextColor="@color/default_color_light"
+        apps:errorEnabled="true"
+        apps:errorTextColor="@color/yellow">
+
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView xmlns:apps="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="13dp"
+            android:paddingEnd="13dp"
+            android:gravity="center|start"
+            android:imeOptions="actionSearch"
+            android:lines="1"
+            android:inputType="textAutoComplete|textCapWords"
+            android:maxLines="1"
+            android:textSize="17sp"
+            android:textColor="@color/light"
+            android:cursorVisible="true"
+            android:drawableEnd="@drawable/search_engine_icon"
+            android:drawableTint="@color/default_color_light"
+            android:drawablePadding="3dp"
+            android:dropDownAnchor="@id/searchView"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/searchIcon"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/switchFloating"
+        android:layout_marginBottom="3dp"
+        android:visibility="invisible"
+        android:background="@drawable/search_icon"/>
+
+    <ImageView
+        android:id="@+id/searchFloatIt"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/switchFloating"
+        android:layout_toEndOf="@id/textInputSearchView"
+        android:padding="7dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginStart="3dp"
+        android:scaleType="fitCenter"
+        android:visibility="invisible"
+        android:src="@drawable/search_icon_float_it"/>
+
+    <ImageView
+        android:id="@+id/searchClose"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/switchFloating"
+        android:layout_toStartOf="@id/textInputSearchView"
+        android:padding="7dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="3dp"
+        android:scaleType="fitCenter"
+        android:tint="@color/default_color_game_light"
+        android:visibility="invisible"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+    <!-- Search Engine -->
+
+    <RelativeLayout
+        android:id="@+id/loadingSplash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/loadingLogo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_launcher_layer"/>
+
+        <ProgressBar
+            android:id="@+id/loadingProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="-15dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="cycle"/>
+    </RelativeLayout>
+
+</RelativeLayout>

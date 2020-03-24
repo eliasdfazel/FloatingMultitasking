@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/8/20 7:23 AM
- * Last modified 3/8/20 7:23 AM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 12:47 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -63,9 +63,10 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.hybrid_view.*
+import kotlinx.android.synthetic.main.hybrid_application_view.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import net.geeksempire.primepuzzles.GameView.UI.SwipeGestureListener
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.BuildConfig
@@ -76,27 +77,29 @@ import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardHybridAdapter
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsApplications
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsSearchEngine
-import net.geekstools.floatshort.PRO.Util.Functions.*
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authComponentName
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authHW
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionX
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionY
-import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutGrid
-import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling
-import net.geekstools.floatshort.PRO.Util.IAP.Util.PurchasesCheckpoint
-import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager
-import net.geekstools.floatshort.PRO.Util.InAppUpdate.InAppUpdateProcess
-import net.geekstools.floatshort.PRO.Util.RemoteProcess.LicenseValidator
-import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryFolders
-import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryShortcuts
-import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryWidgets
-import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons
-import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch
-import net.geekstools.floatshort.PRO.Util.UI.WaitingDialogue
-import net.geekstools.floatshort.PRO.Util.UI.WaitingDialogueLiveData
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine
+import net.geekstools.floatshort.PRO.Utils.Functions.*
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity.AuthOpenAppValues.authComponentName
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity.AuthOpenAppValues.authHW
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionX
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity.AuthOpenAppValues.authPositionY
+import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.RecycleViewSmoothLayoutGrid
+import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
+import net.geekstools.floatshort.PRO.Utils.IAP.Util.PurchasesCheckpoint
+import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager
+import net.geekstools.floatshort.PRO.Utils.InAppUpdate.InAppUpdateProcess
+import net.geekstools.floatshort.PRO.Utils.RemoteProcess.LicenseValidator
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryWidgets
+import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
+import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogue
+import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveData
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
 import java.io.File
@@ -105,7 +108,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
 import kotlin.math.hypot
 
-class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickListener, OnTouchListener, SimpleGestureFilterSwitch.SimpleGestureListener {
+class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickListener, OnTouchListener, GestureListenerInterface {
 
     private lateinit var functionsClassDataActivity: FunctionsClassDataActivity
 
@@ -141,7 +144,9 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     private lateinit var frequentlyUsedAppsCounter: IntArray
     var loadFreq = false
 
-    private lateinit var simpleGestureFilterSwitch: SimpleGestureFilterSwitch
+    private val swipeGestureListener: SwipeGestureListener by lazy {
+        SwipeGestureListener(applicationContext, this@ApplicationsView)
+    }
 
     private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
 
@@ -153,7 +158,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.hybrid_view)
+        setContentView(R.layout.hybrid_application_view)
 
         functionsClassDataActivity = FunctionsClassDataActivity(this@ApplicationsView)
 
@@ -167,8 +172,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
         functionsClass.setThemeColorFloating(MainView, functionsClass.appThemeTransparent())
         functionsClassDialogues.changeLog()
-
-        simpleGestureFilterSwitch = SimpleGestureFilterSwitch(applicationContext, this@ApplicationsView)
 
         recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(105), OrientationHelper.VERTICAL, false)
         loadView.layoutManager = recyclerViewLayoutManager
@@ -193,7 +196,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         /*All Loading Process*/
 
         val drawPreferenceAction: LayerDrawable = getDrawable(R.drawable.draw_pref_action) as LayerDrawable
-        val backPreferenceAction: Drawable = drawPreferenceAction.findDrawableByLayerId(R.id.backtemp)
+        val backPreferenceAction: Drawable = drawPreferenceAction.findDrawableByLayerId(R.id.backgroundTemporary)
         backPreferenceAction.setTint(PublicVariable.primaryColorOpposite)
         actionButton.setImageDrawable(drawPreferenceAction)
 
@@ -218,11 +221,11 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
         try {
             val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)!!.mutate() as LayerDrawable
-            val backRecoverFloatingCategories = drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate()
+            val backRecoverFloatingCategories = drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backgroundTemporary).mutate()
             backRecoverFloatingCategories.setTint(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
 
             val drawRecoverFloatingWidgets = getDrawable(R.drawable.draw_recovery_widgets)!!.mutate() as LayerDrawable
-            val backRecoverFloatingWidgets = drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backtemp).mutate()
+            val backRecoverFloatingWidgets = drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backgroundTemporary).mutate()
             backRecoverFloatingWidgets.setTint(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
 
             recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories)
@@ -532,7 +535,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         }
 
         val drawableShare: LayerDrawable? = getDrawable(R.drawable.draw_share) as LayerDrawable
-        val backgroundShare = drawableShare!!.findDrawableByLayerId(R.id.backtemp)
+        val backgroundShare = drawableShare!!.findDrawableByLayerId(R.id.backgroundTemporary)
         backgroundShare.setTint(PublicVariable.primaryColor)
 
         shareIt.setImageDrawable(drawableShare)
@@ -683,28 +686,34 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         return true
     }
 
-    override fun onSwipe(direction: Int) {
-        when (direction) {
-            SimpleGestureFilterSwitch.SWIPE_RIGHT -> {
-                if (functionsClass.floatingWidgetsPurchased()) {
-                    functionsClass.navigateToClass(WidgetConfigurations::class.java,
-                            ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
-                } else {
-                    InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
+    override fun onSwipeGesture(gestureConstants: GestureConstants, downMotionEvent: MotionEvent, moveMotionEvent: MotionEvent, initVelocityX: Float, initVelocityY: Float) {
+        super.onSwipeGesture(gestureConstants, downMotionEvent, moveMotionEvent, initVelocityX, initVelocityY)
 
-                    functionsClass.navigateToClass(InAppBilling::class.java,
-                            ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+        when (gestureConstants) {
+            is GestureConstants.SwipeHorizontal -> {
+                when (gestureConstants.horizontalDirection) {
+                    GestureListenerConstants.SWIPE_RIGHT -> {
+                        if (functionsClass.floatingWidgetsPurchased()) {
+                            functionsClass.navigateToClass(WidgetConfigurations::class.java,
+                                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+                        } else {
+                            InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
+
+                            functionsClass.navigateToClass(InAppBilling::class.java,
+                                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+                        }
+                    }
+                    GestureListenerConstants.SWIPE_LEFT -> {
+                        functionsClass.navigateToClass(FoldersConfigurations::class.java,
+                                ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
+                    }
                 }
-            }
-            SimpleGestureFilterSwitch.SWIPE_LEFT -> {
-                functionsClass.navigateToClass(FoldersConfigurations::class.java,
-                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
             }
         }
     }
 
-    override fun dispatchTouchEvent(motionEvent: MotionEvent?): Boolean {
-        simpleGestureFilterSwitch.onTouchEvent(motionEvent)
+    override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
+        swipeGestureListener.onTouchEvent(motionEvent)
 
         return super.dispatchTouchEvent(motionEvent)
     }
@@ -775,7 +784,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         val layerDrawableLoadLogo: LayerDrawable = getDrawable(R.drawable.ic_launcher_layer) as LayerDrawable
         val gradientDrawableLoadLogo: BitmapDrawable = layerDrawableLoadLogo!!.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
         gradientDrawableLoadLogo.setTint(PublicVariable.primaryColor)
-        loadLogo.setImageDrawable(layerDrawableLoadLogo)
+        loadingLogo.setImageDrawable(layerDrawableLoadLogo)
 
         loadApplicationsData()
     }
@@ -785,7 +794,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons.load()
-            PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons())
+            PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber())
         }
 
         applicationInfoList = packageManager.queryIntentActivities(Intent().apply {

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:16 AM
- * Last modified 1/13/20 9:16 AM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 12:47 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,7 +10,6 @@
 
 package net.geekstools.floatshort.PRO.Widget.WidgetsAdapter;
 
-import android.app.Activity;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -38,9 +37,9 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataDAO;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
@@ -51,7 +50,7 @@ import java.util.ArrayList;
 
 public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder> {
 
-    Activity activity;
+    WidgetConfigurations widgetConfigurations;
     Context context;
 
     FunctionsClass functionsClass;
@@ -64,16 +63,16 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
     AppWidgetManager appWidgetManager;
     AppWidgetHost appWidgetHost;
 
-    public ConfiguredWidgetsAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost) {
+    public ConfiguredWidgetsAdapter(WidgetConfigurations widgetConfigurations, Context context, ArrayList<AdapterItems> adapterItems, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost) {
         this.context = context;
-        this.activity = activity;
+        this.widgetConfigurations = widgetConfigurations;
 
         this.adapterItems = adapterItems;
 
         this.appWidgetManager = appWidgetManager;
         this.appWidgetHost = appWidgetHost;
 
-        functionsClass = new FunctionsClass(context, activity);
+        functionsClass = new FunctionsClass(context, widgetConfigurations);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
         AppWidgetProviderInfo appWidgetProviderInfo = adapterItems.get(position).getAppWidgetProviderInfo();
         int appWidgetId = adapterItems.get(position).getAppWidgetId();
 
-        WidgetConfigurations.createWidget(activity, viewHolder.widgetPreview,
+        widgetConfigurations.createWidget(widgetConfigurations, viewHolder.widgetPreview,
                 appWidgetManager, appWidgetHost,
                 appWidgetProviderInfo, appWidgetId);
 
@@ -96,7 +95,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
         viewHolder.widgetLabel.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
 
         LayerDrawable drawFloatTheWidget = (LayerDrawable) context.getDrawable(R.drawable.draw_open);
-        Drawable backFloatTheWidget = drawFloatTheWidget.findDrawableByLayerId(R.id.backtemp);
+        Drawable backFloatTheWidget = drawFloatTheWidget.findDrawableByLayerId(R.id.backgroundTemporary);
         backFloatTheWidget.setTint(functionsClass.extractDominantColor(functionsClass.appIcon(adapterItems.get(position).getPackageName())));
         viewHolder.floatTheWidget.setImageDrawable(drawFloatTheWidget);
 
@@ -156,7 +155,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
                                 widgetDataDAO.updateWidgetLabelByWidgetId(adapterItems.get(position).getAppWidgetId(), textView.getText().toString().replace("\uD83D\uDD04", ""));
                                 widgetDataInterface.close();
 
-                                activity.runOnUiThread(new Runnable() {
+                                widgetConfigurations.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         SearchEngineAdapter.allSearchResultItems.clear();

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 6:50 AM
- * Last modified 1/14/20 6:46 AM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 12:47 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -38,9 +38,9 @@ import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 
 public class Widget_Unlimited_Floating extends Service {
 
@@ -162,11 +162,11 @@ public class Widget_Unlimited_Floating extends Service {
             widgetLabel[startId].setTextColor(widgetColor[startId]);
 
             LayerDrawable moveLayerDrawable = (LayerDrawable) getDrawable(R.drawable.draw_move);
-            Drawable moveBackgroundLayerDrawable = moveLayerDrawable.findDrawableByLayerId(R.id.backtemp);
+            Drawable moveBackgroundLayerDrawable = moveLayerDrawable.findDrawableByLayerId(R.id.backgroundTemporary);
             moveBackgroundLayerDrawable.setTint(widgetColor[startId]);
 
             LayerDrawable closeLayerDrawable = (LayerDrawable) getDrawable(R.drawable.draw_close_service);
-            Drawable closeBackgroundLayerDrawable = closeLayerDrawable.findDrawableByLayerId(R.id.backtemp);
+            Drawable closeBackgroundLayerDrawable = closeLayerDrawable.findDrawableByLayerId(R.id.backgroundTemporary);
             closeBackgroundLayerDrawable.setTint(widgetColor[startId]);
 
             Drawable resizeDrawable = getDrawable(R.drawable.w_resize).mutate();

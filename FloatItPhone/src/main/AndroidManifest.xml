@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/14/20 12:14 PM
-  ~ Last modified 1/14/20 10:49 AM
+  ~ Created by Elias Fazel on 3/24/20 1:15 PM
+  ~ Last modified 3/24/20 10:36 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -152,7 +152,7 @@
             android:name=".Automation.Alarms.TimeDialogue"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"/>
         <activity
-            android:name=".Util.RemoteTask.Create.DeepLinkedShortcuts"
+            android:name=".Utils.RemoteTask.Create.DeepLinkedShortcuts"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter
                 android:autoVerify="true"
@@ -188,7 +188,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.InteractionObserver.SplitTransparentPair"
+            android:name=".Utils.InteractionObserver.SplitTransparentPair"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:excludeFromRecents="true"
             android:noHistory="true"
@@ -196,7 +196,7 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/Transparent"/>
         <activity
-            android:name=".Util.InteractionObserver.SplitTransparentSingle"
+            android:name=".Utils.InteractionObserver.SplitTransparentSingle"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:excludeFromRecents="true"
             android:noHistory="true"
@@ -204,7 +204,7 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/Transparent"/>
         <activity
-            android:name=".Util.RemoteTask.Create.RecoveryAllActivity"
+            android:name=".Utils.RemoteTask.Create.RecoveryAllActivity"
             android:exported="true"
             android:icon="@drawable/draw_recovery"
             android:label="@string/recover_all"
@@ -219,11 +219,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.RemoteTask.Remove.RemoveAllActivity"
+            android:name=".Utils.RemoteTask.Remove.RemoveAllActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".Util.RemoteTask.Create.RecoveryShortcutsActivity"
+            android:name=".Utils.RemoteTask.Create.RecoveryShortcutsActivity"
             android:exported="true"
             android:icon="@drawable/draw_widget_shortcuts"
             android:label="@string/shortcuts"
@@ -238,7 +238,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.RemoteTask.Create.RecoveryFoldersActivity"
+            android:name=".Utils.RemoteTask.Create.RecoveryFoldersActivity"
             android:exported="true"
             android:icon="@drawable/draw_widget_categories"
             android:excludeFromRecents="true"
@@ -253,7 +253,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.RemoteTask.Create.RecoveryWidgetActivity"
+            android:name=".Utils.RemoteTask.Create.RecoveryWidgetActivity"
             android:exported="true"
             android:icon="@drawable/draw_widget_widgets"
             android:excludeFromRecents="true"
@@ -272,7 +272,7 @@
             android:excludeFromRecents="true"
             android:theme="@style/GeeksEmpire.Material" />
         <activity
-            android:name=".Util.RemoteTask.Create.RemoteRecoveryActivity"
+            android:name=".Utils.RemoteTask.Create.RemoteRecoveryActivity"
             android:exported="true"
             android:label="@string/recovery_center"
             android:excludeFromRecents="true"
@@ -285,7 +285,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.OpenApplicationsLaunchPad"
+            android:name=".Utils.LaunchPad.OpenApplicationsLaunchPad"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:noHistory="true"
             android:excludeFromRecents="true"
@@ -293,7 +293,7 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/Transparent"/>
         <activity
-            android:name=".Util.RemoteTask.Create.CreateFloatingShortcuts"
+            android:name=".Utils.RemoteTask.Create.CreateFloatingShortcuts"
             android:exported="true"
             android:excludeFromRecents="true"
             android:noHistory="true"
@@ -305,7 +305,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.RemoteTask.Create.FloatingWidgetHomeScreenShortcuts"
+            android:name=".Utils.RemoteTask.Create.FloatingWidgetHomeScreenShortcuts"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/Transparent">
@@ -316,7 +316,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.IAP.InAppBilling"
+            android:name=".Utils.IAP.InAppBilling"
             android:theme="@style/GeeksEmpire.Material.IAP.DARK">
             <intent-filter>
                 <action android:name="RESPONSE_OWNED"/>
@@ -366,7 +366,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Util.InAppUpdate.InAppUpdateProcess"
+            android:name=".Utils.InAppUpdate.InAppUpdateProcess"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/TransparentInAppUpdate" />
 
@@ -411,7 +411,7 @@
             android:enabled="false"
             android:icon="@drawable/alias_shortcuts_recovery"
             android:label="@string/recoveryShortcuts"
-            android:targetActivity=".Util.RemoteTask.Create.RecoveryShortcutsActivity">
+            android:targetActivity=".Utils.RemoteTask.Create.RecoveryShortcutsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -423,7 +423,7 @@
             android:enabled="false"
             android:icon="@drawable/alias_categories_recovery"
             android:label="@string/recover_category"
-            android:targetActivity=".Util.RemoteTask.Create.RecoveryFoldersActivity">
+            android:targetActivity=".Utils.RemoteTask.Create.RecoveryFoldersActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -435,7 +435,7 @@
             android:name=".BindServices"
             android:foregroundServiceType="dataSync"/>
         <service
-            android:name=".Util.RemoteTask.Create.RecoveryShortcuts"
+            android:name=".Utils.RemoteTask.Create.RecoveryShortcuts"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay"
             android:foregroundServiceType="dataSync">
@@ -446,17 +446,17 @@
             </intent-filter>
         </service>
         <service
-            android:name=".Util.RemoteTask.Create.RecoveryFolders"
+            android:name=".Utils.RemoteTask.Create.RecoveryFolders"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay"
             android:foregroundServiceType="dataSync"/>
         <service
-            android:name=".Util.RemoteTask.Create.RecoveryWidgets"
+            android:name=".Utils.RemoteTask.Create.RecoveryWidgets"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay"
             android:foregroundServiceType="dataSync"/>
         <service
-            android:name=".Util.RemoteTask.Create.RecoveryAll"
+            android:name=".Utils.RemoteTask.Create.RecoveryAll"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay"
             android:foregroundServiceType="dataSync"/>
@@ -473,7 +473,7 @@
             android:name=".Automation.RecoveryGps"
             android:theme="@android:style/Theme.NoDisplay"/>
         <service
-            android:name=".Util.RemoteTask.Remove.RemoveAll"
+            android:name=".Utils.RemoteTask.Remove.RemoveAll"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay"/>
         <service
@@ -514,13 +514,13 @@
             android:name=".Shortcuts.FloatingServices.App_Unlimited_HIS"/>
         <!-- Float It -->
         <service
-            android:name=".Util.RemoteProcess.CloudNotificationHandler">
+            android:name=".Utils.RemoteProcess.CloudNotificationHandler">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
         <service
-            android:name=".Util.InteractionObserver.InteractionObserver"
+            android:name=".Utils.InteractionObserver.InteractionObserver"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService"/>
@@ -531,10 +531,10 @@
                 android:resource="@xml/split_screen_config"/>
         </service>
         <service
-            android:name=".Util.RemoteTask.RemoteController"
+            android:name=".Utils.RemoteTask.RemoteController"
             android:theme="@android:style/Theme.NoDisplay"/>
         <service
-            android:name=".Util.RemoteProcess.LicenseValidator"
+            android:name=".Utils.RemoteProcess.LicenseValidator"
             android:foregroundServiceType="dataSync"/>
         <service
             android:name=".Notifications.NotificationListener"
@@ -545,11 +545,11 @@
             </intent-filter>
         </service>
         <service
-            android:name=".Util.UI.Splash.FloatingSplash"/>
+            android:name=".Utils.UI.Splash.FloatingSplash"/>
         <service
-            android:name=".Util.UI.PopupOptionsFloatingShortcuts"/>
+            android:name=".Utils.UI.PopupDialogue.PopupOptionsFloatingShortcuts"/>
         <service
-            android:name=".Util.UI.PopupOptionsFloatingCategory"/>
+            android:name=".Utils.UI.PopupDialogue.PopupOptionsFloatingCategory"/>
 
         <receiver
             android:name=".Receivers.ReceiverWifi">

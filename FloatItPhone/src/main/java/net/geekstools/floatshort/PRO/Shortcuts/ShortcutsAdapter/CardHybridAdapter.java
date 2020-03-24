@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/13/20 9:16 AM
- * Last modified 1/13/20 8:06 AM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 12:47 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,10 +28,10 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsApplications;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassRunServices;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.util.ArrayList;
@@ -100,7 +100,7 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
         final LayerDrawable drawIndicator = (LayerDrawable) context.getDrawable(R.drawable.draw_recovery_indicator);
-        final Drawable backIndicator = drawIndicator.findDrawableByLayerId(R.id.backtemp);
+        final Drawable backIndicator = drawIndicator.findDrawableByLayerId(R.id.backgroundTemporary);
         backIndicator.setTint(PublicVariable.primaryColor);
 
         viewHolderBinder.shapedIcon.setImageDrawable(adapterItemsApplications.get(position).getAppIcon());

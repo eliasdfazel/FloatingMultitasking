@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/14/20 12:14 PM
- * Last modified 1/14/20 12:14 PM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 12:47 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -50,12 +50,12 @@ import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
-import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterFull;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SimpleGestureFilterFull;
 
 import java.util.ArrayList;
 
@@ -219,9 +219,9 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         }
         autoCategories.setBackground(rippleDrawableCategories);
 
-        ImageView floatingLogo = (ImageView) findViewById(R.id.loadLogo);
+        ImageView floatingLogo = (ImageView) findViewById(R.id.loadingLogo);
         LayerDrawable drawFloatingLogo = (LayerDrawable) getDrawable(R.drawable.draw_floating_logo);
-        Drawable backFloatingLogo = drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
+        Drawable backFloatingLogo = drawFloatingLogo.findDrawableByLayerId(R.id.backgroundTemporary);
         backFloatingLogo.setTint(PublicVariable.primaryColorOpposite);
         floatingLogo.setImageDrawable(drawFloatingLogo);
 
@@ -274,19 +274,19 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
         if (PublicVariable.autoID != null) {
             final LayerDrawable drawWifi = (LayerDrawable) getDrawable(R.drawable.draw_wifi);
-            final Drawable backWifi = drawWifi.findDrawableByLayerId(R.id.backtemp);
+            final Drawable backWifi = drawWifi.findDrawableByLayerId(R.id.backgroundTemporary);
 
             final LayerDrawable drawBluetooth = (LayerDrawable) getDrawable(R.drawable.draw_bluetooth);
-            final Drawable backBluetooth = drawBluetooth.findDrawableByLayerId(R.id.backtemp);
+            final Drawable backBluetooth = drawBluetooth.findDrawableByLayerId(R.id.backgroundTemporary);
 
             final LayerDrawable drawGPS = (LayerDrawable) getDrawable(R.drawable.draw_gps);
-            final Drawable backGPS = drawGPS.findDrawableByLayerId(R.id.backtemp);
+            final Drawable backGPS = drawGPS.findDrawableByLayerId(R.id.backgroundTemporary);
 
             final LayerDrawable drawNfc = (LayerDrawable) getDrawable(R.drawable.draw_nfc);
-            final Drawable backNfc = drawNfc.findDrawableByLayerId(R.id.backtemp);
+            final Drawable backNfc = drawNfc.findDrawableByLayerId(R.id.backgroundTemporary);
 
             final LayerDrawable drawTime = (LayerDrawable) getDrawable(R.drawable.draw_time);
-            final Drawable backTime = drawTime.findDrawableByLayerId(R.id.backtemp);
+            final Drawable backTime = drawTime.findDrawableByLayerId(R.id.backgroundTemporary);
 
             wifi.setBackground(drawWifi);
             bluetooth.setBackground(drawBluetooth);
@@ -378,19 +378,19 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         super.onStart();
 
         final LayerDrawable drawWifi = (LayerDrawable) getDrawable(R.drawable.draw_wifi);
-        final Drawable backWifi = drawWifi.findDrawableByLayerId(R.id.backtemp);
+        final Drawable backWifi = drawWifi.findDrawableByLayerId(R.id.backgroundTemporary);
 
         final LayerDrawable drawBluetooth = (LayerDrawable) getDrawable(R.drawable.draw_bluetooth);
-        final Drawable backBluetooth = drawBluetooth.findDrawableByLayerId(R.id.backtemp);
+        final Drawable backBluetooth = drawBluetooth.findDrawableByLayerId(R.id.backgroundTemporary);
 
         final LayerDrawable drawGPS = (LayerDrawable) getDrawable(R.drawable.draw_gps);
-        final Drawable backGPS = drawGPS.findDrawableByLayerId(R.id.backtemp);
+        final Drawable backGPS = drawGPS.findDrawableByLayerId(R.id.backgroundTemporary);
 
         final LayerDrawable drawNfc = (LayerDrawable) getDrawable(R.drawable.draw_nfc);
-        final Drawable backNfc = drawNfc.findDrawableByLayerId(R.id.backtemp);
+        final Drawable backNfc = drawNfc.findDrawableByLayerId(R.id.backgroundTemporary);
 
         final LayerDrawable drawTime = (LayerDrawable) getDrawable(R.drawable.draw_time);
-        final Drawable backTime = drawTime.findDrawableByLayerId(R.id.backtemp);
+        final Drawable backTime = drawTime.findDrawableByLayerId(R.id.backgroundTemporary);
 
         if (PublicVariable.themeLightDark) {
             color = PublicVariable.vibrantColor;
@@ -680,7 +680,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
-                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
+                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }
 
                 adapterItems = new ArrayList<AdapterItems>();

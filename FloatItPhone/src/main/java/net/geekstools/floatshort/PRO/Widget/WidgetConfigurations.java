@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 2/22/20 2:15 PM
- * Last modified 2/22/20 2:10 PM
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 1:15 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -91,21 +91,21 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItems;
-import net.geekstools.floatshort.PRO.Util.AdapterItemsData.AdapterItemsSearchEngine;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassRunServices;
-import net.geekstools.floatshort.PRO.Util.Functions.FunctionsClassSecurity;
-import net.geekstools.floatshort.PRO.Util.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Util.GeneralAdapters.RecycleViewSmoothLayoutGrid;
-import net.geekstools.floatshort.PRO.Util.IAP.InAppBilling;
-import net.geekstools.floatshort.PRO.Util.IAP.billing.BillingManager;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryFolders;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryShortcuts;
-import net.geekstools.floatshort.PRO.Util.RemoteTask.Create.RecoveryWidgets;
-import net.geekstools.floatshort.PRO.Util.UI.CustomIconManager.LoadCustomIcons;
-import net.geekstools.floatshort.PRO.Util.UI.SimpleGestureFilterSwitch;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
+import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.RecycleViewSmoothLayoutGrid;
+import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling;
+import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager;
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders;
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts;
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryWidgets;
+import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SimpleGestureFilterSwitch;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel;
 import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.ConfiguredWidgetsAdapter;
@@ -168,7 +168,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     RelativeLayout loadingSplash;
     ProgressBar loadingBarLTR;
-    TextView gx;
+    TextView loadingText;
 
     List<AppWidgetProviderInfo> widgetProviderInfoList;
     ArrayList<AdapterItems> installedWidgetsAdapterItems, configuredWidgetsAdapterItems;
@@ -275,12 +275,14 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         configuredWidgetsAdapterItems = new ArrayList<AdapterItems>();
         indexListConfigured = new ArrayList<String>();
         indexListInstalled = new ArrayList<String>();
+
         mapIndexFirstItem = new LinkedHashMap<String, Integer>();
         mapIndexFirstItemInstalled = new LinkedHashMap<String, Integer>();
         mapIndexLastItem = new LinkedHashMap<String, Integer>();
         mapIndexLastItemInstalled = new LinkedHashMap<String, Integer>();
         mapRangeIndex = new LinkedHashMap<Integer, String>();
         mapRangeIndexInstalled = new LinkedHashMap<Integer, String>();
+
         indexItems = new TreeMap<String, Integer>();
         indexItemsInstalled = new TreeMap<String, Integer>();
 
@@ -307,16 +309,16 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             }
 
             loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
-            gx = (TextView) findViewById(R.id.gx);
+            loadingText = (TextView) findViewById(R.id.loadingText);
             Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
-            gx.setTypeface(face);
+            loadingText.setTypeface(face);
 
             if (PublicVariable.themeLightDark) {
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                gx.setTextColor(getColor(R.color.dark));
+                loadingText.setTextColor(getColor(R.color.dark));
             } else if (!PublicVariable.themeLightDark) {
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                gx.setTextColor(getColor(R.color.light));
+                loadingText.setTextColor(getColor(R.color.light));
             }
 
             ((LinearLayout) findViewById(R.id.switchFloating)).bringToFront();
@@ -332,14 +334,14 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         }
 
         LayerDrawable drawAddWidget = (LayerDrawable) getDrawable(R.drawable.draw_pref_add_widget);
-        Drawable backAddWidget = drawAddWidget.findDrawableByLayerId(R.id.backtemp);
-        Drawable frontAddWidget = drawAddWidget.findDrawableByLayerId(R.id.frontTemp).mutate();
+        Drawable backAddWidget = drawAddWidget.findDrawableByLayerId(R.id.backgroundTemporary);
+        Drawable frontAddWidget = drawAddWidget.findDrawableByLayerId(R.id.frontTemporary).mutate();
         backAddWidget.setTint(/*PublicVariable.primaryColor*/getColor(R.color.default_color_game));
         frontAddWidget.setTint(getColor(R.color.light));
         addWidget.setImageDrawable(drawAddWidget);
 
         LayerDrawable drawPreferenceAction = (LayerDrawable) getDrawable(R.drawable.draw_pref_action);
-        Drawable backPreferenceAction = drawPreferenceAction.findDrawableByLayerId(R.id.backtemp);
+        Drawable backPreferenceAction = drawPreferenceAction.findDrawableByLayerId(R.id.backgroundTemporary);
         backPreferenceAction.setTint(PublicVariable.primaryColorOpposite);
         actionButton.setImageDrawable(drawPreferenceAction);
 
@@ -364,7 +366,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
         try {
             LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
-            Drawable backRecoverFloatingCategories = drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backtemp).mutate();
+            Drawable backRecoverFloatingCategories = drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backgroundTemporary).mutate();
             backRecoverFloatingCategories.setTint(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
 
             recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories);
@@ -531,6 +533,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 }
             }
         });
+
+
         switchCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -733,9 +737,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             }
         });
 
-        ImageView floatingLogo = (ImageView) findViewById(R.id.loadLogo);
+        ImageView floatingLogo = (ImageView) findViewById(R.id.loadingLogo);
         LayerDrawable drawFloatingLogo = (LayerDrawable) getDrawable(R.drawable.draw_floating_widgets);
-        Drawable backFloatingLogo = drawFloatingLogo.findDrawableByLayerId(R.id.backtemp);
+        Drawable backFloatingLogo = drawFloatingLogo.findDrawableByLayerId(R.id.backgroundTemporary);
         backFloatingLogo.setTint(PublicVariable.primaryColorOpposite);
         floatingLogo.setImageDrawable(drawFloatingLogo);
 
@@ -1312,16 +1316,16 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             }
 
             loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
-            gx = (TextView) findViewById(R.id.gx);
+            loadingText = (TextView) findViewById(R.id.loadingText);
             Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
-            gx.setTypeface(face);
+            loadingText.setTypeface(face);
 
             if (PublicVariable.themeLightDark) {
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                gx.setTextColor(getColor(R.color.dark));
+                loadingText.setTextColor(getColor(R.color.dark));
             } else if (!PublicVariable.themeLightDark) {
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-                gx.setTextColor(getColor(R.color.light));
+                loadingText.setTextColor(getColor(R.color.light));
             }
         }
 
@@ -1334,7 +1338,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             try {
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
-                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
+                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }
 
                 WidgetDataInterface widgetDataInterface = Room.databaseBuilder(getApplicationContext(), WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
@@ -1510,7 +1514,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                 if (functionsClass.loadCustomIcons()) {
                     loadCustomIcons.load();
-                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIcons());
+                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }
 
                 String oldAppName = "";
@@ -1872,7 +1876,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         }
     }
 
-    public static void createWidget(Context context, ViewGroup widgetView, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost, AppWidgetProviderInfo appWidgetProviderInfo, int widgetId) {
+    public void createWidget(Context context, ViewGroup widgetView, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost, AppWidgetProviderInfo appWidgetProviderInfo, int widgetId) {
         try {
             widgetView.removeAllViews();
 
