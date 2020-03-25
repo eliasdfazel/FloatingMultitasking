@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 6:10 PM
- * Last modified 3/24/20 6:10 PM
+ * Created by Elias Fazel on 3/24/20 6:40 PM
+ * Last modified 3/24/20 6:15 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -233,7 +233,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         installedNestedIndexScrollView = (ScrollView) findViewById(R.id.installedNestedIndexScrollView);
 
         indexView = (LinearLayout) findViewById(R.id.indexView);
-        indexViewInstalled = (LinearLayout) findViewById(R.id.installed_side_index);
+        indexViewInstalled = (LinearLayout) findViewById(R.id.indexViewInstalled);
 
         /*Search Engine*/
         textInputSearchView = (TextInputLayout) findViewById(R.id.textInputSearchView);
@@ -1822,6 +1822,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+
             TextView textView = (TextView) getLayoutInflater()
                     .inflate(R.layout.side_index_item, null);
             List<String> indexListFinal = new ArrayList<String>(mapIndexFirstItemInstalled.keySet());
@@ -1837,6 +1838,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+
                     int upperRange = (int) (indexViewInstalled.getY() - finalTextView.getHeight());
                     for (int i = 0; i < indexViewInstalled.getChildCount(); i++) {
                         String indexText = ((TextView) indexViewInstalled.getChildAt(i)).getText().toString();

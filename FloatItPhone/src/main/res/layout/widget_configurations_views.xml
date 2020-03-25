@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 3/24/20 1:15 PM
-  ~ Last modified 3/24/20 12:41 PM
+  ~ Created by Elias Fazel on 3/24/20 6:40 PM
+  ~ Last modified 3/24/20 6:12 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -325,7 +325,7 @@
         android:visibility="invisible">
 
         <LinearLayout
-            android:id="@+id/installed_side_index"
+            android:id="@+id/indexViewInstalled"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
