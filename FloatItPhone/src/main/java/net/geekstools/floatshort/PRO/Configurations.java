@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 2:16 PM
- * Last modified 3/25/20 2:06 PM
+ * Created by Elias Fazel on 3/25/20 3:04 PM
+ * Last modified 3/25/20 3:04 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,8 +24,6 @@ import android.util.TypedValue;
 
 import androidx.preference.PreferenceManager;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -42,8 +40,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import io.fabric.sdk.android.Fabric;
-
 public class Configurations extends Activity {
 
     FunctionsClass functionsClass;
@@ -56,11 +52,6 @@ public class Configurations extends Activity {
     protected void onCreate(Bundle Saved) {
         super.onCreate(Saved);
         FirebaseApp.initializeApp(getApplicationContext());
-
-        CrashlyticsCore crashlyticsCore = new CrashlyticsCore.Builder()
-                .disabled(BuildConfig.DEBUG)
-                .build();
-        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
 
