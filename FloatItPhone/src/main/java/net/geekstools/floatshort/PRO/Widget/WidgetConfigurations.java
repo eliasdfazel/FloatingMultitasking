@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 1:15 PM
+ * Created by Elias Fazel on 3/24/20 4:53 PM
+ * Last modified 3/24/20 4:48 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,11 +19,9 @@ import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
@@ -136,8 +134,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     MaterialButton switchApps, switchCategories, recoveryAction, automationAction,
             reconfigure;
 
-    RecyclerView installedWidgetsLoadView, configuredWidgetsLoadView;
-    ScrollView installedWidgetsNestedScrollView, configuredWidgetsNestedScrollView,
+    RecyclerView installedWidgetList, configuredWidgetList;
+    ScrollView installedNestedScrollView, configuredWidgetNestedScrollView,
             nestedIndexScrollView, installedNestedIndexScrollView;
 
     LinearLayout indexView, indexViewInstalled;
@@ -167,7 +165,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
     SpinKitView loadingInstalledWidgets;
 
     RelativeLayout loadingSplash;
-    ProgressBar loadingBarLTR;
+    ProgressBar loadingProgress;
     TextView loadingText;
 
     List<AppWidgetProviderInfo> widgetProviderInfoList;
@@ -213,12 +211,12 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         wholeWidget = (RelativeLayout) findViewById(R.id.wholeWidget);
         fullActionViews = (RelativeLayout) findViewById(R.id.fullActionViews);
 
-        installedWidgetsNestedScrollView = (ScrollView) findViewById(R.id.installedNestedScrollView);
-        installedWidgetsLoadView = (RecyclerView) findViewById(R.id.installedWidgetList);
+        installedNestedScrollView = (ScrollView) findViewById(R.id.installedNestedScrollView);
+        installedWidgetList = (RecyclerView) findViewById(R.id.installedWidgetList);
         loadingInstalledWidgets = (SpinKitView) findViewById(R.id.loadingInstalledWidgets);
 
-        configuredWidgetsNestedScrollView = (ScrollView) findViewById(R.id.configuredWidgetNestedScrollView);
-        configuredWidgetsLoadView = (RecyclerView) findViewById(R.id.configuredWidgetList);
+        configuredWidgetNestedScrollView = (ScrollView) findViewById(R.id.configuredWidgetNestedScrollView);
+        configuredWidgetList = (RecyclerView) findViewById(R.id.configuredWidgetList);
 
         popupIndex = (TextView) findViewById(R.id.popupIndex);
 
@@ -253,12 +251,12 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         widgetPickerTitle.setTextColor(PublicVariable.themeLightDark ? getColor(R.color.dark) : getColor(R.color.light));
 
         installedWidgetsRecyclerViewLayoutManager = new RecycleViewSmoothLayoutGrid(getApplicationContext(), functionsClass.columnCount(190), OrientationHelper.VERTICAL, false);
-        installedWidgetsLoadView.setLayoutManager(installedWidgetsRecyclerViewLayoutManager);
+        installedWidgetList.setLayoutManager(installedWidgetsRecyclerViewLayoutManager);
 
         installedWidgetsSections = new ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>();
 
         configuredWidgetsRecyclerViewLayoutManager = new RecycleViewSmoothLayoutGrid(getApplicationContext(), functionsClass.columnCount(190), OrientationHelper.VERTICAL, false);
-        configuredWidgetsLoadView.setLayoutManager(configuredWidgetsRecyclerViewLayoutManager);
+        configuredWidgetList.setLayoutManager(configuredWidgetsRecyclerViewLayoutManager);
 
         configuredWidgetsSections = new ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>();
 
@@ -308,16 +306,16 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
             }
 
-            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
+            loadingProgress = (ProgressBar) findViewById(R.id.loadingProgress);
             loadingText = (TextView) findViewById(R.id.loadingText);
             Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
             loadingText.setTypeface(face);
 
             if (PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingProgress.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
                 loadingText.setTextColor(getColor(R.color.dark));
             } else if (!PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingProgress.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
                 loadingText.setTextColor(getColor(R.color.light));
             }
 
@@ -381,7 +379,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 functionsClass.doVibrate(33);
 
                 if (PublicVariable.actionCenter == false) {
-                    if (installedWidgetsNestedScrollView.isShown()) {
+                    if (installedNestedScrollView.isShown()) {
                         installedNestedIndexScrollView.setVisibility(View.INVISIBLE);
 
                         if (!configuredWidgetAvailable) {
@@ -401,7 +399,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         int startRadius = 0;
                         int endRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
 
-                        Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedWidgetsNestedScrollView, xPosition, yPosition, endRadius, startRadius);
+                        Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedNestedScrollView, xPosition, yPosition, endRadius, startRadius);
                         circularReveal.setDuration(864);
                         circularReveal.start();
                         circularReveal.addListener(new Animator.AnimatorListener() {
@@ -412,7 +410,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                             @Override
                             public void onAnimationEnd(Animator animator) {
-                                installedWidgetsNestedScrollView.setVisibility(View.INVISIBLE);
+                                installedNestedScrollView.setVisibility(View.INVISIBLE);
                             }
 
                             @Override
@@ -533,8 +531,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 }
             }
         });
-
-
         switchCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -743,29 +739,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
         backFloatingLogo.setTint(PublicVariable.primaryColorOpposite);
         floatingLogo.setImageDrawable(drawFloatingLogo);
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("FORCE_RELOAD");
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals("FORCE_RELOAD")) {
-                    try {
-                        configuredWidgetsAdapterItems.clear();
-                        configuredWidgetsSections.clear();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    LoadConfiguredWidgets loadConfiguredWidgets = new LoadConfiguredWidgets();
-                    loadConfiguredWidgets.execute();
-                }
-            }
-        };
-        try {
-            registerReceiver(broadcastReceiver, intentFilter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         /*Search Engine*/
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -793,7 +766,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             public void onClick(View view) {
                 functionsClass.doVibrate(77);
 
-                if (installedWidgetsNestedScrollView.isShown()) {
+                if (installedNestedScrollView.isShown()) {
                     installedNestedIndexScrollView.setVisibility(View.INVISIBLE);
 
                     if (!configuredWidgetAvailable) {
@@ -813,7 +786,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     int startRadius = 0;
                     int endRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
 
-                    Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedWidgetsNestedScrollView, xPosition, yPosition, endRadius, startRadius);
+                    Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedNestedScrollView, xPosition, yPosition, endRadius, startRadius);
                     circularReveal.setDuration(864);
                     circularReveal.start();
                     circularReveal.addListener(new Animator.AnimatorListener() {
@@ -824,7 +797,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                         @Override
                         public void onAnimationEnd(Animator animator) {
-                            installedWidgetsNestedScrollView.setVisibility(View.INVISIBLE);
+                            installedNestedScrollView.setVisibility(View.INVISIBLE);
                         }
 
                         @Override
@@ -984,10 +957,6 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 }
             }
         }
-
-        /*Search Engine*/
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        /*Search Engine*/
     }
 
     @Override
@@ -1000,7 +969,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
     @Override
     public void onBackPressed() {
-        if (installedWidgetsNestedScrollView.isShown()) {
+        if (installedNestedScrollView.isShown()) {
             functionsClass.doVibrate(77);
             installedNestedIndexScrollView.setVisibility(View.INVISIBLE);
 
@@ -1021,7 +990,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             int startRadius = 0;
             int endRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
 
-            Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedWidgetsNestedScrollView, xPosition, yPosition, endRadius, startRadius);
+            Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedNestedScrollView, xPosition, yPosition, endRadius, startRadius);
             circularReveal.setDuration(864);
             circularReveal.start();
             circularReveal.addListener(new Animator.AnimatorListener() {
@@ -1032,7 +1001,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                 @Override
                 public void onAnimationEnd(Animator animator) {
-                    installedWidgetsNestedScrollView.setVisibility(View.INVISIBLE);
+                    installedNestedScrollView.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
@@ -1303,7 +1272,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             try {
                 configuredWidgetsAdapterItems.clear();
                 configuredWidgetsSections.clear();
-                configuredWidgetsLoadView.removeAllViews();
+                configuredWidgetList.removeAllViews();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1315,16 +1284,16 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
             }
 
-            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
+            loadingProgress = (ProgressBar) findViewById(R.id.loadingProgress);
             loadingText = (TextView) findViewById(R.id.loadingText);
-            Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
-            loadingText.setTypeface(face);
+            Typeface typeface = Typeface.createFromAsset(getAssets(), "upcil.ttf");
+            loadingText.setTypeface(typeface);
 
             if (PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingProgress.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
                 loadingText.setTextColor(getColor(R.color.dark));
             } else if (!PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingProgress.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
                 loadingText.setTextColor(getColor(R.color.light));
             }
         }
@@ -1421,7 +1390,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     return false;
                 }
 
-                configuredWidgetsRecyclerViewAdapter = new ConfiguredWidgetsAdapter(WidgetConfigurations.this, getApplicationContext(), configuredWidgetsAdapterItems, appWidgetManager, appWidgetHost);
+                configuredWidgetsRecyclerViewAdapter = new ConfiguredWidgetsAdapter(
+                        WidgetConfigurations.this, getApplicationContext(), configuredWidgetsAdapterItems, appWidgetManager, appWidgetHost);
 
                 widgetDataInterface.close();
             } catch (Exception e) {
@@ -1444,17 +1414,17 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 configuredWidgetsSectionedGridRecyclerViewAdapter = new WidgetSectionedGridRecyclerViewAdapter(
                         getApplicationContext(),
                         R.layout.widgets_sections,
-                        configuredWidgetsLoadView,
+                        configuredWidgetList,
                         configuredWidgetsRecyclerViewAdapter
                 );
                 configuredWidgetsSectionedGridRecyclerViewAdapter.setSections(configuredWidgetsSections.toArray(sectionsData));
                 configuredWidgetsSectionedGridRecyclerViewAdapter.notifyDataSetChanged();
-                configuredWidgetsLoadView.setAdapter(configuredWidgetsSectionedGridRecyclerViewAdapter);
+                configuredWidgetList.setAdapter(configuredWidgetsSectionedGridRecyclerViewAdapter);
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        configuredWidgetsNestedScrollView.scrollTo(0, 0);
+                        configuredWidgetNestedScrollView.scrollTo(0, 0);
 
                         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                         loadingSplash.setVisibility(View.INVISIBLE);
@@ -1489,7 +1459,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             super.onPreExecute();
 
             loadingInstalledWidgets.setColor(PublicVariable.primaryColor);
-            installedWidgetsNestedScrollView.setBackgroundColor(PublicVariable.themeLightDark ? getColor(R.color.transparent_light_high_twice) : getColor(R.color.transparent_dark_high_twice));
+            installedNestedScrollView.setBackgroundColor(PublicVariable.themeLightDark ? getColor(R.color.transparent_light_high_twice) : getColor(R.color.transparent_dark_high_twice));
 
             loadingInstalledWidgets.setVisibility(View.VISIBLE);
         }
@@ -1618,20 +1588,20 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     .setInterpolator(new OvershootInterpolator(13.0f));
             viewPropertyAnimator.start();
 
-            installedWidgetsNestedScrollView.setBackgroundColor(PublicVariable.themeLightDark ? getColor(R.color.transparent_light) : getColor(R.color.dark_transparent));
-            installedWidgetsNestedScrollView.setVisibility(View.VISIBLE);
+            installedNestedScrollView.setBackgroundColor(PublicVariable.themeLightDark ? getColor(R.color.transparent_light) : getColor(R.color.dark_transparent));
+            installedNestedScrollView.setVisibility(View.VISIBLE);
 
             installedWidgetsRecyclerViewAdapter.notifyDataSetChanged();
             WidgetSectionedGridRecyclerViewAdapter.Section[] sectionsData = new WidgetSectionedGridRecyclerViewAdapter.Section[installedWidgetsSections.size()];
             WidgetSectionedGridRecyclerViewAdapter widgetSectionedGridRecyclerViewAdapter = new WidgetSectionedGridRecyclerViewAdapter(
                     getApplicationContext(),
                     R.layout.widgets_sections,
-                    installedWidgetsLoadView,
+                    installedWidgetList,
                     installedWidgetsRecyclerViewAdapter
             );
             widgetSectionedGridRecyclerViewAdapter.setSections(installedWidgetsSections.toArray(sectionsData));
             widgetSectionedGridRecyclerViewAdapter.notifyDataSetChanged();
-            installedWidgetsLoadView.setAdapter(widgetSectionedGridRecyclerViewAdapter);
+            installedWidgetList.setAdapter(widgetSectionedGridRecyclerViewAdapter);
 
             try {
                 int xPosition = (int) (addWidget.getX() + (addWidget.getWidth() / 2));
@@ -1640,7 +1610,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                 int startRadius = 0;
                 int endRadius = (int) Math.hypot(functionsClass.displayX(), functionsClass.displayY());
 
-                Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedWidgetsNestedScrollView, xPosition, yPosition, startRadius, endRadius);
+                Animator circularReveal = ViewAnimationUtils.createCircularReveal(installedNestedScrollView, xPosition, yPosition, startRadius, endRadius);
                 circularReveal.setDuration(864);
                 circularReveal.start();
                 circularReveal.addListener(new Animator.AnimatorListener() {
@@ -1651,7 +1621,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
 
                     @Override
                     public void onAnimationEnd(Animator animator) {
-                        installedWidgetsNestedScrollView.setVisibility(View.VISIBLE);
+                        installedNestedScrollView.setVisibility(View.VISIBLE);
 
                         final Window window = getWindow();
                         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -1670,7 +1640,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                             colorAnimation.start();
                         } else {
                             if (PublicVariable.themeLightDark) {
-                                installedWidgetsNestedScrollView.setBackground(new ColorDrawable(getColor(R.color.transparent_light)));
+                                installedNestedScrollView.setBackground(new ColorDrawable(getColor(R.color.transparent_light)));
                                 if (PublicVariable.themeLightDark) {
                                     if (functionsClass.returnAPI() > 25) {
                                         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
@@ -1688,7 +1658,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 });
                                 colorAnimation.start();
                             } else if (!PublicVariable.themeLightDark) {
-                                installedWidgetsNestedScrollView.setBackground(new ColorDrawable(getColor(R.color.dark_transparent)));
+                                installedNestedScrollView.setBackground(new ColorDrawable(getColor(R.color.dark_transparent)));
 
                                 ValueAnimator colorAnimation = ValueAnimator
                                         .ofArgb(getWindow().getNavigationBarColor(), functionsClass.mixColors(getColor(R.color.dark), getWindow().getNavigationBarColor(), 0.70f));
@@ -1996,9 +1966,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 popupIndex.setText(indexText);
 
                                 try {
-                                    configuredWidgetsNestedScrollView.smoothScrollTo(
+                                    configuredWidgetNestedScrollView.smoothScrollTo(
                                             0,
-                                            ((int) configuredWidgetsLoadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+                                            ((int) configuredWidgetList.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
                                     );
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -2016,9 +1986,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     case MotionEvent.ACTION_UP: {
                         if (functionsClass.litePreferencesEnabled()) {
                             try {
-                                configuredWidgetsNestedScrollView.smoothScrollTo(
+                                configuredWidgetNestedScrollView.smoothScrollTo(
                                         0,
-                                        ((int) configuredWidgetsLoadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+                                        ((int) configuredWidgetList.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -2026,9 +1996,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         } else {
                             if (popupIndex.isShown()) {
                                 try {
-                                    configuredWidgetsNestedScrollView.smoothScrollTo(
+                                    configuredWidgetNestedScrollView.smoothScrollTo(
                                             0,
-                                            ((int) configuredWidgetsLoadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+                                            ((int) configuredWidgetList.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
                                     );
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -2092,9 +2062,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                 popupIndex.setText(indexText);
 
                                 try {
-                                    installedWidgetsNestedScrollView.smoothScrollTo(
+                                    installedNestedScrollView.smoothScrollTo(
                                             0,
-                                            ((int) installedWidgetsLoadView.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(((int) motionEvent.getY())))).getY())
+                                            ((int) installedWidgetList.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(((int) motionEvent.getY())))).getY())
                                     );
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -2112,9 +2082,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     case MotionEvent.ACTION_UP: {
                         if (functionsClass.litePreferencesEnabled()) {
                             try {
-                                installedWidgetsNestedScrollView.smoothScrollTo(
+                                installedNestedScrollView.smoothScrollTo(
                                         0,
-                                        ((int) installedWidgetsLoadView.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(((int) motionEvent.getY())))).getY())
+                                        ((int) installedWidgetList.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(((int) motionEvent.getY())))).getY())
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -2122,9 +2092,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         } else {
                             if (popupIndex.isShown()) {
                                 try {
-                                    installedWidgetsNestedScrollView.smoothScrollTo(
+                                    installedNestedScrollView.smoothScrollTo(
                                             0,
-                                            ((int) installedWidgetsLoadView.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(((int) motionEvent.getY())))).getY())
+                                            ((int) installedWidgetList.getChildAt(mapIndexFirstItemInstalled.get(mapRangeIndexInstalled.get(((int) motionEvent.getY())))).getY())
                                     );
                                 } catch (Exception e) {
                                     e.printStackTrace();

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 1:15 PM
+ * Created by Elias Fazel on 3/24/20 4:53 PM
+ * Last modified 3/24/20 4:52 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -12,6 +12,7 @@ package net.geekstools.floatshort.PRO.Widget
 
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.app.ActivityOptions
 import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
@@ -25,37 +26,51 @@ import android.graphics.Typeface
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.text.Html
 import android.view.*
 import android.view.animation.AccelerateInterpolator
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.withIndex
 import net.geeksempire.primepuzzles.GameView.UI.SwipeGestureListener
+import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
+import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity
-import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.RecycleViewSmoothLayoutGrid
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
+import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel
+import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.ConfiguredWidgetsAdapter
+import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.InstalledWidgetsAdapter
 import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.WidgetSectionedGridRecyclerViewAdapter
 import net.geekstools.floatshort.PRO.databinding.WidgetConfigurationsViewsBinding
 import java.util.*
@@ -92,19 +107,19 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
     private val indexItems: NavigableMap<String, Int> = TreeMap<String, Int>()
     private val indexItemsInstalled: NavigableMap<String, Int> = TreeMap<String, Int>()
 
-    private val indexListConfigured: List<String> = ArrayList<String>()
-    private val indexListInstalled: List<String> = ArrayList<String>()
+    private val indexListConfigured: ArrayList<String> = ArrayList<String>()
+    private val indexListInstalled: ArrayList<String> = ArrayList<String>()
 
-    private val installedWidgetsSections: List<WidgetSectionedGridRecyclerViewAdapter.Section> = ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>()
-    private val configuredWidgetsSections: List<WidgetSectionedGridRecyclerViewAdapter.Section> = ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>()
+    private val installedWidgetsSections: ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section> = ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>()
+    private val configuredWidgetsSections: ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section> = ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>()
 
-    private lateinit var installedWidgetsRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
-    private lateinit var configuredWidgetsRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
+    private lateinit var installedWidgetsRecyclerViewAdapter: RecyclerView.Adapter<InstalledWidgetsAdapter.ViewHolder>
+    private lateinit var configuredWidgetsRecyclerViewAdapter: RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder>
     private lateinit var configuredWidgetsSectionedGridRecyclerViewAdapter: WidgetSectionedGridRecyclerViewAdapter
     private lateinit var installedWidgetsRecyclerViewLayoutManager: GridLayoutManager
     private lateinit var configuredWidgetsRecyclerViewLayoutManager: GridLayoutManager
 
-    private lateinit var widgetProviderInfoList: List<AppWidgetProviderInfo>
+    private lateinit var widgetProviderInfoList: ArrayList<AppWidgetProviderInfo>
     private val installedWidgetsAdapterItems: ArrayList<AdapterItems> = ArrayList<AdapterItems>()
     private val configuredWidgetsAdapterItems: ArrayList<AdapterItems> = ArrayList<AdapterItems>()
 
@@ -215,10 +230,6 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
         val backPreferenceAction = drawPreferenceAction.findDrawableByLayerId(R.id.backgroundTemporary)
         backPreferenceAction.setTint(PublicVariable.primaryColorOpposite)
         widgetConfigurationsViewsBinding.actionButton.setImageDrawable(drawPreferenceAction)
-
-
-
-
 
         widgetConfigurationsViewsBinding.switchApps.setTextColor(getColor(R.color.light))
         widgetConfigurationsViewsBinding.switchCategories.setTextColor(getColor(R.color.light))
@@ -391,22 +402,461 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                         widgetConfigurationsViewsBinding.actionButton)
             }
         }
+        widgetConfigurationsViewsBinding.switchCategories.setOnClickListener {
+
+            functionsClass.navigateToClass(FoldersConfigurations::class.java,
+                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+        }
+        widgetConfigurationsViewsBinding.switchApps.setOnClickListener {
+
+            startActivity(Intent(applicationContext, ApplicationsView::class.java),
+                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left).toBundle())
+        }
+        widgetConfigurationsViewsBinding.automationAction.setOnClickListener {
+
+            Intent(applicationContext, AppAutoFeatures::class.java).apply {
+                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(this,
+                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.up_down, android.R.anim.fade_out).toBundle())
+            }
+        }
+        widgetConfigurationsViewsBinding.recoveryAction.setOnClickListener {
+
+            Intent(applicationContext, RecoveryFolders::class.java).apply {
+                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startService(this)
+            }
+
+            val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
+            widgetConfigurationsViewsBinding.recoverFloatingCategories.startAnimation(animation)
+            animation.setAnimationListener(object : Animation.AnimationListener {
+
+                override fun onAnimationStart(animation: Animation) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animation) {
+                    widgetConfigurationsViewsBinding.recoverFloatingCategories.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+
+                }
+            })
+        }
+        widgetConfigurationsViewsBinding.recoverFloatingCategories.setOnClickListener {
+
+            Intent(applicationContext, RecoveryFolders::class.java).apply {
+                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startService(this)
+            }
+
+            val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
+            widgetConfigurationsViewsBinding.recoverFloatingCategories.startAnimation(animation)
+            animation.setAnimationListener(object : Animation.AnimationListener {
+
+                override fun onAnimationStart(animation: Animation) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animation) {
+                    widgetConfigurationsViewsBinding.recoverFloatingCategories.setVisibility(View.INVISIBLE)
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+
+                }
+            })
+        }
+        widgetConfigurationsViewsBinding.recoverFloatingApps.setOnClickListener {
+
+            Intent(applicationContext, RecoveryShortcuts::class.java).apply {
+                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startService(this)
+            }
+
+            val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
+            widgetConfigurationsViewsBinding.recoverFloatingApps.startAnimation(animation)
+            animation.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {}
+                override fun onAnimationEnd(animation: Animation) {
+                    widgetConfigurationsViewsBinding.recoverFloatingApps.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {}
+            })
+        }
+
+        widgetConfigurationsViewsBinding.actionButton.setOnLongClickListener {
+
+            Handler().postDelayed({
+                Intent().apply {
+                    this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    this.setClass(this@WidgetConfigurationsXYZ, PreferencesActivity::class.java)
+                    startActivity(this,
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(this@WidgetConfigurationsXYZ, widgetConfigurationsViewsBinding.actionButton, "transition").toBundle())
+                }
+            }, 113)
+
+            true
+        }
+        widgetConfigurationsViewsBinding.switchCategories.setOnLongClickListener {
+
+            if (!widgetConfigurationsViewsBinding.recoverFloatingCategories.isShown) {
+                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
+                widgetConfigurationsViewsBinding.recoverFloatingCategories.startAnimation(animation)
+                animation.setAnimationListener(object : Animation.AnimationListener {
+
+                    override fun onAnimationStart(animation: Animation) {
+
+                    }
+
+                    override fun onAnimationEnd(animation: Animation) {
+                        widgetConfigurationsViewsBinding.recoverFloatingCategories.visibility = View.VISIBLE
+                    }
+
+                    override fun onAnimationRepeat(animation: Animation) {
+
+                    }
+                })
+            } else {
+                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
+                widgetConfigurationsViewsBinding.recoverFloatingCategories.startAnimation(animation)
+                animation.setAnimationListener(object : Animation.AnimationListener {
+
+                    override fun onAnimationStart(animation: Animation) {
+
+                    }
+
+                    override fun onAnimationEnd(animation: Animation) {
+                        widgetConfigurationsViewsBinding.recoverFloatingCategories.visibility = View.INVISIBLE
+                    }
+
+                    override fun onAnimationRepeat(animation: Animation) {
+
+                    }
+                })
+            }
+
+            true
+        }
+        widgetConfigurationsViewsBinding.switchApps.setOnLongClickListener {
+
+            if (!widgetConfigurationsViewsBinding.recoverFloatingApps.isShown) {
+                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
+                widgetConfigurationsViewsBinding.recoverFloatingApps.startAnimation(animation)
+                animation.setAnimationListener(object : Animation.AnimationListener {
+
+                    override fun onAnimationStart(animation: Animation) {
+
+                    }
+
+                    override fun onAnimationEnd(animation: Animation) {
+                        widgetConfigurationsViewsBinding.recoverFloatingApps.visibility = View.VISIBLE
+                    }
+
+                    override fun onAnimationRepeat(animation: Animation) {
+
+                    }
+                })
+            } else {
+                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
+                widgetConfigurationsViewsBinding.recoverFloatingApps.startAnimation(animation)
+                animation.setAnimationListener(object : Animation.AnimationListener {
+
+                    override fun onAnimationStart(animation: Animation) {
+
+                    }
+
+                    override fun onAnimationEnd(animation: Animation) {
+                        widgetConfigurationsViewsBinding.recoverFloatingApps.visibility = View.INVISIBLE
+                    }
+
+                    override fun onAnimationRepeat(animation: Animation) {
+
+                    }
+                })
+            }
+
+            true
+        }
+
+        val drawFloatingLogo = getDrawable(R.drawable.draw_floating_widgets) as LayerDrawable
+        val backFloatingLogo = drawFloatingLogo.findDrawableByLayerId(R.id.backgroundTemporary)
+        backFloatingLogo.setTint(PublicVariable.primaryColorOpposite)
+        widgetConfigurationsViewsBinding.loadingLogo.setImageDrawable(drawFloatingLogo)
+
+        firebaseAuth = FirebaseAuth.getInstance()
     }
 
     override fun onStart() {
         super.onStart()
+
+        widgetConfigurationsViewsBinding.reconfigure.setOnClickListener {
+
+            startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java),
+                    ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
+            this@WidgetConfigurationsXYZ.finish()
+        }
+
+        widgetConfigurationsViewsBinding.addWidget.setOnClickListener {
+            functionsClass.doVibrate(77)
+
+            if (widgetConfigurationsViewsBinding.installedNestedScrollView.isShown) {
+                widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.INVISIBLE
+                if (!configuredWidgetAvailable) {
+                    widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
+                }
+                ViewCompat.animate(widgetConfigurationsViewsBinding.addWidget)
+                        .rotation(0.0f)
+                        .withLayer()
+                        .setDuration(300L)
+                        .setInterpolator(OvershootInterpolator(3.0f))
+                        .start()
+                val xPosition = (widgetConfigurationsViewsBinding.addWidget.x + widgetConfigurationsViewsBinding.addWidget.width / 2).roundToInt()
+                val yPosition = (widgetConfigurationsViewsBinding.addWidget.y + widgetConfigurationsViewsBinding.addWidget.height / 2).roundToInt()
+                val startRadius = 0
+                val endRadius = hypot(functionsClass.displayX().toDouble(), functionsClass.displayY().toDouble()).toInt()
+                val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.installedNestedScrollView,
+                        xPosition, yPosition,
+                        endRadius.toFloat(), startRadius.toFloat())
+                circularReveal.duration = 864
+                circularReveal.start()
+                circularReveal.addListener(object : Animator.AnimatorListener {
+
+                    override fun onAnimationStart(animator: Animator) {
+
+                    }
+
+                    override fun onAnimationEnd(animator: Animator) {
+                        widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.INVISIBLE
+                    }
+
+                    override fun onAnimationCancel(animator: Animator) {
+
+                    }
+
+                    override fun onAnimationRepeat(animator: Animator) {
+
+                    }
+                })
+                if (functionsClass.appThemeTransparent()) {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                    if (PublicVariable.themeLightDark) {
+                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                        }
+                    }
+                    val valueAnimator = ValueAnimator
+                            .ofArgb(window.navigationBarColor, functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
+                    valueAnimator.addUpdateListener { animator ->
+                        window.statusBarColor = (animator.animatedValue as Int)
+                        window.navigationBarColor = (animator.animatedValue as Int)
+                    }
+                    valueAnimator.start()
+                } else {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                    if (PublicVariable.themeLightDark) {
+                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                        }
+                    }
+                    val colorAnimation = ValueAnimator
+                            .ofArgb(window.navigationBarColor, PublicVariable.colorLightDark)
+                    colorAnimation.addUpdateListener { animator ->
+                        window.navigationBarColor = (animator.animatedValue as Int)
+                        window.statusBarColor = (animator.animatedValue as Int)
+                    }
+                    colorAnimation.start()
+                }
+            } else {
+                if (PublicVariable.actionCenter) {
+                    widgetConfigurationsViewsBinding.recoveryAction.visibility = View.VISIBLE
+
+                    val finalRadius = hypot(functionsClass.displayX().toDouble(), functionsClass.displayY().toDouble()).toInt()
+                    val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.recoveryAction,
+                            widgetConfigurationsViewsBinding.actionButton.x.roundToInt(),
+                            widgetConfigurationsViewsBinding.actionButton.y.roundToInt(),
+                            functionsClass.DpToInteger(13).toFloat(), finalRadius.toFloat())
+                    circularReveal.duration = 1300
+                    circularReveal.interpolator = AccelerateInterpolator()
+                    circularReveal.start()
+                    circularReveal.addListener(object : Animator.AnimatorListener {
+
+                        override fun onAnimationStart(animation: Animator) {
+
+                        }
+
+                        override fun onAnimationEnd(animation: Animator) {
+                            widgetConfigurationsViewsBinding.recoveryAction.visibility = View.VISIBLE
+                        }
+
+                        override fun onAnimationCancel(animation: Animator) {
+
+                        }
+
+                        override fun onAnimationRepeat(animation: Animator) {
+
+                        }
+                    })
+                    functionsClass.closeActionMenuOption(widgetConfigurationsViewsBinding.fullActionViews, widgetConfigurationsViewsBinding.actionButton)
+                }
+
+                LoadInstalledWidgets()
+            }
+        }
+
+        widgetConfigurationsViewsBinding.addWidget.setOnLongClickListener {
+
+            val appWidgetId = appWidgetHost.allocateAppWidgetId()
+            val appWidgetProviderInfos = ArrayList<AppWidgetProviderInfo>()
+            val bundleArrayList = ArrayList<Bundle>()
+
+            val pickIntent = Intent(AppWidgetManager.ACTION_APPWIDGET_PICK)
+            pickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            pickIntent.putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_INFO, appWidgetProviderInfos)
+            pickIntent.putParcelableArrayListExtra(AppWidgetManager.EXTRA_CUSTOM_EXTRAS, bundleArrayList)
+            startActivityForResult(pickIntent, InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER)
+
+            true
+        }
     }
 
     override fun onResume() {
         super.onResume()
+
+        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
+        firebaseRemoteConfig.fetch(0)
+                .addOnCompleteListener {  task ->
+                    if (task.isSuccessful) {
+                        firebaseRemoteConfig.activate().addOnSuccessListener {
+                            if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(packageName)) {
+                                functionsClass.notificationCreator(
+                                        getString(R.string.updateAvailable),
+                                        firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogSummaryConfigKey()),
+                                        firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toInt()
+                                )
+                            } else {
+
+                            }
+                        }
+                    } else {
+
+                    }
+                }
+
+        if (functionsClass.readPreference(".Password", "Pin", "0") == "0" && functionsClass.securityServicesSubscribed()) {
+            startActivity(Intent(applicationContext, HandlePinPassword::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+        } else {
+            if (!WidgetConfigurations.alreadyAuthenticatedWidgets) {
+                if (functionsClass.securityServicesSubscribed()) {
+                    FunctionsClassSecurity.AuthOpenAppValues.authComponentName = getString(R.string.securityServices)
+                    FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName = packageName
+                    FunctionsClassSecurity.AuthOpenAppValues.authWidgetConfigurations = true
+
+                    functionsClassSecurity.openAuthInvocation()
+                }
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
+
+        if (PublicVariable.actionCenter) {
+            functionsClass.closeActionMenuOption(widgetConfigurationsViewsBinding.fullActionViews,
+                    widgetConfigurationsViewsBinding.actionButton)
+        }
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
+        if (widgetConfigurationsViewsBinding.installedNestedScrollView.isShown()) {
+            functionsClass.doVibrate(77)
+
+            widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.INVISIBLE
+            if (!configuredWidgetAvailable) {
+                widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
+            }
+
+            ViewCompat.animate(widgetConfigurationsViewsBinding.addWidget)
+                    .rotation(0.0f)
+                    .withLayer()
+                    .setDuration(300L)
+                    .setInterpolator(OvershootInterpolator(3.0f))
+                    .start()
+            val startRadius = 0
+            val endRadius = hypot(functionsClass.displayX().toDouble(), functionsClass.displayY().toDouble()).toInt()
+            val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.installedNestedScrollView,
+                    (widgetConfigurationsViewsBinding.addWidget.x + widgetConfigurationsViewsBinding.addWidget.width / 2).roundToInt(),
+                    (widgetConfigurationsViewsBinding.addWidget.y + widgetConfigurationsViewsBinding.addWidget.height / 2).roundToInt(),
+                    endRadius.toFloat(), startRadius.toFloat())
+            circularReveal.duration = 864
+            circularReveal.start()
+            circularReveal.addListener(object : Animator.AnimatorListener {
+
+                override fun onAnimationStart(animator: Animator) {
+
+                }
+
+                override fun onAnimationEnd(animator: Animator) {
+                    widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationCancel(animator: Animator) {
+
+                }
+
+                override fun onAnimationRepeat(animator: Animator) {
+
+                }
+            })
+
+            if (functionsClass.appThemeTransparent()) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                if (PublicVariable.themeLightDark) {
+                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                    }
+                }
+
+                val valueAnimator = ValueAnimator
+                        .ofArgb(window.navigationBarColor, functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
+                valueAnimator.addUpdateListener { animator ->
+                    window.statusBarColor = (animator.animatedValue as Int)
+                    window.navigationBarColor = (animator.animatedValue as Int)
+                }
+                valueAnimator.start()
+            } else {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                if (PublicVariable.themeLightDark) {
+                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                    }
+                }
+                val colorAnimation = ValueAnimator
+                        .ofArgb(window.navigationBarColor, PublicVariable.colorLightDark)
+                colorAnimation.addUpdateListener { animator ->
+                    window.navigationBarColor = (animator.animatedValue as Int)
+                    window.statusBarColor = (animator.animatedValue as Int)
+                }
+                colorAnimation.start()
+            }
+        } else {
+
+            functionsClass.overrideBackPressToMain(this@WidgetConfigurationsXYZ)
+        }
     }
 
     override fun onSwipeGesture(gestureConstants: GestureConstants, downMotionEvent: MotionEvent, moveMotionEvent: MotionEvent, initVelocityX: Float, initVelocityY: Float) {
@@ -438,10 +888,294 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                InstalledWidgetsAdapter.WIDGET_CONFIGURATION_REQUEST -> {
+
+                    CoroutineScope(Dispatchers.IO).launch {
+
+                        val dataExtras = data!!.extras
+                        val appWidgetId = dataExtras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
+
+                        val widgetDataModel = WidgetDataModel(
+                                System.currentTimeMillis(),
+                                appWidgetId,
+                                InstalledWidgetsAdapter.pickedWidgetPackageName,
+                                InstalledWidgetsAdapter.pickedWidgetClassNameProvider,
+                                InstalledWidgetsAdapter.pickedWidgetConfigClassName,
+                                functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName),
+                                InstalledWidgetsAdapter.pickedWidgetLabel,
+                                false
+                        )
+
+                        val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                .fallbackToDestructiveMigration()
+                                .addCallback(object : RoomDatabase.Callback() {
+
+                                    override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                        super.onCreate(supportSQLiteDatabase)
+                                    }
+
+                                    override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                        super.onOpen(supportSQLiteDatabase)
+
+                                        LoadConfiguredWidgets()
+                                    }
+                                })
+                                .build()
+
+                        widgetDataInterface.initDataAccessObject().insertNewWidgetDataSuspend(widgetDataModel)
+                        widgetDataInterface.close()
+                    }
+                }
+                InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER -> {
+                    val extras = data!!.extras
+                    val appWidgetId = extras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
+                    val appWidgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
+
+                    if (appWidgetInfo.configure != null) {
+
+                        Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE).apply {
+                            this.component = appWidgetInfo.configure
+                            this.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                            startActivityForResult(this, InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER_CONFIGURATION)
+                        }
+
+                    } else {
+                        CoroutineScope(Dispatchers.IO).launch {
+
+                            val widgetDataModel = WidgetDataModel(
+                                    System.currentTimeMillis(),
+                                    appWidgetId,
+                                    appWidgetInfo.provider.packageName,
+                                    InstalledWidgetsAdapter.pickedWidgetClassNameProvider,
+                                    InstalledWidgetsAdapter.pickedWidgetConfigClassName,
+                                    functionsClass.appName(appWidgetInfo.provider.packageName),
+                                    appWidgetInfo.loadLabel(packageManager),
+                                    false
+                            )
+
+                            val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                    .fallbackToDestructiveMigration()
+                                    .addCallback(object : RoomDatabase.Callback() {
+
+                                        override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                            super.onCreate(supportSQLiteDatabase)
+                                        }
+
+                                        override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                            super.onOpen(supportSQLiteDatabase)
+
+                                            LoadConfiguredWidgets()
+                                        }
+                                    })
+                                    .build()
+
+                            widgetDataInterface.initDataAccessObject().insertNewWidgetDataSuspend(widgetDataModel)
+                            widgetDataInterface.close()
+                        }
+                    }
+                }
+                InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER_CONFIGURATION -> {
+
+                    CoroutineScope(Dispatchers.IO).launch {
+
+                        val extras = data!!.extras
+                        val appWidgetId = extras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
+                        val appWidgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
+
+                        val widgetDataModel = WidgetDataModel(
+                                System.currentTimeMillis(),
+                                appWidgetId,
+                                appWidgetInfo.provider.packageName,
+                                InstalledWidgetsAdapter.pickedWidgetClassNameProvider,
+                                InstalledWidgetsAdapter.pickedWidgetConfigClassName,
+                                functionsClass.appName(appWidgetInfo.provider.packageName),
+                                appWidgetInfo.loadLabel(packageManager),
+                                false
+                        )
+                        val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                .fallbackToDestructiveMigration()
+                                .addCallback(object : RoomDatabase.Callback() {
+
+                                    override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                        super.onCreate(supportSQLiteDatabase)
+                                    }
+
+                                    override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                        super.onOpen(supportSQLiteDatabase)
+
+                                        LoadConfiguredWidgets()
+                                    }
+                                })
+                                .build()
+                        widgetDataInterface.initDataAccessObject().insertNewWidgetDataSuspend(widgetDataModel)
+                        widgetDataInterface.close()
+                    }
+                }
+            }
+        }
+    }
+
+    fun forceLoadConfiguredWidgets() {
+        configuredWidgetsAdapterItems.clear()
+        configuredWidgetsSections.clear()
+
+        LoadConfiguredWidgets()
     }
 
     fun LoadConfiguredWidgets() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
 
+        configuredWidgetsAdapterItems.clear()
+        configuredWidgetsSections.clear()
+        widgetConfigurationsViewsBinding.configuredWidgetList.removeAllViews()
+
+        if (functionsClass.appThemeTransparent()) {
+            widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
+        } else {
+            widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
+        }
+
+        val typeface = Typeface.createFromAsset(assets, "upcil.ttf")
+        widgetConfigurationsViewsBinding.loadingText.typeface = typeface
+
+        if (PublicVariable.themeLightDark) {
+
+            widgetConfigurationsViewsBinding.loadingProgress
+                    .indeterminateDrawable.setTint(PublicVariable.darkMutedColor)
+            widgetConfigurationsViewsBinding.loadingText.setTextColor(getColor(R.color.dark))
+
+        } else if (!PublicVariable.themeLightDark) {
+
+            widgetConfigurationsViewsBinding.loadingProgress
+                    .indeterminateDrawable.setTint(PublicVariable.vibrantColor)
+            widgetConfigurationsViewsBinding.loadingText.setTextColor(getColor(R.color.light))
+
+        }
+
+        configuredWidgetsAdapterItems.clear()
+        configuredWidgetsSections.clear()
+
+        configuredWidgetAvailable = false
+
+        if (functionsClass.loadCustomIcons()) {
+            loadCustomIcons.load()
+            FunctionsClassDebug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
+        }
+
+        val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                .fallbackToDestructiveMigration()
+                .addCallback(object : RoomDatabase.Callback() {
+
+                    override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                        super.onCreate(supportSQLiteDatabase)
+                    }
+
+                    override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                        super.onOpen(supportSQLiteDatabase)
+                    }
+                })
+                .build()
+
+        val widgetDataModels: List<WidgetDataModel> = widgetDataInterface.initDataAccessObject().getAllWidgetDataSuspend()
+
+        if (widgetDataModels.isNotEmpty()) {
+            var oldAppName = ""
+            var widgetIndex = 0
+
+            widgetDataModels.asFlow()
+                    .onCompletion {
+
+                    }
+                    .withIndex().collect { widgetDataModel ->
+                        val appWidgetId: Int = widgetDataModel.value.WidgetId
+                        val packageName: String = widgetDataModel.value.PackageName
+                        val className: String = widgetDataModel.value.ClassNameProvider
+                        val configClassName: String? = widgetDataModel.value.ConfigClassName
+
+                        FunctionsClassDebug.PrintDebug("*** $appWidgetId *** PackageName: $packageName - ClassName: $className - Configure: $configClassName ***")
+
+                        if (functionsClass.appIsInstalled(packageName)) {
+                            val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
+                            val newAppName = functionsClass.appName(packageName)
+                            val appIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+                            if (widgetIndex == 0) {
+                                configuredWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, appIcon))
+                                indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
+                            } else {
+                                if (oldAppName != newAppName) {
+                                    configuredWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, appIcon))
+                                    indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
+                                }
+                            }
+                            oldAppName = functionsClass.appName(packageName)
+                            indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
+                            configuredWidgetsAdapterItems.add(AdapterItems(
+                                    newAppName,
+                                    packageName,
+                                    className,
+                                    configClassName,
+                                    widgetDataModel.value.WidgetLabel,
+                                    appIcon,
+                                    appWidgetProviderInfo,
+                                    appWidgetId,
+                                    widgetDataModel.value.Recovery?:false,
+                                    SearchEngineAdapter.SearchResultType.SearchWidgets
+                            ))
+
+                            widgetIndex++
+                        } else {
+                            widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidgetSuspend(packageName, className)
+                        }
+                    }
+
+            configuredWidgetsRecyclerViewAdapter = ConfiguredWidgetsAdapter(this@WidgetConfigurationsXYZ, applicationContext,
+                    configuredWidgetsAdapterItems,
+                    appWidgetManager, appWidgetHost)
+        }
+
+        configuredWidgetAvailable = configuredWidgetsAdapterItems.isNotEmpty()
+
+        widgetDataInterface.close()
+
+        if (configuredWidgetAvailable) {
+
+            widgetConfigurationsViewsBinding.reconfigure.visibility = View.VISIBLE
+
+            configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged()
+            val sectionsData = arrayOfNulls<WidgetSectionedGridRecyclerViewAdapter.Section>(configuredWidgetsSections.size)
+            configuredWidgetsSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter(
+                    applicationContext,
+                    R.layout.widgets_sections,
+                    widgetConfigurationsViewsBinding.configuredWidgetList,
+                    configuredWidgetsRecyclerViewAdapter
+            )
+            configuredWidgetsSectionedGridRecyclerViewAdapter.setSections(configuredWidgetsSections.toArray(sectionsData))
+            configuredWidgetsSectionedGridRecyclerViewAdapter.notifyDataSetChanged()
+            widgetConfigurationsViewsBinding.configuredWidgetList.adapter = configuredWidgetsSectionedGridRecyclerViewAdapter
+
+            delay(333)
+
+            widgetConfigurationsViewsBinding.configuredWidgetNestedScrollView.scrollTo(0, 0)
+
+            val animation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
+            widgetConfigurationsViewsBinding.loadingSplash.visibility = View.INVISIBLE
+            widgetConfigurationsViewsBinding.loadingSplash.startAnimation(animation)
+        } else {
+
+            widgetConfigurationsViewsBinding.reconfigure.visibility = View.INVISIBLE
+
+            installedWidgetsLoaded = false
+            widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
+            widgetConfigurationsViewsBinding.loadingSplash.visibility = View.VISIBLE
+
+            configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged()
+            configuredWidgetsSectionedGridRecyclerViewAdapter.notifyDataSetChanged()
+        }
+
+        LoadApplicationsIndexConfigured()
+        LoadSearchEngineData()
     }
 
     fun LoadInstalledWidgets() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {

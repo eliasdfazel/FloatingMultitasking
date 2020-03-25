@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel on 3/24/20 4:53 PM
+ * Last modified 3/24/20 4:01 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1191,7 +1191,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                             }
                         })
                         .build()
-                val widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetDataCoroutines()
+                val widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetDataSuspend()
 
                 if (widgetDataModels.isNotEmpty()) {
                     widgetDataModels.forEach { widgetDataModel ->

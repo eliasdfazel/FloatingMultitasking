@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel on 3/24/20 4:53 PM
+ * Last modified 3/24/20 4:53 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,7 +14,6 @@ import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.DisplayMetrics;
@@ -42,7 +41,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataDAO;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
-import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
+import net.geekstools.floatshort.PRO.Widget.WidgetConfigurationsXYZ;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -50,7 +49,7 @@ import java.util.ArrayList;
 
 public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder> {
 
-    WidgetConfigurations widgetConfigurations;
+    WidgetConfigurationsXYZ widgetConfigurations;
     Context context;
 
     FunctionsClass functionsClass;
@@ -63,7 +62,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
     AppWidgetManager appWidgetManager;
     AppWidgetHost appWidgetHost;
 
-    public ConfiguredWidgetsAdapter(WidgetConfigurations widgetConfigurations, Context context, ArrayList<AdapterItems> adapterItems, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost) {
+    public ConfiguredWidgetsAdapter(WidgetConfigurationsXYZ widgetConfigurations, Context context, ArrayList<AdapterItems> adapterItems, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost) {
         this.context = context;
         this.widgetConfigurations = widgetConfigurations;
 
@@ -111,7 +110,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
 
                 AppWidgetProviderInfo appWidgetProviderInfoLongClick = adapterItems.get(position).getAppWidgetProviderInfo();
 
-                functionsClass.popupOptionWidget(context, view,
+                functionsClass.popupOptionWidget(widgetConfigurations, context, view,
                         adapterItems.get(position).getPackageName(),
                         adapterItems.get(position).getClassNameProviderWidget(),
                         adapterItems.get(position).getWidgetLabel(),
@@ -160,7 +159,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
                                     public void run() {
                                         SearchEngineAdapter.allSearchResultItems.clear();
 
-                                        context.sendBroadcast(new Intent("FORCE_RELOAD"));
+                                        widgetConfigurations.forceLoadConfiguredWidgets();
                                     }
                                 });
 
