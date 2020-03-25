@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/25/20 2:16 PM
+ * Last modified 3/25/20 2:06 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,6 +18,7 @@ import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.nfc.NfcManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.TypedValue;
@@ -39,7 +40,7 @@ public class BindServices extends Service {
 
     FunctionsClass functionsClass;
 
-    BroadcastReceiver broadcastReceiverONOFF, broadcastReceiverAction;
+    BroadcastReceiver broadcastReceiverAction;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -49,56 +50,21 @@ public class BindServices extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         FunctionsClassDebug.Companion.PrintDebug("*** Bind Service StartId " + startId + " ***");
-        if (startId > 1) {
 
-            return START_NOT_STICKY;
-        }
-        startForeground(333, functionsClass.bindServiceNotification());
+        if (startId == 1) {
+            startForeground(333, functionsClass.bindServiceNotification());
 
-        PublicVariable.contextStatic = getApplicationContext();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
-                PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, getApplicationContext().getResources().getDisplayMetrics());
-            }
-        }, 333);
-        if (functionsClass.SystemCache()) {
-            if (startId == 1) {
-                IntentFilter intentFilterNewDataSet = new IntentFilter();
-                intentFilterNewDataSet.addAction(Intent.ACTION_SCREEN_ON);
-                intentFilterNewDataSet.addAction(Intent.ACTION_SCREEN_OFF);
-                broadcastReceiverONOFF = new BroadcastReceiver() {
-                    @Override
-                    public void onReceive(Context context, Intent intent) {
-                        if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-                            if (!PublicVariable.inMemory) {
-                                Intent openBackground = new Intent(getApplicationContext(), Configurations.class);
-                                openBackground.putExtra("goHome", true);
-                                openBackground.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(openBackground);
-                            }
-                        } else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-                            startService(new Intent(getApplicationContext(), BindServices.class));
-                        }
-                    }
-                };
-                try {
-                    unregisterReceiver(broadcastReceiverONOFF);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
+                    PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, getApplicationContext().getResources().getDisplayMetrics());
                 }
+            }, 333);
 
-                try {
-                    registerReceiver(broadcastReceiverONOFF, intentFilterNewDataSet);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+            if (functionsClass.returnAPI() >= Build.VERSION.SDK_INT
+                    && functionsClass.automationFeatureEnable()) {
 
-        if (functionsClass.returnAPI() >= 26) {
-            if (startId == 1) {
                 IntentFilter intentFilter = new IntentFilter();
                 intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
                 intentFilter.addAction("android.location.PROVIDERS_CHANGED");
@@ -202,6 +168,7 @@ public class BindServices extends Service {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

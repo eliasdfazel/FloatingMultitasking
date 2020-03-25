@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 1:44 PM
- * Last modified 3/25/20 1:04 PM
+ * Created by Elias Fazel on 3/25/20 2:16 PM
+ * Last modified 3/25/20 2:16 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -68,7 +68,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import net.geeksempire.primepuzzles.GameView.UI.SwipeGestureListener
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
-import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
@@ -219,20 +218,16 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
         automationAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
 
-        try {
-            val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)!!.mutate() as LayerDrawable
-            val backRecoverFloatingCategories = drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backgroundTemporary).mutate()
-            backRecoverFloatingCategories.setTint(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
+        val backRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
+        backRecoverFloatingCategories?.setTint(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
 
-            val drawRecoverFloatingWidgets = getDrawable(R.drawable.draw_recovery_widgets)!!.mutate() as LayerDrawable
-            val backRecoverFloatingWidgets = drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backgroundTemporary).mutate()
-            backRecoverFloatingWidgets.setTint(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        val drawRecoverFloatingWidgets = getDrawable(R.drawable.draw_recovery_widgets)?.mutate() as LayerDrawable?
+        val backRecoverFloatingWidgets = drawRecoverFloatingWidgets?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
+        backRecoverFloatingWidgets?.setTint(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
 
-            recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories)
-            recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
-        } catch (e: NullPointerException) {
-            e.printStackTrace()
-        }
+        recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories)
+        recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
 
         actionButton.setOnClickListener {
             functionsClass.doVibrate(33)
@@ -633,10 +628,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         }
 
         functionsClass.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
-
-        if (functionsClass.SystemCache()) {
-            startService(Intent(applicationContext, BindServices::class.java))
-        }
     }
 
     override fun onDestroy() {

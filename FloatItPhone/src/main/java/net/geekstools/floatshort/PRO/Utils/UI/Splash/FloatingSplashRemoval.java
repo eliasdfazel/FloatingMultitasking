@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/25/20 2:16 PM
+ * Last modified 3/25/20 2:16 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,15 +20,12 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 
-public class FloatingSplashRemoval extends ImageView {
+public class FloatingSplashRemoval extends androidx.appcompat.widget.AppCompatImageView {
 
     FunctionsClass functionsClass;
-    Context context;
 
     public FloatingSplashRemoval(Context context) {
         super(context);
@@ -36,8 +33,8 @@ public class FloatingSplashRemoval extends ImageView {
 
     public FloatingSplashRemoval(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        this.context = PublicVariable.contextStatic.getApplicationContext();
-        functionsClass = new FunctionsClass(this.context);
+
+        functionsClass = new FunctionsClass(getContext());
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("FloatingSplashRemoval");
@@ -59,7 +56,7 @@ public class FloatingSplashRemoval extends ImageView {
             }
         };
         try {
-            FloatingSplashRemoval.this.context.registerReceiver(broadcastReceiver, intentFilter);
+            getContext().registerReceiver(broadcastReceiver, intentFilter);
         } catch (Exception e) {
             e.printStackTrace();
         }

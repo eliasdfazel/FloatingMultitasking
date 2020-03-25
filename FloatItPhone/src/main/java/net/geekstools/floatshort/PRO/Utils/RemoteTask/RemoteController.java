@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/25/20 2:16 PM
+ * Last modified 3/25/20 2:00 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,7 +28,7 @@ public class RemoteController extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getStringExtra("RemoteController").equals("CancelRemote")) {
-            if (functionsClass.SystemCache() || functionsClass.automationFeatureEnable() || functionsClass.ControlPanel()) {
+            if (functionsClass.automationFeatureEnable() || functionsClass.ControlPanel()) {
                 /**/
             } else {
                 stopService(new Intent(getApplicationContext(), BindServices.class));

@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 1/2/20 10:52 PM
-  ~ Last modified 1/2/20 10:51 PM
+  ~ Created by Elias Fazel on 3/25/20 2:16 PM
+  ~ Last modified 3/25/20 1:56 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -121,12 +121,6 @@
             android:icon="@drawable/draw_pref"
             android:key="stable"
             android:title="@string/stable"/>
-        <SwitchPreference
-            android:defaultValue="false"
-            android:icon="@drawable/draw_pref"
-            android:key="cache"
-            android:summary="@string/syscache"
-            android:title="@string/autorecovs"/>
         <Preference
             android:icon="@drawable/draw_pref"
             android:key="lite"

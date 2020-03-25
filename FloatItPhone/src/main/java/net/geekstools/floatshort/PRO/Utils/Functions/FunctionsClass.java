@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 1:44 PM
- * Last modified 3/25/20 1:11 PM
+ * Created by Elias Fazel on 3/25/20 2:16 PM
+ * Last modified 3/25/20 2:09 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1827,13 +1827,8 @@ public class FunctionsClass {
     }
 
     public int serviceMode() {
-        int ReturnValue = Service.START_NOT_STICKY;
-        if (!SystemCache()) {
-            ReturnValue = Service.START_NOT_STICKY;
-        } else if (SystemCache()) {
-            ReturnValue = Service.START_STICKY;
-        }
-        return ReturnValue;
+
+        return Service.START_NOT_STICKY;
     }
 
     public boolean SettingServiceRunning(Class aClass) {
@@ -1869,17 +1864,14 @@ public class FunctionsClass {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("freeForm", false);
     }
 
-    public boolean SystemCache() {
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("cache", false);
-    }
-
     public boolean ControlPanel() {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("stable", true);
     }
 
     public int bindServicePriority() {
         int notificationPriority = Integer.MIN_VALUE;
-        if (SystemCache() || automationFeatureEnable()) {
+
+        if (automationFeatureEnable()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 notificationPriority = NotificationManager.IMPORTANCE_MIN;
             } else {
@@ -1892,6 +1884,7 @@ public class FunctionsClass {
                 notificationPriority = Notification.PRIORITY_HIGH;
             }
         }
+
         return notificationPriority;
     }
 
@@ -5561,9 +5554,6 @@ public class FunctionsClass {
     public void liteAppPreferences() {
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor defaultSharedPreferencesEditor = defaultSharedPreferences.edit();
-
-        /*OFF Always Ready*/
-        defaultSharedPreferencesEditor.putBoolean("cache", false);
 
         /*OFF Control Panel*/
         defaultSharedPreferencesEditor.putBoolean("stable", false);

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel on 3/25/20 2:16 PM
+ * Last modified 3/25/20 2:16 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -91,7 +91,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import net.geekstools.floatshort.PRO.Automation.Folders.FolderAutoFeatures;
-import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.FoldersListAdapter;
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
@@ -272,20 +271,16 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
         automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite);
         automationAction.setRippleColor(ColorStateList.valueOf(PublicVariable.primaryColor));
 
-        try {
-            LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
-            Drawable backRecoverFloatingCategories = drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backgroundTemporary).mutate();
-            backRecoverFloatingCategories.setTint(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+        LayerDrawable drawRecoverFloatingCategories = (LayerDrawable) getDrawable(R.drawable.draw_recovery).mutate();
+        Drawable backRecoverFloatingCategories = drawRecoverFloatingCategories.findDrawableByLayerId(R.id.backgroundTemporary).mutate();
+        backRecoverFloatingCategories.setTint(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
 
-            LayerDrawable drawRecoverFloatingWidgets = (LayerDrawable) getDrawable(R.drawable.draw_recovery_widgets).mutate();
-            Drawable backRecoverFloatingWidgets = drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backgroundTemporary).mutate();
-            backRecoverFloatingWidgets.setTint(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+        LayerDrawable drawRecoverFloatingWidgets = (LayerDrawable) getDrawable(R.drawable.draw_recovery_widgets).mutate();
+        Drawable backRecoverFloatingWidgets = drawRecoverFloatingWidgets.findDrawableByLayerId(R.id.backgroundTemporary).mutate();
+        backRecoverFloatingWidgets.setTint(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
 
-            recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories);
-            recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories);
+        recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets);
 
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -639,10 +634,6 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-        if (functionsClass.SystemCache()) {
-            startService(new Intent(getApplicationContext(), BindServices.class));
         }
 
         try {

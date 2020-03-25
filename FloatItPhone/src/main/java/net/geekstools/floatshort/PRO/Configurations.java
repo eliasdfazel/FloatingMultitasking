@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/25/20 2:16 PM
+ * Last modified 3/25/20 2:06 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -63,8 +63,6 @@ public class Configurations extends Activity {
         Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
-
-        PublicVariable.contextStatic = getApplicationContext();
 
         functionsClass = new FunctionsClass(getApplicationContext(), Configurations.this);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);

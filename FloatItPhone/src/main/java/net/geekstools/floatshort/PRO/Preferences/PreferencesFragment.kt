@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel on 3/25/20 2:16 PM
+ * Last modified 3/25/20 1:59 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -74,7 +74,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     lateinit var stick: ListPreference
 
     lateinit var stable: SwitchPreference
-    lateinit var cache: SwitchPreference
     lateinit var themeTrans: SwitchPreference
     lateinit var smart: SwitchPreference
     lateinit var blur: SwitchPreference
@@ -117,7 +116,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         stable = findPreference("stable")!!
-        cache = findPreference("cache")!!
         themeTrans = findPreference("transparent")!!
         blur = findPreference("blur")!!
         smart = findPreference("smart")!!
@@ -180,25 +178,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         delayPressHold.summary = functionsClass.readDefaultPreference("delayPressHold", 333).toString() + " " + getString(R.string.millis)
-
-        cache.setOnPreferenceClickListener {
-            if (PublicVariable.Stable) {
-                context?.stopService(Intent(context, BindServices::class.java))
-                Handler().postDelayed({
-                    context?.startService(Intent(context, BindServices::class.java))
-                }, 333)
-            } else {
-                if (sharedPreferences.getBoolean("cache", true)) {
-                    context?.startService(Intent(context, BindServices::class.java))
-                } else if (!sharedPreferences.getBoolean("cache", true)) {
-                    if (PublicVariable.floatingCounter == 0) {
-                        context?.stopService(Intent(context, BindServices::class.java))
-                    }
-                    functionsClass.saveDefaultPreference("LitePreferences", false)
-                }
-            }
-            false
-        }
 
         stable.setOnPreferenceClickListener {
             if (sharedPreferences.getBoolean("stable", true)) {
@@ -894,7 +873,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         backSupport.setTint(PublicVariable.primaryColorOpposite)
 
         stable.icon = drawPref
-        cache.icon = drawPref
         autotrans.icon = drawPrefAutoTrans
         floatingSplash.icon = drawPref
         themeColor.icon = drawPref
@@ -988,7 +966,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (functionsClass.SystemCache() || functionsClass.automationFeatureEnable()) {
+        if (functionsClass.automationFeatureEnable()) {
             context!!.startService(Intent(context, BindServices::class.java))
         }
     }
