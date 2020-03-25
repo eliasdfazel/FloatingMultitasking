@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 4:53 PM
- * Last modified 3/24/20 4:53 PM
+ * Created by Elias Fazel on 3/25/20 1:44 PM
+ * Last modified 3/25/20 1:11 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -41,7 +41,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataDAO;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
-import net.geekstools.floatshort.PRO.Widget.WidgetConfigurationsXYZ;
+import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,7 +49,7 @@ import java.util.ArrayList;
 
 public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder> {
 
-    WidgetConfigurationsXYZ widgetConfigurations;
+    WidgetConfigurations widgetConfigurations;
     Context context;
 
     FunctionsClass functionsClass;
@@ -62,7 +62,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
     AppWidgetManager appWidgetManager;
     AppWidgetHost appWidgetHost;
 
-    public ConfiguredWidgetsAdapter(WidgetConfigurationsXYZ widgetConfigurations, Context context, ArrayList<AdapterItems> adapterItems, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost) {
+    public ConfiguredWidgetsAdapter(WidgetConfigurations widgetConfigurations, Context context, ArrayList<AdapterItems> adapterItems, AppWidgetManager appWidgetManager, AppWidgetHost appWidgetHost) {
         this.context = context;
         this.widgetConfigurations = widgetConfigurations;
 

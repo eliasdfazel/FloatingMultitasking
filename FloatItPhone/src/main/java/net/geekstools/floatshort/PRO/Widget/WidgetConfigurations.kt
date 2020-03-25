@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 6:40 PM
- * Last modified 3/24/20 6:39 PM
+ * Created by Elias Fazel on 3/25/20 1:44 PM
+ * Last modified 3/25/20 1:38 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,27 +18,28 @@ import android.app.ActivityOptions
 import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.*
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
 import android.text.Html
+import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.view.*
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -50,6 +51,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.coroutines.*
@@ -66,6 +68,8 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine
 import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.RecycleViewSmoothLayoutGrid
+import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
+import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
@@ -84,13 +88,13 @@ import kotlin.collections.LinkedHashMap
 import kotlin.math.hypot
 import kotlin.math.roundToInt
 
-class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
+class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
     private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext, this@WidgetConfigurationsXYZ)
+        FunctionsClass(applicationContext, this@WidgetConfigurations)
     }
     private val functionsClassSecurity: FunctionsClassSecurity by lazy {
-        FunctionsClassSecurity(this@WidgetConfigurationsXYZ, applicationContext)
+        FunctionsClassSecurity(this@WidgetConfigurations, applicationContext)
     }
     private val functionsClassRunServices: FunctionsClassRunServices by lazy {
         FunctionsClassRunServices(applicationContext)
@@ -120,7 +124,10 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
 
     private lateinit var installedWidgetsRecyclerViewAdapter: RecyclerView.Adapter<InstalledWidgetsAdapter.ViewHolder>
     private lateinit var configuredWidgetsRecyclerViewAdapter: RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder>
+
     private lateinit var configuredWidgetsSectionedGridRecyclerViewAdapter: WidgetSectionedGridRecyclerViewAdapter
+    private lateinit var widgetSectionedGridRecyclerViewAdapter: WidgetSectionedGridRecyclerViewAdapter
+
     private lateinit var installedWidgetsRecyclerViewLayoutManager: GridLayoutManager
     private lateinit var configuredWidgetsRecyclerViewLayoutManager: GridLayoutManager
 
@@ -136,7 +143,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
     }
 
     private val swipeGestureListener: SwipeGestureListener by lazy {
-        SwipeGestureListener(applicationContext, this@WidgetConfigurationsXYZ)
+        SwipeGestureListener(applicationContext, this@WidgetConfigurations)
     }
 
     private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
@@ -174,6 +181,9 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
         installedWidgetsRecyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(190), OrientationHelper.VERTICAL, false)
         widgetConfigurationsViewsBinding.installedWidgetList.layoutManager = installedWidgetsRecyclerViewLayoutManager
 
+        configuredWidgetsRecyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(190), OrientationHelper.VERTICAL, false)
+        widgetConfigurationsViewsBinding.configuredWidgetList.layoutManager = configuredWidgetsRecyclerViewLayoutManager
+
         if (functionsClass.appThemeTransparent()) {
             functionsClass.setThemeColorFloating(widgetConfigurationsViewsBinding.wholeWidget, true)
         } else {
@@ -185,7 +195,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
 
         if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
 
-            LoadConfiguredWidgets().invokeOnCompletion {
+            loadConfiguredWidgets().invokeOnCompletion {
 
             }
         } else {
@@ -220,8 +230,6 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
             widgetConfigurationsViewsBinding.searchIcon.bringToFront()
             widgetConfigurationsViewsBinding.searchFloatIt.bringToFront()
             widgetConfigurationsViewsBinding.searchClose.bringToFront()
-
-            LoadSearchEngineData()
         }
 
         val drawAddWidget = getDrawable(R.drawable.draw_pref_add_widget) as LayerDrawable
@@ -319,8 +327,8 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                         val valueAnimator = ValueAnimator
                                 .ofArgb(window.navigationBarColor, functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
                         valueAnimator.addUpdateListener { animator ->
-                            window.statusBarColor = (animator.animatedValue as Int)
-                            window.navigationBarColor = (animator.animatedValue as Int)
+                            window.statusBarColor = (animator.animatedValue) as Int
+                            window.navigationBarColor = (animator.animatedValue) as Int
                         }
                         valueAnimator.start()
                     } else {
@@ -335,8 +343,8 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                         val colorAnimation = ValueAnimator
                                 .ofArgb(getWindow().navigationBarColor, PublicVariable.colorLightDark)
                         colorAnimation.addUpdateListener { animator ->
-                            window.navigationBarColor = (animator.animatedValue as Int)
-                            window.statusBarColor = (animator.animatedValue as Int)
+                            window.navigationBarColor = (animator.animatedValue) as Int
+                            window.statusBarColor = (animator.animatedValue) as Int
                         }
                         colorAnimation.start()
                     }
@@ -497,9 +505,9 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
             Handler().postDelayed({
                 Intent().apply {
                     this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    this.setClass(this@WidgetConfigurationsXYZ, PreferencesActivity::class.java)
+                    this.setClass(this@WidgetConfigurations, PreferencesActivity::class.java)
                     startActivity(this,
-                            ActivityOptionsCompat.makeSceneTransitionAnimation(this@WidgetConfigurationsXYZ, widgetConfigurationsViewsBinding.actionButton, "transition").toBundle())
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(this@WidgetConfigurations, widgetConfigurationsViewsBinding.actionButton, "transition").toBundle())
                 }
             }, 113)
 
@@ -602,7 +610,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
             startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java),
                     ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
-            this@WidgetConfigurationsXYZ.finish()
+            this@WidgetConfigurations.finish()
         }
 
         widgetConfigurationsViewsBinding.addWidget.setOnClickListener {
@@ -658,8 +666,8 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                     val valueAnimator = ValueAnimator
                             .ofArgb(window.navigationBarColor, functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
                     valueAnimator.addUpdateListener { animator ->
-                        window.statusBarColor = (animator.animatedValue as Int)
-                        window.navigationBarColor = (animator.animatedValue as Int)
+                        window.statusBarColor = (animator.animatedValue) as Int
+                        window.navigationBarColor = (animator.animatedValue) as Int
                     }
                     valueAnimator.start()
                 } else {
@@ -674,8 +682,8 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                     val colorAnimation = ValueAnimator
                             .ofArgb(window.navigationBarColor, PublicVariable.colorLightDark)
                     colorAnimation.addUpdateListener { animator ->
-                        window.navigationBarColor = (animator.animatedValue as Int)
-                        window.statusBarColor = (animator.animatedValue as Int)
+                        window.navigationBarColor = (animator.animatedValue) as Int
+                        window.statusBarColor = (animator.animatedValue) as Int
                     }
                     colorAnimation.start()
                 }
@@ -712,7 +720,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                     functionsClass.closeActionMenuOption(widgetConfigurationsViewsBinding.fullActionViews, widgetConfigurationsViewsBinding.actionButton)
                 }
 
-                LoadInstalledWidgets()
+                loadInstalledWidgets()
             }
         }
 
@@ -837,8 +845,8 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                 val valueAnimator = ValueAnimator
                         .ofArgb(window.navigationBarColor, functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
                 valueAnimator.addUpdateListener { animator ->
-                    window.statusBarColor = (animator.animatedValue as Int)
-                    window.navigationBarColor = (animator.animatedValue as Int)
+                    window.statusBarColor = (animator.animatedValue) as Int
+                    window.navigationBarColor = (animator.animatedValue) as Int
                 }
                 valueAnimator.start()
             } else {
@@ -853,14 +861,14 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                 val colorAnimation = ValueAnimator
                         .ofArgb(window.navigationBarColor, PublicVariable.colorLightDark)
                 colorAnimation.addUpdateListener { animator ->
-                    window.navigationBarColor = (animator.animatedValue as Int)
-                    window.statusBarColor = (animator.animatedValue as Int)
+                    window.navigationBarColor = (animator.animatedValue) as Int
+                    window.statusBarColor = (animator.animatedValue) as Int
                 }
                 colorAnimation.start()
             }
         } else {
 
-            functionsClass.overrideBackPressToMain(this@WidgetConfigurationsXYZ)
+            functionsClass.overrideBackPressToMain(this@WidgetConfigurations)
         }
     }
 
@@ -925,7 +933,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                                     override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
                                         super.onOpen(supportSQLiteDatabase)
 
-                                        LoadConfiguredWidgets()
+                                        loadConfiguredWidgets()
                                     }
                                 })
                                 .build()
@@ -972,7 +980,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                                         override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
                                             super.onOpen(supportSQLiteDatabase)
 
-                                            LoadConfiguredWidgets()
+                                            loadConfiguredWidgets()
                                         }
                                     })
                                     .build()
@@ -1011,7 +1019,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                                     override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
                                         super.onOpen(supportSQLiteDatabase)
 
-                                        LoadConfiguredWidgets()
+                                        loadConfiguredWidgets()
                                     }
                                 })
                                 .build()
@@ -1027,10 +1035,10 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
         configuredWidgetsAdapterItems.clear()
         configuredWidgetsSections.clear()
 
-        LoadConfiguredWidgets()
+        loadConfiguredWidgets()
     }
 
-    fun LoadConfiguredWidgets() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+    fun loadConfiguredWidgets() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
 
         configuredWidgetsAdapterItems.clear()
         configuredWidgetsSections.clear()
@@ -1092,8 +1100,11 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
             widgetDataModels.asFlow()
                     .onCompletion {
 
-                        LoadApplicationsIndexConfigured()
-                        LoadSearchEngineData()
+                        loadApplicationsIndexConfigured().await()
+
+                        loadSearchEngineData().await()
+
+                        loadInstalledCustomIconPackages().await()
                     }
                     .withIndex().collect { widgetDataModel ->
                         val appWidgetId: Int = widgetDataModel.value.WidgetId
@@ -1137,7 +1148,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                         }
                     }
 
-            configuredWidgetsRecyclerViewAdapter = ConfiguredWidgetsAdapter(this@WidgetConfigurationsXYZ, applicationContext,
+            configuredWidgetsRecyclerViewAdapter = ConfiguredWidgetsAdapter(this@WidgetConfigurations, applicationContext,
                     configuredWidgetsAdapterItems,
                     appWidgetManager, appWidgetHost)
         }
@@ -1150,9 +1161,8 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
 
             widgetConfigurationsViewsBinding.reconfigure.visibility = View.VISIBLE
 
-            configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged()
             val sectionsData = arrayOfNulls<WidgetSectionedGridRecyclerViewAdapter.Section>(configuredWidgetsSections.size)
-            configuredWidgetsSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter(
+            configuredWidgetsSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter (
                     applicationContext,
                     R.layout.widgets_sections,
                     widgetConfigurationsViewsBinding.configuredWidgetList,
@@ -1182,7 +1192,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
         }
     }
 
-    fun LoadInstalledWidgets() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+    fun loadInstalledWidgets() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
         widgetConfigurationsViewsBinding.loadingInstalledWidgets.setColor(PublicVariable.primaryColor)
         widgetConfigurationsViewsBinding.installedNestedScrollView.setBackgroundColor(if (PublicVariable.themeLightDark) getColor(R.color.transparent_light_high_twice) else getColor(R.color.transparent_dark_high_twice))
 
@@ -1215,7 +1225,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                 }
                 .onCompletion {
 
-                    LoadApplicationsIndexInstalled()
+                    loadApplicationsIndexInstalled()
                 }
                 .withIndex().collect { appWidgetProviderInfo ->
                     val packageName: String = appWidgetProviderInfo.value.provider.packageName
@@ -1293,7 +1303,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                     widgetIndex++
                 }
 
-        installedWidgetsRecyclerViewAdapter = InstalledWidgetsAdapter(this@WidgetConfigurationsXYZ, applicationContext, installedWidgetsAdapterItems, appWidgetHost)
+        installedWidgetsRecyclerViewAdapter = InstalledWidgetsAdapter(this@WidgetConfigurations, applicationContext, installedWidgetsAdapterItems, appWidgetHost)
 
         installedWidgetsLoaded = true
 
@@ -1305,11 +1315,11 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
         viewPropertyAnimator.start()
 
         widgetConfigurationsViewsBinding.installedNestedScrollView.setBackgroundColor(if (PublicVariable.themeLightDark) getColor(R.color.transparent_light) else getColor(R.color.dark_transparent))
-        widgetConfigurationsViewsBinding.installedNestedScrollView.setVisibility(View.VISIBLE)
+        widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.VISIBLE
 
         installedWidgetsRecyclerViewAdapter.notifyDataSetChanged()
         val sectionsData = arrayOfNulls<WidgetSectionedGridRecyclerViewAdapter.Section>(installedWidgetsSections.size)
-        val widgetSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter(
+        widgetSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter (
                 applicationContext,
                 R.layout.widgets_sections,
                 widgetConfigurationsViewsBinding.installedWidgetList,
@@ -1343,8 +1353,8 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                     val colorAnimation = ValueAnimator
                             .ofArgb(window.navigationBarColor, if (PublicVariable.themeLightDark) getColor(R.color.fifty_light_twice) else getColor(R.color.transparent_dark_high_twice))
                     colorAnimation.addUpdateListener { animator ->
-                        window.statusBarColor = (animator.animatedValue as Int)
-                        window.navigationBarColor = (animator.animatedValue as Int)
+                        window.statusBarColor = (animator.animatedValue) as Int
+                        window.navigationBarColor = (animator.animatedValue) as Int
                     }
                     colorAnimation.start()
                 } else {
@@ -1358,8 +1368,8 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                         val colorAnimation = ValueAnimator
                                 .ofArgb(window.navigationBarColor, functionsClass.mixColors(getColor(R.color.light), getWindow().navigationBarColor, 0.70f))
                         colorAnimation.addUpdateListener { animator ->
-                            window.navigationBarColor = (animator.animatedValue as Int)
-                            window.statusBarColor = (animator.animatedValue as Int)
+                            window.navigationBarColor = (animator.animatedValue) as Int
+                            window.statusBarColor = (animator.animatedValue) as Int
                         }
                         colorAnimation.start()
                     } else if (!PublicVariable.themeLightDark) {
@@ -1367,8 +1377,8 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                         val colorAnimation = ValueAnimator
                                 .ofArgb(getWindow().navigationBarColor, functionsClass.mixColors(getColor(R.color.dark), getWindow().navigationBarColor, 0.70f))
                         colorAnimation.addUpdateListener { animator ->
-                            window.navigationBarColor = (animator.animatedValue as Int)
-                            window.statusBarColor = (animator.animatedValue as Int)
+                            window.navigationBarColor = (animator.animatedValue) as Int
+                            window.statusBarColor = (animator.animatedValue) as Int
                         }
                         colorAnimation.start()
                     }
@@ -1409,7 +1419,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
         widgetConfigurationsViewsBinding.loadingInstalledWidgets.visibility = View.INVISIBLE
     }
 
-    fun LoadApplicationsIndexConfigured() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+    fun loadApplicationsIndexConfigured() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
         withContext(Dispatchers.Main) {
             widgetConfigurationsViewsBinding.indexView.removeAllViews()
         }
@@ -1454,12 +1464,12 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                     upperRange = indexRange
                 }
             }
-        }
 
-        setupFastScrollingIndexingConfigured()
+            setupFastScrollingIndexingConfigured()
+        }
     }
 
-    fun LoadApplicationsIndexInstalled() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+    fun loadApplicationsIndexInstalled() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
         withContext(Dispatchers.Main) {
             widgetConfigurationsViewsBinding.indexViewInstalled.removeAllViews()
         }
@@ -1495,7 +1505,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
 
                 for (i in 0 until widgetConfigurationsViewsBinding.indexViewInstalled.childCount) {
                     val indexText = (widgetConfigurationsViewsBinding.indexViewInstalled.getChildAt(i) as TextView).text.toString()
-                    val indexRange = (widgetConfigurationsViewsBinding.indexViewInstalled.getChildAt(i).y + widgetConfigurationsViewsBinding.indexViewInstalled.y + it.height) as Int
+                    val indexRange = (widgetConfigurationsViewsBinding.indexViewInstalled.getChildAt(i).y + widgetConfigurationsViewsBinding.indexViewInstalled.y + it.height).roundToInt()
 
                     for (jRange in upperRange..indexRange) {
                         mapRangeIndexInstalled[jRange] = indexText
@@ -1504,9 +1514,25 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
                     upperRange = indexRange
                 }
             }
-        }
 
-        setupFastScrollingIndexingInstalled()
+            setupFastScrollingIndexingInstalled()
+        }
+    }
+
+    private fun loadInstalledCustomIconPackages() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
+        val packageManager = applicationContext.packageManager
+        //ACTION: com.novalauncher.THEME
+        //CATEGORY: com.novalauncher.category.CUSTOM_ICON_PICKER
+        val intentCustomIcons = Intent()
+        intentCustomIcons.action = "com.novalauncher.THEME"
+        intentCustomIcons.addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER")
+        val resolveInfos = packageManager.queryIntentActivities(intentCustomIcons, 0)
+
+        PublicVariable.customIconsPackages.clear()
+        for (resolveInfo in resolveInfos) {
+            FunctionsClassDebug.PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
+            PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
+        }
     }
 
     fun createWidget(context: Context?, widgetView: ViewGroup, appWidgetManager: AppWidgetManager, appWidgetHost: AppWidgetHost, appWidgetProviderInfo: AppWidgetProviderInfo, widgetId: Int) {
@@ -1533,46 +1559,6 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
         appWidgetManager.bindAppWidgetIdIfAllowed(widgetId, appWidgetProviderInfo.provider, bundle)
 
         widgetView.addView(hostView)
-    }
-
-    val scaleDownListener: Animator.AnimatorListener = object : Animator.AnimatorListener {
-
-        override fun onAnimationStart(animation: Animator) {
-
-        }
-
-        override fun onAnimationRepeat(animation: Animator) {
-
-        }
-
-        override fun onAnimationEnd(animation: Animator) {
-            if (!installedWidgetsLoaded) {
-                widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
-            }
-        }
-
-        override fun onAnimationCancel(animation: Animator) {
-
-        }
-    }
-
-    val scaleUpListener: Animator.AnimatorListener = object : Animator.AnimatorListener {
-
-        override fun onAnimationStart(animation: Animator) {
-
-        }
-
-        override fun onAnimationRepeat(animation: Animator) {
-
-        }
-
-        override fun onAnimationEnd(animation: Animator) {
-            widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(-0.23f).scaleYBy(-0.23f).setDuration(323).setListener(scaleDownListener)
-        }
-
-        override fun onAnimationCancel(animation: Animator) {
-
-        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -1730,13 +1716,490 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
         }
     }
 
-    /*Search Engine*/
-    fun LoadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+    val scaleDownListener: Animator.AnimatorListener = object : Animator.AnimatorListener {
 
+        override fun onAnimationStart(animation: Animator) {
+
+        }
+
+        override fun onAnimationRepeat(animation: Animator) {
+
+        }
+
+        override fun onAnimationEnd(animation: Animator) {
+            if (!installedWidgetsLoaded) {
+                widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
+            }
+        }
+
+        override fun onAnimationCancel(animation: Animator) {
+
+        }
     }
 
-    fun setupSearchView() {
+    val scaleUpListener: Animator.AnimatorListener = object : Animator.AnimatorListener {
 
+        override fun onAnimationStart(animation: Animator) {
+
+        }
+
+        override fun onAnimationRepeat(animation: Animator) {
+
+        }
+
+        override fun onAnimationEnd(animation: Animator) {
+            widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(-0.23f).scaleYBy(-0.23f).setDuration(323).setListener(scaleDownListener)
+        }
+
+        override fun onAnimationCancel(animation: Animator) {
+
+        }
+    }
+
+    /*Search Engine*/
+    private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Default).async {
+        if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
+            searchAdapterItems = ArrayList<AdapterItemsSearchEngine>()
+
+            //Loading Applications
+            val applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
+                this.action = Intent.ACTION_MAIN
+                this.addCategory(Intent.CATEGORY_LAUNCHER)
+            }, PackageManager.GET_RESOLVED_FILTER)
+            val applicationInfoListSorted = applicationInfoList.sortedWith(ResolveInfo.DisplayNameComparator(packageManager))
+
+            applicationInfoListSorted.asFlow()
+                    .filter {
+
+                        (packageManager.getLaunchIntentForPackage(it.activityInfo.packageName) != null)
+                    }
+                    .map {
+
+                        it
+                    }
+                    .collect {
+                        try {
+                            val installedPackageName = it.activityInfo.packageName
+                            val installedClassName= it.activityInfo.name
+                            val installedAppName = functionsClass.activityLabel(it.activityInfo)
+
+                            val installedAppIcon = if (functionsClass.loadCustomIcons()) {
+                                loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(it.activityInfo))
+                            } else {
+                                functionsClass.shapedAppIcon(it.activityInfo)
+                            }
+
+                            searchAdapterItems.add(AdapterItemsSearchEngine(installedAppName, installedPackageName, installedClassName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts))
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        } finally {
+
+                        }
+                    }
+
+            //Loading Folders
+            try {
+                getFileStreamPath(".categoryInfo").readLines().forEach {
+                    try {
+                        searchAdapterItems.add(AdapterItemsSearchEngine(it, functionsClass.readFileLine(it), SearchEngineAdapter.SearchResultType.SearchFolders))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            //Loading Widgets
+            if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+                val appWidgetManager = AppWidgetManager.getInstance(this@WidgetConfigurations)
+                val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                        .fallbackToDestructiveMigration()
+                        .addCallback(object : RoomDatabase.Callback() {
+                            override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                super.onCreate(supportSQLiteDatabase)
+                            }
+
+                            override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                super.onOpen(supportSQLiteDatabase)
+                            }
+                        })
+                        .build()
+                val widgetDataModels = widgetDataInterface.initDataAccessObject().getAllWidgetDataSuspend()
+
+                if (widgetDataModels.isNotEmpty()) {
+                    widgetDataModels.forEach { widgetDataModel ->
+                        try {
+                            val appWidgetId: Int = widgetDataModel.WidgetId
+                            val packageName: String = widgetDataModel.PackageName
+                            val className: String = widgetDataModel.ClassNameProvider
+                            val configClassName: String? = widgetDataModel.ConfigClassName
+
+                            FunctionsClassDebug.PrintDebug("*** $appWidgetId *** PackageName: $packageName - ClassName: $className - Configure: $configClassName ***")
+
+                            if (functionsClass.appIsInstalled(packageName)) {
+
+                                val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
+                                val newAppName = functionsClass.appName(packageName)
+                                val appIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+
+                                searchAdapterItems.add(AdapterItemsSearchEngine(
+                                        newAppName,
+                                        packageName,
+                                        className,
+                                        configClassName,
+                                        widgetDataModel.WidgetLabel,
+                                        appIcon,
+                                        appWidgetProviderInfo,
+                                        appWidgetId,
+                                        SearchEngineAdapter.SearchResultType.SearchWidgets
+                                ))
+                            } else {
+                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            val searchRecyclerViewAdapter = SearchEngineAdapter(applicationContext, searchAdapterItems)
+
+            withContext(Dispatchers.Main) {
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+
+                if (searchAdapterItems.size > 0) {
+                    setupSearchView(searchRecyclerViewAdapter)
+                }
+            }
+        } else {
+            searchAdapterItems = SearchEngineAdapter.allSearchResultItems
+
+            val searchRecyclerViewAdapter = SearchEngineAdapter(applicationContext, searchAdapterItems)
+
+            withContext(Dispatchers.Main) {
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+
+                if (searchAdapterItems.size > 0) {
+                    setupSearchView(searchRecyclerViewAdapter)
+                }
+            }
+        }
+    }
+
+    private fun setupSearchView(searchRecyclerViewAdapter: SearchEngineAdapter) {
+        widgetConfigurationsViewsBinding.searchView.setAdapter(searchRecyclerViewAdapter)
+
+        widgetConfigurationsViewsBinding.searchView.setDropDownBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        widgetConfigurationsViewsBinding.searchView.isVerticalScrollBarEnabled = false
+        widgetConfigurationsViewsBinding.searchView.scrollBarSize = 0
+
+        widgetConfigurationsViewsBinding.searchView.setTextColor(PublicVariable.colorLightDarkOpposite)
+        widgetConfigurationsViewsBinding.searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
+
+        val layerDrawableSearchIcon = getDrawable(R.drawable.search_icon) as RippleDrawable?
+        val backgroundTemporarySearchIcon = layerDrawableSearchIcon?.findDrawableByLayerId(R.id.backgroundTemporary)
+        val frontTemporarySearchIcon = layerDrawableSearchIcon?.findDrawableByLayerId(R.id.frontTemporary)
+        val frontDrawableSearchIcon = layerDrawableSearchIcon?.findDrawableByLayerId(R.id.frontDrawable)
+        backgroundTemporarySearchIcon?.setTint(PublicVariable.colorLightDarkOpposite)
+        frontTemporarySearchIcon?.setTint(PublicVariable.colorLightDark)
+        frontDrawableSearchIcon?.setTint(if (PublicVariable.themeLightDark) functionsClass.manipulateColor(PublicVariable.primaryColor, 0.90f) else functionsClass.manipulateColor(PublicVariable.primaryColor, 3.00f))
+
+        layerDrawableSearchIcon?.setLayerInset(2,
+                functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13))
+
+        widgetConfigurationsViewsBinding.searchIcon.setImageDrawable(layerDrawableSearchIcon)
+        widgetConfigurationsViewsBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+        widgetConfigurationsViewsBinding.searchIcon.visibility = View.VISIBLE
+
+        widgetConfigurationsViewsBinding.textInputSearchView.hintTextColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+        widgetConfigurationsViewsBinding.textInputSearchView.boxStrokeColor = PublicVariable.primaryColor
+
+        var backgroundTemporaryInput = GradientDrawable()
+        try {
+            val layerDrawableBackgroundInput = getDrawable(R.drawable.background_search_input) as LayerDrawable?
+            backgroundTemporaryInput = layerDrawableBackgroundInput!!.findDrawableByLayerId(R.id.backgroundTemporary) as GradientDrawable
+            backgroundTemporaryInput.setTint(PublicVariable.colorLightDark)
+            widgetConfigurationsViewsBinding.textInputSearchView.background = layerDrawableBackgroundInput
+        } catch (e: Exception) {
+            e.printStackTrace()
+            widgetConfigurationsViewsBinding.textInputSearchView.background = null
+        }
+
+        val finalBackgroundTemporaryInput = backgroundTemporaryInput
+        widgetConfigurationsViewsBinding.searchIcon.setOnClickListener {
+            val bundleSearchEngineUsed = Bundle()
+            bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.currentUser)
+            bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchEngineAdapter.SearchResultType.SearchFolders)
+
+            val firebaseAnalytics = FirebaseAnalytics.getInstance(applicationContext)
+            firebaseAnalytics.logEvent(SearchEngineAdapter.SEARCH_ENGINE_USED_LOG, bundleSearchEngineUsed)
+
+            if (functionsClass.securityServicesSubscribed()) {
+                if (functionsClass.readPreference(".Password", "Pin", "0") == "0" && functionsClass.securityServicesSubscribed()) {
+                    startActivity(Intent(applicationContext, HandlePinPassword::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                            ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+                } else {
+                    if (!SearchEngineAdapter.alreadyAuthenticatedSearchEngine) {
+                        if (functionsClass.securityServicesSubscribed()) {
+                            FunctionsClassSecurity.AuthOpenAppValues.authComponentName = getString(R.string.securityServices)
+                            FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName = packageName
+                            FunctionsClassSecurity.AuthOpenAppValues.authSearchEngine = true
+
+                            functionsClassSecurity.openAuthInvocation()
+
+                            val intentFilter = IntentFilter()
+                            intentFilter.addAction("SEARCH_ENGINE_AUTHENTICATED")
+                            val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+                                override fun onReceive(context: Context, intent: Intent) {
+                                    if (intent.action == "SEARCH_ENGINE_AUTHENTICATED") {
+                                        performSearchEngine(finalBackgroundTemporaryInput)
+                                    }
+                                }
+                            }
+                            try {
+                                registerReceiver(broadcastReceiver, intentFilter)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    } else {
+                        performSearchEngine(finalBackgroundTemporaryInput)
+                    }
+                }
+            } else {
+                performSearchEngine(finalBackgroundTemporaryInput)
+            }
+        }
+    }
+
+    private fun performSearchEngine(finalBackgroundTemporaryInput: GradientDrawable)  = CoroutineScope(Dispatchers.Main).launch {
+        delay(90)
+
+        if (functionsClass.searchEngineSubscribed()) {
+            widgetConfigurationsViewsBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+            widgetConfigurationsViewsBinding.textInputSearchView.visibility = View.VISIBLE
+
+            widgetConfigurationsViewsBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+            widgetConfigurationsViewsBinding.searchIcon.visibility = View.INVISIBLE
+
+            val valueAnimatorCornerDown = ValueAnimator.ofInt(functionsClass.DpToInteger(51), functionsClass.DpToInteger(7))
+            valueAnimatorCornerDown.duration = 777
+            valueAnimatorCornerDown.addUpdateListener { animator ->
+                val animatorValue = animator.animatedValue as Int
+
+                widgetConfigurationsViewsBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
+            }
+            valueAnimatorCornerDown.start()
+
+            val valueAnimatorScalesUp = ValueAnimator.ofInt(functionsClass.DpToInteger(51), widgetConfigurationsViewsBinding.switchApps.width)
+            valueAnimatorScalesUp.duration = 777
+            valueAnimatorScalesUp.addUpdateListener { animator ->
+                val animatorValue = animator.animatedValue as Int
+                widgetConfigurationsViewsBinding.textInputSearchView.layoutParams.width = animatorValue
+                widgetConfigurationsViewsBinding.textInputSearchView.requestLayout()
+            }
+            valueAnimatorScalesUp.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animator) {
+                    widgetConfigurationsViewsBinding.searchView.requestFocus()
+
+                    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.showSoftInput(widgetConfigurationsViewsBinding.searchView, InputMethodManager.SHOW_IMPLICIT)
+                    Handler().postDelayed({
+                        widgetConfigurationsViewsBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                        widgetConfigurationsViewsBinding.searchFloatIt.visibility = View.VISIBLE
+                        widgetConfigurationsViewsBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                        widgetConfigurationsViewsBinding.searchClose.visibility = View.VISIBLE
+                    }, 555)
+                }
+
+                override fun onAnimationCancel(animation: Animator) {
+
+                }
+
+                override fun onAnimationRepeat(animation: Animator) {
+
+                }
+            })
+            valueAnimatorScalesUp.start()
+
+            widgetConfigurationsViewsBinding.searchFloatIt.setOnClickListener {
+                if (!widgetConfigurationsViewsBinding.searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResultItems.size > 0
+                        && widgetConfigurationsViewsBinding.searchView.text.toString().length >= 2) {
+                    SearchEngineAdapter.allSearchResultItems.forEach { searchResultItem ->
+                        when (searchResultItem.searchResultType) {
+                            SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
+                                functionsClassRunServices.runUnlimitedShortcutsService(searchResultItem.PackageName!!, searchResultItem.ClassName!!)
+                            }
+                            SearchEngineAdapter.SearchResultType.SearchFolders -> {
+                                functionsClass.runUnlimitedFolderService(searchResultItem.folderName)
+                            }
+                            SearchEngineAdapter.SearchResultType.SearchWidgets -> {
+                                functionsClass
+                                        .runUnlimitedWidgetService(searchResultItem.appWidgetId!!,
+                                                searchResultItem.widgetLabel)
+                            }
+                        }
+                    }
+                }
+            }
+
+            widgetConfigurationsViewsBinding.searchView.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+                }
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+                }
+                override fun afterTextChanged(s: Editable) {
+
+                }
+            })
+
+            widgetConfigurationsViewsBinding.searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+                override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        if (SearchEngineAdapter.allSearchResultItems.size == 1
+                                && !widgetConfigurationsViewsBinding.searchView.text.toString().isEmpty()
+                                && widgetConfigurationsViewsBinding.searchView.text.toString().length >= 2) {
+                            when (SearchEngineAdapter.allSearchResultItems[0].searchResultType) {
+                                SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
+                                    functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems[0].PackageName!!, SearchEngineAdapter.allSearchResultItems[0].ClassName!!)
+                                }
+                                SearchEngineAdapter.SearchResultType.SearchFolders -> {
+                                    functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems[0].folderName)
+                                }
+                                SearchEngineAdapter.SearchResultType.SearchWidgets -> {
+                                    functionsClass
+                                            .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResultItems[0].appWidgetId!!,
+                                                    SearchEngineAdapter.allSearchResultItems[0].widgetLabel)
+                                }
+                            }
+
+                            widgetConfigurationsViewsBinding.searchView.setText("")
+
+                            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            inputMethodManager.hideSoftInputFromWindow(widgetConfigurationsViewsBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
+                            val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
+                            valueAnimatorCornerUp.duration = 777
+                            valueAnimatorCornerUp.addUpdateListener { animator ->
+                                val animatorValue = animator.animatedValue as Int
+                                widgetConfigurationsViewsBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                                finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
+                            }
+                            valueAnimatorCornerUp.start()
+
+                            val valueAnimatorScales = ValueAnimator.ofInt(widgetConfigurationsViewsBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
+                            valueAnimatorScales.duration = 777
+                            valueAnimatorScales.addUpdateListener { animator ->
+                                val animatorValue = animator.animatedValue as Int
+                                widgetConfigurationsViewsBinding.textInputSearchView.layoutParams.width = animatorValue
+                                widgetConfigurationsViewsBinding.textInputSearchView.requestLayout()
+                            }
+                            valueAnimatorScales.addListener(object : Animator.AnimatorListener {
+                                override fun onAnimationStart(animation: Animator) {
+
+                                }
+
+                                override fun onAnimationEnd(animation: Animator) {
+                                    widgetConfigurationsViewsBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                                    widgetConfigurationsViewsBinding.textInputSearchView.visibility = View.INVISIBLE
+
+                                    widgetConfigurationsViewsBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                                    widgetConfigurationsViewsBinding.searchIcon.visibility = View.VISIBLE
+
+                                    widgetConfigurationsViewsBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                    widgetConfigurationsViewsBinding.searchFloatIt.visibility = View.INVISIBLE
+
+                                    widgetConfigurationsViewsBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                    widgetConfigurationsViewsBinding.searchClose.visibility = View.INVISIBLE
+                                }
+
+                                override fun onAnimationCancel(animation: Animator) {
+
+                                }
+
+                                override fun onAnimationRepeat(animation: Animator) {
+
+                                }
+                            })
+                            valueAnimatorScales.start()
+                        } else {
+                            if (SearchEngineAdapter.allSearchResultItems.size > 0
+                                    && widgetConfigurationsViewsBinding.searchView.text.toString().length >= 2) {
+                                widgetConfigurationsViewsBinding.searchView.showDropDown()
+                            }
+                        }
+                    }
+
+                    return false
+                }
+            })
+
+            widgetConfigurationsViewsBinding.searchClose.setOnClickListener {
+                widgetConfigurationsViewsBinding.searchView.setText("")
+
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(widgetConfigurationsViewsBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
+                val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
+                valueAnimatorCornerUp.duration = 777
+                valueAnimatorCornerUp.addUpdateListener { animator ->
+                    val animatorValue = animator.animatedValue as Int
+                    widgetConfigurationsViewsBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                    finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
+                }
+                valueAnimatorCornerUp.start()
+
+                val valueAnimatorScales = ValueAnimator.ofInt(widgetConfigurationsViewsBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
+                valueAnimatorScales.duration = 777
+                valueAnimatorScales.addUpdateListener { animator ->
+                    val animatorValue = animator.animatedValue as Int
+                    widgetConfigurationsViewsBinding.textInputSearchView.layoutParams.width = animatorValue
+                    widgetConfigurationsViewsBinding.textInputSearchView.requestLayout()
+                }
+                valueAnimatorScales.addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(animation: Animator) {
+
+                    }
+
+                    override fun onAnimationEnd(animation: Animator) {
+                        widgetConfigurationsViewsBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                        widgetConfigurationsViewsBinding.textInputSearchView.visibility = View.INVISIBLE
+
+                        widgetConfigurationsViewsBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                        widgetConfigurationsViewsBinding.searchIcon.visibility = View.VISIBLE
+
+                        widgetConfigurationsViewsBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                        widgetConfigurationsViewsBinding.searchFloatIt.visibility = View.INVISIBLE
+
+                        widgetConfigurationsViewsBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                        widgetConfigurationsViewsBinding.searchClose.visibility = View.INVISIBLE
+                    }
+
+                    override fun onAnimationCancel(animation: Animator) {
+
+                    }
+
+                    override fun onAnimationRepeat(animation: Animator) {
+
+                    }
+                })
+                valueAnimatorScales.start()
+            }
+        } else {
+            InAppBilling.ItemIAB = BillingManager.iapSearchEngines
+
+            startActivity(Intent(applicationContext, InAppBilling::class.java),
+                    ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+        }
     }
     /*Search Engine*/
 }

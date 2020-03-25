@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/25/20 1:44 PM
+ * Last modified 3/25/20 1:15 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -342,7 +342,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                 } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations()) {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Open Widget Configurations ***");
 
-                                    WidgetConfigurations.alreadyAuthenticatedWidgets = true;
+                                    WidgetConfigurations.Companion.setAlreadyAuthenticatedWidgets(true);
                                 } else if (FunctionsClassSecurity.AuthOpenAppValues.getAuthSearchEngine()) {
                                     FunctionsClassDebug.Companion.PrintDebug("*** Authenticated | Run Search Engine ***");
 

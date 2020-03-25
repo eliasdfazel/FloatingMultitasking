@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/25/20 1:44 PM
+ * Last modified 3/25/20 1:15 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -355,7 +355,7 @@ class FunctionsClassSecurity {
             } else if (FunctionsClassSecurity.authWidgetConfigurations) {
                 FunctionsClassDebug.PrintDebug("*** Authenticated | Open Widget Configurations ***")
 
-                WidgetConfigurations.alreadyAuthenticatedWidgets = true
+                WidgetConfigurations.Companion.alreadyAuthenticatedWidgets = true
             } else if (FunctionsClassSecurity.authSearchEngine) {
                 FunctionsClassDebug.PrintDebug("*** Authenticated | Run Search Engine ***")
 

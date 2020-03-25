@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 4:53 PM
- * Last modified 3/24/20 3:28 PM
+ * Created by Elias Fazel on 3/25/20 1:44 PM
+ * Last modified 3/25/20 1:11 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -165,7 +165,6 @@ import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash;
 import net.geekstools.floatshort.PRO.Widget.FloatingServices.Widget_Unlimited_Floating;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
-import net.geekstools.floatshort.PRO.Widget.WidgetConfigurationsXYZ;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.io.BufferedReader;
@@ -3864,7 +3863,7 @@ public class FunctionsClass {
         popupMenu.show();
     }
 
-    public void popupOptionWidget(WidgetConfigurationsXYZ widgetConfigurations, final Context context, View anchorView, String packageName, final String providerClassName, String widgetLabel, Drawable widgetPreview, boolean addedWidgetRecovery) {
+    public void popupOptionWidget(WidgetConfigurations widgetConfigurations, final Context context, View anchorView, String packageName, final String providerClassName, String widgetLabel, Drawable widgetPreview, boolean addedWidgetRecovery) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
             popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Light);
