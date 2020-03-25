@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 4:53 PM
- * Last modified 3/24/20 4:52 PM
+ * Created by Elias Fazel on 3/24/20 6:10 PM
+ * Last modified 3/24/20 6:08 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -17,22 +17,29 @@ import android.app.ActivityOptions
 import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.Html
+import android.util.DisplayMetrics
 import android.view.*
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
@@ -45,10 +52,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.withIndex
+import kotlinx.coroutines.flow.*
 import net.geeksempire.primepuzzles.GameView.UI.SwipeGestureListener
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
@@ -96,13 +100,13 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
     lateinit var searchAdapterItems: ArrayList<AdapterItemsSearchEngine>
     /*Search Engine*/
 
-    private val mapIndexFirstItem: Map<String, Int> = LinkedHashMap<String, Int>()
-    private val mapIndexLastItem: Map<String, Int> = LinkedHashMap<String, Int>()
-    private val mapIndexFirstItemInstalled: Map<String, Int> = LinkedHashMap<String, Int>()
-    private val mapIndexLastItemInstalled: Map<String, Int> = LinkedHashMap<String, Int>()
+    private val mapIndexFirstItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
+    private val mapIndexLastItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
+    private val mapIndexFirstItemInstalled: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
+    private val mapIndexLastItemInstalled: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
 
-    private val mapRangeIndex: Map<Int, String> = LinkedHashMap<Int, String>()
-    private val mapRangeIndexInstalled: Map<Int, String> = LinkedHashMap<Int, String>()
+    private val mapRangeIndex: LinkedHashMap<Int, String> = LinkedHashMap<Int, String>()
+    private val mapRangeIndexInstalled: LinkedHashMap<Int, String> = LinkedHashMap<Int, String>()
 
     private val indexItems: NavigableMap<String, Int> = TreeMap<String, Int>()
     private val indexItemsInstalled: NavigableMap<String, Int> = TreeMap<String, Int>()
@@ -778,7 +782,7 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
     }
 
     override fun onBackPressed() {
-        if (widgetConfigurationsViewsBinding.installedNestedScrollView.isShown()) {
+        if (widgetConfigurationsViewsBinding.installedNestedScrollView.isShown) {
             functionsClass.doVibrate(77)
 
             widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.INVISIBLE
@@ -1087,6 +1091,8 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
             widgetDataModels.asFlow()
                     .onCompletion {
 
+                        LoadApplicationsIndexConfigured()
+                        LoadSearchEngineData()
                     }
                     .withIndex().collect { widgetDataModel ->
                         val appWidgetId: Int = widgetDataModel.value.WidgetId
@@ -1173,17 +1179,283 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
             configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged()
             configuredWidgetsSectionedGridRecyclerViewAdapter.notifyDataSetChanged()
         }
-
-        LoadApplicationsIndexConfigured()
-        LoadSearchEngineData()
     }
 
     fun LoadInstalledWidgets() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+        widgetConfigurationsViewsBinding.loadingInstalledWidgets.setColor(PublicVariable.primaryColor)
+        widgetConfigurationsViewsBinding.installedNestedScrollView.setBackgroundColor(if (PublicVariable.themeLightDark) getColor(R.color.transparent_light_high_twice) else getColor(R.color.transparent_dark_high_twice))
 
+        widgetConfigurationsViewsBinding.loadingInstalledWidgets.visibility = View.VISIBLE
+
+        installedWidgetsAdapterItems.clear()
+        installedWidgetsSections.clear()
+
+        widgetProviderInfoList = appWidgetManager.installedProviders as ArrayList<AppWidgetProviderInfo>
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
+            widgetProviderInfoList.sortWith(Comparator { appWidgetProviderInfoLeft, appWidgetProviderInfoRight ->
+
+                functionsClass.appName(appWidgetProviderInfoLeft.provider.packageName)
+                        .compareTo(functionsClass.appName(appWidgetProviderInfoRight.provider.packageName))
+            })
+        }
+
+        if (functionsClass.loadCustomIcons()) {
+            loadCustomIcons.load()
+            FunctionsClassDebug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
+        }
+
+        var oldAppName = ""
+        var widgetIndex = 0
+
+        widgetProviderInfoList.asFlow()
+                .onEach {
+                    FunctionsClassDebug.PrintDebug("*** Provider = " + it.provider + " | Config = " + it.configure + " ***")
+                }
+                .onCompletion {
+
+                    LoadApplicationsIndexInstalled()
+                }
+                .withIndex().collect { appWidgetProviderInfo ->
+                    val packageName: String = appWidgetProviderInfo.value.provider.packageName
+                    val className: String = appWidgetProviderInfo.value.provider.className
+                    val componentNameConfiguration: ComponentName? = appWidgetProviderInfo.value.configure
+
+                    if (componentNameConfiguration != null) {
+                        if (packageManager.getActivityInfo(componentNameConfiguration, PackageManager.GET_META_DATA).exported) {
+                            if (packageName.isNotEmpty() && className.isNotEmpty()) {
+
+                                val newAppName = functionsClass.appName(packageName)
+                                val newAppIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+
+                                if (widgetIndex == 0) {
+                                    installedWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon))
+                                    indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                } else {
+                                    if (oldAppName != newAppName) {
+                                        installedWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon))
+                                        indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                    }
+                                }
+
+                                oldAppName = functionsClass.appName(appWidgetProviderInfo.value.provider.packageName)
+
+                                val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
+                                val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
+
+                                indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                installedWidgetsAdapterItems.add(AdapterItems(functionsClass.appName(appWidgetProviderInfo.value.provider.packageName),
+                                        appWidgetProviderInfo.value.provider.packageName,
+                                        appWidgetProviderInfo.value.provider.className,
+                                        componentNameConfiguration.className,
+                                        widgetLabel ?: newAppName,
+                                        newAppIcon,
+                                        widgetPreviewDrawable ?: appWidgetProviderInfo.value.loadIcon(applicationContext, DisplayMetrics.DENSITY_HIGH),
+                                        appWidgetProviderInfo.value
+                                ))
+
+                            }
+                        }
+                    } else {
+
+                        if (packageName.isNotEmpty() && className.isNotEmpty()) {
+                            val newAppName = functionsClass.appName(packageName)
+                            val newAppIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+
+                            if (widgetIndex == 0) {
+                                installedWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon))
+                                indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                            } else {
+                                if (oldAppName != newAppName) {
+                                    installedWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon))
+                                    indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                }
+                            }
+
+                            oldAppName = functionsClass.appName(appWidgetProviderInfo.value.provider.packageName)
+                            val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
+                            val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
+
+                            indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                            installedWidgetsAdapterItems.add(AdapterItems(functionsClass.appName(appWidgetProviderInfo.value.provider.packageName),
+                                    appWidgetProviderInfo.value.provider.packageName,
+                                    appWidgetProviderInfo.value.provider.className,
+                                    null,
+                                    widgetLabel ?: newAppName,
+                                    newAppIcon,
+                                    widgetPreviewDrawable ?: appWidgetProviderInfo.value.loadIcon(applicationContext, DisplayMetrics.DENSITY_HIGH),
+                                    appWidgetProviderInfo.value
+                            ))
+                        }
+                    }
+
+                    widgetIndex++
+                }
+
+        installedWidgetsRecyclerViewAdapter = InstalledWidgetsAdapter(this@WidgetConfigurationsXYZ, applicationContext, installedWidgetsAdapterItems, appWidgetHost)
+
+        installedWidgetsLoaded = true
+
+        val viewPropertyAnimator: ViewPropertyAnimator = widgetConfigurationsViewsBinding.addWidget.animate()
+                .rotation(135.0f)
+                .withLayer()
+                .setDuration(500L)
+                .setInterpolator(OvershootInterpolator(13.0f))
+        viewPropertyAnimator.start()
+
+        widgetConfigurationsViewsBinding.installedNestedScrollView.setBackgroundColor(if (PublicVariable.themeLightDark) getColor(R.color.transparent_light) else getColor(R.color.dark_transparent))
+        widgetConfigurationsViewsBinding.installedNestedScrollView.setVisibility(View.VISIBLE)
+
+        installedWidgetsRecyclerViewAdapter.notifyDataSetChanged()
+        val sectionsData = arrayOfNulls<WidgetSectionedGridRecyclerViewAdapter.Section>(installedWidgetsSections.size)
+        val widgetSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter(
+                applicationContext,
+                R.layout.widgets_sections,
+                widgetConfigurationsViewsBinding.installedWidgetList,
+                installedWidgetsRecyclerViewAdapter
+        )
+        widgetSectionedGridRecyclerViewAdapter.setSections(installedWidgetsSections.toArray(sectionsData))
+        widgetSectionedGridRecyclerViewAdapter.notifyDataSetChanged()
+        widgetConfigurationsViewsBinding.installedWidgetList.adapter = widgetSectionedGridRecyclerViewAdapter
+
+        val xPosition = (widgetConfigurationsViewsBinding.addWidget.x + widgetConfigurationsViewsBinding.addWidget.width / 2).roundToInt()
+        val yPosition = (widgetConfigurationsViewsBinding.addWidget.y + widgetConfigurationsViewsBinding.addWidget.height / 2).roundToInt()
+        val startRadius = 0
+        val endRadius = hypot(functionsClass.displayX().toDouble(), functionsClass.displayY().toDouble()).toInt()
+        val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.installedNestedScrollView,
+                xPosition, yPosition,
+                startRadius.toFloat(), endRadius.toFloat())
+        circularReveal.duration = 864
+        circularReveal.start()
+        circularReveal.addListener(object : Animator.AnimatorListener {
+
+            override fun onAnimationStart(animator: Animator) {
+
+            }
+
+            override fun onAnimationEnd(animator: Animator) {
+                widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.VISIBLE
+
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                if (functionsClass.appThemeTransparent()) {
+                    val colorAnimation = ValueAnimator
+                            .ofArgb(window.navigationBarColor, if (PublicVariable.themeLightDark) getColor(R.color.fifty_light_twice) else getColor(R.color.transparent_dark_high_twice))
+                    colorAnimation.addUpdateListener { animator ->
+                        window.statusBarColor = (animator.animatedValue as Int)
+                        window.navigationBarColor = (animator.animatedValue as Int)
+                    }
+                    colorAnimation.start()
+                } else {
+                    if (PublicVariable.themeLightDark) {
+                        widgetConfigurationsViewsBinding.installedNestedScrollView.setBackground(ColorDrawable(getColor(R.color.transparent_light)))
+                        if (PublicVariable.themeLightDark) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                            }
+                        }
+                        val colorAnimation = ValueAnimator
+                                .ofArgb(window.navigationBarColor, functionsClass.mixColors(getColor(R.color.light), getWindow().navigationBarColor, 0.70f))
+                        colorAnimation.addUpdateListener { animator ->
+                            window.navigationBarColor = (animator.animatedValue as Int)
+                            window.statusBarColor = (animator.animatedValue as Int)
+                        }
+                        colorAnimation.start()
+                    } else if (!PublicVariable.themeLightDark) {
+                        widgetConfigurationsViewsBinding.installedNestedScrollView.setBackground(ColorDrawable(getColor(R.color.dark_transparent)))
+                        val colorAnimation = ValueAnimator
+                                .ofArgb(getWindow().navigationBarColor, functionsClass.mixColors(getColor(R.color.dark), getWindow().navigationBarColor, 0.70f))
+                        colorAnimation.addUpdateListener { animator ->
+                            window.navigationBarColor = (animator.animatedValue as Int)
+                            window.statusBarColor = (animator.animatedValue as Int)
+                        }
+                        colorAnimation.start()
+                    }
+                }
+            }
+
+            override fun onAnimationCancel(animator: Animator) {
+
+            }
+
+            override fun onAnimationRepeat(animator: Animator) {
+
+            }
+        })
+
+        if (!getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists() || !configuredWidgetAvailable) {
+            delay(200)
+
+            val animation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
+            widgetConfigurationsViewsBinding.loadingSplash.visibility = View.INVISIBLE
+            widgetConfigurationsViewsBinding.loadingSplash.startAnimation(animation)
+            animation.setAnimationListener(object : Animation.AnimationListener {
+
+                override fun onAnimationStart(animation: Animation) {
+                    (findViewById<View>(R.id.switchFloating) as LinearLayout).visibility = View.VISIBLE
+                }
+
+                override fun onAnimationEnd(animation: Animation) {
+
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+
+                }
+            })
+        }
+
+        widgetConfigurationsViewsBinding.loadingInstalledWidgets.visibility = View.INVISIBLE
     }
 
-    fun LoadApplicationsIndexConfigured() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+    fun LoadApplicationsIndexConfigured() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+        withContext(Dispatchers.Main) {
+            widgetConfigurationsViewsBinding.indexView.removeAllViews()
+        }
 
+        val indexCount = indexListConfigured.size
+        for (navItem in 0 until indexCount) {
+            val indexText = indexListConfigured[navItem]
+            if (mapIndexFirstItem[indexText] == null /*avoid duplication*/) {
+                mapIndexFirstItem[indexText] = navItem
+            }
+
+            mapIndexLastItem[indexText] = navItem
+        }
+
+        withContext(Dispatchers.Main) {
+            var textView: TextView? = null
+
+            val indexListFinal: List<String> = ArrayList(mapIndexFirstItem.keys)
+            for (index in indexListFinal) {
+                textView = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
+                textView.text = index.toUpperCase(Locale.getDefault())
+                textView.setTextColor(PublicVariable.colorLightDarkOpposite)
+
+                widgetConfigurationsViewsBinding.indexView.addView(textView)
+            }
+
+            val finalTextView = textView
+
+            delay(700)
+
+            finalTextView?.let {
+                var upperRange = (widgetConfigurationsViewsBinding.indexView.y - it.height).roundToInt()
+
+                for (i in 0 until widgetConfigurationsViewsBinding.indexView.childCount) {
+                    val indexText = (widgetConfigurationsViewsBinding.indexView.getChildAt(i) as TextView).text.toString()
+                    val indexRange = (widgetConfigurationsViewsBinding.indexView.getChildAt(i).y + widgetConfigurationsViewsBinding.indexView.y + it.height).roundToInt()
+
+                    for (jRange in upperRange..indexRange) {
+                        mapRangeIndex[jRange] = indexText
+                    }
+
+                    upperRange = indexRange
+                }
+            }
+        }
+
+        setupFastScrollingIndexingConfigured()
     }
 
     fun LoadApplicationsIndexInstalled() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
@@ -1191,7 +1463,29 @@ class WidgetConfigurationsXYZ : AppCompatActivity(), GestureListenerInterface {
     }
 
     fun createWidget(context: Context?, widgetView: ViewGroup, appWidgetManager: AppWidgetManager, appWidgetHost: AppWidgetHost, appWidgetProviderInfo: AppWidgetProviderInfo, widgetId: Int) {
+        widgetView.removeAllViews()
 
+        val functionsClass = FunctionsClass(context)
+
+        appWidgetHost.startListening()
+
+        val hostView = appWidgetHost.createView(context, widgetId, appWidgetProviderInfo)
+        hostView.setAppWidget(widgetId, appWidgetProviderInfo)
+
+        val widgetWidth = 213
+        val widgetHeight = 213
+
+        hostView.minimumWidth = widgetWidth
+        hostView.minimumHeight = widgetHeight
+
+        val bundle = Bundle()
+        bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, widgetWidth)
+        bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, widgetHeight)
+        bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, functionsClass.displayX() / 2)
+        bundle.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, functionsClass.displayY() / 2)
+        appWidgetManager.bindAppWidgetIdIfAllowed(widgetId, appWidgetProviderInfo.provider, bundle)
+
+        widgetView.addView(hostView)
     }
 
     val scaleDownListener: Animator.AnimatorListener = object : Animator.AnimatorListener {

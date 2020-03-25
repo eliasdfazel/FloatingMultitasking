@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 4:53 PM
- * Last modified 3/24/20 4:48 PM
+ * Created by Elias Fazel on 3/24/20 6:10 PM
+ * Last modified 3/24/20 6:10 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -106,7 +106,6 @@ import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SimpleGestureFilterSwitch;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel;
-import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.ConfiguredWidgetsAdapter;
 import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.InstalledWidgetsAdapter;
 import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.WidgetSectionedGridRecyclerViewAdapter;
 
@@ -1390,8 +1389,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     return false;
                 }
 
-                configuredWidgetsRecyclerViewAdapter = new ConfiguredWidgetsAdapter(
-                        WidgetConfigurations.this, getApplicationContext(), configuredWidgetsAdapterItems, appWidgetManager, appWidgetHost);
+//                configuredWidgetsRecyclerViewAdapter = new ConfiguredWidgetsAdapter(
+//                        WidgetConfigurations.this, getApplicationContext(),
+//                        configuredWidgetsAdapterItems, appWidgetManager, appWidgetHost);
 
                 widgetDataInterface.close();
             } catch (Exception e) {
@@ -1499,6 +1499,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                         if (componentNameConfiguration != null) {
                             if (getPackageManager().getActivityInfo(componentNameConfiguration, PackageManager.GET_META_DATA).exported) {
                                 if (!packageName.isEmpty() && !className.isEmpty()) {
+
                                     String newAppName = functionsClass.appName(packageName);
                                     Drawable newAppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) : functionsClass.shapedAppIcon(packageName);
 
@@ -1527,6 +1528,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                                             (widgetPreviewDrawable != null) ? widgetPreviewDrawable : appWidgetProviderInfo.loadIcon(getApplicationContext(), DisplayMetrics.DENSITY_HIGH),
                                             appWidgetProviderInfo
                                     ));
+
                                 }
                             }
                         } else {
@@ -1564,6 +1566,7 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                     widgetIndex++;
                 }
 
@@ -1767,6 +1770,8 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+
+
                     int upperRange = (int) (indexView.getY() - finalTextView.getHeight());
                     for (int i = 0; i < indexView.getChildCount(); i++) {
                         String indexText = ((TextView) indexView.getChildAt(i)).getText().toString();
@@ -1779,6 +1784,9 @@ public class WidgetConfigurations extends Activity implements SimpleGestureFilte
                     }
 
                     setupFastScrollingIndexingConfigured();
+
+
+
                 }
             }, 700);
         }
