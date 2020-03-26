@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 2:16 PM
- * Last modified 3/25/20 2:16 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:31 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -199,7 +199,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
         searchClose = (ImageView) findViewById(R.id.searchClose);
         /*Search Engine*/
 
-        functionsClass = new FunctionsClass(getApplicationContext(), this);
+        functionsClass = new FunctionsClass(getApplicationContext());
         functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
         functionsClassDialogues = new FunctionsClassDialogues(functionsClassDataActivity, functionsClass);
         functionsClassRunServices = new FunctionsClassRunServices(getApplicationContext());
@@ -207,7 +207,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
         functionsClass.loadSavedColor();
         functionsClass.checkLightDarkTheme();
 
-        functionsClass.setThemeColorFloating(wholeCategory, functionsClass.appThemeTransparent());
+        functionsClass.setThemeColorFloating(FoldersConfigurations.this, wholeCategory, functionsClass.appThemeTransparent());
         functionsClassDialogues.changeLog();
 
         simpleGestureFilterSwitch = new SimpleGestureFilterSwitch(getApplicationContext(), this);
@@ -316,7 +316,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
                         }
                     });
 
-                    functionsClass.openActionMenuOption(fullActionViews, actionButton, fullActionViews.isShown());
+                    functionsClass.openActionMenuOption(FoldersConfigurations.this, fullActionViews, actionButton, fullActionViews.isShown());
                 } else {
                     recoveryAction.setVisibility(View.VISIBLE);
 
@@ -347,7 +347,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
                         }
                     });
 
-                    functionsClass.closeActionMenuOption(fullActionViews, actionButton);
+                    functionsClass.closeActionMenuOption(FoldersConfigurations.this, fullActionViews, actionButton);
                 }
             }
         });
@@ -355,7 +355,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
             @Override
             public void onClick(View view) {
                 try {
-                    functionsClass.navigateToClass(ApplicationsView.class,
+                    functionsClass.navigateToClass(FoldersConfigurations.this, ApplicationsView.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -368,7 +368,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
                 if (functionsClass.networkConnection() && firebaseAuth.getCurrentUser() != null) {
                     if (functionsClass.floatingWidgetsPurchased()) {
 
-                        functionsClass.navigateToClass(WidgetConfigurations.class,
+                        functionsClass.navigateToClass(FoldersConfigurations.this, WidgetConfigurations.class,
                                 ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
 
                     } else {
@@ -798,7 +798,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
     public void onPause() {
         super.onPause();
         if (PublicVariable.actionCenter == true) {
-            functionsClass.closeActionMenuOption(fullActionViews, actionButton);
+            functionsClass.closeActionMenuOption(FoldersConfigurations.this, fullActionViews, actionButton);
         }
 
         functionsClass.savePreference("OpenMode", "openClassName", this.getClass().getSimpleName());
@@ -842,7 +842,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
         switch (direction) {
             case SimpleGestureFilterSwitch.SWIPE_RIGHT: {
                 try {
-                    functionsClass.navigateToClass(ApplicationsView.class,
+                    functionsClass.navigateToClass(FoldersConfigurations.this, ApplicationsView.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -852,12 +852,12 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
             case SimpleGestureFilterSwitch.SWIPE_LEFT: {
                 try {
                     if (functionsClass.floatingWidgetsPurchased()) {
-                        functionsClass.navigateToClass(WidgetConfigurations.class,
+                        functionsClass.navigateToClass(FoldersConfigurations.this, WidgetConfigurations.class,
                                 ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     } else {
                         InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets;
 
-                        functionsClass.navigateToClass(InAppBilling.class,
+                        functionsClass.navigateToClass(FoldersConfigurations.this, InAppBilling.class,
                                 ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     }
                 } catch (Exception e) {

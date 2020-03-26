@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:17 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -107,7 +107,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
         simpleGestureFilterFull = new SimpleGestureFilterFull(getApplicationContext(), this);
 
-        functionsClass = new FunctionsClass(getApplicationContext(), this);
+        functionsClass = new FunctionsClass(getApplicationContext());
         functionsClass.loadSavedColor();
         functionsClass.checkLightDarkTheme();
 
@@ -153,9 +153,9 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         }
 
         if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColorAutomationFeature(MainView, true);
+            functionsClass.setThemeColorAutomationFeature(FolderAutoFeatures.this, MainView, true);
         } else {
-            functionsClass.setThemeColorAutomationFeature(MainView, false);
+            functionsClass.setThemeColorAutomationFeature(FolderAutoFeatures.this, MainView, false);
         }
 
         if (functionsClass.loadCustomIcons()) {
@@ -250,7 +250,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             public void onClick(View view) {
                 PublicVariable.autoID = null;
                 try {
-                    functionsClass.navigateToClass(AppAutoFeatures.class,
+                    functionsClass.navigateToClass(FolderAutoFeatures.this, AppAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                     finish();
                 } catch (Exception e) {
@@ -534,7 +534,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         try {
             functionsClass.CheckSystemRAM(FolderAutoFeatures.this);
 
-            functionsClass.overrideBackPressToMain(FolderAutoFeatures.this);
+            functionsClass.overrideBackPressToMain(FolderAutoFeatures.this, FolderAutoFeatures.this);
             overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
         } catch (Exception e) {
             e.printStackTrace();
@@ -556,7 +556,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             case SimpleGestureFilterFull.SWIPE_LEFT: {
                 FunctionsClassDebug.Companion.PrintDebug("Swipe Left");
                 try {
-                    functionsClass.navigateToClass(FolderAutoFeatures.class,
+                    functionsClass.navigateToClass(FolderAutoFeatures.this, FolderAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     finish();
                 } catch (Exception e) {

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:19 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -64,7 +64,7 @@ public class Checkpoint extends Activity {
         setContentView(R.layout.check_point);
         entry = (RelativeLayout) findViewById(R.id.entry);
 
-        functionsClass = new FunctionsClass(getApplicationContext(), Checkpoint.this);
+        functionsClass = new FunctionsClass(getApplicationContext());
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.wait), Toast.LENGTH_LONG).show();
 
         Window window = this.getWindow();
@@ -86,7 +86,7 @@ public class Checkpoint extends Activity {
         }
 
         if (getIntent().hasExtra(getString(R.string.splitIt))) {
-            functionsClass.AccessibilityService(Checkpoint.this);
+            functionsClass.AccessibilityServiceDialogue(Checkpoint.this);
         } else {
             ArrayList<String> Permissions = new ArrayList<String>();
             Permissions.add(Manifest.permission.INTERNET);

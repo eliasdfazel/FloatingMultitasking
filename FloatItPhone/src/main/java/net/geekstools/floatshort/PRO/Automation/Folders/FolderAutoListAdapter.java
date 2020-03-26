@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:17 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -63,7 +63,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
         this.context = context;
         this.adapterItems = adapterItems;
 
-        functionsClass = new FunctionsClass(context, activity);
+        functionsClass = new FunctionsClass(context);
 
         if (PublicVariable.autoID != null) {
             if (PublicVariable.autoID.equals(context.getString(R.string.wifi_category))) {

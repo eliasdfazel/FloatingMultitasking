@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:32 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,7 +21,6 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.Folders.SimpleGestureFilterAdvance;
@@ -29,12 +28,12 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 
-public class AppsConfirmButton extends Button
+public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
         implements SimpleGestureFilterAdvance.SimpleGestureListener {
 
     FunctionsClass functionsClass;
+
     Context context;
-    Activity activity;
 
     SimpleGestureFilterAdvance detector;
     BroadcastReceiver visibilityReceiver;
@@ -44,8 +43,9 @@ public class AppsConfirmButton extends Button
     public AppsConfirmButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        this.activity = (Activity) getContext();
-        functionsClass = new FunctionsClass(context, (Activity) getContext());
+
+        functionsClass = new FunctionsClass(context);
+
         initConfirmButton();
     }
 
@@ -145,6 +145,6 @@ public class AppsConfirmButton extends Button
 
     @Override
     public void onSingleTapUp() {
-        functionsClass.navigateToClass(FoldersConfigurations.class, activity);
+        functionsClass.navigateToClass(FoldersConfigurations.class, (Activity) getContext());
     }
 }

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 1:44 PM
- * Last modified 3/25/20 1:11 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:29 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -71,7 +71,7 @@ public class ConfiguredWidgetsAdapter extends RecyclerView.Adapter<ConfiguredWid
         this.appWidgetManager = appWidgetManager;
         this.appWidgetHost = appWidgetHost;
 
-        functionsClass = new FunctionsClass(context, widgetConfigurations);
+        functionsClass = new FunctionsClass(context);
     }
 
     @Override

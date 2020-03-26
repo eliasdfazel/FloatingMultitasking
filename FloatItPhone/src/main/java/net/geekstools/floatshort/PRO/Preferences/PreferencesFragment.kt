@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 2:16 PM
- * Last modified 3/25/20 1:59 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:19 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -110,7 +110,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         functionsClassDataActivity = FunctionsClassDataActivity(activity!!)
 
-        functionsClass = FunctionsClass(context, activity)
+        functionsClass = FunctionsClass(context)
         functionsClassDialogues = FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -195,9 +195,9 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         themeTrans.setOnPreferenceClickListener {
             if (functionsClass.appThemeTransparent()) {
-                functionsClass.setThemeColorPreferences(activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), true, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
+                functionsClass.setThemeColorPreferences(activity, activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), true, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
             } else {
-                functionsClass.setThemeColorPreferences(activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), false, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
+                functionsClass.setThemeColorPreferences(activity, activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), false, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
             }
 
             functionsClass.saveDefaultPreference("LitePreferences", false)
@@ -207,9 +207,9 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         blur.setOnPreferenceClickListener {
             if (functionsClass.appThemeTransparent()) {
-                functionsClass.setThemeColorPreferences(activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), true, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
+                functionsClass.setThemeColorPreferences(activity, activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), true, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
             } else {
-                functionsClass.setThemeColorPreferences(activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), false, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
+                functionsClass.setThemeColorPreferences(activity, activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), false, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
             }
 
             functionsClass.saveDefaultPreference("LitePreferences", false)
@@ -357,7 +357,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         observe.setOnPreferenceClickListener {
             if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
-                functionsClass.AccessibilityService(activity, observe)
+                functionsClass.AccessibilityServiceDialogue(activity, observe)
             } else {
                 val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -770,7 +770,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                         listView.smoothScrollToPosition(listView.bottom)
 
                         Handler().postDelayed({
-                            functionsClass.litePreferenceConfirm()
+                            functionsClass.litePreferenceConfirm(activity)
 
                             functionsClass.saveFileEmpty(".LitePreferenceCheckpoint")
                         }, 555)
@@ -779,7 +779,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             }
         }
         lite.setOnPreferenceClickListener {
-            functionsClass.litePreferenceConfirm()
+            functionsClass.litePreferenceConfirm(activity)
 
             true
         }

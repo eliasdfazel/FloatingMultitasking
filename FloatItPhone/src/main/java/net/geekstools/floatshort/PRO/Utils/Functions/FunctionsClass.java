@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 2:16 PM
- * Last modified 3/25/20 2:09 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:30 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -196,7 +196,6 @@ import static android.content.Context.VIBRATOR_SERVICE;
 
 public class FunctionsClass {
 
-    Activity activity;
     Context context;
 
     FunctionsClassSecurity functionsClassSecurity;
@@ -205,13 +204,6 @@ public class FunctionsClass {
         this.context = context;
 
         functionsClassSecurity = new FunctionsClassSecurity(context);
-    }
-
-    public FunctionsClass(Context context, Activity activity) {
-        this.context = context;
-        this.activity = activity;
-
-        functionsClassSecurity = new FunctionsClassSecurity(activity, context);
     }
 
     public static boolean ComponentEnabled(PackageManager packageManager, String packageName, String className) {
@@ -1151,7 +1143,7 @@ public class FunctionsClass {
         alertDialog.show();
     }
 
-    public void AccessibilityService(Activity activity, final SwitchPreference switchPreference) {
+    public void AccessibilityServiceDialogue(Activity activity, final SwitchPreference switchPreference) {
         context = activity.getApplicationContext();
         if (returnAPI() < 23) {
             Intent notification = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
@@ -1193,8 +1185,7 @@ public class FunctionsClass {
         alertDialog.show();
     }
 
-    public void AccessibilityService(final Activity activity) {
-        context = activity.getApplicationContext();
+    public void AccessibilityServiceDialogue(final Activity activity) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
         if (PublicVariable.themeLightDark == true) {
             alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
@@ -1600,12 +1591,12 @@ public class FunctionsClass {
         builder.show();
     }
 
-    public void litePreferenceConfirm() {
+    public void litePreferenceConfirm(Activity activityToDelete) {
         AlertDialog.Builder alertDialog = null;
         if (PublicVariable.themeLightDark == true) {
-            alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
+            alertDialog = new AlertDialog.Builder(activityToDelete, R.style.GeeksEmpire_Dialogue_Light);
         } else if (PublicVariable.themeLightDark == false) {
-            alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
+            alertDialog = new AlertDialog.Builder(activityToDelete, R.style.GeeksEmpire_Dialogue_Dark);
         }
         alertDialog.setTitle(Html.fromHtml("<small>" + context.getString(R.string.liteTitle) + "</small>"));
         alertDialog.setMessage(Html.fromHtml(context.getString(R.string.liteDesc)));
@@ -1629,7 +1620,7 @@ public class FunctionsClass {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        liteAppPreferences();
+                        liteAppPreferences(activityToDelete);
                     }
                 }, 333);
                 Runtime.getRuntime().gc();
@@ -1738,25 +1729,25 @@ public class FunctionsClass {
         }, 313);
     }
 
-    public void navigateToClass(Class returnClass, ActivityOptions activityOptions) {
+    public void navigateToClass(Activity activityToDelete, Class returnClass, ActivityOptions activityOptions) {
         Intent intentOverride = new Intent(context, returnClass);
         if (returnClass.getSimpleName().equals(ApplicationsView.class.getSimpleName())) {
             intentOverride.putExtra("freq", PublicVariable.frequentlyUsedApps);
             intentOverride.putExtra("num", PublicVariable.freqLength);
         }
-        activity.startActivity(intentOverride, activityOptions.toBundle());
+        activityToDelete.startActivity(intentOverride, activityOptions.toBundle());
     }
 
-    public void overrideBackPressToMain(final Activity activityToFinish) throws Exception {
+    public void overrideBackPressToMain(Activity activityToDelete, final Activity activityToFinish) throws Exception {
         if (readPreference("OpenMode", "openClassName", ApplicationsView.class.getSimpleName()).equals(FoldersConfigurations.class.getSimpleName())) {
             Intent categoryInten = new Intent(context, FoldersConfigurations.class);
-            activity.startActivity(categoryInten);
+            activityToDelete.startActivity(categoryInten);
         } else {
             Intent hybridViewOff = new Intent(context, ApplicationsView.class);
             hybridViewOff.putExtra("freq", PublicVariable.frequentlyUsedApps);
             hybridViewOff.putExtra("num", PublicVariable.freqLength);
             hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
-            activity.startActivity(hybridViewOff);
+            activityToDelete.startActivity(hybridViewOff);
         }
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -1766,12 +1757,12 @@ public class FunctionsClass {
         }, 313);
     }
 
-    public void overrideBackPressToShortcuts(final Activity activityToFinish) throws Exception {
+    public void overrideBackPressToShortcuts(Activity activityToDelete, final Activity activityToFinish) throws Exception {
         Intent hybridViewOff = new Intent(context, ApplicationsView.class);
         hybridViewOff.putExtra("freq", PublicVariable.frequentlyUsedApps);
         hybridViewOff.putExtra("num", PublicVariable.freqLength);
         hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
-        activity.startActivity(hybridViewOff);
+        activityToDelete.startActivity(hybridViewOff);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -1847,7 +1838,10 @@ public class FunctionsClass {
 
     public void sendInteractionObserverEvent(View view, String packageName, int accessibilityEvent, int accessibilityAction) {
         if (!AccessibilityServiceEnabled()) {
-            AccessibilityService(activity);
+            Intent splitIntent = new Intent();
+            splitIntent.putExtra(context.getString(R.string.splitIt), packageName);
+            splitIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(splitIntent);
         } else {
             AccessibilityManager accessibilityManager = (AccessibilityManager) context.getSystemService(ACCESSIBILITY_SERVICE);
             AccessibilityEvent event = AccessibilityEvent.obtain();
@@ -2121,52 +2115,52 @@ public class FunctionsClass {
         return (context.getPackageManager().getLaunchIntentForPackage(packageName) != null);
     }
 
-    public void openApplicationFromActivity(String packageName) {
+    public void openApplicationFromActivity(Activity activityToDelete, String packageName) {
         if (appIsInstalled(packageName) == true) {
             try {
                 Toast(appName(packageName), Gravity.BOTTOM);
 
                 Intent launchIntentForPackage = context.getPackageManager().getLaunchIntentForPackage(packageName);
-                activity.startActivity(launchIntentForPackage);
+                activityToDelete.startActivity(launchIntentForPackage);
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
                 Intent playStore = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(context.getString(R.string.play_store_link) + packageName));
                 playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                activity.startActivity(playStore);
+                activityToDelete.startActivity(playStore);
             }
         } else {
             Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
             Intent playStore = new Intent(Intent.ACTION_VIEW,
                     Uri.parse(context.getString(R.string.play_store_link) + packageName));
             playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            activity.startActivity(playStore);
+            activityToDelete.startActivity(playStore);
         }
     }
 
-    public void openApplicationFromActivity(String packageName, String className) {
+    public void openApplicationFromActivity(Activity activityToDelete, String packageName, String className) {
         if (appIsInstalled(packageName) == true) {
             try {
                 Toast(String.valueOf(context.getPackageManager().getActivityInfo(new ComponentName(packageName, className), 0).loadLabel(context.getPackageManager())), Gravity.BOTTOM);
 
                 Intent openAlias = new Intent();
                 openAlias.setClassName(packageName, className);
-                activity.startActivity(openAlias);
+                activityToDelete.startActivity(openAlias);
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
                 Intent playStore = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(context.getString(R.string.play_store_link) + packageName));
                 playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                activity.startActivity(playStore);
+                activityToDelete.startActivity(playStore);
             }
         } else {
             Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
             Intent playStore = new Intent(Intent.ACTION_VIEW,
                     Uri.parse(context.getString(R.string.play_store_link) + packageName));
             playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            activity.startActivity(playStore);
+            activityToDelete.startActivity(playStore);
         }
     }
 
@@ -3083,14 +3077,14 @@ public class FunctionsClass {
     }
 
     /*App GUI Functions*/
-    public void setThemeColorFloating(View view, boolean transparent) {
+    public void setThemeColorFloating(Activity activityToDelete, View view, boolean transparent) {
         if (transparent == true) {
             if (wallpaperStaticLive()) {
-                setBackgroundTheme();
+                setBackgroundTheme(activityToDelete);
             }
             view.setBackgroundColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
 
-            Window window = activity.getWindow();
+            Window window = activityToDelete.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
@@ -3104,7 +3098,7 @@ public class FunctionsClass {
         } else if (transparent == false) {
             view.setBackgroundColor(PublicVariable.colorLightDark);
 
-            Window window = activity.getWindow();
+            Window window = activityToDelete.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
@@ -3118,14 +3112,14 @@ public class FunctionsClass {
         }
     }
 
-    public void setThemeColorAutomationFeature(View view, boolean transparent) {
+    public void setThemeColorAutomationFeature(Activity activityToDelete, View view, boolean transparent) {
         if (transparent == true) {
             if (wallpaperStaticLive()) {
-                setBackgroundTheme();
+                setBackgroundTheme(activityToDelete);
             }
             view.setBackgroundColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
 
-            Window window = activity.getWindow();
+            Window window = activityToDelete.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
@@ -3145,7 +3139,7 @@ public class FunctionsClass {
         } else if (transparent == false) {
             view.setBackgroundColor(PublicVariable.colorLightDark);
 
-            Window window = activity.getWindow();
+            Window window = activityToDelete.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
@@ -3159,11 +3153,11 @@ public class FunctionsClass {
         }
     }
 
-    public void setThemeColorPreferences(View backgroundView, Toolbar preferencesToolbar, boolean transparent, String title, String subTitle) {
+    public void setThemeColorPreferences(Activity activityToDelete, View backgroundView, Toolbar preferencesToolbar, boolean transparent, String title, String subTitle) {
         if (transparent) {
             try {
                 if (wallpaperStaticLive()) {
-                    setBackgroundTheme();
+                    setBackgroundTheme(activityToDelete);
                 }
                 backgroundView.setBackgroundColor(setColorAlpha(PublicVariable.colorLightDark, wallpaperStaticLive() ? 180 : 80));
 
@@ -3179,7 +3173,7 @@ public class FunctionsClass {
                 ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setText(subTitle);
 
 
-                Window window = activity.getWindow();
+                Window window = activityToDelete.getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 if (PublicVariable.themeLightDark) {
@@ -3201,7 +3195,7 @@ public class FunctionsClass {
                 ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setText(Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>"));
                 ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setText(Html.fromHtml("<small><font color='" + context.getColor(R.color.light) + "'>" + subTitle + "</font></small>"));
 
-                Window window = activity.getWindow();
+                Window window = activityToDelete.getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 if (PublicVariable.themeLightDark) {
@@ -3218,7 +3212,7 @@ public class FunctionsClass {
         }
     }
 
-    public void setAppThemeBlur() {
+    public void setAppThemeBlur(Activity activityToDelete) {
         if (appThemeBlurry()) {
             try {
                 WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
@@ -3249,28 +3243,28 @@ public class FunctionsClass {
                 intrinsicBlur.forEach(allocationOut);
                 allocationOut.copyTo(outputBitmap);
                 BitmapDrawable bitmapDrawable = new BitmapDrawable(context.getResources(), outputBitmap);
-                activity.getWindow().getDecorView().setBackground(bitmapDrawable);
+                activityToDelete.getWindow().getDecorView().setBackground(bitmapDrawable);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void setWallpaperToBackground() {
+    public void setWallpaperToBackground(Activity activityToDelete) {
         try {
             WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
             BitmapDrawable wallpaperManagerDrawable = (BitmapDrawable) wallpaperManager.getDrawable();
-            activity.getWindow().getDecorView().setBackground(wallpaperManagerDrawable);
+            activityToDelete.getWindow().getDecorView().setBackground(wallpaperManagerDrawable);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void setBackgroundTheme() {
+    public void setBackgroundTheme(Activity activityToDelete) {
         if (appThemeBlurry()) {
-            setAppThemeBlur();
+            setAppThemeBlur(activityToDelete);
         } else {
-            setWallpaperToBackground();
+            setWallpaperToBackground(activityToDelete);
         }
     }
 
@@ -3926,7 +3920,7 @@ public class FunctionsClass {
                                             public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
                                                 super.onOpen(supportSQLiteDatabase);
 
-                                                activity.runOnUiThread(new Runnable() {
+                                                widgetConfigurations.runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
                                                         widgetConfigurations.forceLoadConfiguredWidgets();
@@ -4316,12 +4310,12 @@ public class FunctionsClass {
         }
     }
 
-    public void ShortcutsDialogue(final Class className, final String activityAlias, final String shortcutName, final int drawableId) {
+    public void ShortcutsDialogue(Activity activityToDelete, final Class className, final String activityAlias, final String shortcutName, final int drawableId) {
         AlertDialog.Builder alertDialog = null;
         if (PublicVariable.themeLightDark == true) {
-            alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
+            alertDialog = new AlertDialog.Builder(activityToDelete, R.style.GeeksEmpire_Dialogue_Light);
         } else if (PublicVariable.themeLightDark == false) {
-            alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
+            alertDialog = new AlertDialog.Builder(activityToDelete, R.style.GeeksEmpire_Dialogue_Dark);
         }
         alertDialog.setCancelable(true);
 
@@ -5138,8 +5132,8 @@ public class FunctionsClass {
     }
 
     /*Action Center*/
-    public void Preferences(boolean visibility) {
-        final ImageView preferencesView = activity.findViewById(R.id.preferences);
+    public void Preferences(Activity activityToDelete, boolean visibility) {
+        final ImageView preferencesView = activityToDelete.findViewById(R.id.preferences);
         if (visibility == true && !preferencesView.isShown()) {
             LayerDrawable drawPrefAction = (LayerDrawable) context.getDrawable(R.drawable.draw_pref_action);
             Drawable backPrefAction = drawPrefAction.findDrawableByLayerId(R.id.backgroundTemporary);
@@ -5163,16 +5157,16 @@ public class FunctionsClass {
                     @Override
                     public void run() {
                         ActivityOptionsCompat options = ActivityOptionsCompat.
-                                makeSceneTransitionAnimation(activity, preferencesView, "transition");
+                                makeSceneTransitionAnimation(activityToDelete, preferencesView, "transition");
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setClass(activity, PreferencesActivity.class);
-                        if (activity != null) {
-                            if (activity.getClass().getSimpleName().equals(WidgetConfigurations.class.getSimpleName())) {
+                        intent.setClass(activityToDelete, PreferencesActivity.class);
+                        if (activityToDelete != null) {
+                            if (activityToDelete.getClass().getSimpleName().equals(WidgetConfigurations.class.getSimpleName())) {
                                 intent.putExtra("FromWidgetsConfigurations", true);
                             }
                         }
-                        activity.startActivity(intent, options.toBundle());
+                        activityToDelete.startActivity(intent, options.toBundle());
                     }
                 }, 113);
             }
@@ -5190,7 +5184,7 @@ public class FunctionsClass {
         });
     }
 
-    public void openActionMenuOption(final View fullActionElements, View actionButton, boolean startAnimation) {
+    public void openActionMenuOption(Activity activityToDelete, final View fullActionElements, View actionButton, boolean startAnimation) {
         if (startAnimation == false) {
             int xPosition = (int) (actionButton.getX() + (actionButton.getWidth() / 2));
             int yPosition = (int) (actionButton.getY() + (actionButton.getHeight() / 2));
@@ -5207,10 +5201,10 @@ public class FunctionsClass {
         fullActionElements.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.findViewById(R.id.recoveryAction).setVisibility(View.VISIBLE);
+                activityToDelete.findViewById(R.id.recoveryAction).setVisibility(View.VISIBLE);
 
                 int finalRadius = (int) Math.hypot(displayX(), displayY());
-                Animator circularReveal = ViewAnimationUtils.createCircularReveal(activity.findViewById(R.id.recoveryAction), (int) actionButton.getX(), (int) actionButton.getY(), DpToInteger(13), finalRadius);
+                Animator circularReveal = ViewAnimationUtils.createCircularReveal(activityToDelete.findViewById(R.id.recoveryAction), (int) actionButton.getX(), (int) actionButton.getY(), DpToInteger(13), finalRadius);
                 circularReveal.setDuration(1300);
                 circularReveal.setInterpolator(new AccelerateInterpolator());
                 circularReveal.start();
@@ -5222,7 +5216,7 @@ public class FunctionsClass {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        activity.findViewById(R.id.recoveryAction).setVisibility(View.VISIBLE);
+                        activityToDelete.findViewById(R.id.recoveryAction).setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -5236,7 +5230,7 @@ public class FunctionsClass {
                     }
                 });
 
-                closeActionMenuOption(fullActionElements, actionButton);
+                closeActionMenuOption(activityToDelete, fullActionElements, actionButton);
             }
         });
 
@@ -5245,7 +5239,7 @@ public class FunctionsClass {
         backFloating.setTint(PublicVariable.primaryColor);
 
         CharSequence[] charSequence = new CharSequence[]{
-                activity.getClass().getSimpleName().equals(AppAutoFeatures.class.getSimpleName()) || activity.getClass().getSimpleName().equals(FolderAutoFeatures.class.getSimpleName())
+                activityToDelete.getClass().getSimpleName().equals(AppAutoFeatures.class.getSimpleName()) || activityToDelete.getClass().getSimpleName().equals(FolderAutoFeatures.class.getSimpleName())
                         ? context.getString(R.string.floatingCategory) : context.getString(R.string.automation),
         };
         Drawable[] drawables = new Drawable[]{
@@ -5264,7 +5258,7 @@ public class FunctionsClass {
             if (PublicVariable.themeLightDark) {
                 fullActionElements.setBackground(new ColorDrawable(context.getColor(R.color.transparent_light)));
 
-                final Window window = activity.getWindow();
+                final Window window = activityToDelete.getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 if (PublicVariable.themeLightDark) {
@@ -5274,7 +5268,7 @@ public class FunctionsClass {
                     }
                 }
                 ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(activity.getWindow().getNavigationBarColor(), context.getColor(R.color.fifty_light_twice));
+                        .ofArgb(activityToDelete.getWindow().getNavigationBarColor(), context.getColor(R.color.fifty_light_twice));
                 colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animator) {
@@ -5286,12 +5280,12 @@ public class FunctionsClass {
             } else if (!PublicVariable.themeLightDark) {
                 fullActionElements.setBackground(new ColorDrawable(context.getColor(R.color.dark_transparent)));
 
-                final Window window = activity.getWindow();
+                final Window window = activityToDelete.getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
                 ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(activity.getWindow().getNavigationBarColor(), context.getColor(R.color.transparent_dark_high_twice));
+                        .ofArgb(activityToDelete.getWindow().getNavigationBarColor(), context.getColor(R.color.transparent_dark_high_twice));
                 colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animator) {
@@ -5306,17 +5300,17 @@ public class FunctionsClass {
                 fullActionElements.setBackground(new ColorDrawable(context.getColor(R.color.transparent_light)));
                 if (PublicVariable.themeLightDark) {
                     if (Build.VERSION.SDK_INT > 25) {
-                        activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                        activityToDelete.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                     }
                 }
 
                 ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(activity.getWindow().getNavigationBarColor(), mixColors(context.getColor(R.color.light), activity.getWindow().getNavigationBarColor(), 0.70f));
+                        .ofArgb(activityToDelete.getWindow().getNavigationBarColor(), mixColors(context.getColor(R.color.light), activityToDelete.getWindow().getNavigationBarColor(), 0.70f));
                 colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animator) {
-                        activity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
-                        activity.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
+                        activityToDelete.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                        activityToDelete.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
                     }
                 });
                 colorAnimation.start();
@@ -5324,12 +5318,12 @@ public class FunctionsClass {
                 fullActionElements.setBackground(new ColorDrawable(context.getColor(R.color.dark_transparent)));
 
                 ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(activity.getWindow().getNavigationBarColor(), mixColors(context.getColor(R.color.dark), activity.getWindow().getNavigationBarColor(), 0.70f));
+                        .ofArgb(activityToDelete.getWindow().getNavigationBarColor(), mixColors(context.getColor(R.color.dark), activityToDelete.getWindow().getNavigationBarColor(), 0.70f));
                 colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animator) {
-                        activity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
-                        activity.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
+                        activityToDelete.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                        activityToDelete.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
                     }
                 });
                 colorAnimation.start();
@@ -5342,15 +5336,15 @@ public class FunctionsClass {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Preferences(true);
+                Preferences(activityToDelete, true);
             }
         }, 222);
         PublicVariable.actionCenter = true;
     }
 
-    public void closeActionMenuOption(final View fullActionElements, View actionButton) {
+    public void closeActionMenuOption(Activity activityToDelete, final View fullActionElements, View actionButton) {
         if (appThemeTransparent() == true) {
-            final Window window = activity.getWindow();
+            final Window window = activityToDelete.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (PublicVariable.themeLightDark) {
@@ -5361,7 +5355,7 @@ public class FunctionsClass {
             }
 
             ValueAnimator valueAnimator = ValueAnimator
-                    .ofArgb(activity.getWindow().getNavigationBarColor(), setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
+                    .ofArgb(activityToDelete.getWindow().getNavigationBarColor(), setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animator) {
@@ -5372,7 +5366,7 @@ public class FunctionsClass {
             valueAnimator.start();
         } else {
             if (PublicVariable.themeLightDark) {
-                final Window window = activity.getWindow();
+                final Window window = activityToDelete.getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 if (PublicVariable.themeLightDark) {
@@ -5384,12 +5378,12 @@ public class FunctionsClass {
             }
 
             ValueAnimator colorAnimation = ValueAnimator
-                    .ofArgb(activity.getWindow().getNavigationBarColor(), PublicVariable.colorLightDark);
+                    .ofArgb(activityToDelete.getWindow().getNavigationBarColor(), PublicVariable.colorLightDark);
             colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animator) {
-                    activity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
-                    activity.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
+                    activityToDelete.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
+                    activityToDelete.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
                 }
             });
             colorAnimation.start();
@@ -5412,7 +5406,7 @@ public class FunctionsClass {
             @Override
             public void onAnimationEnd(Animator animation) {
                 fullActionElements.setVisibility(View.INVISIBLE);
-                Preferences(false);
+                Preferences(activityToDelete, false);
             }
 
             @Override
@@ -5551,7 +5545,7 @@ public class FunctionsClass {
     }
 
     /*Lite App Preferences*/
-    public void liteAppPreferences() {
+    public void liteAppPreferences(Activity activityToDelete) {
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor defaultSharedPreferencesEditor = defaultSharedPreferences.edit();
 
@@ -5586,11 +5580,11 @@ public class FunctionsClass {
 
         saveDefaultPreference("LitePreferences", true);
 
-        activity.finish();
+        activityToDelete.finish();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                activity.startActivity(new Intent(context, Configurations.class)
+                activityToDelete.startActivity(new Intent(context, Configurations.class)
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         }, 333);

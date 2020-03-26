@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:28 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -49,7 +49,7 @@ public class AuthActivityHelper extends AppCompatActivity {
         super.onCreate(bundle);
         setContentView(R.layout.auth_transparent);
 
-        functionsClass = new FunctionsClass(getApplicationContext(), AuthActivityHelper.this);
+        functionsClass = new FunctionsClass(getApplicationContext());
         functionsClassSecurity = new FunctionsClassSecurity(AuthActivityHelper.this, getApplicationContext());
 
         authBackground = (RelativeLayout) findViewById(R.id.authBackground);

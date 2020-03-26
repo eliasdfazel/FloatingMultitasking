@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:33 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -30,7 +30,7 @@ public class RecoveryAllActivity extends Activity {
         super.onCreate(Saved);
         try {
             if (getIntent().getAction().equals(Intent.ACTION_CREATE_SHORTCUT)) {
-                FunctionsClass functionsClass = new FunctionsClass(getApplicationContext(), this);
+                FunctionsClass functionsClass = new FunctionsClass(getApplicationContext());
 
                 Drawable shapeTempDrawable = functionsClass.shapesDrawables();
                 if (shapeTempDrawable != null) {

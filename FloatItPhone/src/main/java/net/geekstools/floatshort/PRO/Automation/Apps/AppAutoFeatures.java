@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:26 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -131,7 +131,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
         simpleGestureFilterFull = new SimpleGestureFilterFull(getApplicationContext(), this);
 
-        functionsClass = new FunctionsClass(getApplicationContext(), this);
+        functionsClass = new FunctionsClass(getApplicationContext());
         functionsClass.loadSavedColor();
         functionsClass.checkLightDarkTheme();
 
@@ -170,9 +170,9 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         }
 
         if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColorAutomationFeature(MainView, true);
+            functionsClass.setThemeColorAutomationFeature(AppAutoFeatures.this, MainView, true);
         } else {
-            functionsClass.setThemeColorAutomationFeature(MainView, false);
+            functionsClass.setThemeColorAutomationFeature(AppAutoFeatures.this, MainView, false);
         }
 
         if (functionsClass.loadCustomIcons()) {
@@ -267,7 +267,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             public void onClick(View view) {
                 PublicVariable.autoID = null;
                 try {
-                    functionsClass.navigateToClass(FolderAutoFeatures.class,
+                    functionsClass.navigateToClass(AppAutoFeatures.this, FolderAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     finish();
                 } catch (Exception e) {
@@ -551,7 +551,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         try {
             functionsClass.CheckSystemRAM(AppAutoFeatures.this);
 
-            functionsClass.overrideBackPressToMain(AppAutoFeatures.this);
+            functionsClass.overrideBackPressToMain(AppAutoFeatures.this, AppAutoFeatures.this);
             overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
         } catch (Exception e) {
             e.printStackTrace();
@@ -574,7 +574,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             case SimpleGestureFilterFull.SWIPE_LEFT: {
                 FunctionsClassDebug.Companion.PrintDebug("Swipe Left");
                 try {
-                    functionsClass.navigateToClass(FolderAutoFeatures.class,
+                    functionsClass.navigateToClass(AppAutoFeatures.this, FolderAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     finish();
                 } catch (Exception e) {

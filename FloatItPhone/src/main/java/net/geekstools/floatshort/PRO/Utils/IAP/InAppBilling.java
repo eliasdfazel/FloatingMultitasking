@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:32 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -40,7 +40,7 @@ public class InAppBilling extends AppCompatActivity implements BillingProvider {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        functionsClass = new FunctionsClass(getApplicationContext(), InAppBilling.this);
+        functionsClass = new FunctionsClass(getApplicationContext());
 
         if (InAppBilling.ItemIAB == null) {
             if (functionsClass.floatingWidgetsPurchased()) {

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:41 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:17 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -97,7 +97,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         super.onCreate(Saved);
         setContentView(R.layout.advance_app_selection_list);
 
-        functionsClass = new FunctionsClass(getApplicationContext(), this);
+        functionsClass = new FunctionsClass(getApplicationContext());
 
         listPopupWindow = new ListPopupWindow(AppSelectionList.this);
         desc = (TextView) findViewById(R.id.desc);
@@ -122,9 +122,9 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         popupIndex = (TextView) findViewById(R.id.popupIndex);
 
         if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColorFloating(wholeAuto, true);
+            functionsClass.setThemeColorFloating(AppSelectionList.this, wholeAuto, true);
         } else {
-            functionsClass.setThemeColorFloating(wholeAuto, false);
+            functionsClass.setThemeColorFloating(AppSelectionList.this, wholeAuto, false);
         }
 
         recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 1:44 PM
- * Last modified 3/25/20 1:15 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:28 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -93,7 +93,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        functionsClass = new FunctionsClass(getContext(), getActivity());
+        functionsClass = new FunctionsClass(getContext());
         functionsClassSecurity = new FunctionsClassSecurity(getActivity(), getContext());
 
         setRetainInstance(true);

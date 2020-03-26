@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:39 AM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:28 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,7 +36,6 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
 
     FunctionsClass functionsClass;
 
-    private Activity activity;
     private Context context;
 
     View view;
@@ -47,12 +46,11 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
     private ArrayList<AdapterItems> adapterItems;
 
     public CustomIconsThemeAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems, Dialog dialog) {
-        this.activity = activity;
         this.context = context;
         this.adapterItems = adapterItems;
         this.dialog = dialog;
 
-        functionsClass = new FunctionsClass(context, activity);
+        functionsClass = new FunctionsClass(context);
     }
 
     @Override

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 1:44 PM
- * Last modified 3/25/20 1:38 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:04 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -91,7 +91,7 @@ import kotlin.math.roundToInt
 class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
     private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext, this@WidgetConfigurations)
+        FunctionsClass(applicationContext)
     }
     private val functionsClassSecurity: FunctionsClassSecurity by lazy {
         FunctionsClassSecurity(this@WidgetConfigurations, applicationContext)
@@ -185,9 +185,9 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         widgetConfigurationsViewsBinding.configuredWidgetList.layoutManager = configuredWidgetsRecyclerViewLayoutManager
 
         if (functionsClass.appThemeTransparent()) {
-            functionsClass.setThemeColorFloating(widgetConfigurationsViewsBinding.wholeWidget, true)
+            functionsClass.setThemeColorFloating(this, widgetConfigurationsViewsBinding.wholeWidget, true)
         } else {
-            functionsClass.setThemeColorFloating(widgetConfigurationsViewsBinding.wholeWidget, false)
+            functionsClass.setThemeColorFloating(this, widgetConfigurationsViewsBinding.wholeWidget, false)
         }
 
         appWidgetManager = AppWidgetManager.getInstance(applicationContext)
@@ -377,7 +377,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
                 })
 
-                functionsClass.openActionMenuOption(widgetConfigurationsViewsBinding.fullActionViews,
+                functionsClass.openActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
                         widgetConfigurationsViewsBinding.actionButton,
                         widgetConfigurationsViewsBinding.fullActionViews.isShown)
 
@@ -411,13 +411,13 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
                 })
 
-                functionsClass.closeActionMenuOption(widgetConfigurationsViewsBinding.fullActionViews,
+                functionsClass.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
                         widgetConfigurationsViewsBinding.actionButton)
             }
         }
         widgetConfigurationsViewsBinding.switchCategories.setOnClickListener {
 
-            functionsClass.navigateToClass(FoldersConfigurations::class.java,
+            functionsClass.navigateToClass(this@WidgetConfigurations, FoldersConfigurations::class.java,
                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
         }
         widgetConfigurationsViewsBinding.switchApps.setOnClickListener {
@@ -717,7 +717,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                         }
                     })
-                    functionsClass.closeActionMenuOption(widgetConfigurationsViewsBinding.fullActionViews, widgetConfigurationsViewsBinding.actionButton)
+                    functionsClass.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews, widgetConfigurationsViewsBinding.actionButton)
                 }
 
                 loadInstalledWidgets()
@@ -785,7 +785,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         super.onPause()
 
         if (PublicVariable.actionCenter) {
-            functionsClass.closeActionMenuOption(widgetConfigurationsViewsBinding.fullActionViews,
+            functionsClass.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
                     widgetConfigurationsViewsBinding.actionButton)
         }
     }
@@ -868,7 +868,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             }
         } else {
 
-            functionsClass.overrideBackPressToMain(this@WidgetConfigurations)
+            functionsClass.overrideBackPressToMain(this@WidgetConfigurations, this@WidgetConfigurations)
         }
     }
 
@@ -880,12 +880,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 when (gestureConstants.horizontalDirection) {
                     GestureListenerConstants.SWIPE_RIGHT -> {
 
-                        functionsClass.navigateToClass(FoldersConfigurations::class.java,
+                        functionsClass.navigateToClass(this@WidgetConfigurations, FoldersConfigurations::class.java,
                                 ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
 
-                        functionsClass.navigateToClass(ApplicationsView::class.java,
+                        functionsClass.navigateToClass(this@WidgetConfigurations, ApplicationsView::class.java,
                                 ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
                     }
                 }

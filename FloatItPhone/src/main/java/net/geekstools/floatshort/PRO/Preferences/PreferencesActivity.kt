@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 1:51 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -55,15 +55,15 @@ class PreferencesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.preferences_activity_view)
 
-        functionsClass = FunctionsClass(applicationContext, this@PreferencesActivity)
+        functionsClass = FunctionsClass(applicationContext)
 
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()
 
         if (functionsClass.appThemeTransparent()) {
-            functionsClass.setThemeColorPreferences(fullPreferencesActivity, preferencesToolbar, true, getString(R.string.settingTitle), "${BuildConfig.VERSION_NAME}")
+            functionsClass.setThemeColorPreferences(this, fullPreferencesActivity, preferencesToolbar, true, getString(R.string.settingTitle), "${BuildConfig.VERSION_NAME}")
         } else {
-            functionsClass.setThemeColorPreferences(fullPreferencesActivity, preferencesToolbar, false, getString(R.string.settingTitle), "${BuildConfig.VERSION_NAME}")
+            functionsClass.setThemeColorPreferences(this, fullPreferencesActivity, preferencesToolbar, false, getString(R.string.settingTitle), "${BuildConfig.VERSION_NAME}")
         }
 
         rootLayout = this.window.decorView
@@ -138,7 +138,7 @@ class PreferencesActivity : AppCompatActivity() {
             } else {
                 if (PublicVariable.forceReload) {
                     PublicVariable.forceReload = false
-                    functionsClass.overrideBackPressToMain(this@PreferencesActivity)
+                    functionsClass.overrideBackPressToMain(this@PreferencesActivity, this@PreferencesActivity)
                 }
             }
             val finalRadius = hypot(functionsClass.displayX().toDouble(), functionsClass.displayY().toDouble())

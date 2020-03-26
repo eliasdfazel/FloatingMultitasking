@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 2:16 PM
- * Last modified 3/25/20 2:16 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:14 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -161,7 +161,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
         functionsClassDataActivity = FunctionsClassDataActivity(this@ApplicationsView)
 
-        functionsClass = FunctionsClass(applicationContext, this@ApplicationsView)
+        functionsClass = FunctionsClass(applicationContext)
         functionsClassRunServices = FunctionsClassRunServices(applicationContext)
         functionsClassSecurity = FunctionsClassSecurity(this@ApplicationsView, applicationContext)
         functionsClassDialogues = FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
@@ -169,7 +169,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()
 
-        functionsClass.setThemeColorFloating(MainView, functionsClass.appThemeTransparent())
+        functionsClass.setThemeColorFloating(this, MainView, functionsClass.appThemeTransparent())
         functionsClassDialogues.changeLog()
 
         recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(105), OrientationHelper.VERTICAL, false)
@@ -257,7 +257,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     }
                 })
 
-                functionsClass.openActionMenuOption(fullActionViews, actionButton, fullActionViews.isShown)
+                functionsClass.openActionMenuOption(this, fullActionViews, actionButton, fullActionViews.isShown)
             } else {
                 recoveryAction.visibility = View.VISIBLE
 
@@ -288,7 +288,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
         switchCategories.setOnClickListener {
             try {
-                functionsClass.navigateToClass(FoldersConfigurations::class.java,
+                functionsClass.navigateToClass(this@ApplicationsView, FoldersConfigurations::class.java,
                         ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -299,7 +299,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
                 if (functionsClass.floatingWidgetsPurchased()) {
 
-                    functionsClass.navigateToClass(WidgetConfigurations::class.java,
+                    functionsClass.navigateToClass(this@ApplicationsView, WidgetConfigurations::class.java,
                             ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
 
                 } else {
@@ -624,7 +624,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         functionsClass.addAppShortcuts()
         functionsClass.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition())
         if (PublicVariable.actionCenter) {
-            functionsClass.closeActionMenuOption(fullActionViews, actionButton)
+            functionsClass.closeActionMenuOption(this@ApplicationsView, fullActionViews, actionButton)
         }
 
         functionsClass.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
@@ -685,17 +685,17 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 when (gestureConstants.horizontalDirection) {
                     GestureListenerConstants.SWIPE_RIGHT -> {
                         if (functionsClass.floatingWidgetsPurchased()) {
-                            functionsClass.navigateToClass(WidgetConfigurations::class.java,
+                            functionsClass.navigateToClass(this@ApplicationsView, WidgetConfigurations::class.java,
                                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
                         } else {
                             InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
 
-                            functionsClass.navigateToClass(InAppBilling::class.java,
+                            functionsClass.navigateToClass(this@ApplicationsView, InAppBilling::class.java,
                                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
                         }
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
-                        functionsClass.navigateToClass(FoldersConfigurations::class.java,
+                        functionsClass.navigateToClass(this@ApplicationsView, FoldersConfigurations::class.java,
                                 ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
                     }
                 }

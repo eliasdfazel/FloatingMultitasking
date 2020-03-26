@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:28 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -38,7 +38,6 @@ import java.util.ArrayList;
 
 public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.ViewHolder> {
 
-    Activity activity;
     Context context;
 
     FunctionsClass functionsClass;
@@ -53,10 +52,9 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
 
     public CardHybridAdapter(Activity activity, Context context, ArrayList<AdapterItemsApplications> adapterItemsApplications) {
         this.context = context;
-        this.activity = activity;
         this.adapterItemsApplications = adapterItemsApplications;
 
-        functionsClass = new FunctionsClass(context, activity);
+        functionsClass = new FunctionsClass(context);
         functionsClassRunServices = new FunctionsClassRunServices(context);
 
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);

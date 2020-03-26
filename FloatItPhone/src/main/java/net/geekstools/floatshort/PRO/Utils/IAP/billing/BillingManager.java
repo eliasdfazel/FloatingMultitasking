@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/26/20 2:51 PM
+ * Last modified 3/26/20 2:31 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -62,7 +62,7 @@ public class BillingManager implements PurchasesUpdatedListener {
         this.appCompatActivity = appCompatActivity;
         this.UserEmailAddress = UserEmailAddress;
 
-        functionsClass = new FunctionsClass(appCompatActivity.getApplicationContext(), appCompatActivity);
+        functionsClass = new FunctionsClass(appCompatActivity.getApplicationContext());
 
         billingClient = new PurchasesCheckpoint(appCompatActivity).trigger();
     }
