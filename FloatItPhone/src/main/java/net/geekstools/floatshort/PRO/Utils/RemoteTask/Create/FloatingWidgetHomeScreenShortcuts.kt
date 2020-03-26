@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:14 PM
+ * Created by Elias Fazel on 3/26/20 3:43 PM
+ * Last modified 3/26/20 3:03 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,7 +32,7 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
         super.onCreate(savedInstanceState)
 
         functionsClass = FunctionsClass(applicationContext)
-        functionsClassSecurity = FunctionsClassSecurity(this@FloatingWidgetHomeScreenShortcuts, applicationContext)
+        functionsClassSecurity = FunctionsClassSecurity(applicationContext)
 
         if (!functionsClass.readPreference("WidgetsInformation", "Reallocated", true)
                 && getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:28 PM
+ * Created by Elias Fazel on 3/26/20 3:43 PM
+ * Last modified 3/26/20 3:00 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -94,7 +94,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         functionsClass = new FunctionsClass(getContext());
-        functionsClassSecurity = new FunctionsClassSecurity(getActivity(), getContext());
+        functionsClassSecurity = new FunctionsClassSecurity(getContext());
 
         setRetainInstance(true);
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Dialog);
@@ -430,7 +430,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                     new FingerprintProcessHelper.Callback() {
                         @Override
                         public void onAuthenticated() {
-                            functionsClassSecurity.Authed(true, AuthenticationDialogFragment.this.cryptoObject);
+                            functionsClassSecurity.Authed(getActivity(), true, AuthenticationDialogFragment.this.cryptoObject);
 
                             dismiss();
                             try {

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 1:44 PM
- * Last modified 3/25/20 1:15 PM
+ * Created by Elias Fazel on 3/26/20 3:43 PM
+ * Last modified 3/26/20 3:01 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -52,29 +52,7 @@ import java.security.cert.CertificateException
 import javax.crypto.*
 import javax.crypto.spec.SecretKeySpec
 
-class FunctionsClassSecurity {
-
-    lateinit var activity: Activity
-    lateinit var appCompatActivity: AppCompatActivity
-    lateinit var context: Context
-
-    constructor(activity: Activity, context: Context) {
-        this.activity = activity
-        this.context = context
-    }
-
-    constructor(appCompatActivity: AppCompatActivity, context: Context) {
-        this.appCompatActivity = appCompatActivity
-        this.context = context
-    }
-
-    constructor(context: Context) {
-        this.context = context
-    }
-
-    init {
-
-    }
+class FunctionsClassSecurity (var context: Context) {
 
     /*Lock/Unlock Apps*/
     fun doLockApps(PackageName: String) {
@@ -172,7 +150,7 @@ class FunctionsClassSecurity {
         }, 1000)
     }
 
-    inner class InvokeAuth(activity: Activity, internal var cipher: Cipher?, internal var keyName: String) {
+    inner class InvokeAuth(appCompatActivity: AppCompatActivity, internal var cipher: Cipher?, internal var keyName: String) {
         init {
             if (fingerprintSensorAvailable() && fingerprintEnrolled()) {
                 if (initCipher(this.cipher!!, this.keyName)) {
@@ -181,7 +159,7 @@ class FunctionsClassSecurity {
                     val fingerprintAuthenticationDialogFragment = AuthenticationDialogFragment()
                     fingerprintAuthenticationDialogFragment.setCryptoObject(FingerprintManager.CryptoObject(this.cipher!!))
 
-                    if (!activity.isFinishing) {
+                    if (!appCompatActivity.isFinishing) {
                         Handler().post {
                             fingerprintAuthenticationDialogFragment.show(appCompatActivity.supportFragmentManager, context.packageName)
                         }
@@ -191,7 +169,7 @@ class FunctionsClassSecurity {
                 FunctionsClassDebug.PrintDebug("*** Finger Print Not Available ***")
 
                 val fingerprintAuthenticationDialogFragment = AuthenticationDialogFragment()
-                if (!activity.isFinishing) {
+                if (!appCompatActivity.isFinishing) {
                     Handler().post {
                         fingerprintAuthenticationDialogFragment.show(appCompatActivity.supportFragmentManager, context.packageName)
                     }
@@ -230,16 +208,16 @@ class FunctionsClassSecurity {
         }
     }
 
-    fun Authed(withFingerprint: Boolean, cryptoObject: FingerprintManager.CryptoObject?) {
+    fun Authed(activity: Activity, withFingerprint: Boolean, cryptoObject: FingerprintManager.CryptoObject?) {
         if (withFingerprint) {
             assert(cryptoObject != null)
-            tryEncrypt(cryptoObject!!.cipher)
+            tryEncrypt(activity, cryptoObject!!.cipher)
         } else {
 
         }
     }
 
-    private fun authConfirmed(encrypted: ByteArray?) {
+    private fun authConfirmed(activity: Activity, encrypted: ByteArray?) {
         if (encrypted != null) {
 
             if (AuthOpenAppValues.authFloatingShortcuts) {
@@ -399,10 +377,10 @@ class FunctionsClassSecurity {
         println("Auth Error")
     }
 
-    private fun tryEncrypt(cipher: Cipher) {
+    private fun tryEncrypt(activity: Activity, cipher: Cipher) {
         try {
             val encrypted = cipher.doFinal("Geeks Empire".toByteArray())
-            authConfirmed(encrypted)
+            authConfirmed(activity, encrypted)
         } catch (e: BadPaddingException) {
             e.printStackTrace()
         } catch (e: IllegalBlockSizeException) {

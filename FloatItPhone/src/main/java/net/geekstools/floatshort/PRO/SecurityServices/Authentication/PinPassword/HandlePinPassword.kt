@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 1:55 PM
+ * Created by Elias Fazel on 3/26/20 3:43 PM
+ * Last modified 3/26/20 3:03 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -53,7 +53,7 @@ class HandlePinPassword : Activity() {
         setContentView(R.layout.auth_handler_views)
 
         functionClass = FunctionsClass(applicationContext)
-        functionsClassSecurity = FunctionsClassSecurity(this@HandlePinPassword, applicationContext)
+        functionsClassSecurity = FunctionsClassSecurity(applicationContext)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)

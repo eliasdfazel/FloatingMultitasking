@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:31 PM
+ * Created by Elias Fazel on 3/26/20 3:43 PM
+ * Last modified 3/26/20 3:38 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -152,7 +152,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
             searchClose;
     /*Search Engine*/
 
-    RecyclerView.Adapter categoryListAdapter;
+    RecyclerView.Adapter folderListAdapter;
     ArrayList<AdapterItems> adapterItems;
     ArrayList<AdapterItemsSearchEngine> searchAdapterItems;
 
@@ -200,7 +200,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
         /*Search Engine*/
 
         functionsClass = new FunctionsClass(getApplicationContext());
-        functionsClassSecurity = new FunctionsClassSecurity(this, getApplicationContext());
+        functionsClassSecurity = new FunctionsClassSecurity(this);
         functionsClassDialogues = new FunctionsClassDialogues(functionsClassDataActivity, functionsClass);
         functionsClassRunServices = new FunctionsClassRunServices(getApplicationContext());
 
@@ -229,23 +229,6 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
 
         LoadCategory loadCategory = new LoadCategory();
         loadCategory.execute();
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("Category_Reload");
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals("Category_Reload")) {
-                    LoadCategory loadCategory = new LoadCategory();
-                    loadCategory.execute();
-                }
-            }
-        };
-        try {
-            registerReceiver(broadcastReceiver, intentFilter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         LayerDrawable drawPreferenceAction = (LayerDrawable) getDrawable(R.drawable.draw_pref_action);
         Drawable backPreferenceAction = drawPreferenceAction.findDrawableByLayerId(R.id.backgroundTemporary);
@@ -1028,13 +1011,13 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
 
                         if (linesNumber > 0) {
                             adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                            categoryListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
+                            folderListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
                         } else {
                             adapterItems = new ArrayList<AdapterItems>();
                             adapterItems.clear();
 
                             adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                            categoryListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
+                            folderListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1045,7 +1028,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
                     adapterItems.clear();
 
                     adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                    categoryListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
+                    folderListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1058,7 +1041,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            categorylist.setAdapter(categoryListAdapter);
+            categorylist.setAdapter(folderListAdapter);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
