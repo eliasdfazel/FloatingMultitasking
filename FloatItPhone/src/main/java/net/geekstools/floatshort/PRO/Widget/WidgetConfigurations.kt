@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 3:43 PM
- * Last modified 3/26/20 3:17 PM
+ * Created by Elias Fazel on 3/26/20 7:00 PM
+ * Last modified 3/26/20 7:00 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -23,7 +23,6 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.graphics.drawable.*
 import android.os.Build
@@ -215,10 +214,10 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             widgetConfigurationsViewsBinding.loadingText.setTypeface(typeface)
 
             if (PublicVariable.themeLightDark) {
-                widgetConfigurationsViewsBinding.loadingProgress.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, PorterDuff.Mode.MULTIPLY)
+                widgetConfigurationsViewsBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.darkMutedColor)
                 widgetConfigurationsViewsBinding.loadingText.setTextColor(getColor(R.color.dark))
             } else if (!PublicVariable.themeLightDark) {
-                widgetConfigurationsViewsBinding.loadingProgress.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, PorterDuff.Mode.MULTIPLY)
+                widgetConfigurationsViewsBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.vibrantColor)
                 widgetConfigurationsViewsBinding.loadingText.setTextColor(getColor(R.color.light))
             }
 

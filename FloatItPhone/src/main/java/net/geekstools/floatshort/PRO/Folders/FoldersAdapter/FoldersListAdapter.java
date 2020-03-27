@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 3:43 PM
- * Last modified 3/26/20 3:43 PM
+ * Created by Elias Fazel on 3/26/20 7:00 PM
+ * Last modified 3/26/20 6:53 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,7 +32,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.Folders.AppSelectionList;
-import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
+import net.geekstools.floatshort.PRO.Folders.FoldersConfigurationsXYZ;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
@@ -46,7 +46,7 @@ import java.util.ArrayList;
 public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.ViewHolder> {
 
     Context context;
-    FoldersConfigurations foldersConfigurations;
+    FoldersConfigurationsXYZ foldersConfigurations;
 
     FunctionsClass functionsClass;
 
@@ -57,12 +57,12 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
 
     String endEdited = "";
 
-    View view;
+    View anchorView;
     ViewHolder viewHolder;
 
     LoadCustomIcons loadCustomIcons;
 
-    public FoldersListAdapter(FoldersConfigurations foldersConfigurations, Context context, ArrayList<AdapterItems> adapterItems) {
+    public FoldersListAdapter(FoldersConfigurationsXYZ foldersConfigurations, Context context, ArrayList<AdapterItems> adapterItems) {
         this.foldersConfigurations = foldersConfigurations;
         this.context = context;
         this.adapterItems = adapterItems;
@@ -79,8 +79,8 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
 
     @Override
     public FoldersListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(context).inflate(R.layout.item_category, parent, false);
-        viewHolder = new ViewHolder(view);
+        anchorView = LayoutInflater.from(context).inflate(R.layout.item_category, parent, false);
+        viewHolder = new ViewHolder(anchorView);
         return viewHolder;
     }
 
@@ -257,11 +257,14 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
         });
         viewHolderBinder.selectedApp.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public boolean onLongClick(View view) {
                 if (!adapterItems.get(position).getCategory().equals(context.getPackageName())) {
                     PublicVariable.itemPosition = position;
                     String categoryName = adapterItems.get(position).getCategory();
-                    functionsClass.popupOptionCategory(foldersConfigurations, context, view, categoryName, position);
+
+                    functionsClass.popupOptionCategory(foldersConfigurations, context,
+                            anchorView,
+                            categoryName, position);
                 }
                 return true;
             }
@@ -281,7 +284,10 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                 if (!adapterItems.get(position).getCategory().equals(context.getPackageName())) {
                     PublicVariable.itemPosition = position;
                     String categoryName = adapterItems.get(position).getCategory();
-                    functionsClass.popupOptionCategory(foldersConfigurations, context, view, categoryName, position);
+
+                    functionsClass.popupOptionCategory(foldersConfigurations, context,
+                            anchorView,
+                            categoryName, position);
                 }
                 return true;
             }

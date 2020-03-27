@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 3:43 PM
- * Last modified 3/26/20 3:23 PM
+ * Created by Elias Fazel on 3/26/20 7:00 PM
+ * Last modified 3/26/20 6:19 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -589,6 +589,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                                         ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
                             }
                         } else {
+
                         }
                     }
                 }
@@ -744,7 +745,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                                     PrintDebug("Firebase Activities Done Successfully")
                                     functionsClass.Toast(getString(R.string.signinFinished), Gravity.TOP)
 
-                                    waitingDialogue?.dismiss()
+                                    waitingDialogue.dismiss()
                                 }
                             } finally {
                                 functionsClassSecurity.downloadLockedAppsData()

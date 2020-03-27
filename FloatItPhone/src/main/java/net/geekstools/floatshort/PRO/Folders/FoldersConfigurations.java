@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 3:43 PM
- * Last modified 3/26/20 3:38 PM
+ * Created by Elias Fazel on 3/26/20 7:00 PM
+ * Last modified 3/26/20 6:46 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -92,7 +92,6 @@ import com.google.firebase.storage.UploadTask;
 
 import net.geekstools.floatshort.PRO.Automation.Folders.FolderAutoFeatures;
 import net.geekstools.floatshort.PRO.BuildConfig;
-import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.FoldersListAdapter;
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
@@ -180,7 +179,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
         functionsClassDataActivity = new FunctionsClassDataActivity(FoldersConfigurations.this);
 
         wholeCategory = (RelativeLayout) findViewById(R.id.wholeCategory);
-        categorylist = (RecyclerView) findViewById(R.id.categorylist);
+        categorylist = (RecyclerView) findViewById(R.id.foldersList);
         fullActionViews = (RelativeLayout) findViewById(R.id.fullActionViews);
 
         actionButton = (ImageView) findViewById(R.id.actionButton);
@@ -584,6 +583,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
     @Override
     public void onStart() {
         super.onStart();
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(getString(R.string.license));
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -600,21 +600,9 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
                 }
             }
         };
+
         try {
             registerReceiver(broadcastReceiver, intentFilter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            if (!getFileStreamPath(".License").exists() && functionsClass.networkConnection() == true) {
-                startService(new Intent(getApplicationContext(), LicenseValidator.class));
-            } else {
-                try {
-                    unregisterReceiver(broadcastReceiver);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -773,14 +761,9 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
-        if (PublicVariable.actionCenter == true) {
+        if (PublicVariable.actionCenter) {
             functionsClass.closeActionMenuOption(FoldersConfigurations.this, fullActionViews, actionButton);
         }
 
@@ -791,13 +774,6 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
     public void onDestroy() {
         super.onDestroy();
         PublicVariable.inMemory = false;
-
-        functionsClass.endIndexAppInfo();
-        try {
-            unregisterReceiver(broadcastReceiver);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -946,7 +922,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
             super.onPreExecute();
 
             loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
-            if (functionsClass.appThemeTransparent() == true) {
+            if (functionsClass.appThemeTransparent()) {
                 loadingSplash.setBackgroundColor(Color.TRANSPARENT);
             } else {
                 loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
@@ -964,6 +940,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
                 loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
                 gx.setTextColor(getColor(R.color.light));
             }
+
             if (!getFileStreamPath(".categoryInfo").exists()) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -1011,13 +988,12 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
 
                         if (linesNumber > 0) {
                             adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                            folderListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
+
                         } else {
                             adapterItems = new ArrayList<AdapterItems>();
                             adapterItems.clear();
 
                             adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                            folderListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1028,7 +1004,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
                     adapterItems.clear();
 
                     adapterItems.add(new AdapterItems(getPackageName(), new String[]{getPackageName()}, SearchEngineAdapter.SearchResultType.SearchFolders));
-                    folderListAdapter = new FoldersListAdapter(FoldersConfigurations.this, getApplicationContext(), adapterItems);
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1046,6 +1022,7 @@ public class FoldersConfigurations extends AppCompatActivity implements View.OnC
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
                     loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
                     loadingSplash.setVisibility(View.INVISIBLE);

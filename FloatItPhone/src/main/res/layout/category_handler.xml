@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 3/24/20 1:15 PM
-  ~ Last modified 3/24/20 12:41 PM
+  ~ Created by Elias Fazel on 3/26/20 7:00 PM
+  ~ Last modified 3/26/20 6:42 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -38,7 +38,7 @@
             android:paddingBottom="47dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categorylist"
+                android:id="@+id/foldersList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingEnd="10dp"
