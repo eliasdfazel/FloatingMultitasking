@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 7:00 PM
- * Last modified 3/26/20 6:53 PM
+ * Created by Elias Fazel on 3/26/20 7:35 PM
+ * Last modified 3/26/20 7:02 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -140,7 +140,6 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_N
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Time;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
-import net.geekstools.floatshort.PRO.Folders.FoldersConfigurationsXYZ;
 import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
@@ -3709,7 +3708,7 @@ public class FunctionsClass {
         popupMenu.show();
     }
 
-    public void popupOptionCategory(FoldersConfigurationsXYZ foldersConfigurations, final Context context, View anchorView, final String categoryName, final int indicatorPosition) {
+    public void popupOptionCategory(FoldersConfigurations foldersConfigurations, final Context context, View anchorView, final String categoryName, final int indicatorPosition) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {

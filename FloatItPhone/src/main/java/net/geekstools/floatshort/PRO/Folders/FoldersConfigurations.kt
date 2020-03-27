@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 7:00 PM
- * Last modified 3/26/20 6:58 PM
+ * Created by Elias Fazel on 3/26/20 7:35 PM
+ * Last modified 3/26/20 7:25 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -87,17 +87,17 @@ import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogue
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveData
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
-import net.geekstools.floatshort.PRO.databinding.CategoryHandlerBinding
+import net.geekstools.floatshort.PRO.databinding.FoldersConfigurationViewBinding
 import java.io.File
 import java.nio.charset.Charset
 import java.util.*
 import kotlin.math.hypot
 import kotlin.math.roundToInt
 
-class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View.OnLongClickListener, GestureListenerInterface {
+class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.OnLongClickListener, GestureListenerInterface {
 
     private val functionsClassDataActivity: FunctionsClassDataActivity by lazy {
-        FunctionsClassDataActivity(this@FoldersConfigurationsXYZ)
+        FunctionsClassDataActivity(this@FoldersConfigurations)
     }
 
     private val functionsClass: FunctionsClass by lazy {
@@ -125,7 +125,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
     }
 
     private val swipeGestureListener: SwipeGestureListener by lazy {
-        SwipeGestureListener(applicationContext, this@FoldersConfigurationsXYZ)
+        SwipeGestureListener(applicationContext, this@FoldersConfigurations)
     }
 
     private val firebaseRemoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
@@ -134,52 +134,52 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
 
     private lateinit var waitingDialogue: Dialog
 
-    private lateinit var categoryHandlerBinding: CategoryHandlerBinding
+    private lateinit var foldersConfigurationViewBinding: FoldersConfigurationViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        categoryHandlerBinding = CategoryHandlerBinding.inflate(layoutInflater)
-        setContentView(categoryHandlerBinding.root)
+        foldersConfigurationViewBinding = FoldersConfigurationViewBinding.inflate(layoutInflater)
+        setContentView(foldersConfigurationViewBinding.root)
 
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()
 
-        functionsClass.setThemeColorFloating(this@FoldersConfigurationsXYZ, categoryHandlerBinding.wholeCategory, functionsClass.appThemeTransparent())
+        functionsClass.setThemeColorFloating(this@FoldersConfigurations, foldersConfigurationViewBinding.wholeCategory, functionsClass.appThemeTransparent())
         functionsClassDialogues.changeLog()
 
         val recyclerViewLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
-        categoryHandlerBinding.foldersList.layoutManager = recyclerViewLayoutManager
+        foldersConfigurationViewBinding.foldersList.layoutManager = recyclerViewLayoutManager
 
         val drawFloatingLogo = getDrawable(R.drawable.draw_floating_logo) as LayerDrawable?
         val backFloatingLogo = drawFloatingLogo?.findDrawableByLayerId(R.id.backgroundTemporary)
         backFloatingLogo?.setTint(PublicVariable.primaryColorOpposite)
-        categoryHandlerBinding.loadingLogo.setImageDrawable(drawFloatingLogo)
+        foldersConfigurationViewBinding.loadingLogo.setImageDrawable(drawFloatingLogo)
 
         loadFolders()
 
         val drawPreferenceAction = getDrawable(R.drawable.draw_pref_action) as LayerDrawable?
         val backgroundTemporary = drawPreferenceAction?.findDrawableByLayerId(R.id.backgroundTemporary)
         backgroundTemporary?.setTint(PublicVariable.primaryColorOpposite)
-        categoryHandlerBinding.actionButton.setImageDrawable(drawPreferenceAction)
+        foldersConfigurationViewBinding.actionButton.setImageDrawable(drawPreferenceAction)
 
-        categoryHandlerBinding.switchWidgets.setTextColor(getColor(R.color.light))
-        categoryHandlerBinding.switchApps.setTextColor(getColor(R.color.light))
+        foldersConfigurationViewBinding.switchWidgets.setTextColor(getColor(R.color.light))
+        foldersConfigurationViewBinding.switchApps.setTextColor(getColor(R.color.light))
         if (PublicVariable.themeLightDark /*light*/ && functionsClass.appThemeTransparent() /*transparent*/) {
-            categoryHandlerBinding.switchWidgets.setTextColor(getColor(R.color.dark))
-            categoryHandlerBinding.switchApps.setTextColor(getColor(R.color.dark))
+            foldersConfigurationViewBinding.switchWidgets.setTextColor(getColor(R.color.dark))
+            foldersConfigurationViewBinding.switchApps.setTextColor(getColor(R.color.dark))
         }
 
-        categoryHandlerBinding.switchApps.setBackgroundColor(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        categoryHandlerBinding.switchApps.rippleColor = ColorStateList.valueOf(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        foldersConfigurationViewBinding.switchApps.setBackgroundColor(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        foldersConfigurationViewBinding.switchApps.rippleColor = ColorStateList.valueOf(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
-        categoryHandlerBinding.switchWidgets.setBackgroundColor(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        categoryHandlerBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        foldersConfigurationViewBinding.switchWidgets.setBackgroundColor(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        foldersConfigurationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
-        categoryHandlerBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
-        categoryHandlerBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
+        foldersConfigurationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
+        foldersConfigurationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
 
-        categoryHandlerBinding.automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
-        categoryHandlerBinding.automationAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
+        foldersConfigurationViewBinding.automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
+        foldersConfigurationViewBinding.automationAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
 
         val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
         val backRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
@@ -189,16 +189,16 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
         val backRecoverFloatingWidgets = drawRecoverFloatingWidgets?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
         backRecoverFloatingWidgets?.setTint(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
 
-        categoryHandlerBinding.recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories)
-        categoryHandlerBinding.recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
+        foldersConfigurationViewBinding.recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories)
+        foldersConfigurationViewBinding.recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
 
-        categoryHandlerBinding.actionButton.setOnClickListener {
+        foldersConfigurationViewBinding.actionButton.setOnClickListener {
             functionsClass.doVibrate(33)
 
             if (!PublicVariable.actionCenter) {
                 val finalRadius = hypot(functionsClass.displayX().toDouble(), functionsClass.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(categoryHandlerBinding.recoveryAction,
-                        categoryHandlerBinding.actionButton.x.roundToInt(), categoryHandlerBinding.actionButton.y.roundToInt(),
+                val circularReveal = ViewAnimationUtils.createCircularReveal(foldersConfigurationViewBinding.recoveryAction,
+                        foldersConfigurationViewBinding.actionButton.x.roundToInt(), foldersConfigurationViewBinding.actionButton.y.roundToInt(),
                         finalRadius.toFloat(), functionsClass.DpToInteger(13).toFloat())
                 circularReveal.duration = 777
                 circularReveal.interpolator = AccelerateInterpolator()
@@ -210,7 +210,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                     }
 
                     override fun onAnimationEnd(animation: Animator) {
-                        categoryHandlerBinding.recoveryAction.visibility = View.INVISIBLE
+                        foldersConfigurationViewBinding.recoveryAction.visibility = View.INVISIBLE
                     }
 
                     override fun onAnimationCancel(animation: Animator) {
@@ -221,13 +221,13 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
 
                     }
                 })
-                functionsClass.openActionMenuOption(this@FoldersConfigurationsXYZ, categoryHandlerBinding.fullActionViews, categoryHandlerBinding.actionButton, categoryHandlerBinding.fullActionViews.isShown)
+                functionsClass.openActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton, foldersConfigurationViewBinding.fullActionViews.isShown)
             } else {
-                categoryHandlerBinding.recoveryAction.visibility = View.VISIBLE
+                foldersConfigurationViewBinding.recoveryAction.visibility = View.VISIBLE
 
                 val finalRadius = hypot(functionsClass.displayX().toDouble(), functionsClass.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(categoryHandlerBinding.recoveryAction,
-                        categoryHandlerBinding.actionButton.x.roundToInt(), categoryHandlerBinding.actionButton.y.roundToInt(),
+                val circularReveal = ViewAnimationUtils.createCircularReveal(foldersConfigurationViewBinding.recoveryAction,
+                        foldersConfigurationViewBinding.actionButton.x.roundToInt(), foldersConfigurationViewBinding.actionButton.y.roundToInt(),
                         functionsClass.DpToInteger(13).toFloat(), finalRadius.toFloat())
                 circularReveal.duration = 1300
                 circularReveal.interpolator = AccelerateInterpolator()
@@ -239,7 +239,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                     }
 
                     override fun onAnimationEnd(animation: Animator) {
-                        categoryHandlerBinding.recoveryAction.visibility = View.VISIBLE
+                        foldersConfigurationViewBinding.recoveryAction.visibility = View.VISIBLE
                     }
 
                     override fun onAnimationCancel(animation: Animator) {
@@ -250,18 +250,18 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
 
                     }
                 })
-                functionsClass.closeActionMenuOption(this@FoldersConfigurationsXYZ, categoryHandlerBinding.fullActionViews, categoryHandlerBinding.actionButton)
+                functionsClass.closeActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton)
             }
         }
-        categoryHandlerBinding.switchApps.setOnClickListener {
+        foldersConfigurationViewBinding.switchApps.setOnClickListener {
 
-            functionsClass.navigateToClass(this@FoldersConfigurationsXYZ, ApplicationsView::class.java,
+            functionsClass.navigateToClass(this@FoldersConfigurations, ApplicationsView::class.java,
                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
         }
-        categoryHandlerBinding.switchWidgets.setOnClickListener {
+        foldersConfigurationViewBinding.switchWidgets.setOnClickListener {
             if (functionsClass.networkConnection() && firebaseAuth.currentUser != null) {
                 if (functionsClass.floatingWidgetsPurchased()) {
-                    functionsClass.navigateToClass(this@FoldersConfigurationsXYZ, WidgetConfigurations::class.java,
+                    functionsClass.navigateToClass(this@FoldersConfigurations, WidgetConfigurations::class.java,
                             ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
                 } else {
                     InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
@@ -279,7 +279,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 }
             }
         }
-        categoryHandlerBinding.automationAction.setOnClickListener {
+        foldersConfigurationViewBinding.automationAction.setOnClickListener {
             functionsClass.doVibrate(50)
 
             Intent(applicationContext, FolderAutoFeatures::class.java).apply {
@@ -288,21 +288,21 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                         ActivityOptions.makeCustomAnimation(applicationContext, R.anim.up_down, android.R.anim.fade_out).toBundle())
             }
         }
-        categoryHandlerBinding.recoveryAction.setOnClickListener {
+        foldersConfigurationViewBinding.recoveryAction.setOnClickListener {
 
             Intent(applicationContext, RecoveryFolders::class.java).apply {
                 this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startService(this)
             }
         }
-        categoryHandlerBinding.recoverFloatingApps.setOnClickListener {
+        foldersConfigurationViewBinding.recoverFloatingApps.setOnClickListener {
             Intent(applicationContext, RecoveryShortcuts::class.java).apply {
                 this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startService(this)
             }
 
             val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-            categoryHandlerBinding.recoverFloatingApps.startAnimation(animation)
+            foldersConfigurationViewBinding.recoverFloatingApps.startAnimation(animation)
             animation.setAnimationListener(object : Animation.AnimationListener {
 
                 override fun onAnimationStart(animation: Animation) {
@@ -310,7 +310,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 }
 
                 override fun onAnimationEnd(animation: Animation) {
-                    categoryHandlerBinding.recoverFloatingApps.visibility = View.INVISIBLE
+                    foldersConfigurationViewBinding.recoverFloatingApps.visibility = View.INVISIBLE
                 }
 
                 override fun onAnimationRepeat(animation: Animation) {
@@ -318,14 +318,14 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 }
             })
         }
-        categoryHandlerBinding.recoverFloatingWidgets.setOnClickListener {
+        foldersConfigurationViewBinding.recoverFloatingWidgets.setOnClickListener {
             Intent(applicationContext, RecoveryWidgets::class.java).apply {
                 this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startService(this)
             }
 
             val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-            categoryHandlerBinding.recoverFloatingWidgets.startAnimation(animation)
+            foldersConfigurationViewBinding.recoverFloatingWidgets.startAnimation(animation)
             animation.setAnimationListener(object : Animation.AnimationListener {
 
                 override fun onAnimationStart(animation: Animation) {
@@ -333,7 +333,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 }
 
                 override fun onAnimationEnd(animation: Animation) {
-                    categoryHandlerBinding.recoverFloatingWidgets.visibility = View.INVISIBLE
+                    foldersConfigurationViewBinding.recoverFloatingWidgets.visibility = View.INVISIBLE
                 }
 
                 override fun onAnimationRepeat(animation: Animation) {
@@ -342,23 +342,23 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
             })
         }
 
-        categoryHandlerBinding.actionButton.setOnLongClickListener {
+        foldersConfigurationViewBinding.actionButton.setOnLongClickListener {
 
-            val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@FoldersConfigurationsXYZ, categoryHandlerBinding.actionButton, "transition")
+            val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@FoldersConfigurations, foldersConfigurationViewBinding.actionButton, "transition")
 
             Intent().apply {
                 this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                this.setClass(this@FoldersConfigurationsXYZ, PreferencesActivity::class.java)
+                this.setClass(this@FoldersConfigurations, PreferencesActivity::class.java)
                 startActivity(this, activityOptionsCompat.toBundle())
             }
 
             true
         }
-        categoryHandlerBinding.switchApps.setOnLongClickListener {
+        foldersConfigurationViewBinding.switchApps.setOnLongClickListener {
 
-            if (!categoryHandlerBinding.recoverFloatingApps.isShown) {
+            if (!foldersConfigurationViewBinding.recoverFloatingApps.isShown) {
                 val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
-                categoryHandlerBinding.recoverFloatingApps.startAnimation(animation)
+                foldersConfigurationViewBinding.recoverFloatingApps.startAnimation(animation)
                 animation.setAnimationListener(object : Animation.AnimationListener {
 
                     override fun onAnimationStart(animation: Animation) {
@@ -366,7 +366,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                     }
 
                     override fun onAnimationEnd(animation: Animation) {
-                        categoryHandlerBinding.recoverFloatingApps.visibility = View.VISIBLE
+                        foldersConfigurationViewBinding.recoverFloatingApps.visibility = View.VISIBLE
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -375,7 +375,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 })
             } else {
                 val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-                categoryHandlerBinding.recoverFloatingApps.startAnimation(animation)
+                foldersConfigurationViewBinding.recoverFloatingApps.startAnimation(animation)
                 animation.setAnimationListener(object : Animation.AnimationListener {
 
                     override fun onAnimationStart(animation: Animation) {
@@ -383,7 +383,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                     }
 
                     override fun onAnimationEnd(animation: Animation) {
-                        categoryHandlerBinding.recoverFloatingApps.visibility = View.INVISIBLE
+                        foldersConfigurationViewBinding.recoverFloatingApps.visibility = View.INVISIBLE
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -394,11 +394,11 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
 
             true
         }
-        categoryHandlerBinding.switchWidgets.setOnLongClickListener {
+        foldersConfigurationViewBinding.switchWidgets.setOnLongClickListener {
 
-            if (!categoryHandlerBinding.recoverFloatingWidgets.isShown) {
+            if (!foldersConfigurationViewBinding.recoverFloatingWidgets.isShown) {
                 val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
-                categoryHandlerBinding.recoverFloatingWidgets.startAnimation(animation)
+                foldersConfigurationViewBinding.recoverFloatingWidgets.startAnimation(animation)
                 animation.setAnimationListener(object : Animation.AnimationListener {
 
                     override fun onAnimationStart(animation: Animation) {
@@ -406,7 +406,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                     }
 
                     override fun onAnimationEnd(animation: Animation) {
-                        categoryHandlerBinding.recoverFloatingWidgets.visibility = View.VISIBLE
+                        foldersConfigurationViewBinding.recoverFloatingWidgets.visibility = View.VISIBLE
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -415,7 +415,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 })
             } else {
                 val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-                categoryHandlerBinding.recoverFloatingWidgets.startAnimation(animation)
+                foldersConfigurationViewBinding.recoverFloatingWidgets.startAnimation(animation)
                 animation.setAnimationListener(object : Animation.AnimationListener {
 
                     override fun onAnimationStart(animation: Animation) {
@@ -423,7 +423,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                     }
 
                     override fun onAnimationEnd(animation: Animation) {
-                        categoryHandlerBinding.recoverFloatingWidgets.visibility = View.INVISIBLE
+                        foldersConfigurationViewBinding.recoverFloatingWidgets.visibility = View.INVISIBLE
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -435,7 +435,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
         }
 
         //In-App Billing
-        PurchasesCheckpoint(this@FoldersConfigurationsXYZ).trigger()
+        PurchasesCheckpoint(this@FoldersConfigurations).trigger()
 
         if (BuildConfig.VERSION_NAME.contains("[BETA]")
                 && !functionsClass.readPreference(".UserInformation", "SubscribeToBeta", false)) {
@@ -459,7 +459,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
             val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
                 override fun onReceive(context: Context, intent: Intent) {
                     if (intent.action == getString(R.string.license)) {
-                        functionsClass.dialogueLicense(this@FoldersConfigurationsXYZ)
+                        functionsClass.dialogueLicense(this@FoldersConfigurations)
 
                         Handler().postDelayed({
                             stopService(Intent(applicationContext, LicenseValidator::class.java))
@@ -486,11 +486,11 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 startActivityForResult(this, 666)
             }
 
-            ViewModelProvider(this@FoldersConfigurationsXYZ).get(WaitingDialogueLiveData::class.java).run {
+            ViewModelProvider(this@FoldersConfigurations).get(WaitingDialogueLiveData::class.java).run {
                 this.dialogueTitle.value = getString(R.string.signinTitle)
                 this.dialogueMessage.value = getString(R.string.signinMessage)
 
-                waitingDialogue = WaitingDialogue().initShow(this@FoldersConfigurationsXYZ)
+                waitingDialogue = WaitingDialogue().initShow(this@FoldersConfigurations)
             }
         }
 
@@ -498,8 +498,8 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
         val backgroundShare = drawableShare!!.findDrawableByLayerId(R.id.backgroundTemporary)
         backgroundShare.setTint(PublicVariable.primaryColor)
 
-        categoryHandlerBinding.shareIt.setImageDrawable(drawableShare)
-        categoryHandlerBinding.shareIt.setOnClickListener {
+        foldersConfigurationViewBinding.shareIt.setImageDrawable(drawableShare)
+        foldersConfigurationViewBinding.shareIt.setOnClickListener {
             functionsClass.doVibrate(50)
 
             val shareText = getString(R.string.shareTitle) +
@@ -531,7 +531,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                             newUpdate.visibility = View.VISIBLE
                             newUpdate.setOnClickListener {
                                 functionsClass.upcomingChangeLog(
-                                        this@FoldersConfigurationsXYZ,
+                                        this@FoldersConfigurations,
                                         firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
                             }
                             functionsClass.notificationCreator(
@@ -574,7 +574,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                             .requestEmail()
                             .build()
 
-                    val googleSignInClient = GoogleSignIn.getClient(this@FoldersConfigurationsXYZ, googleSignInOptions)
+                    val googleSignInClient = GoogleSignIn.getClient(this@FoldersConfigurations, googleSignInOptions)
                     try {
                         googleSignInClient.signOut()
                         googleSignInClient.revokeAccess()
@@ -588,7 +588,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
         }
 
         if (PublicVariable.actionCenter) {
-            functionsClass.closeActionMenuOption(this@FoldersConfigurationsXYZ, categoryHandlerBinding.fullActionViews, categoryHandlerBinding.actionButton)
+            functionsClass.closeActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton)
         }
 
         functionsClass.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
@@ -606,7 +606,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
         }
         startActivity(homeScreen, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
-        functionsClass.CheckSystemRAM(this@FoldersConfigurationsXYZ)
+        functionsClass.CheckSystemRAM(this@FoldersConfigurations)
     }
 
     override fun onClick(view: View?) {
@@ -626,18 +626,18 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 when (gestureConstants.horizontalDirection) {
                     GestureListenerConstants.SWIPE_RIGHT -> {
 
-                        functionsClass.navigateToClass(this@FoldersConfigurationsXYZ, ApplicationsView::class.java,
+                        functionsClass.navigateToClass(this@FoldersConfigurations, ApplicationsView::class.java,
                                 ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
 
                         if (functionsClass.floatingWidgetsPurchased()) {
-                            functionsClass.navigateToClass(this@FoldersConfigurationsXYZ, WidgetConfigurations::class.java,
+                            functionsClass.navigateToClass(this@FoldersConfigurations, WidgetConfigurations::class.java,
                                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
                         } else {
                             InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
 
-                            functionsClass.navigateToClass(this@FoldersConfigurationsXYZ, InAppBilling::class.java,
+                            functionsClass.navigateToClass(this@FoldersConfigurations, InAppBilling::class.java,
                                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
                         }
                     }
@@ -677,7 +677,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                                 uploadTask.addOnFailureListener { exception ->
                                     exception.printStackTrace()
 
-                                    ViewModelProvider(this@FoldersConfigurationsXYZ).get(WaitingDialogueLiveData::class.java).run {
+                                    ViewModelProvider(this@FoldersConfigurations).get(WaitingDialogueLiveData::class.java).run {
                                         this.dialogueTitle.value = getString(R.string.error)
                                         this.dialogueMessage.value = exception.message
                                     }
@@ -695,7 +695,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 }
             }
         } else {
-            ViewModelProvider(this@FoldersConfigurationsXYZ).get(WaitingDialogueLiveData::class.java).run {
+            ViewModelProvider(this@FoldersConfigurations).get(WaitingDialogueLiveData::class.java).run {
                 this.dialogueTitle.value = getString(R.string.error)
                 this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
             }
@@ -704,26 +704,26 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
 
     fun loadFolders() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
         if (functionsClass.appThemeTransparent()) {
-            categoryHandlerBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
+            foldersConfigurationViewBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
         } else {
-            categoryHandlerBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
+            foldersConfigurationViewBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
         }
 
         val typeface = Typeface.createFromAsset(assets, "upcil.ttf")
-        categoryHandlerBinding.loadingText.typeface = typeface
+        foldersConfigurationViewBinding.loadingText.typeface = typeface
 
         if (PublicVariable.themeLightDark) {
-            categoryHandlerBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.darkMutedColor)
-            categoryHandlerBinding.loadingText.setTextColor(getColor(R.color.dark))
+            foldersConfigurationViewBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.darkMutedColor)
+            foldersConfigurationViewBinding.loadingText.setTextColor(getColor(R.color.dark))
         } else {
-            categoryHandlerBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.vibrantColor)
-            categoryHandlerBinding.loadingText.setTextColor(getColor(R.color.light))
+            foldersConfigurationViewBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.vibrantColor)
+            foldersConfigurationViewBinding.loadingText.setTextColor(getColor(R.color.light))
         }
 
         if (!getFileStreamPath(".categoryInfo").exists()) {
             val animation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
-            categoryHandlerBinding.loadingSplash.visibility = View.INVISIBLE
-            categoryHandlerBinding.loadingSplash.startAnimation(animation)
+            foldersConfigurationViewBinding.loadingSplash.visibility = View.INVISIBLE
+            foldersConfigurationViewBinding.loadingSplash.startAnimation(animation)
         }
 
         if (functionsClass.loadCustomIcons()) {
@@ -738,6 +738,9 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                     .readLines(Charset.defaultCharset()).asFlow()
                     .onCompletion {
 
+                        loadInstalledCustomIcons()
+
+                        loadSearchEngineData().await()
                     }
                     .withIndex().collect { folderInformation ->
 
@@ -746,34 +749,36 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                     }
 
             folderAdapterItems.add(AdapterItems(packageName, arrayOf(packageName), SearchEngineAdapter.SearchResultType.SearchFolders))
-            foldersListAdapter = FoldersListAdapter(this@FoldersConfigurationsXYZ, applicationContext, folderAdapterItems)
+            foldersListAdapter = FoldersListAdapter(this@FoldersConfigurations, applicationContext, folderAdapterItems)
 
-            categoryHandlerBinding.foldersList.adapter = foldersListAdapter
+        } else {
+            folderAdapterItems.clear()
 
-            val animation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
-            categoryHandlerBinding.loadingSplash.visibility = View.INVISIBLE
-            categoryHandlerBinding.loadingSplash.startAnimation(animation)
-            animation.setAnimationListener(object : Animation.AnimationListener {
-
-                override fun onAnimationStart(animation: Animation) {
-
-                }
-
-                override fun onAnimationEnd(animation: Animation) {
-                    categoryHandlerBinding.foldersList.scrollTo(0, 0)
-
-                    categoryHandlerBinding.switchFloating.visibility = View.VISIBLE
-                }
-
-                override fun onAnimationRepeat(animation: Animation) {
-
-                }
-            })
+            folderAdapterItems.add(AdapterItems(packageName, arrayOf(packageName), SearchEngineAdapter.SearchResultType.SearchFolders))
+            foldersListAdapter = FoldersListAdapter(this@FoldersConfigurations, applicationContext, folderAdapterItems)
         }
 
-        loadInstalledCustomIcons()
+        foldersConfigurationViewBinding.foldersList.adapter = foldersListAdapter
 
-        loadSearchEngineData().await()
+        val animation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
+        foldersConfigurationViewBinding.loadingSplash.visibility = View.INVISIBLE
+        foldersConfigurationViewBinding.loadingSplash.startAnimation(animation)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+
+            override fun onAnimationStart(animation: Animation) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animation) {
+                foldersConfigurationViewBinding.foldersList.scrollTo(0, 0)
+
+                foldersConfigurationViewBinding.switchFloating.visibility = View.VISIBLE
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {
+
+            }
+        })
     }
 
     private fun loadInstalledCustomIcons() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
@@ -836,7 +841,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
 
             //Loading Widgets
             if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
-                val appWidgetManager = AppWidgetManager.getInstance(this@FoldersConfigurationsXYZ)
+                val appWidgetManager = AppWidgetManager.getInstance(this@FoldersConfigurations)
                 val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                         .fallbackToDestructiveMigration()
                         .addCallback(object : RoomDatabase.Callback() {
@@ -913,14 +918,14 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
     }
 
     private fun setupSearchView(searchRecyclerViewAdapter: SearchEngineAdapter) {
-        categoryHandlerBinding.searchView.setAdapter(searchRecyclerViewAdapter)
+        foldersConfigurationViewBinding.searchView.setAdapter(searchRecyclerViewAdapter)
 
-        categoryHandlerBinding.searchView.setDropDownBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        categoryHandlerBinding.searchView.isVerticalScrollBarEnabled = false
-        categoryHandlerBinding.searchView.scrollBarSize = 0
+        foldersConfigurationViewBinding.searchView.setDropDownBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        foldersConfigurationViewBinding.searchView.isVerticalScrollBarEnabled = false
+        foldersConfigurationViewBinding.searchView.scrollBarSize = 0
 
-        categoryHandlerBinding.searchView.setTextColor(PublicVariable.colorLightDarkOpposite)
-        categoryHandlerBinding.searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
+        foldersConfigurationViewBinding.searchView.setTextColor(PublicVariable.colorLightDarkOpposite)
+        foldersConfigurationViewBinding.searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
 
         val layerDrawableSearchIcon = getDrawable(R.drawable.search_icon) as RippleDrawable?
         val backgroundTemporarySearchIcon = layerDrawableSearchIcon?.findDrawableByLayerId(R.id.backgroundTemporary)
@@ -933,26 +938,26 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
         layerDrawableSearchIcon?.setLayerInset(2,
                 functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13))
 
-        categoryHandlerBinding.searchIcon.setImageDrawable(layerDrawableSearchIcon)
-        categoryHandlerBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-        categoryHandlerBinding.searchIcon.visibility = View.VISIBLE
+        foldersConfigurationViewBinding.searchIcon.setImageDrawable(layerDrawableSearchIcon)
+        foldersConfigurationViewBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+        foldersConfigurationViewBinding.searchIcon.visibility = View.VISIBLE
 
-        categoryHandlerBinding.textInputSearchView.hintTextColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
-        categoryHandlerBinding.textInputSearchView.boxStrokeColor = PublicVariable.primaryColor
+        foldersConfigurationViewBinding.textInputSearchView.hintTextColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+        foldersConfigurationViewBinding.textInputSearchView.boxStrokeColor = PublicVariable.primaryColor
 
         var backgroundTemporaryInput = GradientDrawable()
         try {
             val layerDrawableBackgroundInput = getDrawable(R.drawable.background_search_input) as LayerDrawable?
             backgroundTemporaryInput = layerDrawableBackgroundInput!!.findDrawableByLayerId(R.id.backgroundTemporary) as GradientDrawable
             backgroundTemporaryInput.setTint(PublicVariable.colorLightDark)
-            categoryHandlerBinding.textInputSearchView.background = layerDrawableBackgroundInput
+            foldersConfigurationViewBinding.textInputSearchView.background = layerDrawableBackgroundInput
         } catch (e: Exception) {
             e.printStackTrace()
-            categoryHandlerBinding.textInputSearchView.background = null
+            foldersConfigurationViewBinding.textInputSearchView.background = null
         }
 
         val finalBackgroundTemporaryInput = backgroundTemporaryInput
-        categoryHandlerBinding.searchIcon.setOnClickListener {
+        foldersConfigurationViewBinding.searchIcon.setOnClickListener {
             val bundleSearchEngineUsed = Bundle()
             bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.currentUser)
             bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchEngineAdapter.SearchResultType.SearchFolders)
@@ -1002,28 +1007,28 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
         delay(90)
 
         if (functionsClass.searchEngineSubscribed()) {
-            categoryHandlerBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-            categoryHandlerBinding.textInputSearchView.visibility = View.VISIBLE
+            foldersConfigurationViewBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+            foldersConfigurationViewBinding.textInputSearchView.visibility = View.VISIBLE
 
-            categoryHandlerBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-            categoryHandlerBinding.searchIcon.visibility = View.INVISIBLE
+            foldersConfigurationViewBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+            foldersConfigurationViewBinding.searchIcon.visibility = View.INVISIBLE
 
             val valueAnimatorCornerDown = ValueAnimator.ofInt(functionsClass.DpToInteger(51), functionsClass.DpToInteger(7))
             valueAnimatorCornerDown.duration = 777
             valueAnimatorCornerDown.addUpdateListener { animator ->
                 val animatorValue = animator.animatedValue as Int
 
-                categoryHandlerBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                foldersConfigurationViewBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
                 finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
             }
             valueAnimatorCornerDown.start()
 
-            val valueAnimatorScalesUp = ValueAnimator.ofInt(functionsClass.DpToInteger(51), categoryHandlerBinding.switchApps.width)
+            val valueAnimatorScalesUp = ValueAnimator.ofInt(functionsClass.DpToInteger(51), foldersConfigurationViewBinding.switchApps.width)
             valueAnimatorScalesUp.duration = 777
             valueAnimatorScalesUp.addUpdateListener { animator ->
                 val animatorValue = animator.animatedValue as Int
-                categoryHandlerBinding.textInputSearchView.layoutParams.width = animatorValue
-                categoryHandlerBinding.textInputSearchView.requestLayout()
+                foldersConfigurationViewBinding.textInputSearchView.layoutParams.width = animatorValue
+                foldersConfigurationViewBinding.textInputSearchView.requestLayout()
             }
             valueAnimatorScalesUp.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator) {
@@ -1031,15 +1036,16 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 }
 
                 override fun onAnimationEnd(animation: Animator) {
-                    categoryHandlerBinding.searchView.requestFocus()
+                    foldersConfigurationViewBinding.searchView.requestFocus()
 
                     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    inputMethodManager.showSoftInput(categoryHandlerBinding.searchView, InputMethodManager.SHOW_IMPLICIT)
+                    inputMethodManager.showSoftInput(foldersConfigurationViewBinding.searchView, InputMethodManager.SHOW_IMPLICIT)
                     Handler().postDelayed({
-                        categoryHandlerBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
-                        categoryHandlerBinding.searchFloatIt.visibility = View.VISIBLE
-                        categoryHandlerBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
-                        categoryHandlerBinding.searchClose.visibility = View.VISIBLE
+                        foldersConfigurationViewBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                        foldersConfigurationViewBinding.searchFloatIt.visibility = View.VISIBLE
+
+                        foldersConfigurationViewBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                        foldersConfigurationViewBinding.searchClose.visibility = View.VISIBLE
                     }, 555)
                 }
 
@@ -1053,9 +1059,9 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
             })
             valueAnimatorScalesUp.start()
 
-            categoryHandlerBinding.searchFloatIt.setOnClickListener {
-                if (!categoryHandlerBinding.searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResultItems.size > 0
-                        && categoryHandlerBinding.searchView.text.toString().length >= 2) {
+            foldersConfigurationViewBinding.searchFloatIt.setOnClickListener {
+                if (!foldersConfigurationViewBinding.searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResultItems.size > 0
+                        && foldersConfigurationViewBinding.searchView.text.toString().length >= 2) {
                     SearchEngineAdapter.allSearchResultItems.forEach { searchResultItem ->
                         when (searchResultItem.searchResultType) {
                             SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
@@ -1074,7 +1080,7 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 }
             }
 
-            categoryHandlerBinding.searchView.addTextChangedListener(object : TextWatcher {
+            foldersConfigurationViewBinding.searchView.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
                 }
@@ -1086,12 +1092,12 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 }
             })
 
-            categoryHandlerBinding.searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            foldersConfigurationViewBinding.searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
                 override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         if (SearchEngineAdapter.allSearchResultItems.size == 1
-                                && !categoryHandlerBinding.searchView.text.toString().isEmpty()
-                                && categoryHandlerBinding.searchView.text.toString().length >= 2) {
+                                && !foldersConfigurationViewBinding.searchView.text.toString().isEmpty()
+                                && foldersConfigurationViewBinding.searchView.text.toString().length >= 2) {
                             when (SearchEngineAdapter.allSearchResultItems[0].searchResultType) {
                                 SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
                                     functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems[0].PackageName!!, SearchEngineAdapter.allSearchResultItems[0].ClassName!!)
@@ -1106,26 +1112,26 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                                 }
                             }
 
-                            categoryHandlerBinding.searchView.setText("")
+                            foldersConfigurationViewBinding.searchView.setText("")
 
                             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                            inputMethodManager.hideSoftInputFromWindow(categoryHandlerBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                            inputMethodManager.hideSoftInputFromWindow(foldersConfigurationViewBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
                             val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
                             valueAnimatorCornerUp.duration = 777
                             valueAnimatorCornerUp.addUpdateListener { animator ->
                                 val animatorValue = animator.animatedValue as Int
-                                categoryHandlerBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                                foldersConfigurationViewBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
                                 finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
                             }
                             valueAnimatorCornerUp.start()
 
-                            val valueAnimatorScales = ValueAnimator.ofInt(categoryHandlerBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
+                            val valueAnimatorScales = ValueAnimator.ofInt(foldersConfigurationViewBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
                             valueAnimatorScales.duration = 777
                             valueAnimatorScales.addUpdateListener { animator ->
                                 val animatorValue = animator.animatedValue as Int
-                                categoryHandlerBinding.textInputSearchView.layoutParams.width = animatorValue
-                                categoryHandlerBinding.textInputSearchView.requestLayout()
+                                foldersConfigurationViewBinding.textInputSearchView.layoutParams.width = animatorValue
+                                foldersConfigurationViewBinding.textInputSearchView.requestLayout()
                             }
                             valueAnimatorScales.addListener(object : Animator.AnimatorListener {
                                 override fun onAnimationStart(animation: Animator) {
@@ -1133,17 +1139,17 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                                 }
 
                                 override fun onAnimationEnd(animation: Animator) {
-                                    categoryHandlerBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                                    categoryHandlerBinding.textInputSearchView.visibility = View.INVISIBLE
+                                    foldersConfigurationViewBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                                    foldersConfigurationViewBinding.textInputSearchView.visibility = View.INVISIBLE
 
-                                    categoryHandlerBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                                    categoryHandlerBinding.searchIcon.visibility = View.VISIBLE
+                                    foldersConfigurationViewBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                                    foldersConfigurationViewBinding.searchIcon.visibility = View.VISIBLE
 
-                                    categoryHandlerBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                                    categoryHandlerBinding.searchFloatIt.visibility = View.INVISIBLE
+                                    foldersConfigurationViewBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                    foldersConfigurationViewBinding.searchFloatIt.visibility = View.INVISIBLE
 
-                                    categoryHandlerBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                                    categoryHandlerBinding.searchClose.visibility = View.INVISIBLE
+                                    foldersConfigurationViewBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                    foldersConfigurationViewBinding.searchClose.visibility = View.INVISIBLE
                                 }
 
                                 override fun onAnimationCancel(animation: Animator) {
@@ -1157,8 +1163,8 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                             valueAnimatorScales.start()
                         } else {
                             if (SearchEngineAdapter.allSearchResultItems.size > 0
-                                    && categoryHandlerBinding.searchView.text.toString().length >= 2) {
-                                categoryHandlerBinding.searchView.showDropDown()
+                                    && foldersConfigurationViewBinding.searchView.text.toString().length >= 2) {
+                                foldersConfigurationViewBinding.searchView.showDropDown()
                             }
                         }
                     }
@@ -1167,27 +1173,27 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                 }
             })
 
-            categoryHandlerBinding.searchClose.setOnClickListener {
-                categoryHandlerBinding.searchView.setText("")
+            foldersConfigurationViewBinding.searchClose.setOnClickListener {
+                foldersConfigurationViewBinding.searchView.setText("")
 
                 val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(categoryHandlerBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                inputMethodManager.hideSoftInputFromWindow(foldersConfigurationViewBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
                 val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
                 valueAnimatorCornerUp.duration = 777
                 valueAnimatorCornerUp.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int
-                    categoryHandlerBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                    foldersConfigurationViewBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
                     finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
                 }
                 valueAnimatorCornerUp.start()
 
-                val valueAnimatorScales = ValueAnimator.ofInt(categoryHandlerBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
+                val valueAnimatorScales = ValueAnimator.ofInt(foldersConfigurationViewBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
                 valueAnimatorScales.duration = 777
                 valueAnimatorScales.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int
-                    categoryHandlerBinding.textInputSearchView.layoutParams.width = animatorValue
-                    categoryHandlerBinding.textInputSearchView.requestLayout()
+                    foldersConfigurationViewBinding.textInputSearchView.layoutParams.width = animatorValue
+                    foldersConfigurationViewBinding.textInputSearchView.requestLayout()
                 }
                 valueAnimatorScales.addListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator) {
@@ -1195,17 +1201,17 @@ class FoldersConfigurationsXYZ : AppCompatActivity(), View.OnClickListener, View
                     }
 
                     override fun onAnimationEnd(animation: Animator) {
-                        categoryHandlerBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                        categoryHandlerBinding.textInputSearchView.visibility = View.INVISIBLE
+                        foldersConfigurationViewBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                        foldersConfigurationViewBinding.textInputSearchView.visibility = View.INVISIBLE
 
-                        categoryHandlerBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                        categoryHandlerBinding.searchIcon.visibility = View.VISIBLE
+                        foldersConfigurationViewBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                        foldersConfigurationViewBinding.searchIcon.visibility = View.VISIBLE
 
-                        categoryHandlerBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                        categoryHandlerBinding.searchFloatIt.visibility = View.INVISIBLE
+                        foldersConfigurationViewBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                        foldersConfigurationViewBinding.searchFloatIt.visibility = View.INVISIBLE
 
-                        categoryHandlerBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                        categoryHandlerBinding.searchClose.visibility = View.INVISIBLE
+                        foldersConfigurationViewBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                        foldersConfigurationViewBinding.searchClose.visibility = View.INVISIBLE
                     }
 
                     override fun onAnimationCancel(animation: Animator) {

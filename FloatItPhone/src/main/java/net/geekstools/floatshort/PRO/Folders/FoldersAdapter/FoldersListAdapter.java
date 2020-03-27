@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 7:00 PM
- * Last modified 3/26/20 6:53 PM
+ * Created by Elias Fazel on 3/26/20 7:35 PM
+ * Last modified 3/26/20 7:32 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,7 +32,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.Folders.AppSelectionList;
-import net.geekstools.floatshort.PRO.Folders.FoldersConfigurationsXYZ;
+import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
@@ -46,7 +46,7 @@ import java.util.ArrayList;
 public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.ViewHolder> {
 
     Context context;
-    FoldersConfigurationsXYZ foldersConfigurations;
+    FoldersConfigurations foldersConfigurations;
 
     FunctionsClass functionsClass;
 
@@ -62,7 +62,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
 
     LoadCustomIcons loadCustomIcons;
 
-    public FoldersListAdapter(FoldersConfigurationsXYZ foldersConfigurations, Context context, ArrayList<AdapterItems> adapterItems) {
+    public FoldersListAdapter(FoldersConfigurations foldersConfigurations, Context context, ArrayList<AdapterItems> adapterItems) {
         this.foldersConfigurations = foldersConfigurations;
         this.context = context;
         this.adapterItems = adapterItems;
@@ -139,6 +139,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                 }
             }
         }
+        viewHolderBinder.categoryName.clearFocus();
 
         viewHolderBinder.categoryName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
