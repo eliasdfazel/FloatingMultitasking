@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/28/20 12:48 PM
+ * Last modified 3/28/20 10:35 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -75,7 +75,7 @@ public class RecoveryAll extends Service {
             stopSelf();
         }
 
-        return functionsClass.serviceMode();
+        return Service.START_NOT_STICKY;
     }
 
     @Override

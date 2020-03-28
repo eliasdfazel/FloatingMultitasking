@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/28/20 12:48 PM
+ * Last modified 3/28/20 12:38 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -87,7 +87,7 @@ public class RemoveAll extends Service {
         startService(App_Unlimited_HIS);
 
         /*Widgets*/
-        Intent Widget_Unlimited_Floating = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Widget.FloatingServices.Widget_Unlimited_Floating.class);
+        Intent Widget_Unlimited_Floating = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Widget.FloatingServices.WidgetUnlimitedFloating.class);
         Widget_Unlimited_Floating.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(Widget_Unlimited_Floating);
 

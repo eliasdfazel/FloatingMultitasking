@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 7:35 PM
- * Last modified 3/26/20 7:02 PM
+ * Created by Elias Fazel on 3/28/20 12:48 PM
+ * Last modified 3/28/20 12:38 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -23,7 +23,6 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.app.WallpaperManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -162,7 +161,7 @@ import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.PopupOptionsFloatingCategory;
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.PopupOptionsFloatingShortcuts;
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash;
-import net.geekstools.floatshort.PRO.Widget.FloatingServices.Widget_Unlimited_Floating;
+import net.geekstools.floatshort.PRO.Widget.FloatingServices.WidgetUnlimitedFloating;
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
@@ -952,7 +951,7 @@ public class FunctionsClass {
             PublicVariable.FloatingWidgets.add(PublicVariable.widgetsCounter, WidgetId);
         }
 
-        Intent w = new Intent(context, Widget_Unlimited_Floating.class);
+        Intent w = new Intent(context, WidgetUnlimitedFloating.class);
         w.putExtra("WidgetId", WidgetId);
         w.putExtra("WidgetLabel", widgetLabel);
         w.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1815,11 +1814,6 @@ public class FunctionsClass {
             e.printStackTrace();
         }
         return VersionCode;
-    }
-
-    public int serviceMode() {
-
-        return Service.START_NOT_STICKY;
     }
 
     public boolean SettingServiceRunning(Class aClass) {

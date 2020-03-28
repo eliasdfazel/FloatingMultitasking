@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 2:16 PM
- * Last modified 3/25/20 2:00 PM
+ * Created by Elias Fazel on 3/28/20 12:48 PM
+ * Last modified 3/28/20 10:35 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -43,7 +43,7 @@ public class RemoteController extends Service {
             sendBroadcast(new Intent("Sticky_Edge_No"));
         }
         stopSelf();
-        return functionsClass.serviceMode();
+        return Service.START_NOT_STICKY;
     }
 
     @Override
