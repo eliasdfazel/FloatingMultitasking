@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 12:48 PM
- * Last modified 3/28/20 12:38 PM
+ * Created by Elias Fazel on 3/28/20 4:03 PM
+ * Last modified 3/28/20 3:24 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -931,12 +931,13 @@ public class FunctionsClass {
 
     /*Floating Widgets Function*/
     public void runUnlimitedWidgetService(int WidgetId, String widgetLabel) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(new Intent(context, Checkpoint.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+            return;
         }
+
         try {
             PublicVariable.floatingCounter++;
             PublicVariable.floatingWidgetsCounter_Widgets++;
@@ -956,6 +957,7 @@ public class FunctionsClass {
         w.putExtra("WidgetLabel", widgetLabel);
         w.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(w);
+
         if (PublicVariable.floatingCounter == 1) {
             if (Build.VERSION.SDK_INT < 26) {
                 context.startService(new Intent(context, BindServices.class));

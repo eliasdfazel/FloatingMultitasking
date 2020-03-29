@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 12:48 PM
- * Last modified 3/28/20 12:46 PM
+ * Created by Elias Fazel on 3/28/20 4:03 PM
+ * Last modified 3/28/20 4:00 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,10 +24,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.DisplayMetrics
 import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -47,7 +44,6 @@ class WidgetUnlimitedFloating : Service() {
 
     private val layoutParams: ArrayList<WindowManager.LayoutParams> = ArrayList<WindowManager.LayoutParams>()
 
-  //  private val floatingView: ArrayList<ViewGroup> = ArrayList<ViewGroup>()
     private val widgetLayout: ArrayList<ViewGroup> = ArrayList<ViewGroup>()
 
     private val wholeViewWidget: ArrayList<RelativeLayout> = ArrayList<RelativeLayout>()
@@ -76,26 +72,68 @@ class WidgetUnlimitedFloating : Service() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        super.onStartCommand(intent, flags, startId)
+    override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
+        super.onStartCommand(intent, flags, serviceStartId)
 
+        val startId = (serviceStartId - 1)
         floatingWidgetsBinding.add(startId, FloatingWidgetsBinding.inflate(layoutInflater))
 
-        widgetLayout[startId] = floatingWidgetsBinding[startId].widgetViewGroup
-        wholeViewWidget[startId] = floatingWidgetsBinding[startId].wholeViewWidget
-        widgetLabel[startId] = floatingWidgetsBinding[startId].widgetLabel
-        widgetMoveButton[startId] = floatingWidgetsBinding[startId].widgetMoveButton
-        widgetCloseButton[startId] = floatingWidgetsBinding[startId].widgetCloseButton
-        widgetResizeControl[startId] = floatingWidgetsBinding[startId].widgetResizeControl
+        widgetLayout.add(startId, floatingWidgetsBinding[startId].widgetViewGroup)
+        wholeViewWidget.add(startId, floatingWidgetsBinding[startId].wholeViewWidget)
+        widgetLabel.add(startId, floatingWidgetsBinding[startId].widgetLabel)
+        widgetMoveButton.add(startId, floatingWidgetsBinding[startId].widgetMoveButton)
+        widgetCloseButton.add(startId, floatingWidgetsBinding[startId].widgetCloseButton)
+        widgetResizeControl.add(startId, floatingWidgetsBinding[startId].widgetResizeControl)
 
         intent?.run {
-            appWidgetId[startId] = this@run.getIntExtra("WidgetId", -1)
+
+            if (this@run.hasExtra(getString(R.string.remove_all_floatings))) {
+                if (this@run.getStringExtra(getString(R.string.remove_all_floatings)) == getString(R.string.remove_all_floatings)) {
+                    for (removeCount in 0 until startId) {
+                        try {
+                            if (floatingWidgetsBinding[removeCount].root.isShown) {
+                                try {
+                                    windowManager.removeView(floatingWidgetsBinding[removeCount].root)
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                } finally {
+                                    PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1
+
+                                    if (PublicVariable.floatingCounter == 0) {
+                                        if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
+
+                                            stopService(Intent(applicationContext, BindServices::class.java))
+                                        }
+                                    }
+                                }
+                            } else if (PublicVariable.floatingCounter == 0) {
+
+                                if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
+
+                                    stopService(Intent(applicationContext, BindServices::class.java))
+                                }
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                    PublicVariable.FloatingWidgets.clear()
+                    PublicVariable.widgetsCounter = -1
+
+                    stopSelf()
+
+                    return START_NOT_STICKY
+                }
+            }
+
+            appWidgetId.add(startId, this@run.getIntExtra("WidgetId", -1))
 
             appWidgetManager.getAppWidgetInfo(appWidgetId[startId])?.let {
 
-                appWidgetProviderInfo[startId] = it
+                appWidgetProviderInfo.add(startId, it)
 
-                appWidgetHosts[startId] = AppWidgetHost(applicationContext, System.currentTimeMillis().toInt())
+                appWidgetHosts.add(startId, AppWidgetHost(applicationContext, System.currentTimeMillis().toInt()))
                 appWidgetHosts[startId].startListening()
 
                 if (PublicVariable.themeLightDark) {
@@ -108,7 +146,7 @@ class WidgetUnlimitedFloating : Service() {
                     widgetLabel[startId].setTextColor(getColor(R.color.light))
                 }
 
-                widgetColor[startId] = functionsClass.extractVibrantColor(appWidgetProviderInfo[startId].loadIcon(applicationContext, DisplayMetrics.DENSITY_LOW))
+                widgetColor.add(startId, functionsClass.extractVibrantColor(appWidgetProviderInfo[startId].loadIcon(applicationContext, DisplayMetrics.DENSITY_LOW)))
 
                 if (this@run.hasExtra("WidgetLabel")) {
                     val widgetLabelText = this@run.getStringExtra("WidgetLabel")
@@ -139,10 +177,10 @@ class WidgetUnlimitedFloating : Service() {
                 widgetCloseButton[startId].setImageDrawable(closeLayerDrawable)
                 widgetResizeControl[startId].background = resizeDrawable
 
-                appWidgetHostView[startId] = appWidgetHosts[startId].createView(applicationContext, appWidgetId[startId], appWidgetProviderInfo[startId])
+                appWidgetHostView.add(startId, appWidgetHosts[startId].createView(applicationContext, appWidgetId[startId], appWidgetProviderInfo[startId]))
 
-                val initWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 213f, getResources().getDisplayMetrics()).toInt()
-                val initHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 133f, getResources().getDisplayMetrics()).toInt()
+                val initWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 213f, resources.displayMetrics).toInt()
+                val initHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 133f, resources.displayMetrics).toInt()
 
                 val widgetBundleConfiguration = Bundle()
                 widgetBundleConfiguration.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, initWidth)
@@ -157,13 +195,13 @@ class WidgetUnlimitedFloating : Service() {
                 widgetLayout[startId].addView(appWidgetHostView[startId])
 
                 val widgetRelativeLayout = RelativeLayout.LayoutParams(initWidth, initHeight)
-                wholeViewWidget[startId].elevation = 19f
                 wholeViewWidget[startId].layoutParams = widgetRelativeLayout
                 wholeViewWidget[startId].requestLayout()
 
-                layoutParams[startId] = functionsClass.normalWidgetLayoutParams(appWidgetProviderInfo[startId].provider.packageName,
-                        appWidgetId[startId],
-                        initWidth, initHeight)
+                layoutParams.add(startId,
+                        functionsClass.normalWidgetLayoutParams(appWidgetProviderInfo[startId].provider.packageName,
+                                appWidgetId[startId],
+                                initWidth, initHeight))
                 layoutParams[startId].windowAnimations = android.R.style.Animation_Dialog
 
                 try {
@@ -175,92 +213,103 @@ class WidgetUnlimitedFloating : Service() {
                 widgetLabel[startId].setOnClickListener {
 
                 }
-                widgetLabel[startId].setOnTouchListener { view, motionEvent ->
+                widgetLabel[startId].setOnTouchListener(object : View.OnTouchListener {
                     val layoutParamsTouch = layoutParams[startId]
-                    var initialX = 0
-                    var initialY = 0
 
-                    var initialTouchX = 0f
-                    var initialTouchY = 0f
+                    var initialX: Int = 0
+                    var initialY: Int = 0
 
-                    when (motionEvent.action) {
-                        MotionEvent.ACTION_DOWN -> {
+                    var initialTouchX: Float = 0f
+                    var initialTouchY: Float = 0f
 
-                            initialX = layoutParamsTouch.x
-                            initialY = layoutParamsTouch.y
+                    override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
 
-                            initialTouchX = motionEvent.rawX
-                            initialTouchY = motionEvent.rawY
-                        }
-                        MotionEvent.ACTION_UP -> {
+                        when (motionEvent.action) {
+                            MotionEvent.ACTION_DOWN -> {
 
-                            layoutParamsTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt()
-                            layoutParamsTouch.y = initialY + (motionEvent.rawY - initialTouchY).toInt()
+                                initialX = layoutParamsTouch.x
+                                initialY = layoutParamsTouch.y
 
-                            functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
-                                    "X", layoutParamsTouch.x)
-                            functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
-                                    "Y", layoutParamsTouch.y)
-                        }
-                        MotionEvent.ACTION_MOVE -> {
+                                initialTouchX = motionEvent.rawX
+                                initialTouchY = motionEvent.rawY
 
-                            layoutParamsTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt()
-                            layoutParamsTouch.y = initialY + (motionEvent.rawY - initialTouchY).toInt()
-                            try {
-                                windowManager.updateViewLayout(floatingWidgetsBinding[startId].root, layoutParamsTouch)
-                            } catch (e: WindowManager.InvalidDisplayException) {
-                                e.printStackTrace()
+                            }
+                            MotionEvent.ACTION_UP -> {
+
+                                layoutParamsTouch.x = initialX + ((motionEvent.rawX - initialTouchX)).toInt()
+                                layoutParamsTouch.y = initialY + ((motionEvent.rawY - initialTouchY)).toInt()
+
+                                functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                        "X", layoutParamsTouch.x)
+                                functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                        "Y", layoutParamsTouch.y)
+                            }
+                            MotionEvent.ACTION_MOVE -> {
+
+                                layoutParamsTouch.x = initialX + ((motionEvent.rawX - initialTouchX)).toInt()
+                                layoutParamsTouch.y = initialY + ((motionEvent.rawY - initialTouchY)).toInt()
+
+                                try {
+                                    windowManager.updateViewLayout(floatingWidgetsBinding[startId].root, layoutParamsTouch)
+                                } catch (e: WindowManager.InvalidDisplayException) {
+                                    e.printStackTrace()
+                                }
                             }
                         }
-                    }
 
-                    false
-                }
+                        return false
+                    }
+                })
 
                 widgetMoveButton[startId].setOnClickListener {
 
                 }
-                widgetMoveButton[startId].setOnTouchListener { view, motionEvent ->
+                widgetMoveButton[startId].setOnTouchListener(object : View.OnTouchListener {
                     val layoutParamsTouch = layoutParams[startId]
-                    var initialX = 0
-                    var initialY = 0
 
-                    var initialTouchX = 0f
-                    var initialTouchY = 0f
+                    var initialX: Int = 0
+                    var initialY: Int = 0
 
-                    when (motionEvent.action) {
-                        MotionEvent.ACTION_DOWN -> {
+                    var initialTouchX: Float = 0f
+                    var initialTouchY: Float = 0f
 
-                            initialX = layoutParamsTouch.x
-                            initialY = layoutParamsTouch.y
+                    override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
 
-                            initialTouchX = motionEvent.rawX
-                            initialTouchY = motionEvent.rawY
-                        }
-                        MotionEvent.ACTION_UP -> {
+                        when (motionEvent.action) {
+                            MotionEvent.ACTION_DOWN -> {
 
-                            layoutParamsTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt()
-                            layoutParamsTouch.y = initialY + (motionEvent.rawY - initialTouchY).toInt()
+                                initialX = layoutParamsTouch.x
+                                initialY = layoutParamsTouch.y
 
-                            functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
-                                    "X", layoutParamsTouch.x)
-                            functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
-                                    "Y", layoutParamsTouch.y)
-                        }
-                        MotionEvent.ACTION_MOVE -> {
+                                initialTouchX = motionEvent.rawX
+                                initialTouchY = motionEvent.rawY
+                            }
+                            MotionEvent.ACTION_UP -> {
 
-                            layoutParamsTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt()
-                            layoutParamsTouch.y = initialY + (motionEvent.rawY - initialTouchY).toInt()
-                            try {
-                                windowManager.updateViewLayout(floatingWidgetsBinding[startId].root, layoutParamsTouch)
-                            } catch (e: WindowManager.InvalidDisplayException) {
-                                e.printStackTrace()
+                                layoutParamsTouch.x = (initialX + (motionEvent.rawX - initialTouchX)).toInt()
+                                layoutParamsTouch.y = (initialY + (motionEvent.rawY - initialTouchY)).toInt()
+
+                                functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                        "X", layoutParamsTouch.x)
+                                functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                        "Y", layoutParamsTouch.y)
+                            }
+                            MotionEvent.ACTION_MOVE -> {
+
+                                layoutParamsTouch.x = (initialX + (motionEvent.rawX - initialTouchX)).toInt()
+                                layoutParamsTouch.y = (initialY + (motionEvent.rawY - initialTouchY)).toInt()
+                                try {
+                                    windowManager.updateViewLayout(floatingWidgetsBinding[startId].root, layoutParamsTouch)
+                                } catch (e: WindowManager.InvalidDisplayException) {
+                                    e.printStackTrace()
+                                }
                             }
                         }
-                    }
 
-                    false
-                }
+                        return false
+                    }
+                })
+
 
                 widgetCloseButton[startId].setOnClickListener {
 
@@ -283,49 +332,52 @@ class WidgetUnlimitedFloating : Service() {
                     }
                 }
 
-                widgetResizeControl[startId].setOnTouchListener { view, motionEvent ->
+                widgetResizeControl[startId].setOnTouchListener(object : View.OnTouchListener {
                     val layoutParamsTouch = layoutParams[startId]
 
-                    var initialWidth = 0
-                    var initialHeight = 0
+                    var initialWidth: Int = 0
+                    var initialHeight: Int = 0
 
-                    var initialTouchX = 0f
-                    var initialTouchY = 0f
+                    var initialTouchX: Float = 0f
+                    var initialTouchY: Float = 0f
 
-                    when (motionEvent.action) {
-                        MotionEvent.ACTION_DOWN -> {
+                    override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
 
-                            initialWidth = layoutParamsTouch.width
-                            initialHeight = layoutParamsTouch.height
+                        when (motionEvent.action) {
+                            MotionEvent.ACTION_DOWN -> {
 
-                            initialTouchX = motionEvent.rawX
-                            initialTouchY = motionEvent.rawY
-                        }
-                        MotionEvent.ACTION_UP ->
+                                initialWidth = layoutParamsTouch.width
+                                initialHeight = layoutParamsTouch.height
 
-                            if (layoutParamsTouch.width < initWidth || layoutParamsTouch.height < initHeight) {
-
-                            } else {
-                                functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
-                                        "WidgetWidth", layoutParamsTouch.width)
-                                functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
-                                        "WidgetHeight", layoutParamsTouch.height)
+                                initialTouchX = motionEvent.rawX
+                                initialTouchY = motionEvent.rawY
                             }
-                        MotionEvent.ACTION_MOVE -> {
+                            MotionEvent.ACTION_UP ->
 
-                            val xWidthMove = initialWidth + (motionEvent.rawX - initialTouchX).toInt()
-                            val yHeightMove = initialHeight + (motionEvent.rawY - initialTouchY).toInt()
+                                if (layoutParamsTouch.width < initWidth || layoutParamsTouch.height < initHeight) {
 
-                            layoutParamsTouch.width = xWidthMove
-                            layoutParamsTouch.height = yHeightMove
+                                } else {
+                                    functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                            "WidgetWidth", layoutParamsTouch.width)
+                                    functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                            "WidgetHeight", layoutParamsTouch.height)
+                                }
+                            MotionEvent.ACTION_MOVE -> {
 
-                            appWidgetHostView[startId].updateAppWidgetSize(Bundle(), layoutParamsTouch.width, layoutParamsTouch.height, layoutParamsTouch.width, layoutParamsTouch.height)
-                            windowManager.updateViewLayout(floatingWidgetsBinding[startId].root, layoutParamsTouch)
+                                val xWidthMove = (initialWidth + (motionEvent.rawX - initialTouchX)).toInt()
+                                val yHeightMove = (initialHeight + (motionEvent.rawY - initialTouchY)).toInt()
+
+                                layoutParamsTouch.width = xWidthMove
+                                layoutParamsTouch.height = yHeightMove
+
+                                appWidgetHostView[startId].updateAppWidgetSize(Bundle(), layoutParamsTouch.width, layoutParamsTouch.height, layoutParamsTouch.width, layoutParamsTouch.height)
+                                windowManager.updateViewLayout(floatingWidgetsBinding[startId].root, layoutParamsTouch)
+                            }
                         }
-                    }
 
-                    false
-                }
+                        return false
+                    }
+                })
             }
         }
 

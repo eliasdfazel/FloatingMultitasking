@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 3/28/20 12:48 PM
-  ~ Last modified 3/28/20 12:38 PM
+  ~ Created by Elias Fazel on 3/28/20 4:03 PM
+  ~ Last modified 3/28/20 3:25 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -494,6 +494,7 @@
             android:name=".Shortcuts.FloatingServices.App_Unlimited_Nfc"/>
         <service
             android:name=".Shortcuts.FloatingServices.App_Unlimited_Time"/>
+
         <service
             android:name=".Folders.FloatingServices.Folder_Unlimited_Floating" />
         <service
@@ -506,8 +507,10 @@
             android:name=".Folders.FloatingServices.Folder_Unlimited_Nfc" />
         <service
             android:name=".Folders.FloatingServices.Folder_Unlimited_Time" />
+
         <service
             android:name=".Widget.FloatingServices.WidgetUnlimitedFloating"/>
+
         <service
             android:name=".Shortcuts.FloatingServices.App_Unlimited_HIS"/>
         <!-- Float It -->
