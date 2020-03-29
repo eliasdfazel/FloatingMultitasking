@@ -53,15 +53,15 @@ android {
 
     flavorDimensions "FloatIt"
     productFlavors {
-        releaseConfig {
+        productionConfiguration {
             dimension "FloatIt"
 
-            versionNameSuffix '[PRO][WearOS][Watch]'
+            versionNameSuffix '[PRO][Android][Phone]'
         }
-        betaConfig {
+        betaConfiguration {
             dimension "FloatIt"
 
-            versionNameSuffix '[PRO][WearOS][Watch][BETA]'
+            versionNameSuffix '[PRO][Android][Phone][BETA]'
         }
     }
 }
