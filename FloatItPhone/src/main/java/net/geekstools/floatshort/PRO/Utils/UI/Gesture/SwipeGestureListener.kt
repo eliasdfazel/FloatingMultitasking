@@ -8,15 +8,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-package net.geeksempire.primepuzzles.GameView.UI
+package net.geekstools.floatshort.PRO.Utils.UI.Gesture
 
 import android.content.Context
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
-import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
-import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
-import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
 import kotlin.math.abs
 
 class SwipeGestureListener(private val context: Context,

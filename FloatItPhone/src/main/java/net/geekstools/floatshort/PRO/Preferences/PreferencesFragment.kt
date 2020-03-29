@@ -108,7 +108,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_screen, rootKey)
 
-        functionsClassDataActivity = FunctionsClassDataActivity(activity!!)
+        functionsClassDataActivity = FunctionsClassDataActivity(requireActivity())
 
         functionsClass = FunctionsClass(context)
         functionsClassDialogues = FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
@@ -418,7 +418,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         shapes.setOnPreferenceClickListener {
-            PreferencesDataUtilShape(activity!!, sharedPreferences, functionsClass, shapes).let {
+            PreferencesDataUtilShape(requireActivity(), sharedPreferences, functionsClass, shapes).let {
                 setupShapes(it)
             }
 
@@ -446,7 +446,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
             layoutParams.dimAmount = 0.57f
 
-            val dialog = Dialog(activity!!)
+            val dialog = Dialog(requireActivity())
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(R.layout.seekbar_preferences)
             dialog.window!!.attributes = layoutParams
@@ -476,11 +476,11 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 backgroundDot.setTint(PublicVariable.primaryColorOpposite)
                 layerDrawableLoadLogo = LayerDrawable(arrayOf(
                         backgroundDot,
-                        context!!.getDrawable(R.drawable.ic_launcher_dots)
+                        requireContext().getDrawable(R.drawable.ic_launcher_dots)
                 ))
             } catch (e: NullPointerException) {
                 e.printStackTrace()
-                layerDrawableLoadLogo = context!!.getDrawable(R.drawable.ic_launcher)
+                layerDrawableLoadLogo = requireContext().getDrawable(R.drawable.ic_launcher)
             }
 
             transparentIcon.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
@@ -515,7 +515,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             }
 
             dialog.setOnDismissListener {
-                val drawPrefAutoTrans = context!!.getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
+                val drawPrefAutoTrans = requireContext().getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
                 val backPrefAutoTrans = drawPrefAutoTrans.findDrawableByLayerId(R.id.backgroundTemporary).mutate()
                 backPrefAutoTrans.setTint(PublicVariable.primaryColor)
                 backPrefAutoTrans.alpha = functionsClass.readDefaultPreference("autoTrans", 255)
@@ -541,7 +541,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
             layoutParams.dimAmount = 0.57f
 
-            val dialog = Dialog(activity!!)
+            val dialog = Dialog(requireActivity())
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(R.layout.seekbar_preferences)
             dialog.window!!.attributes = layoutParams
@@ -572,11 +572,11 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 backgroundDot.setTint(PublicVariable.primaryColorOpposite)
                 layerDrawableLoadLogo = LayerDrawable(arrayOf(
                         backgroundDot,
-                        context!!.getDrawable(R.drawable.ic_launcher_dots)
+                        requireContext().getDrawable(R.drawable.ic_launcher_dots)
                 ))
             } catch (e: java.lang.NullPointerException) {
                 e.printStackTrace()
-                layerDrawableLoadLogo = context!!.getDrawable(R.drawable.ic_launcher)
+                layerDrawableLoadLogo = requireContext().getDrawable(R.drawable.ic_launcher)
             }
 
             val iconHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, functionsClass.readDefaultPreference("floatingSize", 39).toFloat(), resources.displayMetrics).toInt()
@@ -650,7 +650,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
             layoutParams.dimAmount = 0.57f
 
-            val dialog = Dialog(activity!!)
+            val dialog = Dialog(requireActivity())
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(R.layout.seekbar_preferences)
             dialog.window!!.attributes = layoutParams
@@ -685,11 +685,11 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 backgroundDot.setTint(PublicVariable.primaryColorOpposite)
                 layerDrawableLoadLogo = LayerDrawable(arrayOf(
                         backgroundDot,
-                        context!!.getDrawable(R.drawable.ic_launcher_dots)
+                        requireContext().getDrawable(R.drawable.ic_launcher_dots)
                 ))
             } catch (e: java.lang.NullPointerException) {
                 e.printStackTrace()
-                layerDrawableLoadLogo = context!!.getDrawable(R.drawable.ic_launcher)
+                layerDrawableLoadLogo = requireContext().getDrawable(R.drawable.ic_launcher)
             }
 
 
@@ -707,7 +707,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                         touchingDelay = true
                         runnablePressHold = Runnable {
                             if (touchingDelay) {
-                                val vibrator = context!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                val vibrator = requireContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                                 vibrator.vibrate(333)
                                 /*
                                                                          *
@@ -753,15 +753,15 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         flingSensitivity.setOnPreferenceClickListener {
-            PreferencesDataUtilFling(activity!!, functionsClass).let {
+            PreferencesDataUtilFling(requireActivity(), functionsClass).let {
                 setupFlingSensitivity(it)
             }
 
             true
         }
 
-        if (!context!!.getFileStreamPath(".LitePreferenceCheckpoint").exists()) {
-            val activityManager = context!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
+        if (!requireContext().getFileStreamPath(".LitePreferenceCheckpoint").exists()) {
+            val activityManager = requireContext().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
             val memoryInfo = ActivityManager.MemoryInfo()
             if (activityManager != null) {
                 activityManager.getMemoryInfo(memoryInfo)
@@ -788,18 +788,19 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
         firebaseRemoteConfig.fetch(0).addOnSuccessListener {
             firebaseRemoteConfig.activate().addOnSuccessListener {
-                if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(context!!.packageName)) {
+
+                if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(requireContext().packageName)) {
                     functionsClass.upcomingChangeLog(
-                            activity!!,
+                            requireActivity(),
                             firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
                 }
-                if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClass.appVersionCode(context!!.packageName)) {
+                if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClass.appVersionCode(requireContext().packageName)) {
                     whatsnew.summary = getString(R.string.betaUpdateAvailable)
                     betaChangeLog = firebaseRemoteConfig.getString(getString(R.string.BETAstringUpcomingChangeLogPhone))
                     betaVersionCode = firebaseRemoteConfig.getString(getString(R.string.BETAintegerVersionCodeNewUpdatePhone))
                 }
                 if (firebaseRemoteConfig.getBoolean(getString(R.string.adAppForceLoad))) {
-                    Glide.with(context!!)
+                    Glide.with(requireContext())
                             .load(firebaseRemoteConfig.getString(getString(R.string.adAppIconLink)))
                             .addListener(object : RequestListener<Drawable?> {
                                 override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
@@ -807,7 +808,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                                 }
 
                                 override fun onResourceReady(resource: Drawable?, model: Any, target: Target<Drawable?>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
-                                    activity!!.runOnUiThread {
+                                    requireActivity().runOnUiThread {
                                         adApp.setIcon(resource)
                                     }
                                     return false
@@ -836,31 +837,31 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
 
-        val drawSecurity: LayerDrawable  = context!!.getDrawable(R.drawable.draw_security_preferences) as LayerDrawable
+        val drawSecurity: LayerDrawable = requireContext().getDrawable(R.drawable.draw_security_preferences) as LayerDrawable
         val backSecurity = drawSecurity.findDrawableByLayerId(R.id.backgroundTemporary)
         backSecurity.setTint(PublicVariable.primaryColorOpposite)
         pinPassword.icon = drawSecurity
 
-        val drawSmart: LayerDrawable = context!!.getDrawable(R.drawable.draw_smart) as LayerDrawable
+        val drawSmart: LayerDrawable = requireContext().getDrawable(R.drawable.draw_smart) as LayerDrawable
         val backSmart = drawSmart.findDrawableByLayerId(R.id.backgroundTemporary)
 
-        val drawPref: LayerDrawable  = context!!.getDrawable(R.drawable.draw_pref) as LayerDrawable
+        val drawPref: LayerDrawable = requireContext().getDrawable(R.drawable.draw_pref) as LayerDrawable
         val backPref = drawPref.findDrawableByLayerId(R.id.backgroundTemporary)
 
-        val drawPrefAutoTrans: LayerDrawable  = context!!.getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
+        val drawPrefAutoTrans: LayerDrawable = requireContext().getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
         val backPrefAutoTrans = drawPrefAutoTrans.findDrawableByLayerId(R.id.backgroundTemporary).mutate()
 
-        val drawPrefLite: LayerDrawable  = context!!.getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
+        val drawPrefLite: LayerDrawable = requireContext().getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
         val backPrefLite = drawPrefLite.findDrawableByLayerId(R.id.backgroundTemporary).mutate()
         val drawablePrefLite = drawPrefLite.findDrawableByLayerId(R.id.wPref)
-        backPrefLite.setTint(if (PublicVariable.themeLightDark) context!!.getColor(R.color.dark) else context!!.getColor(R.color.light))
-        drawablePrefLite.setTint(if (PublicVariable.themeLightDark) context!!.getColor(R.color.light) else context!!.getColor(R.color.dark))
+        backPrefLite.setTint(if (PublicVariable.themeLightDark) requireContext().getColor(R.color.dark) else requireContext().getColor(R.color.light))
+        drawablePrefLite.setTint(if (PublicVariable.themeLightDark) requireContext().getColor(R.color.light) else requireContext().getColor(R.color.dark))
         lite.icon = drawPrefLite
 
-        val drawFloatIt: LayerDrawable = context!!.getDrawable(R.drawable.draw_floatit) as LayerDrawable
+        val drawFloatIt: LayerDrawable = requireContext().getDrawable(R.drawable.draw_floatit) as LayerDrawable
         val backFloatIt = drawFloatIt.findDrawableByLayerId(R.id.backgroundTemporary)
 
-        val drawSupport: LayerDrawable  = context!!.getDrawable(R.drawable.draw_support) as LayerDrawable
+        val drawSupport: LayerDrawable = requireContext().getDrawable(R.drawable.draw_support) as LayerDrawable
         val backSupport = drawSupport.findDrawableByLayerId(R.id.backgroundTemporary)
 
         backSmart.setTint(PublicVariable.primaryColor)
@@ -893,35 +894,35 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         when (sharedPreferences.getInt("iconShape", 0)) {
             1 -> {
-                val drawableTeardrop: Drawable = context!!.getDrawable(R.drawable.droplet_icon)!!
+                val drawableTeardrop: Drawable = requireContext().getDrawable(R.drawable.droplet_icon)!!
                 drawableTeardrop.setTint(PublicVariable.primaryColor)
-                val layerDrawable1 = LayerDrawable(arrayOf(drawableTeardrop, context!!.getDrawable(R.drawable.w_pref_gui)))
+                val layerDrawable1 = LayerDrawable(arrayOf(drawableTeardrop, requireContext().getDrawable(R.drawable.w_pref_gui)))
                 shapes.icon = layerDrawable1
                 shapes.summary = getString(R.string.droplet)
             }
             2 -> {
-                val drawableCircle: Drawable = context!!.getDrawable(R.drawable.circle_icon)!!
+                val drawableCircle: Drawable = requireContext().getDrawable(R.drawable.circle_icon)!!
                 drawableCircle.setTint(PublicVariable.primaryColor)
-                val layerDrawable2 = LayerDrawable(arrayOf(drawableCircle, context!!.getDrawable(R.drawable.w_pref_gui)))
+                val layerDrawable2 = LayerDrawable(arrayOf(drawableCircle, requireContext().getDrawable(R.drawable.w_pref_gui)))
                 shapes.icon = layerDrawable2
                 shapes.summary = getString(R.string.circle)
             }
             3 -> {
-                val drawableSquare: Drawable = context!!.getDrawable(R.drawable.square_icon)!!
+                val drawableSquare: Drawable = requireContext().getDrawable(R.drawable.square_icon)!!
                 drawableSquare.setTint(PublicVariable.primaryColor)
-                val layerDrawable3 = LayerDrawable(arrayOf(drawableSquare, context!!.getDrawable(R.drawable.w_pref_gui)))
+                val layerDrawable3 = LayerDrawable(arrayOf(drawableSquare, requireContext().getDrawable(R.drawable.w_pref_gui)))
                 shapes.icon = layerDrawable3
                 shapes.summary = getString(R.string.square)
             }
             4 -> {
-                val drawableSquircle: Drawable = context!!.getDrawable(R.drawable.squircle_icon)!!
+                val drawableSquircle: Drawable = requireContext().getDrawable(R.drawable.squircle_icon)!!
                 drawableSquircle.setTint(PublicVariable.primaryColor)
-                val layerDrawable4 = LayerDrawable(arrayOf(drawableSquircle, context!!.getDrawable(R.drawable.w_pref_gui)))
+                val layerDrawable4 = LayerDrawable(arrayOf(drawableSquircle, requireContext().getDrawable(R.drawable.w_pref_gui)))
                 shapes.icon = layerDrawable4
                 shapes.summary = getString(R.string.squircle)
             }
             0 -> {
-                val drawableNoShape: Drawable = context!!.getDrawable(R.drawable.w_pref_noshape)!!
+                val drawableNoShape: Drawable = requireContext().getDrawable(R.drawable.w_pref_noshape)!!
                 drawableNoShape.setTint(PublicVariable.primaryColor)
                 shapes.icon = drawableNoShape
             }
@@ -967,7 +968,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         super.onDestroy()
 
         if (functionsClass.automationFeatureEnable()) {
-            context!!.startService(Intent(context, BindServices::class.java))
+            requireContext().startService(Intent(context, BindServices::class.java))
         }
     }
 }
