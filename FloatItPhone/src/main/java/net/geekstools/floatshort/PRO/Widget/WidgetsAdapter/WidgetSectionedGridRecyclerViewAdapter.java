@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 4:57 PM
- * Last modified 3/28/20 4:56 PM
+ * Created by Elias Fazel on 3/28/20 6:01 PM
+ * Last modified 3/28/20 6:01 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,24 +32,25 @@ import java.util.Comparator;
 
 public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int SECTION_TYPE = 0;
     private final Context context;
-    FunctionsClass functionsClass;
+
+    private FunctionsClass functionsClass;
+
     private boolean validate = true;
     private int sectionResourceId;
-    private LayoutInflater layoutInflater;
+
     private RecyclerView.Adapter baseAdapter;
     private SparseArray<Section> sectionSparseArray = new SparseArray<Section>();
-    private RecyclerView recyclerView;
+
+    private static final int SECTION_TYPE = 0;
 
     public WidgetSectionedGridRecyclerViewAdapter(Context context, int sectionResourceId, RecyclerView recyclerView, RecyclerView.Adapter baseAdapter) {
+
         functionsClass = new FunctionsClass(context);
 
-        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.sectionResourceId = sectionResourceId;
         this.baseAdapter = baseAdapter;
         this.context = context;
-        this.recyclerView = recyclerView;
 
         this.baseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -77,7 +78,7 @@ public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
             }
         });
 
-        final GridLayoutManager layoutManager = (GridLayoutManager) (this.recyclerView.getLayoutManager());
+        final GridLayoutManager layoutManager = (GridLayoutManager) (recyclerView.getLayoutManager());
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -98,14 +99,21 @@ public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder sectionViewHolder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         if (isSectionHeaderPosition(position)) {
-            ((SectionViewHolder) sectionViewHolder).appName.setText(sectionSparseArray.get(position).appName);
-            ((SectionViewHolder) sectionViewHolder).appName.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
-            ((SectionViewHolder) sectionViewHolder).appIcon.setImageDrawable(sectionSparseArray.get(position).appIcon);
+
+            if (viewHolder instanceof SectionViewHolder) {
+                SectionViewHolder sectionViewHolder = (SectionViewHolder) viewHolder;
+
+                sectionViewHolder.appName.setText(sectionSparseArray.get(position).sectionTitle);
+                sectionViewHolder.appName.setTextColor(PublicVariable.themeLightDark ? context.getColor(R.color.dark) : context.getColor(R.color.light));
+                sectionViewHolder.appIcon.setImageDrawable(sectionSparseArray.get(position).appIcon);
+            }
+
         } else {
+
             try {
-                baseAdapter.onBindViewHolder(sectionViewHolder, sectionedPositionToPosition(position));
+                baseAdapter.onBindViewHolder(viewHolder, sectionedPositionToPosition(position));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -115,6 +123,7 @@ public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
 
     @Override
     public int getItemViewType(int position) {
+
         return isSectionHeaderPosition(position)
                 ? SECTION_TYPE
                 : baseAdapter.getItemViewType(sectionedPositionToPosition(position)) + 1;
@@ -127,11 +136,13 @@ public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
             @Override
             public int compare(Section o, Section o1) {
                 int comparison = 1;
+
                 try {
                     comparison = Integer.compare(o.firstPosition, o1.firstPosition);
                 } catch (Exception e) {
                     comparison = 0;
                 }
+
                 return comparison;
             }
         });
@@ -150,17 +161,6 @@ public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
         notifyDataSetChanged();
     }
 
-    public int positionToSectionedPosition(int position) {
-        int offset = 0;
-        for (int i = 0; i < sectionSparseArray.size(); i++) {
-            if (sectionSparseArray.valueAt(i).firstPosition > position) {
-                break;
-            }
-            ++offset;
-        }
-        return position + offset;
-    }
-
     public int sectionedPositionToPosition(int sectionedPosition) {
         if (isSectionHeaderPosition(sectionedPosition)) {
 
@@ -169,15 +169,19 @@ public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
 
         int offset = 0;
         for (int i = 0; i < sectionSparseArray.size(); i++) {
+
             if (sectionSparseArray.valueAt(i).sectionedPosition > sectionedPosition) {
                 break;
             }
+
             --offset;
         }
+
         return sectionedPosition + offset;
     }
 
-    public boolean isSectionHeaderPosition(int position) {
+    private boolean isSectionHeaderPosition(int position) {
+
         return sectionSparseArray.get(position) != null;
     }
 
@@ -197,22 +201,14 @@ public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
         int firstPosition;
         int sectionedPosition;
 
-        String appName;
+        String sectionTitle;
         Drawable appIcon;
 
-        public Section(int firstPosition, String appName, Drawable appIcon) {
+        public Section(int firstPosition, String sectionTitle, Drawable appIcon) {
             this.firstPosition = firstPosition;
 
-            this.appName = appName;
+            this.sectionTitle = sectionTitle;
             this.appIcon = appIcon;
-        }
-
-        public String getTitle() {
-            return this.appName;
-        }
-
-        public Drawable getAppIcon() {
-            return this.appIcon;
         }
     }
 
@@ -221,7 +217,7 @@ public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
         ShapesImage appIcon;
         TextView appName;
 
-        public SectionViewHolder(View view) {
+        SectionViewHolder(View view) {
             super(view);
             appIcon = (ShapesImage) view.findViewById(R.id.appIcon);
             appName = (TextView) view.findViewById(R.id.appName);
