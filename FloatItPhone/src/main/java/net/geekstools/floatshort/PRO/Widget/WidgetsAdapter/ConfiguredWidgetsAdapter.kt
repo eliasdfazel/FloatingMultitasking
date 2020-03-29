@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 4:56 PM
- * Last modified 3/28/20 4:42 PM
+ * Created by Elias Fazel on 3/28/20 5:49 PM
+ * Last modified 3/28/20 5:07 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -123,13 +123,14 @@ class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetC
     }
 
     override fun getItemCount(): Int {
+
         return adapterItems.size
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var widgetItem: RelativeLayout = view.findViewById<View>(R.id.widgetItem) as RelativeLayout
-        var widgetPreview: RelativeLayout = view.findViewById<View>(R.id.widgetPreview) as RelativeLayout
-        var floatTheWidget: ImageView = view.findViewById<View>(R.id.floatTheWidget) as ImageView
-        var widgetLabel: TextInputEditText = view.findViewById<View>(R.id.widgetLabel) as TextInputEditText
+        var widgetItem: RelativeLayout = view.findViewById<RelativeLayout>(R.id.widgetItem) as RelativeLayout
+        var widgetPreview: RelativeLayout = view.findViewById<RelativeLayout>(R.id.widgetPreview) as RelativeLayout
+        var floatTheWidget: ImageView = view.findViewById<ImageView>(R.id.floatTheWidget) as ImageView
+        var widgetLabel: TextInputEditText = view.findViewById<TextInputEditText>(R.id.widgetLabel) as TextInputEditText
     }
 }

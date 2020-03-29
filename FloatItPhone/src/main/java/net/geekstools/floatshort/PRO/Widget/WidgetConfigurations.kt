@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 4:32 PM
- * Last modified 3/28/20 4:32 PM
+ * Created by Elias Fazel on 3/28/20 5:49 PM
+ * Last modified 3/28/20 5:44 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -81,6 +81,7 @@ import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.InstalledWidgetsAdapt
 import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.WidgetSectionedGridRecyclerViewAdapter
 import net.geekstools.floatshort.PRO.databinding.WidgetConfigurationsViewsBinding
 import java.util.*
+import kotlin.Comparator
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
 import kotlin.math.hypot
@@ -613,9 +614,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
             if (widgetConfigurationsViewsBinding.installedNestedScrollView.isShown) {
                 widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.INVISIBLE
+                widgetConfigurationsViewsBinding.installedNestedIndexScrollView.visibility = View.INVISIBLE
+
                 if (!configuredWidgetAvailable) {
                     widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
                 }
+
                 ViewCompat.animate(widgetConfigurationsViewsBinding.addWidget)
                         .rotation(0.0f)
                         .withLayer()
@@ -649,6 +653,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                     }
                 })
+
                 if (functionsClass.appThemeTransparent()) {
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -741,7 +746,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
         firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener {  task ->
+                .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         firebaseRemoteConfig.activate().addOnSuccessListener {
                             if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(packageName)) {
@@ -1095,7 +1100,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             widgetDataModels.asFlow()
                     .onCompletion {
 
-                        loadApplicationsIndexConfigured().await()
+                        loadWidgetsIndexConfigured().await()
 
                         loadSearchEngineData().await()
 
@@ -1133,7 +1138,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                     appIcon,
                                     appWidgetProviderInfo,
                                     appWidgetId,
-                                    widgetDataModel.value.Recovery?:false,
+                                    widgetDataModel.value.Recovery ?: false,
                                     SearchEngineAdapter.SearchResultType.SearchWidgets
                             ))
 
@@ -1157,7 +1162,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             widgetConfigurationsViewsBinding.reconfigure.visibility = View.VISIBLE
 
             val sectionsData = arrayOfNulls<WidgetSectionedGridRecyclerViewAdapter.Section>(configuredWidgetsSections.size)
-            configuredWidgetsSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter (
+            configuredWidgetsSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter(
                     applicationContext,
                     R.layout.widgets_sections,
                     widgetConfigurationsViewsBinding.configuredWidgetList,
@@ -1220,7 +1225,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 }
                 .onCompletion {
 
-                    loadApplicationsIndexInstalled()
+                    loadWidgetsIndexInstalled()
                 }
                 .withIndex().collect { appWidgetProviderInfo ->
                     val packageName: String = appWidgetProviderInfo.value.provider.packageName
@@ -1256,7 +1261,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                         componentNameConfiguration.className,
                                         widgetLabel ?: newAppName,
                                         newAppIcon,
-                                        widgetPreviewDrawable ?: appWidgetProviderInfo.value.loadIcon(applicationContext, DisplayMetrics.DENSITY_HIGH),
+                                        widgetPreviewDrawable
+                                                ?: appWidgetProviderInfo.value.loadIcon(applicationContext, DisplayMetrics.DENSITY_HIGH),
                                         appWidgetProviderInfo.value
                                 ))
 
@@ -1289,7 +1295,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                     null,
                                     widgetLabel ?: newAppName,
                                     newAppIcon,
-                                    widgetPreviewDrawable ?: appWidgetProviderInfo.value.loadIcon(applicationContext, DisplayMetrics.DENSITY_HIGH),
+                                    widgetPreviewDrawable
+                                            ?: appWidgetProviderInfo.value.loadIcon(applicationContext, DisplayMetrics.DENSITY_HIGH),
                                     appWidgetProviderInfo.value
                             ))
                         }
@@ -1314,7 +1321,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         installedWidgetsRecyclerViewAdapter.notifyDataSetChanged()
         val sectionsData = arrayOfNulls<WidgetSectionedGridRecyclerViewAdapter.Section>(installedWidgetsSections.size)
-        widgetSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter (
+        widgetSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter(
                 applicationContext,
                 R.layout.widgets_sections,
                 widgetConfigurationsViewsBinding.installedWidgetList,
@@ -1414,7 +1421,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         widgetConfigurationsViewsBinding.loadingInstalledWidgets.visibility = View.INVISIBLE
     }
 
-    fun loadApplicationsIndexConfigured() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
+    fun loadWidgetsIndexConfigured() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
         withContext(Dispatchers.Main) {
             widgetConfigurationsViewsBinding.indexView.removeAllViews()
         }
@@ -1464,7 +1471,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         }
     }
 
-    fun loadApplicationsIndexInstalled() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+    fun loadWidgetsIndexInstalled() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
         withContext(Dispatchers.Main) {
             widgetConfigurationsViewsBinding.indexViewInstalled.removeAllViews()
         }
@@ -1482,7 +1489,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         withContext(Dispatchers.Main) {
             var textView: TextView? = null
 
-            val indexListFinal: List<String> = java.util.ArrayList(mapIndexFirstItemInstalled.keys)
+            val indexListFinal: List<String> = ArrayList(mapIndexFirstItemInstalled.keys)
             for (index in indexListFinal) {
                 textView = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
                 textView.text = index.toUpperCase(Locale.getDefault())
@@ -1568,7 +1575,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         val popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (if (functionsClass.UsageStatsEnabled()) functionsClass.DpToInteger(7) else functionsClass.DpToInteger(7)).toFloat()
 
         widgetConfigurationsViewsBinding.nestedIndexScrollView.setOnTouchListener { view, motionEvent ->
-            when(motionEvent.action) {
+            when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
                     if (functionsClass.litePreferencesEnabled()) {
 
@@ -1596,7 +1603,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                             widgetConfigurationsViewsBinding.configuredWidgetNestedScrollView.smoothScrollTo(
                                     0,
-                                    widgetConfigurationsViewsBinding.configuredWidgetList.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]?:0).y.roundToInt()
+                                    widgetConfigurationsViewsBinding.configuredWidgetList.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]
+                                            ?: 0).y.roundToInt()
                             )
                         } else {
                             if (widgetConfigurationsViewsBinding.popupIndex.isShown) {
@@ -1610,14 +1618,16 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     if (functionsClass.litePreferencesEnabled()) {
                         widgetConfigurationsViewsBinding.configuredWidgetNestedScrollView.smoothScrollTo(
                                 0,
-                                widgetConfigurationsViewsBinding.configuredWidgetList.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]?:0).y.roundToInt()
+                                widgetConfigurationsViewsBinding.configuredWidgetList.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]
+                                        ?: 0).y.roundToInt()
                         )
 
                     } else {
                         if (widgetConfigurationsViewsBinding.popupIndex.isShown) {
                             widgetConfigurationsViewsBinding.configuredWidgetNestedScrollView.smoothScrollTo(
                                     0,
-                                    widgetConfigurationsViewsBinding.configuredWidgetList.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]?:0).y.roundToInt()
+                                    widgetConfigurationsViewsBinding.configuredWidgetList.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]
+                                            ?: 0).y.roundToInt()
                             )
 
                             widgetConfigurationsViewsBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
@@ -1673,7 +1683,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                             widgetConfigurationsViewsBinding.installedNestedScrollView.smoothScrollTo(
                                     0,
-                                    widgetConfigurationsViewsBinding.installedWidgetList.getChildAt(mapIndexFirstItemInstalled[mapRangeIndexInstalled[motionEvent.y.toInt()]]?:0).y.roundToInt()
+                                    widgetConfigurationsViewsBinding.installedWidgetList.getChildAt(mapIndexFirstItemInstalled[mapRangeIndexInstalled[motionEvent.y.toInt()]]
+                                            ?: 0).y.roundToInt()
                             )
                         } else {
                             if (widgetConfigurationsViewsBinding.popupIndex.isShown) {
@@ -1688,7 +1699,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         try {
                             widgetConfigurationsViewsBinding.installedNestedScrollView.smoothScrollTo(
                                     0,
-                                    widgetConfigurationsViewsBinding.installedWidgetList.getChildAt(mapIndexFirstItemInstalled[mapRangeIndexInstalled[motionEvent.y.toInt()]]?:0).y.roundToInt()
+                                    widgetConfigurationsViewsBinding.installedWidgetList.getChildAt(mapIndexFirstItemInstalled[mapRangeIndexInstalled[motionEvent.y.toInt()]]
+                                            ?: 0).y.roundToInt()
                             )
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -1697,7 +1709,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         if (widgetConfigurationsViewsBinding.popupIndex.isShown) {
                             widgetConfigurationsViewsBinding.installedNestedScrollView.smoothScrollTo(
                                     0,
-                                    widgetConfigurationsViewsBinding.installedWidgetList.getChildAt(mapIndexFirstItemInstalled[mapRangeIndexInstalled[motionEvent.y.toInt()]]?:0).y.roundToInt()
+                                    widgetConfigurationsViewsBinding.installedWidgetList.getChildAt(mapIndexFirstItemInstalled[mapRangeIndexInstalled[motionEvent.y.toInt()]]
+                                            ?: 0).y.roundToInt()
                             )
 
                             widgetConfigurationsViewsBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
@@ -1775,7 +1788,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     .collect {
                         try {
                             val installedPackageName = it.activityInfo.packageName
-                            val installedClassName= it.activityInfo.name
+                            val installedClassName = it.activityInfo.name
                             val installedAppName = functionsClass.activityLabel(it.activityInfo)
 
                             val installedAppIcon = if (functionsClass.loadCustomIcons()) {
@@ -1969,7 +1982,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         }
     }
 
-    private fun performSearchEngine(finalBackgroundTemporaryInput: GradientDrawable)  = CoroutineScope(Dispatchers.Main).launch {
+    private fun performSearchEngine(finalBackgroundTemporaryInput: GradientDrawable) = CoroutineScope(Dispatchers.Main).launch {
         delay(90)
 
         if (functionsClass.searchEngineSubscribed()) {
@@ -2049,9 +2062,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
                 }
+
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
 
                 }
+
                 override fun afterTextChanged(s: Editable) {
 
                 }
