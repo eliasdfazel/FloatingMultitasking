@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:03 PM
+ * Created by Elias Fazel on 3/28/20 4:56 PM
+ * Last modified 3/28/20 4:51 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,6 +26,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.android.synthetic.main.reallocating.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
@@ -56,9 +60,10 @@ class WidgetsReallocationProcess : Activity() {
         allocatingProgress.setColor(PublicVariable.primaryColorOpposite)
 
         if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
-            appWidgetHost = AppWidgetHost(getApplicationContext(), System.currentTimeMillis().toInt())
+            appWidgetHost = AppWidgetHost(applicationContext, System.currentTimeMillis().toInt())
 
-            Thread(Runnable {
+            CoroutineScope(Dispatchers.IO).launch {
+
                 val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                         .fallbackToDestructiveMigration()
                         .addCallback(object : RoomDatabase.Callback() {
@@ -72,22 +77,22 @@ class WidgetsReallocationProcess : Activity() {
                             }
                         })
                         .build()
-                widgetDataModelsReallocation = widgetDataInterface.initDataAccessObject().getAllWidgetData()
+                widgetDataModelsReallocation = widgetDataInterface.initDataAccessObject().getAllWidgetDataSuspend()
 
                 if (widgetDataModelsReallocation.isNotEmpty()) {
-                    runOnUiThread {
-                        Handler().postDelayed({
-                            if (REALLOCATION_COUNTER < widgetDataModelsReallocation.size) {
-                                widgetsReallocationProcess(widgetDataModelsReallocation[REALLOCATION_COUNTER], appWidgetHost)
-                            }
-                        }, 333)
+
+                    withContext(Dispatchers.Main) {
+
+                        if (REALLOCATION_COUNTER < widgetDataModelsReallocation.size) {
+                            widgetsReallocationProcess(widgetDataModelsReallocation[REALLOCATION_COUNTER], appWidgetHost)
+                        }
                     }
                 } else {
                     this@WidgetsReallocationProcess.finish()
                 }
 
                 widgetDataInterface.close()
-            }).start()
+            }
 
             widgetInformation.setOnClickListener {
                 startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java),
@@ -108,15 +113,17 @@ class WidgetsReallocationProcess : Activity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (resultCode == Activity.RESULT_OK) {
+
             when (requestCode) {
                 WIDGETS_REALLOCATION_REQUEST -> {
                     FunctionsClassDebug.PrintDebug("*** WIDGETS_REALLOCATION_REQUEST | ${REALLOCATION_COUNTER} ***")
 
                     if (REALLOCATION_COUNTER < widgetDataModelsReallocation.size) {
-                        Handler().postDelayed({
-                            widgetsReallocationProcess(widgetDataModelsReallocation[REALLOCATION_COUNTER], appWidgetHost)
-                        }, 333)
+
+                        widgetsReallocationProcess(widgetDataModelsReallocation[REALLOCATION_COUNTER], appWidgetHost)
+
                     } else if (REALLOCATION_COUNTER >= widgetDataModelsReallocation.size) {
                         functionsClass.savePreference("WidgetsInformation", "Reallocated", true)
 
@@ -130,110 +137,110 @@ class WidgetsReallocationProcess : Activity() {
         }
     }
 
-    private fun widgetsReallocationProcess(widgetDataModel: WidgetDataModel, appWidgetHost: AppWidgetHost) {
+    private fun widgetsReallocationProcess(widgetDataModel: WidgetDataModel, appWidgetHost: AppWidgetHost) = CoroutineScope(Dispatchers.Main).launch {
         val widgetId = appWidgetHost.allocateAppWidgetId()
 
-        runOnUiThread {
-            widgetInformation.setBackgroundColor(PublicVariable.colorLightDark)
-            widgetInformation.alpha = 0.77F
 
-            val valueAnimatorScaleWidgetInformation =
-                    ValueAnimator.ofInt(
-                            widgetInformation.width,
-                            functionsClass.DpToInteger(51)
-                    )
-            valueAnimatorScaleWidgetInformation.duration = 1000
-            valueAnimatorScaleWidgetInformation.addUpdateListener { animator ->
-                widgetInformation.layoutParams.width = (animator.animatedValue as Int)
-                widgetInformation.requestLayout()
-                if ((animator.animatedValue as Int) < functionsClass.DpToInteger(300)) {
-                    widgetInformation.text = null
-                    widgetInformation.icon = null
+        widgetInformation.setBackgroundColor(PublicVariable.colorLightDark)
+        widgetInformation.alpha = 0.77F
 
-                    Handler().postDelayed({
+        val valueAnimatorScaleWidgetInformation =
+                ValueAnimator.ofInt(
+                        widgetInformation.width,
+                        functionsClass.DpToInteger(51)
+                )
+        valueAnimatorScaleWidgetInformation.duration = 1000
+        valueAnimatorScaleWidgetInformation.addUpdateListener { animator ->
+            widgetInformation.layoutParams.width = (animator.animatedValue as Int)
+            widgetInformation.requestLayout()
+            if ((animator.animatedValue as Int) < functionsClass.DpToInteger(300)) {
+                widgetInformation.text = null
+                widgetInformation.icon = null
 
-                        widgetInformation.icon = functionsClass.appIcon(widgetDataModel.PackageName)
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
-                                    + widgetDataModel.WidgetLabel + "<br/>"
-                                    + "<small>" + getString(R.string.reallocatingWidgets) + "</small>", Html.FROM_HTML_MODE_LEGACY)
-                        } else {
-                            widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
-                                    + widgetDataModel.WidgetLabel + "<br/>"
-                                    + "<small>" + getString(R.string.reallocatingWidgets) + "</small>")
-                        }
-                    }, 577)
-                }
-            }
-            valueAnimatorScaleWidgetInformation.start()
-            valueAnimatorScaleWidgetInformation.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(animation: Animator?) {
+                Handler().postDelayed({
 
-                }
-
-                override fun onAnimationEnd(animation: Animator?) {
-                    val valueAnimatorScaleWidgetInformationRevert =
-                            ValueAnimator.ofInt(
-                                    functionsClass.DpToInteger(51),
-                                    functionsClass.DpToInteger(313)
-                            )
-                    valueAnimatorScaleWidgetInformationRevert.duration = 500
-                    valueAnimatorScaleWidgetInformationRevert.addUpdateListener { animator ->
-                        widgetInformation.layoutParams.width = (animator.animatedValue as Int)
-                        widgetInformation.requestLayout()
+                    widgetInformation.icon = functionsClass.appIcon(widgetDataModel.PackageName)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
+                                + widgetDataModel.WidgetLabel + "<br/>"
+                                + "<small>" + getString(R.string.reallocatingWidgets) + "</small>", Html.FROM_HTML_MODE_LEGACY)
+                    } else {
+                        widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
+                                + widgetDataModel.WidgetLabel + "<br/>"
+                                + "<small>" + getString(R.string.reallocatingWidgets) + "</small>")
                     }
-                    valueAnimatorScaleWidgetInformationRevert.start()
-                    valueAnimatorScaleWidgetInformationRevert.addListener(object : Animator.AnimatorListener {
-                        override fun onAnimationRepeat(animation: Animator?) {
-
-                        }
-
-                        override fun onAnimationEnd(animation: Animator?) {
-
-                        }
-
-                        override fun onAnimationCancel(animation: Animator?) {
-
-                        }
-
-                        override fun onAnimationStart(animation: Animator?) {
-
-                        }
-                    })
-                }
-
-                override fun onAnimationCancel(animation: Animator?) {
-
-                }
-
-                override fun onAnimationStart(animation: Animator?) {
-
-                }
-            })
-
-            val provider = ComponentName.createRelative(widgetDataModel.PackageName, widgetDataModel.ClassNameProvider)
-            FunctionsClassDebug.PrintDebug("*** ${widgetId}. Provider Widget = ${provider} ***")
-
-            val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND)
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider)
-            startActivityForResult(intent, WIDGETS_REALLOCATION_REQUEST)
-
-            if (widgetDataModel.ConfigClassName != null) {
-                val configure = ComponentName.createRelative(widgetDataModel.PackageName, widgetDataModel.ConfigClassName!!)
-                FunctionsClassDebug.PrintDebug("*** Configure Widget = $configure")
-
-                val intentWidgetConfiguration = Intent()
-                intentWidgetConfiguration.action = AppWidgetManager.ACTION_APPWIDGET_CONFIGURE
-                intentWidgetConfiguration.component = configure
-                intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-                intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider)
-                intentWidgetConfiguration.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-                startActivityForResult(intentWidgetConfiguration, WIDGETS_REALLOCATION_REQUEST)
+                }, 577)
             }
         }
+        valueAnimatorScaleWidgetInformation.start()
+        valueAnimatorScaleWidgetInformation.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {
 
-        Thread(Runnable {
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                val valueAnimatorScaleWidgetInformationRevert =
+                        ValueAnimator.ofInt(
+                                functionsClass.DpToInteger(51),
+                                functionsClass.DpToInteger(313)
+                        )
+                valueAnimatorScaleWidgetInformationRevert.duration = 500
+                valueAnimatorScaleWidgetInformationRevert.addUpdateListener { animator ->
+                    widgetInformation.layoutParams.width = (animator.animatedValue as Int)
+                    widgetInformation.requestLayout()
+                }
+                valueAnimatorScaleWidgetInformationRevert.start()
+                valueAnimatorScaleWidgetInformationRevert.addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationRepeat(animation: Animator?) {
+
+                    }
+
+                    override fun onAnimationEnd(animation: Animator?) {
+
+                    }
+
+                    override fun onAnimationCancel(animation: Animator?) {
+
+                    }
+
+                    override fun onAnimationStart(animation: Animator?) {
+
+                    }
+                })
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+
+            }
+        })
+
+        val provider = ComponentName.createRelative(widgetDataModel.PackageName, widgetDataModel.ClassNameProvider)
+        FunctionsClassDebug.PrintDebug("*** ${widgetId}. Provider Widget = ${provider} ***")
+
+        val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND)
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider)
+        startActivityForResult(intent, WIDGETS_REALLOCATION_REQUEST)
+
+        if (widgetDataModel.ConfigClassName != null) {
+            val configure = ComponentName.createRelative(widgetDataModel.PackageName, widgetDataModel.ConfigClassName!!)
+            FunctionsClassDebug.PrintDebug("*** Configure Widget = $configure")
+
+            val intentWidgetConfiguration = Intent()
+            intentWidgetConfiguration.action = AppWidgetManager.ACTION_APPWIDGET_CONFIGURE
+            intentWidgetConfiguration.component = configure
+            intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+            intentWidgetConfiguration.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider)
+            intentWidgetConfiguration.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+            startActivityForResult(intentWidgetConfiguration, WIDGETS_REALLOCATION_REQUEST)
+        }
+
+        withContext(Dispatchers.IO) {
+
             val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
                     .fallbackToDestructiveMigration()
                     .addCallback(object : RoomDatabase.Callback() {
@@ -249,16 +256,14 @@ class WidgetsReallocationProcess : Activity() {
                     .build()
 
             val widgetDataDAO = widgetDataInterface.initDataAccessObject()
-            if (widgetDataModel.PackageName.isNullOrEmpty() && widgetDataModel.ClassNameProvider.isNullOrEmpty()) {
-                try {
-                    widgetDataDAO.delete(widgetDataModel)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+            if (widgetDataModel.PackageName.isEmpty() && widgetDataModel.ClassNameProvider.isEmpty()) {
+
+                widgetDataDAO.deleteSuspend(widgetDataModel)
             } else {
-                widgetDataDAO.updateWidgetIdByPackageNameClassName(widgetDataModel.PackageName, widgetDataModel.ClassNameProvider, widgetId)
+
+                widgetDataDAO.updateWidgetIdByPackageNameClassNameSuspend(widgetDataModel.PackageName, widgetDataModel.ClassNameProvider, widgetId)
             }
-        }).start()
+        }
 
         REALLOCATION_COUNTER++
     }

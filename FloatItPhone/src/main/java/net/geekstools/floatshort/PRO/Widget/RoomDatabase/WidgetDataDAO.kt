@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 4:53 PM
- * Last modified 3/24/20 4:01 PM
+ * Created by Elias Fazel on 3/28/20 4:56 PM
+ * Last modified 3/28/20 4:54 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,32 +15,8 @@ import androidx.room.*
 @Dao
 interface WidgetDataDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewWidgetData(vararg arrayOfWidgetDataModels: WidgetDataModel)
-
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateWidgetData(vararg arrayOfWidgetDataModels: WidgetDataModel)
-
-
-    @Delete
-    fun delete(widgetDataModel: WidgetDataModel)
-
-
-    @Query("SELECT * FROM WidgetData ORDER BY AppName ASC")
-    fun getAllWidgetData(): List<WidgetDataModel>
-
-
     @Query("SELECT * FROM WidgetData WHERE PackageName IN (:PackageName) AND ClassNameProvider IN (:ClassNameWidgetProvider)")
     fun loadWidgetByClassNameProviderWidget(PackageName: String, ClassNameWidgetProvider: String): WidgetDataModel
-
-
-    @Query("UPDATE WidgetData SET WidgetId = :WidgetId WHERE PackageName = :PackageName AND ClassNameProvider == :ClassNameProvider")
-    fun updateWidgetIdByPackageNameClassName(PackageName: String, ClassNameProvider: String, WidgetId: Int): Int
-
-
-    @Query("UPDATE WidgetData SET WidgetLabel = :WidgetLabel WHERE WidgetId = :WidgetId")
-    fun updateWidgetLabelByWidgetId(WidgetId: Int, WidgetLabel: String): Int
 
 
     @Query("UPDATE WidgetData SET Recovery = :AddedWidgetRecovery WHERE PackageName= :PackageName AND ClassNameProvider = :ClassNameWidgetProvider")
@@ -49,17 +25,6 @@ interface WidgetDataDAO {
 
     @Query("DELETE FROM WidgetData WHERE PackageName = :PackageName AND ClassNameProvider = :ClassNameWidgetProvider")
     fun deleteByWidgetClassNameProviderWidget(PackageName: String, ClassNameWidgetProvider: String)
-
-    @Query("SELECT COUNT(WidgetNumber) FROM WidgetData")
-    fun getRowCount(): Int
-
-
-
-
-
-
-
-
 
 
 

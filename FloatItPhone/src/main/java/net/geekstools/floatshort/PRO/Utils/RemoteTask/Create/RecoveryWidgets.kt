@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 12:48 PM
- * Last modified 3/28/20 10:35 AM
+ * Created by Elias Fazel on 3/28/20 4:56 PM
+ * Last modified 3/28/20 4:53 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -22,6 +22,9 @@ import androidx.preference.PreferenceManager
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity
@@ -68,7 +71,9 @@ class RecoveryWidgets : Service() {
             val broadcastReceiver = object : BroadcastReceiver() {
                 override fun onReceive(context: Context, intent: Intent) {
                     if (intent.action == "RECOVERY_AUTHENTICATED") {
-                        Thread(Runnable {
+
+                        CoroutineScope(Dispatchers.IO).launch {
+
                             try {
                                 if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
 
@@ -90,7 +95,7 @@ class RecoveryWidgets : Service() {
                                                 }
                                             })
                                             .build()
-                                    val widgetDataModels: List<WidgetDataModel> = widgetDataInterface.initDataAccessObject().getAllWidgetData()
+                                    val widgetDataModels: List<WidgetDataModel> = widgetDataInterface.initDataAccessObject().getAllWidgetDataSuspend()
 
                                     AllWidgetData@ for (widgetDataModel in widgetDataModels) {
                                         if (widgetDataModel.Recovery!!) {
@@ -136,13 +141,14 @@ class RecoveryWidgets : Service() {
                                 stopSelf()
                             } finally {
                                 if (PublicVariable.floatingCounter == 0) {
-                                    if (PreferenceManager.getDefaultSharedPreferences(applicationContext)
-                                                    .getBoolean("stable", true) == false) {
+
+                                    if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
+
                                         stopService(Intent(applicationContext, BindServices::class.java))
                                     }
                                 }
                             }
-                        }).start()
+                        }
                     }
                 }
             }
@@ -152,7 +158,9 @@ class RecoveryWidgets : Service() {
                 e.printStackTrace()
             }
         } else {
-            Thread(Runnable {
+
+            CoroutineScope(Dispatchers.IO).launch {
+
                 try {
                     if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
 
@@ -173,7 +181,7 @@ class RecoveryWidgets : Service() {
                                     }
                                 })
                                 .build()
-                        val widgetDataModels: List<WidgetDataModel> = widgetDataInterface.initDataAccessObject().getAllWidgetData()
+                        val widgetDataModels: List<WidgetDataModel> = widgetDataInterface.initDataAccessObject().getAllWidgetDataSuspend()
 
                         AllWidgetData@ for (widgetDataModel in widgetDataModels) {
                             if (widgetDataModel.Recovery!!) {
@@ -219,13 +227,13 @@ class RecoveryWidgets : Service() {
                     stopSelf()
                 } finally {
                     if (PublicVariable.floatingCounter == 0) {
-                        if (PreferenceManager.getDefaultSharedPreferences(applicationContext)
-                                        .getBoolean("stable", true) == false) {
+                        if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
+
                             stopService(Intent(applicationContext, BindServices::class.java))
                         }
                     }
                 }
-            }).start()
+            }
         }
 
         return Service.START_NOT_STICKY

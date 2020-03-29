@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 4:32 PM
- * Last modified 3/28/20 4:21 PM
+ * Created by Elias Fazel on 3/28/20 4:56 PM
+ * Last modified 3/28/20 4:42 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -77,7 +77,11 @@ class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetC
                     adapterItems[position].packageName,
                     adapterItems[position].classNameProviderWidget,
                     adapterItems[position].widgetLabel,
-                    if (appWidgetProviderInfoLongClick.loadPreviewImage(widgetConfigurationsActivity, DisplayMetrics.DENSITY_LOW) != null) appWidgetProviderInfoLongClick.loadPreviewImage(widgetConfigurationsActivity, DisplayMetrics.DENSITY_HIGH) else appWidgetProviderInfoLongClick.loadIcon(widgetConfigurationsActivity, DisplayMetrics.DENSITY_HIGH),
+                    if (appWidgetProviderInfoLongClick.loadPreviewImage(widgetConfigurationsActivity, DisplayMetrics.DENSITY_LOW) != null) {
+                        appWidgetProviderInfoLongClick.loadPreviewImage(widgetConfigurationsActivity, DisplayMetrics.DENSITY_HIGH)
+                    } else {
+                        appWidgetProviderInfoLongClick.loadIcon(widgetConfigurationsActivity, DisplayMetrics.DENSITY_HIGH)
+                    },
                     adapterItems[position].addedWidgetRecovery)
 
             functionsClass.doVibrate(77)
@@ -103,8 +107,7 @@ class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetC
                                     }
                                 })
                                 .build()
-                        val widgetDataDAO = widgetDataInterface.initDataAccessObject()
-                        widgetDataDAO.updateWidgetLabelByWidgetIdSuspend(adapterItems[position].appWidgetId, textView.text.toString().replace("\uD83D\uDD04", ""))
+                        widgetDataInterface.initDataAccessObject().updateWidgetLabelByWidgetIdSuspend(adapterItems[position].appWidgetId, textView.text.toString().replace("\uD83D\uDD04", ""))
                         widgetDataInterface.close()
 
                         withContext(Dispatchers.Main) {
