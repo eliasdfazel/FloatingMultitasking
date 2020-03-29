@@ -60,7 +60,7 @@
         android:layout_alignEnd="@id/configuredWidgetNestedScrollView"
         android:foregroundGravity="center_vertical"
         android:background="@android:color/transparent"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/indexView"
@@ -85,7 +85,7 @@
         android:layout_marginStart="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/draw_recovery"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:contentDescription="@string/recover_category" />
 
     <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
@@ -99,7 +99,7 @@
         android:layout_marginEnd="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/draw_recovery"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:contentDescription="@string/recover_apps" />
 
     <LinearLayout
@@ -188,7 +188,7 @@
         android:imeOptions="actionSearch"
         android:hint="@string/searchHint"
         android:textColorHint="@color/default_color_light"
-        android:visibility="invisible"
+        android:visibility="gone"
         apps:boxBackgroundMode="outline"
         apps:boxBackgroundColor="@android:color/transparent"
         apps:boxCornerRadiusTopStart="51dp"
@@ -229,7 +229,7 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@id/switchFloating"
         android:layout_marginBottom="3dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:background="@drawable/search_icon"/>
 
     <ImageView
@@ -243,7 +243,7 @@
         android:layout_marginBottom="3dp"
         android:layout_marginStart="3dp"
         android:scaleType="fitCenter"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:src="@drawable/search_icon_float_it"/>
 
     <ImageView
@@ -258,7 +258,7 @@
         android:layout_marginEnd="3dp"
         android:scaleType="fitCenter"
         android:tint="@color/default_color_game_light"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:src="@android:drawable/ic_menu_close_clear_cancel"/>
     <!-- Search Engine -->
 
@@ -272,7 +272,7 @@
         android:requiresFadingEdge="vertical"
         android:scrollbars="none"
         android:background="@color/dark_transparent"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -312,7 +312,7 @@
         android:layout_height="333dp"
         android:layout_centerInParent="true"
         android:padding="51dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         apps:SpinKit_Style="FoldingCube"/>
 
     <ScrollView
@@ -322,7 +322,7 @@
         android:layout_alignEnd="@id/installedNestedScrollView"
         android:foregroundGravity="center_vertical"
         android:background="@android:color/transparent"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/indexViewInstalled"
@@ -353,7 +353,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent_light"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/automationAction"
@@ -387,7 +387,7 @@
             android:layout_centerInParent="true"
             android:src="@drawable/draw_pref_action"
             android:background="@android:color/transparent"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/reconfigure"
@@ -433,7 +433,7 @@
         android:textSize="29sp"
         android:typeface="monospace"
         android:background="@drawable/ic_launcher_balloon"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/loadingSplash"
