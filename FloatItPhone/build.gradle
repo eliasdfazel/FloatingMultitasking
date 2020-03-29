@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 4:57 PM
- * Last modified 3/28/20 4:57 PM
+ * Created by Elias Fazel on 3/29/20 1:00 PM
+ * Last modified 3/29/20 12:54 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -39,12 +39,12 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
 
-            manifestPlaceholders = [enableCrashReporting:"true"]
+            manifestPlaceholders = [enableCrashReporting: "true"]
         }
         debug {
             debuggable true
 
-            manifestPlaceholders = [enableCrashReporting:"false"]
+            manifestPlaceholders = [enableCrashReporting: "false"]
         }
     }
 
@@ -57,26 +57,21 @@ android {
         enabled = true
     }
 
-    flavorDimensions "FloatingShortcutsPro"
+    flavorDimensions "FloatIt"
     productFlavors {
         releaseConfig {
-            dimension "FloatingShortcutsPro"
+            dimension "FloatIt"
 
             versionNameSuffix '[PRO][Android][Phone]'
         }
         betaConfig {
-            dimension "FloatingShortcutsPro"
+            dimension "FloatIt"
 
             versionNameSuffix '[PRO][Android][Phone][BETA]'
         }
     }
 
-    packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE-FIREBASE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/DEPENDENCIES'
-    }
+    dynamicFeatures = [":FloatingWidgets"]
 }
 
 static def getDateYear() {
@@ -98,61 +93,61 @@ static def getDateDay() {
 }
 
 dependencies {
-    implementation project(path: ':LoadingSpin')
+    implementation project(':LicenseLibrary')
 
-    implementation project(path: ':LicenseLibrary', configuration: 'default')
-    implementation project(path: ':ShapesCustomImageViewLibrary', configuration: 'default')
+    api project(':LoadingSpin')
+    api project(':ShapesCustomImageViewLibrary')
 
 
     implementation 'com.android.billingclient:billing:2.2.0'
     implementation 'com.android.billingclient:billing-ktx:2.1.0'
 
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    api 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.preference:preference:1.1.0'
     implementation 'androidx.preference:preference-ktx:1.1.0'
 
     implementation 'androidx.fragment:fragment-ktx:1.2.3'
 
     implementation 'androidx.palette:palette:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    api 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
 
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
+    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    api 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
 
-    implementation 'androidx.room:room-runtime:2.2.5'
-    implementation 'androidx.room:room-ktx:2.2.5'
+    api 'androidx.room:room-runtime:2.2.5'
+    api 'androidx.room:room-ktx:2.2.5'
     annotationProcessor 'androidx.room:room-compiler:2.2.5'
     kapt 'androidx.room:room-compiler:2.2.5'
 
 
-    implementation 'com.google.android.play:core:1.7.1'
+    api 'com.google.android.play:core:1.7.1'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
-    implementation 'com.google.android.material:material:1.2.0-alpha05'
+    api 'com.google.android.material:material:1.2.0-alpha05'
 
 
     implementation 'com.google.firebase:firebase-core:17.2.3'
-    implementation 'com.google.firebase:firebase-analytics:17.2.3'
+    api 'com.google.firebase:firebase-analytics:17.2.3'
     implementation 'com.google.firebase:firebase-appindexing:19.1.0'
     implementation 'com.google.firebase:firebase-messaging:20.1.3'
-    implementation 'com.google.firebase:firebase-config:19.1.3'
-    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    api 'com.google.firebase:firebase-config:19.1.3'
+    api 'com.google.firebase:firebase-auth:19.3.0'
     implementation 'com.google.firebase:firebase-dynamic-links:19.1.0'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta02'
+    api 'com.google.firebase:firebase-crashlytics:17.0.0-beta02'
 
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3'
 
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.71"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
