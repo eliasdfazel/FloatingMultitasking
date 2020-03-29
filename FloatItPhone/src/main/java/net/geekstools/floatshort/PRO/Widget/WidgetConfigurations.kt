@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 7:00 PM
- * Last modified 3/26/20 7:00 PM
+ * Created by Elias Fazel on 3/28/20 4:32 PM
+ * Last modified 3/28/20 4:32 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,7 +27,6 @@ import android.graphics.Typeface
 import android.graphics.drawable.*
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
@@ -500,14 +499,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         widgetConfigurationsViewsBinding.actionButton.setOnLongClickListener {
 
-            Handler().postDelayed({
-                Intent().apply {
-                    this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    this.setClass(this@WidgetConfigurations, PreferencesActivity::class.java)
-                    startActivity(this,
-                            ActivityOptionsCompat.makeSceneTransitionAnimation(this@WidgetConfigurations, widgetConfigurationsViewsBinding.actionButton, "transition").toBundle())
-                }
-            }, 113)
+            Intent().apply {
+                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                this.setClass(this@WidgetConfigurations, PreferencesActivity::class.java)
+                startActivity(this,
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(this@WidgetConfigurations, widgetConfigurationsViewsBinding.actionButton, "transition").toBundle())
+            }
 
             true
         }
@@ -1146,7 +1143,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         }
                     }
 
-            configuredWidgetsRecyclerViewAdapter = ConfiguredWidgetsAdapter(this@WidgetConfigurations, applicationContext,
+            configuredWidgetsRecyclerViewAdapter = ConfiguredWidgetsAdapter(this@WidgetConfigurations,
                     configuredWidgetsAdapterItems,
                     appWidgetManager, appWidgetHost)
         }
@@ -2009,12 +2006,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.showSoftInput(widgetConfigurationsViewsBinding.searchView, InputMethodManager.SHOW_IMPLICIT)
-                    Handler().postDelayed({
-                        widgetConfigurationsViewsBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
-                        widgetConfigurationsViewsBinding.searchFloatIt.visibility = View.VISIBLE
-                        widgetConfigurationsViewsBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
-                        widgetConfigurationsViewsBinding.searchClose.visibility = View.VISIBLE
-                    }, 555)
+
+                    widgetConfigurationsViewsBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                    widgetConfigurationsViewsBinding.searchFloatIt.visibility = View.VISIBLE
+
+                    widgetConfigurationsViewsBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                    widgetConfigurationsViewsBinding.searchClose.visibility = View.VISIBLE
                 }
 
                 override fun onAnimationCancel(animation: Animator) {
