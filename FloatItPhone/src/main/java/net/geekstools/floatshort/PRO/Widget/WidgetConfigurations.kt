@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 5:49 PM
- * Last modified 3/28/20 5:44 PM
+ * Created by Elias Fazel on 3/28/20 6:29 PM
+ * Last modified 3/28/20 6:25 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -78,7 +78,8 @@ import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel
 import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.ConfiguredWidgetsAdapter
 import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.InstalledWidgetsAdapter
-import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.WidgetSectionedGridRecyclerViewAdapter
+import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.WidgetSectionedConfiguredAdapter
+import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.WidgetSectionedInstalledAdapter
 import net.geekstools.floatshort.PRO.databinding.WidgetConfigurationsViewsBinding
 import java.util.*
 import kotlin.Comparator
@@ -117,14 +118,14 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     private val indexListConfigured: ArrayList<String> = ArrayList<String>()
     private val indexListInstalled: ArrayList<String> = ArrayList<String>()
 
-    private val installedWidgetsSections: ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section> = ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>()
-    private val configuredWidgetsSections: ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section> = ArrayList<WidgetSectionedGridRecyclerViewAdapter.Section>()
+    private val installedWidgetsSections: ArrayList<WidgetSectionedInstalledAdapter.Section> = ArrayList<WidgetSectionedInstalledAdapter.Section>()
+    private val configuredWidgetsSections: ArrayList<WidgetSectionedConfiguredAdapter.Section> = ArrayList<WidgetSectionedConfiguredAdapter.Section>()
 
-    private lateinit var installedWidgetsRecyclerViewAdapter: RecyclerView.Adapter<InstalledWidgetsAdapter.ViewHolder>
     private lateinit var configuredWidgetsRecyclerViewAdapter: RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder>
+    private lateinit var installedWidgetsRecyclerViewAdapter: RecyclerView.Adapter<InstalledWidgetsAdapter.ViewHolder>
 
-    private lateinit var configuredWidgetsSectionedGridRecyclerViewAdapter: WidgetSectionedGridRecyclerViewAdapter
-    private lateinit var widgetSectionedGridRecyclerViewAdapter: WidgetSectionedGridRecyclerViewAdapter
+    private lateinit var widgetSectionedConfiguredAdapter: WidgetSectionedConfiguredAdapter
+    private lateinit var widgetSectionedInstalledAdapter: WidgetSectionedInstalledAdapter
 
     private lateinit var installedWidgetsRecyclerViewLayoutManager: GridLayoutManager
     private lateinit var configuredWidgetsRecyclerViewLayoutManager: GridLayoutManager
@@ -1119,11 +1120,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             val newAppName = functionsClass.appName(packageName)
                             val appIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
                             if (widgetIndex == 0) {
-                                configuredWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, appIcon))
+                                configuredWidgetsSections.add(WidgetSectionedConfiguredAdapter.Section(widgetIndex, newAppName, appIcon))
                                 indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
                             } else {
                                 if (oldAppName != newAppName) {
-                                    configuredWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, appIcon))
+                                    configuredWidgetsSections.add(WidgetSectionedConfiguredAdapter.Section(widgetIndex, newAppName, appIcon))
                                     indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
                                 }
                             }
@@ -1161,16 +1162,16 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
             widgetConfigurationsViewsBinding.reconfigure.visibility = View.VISIBLE
 
-            val sectionsData = arrayOfNulls<WidgetSectionedGridRecyclerViewAdapter.Section>(configuredWidgetsSections.size)
-            configuredWidgetsSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter(
+            val sectionsData = arrayOfNulls<WidgetSectionedConfiguredAdapter.Section>(configuredWidgetsSections.size)
+            widgetSectionedConfiguredAdapter = WidgetSectionedConfiguredAdapter(
                     applicationContext,
                     R.layout.widgets_sections,
                     widgetConfigurationsViewsBinding.configuredWidgetList,
                     configuredWidgetsRecyclerViewAdapter
             )
-            configuredWidgetsSectionedGridRecyclerViewAdapter.setSections(configuredWidgetsSections.toArray(sectionsData))
-            configuredWidgetsSectionedGridRecyclerViewAdapter.notifyDataSetChanged()
-            widgetConfigurationsViewsBinding.configuredWidgetList.adapter = configuredWidgetsSectionedGridRecyclerViewAdapter
+            widgetSectionedConfiguredAdapter.setSections(configuredWidgetsSections.toArray(sectionsData))
+            widgetSectionedConfiguredAdapter.notifyDataSetChanged()
+            widgetConfigurationsViewsBinding.configuredWidgetList.adapter = widgetSectionedConfiguredAdapter
 
             delay(333)
 
@@ -1188,7 +1189,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             widgetConfigurationsViewsBinding.loadingSplash.visibility = View.VISIBLE
 
             configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged()
-            configuredWidgetsSectionedGridRecyclerViewAdapter.notifyDataSetChanged()
+            widgetSectionedConfiguredAdapter.notifyDataSetChanged()
         }
     }
 
@@ -1240,11 +1241,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 val newAppIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
 
                                 if (widgetIndex == 0) {
-                                    installedWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon))
+                                    installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
                                     indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
                                 } else {
                                     if (oldAppName != newAppName) {
-                                        installedWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon))
+                                        installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
                                         indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
                                     }
                                 }
@@ -1275,11 +1276,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             val newAppIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
 
                             if (widgetIndex == 0) {
-                                installedWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon))
+                                installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
                                 indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
                             } else {
                                 if (oldAppName != newAppName) {
-                                    installedWidgetsSections.add(WidgetSectionedGridRecyclerViewAdapter.Section(widgetIndex, newAppName, newAppIcon))
+                                    installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
                                     indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
                                 }
                             }
@@ -1320,16 +1321,16 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.VISIBLE
 
         installedWidgetsRecyclerViewAdapter.notifyDataSetChanged()
-        val sectionsData = arrayOfNulls<WidgetSectionedGridRecyclerViewAdapter.Section>(installedWidgetsSections.size)
-        widgetSectionedGridRecyclerViewAdapter = WidgetSectionedGridRecyclerViewAdapter(
+        val sectionsData = arrayOfNulls<WidgetSectionedInstalledAdapter.Section>(installedWidgetsSections.size)
+        widgetSectionedInstalledAdapter = WidgetSectionedInstalledAdapter(
                 applicationContext,
                 R.layout.widgets_sections,
                 widgetConfigurationsViewsBinding.installedWidgetList,
                 installedWidgetsRecyclerViewAdapter
         )
-        widgetSectionedGridRecyclerViewAdapter.setSections(installedWidgetsSections.toArray(sectionsData))
-        widgetSectionedGridRecyclerViewAdapter.notifyDataSetChanged()
-        widgetConfigurationsViewsBinding.installedWidgetList.adapter = widgetSectionedGridRecyclerViewAdapter
+        widgetSectionedInstalledAdapter.setSections(installedWidgetsSections.toArray(sectionsData))
+        widgetSectionedInstalledAdapter.notifyDataSetChanged()
+        widgetConfigurationsViewsBinding.installedWidgetList.adapter = widgetSectionedInstalledAdapter
 
         val xPosition = (widgetConfigurationsViewsBinding.addWidget.x + widgetConfigurationsViewsBinding.addWidget.width / 2).roundToInt()
         val yPosition = (widgetConfigurationsViewsBinding.addWidget.y + widgetConfigurationsViewsBinding.addWidget.height / 2).roundToInt()
