@@ -11,4 +11,3 @@
 include ':FloatItPhone', ':FloatItWatch', ':LoadingSpin'
 include ':ShapesCustomImageViewLibrary'
 include ':LicenseLibrary'
-include ':FloatingWidgets'
