@@ -70,12 +70,12 @@
     <output-test url="file://$MODULE_DIR$/build/intermediates/javac/betaConfigDebugUnitTest/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/kapt/betaConfigDebug" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/ap_generated_sources/betaConfigDebug/out" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/aidl_source_output_dir/betaConfigDebug/out" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/betaConfig/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/renderscript_source_output_dir/betaConfigDebug/out" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/kaptKotlin/betaConfigDebug" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/kapt/betaConfigDebug" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/aidl_source_output_dir/betaConfigDebug/out" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/ap_generated_sources/betaConfigDebug/out" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/betaConfig/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/google-services/betaConfig/debug" type="java-resource" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/crashlytics/res/betaConfig/debug" type="java-resource" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/betaConfig/debug" type="java-resource" generated="true" />
@@ -86,11 +86,11 @@
       <sourceFolder url="file://$MODULE_DIR$/src/betaConfigDebug/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/betaConfigDebug/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/betaConfigDebug/shaders" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/betaConfig/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/renderscript_source_output_dir/betaConfigDebugAndroidTest/out" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/kapt/betaConfigDebugAndroidTest" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/ap_generated_sources/betaConfigDebugAndroidTest/out" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/aidl_source_output_dir/betaConfigDebugAndroidTest/out" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/kapt/betaConfigDebugAndroidTest" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/betaConfig/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/renderscript_source_output_dir/betaConfigDebugAndroidTest/out" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/betaConfig/debug" type="java-test-resource" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestBetaConfigDebug/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestBetaConfigDebug/resources" type="java-test-resource" />
@@ -178,16 +178,16 @@
     <orderEntry type="module-library">
       <library name="Gradle: kaptGeneratedClasses">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/releaseConfigDebugUnitTest" />
-          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigReleaseUnitTest" />
-          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/releaseConfigDebugAndroidTest" />
+          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigDebugAndroidTest" />
+          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigDebug" />
           <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigDebugUnitTest" />
           <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigRelease" />
+          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigReleaseUnitTest" />
+          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/releaseConfigDebugAndroidTest" />
+          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/releaseConfigDebug" />
+          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/releaseConfigDebugUnitTest" />
           <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/releaseConfigRelease" />
           <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/releaseConfigReleaseUnitTest" />
-          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/releaseConfigDebug" />
-          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigDebug" />
-          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigDebugAndroidTest" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel on 3/28/20 4:57 PM
+ * Last modified 3/28/20 4:56 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -163,7 +163,7 @@ public class WidgetSectionedGridRecyclerViewAdapter extends RecyclerView.Adapter
 
     public int sectionedPositionToPosition(int sectionedPosition) {
         if (isSectionHeaderPosition(sectionedPosition)) {
-//            return RecyclerView.NO_POSITION;
+
             return RecyclerView.SCROLLBAR_POSITION_LEFT;
         }
 
