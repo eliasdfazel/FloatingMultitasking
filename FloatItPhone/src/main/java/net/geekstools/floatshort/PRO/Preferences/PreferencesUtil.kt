@@ -30,11 +30,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter
+import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -43,10 +44,8 @@ import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.RecycleViewSmoothLayo
 
 class PreferencesUtil : ViewModel() {
 
-    companion object {
-        val CUSTOM_DIALOGUE_DISMISS: MutableLiveData<Boolean> by lazy {
-            MutableLiveData<Boolean>()
-        }
+    val customDialogueDismiss: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
     }
 }
 
@@ -209,7 +208,7 @@ fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
         preferencesDataUtilShape.functionsClass.addAppShortcuts()
         if (currentShape != preferencesDataUtilShape.sharedPreferences.getInt("iconShape", 0)) {
             PublicVariable.forceReload = true
-            SearchEngineAdapter.allSearchResultItems.clear()
+            SearchEngineAdapter.allSearchResults.clear()
         }
         dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     }
@@ -247,6 +246,8 @@ fun listCustomIconsPackage(preferencesDataUtilShape: PreferencesDataUtilShape) {
     dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
     defaultTheme.setTextColor(PublicVariable.colorLightDarkOpposite)
 
+    val preferencesUtil = ViewModelProvider(preferencesDataUtilShape.activity).get(PreferencesUtil::class.java)
+
     val recyclerViewLayoutManager = RecycleViewSmoothLayoutList(preferencesDataUtilShape.activity, OrientationHelper.VERTICAL, false)
     customIconList.layoutManager = recyclerViewLayoutManager
     customIconList.removeAllViews()
@@ -259,7 +260,7 @@ fun listCustomIconsPackage(preferencesDataUtilShape: PreferencesDataUtilShape) {
                 preferencesDataUtilShape.functionsClass.appIcon(packageName)
         ))
     }
-    val customIconsThemeAdapter = CustomIconsThemeAdapter(preferencesDataUtilShape.activity, preferencesDataUtilShape.activity, adapterItems, dialog)
+    val customIconsThemeAdapter = CustomIconsThemeAdapter(preferencesUtil, preferencesDataUtilShape.activity, adapterItems, dialog)
     customIconList.adapter = customIconsThemeAdapter
 
     defaultTheme.setOnClickListener {
@@ -282,16 +283,16 @@ fun listCustomIconsPackage(preferencesDataUtilShape: PreferencesDataUtilShape) {
 
         if (currentCustomIconPack != preferencesDataUtilShape.sharedPreferences.getString("customIcon", preferencesDataUtilShape.activity.packageName)) {
             PublicVariable.forceReload = true
-            SearchEngineAdapter.allSearchResultItems.clear()
+            SearchEngineAdapter.allSearchResults.clear()
         }
         dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     }
     dialog.show()
 
-    PreferencesUtil.CUSTOM_DIALOGUE_DISMISS.observe(preferencesDataUtilShape.activity,
+    preferencesUtil.customDialogueDismiss.observe(preferencesDataUtilShape.activity,
             Observer<Boolean> { dialogueDismiss ->
                 if (dialogueDismiss) {
-                    PreferencesUtil.CUSTOM_DIALOGUE_DISMISS.value = false
+                    preferencesUtil.customDialogueDismiss.postValue(false)
 
                     preferencesDataUtilShape.shapes.icon = preferencesDataUtilShape.functionsClass.appIcon(preferencesDataUtilShape.functionsClass.customIconPackageName())
                     preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.functionsClass.appName(preferencesDataUtilShape.functionsClass.customIconPackageName())

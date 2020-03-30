@@ -56,7 +56,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import net.geekstools.floatshort.PRO.Checkpoint;
 import net.geekstools.floatshort.PRO.Configurations;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
+import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Fingerprint.FingerprintProcessHelper;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;

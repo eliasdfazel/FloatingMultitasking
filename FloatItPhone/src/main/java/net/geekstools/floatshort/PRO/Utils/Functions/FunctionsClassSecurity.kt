@@ -35,7 +35,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.Checkpoint
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter
+import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.AuthActivityHelper
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.AuthenticationDialogFragment
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword

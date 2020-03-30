@@ -64,7 +64,7 @@
             android:paddingBottom="47dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/loadView"
+                android:id="@+id/applicationsListView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:alwaysDrawnWithCache="true"
@@ -294,89 +294,13 @@
         android:visibility="invisible" />
 
     <!-- Search Engine -->
-    <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/textInputSearchView"
-        android:layout_width="51dp"
-        android:layout_height="51dp"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/switchFloating"
-        android:layout_marginBottom="3dp"
-        android:gravity="center|start"
-        android:imeOptions="actionSearch"
-        android:hint="@string/searchHint"
-        android:textColorHint="@color/default_color_light"
-        android:visibility="invisible"
-        apps:boxBackgroundMode="outline"
-        apps:boxBackgroundColor="@android:color/transparent"
-        apps:boxCornerRadiusTopStart="51dp"
-        apps:boxCornerRadiusTopEnd="51dp"
-        apps:boxCornerRadiusBottomStart="51dp"
-        apps:boxCornerRadiusBottomEnd="51dp"
-        apps:boxStrokeColor="@color/default_color"
-        apps:boxStrokeWidth="2dp"
-        apps:boxStrokeWidthFocused="2dp"
-        apps:hintTextColor="@color/default_color_light"
-        apps:errorEnabled="true"
-        apps:errorTextColor="@color/yellow">
+    <include
+        layout="@layout/search_engine_view"
 
-        <androidx.appcompat.widget.AppCompatAutoCompleteTextView xmlns:apps="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="13dp"
-            android:paddingEnd="13dp"
-            android:gravity="center|start"
-            android:imeOptions="actionSearch"
-            android:lines="1"
-            android:inputType="textAutoComplete|textCapWords"
-            android:maxLines="1"
-            android:textSize="17sp"
-            android:textColor="@color/light"
-            android:cursorVisible="true"
-            android:drawableEnd="@drawable/search_engine_icon"
-            android:drawableTint="@color/default_color_light"
-            android:drawablePadding="3dp"
-            android:dropDownAnchor="@id/searchView"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <ImageView
-        android:id="@+id/searchIcon"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/switchFloating"
-        android:layout_marginBottom="3dp"
-        android:visibility="invisible"
-        android:background="@drawable/search_icon"/>
-
-    <ImageView
-        android:id="@+id/searchFloatIt"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/switchFloating"
-        android:layout_toEndOf="@id/textInputSearchView"
-        android:padding="7dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginStart="3dp"
-        android:scaleType="fitCenter"
-        android:visibility="invisible"
-        android:src="@drawable/search_icon_float_it"/>
-
-    <ImageView
-        android:id="@+id/searchClose"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/switchFloating"
-        android:layout_toStartOf="@id/textInputSearchView"
-        android:padding="7dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginEnd="3dp"
-        android:scaleType="fitCenter"
-        android:tint="@color/default_color_game_light"
-        android:visibility="invisible"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+        android:id="@+id/searchEngineViewInclude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/switchFloating" />
     <!-- Search Engine -->
 
     <RelativeLayout

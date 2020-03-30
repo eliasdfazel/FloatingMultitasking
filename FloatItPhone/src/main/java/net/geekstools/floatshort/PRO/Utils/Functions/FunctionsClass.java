@@ -5715,7 +5715,7 @@ public class FunctionsClass {
 
     public boolean searchEngineSubscribed() {
 
-        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".SubscribedItem", BillingManager.iapSearchEngines, false);
+        return (BuildConfig.VERSION_NAME.contains("[BETA]") || BuildConfig.DEBUG) ? true : readPreference(".SubscribedItem", BillingManager.iapSearchEngines, false);
     }
 
     public boolean alreadyDonated() {

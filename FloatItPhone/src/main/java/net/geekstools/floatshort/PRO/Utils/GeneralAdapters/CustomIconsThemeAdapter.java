@@ -10,7 +10,6 @@
 
 package net.geekstools.floatshort.PRO.Utils.GeneralAdapters;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Gravity;
@@ -34,18 +33,18 @@ import java.util.ArrayList;
 
 public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThemeAdapter.ViewHolder> {
 
-    FunctionsClass functionsClass;
+    private FunctionsClass functionsClass;
+
+    private PreferencesUtil preferencesUtil;
 
     private Context context;
 
-    View view;
-    ViewHolder viewHolder;
-
-    Dialog dialog;
+    private Dialog dialog;
 
     private ArrayList<AdapterItems> adapterItems;
 
-    public CustomIconsThemeAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems, Dialog dialog) {
+    public CustomIconsThemeAdapter(PreferencesUtil preferencesUtil, Context context, ArrayList<AdapterItems> adapterItems, Dialog dialog) {
+        this.preferencesUtil = preferencesUtil;
         this.context = context;
         this.adapterItems = adapterItems;
         this.dialog = dialog;
@@ -55,9 +54,8 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
 
     @Override
     public CustomIconsThemeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(context).inflate(R.layout.custom_icon_items, parent, false);
-        viewHolder = new ViewHolder(view);
-        return viewHolder;
+
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.custom_icon_items, parent, false));
     }
 
     @Override
@@ -81,7 +79,7 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
 
                 functionsClass.saveDefaultPreference("LitePreferences", false);
 
-                PreferencesUtil.Companion.getCUSTOM_DIALOGUE_DISMISS().setValue(true);
+                preferencesUtil.getCustomDialogueDismiss().postValue(true);
                 dialog.dismiss();
             }
         });

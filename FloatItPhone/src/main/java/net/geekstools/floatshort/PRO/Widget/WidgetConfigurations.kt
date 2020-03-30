@@ -58,7 +58,8 @@ import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter
+import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
+import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
@@ -99,10 +100,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     private val functionsClassRunServices: FunctionsClassRunServices by lazy {
         FunctionsClassRunServices(applicationContext)
     }
-
-    /*Search Engine*/
-    lateinit var searchAdapterItems: ArrayList<AdapterItemsSearchEngine>
-    /*Search Engine*/
 
     private val mapIndexFirstItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
     private val mapIndexLastItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
@@ -1140,7 +1137,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                     appWidgetProviderInfo,
                                     appWidgetId,
                                     widgetDataModel.value.Recovery ?: false,
-                                    SearchEngineAdapter.SearchResultType.SearchWidgets
+                                    SearchResultType.SearchWidgets
                             ))
 
                             widgetIndex++
@@ -1767,8 +1764,9 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
     /*Search Engine*/
     private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Default).async {
-        if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
-            searchAdapterItems = ArrayList<AdapterItemsSearchEngine>()
+        var searchAdapterItems = ArrayList<AdapterItemsSearchEngine>()
+
+        if (SearchEngineAdapter.allSearchData.isEmpty()) {
 
             //Loading Applications
             val applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
@@ -1798,7 +1796,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 functionsClass.shapedAppIcon(it.activityInfo)
                             }
 
-                            searchAdapterItems.add(AdapterItemsSearchEngine(installedAppName, installedPackageName, installedClassName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts))
+                            searchAdapterItems.add(AdapterItemsSearchEngine(installedAppName, installedPackageName, installedClassName, installedAppIcon, SearchResultType.SearchShortcuts))
                         } catch (e: Exception) {
                             e.printStackTrace()
                         } finally {
@@ -1810,7 +1808,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             try {
                 getFileStreamPath(".categoryInfo").readLines().forEach {
                     try {
-                        searchAdapterItems.add(AdapterItemsSearchEngine(it, functionsClass.readFileLine(it), SearchEngineAdapter.SearchResultType.SearchFolders))
+                        searchAdapterItems.add(AdapterItemsSearchEngine(it, functionsClass.readFileLine(it), SearchResultType.SearchFolders))
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -1861,10 +1859,10 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                         appIcon,
                                         appWidgetProviderInfo,
                                         appWidgetId,
-                                        SearchEngineAdapter.SearchResultType.SearchWidgets
+                                        SearchResultType.SearchWidgets
                                 ))
                             } else {
-                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className)
+                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidgetSuspend(packageName, className)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -1883,7 +1881,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 }
             }
         } else {
-            searchAdapterItems = SearchEngineAdapter.allSearchResultItems
+            searchAdapterItems = SearchEngineAdapter.allSearchData
 
             val searchRecyclerViewAdapter = SearchEngineAdapter(applicationContext, searchAdapterItems)
 
@@ -1940,7 +1938,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         widgetConfigurationsViewsBinding.searchIcon.setOnClickListener {
             val bundleSearchEngineUsed = Bundle()
             bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.currentUser)
-            bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchEngineAdapter.SearchResultType.SearchFolders)
+            bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchResultType.SearchFolders)
 
             val firebaseAnalytics = FirebaseAnalytics.getInstance(applicationContext)
             firebaseAnalytics.logEvent(SearchEngineAdapter.SEARCH_ENGINE_USED_LOG, bundleSearchEngineUsed)
@@ -2039,17 +2037,17 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             valueAnimatorScalesUp.start()
 
             widgetConfigurationsViewsBinding.searchFloatIt.setOnClickListener {
-                if (!widgetConfigurationsViewsBinding.searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResultItems.size > 0
+                if (!widgetConfigurationsViewsBinding.searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResults.size > 0
                         && widgetConfigurationsViewsBinding.searchView.text.toString().length >= 2) {
-                    SearchEngineAdapter.allSearchResultItems.forEach { searchResultItem ->
+                    SearchEngineAdapter.allSearchResults.forEach { searchResultItem ->
                         when (searchResultItem.searchResultType) {
-                            SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
+                            SearchResultType.SearchShortcuts -> {
                                 functionsClassRunServices.runUnlimitedShortcutsService(searchResultItem.PackageName!!, searchResultItem.ClassName!!)
                             }
-                            SearchEngineAdapter.SearchResultType.SearchFolders -> {
+                            SearchResultType.SearchFolders -> {
                                 functionsClass.runUnlimitedFolderService(searchResultItem.folderName)
                             }
-                            SearchEngineAdapter.SearchResultType.SearchWidgets -> {
+                            SearchResultType.SearchWidgets -> {
                                 functionsClass
                                         .runUnlimitedWidgetService(searchResultItem.appWidgetId!!,
                                                 searchResultItem.widgetLabel)
@@ -2076,20 +2074,20 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             widgetConfigurationsViewsBinding.searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
                 override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        if (SearchEngineAdapter.allSearchResultItems.size == 1
+                        if (SearchEngineAdapter.allSearchResults.size == 1
                                 && !widgetConfigurationsViewsBinding.searchView.text.toString().isEmpty()
                                 && widgetConfigurationsViewsBinding.searchView.text.toString().length >= 2) {
-                            when (SearchEngineAdapter.allSearchResultItems[0].searchResultType) {
-                                SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
-                                    functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems[0].PackageName!!, SearchEngineAdapter.allSearchResultItems[0].ClassName!!)
+                            when (SearchEngineAdapter.allSearchResults[0].searchResultType) {
+                                SearchResultType.SearchShortcuts -> {
+                                    functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResults[0].PackageName!!, SearchEngineAdapter.allSearchResults[0].ClassName!!)
                                 }
-                                SearchEngineAdapter.SearchResultType.SearchFolders -> {
-                                    functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems[0].folderName)
+                                SearchResultType.SearchFolders -> {
+                                    functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResults[0].folderName)
                                 }
-                                SearchEngineAdapter.SearchResultType.SearchWidgets -> {
+                                SearchResultType.SearchWidgets -> {
                                     functionsClass
-                                            .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResultItems[0].appWidgetId!!,
-                                                    SearchEngineAdapter.allSearchResultItems[0].widgetLabel)
+                                            .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResults[0].appWidgetId!!,
+                                                    SearchEngineAdapter.allSearchResults[0].widgetLabel)
                                 }
                             }
 
@@ -2143,7 +2141,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             })
                             valueAnimatorScales.start()
                         } else {
-                            if (SearchEngineAdapter.allSearchResultItems.size > 0
+                            if (SearchEngineAdapter.allSearchResults.size > 0
                                     && widgetConfigurationsViewsBinding.searchView.text.toString().length >= 2) {
                                 widgetConfigurationsViewsBinding.searchView.showDropDown()
                             }

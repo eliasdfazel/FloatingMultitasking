@@ -34,7 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.geekstools.floatshort.PRO.Folders.AppSelectionList;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter;
+import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
@@ -153,7 +153,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                             PublicVariable.categoryName = adapterItems.get(position).getCategory();
                             context.startActivity(new Intent(context, AppSelectionList.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         } else {//Edit Folder Name
-                            SearchEngineAdapter.allSearchResultItems.clear();
+                            SearchEngineAdapter.allSearchResults.clear();
 
                             String[] appsContent = functionsClass.readFileLine(adapterItems.get(position).getCategory());
                             if (PublicVariable.categoryName.length() == 0) {

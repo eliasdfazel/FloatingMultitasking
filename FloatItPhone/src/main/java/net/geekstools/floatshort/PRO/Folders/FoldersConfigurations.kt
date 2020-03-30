@@ -64,7 +64,8 @@ import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.FoldersListAdapter
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter
+import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
+import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
@@ -112,10 +113,6 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
     private val functionsClassRunServices: FunctionsClassRunServices by lazy {
         FunctionsClassRunServices(applicationContext)
     }
-
-    /*Search Engine*/
-    private lateinit var searchAdapterItems: ArrayList<AdapterItemsSearchEngine>
-    /*Search Engine*/
 
     private lateinit var foldersListAdapter: RecyclerView.Adapter<FoldersListAdapter.ViewHolder>
     private val folderAdapterItems: ArrayList<AdapterItems> = ArrayList<AdapterItems>()
@@ -745,16 +742,16 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                     .withIndex().collect { folderInformation ->
 
                         folderAdapterItems.add(AdapterItems(folderInformation.value,
-                                functionsClass.readFileLine(folderInformation.value), SearchEngineAdapter.SearchResultType.SearchFolders))
+                                functionsClass.readFileLine(folderInformation.value), SearchResultType.SearchFolders))
                     }
 
-            folderAdapterItems.add(AdapterItems(packageName, arrayOf(packageName), SearchEngineAdapter.SearchResultType.SearchFolders))
+            folderAdapterItems.add(AdapterItems(packageName, arrayOf(packageName), SearchResultType.SearchFolders))
             foldersListAdapter = FoldersListAdapter(this@FoldersConfigurations, applicationContext, folderAdapterItems)
 
         } else {
             folderAdapterItems.clear()
 
-            folderAdapterItems.add(AdapterItems(packageName, arrayOf(packageName), SearchEngineAdapter.SearchResultType.SearchFolders))
+            folderAdapterItems.add(AdapterItems(packageName, arrayOf(packageName), SearchResultType.SearchFolders))
             foldersListAdapter = FoldersListAdapter(this@FoldersConfigurations, applicationContext, folderAdapterItems)
         }
 
@@ -787,8 +784,9 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
 
     /*Search Engine*/
     private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Default).async {
-        if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
-            searchAdapterItems = ArrayList<AdapterItemsSearchEngine>()
+        var searchAdapterItems = ArrayList<AdapterItemsSearchEngine>()
+
+        if (SearchEngineAdapter.allSearchData.isEmpty()) {
 
             //Loading Applications
             val applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
@@ -818,7 +816,7 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                                 functionsClass.shapedAppIcon(it.activityInfo)
                             }
 
-                            searchAdapterItems.add(AdapterItemsSearchEngine(installedAppName, installedPackageName, installedClassName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts))
+                            searchAdapterItems.add(AdapterItemsSearchEngine(installedAppName, installedPackageName, installedClassName, installedAppIcon, SearchResultType.SearchShortcuts))
                         } catch (e: Exception) {
                             e.printStackTrace()
                         } finally {
@@ -830,7 +828,7 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
             try {
                 getFileStreamPath(".categoryInfo").readLines().forEach {
                     try {
-                        searchAdapterItems.add(AdapterItemsSearchEngine(it, functionsClass.readFileLine(it), SearchEngineAdapter.SearchResultType.SearchFolders))
+                        searchAdapterItems.add(AdapterItemsSearchEngine(it, functionsClass.readFileLine(it), SearchResultType.SearchFolders))
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -881,10 +879,10 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                                         appIcon,
                                         appWidgetProviderInfo,
                                         appWidgetId,
-                                        SearchEngineAdapter.SearchResultType.SearchWidgets
+                                        SearchResultType.SearchWidgets
                                 ))
                             } else {
-                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className)
+                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidgetSuspend(packageName, className)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -903,7 +901,7 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                 }
             }
         } else {
-            searchAdapterItems = SearchEngineAdapter.allSearchResultItems
+            searchAdapterItems = SearchEngineAdapter.allSearchData
 
             val searchRecyclerViewAdapter = SearchEngineAdapter(applicationContext, searchAdapterItems)
 
@@ -960,7 +958,7 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
         foldersConfigurationViewBinding.searchIcon.setOnClickListener {
             val bundleSearchEngineUsed = Bundle()
             bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.currentUser)
-            bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchEngineAdapter.SearchResultType.SearchFolders)
+            bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchResultType.SearchFolders)
 
             val firebaseAnalytics = FirebaseAnalytics.getInstance(applicationContext)
             firebaseAnalytics.logEvent(SearchEngineAdapter.SEARCH_ENGINE_USED_LOG, bundleSearchEngineUsed)
@@ -1060,17 +1058,17 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
             valueAnimatorScalesUp.start()
 
             foldersConfigurationViewBinding.searchFloatIt.setOnClickListener {
-                if (!foldersConfigurationViewBinding.searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResultItems.size > 0
+                if (!foldersConfigurationViewBinding.searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResults.size > 0
                         && foldersConfigurationViewBinding.searchView.text.toString().length >= 2) {
-                    SearchEngineAdapter.allSearchResultItems.forEach { searchResultItem ->
+                    SearchEngineAdapter.allSearchResults.forEach { searchResultItem ->
                         when (searchResultItem.searchResultType) {
-                            SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
+                            SearchResultType.SearchShortcuts -> {
                                 functionsClassRunServices.runUnlimitedShortcutsService(searchResultItem.PackageName!!, searchResultItem.ClassName!!)
                             }
-                            SearchEngineAdapter.SearchResultType.SearchFolders -> {
+                            SearchResultType.SearchFolders -> {
                                 functionsClass.runUnlimitedFolderService(searchResultItem.folderName)
                             }
-                            SearchEngineAdapter.SearchResultType.SearchWidgets -> {
+                            SearchResultType.SearchWidgets -> {
                                 functionsClass
                                         .runUnlimitedWidgetService(searchResultItem.appWidgetId!!,
                                                 searchResultItem.widgetLabel)
@@ -1095,20 +1093,20 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
             foldersConfigurationViewBinding.searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
                 override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        if (SearchEngineAdapter.allSearchResultItems.size == 1
+                        if (SearchEngineAdapter.allSearchResults.size == 1
                                 && !foldersConfigurationViewBinding.searchView.text.toString().isEmpty()
                                 && foldersConfigurationViewBinding.searchView.text.toString().length >= 2) {
-                            when (SearchEngineAdapter.allSearchResultItems[0].searchResultType) {
-                                SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
-                                    functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems[0].PackageName!!, SearchEngineAdapter.allSearchResultItems[0].ClassName!!)
+                            when (SearchEngineAdapter.allSearchResults[0].searchResultType) {
+                                SearchResultType.SearchShortcuts -> {
+                                    functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResults[0].PackageName!!, SearchEngineAdapter.allSearchResults[0].ClassName!!)
                                 }
-                                SearchEngineAdapter.SearchResultType.SearchFolders -> {
-                                    functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems[0].folderName)
+                                SearchResultType.SearchFolders -> {
+                                    functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResults[0].folderName)
                                 }
-                                SearchEngineAdapter.SearchResultType.SearchWidgets -> {
+                                SearchResultType.SearchWidgets -> {
                                     functionsClass
-                                            .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResultItems[0].appWidgetId!!,
-                                                    SearchEngineAdapter.allSearchResultItems[0].widgetLabel)
+                                            .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResults[0].appWidgetId!!,
+                                                    SearchEngineAdapter.allSearchResults[0].widgetLabel)
                                 }
                             }
 
@@ -1162,7 +1160,7 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                             })
                             valueAnimatorScales.start()
                         } else {
-                            if (SearchEngineAdapter.allSearchResultItems.size > 0
+                            if (SearchEngineAdapter.allSearchResults.size > 0
                                     && foldersConfigurationViewBinding.searchView.text.toString().length >= 2) {
                                 foldersConfigurationViewBinding.searchView.showDropDown()
                             }

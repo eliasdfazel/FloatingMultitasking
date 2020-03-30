@@ -63,7 +63,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.hybrid_application_view.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
@@ -71,7 +70,8 @@ import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SearchEngine.SearchEngineAdapter
+import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
+import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardHybridAdapter
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
@@ -101,6 +101,7 @@ import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogue
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveData
 import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
+import net.geekstools.floatshort.PRO.databinding.HybridApplicationViewBinding
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -129,10 +130,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     private lateinit var recyclerViewAdapter: RecyclerView.Adapter<CardHybridAdapter.ViewHolder>
     private lateinit var recyclerViewLayoutManager: GridLayoutManager
 
-    /*Search Engine*/
-    private lateinit var searchAdapterItems: ArrayList<AdapterItemsSearchEngine>
-    /*Search Engine*/
-
     private var installedPackageName: String? = null
     private var installedClassName: String? = null
     private var installedAppName: String? = null
@@ -157,9 +154,12 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
     private lateinit var loadCustomIcons: LoadCustomIcons
 
+    private lateinit var hybridApplicationViewBinding: HybridApplicationViewBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.hybrid_application_view)
+        hybridApplicationViewBinding = HybridApplicationViewBinding.inflate(layoutInflater)
+        setContentView(hybridApplicationViewBinding.root)
 
         functionsClassDataActivity = FunctionsClassDataActivity(this@ApplicationsView)
 
@@ -171,11 +171,11 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()
 
-        functionsClass.setThemeColorFloating(this, MainView, functionsClass.appThemeTransparent())
+        functionsClass.setThemeColorFloating(this, hybridApplicationViewBinding.MainView, functionsClass.appThemeTransparent())
         functionsClassDialogues.changeLog()
 
         recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(105), OrientationHelper.VERTICAL, false)
-        loadView.layoutManager = recyclerViewLayoutManager
+        hybridApplicationViewBinding.applicationsListView.layoutManager = recyclerViewLayoutManager
 
         indexList = ArrayList<String?>()
         sections = ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>()
@@ -199,26 +199,26 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         val drawPreferenceAction: LayerDrawable = getDrawable(R.drawable.draw_pref_action) as LayerDrawable
         val backPreferenceAction: Drawable = drawPreferenceAction.findDrawableByLayerId(R.id.backgroundTemporary)
         backPreferenceAction.setTint(PublicVariable.primaryColorOpposite)
-        actionButton.setImageDrawable(drawPreferenceAction)
+        hybridApplicationViewBinding.actionButton.setImageDrawable(drawPreferenceAction)
 
-        switchWidgets.setTextColor(getColor(R.color.light))
-        switchCategories.setTextColor(getColor(R.color.light))
+        hybridApplicationViewBinding.switchWidgets.setTextColor(getColor(R.color.light))
+        hybridApplicationViewBinding.switchCategories.setTextColor(getColor(R.color.light))
         if (PublicVariable.themeLightDark /*light*/ && functionsClass.appThemeTransparent() /*transparent*/) {
-            switchWidgets.setTextColor(getColor(R.color.dark))
-            switchCategories.setTextColor(getColor(R.color.dark))
+            hybridApplicationViewBinding.switchWidgets.setTextColor(getColor(R.color.dark))
+            hybridApplicationViewBinding.switchCategories.setTextColor(getColor(R.color.dark))
         }
 
-        switchCategories.setBackgroundColor(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        switchCategories.rippleColor = ColorStateList.valueOf(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        hybridApplicationViewBinding.switchCategories.setBackgroundColor(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        hybridApplicationViewBinding.switchCategories.rippleColor = ColorStateList.valueOf(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
-        switchWidgets.setBackgroundColor(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        switchWidgets.rippleColor = ColorStateList.valueOf(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        hybridApplicationViewBinding.switchWidgets.setBackgroundColor(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        hybridApplicationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
-        recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
-        recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
+        hybridApplicationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
+        hybridApplicationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
 
-        automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
-        automationAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
+        hybridApplicationViewBinding.automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
+        hybridApplicationViewBinding.automationAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
 
         val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
         val backRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
@@ -228,16 +228,16 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         val backRecoverFloatingWidgets = drawRecoverFloatingWidgets?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
         backRecoverFloatingWidgets?.setTint(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
 
-        recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories)
-        recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
+        hybridApplicationViewBinding.recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories)
+        hybridApplicationViewBinding.recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
 
-        actionButton.setOnClickListener {
+        hybridApplicationViewBinding.actionButton.setOnClickListener {
             functionsClass.doVibrate(33)
 
             if (!PublicVariable.actionCenter) {
 
                 val finalRadius = hypot(functionsClass.displayX().toDouble(), functionsClass.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(recoveryAction, actionButton.x.toInt(), actionButton.y.toInt(), finalRadius.toFloat(), functionsClass.DpToInteger(13).toFloat())
+                val circularReveal = ViewAnimationUtils.createCircularReveal(hybridApplicationViewBinding.recoveryAction, hybridApplicationViewBinding.actionButton.x.toInt(), hybridApplicationViewBinding.actionButton.y.toInt(), finalRadius.toFloat(), functionsClass.DpToInteger(13).toFloat())
                 circularReveal.duration = 777
                 circularReveal.interpolator = AccelerateInterpolator()
                 circularReveal.start()
@@ -247,7 +247,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     }
 
                     override fun onAnimationEnd(animation: Animator?) {
-                        recoveryAction.visibility = View.INVISIBLE
+                        hybridApplicationViewBinding.recoveryAction.visibility = View.INVISIBLE
                     }
 
                     override fun onAnimationCancel(animation: Animator?) {
@@ -259,12 +259,12 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     }
                 })
 
-                functionsClass.openActionMenuOption(this, fullActionViews, actionButton, fullActionViews.isShown)
+                functionsClass.openActionMenuOption(this@ApplicationsView, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton, hybridApplicationViewBinding.fullActionViews.isShown)
             } else {
-                recoveryAction.visibility = View.VISIBLE
+                hybridApplicationViewBinding.recoveryAction.visibility = View.VISIBLE
 
                 val finalRadius = hypot(functionsClass.displayX().toDouble(), functionsClass.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(recoveryAction, actionButton.x.toInt(), actionButton.y.toInt(), functionsClass.DpToInteger(13).toFloat(), finalRadius.toFloat())
+                val circularReveal = ViewAnimationUtils.createCircularReveal(hybridApplicationViewBinding.recoveryAction, hybridApplicationViewBinding.actionButton.x.toInt(), hybridApplicationViewBinding.actionButton.y.toInt(), functionsClass.DpToInteger(13).toFloat(), finalRadius.toFloat())
                 circularReveal.duration = 1300
                 circularReveal.interpolator = AccelerateInterpolator()
                 circularReveal.start()
@@ -274,7 +274,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     }
 
                     override fun onAnimationEnd(animation: Animator?) {
-                        recoveryAction.visibility = View.VISIBLE
+                        hybridApplicationViewBinding.recoveryAction.visibility = View.VISIBLE
                     }
 
                     override fun onAnimationCancel(animation: Animator?) {
@@ -288,7 +288,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             }
         }
 
-        switchCategories.setOnClickListener {
+        hybridApplicationViewBinding.switchCategories.setOnClickListener {
             try {
                 functionsClass.navigateToClass(this@ApplicationsView, FoldersConfigurations::class.java,
                         ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
@@ -296,7 +296,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 e.printStackTrace()
             }
         }
-        switchWidgets.setOnClickListener {
+        hybridApplicationViewBinding.switchWidgets.setOnClickListener {
             if (functionsClass.networkConnection() && firebaseAuth.currentUser != null) {
 
                 if (functionsClass.floatingWidgetsPurchased()) {
@@ -323,7 +323,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             }
         }
 
-        automationAction.setOnClickListener {
+        hybridApplicationViewBinding.automationAction.setOnClickListener {
             functionsClass.doVibrate(50)
 
             val intent = Intent(applicationContext, AppAutoFeatures::class.java)
@@ -331,27 +331,27 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             startActivity(intent, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.up_down, android.R.anim.fade_out).toBundle())
         }
 
-        recoveryAction.setOnClickListener {
+        hybridApplicationViewBinding.recoveryAction.setOnClickListener {
             Intent(applicationContext, RecoveryShortcuts::class.java).let {
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startService(it)
             }
         }
-        recoverFloatingCategories.setOnClickListener {
+        hybridApplicationViewBinding.recoverFloatingCategories.setOnClickListener {
             Intent(applicationContext, RecoveryFolders::class.java).let {
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startService(it)
             }
 
             val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-            recoverFloatingCategories.startAnimation(animation)
+            hybridApplicationViewBinding.recoverFloatingCategories.startAnimation(animation)
             animation.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(animation: Animation?) {
 
                 }
 
                 override fun onAnimationEnd(animation: Animation?) {
-                    recoverFloatingCategories.visibility = View.INVISIBLE
+                    hybridApplicationViewBinding.recoverFloatingCategories.visibility = View.INVISIBLE
                 }
 
                 override fun onAnimationStart(animation: Animation?) {
@@ -360,21 +360,21 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
             })
         }
-        recoverFloatingWidgets.setOnClickListener {
+        hybridApplicationViewBinding.recoverFloatingWidgets.setOnClickListener {
             Intent(applicationContext, RecoveryWidgets::class.java).let {
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startService(it)
             }
 
             val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-            recoverFloatingWidgets.startAnimation(animation)
+            hybridApplicationViewBinding.recoverFloatingWidgets.startAnimation(animation)
             animation.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(animation: Animation?) {
 
                 }
 
                 override fun onAnimationEnd(animation: Animation?) {
-                    recoverFloatingWidgets.visibility = View.INVISIBLE
+                    hybridApplicationViewBinding.recoverFloatingWidgets.visibility = View.INVISIBLE
                 }
 
                 override fun onAnimationStart(animation: Animation?) {
@@ -384,9 +384,9 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             })
         }
 
-        actionButton.setOnLongClickListener {
+        hybridApplicationViewBinding.actionButton.setOnLongClickListener {
             Handler().postDelayed({
-                val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@ApplicationsView, actionButton, "transition")
+                val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@ApplicationsView, hybridApplicationViewBinding.actionButton, "transition")
                 Intent().let {
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     it.setClass(this@ApplicationsView, PreferencesActivity::class.java)
@@ -397,17 +397,17 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             true
         }
 
-        switchCategories.setOnLongClickListener {
-            if (!recoverFloatingCategories.isShown) {
+        hybridApplicationViewBinding.switchCategories.setOnLongClickListener {
+            if (!hybridApplicationViewBinding.recoverFloatingCategories.isShown) {
                 val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
-                recoverFloatingCategories.startAnimation(animation)
+                hybridApplicationViewBinding.recoverFloatingCategories.startAnimation(animation)
                 animation.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation) {
 
                     }
 
                     override fun onAnimationEnd(animation: Animation) {
-                        recoverFloatingCategories.visibility = View.VISIBLE
+                        hybridApplicationViewBinding.recoverFloatingCategories.visibility = View.VISIBLE
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -416,13 +416,13 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 })
             } else {
                 val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-                recoverFloatingCategories.startAnimation(animation)
+                hybridApplicationViewBinding.recoverFloatingCategories.startAnimation(animation)
                 animation.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation) {
 
                     }
                     override fun onAnimationEnd(animation: Animation) {
-                        recoverFloatingCategories.visibility = View.INVISIBLE
+                        hybridApplicationViewBinding.recoverFloatingCategories.visibility = View.INVISIBLE
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -433,17 +433,17 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
             true
         }
-        switchWidgets.setOnLongClickListener {
-            if (!recoverFloatingWidgets.isShown) {
+        hybridApplicationViewBinding.switchWidgets.setOnLongClickListener {
+            if (!hybridApplicationViewBinding.recoverFloatingWidgets.isShown) {
                 val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
-                recoverFloatingWidgets.startAnimation(animation)
+                hybridApplicationViewBinding.recoverFloatingWidgets.startAnimation(animation)
                 animation.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation) {
 
                     }
 
                     override fun onAnimationEnd(animation: Animation) {
-                        recoverFloatingWidgets.visibility = View.VISIBLE
+                        hybridApplicationViewBinding.recoverFloatingWidgets.visibility = View.VISIBLE
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -452,14 +452,14 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 })
             } else {
                 val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-                recoverFloatingWidgets.startAnimation(animation)
+                hybridApplicationViewBinding.recoverFloatingWidgets.startAnimation(animation)
                 animation.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation) {
 
                     }
 
                     override fun onAnimationEnd(animation: Animation) {
-                        recoverFloatingWidgets.visibility = View.INVISIBLE
+                        hybridApplicationViewBinding.recoverFloatingWidgets.visibility = View.INVISIBLE
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -535,8 +535,8 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         val backgroundShare = drawableShare!!.findDrawableByLayerId(R.id.backgroundTemporary)
         backgroundShare.setTint(PublicVariable.primaryColor)
 
-        shareIt.setImageDrawable(drawableShare)
-        shareIt.setOnClickListener {
+        hybridApplicationViewBinding.shareIt.setImageDrawable(drawableShare)
+        hybridApplicationViewBinding.shareIt.setOnClickListener {
             functionsClass.doVibrate(50)
 
             val shareText = getString(R.string.shareTitle) +
@@ -564,10 +564,10 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                             val layerDrawableNewUpdate = getDrawable(R.drawable.ic_update) as LayerDrawable?
                             val gradientDrawableNewUpdate = layerDrawableNewUpdate!!.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
                             gradientDrawableNewUpdate.setTint(PublicVariable.primaryColor)
-                            val newUpdate = findViewById<View>(R.id.newUpdate) as ImageView
-                            newUpdate.setImageDrawable(layerDrawableNewUpdate)
-                            newUpdate.visibility = View.VISIBLE
-                            newUpdate.setOnClickListener {
+
+                            hybridApplicationViewBinding.newUpdate.setImageDrawable(layerDrawableNewUpdate)
+                            hybridApplicationViewBinding.newUpdate.visibility = View.VISIBLE
+                            hybridApplicationViewBinding.newUpdate.setOnClickListener {
                                 functionsClass.upcomingChangeLog(
                                         this@ApplicationsView,
                                         firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
@@ -627,7 +627,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         functionsClass.addAppShortcuts()
         functionsClass.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition())
         if (PublicVariable.actionCenter) {
-            functionsClass.closeActionMenuOption(this@ApplicationsView, fullActionViews, actionButton)
+            functionsClass.closeActionMenuOption(this@ApplicationsView, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton)
         }
 
         functionsClass.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
@@ -764,27 +764,27 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
     private fun initiateLoadingProcessAll() {
         if (functionsClass.appThemeTransparent()) {
-            loadingSplash.setBackgroundColor(Color.TRANSPARENT)
+            hybridApplicationViewBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
         } else {
-            loadingSplash.setBackgroundColor(window.navigationBarColor)
+            hybridApplicationViewBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
         }
 
         if (PublicVariable.themeLightDark) {
-            loadingProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(PublicVariable.darkMutedColor, PorterDuff.Mode.MULTIPLY)
+            hybridApplicationViewBinding.loadingProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(PublicVariable.darkMutedColor, PorterDuff.Mode.MULTIPLY)
         } else if (!PublicVariable.themeLightDark) {
-            loadingProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(PublicVariable.vibrantColor, PorterDuff.Mode.MULTIPLY)
+            hybridApplicationViewBinding.loadingProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(PublicVariable.vibrantColor, PorterDuff.Mode.MULTIPLY)
         }
 
         val layerDrawableLoadLogo: LayerDrawable = getDrawable(R.drawable.ic_launcher_layer) as LayerDrawable
         val gradientDrawableLoadLogo: BitmapDrawable = layerDrawableLoadLogo!!.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
         gradientDrawableLoadLogo.setTint(PublicVariable.primaryColor)
-        loadingLogo.setImageDrawable(layerDrawableLoadLogo)
+        hybridApplicationViewBinding.loadingLogo.setImageDrawable(layerDrawableLoadLogo)
 
         loadApplicationsData()
     }
 
     private fun loadApplicationsData() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
-        indexView.removeAllViews()
+        hybridApplicationViewBinding.indexView.removeAllViews()
 
         if (functionsClass.loadCustomIcons()) {
             loadCustomIcons.load()
@@ -815,7 +815,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 }
                 .onCompletion {
                     val splashAnimation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
-                    loadingSplash.startAnimation(splashAnimation)
+                    hybridApplicationViewBinding.loadingSplash.startAnimation(splashAnimation)
                     splashAnimation.setAnimationListener(object : Animation.AnimationListener {
                         override fun onAnimationStart(animation: Animation?) {
                             if (loadFreq == true) {
@@ -823,7 +823,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                                     loadFrequentlyUsedApplications().await()
                                 }
                             }
-                            switchFloating.visibility = View.VISIBLE
+                            hybridApplicationViewBinding.switchFloating.visibility = View.VISIBLE
                         }
 
                         override fun onAnimationRepeat(animation: Animation?) {
@@ -831,7 +831,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                         }
 
                         override fun onAnimationEnd(animation: Animation?) {
-                            loadingSplash.visibility = View.INVISIBLE
+                            hybridApplicationViewBinding.loadingSplash.visibility = View.INVISIBLE
                         }
                     })
                 }
@@ -862,7 +862,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                         }
 
                         applicationsAdapterItems.add(AdapterItemsApplications(installedAppName!!, installedPackageName!!, installedClassName!!, installedAppIcon!!,
-                                SearchEngineAdapter.SearchResultType.SearchShortcuts))
+                                SearchResultType.SearchShortcuts))
                     } finally {
                         indexList.add(newChar)
                         indexItems[newChar] = itemOfIndex++
@@ -887,21 +887,21 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         }
 
         if (!loadFreq) {
-            MainView.removeView(freqList)
+            hybridApplicationViewBinding.MainView.removeView(hybridApplicationViewBinding.freqList)
             val layoutParams = RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.MATCH_PARENT
             )
-            nestedScrollView.layoutParams = layoutParams
+            hybridApplicationViewBinding.nestedScrollView.layoutParams = layoutParams
         } else {
             val layoutParams = RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.MATCH_PARENT
             )
             layoutParams.addRule(RelativeLayout.ABOVE, R.id.freqList)
-            scrollRelativeLayout.setPadding(0, scrollRelativeLayout.paddingTop, 0, 0)
-            nestedScrollView.layoutParams = layoutParams
-            nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(66))
+            hybridApplicationViewBinding.scrollRelativeLayout.setPadding(0, hybridApplicationViewBinding.scrollRelativeLayout.paddingTop, 0, 0)
+            hybridApplicationViewBinding.nestedScrollView.layoutParams = layoutParams
+            hybridApplicationViewBinding.nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(66))
         }
 
         recyclerViewAdapter.notifyDataSetChanged()
@@ -910,15 +910,15 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 applicationContext,
                 R.layout.hybrid_sections,
                 R.id.section_text,
-                loadView,
+                hybridApplicationViewBinding.applicationsListView,
                 recyclerViewAdapter
         )
 
         hybridSectionedGridRecyclerViewAdapter.setSections(sections.toArray(sectionsData))
-        loadView.adapter = hybridSectionedGridRecyclerViewAdapter
+        hybridApplicationViewBinding.applicationsListView.adapter = hybridSectionedGridRecyclerViewAdapter
 
         recyclerViewLayoutManager.scrollToPosition(0)
-        nestedScrollView.scrollTo(0, 0)
+        hybridApplicationViewBinding.nestedScrollView.scrollTo(0, 0)
 
         loadApplicationsIndex().await()
 
@@ -944,7 +944,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     }
 
     private fun loadFrequentlyUsedApplications() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
-        freqItem.removeAllViews()
+        hybridApplicationViewBinding.freqItem.removeAllViews()
 
         frequentlyUsedAppsCounter = IntArray(25)
         frequentlyUsedAppsList = intent.getStringArrayExtra("freq")
@@ -955,7 +955,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         }
         functionsClass.saveFileAppendLine(".categoryInfo", "Frequently")
 
-        freqList.visibility = View.VISIBLE
+        hybridApplicationViewBinding.freqList.visibility = View.VISIBLE
 
         for (i in 0 until freqLength) {
             val freqLayout = layoutInflater.inflate(R.layout.freq_item, null) as RelativeLayout
@@ -964,7 +964,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             shapesImage.setOnClickListener(this@ApplicationsView)
             shapesImage.setOnLongClickListener(this@ApplicationsView)
             shapesImage.setImageDrawable(if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(frequentlyUsedAppsList[i], functionsClass.shapedAppIcon(frequentlyUsedAppsList[i])) else functionsClass.shapedAppIcon(frequentlyUsedAppsList[i]))
-            freqItem.addView(freqLayout)
+            hybridApplicationViewBinding.freqItem.addView(freqLayout)
 
             functionsClass.saveFileAppendLine("Frequently", frequentlyUsedAppsList[i])
             functionsClass.saveFile(frequentlyUsedAppsList[i] + "Frequently", frequentlyUsedAppsList[i])
@@ -991,7 +991,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
     /*Indexing*/
     private fun loadApplicationsIndex() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
-        indexView.removeAllViews()
+        hybridApplicationViewBinding.indexView.removeAllViews()
 
         withContext(Dispatchers.Default) {
             val indexCount = indexList.size
@@ -1013,15 +1013,15 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             val sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
             sideIndexItem.text = indexText.toUpperCase(Locale.getDefault())
             sideIndexItem.setTextColor(PublicVariable.colorLightDarkOpposite)
-            indexView.addView(sideIndexItem)
+            hybridApplicationViewBinding.indexView.addView(sideIndexItem)
         }
 
         val sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
         Handler().postDelayed({
-            var upperRange = (indexView.y - sideIndexItem.height).toInt()
-            for (number in 0 until indexView.childCount) {
-                val indexText = (indexView.getChildAt(number) as TextView).text.toString()
-                val indexRange = (indexView.getChildAt(number).y + indexView.y + sideIndexItem.height).toInt()
+            var upperRange = (hybridApplicationViewBinding.indexView.y - sideIndexItem.height).toInt()
+            for (number in 0 until hybridApplicationViewBinding.indexView.childCount) {
+                val indexText = (hybridApplicationViewBinding.indexView.getChildAt(number) as TextView).text.toString()
+                val indexRange = (hybridApplicationViewBinding.indexView.getChildAt(number).y + hybridApplicationViewBinding.indexView.y + sideIndexItem.height).toInt()
                 for (jRange in upperRange..indexRange) {
                     mapRangeIndex[jRange] = indexText
                 }
@@ -1036,23 +1036,23 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     private fun setupFastScrollingIndexing() {
         val popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon)!!.mutate()
         popupIndexBackground.setTint(PublicVariable.primaryColorOpposite)
-        popupIndex.background = popupIndexBackground
+        hybridApplicationViewBinding.popupIndex.background = popupIndexBackground
 
-        nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-        nestedIndexScrollView.visibility = View.VISIBLE
+        hybridApplicationViewBinding.nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+        hybridApplicationViewBinding.nestedIndexScrollView.visibility = View.VISIBLE
 
         val popupIndexOffsetY = (PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + if (functionsClass.UsageStatsEnabled()) functionsClass.DpToInteger(7) else functionsClass.DpToInteger(7)).toFloat()
-        nestedIndexScrollView.setOnTouchListener { view, motionEvent ->
+        hybridApplicationViewBinding.nestedIndexScrollView.setOnTouchListener { view, motionEvent ->
             when(motionEvent.action){
                 MotionEvent.ACTION_DOWN -> {
                     if (!functionsClass.litePreferencesEnabled()) {
                         val indexText = mapRangeIndex[motionEvent.y.toInt()]
 
                         if (indexText != null) {
-                            popupIndex.y = motionEvent.rawY - popupIndexOffsetY
-                            popupIndex.text = indexText
-                            popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                            popupIndex.visibility = View.VISIBLE
+                            hybridApplicationViewBinding.popupIndex.y = motionEvent.rawY - popupIndexOffsetY
+                            hybridApplicationViewBinding.popupIndex.text = indexText
+                            hybridApplicationViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                            hybridApplicationViewBinding.popupIndex.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -1061,24 +1061,24 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                         val indexText = mapRangeIndex[motionEvent.y.toInt()]
 
                         if (indexText != null) {
-                            if (!popupIndex.isShown) {
-                                popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                                popupIndex.visibility = View.VISIBLE
+                            if (!hybridApplicationViewBinding.popupIndex.isShown) {
+                                hybridApplicationViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                                hybridApplicationViewBinding.popupIndex.visibility = View.VISIBLE
                             }
-                            popupIndex.y = motionEvent.rawY - popupIndexOffsetY
-                            popupIndex.text = indexText
+                            hybridApplicationViewBinding.popupIndex.y = motionEvent.rawY - popupIndexOffsetY
+                            hybridApplicationViewBinding.popupIndex.text = indexText
                             try {
-                                nestedScrollView.smoothScrollTo(
+                                hybridApplicationViewBinding.nestedScrollView.smoothScrollTo(
                                         0,
-                                        loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
+                                        hybridApplicationViewBinding.applicationsListView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
                                 )
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
                         } else {
-                            if (popupIndex.isShown) {
-                                popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                                popupIndex.visibility = View.INVISIBLE
+                            if (hybridApplicationViewBinding.popupIndex.isShown) {
+                                hybridApplicationViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                                hybridApplicationViewBinding.popupIndex.visibility = View.INVISIBLE
                             }
                         }
                     }
@@ -1086,25 +1086,25 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 MotionEvent.ACTION_UP -> {
                     if (functionsClass.litePreferencesEnabled()) {
                         try {
-                            nestedScrollView.smoothScrollTo(
+                            hybridApplicationViewBinding.nestedScrollView.smoothScrollTo(
                                     0,
-                                    loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
+                                    hybridApplicationViewBinding.applicationsListView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
                             )
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
                     } else {
-                        if (popupIndex.isShown) {
+                        if (hybridApplicationViewBinding.popupIndex.isShown) {
                             try {
-                                nestedScrollView.smoothScrollTo(
+                                hybridApplicationViewBinding.nestedScrollView.smoothScrollTo(
                                         0,
-                                        loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
+                                        hybridApplicationViewBinding.applicationsListView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
                                 )
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
-                            popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                            popupIndex.visibility = View.INVISIBLE
+                            hybridApplicationViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                            hybridApplicationViewBinding.popupIndex.visibility = View.INVISIBLE
                         }
                     }
                 }
@@ -1116,8 +1116,9 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
     /*Search Engine*/
     private fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Default).async {
-        if (SearchEngineAdapter.allSearchResultItems.isEmpty()) {
-            searchAdapterItems = ArrayList<AdapterItemsSearchEngine>()
+        var searchAdapterItems: ArrayList<AdapterItemsSearchEngine> = ArrayList<AdapterItemsSearchEngine>()
+
+        if (SearchEngineAdapter.allSearchData.isEmpty()) {
 
             //Loading Applications
             applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
@@ -1147,7 +1148,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                                 functionsClass.shapedAppIcon(it.activityInfo)
                             }
 
-                            searchAdapterItems.add(AdapterItemsSearchEngine(installedAppName, installedPackageName, installedClassName, installedAppIcon, SearchEngineAdapter.SearchResultType.SearchShortcuts))
+                            searchAdapterItems.add(AdapterItemsSearchEngine(installedAppName, installedPackageName, installedClassName, installedAppIcon, SearchResultType.SearchShortcuts))
                         } catch (e: Exception) {
                             e.printStackTrace()
                         } finally {
@@ -1159,7 +1160,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             try {
                 getFileStreamPath(".categoryInfo").readLines().forEach {
                     try {
-                        searchAdapterItems.add(AdapterItemsSearchEngine(it, functionsClass.readFileLine(it), SearchEngineAdapter.SearchResultType.SearchFolders))
+                        searchAdapterItems.add(AdapterItemsSearchEngine(it, functionsClass.readFileLine(it), SearchResultType.SearchFolders))
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -1210,10 +1211,10 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                                         appIcon,
                                         appWidgetProviderInfo,
                                         appWidgetId,
-                                        SearchEngineAdapter.SearchResultType.SearchWidgets
+                                        SearchResultType.SearchWidgets
                                 ))
                             } else {
-                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, className)
+                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidgetSuspend(packageName, className)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -1232,7 +1233,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 }
             }
         } else {
-            searchAdapterItems = SearchEngineAdapter.allSearchResultItems
+            searchAdapterItems = SearchEngineAdapter.allSearchData
 
             val searchRecyclerViewAdapter = SearchEngineAdapter(applicationContext, searchAdapterItems)
 
@@ -1248,36 +1249,38 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
     private fun setupSearchView(searchRecyclerViewAdapter: SearchEngineAdapter) {
         if (loadFreq) {
-            val layoutParamsAbove = textInputSearchView.layoutParams as RelativeLayout.LayoutParams
+            val layoutParamsAbove = hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.layoutParams as RelativeLayout.LayoutParams
             layoutParamsAbove.addRule(RelativeLayout.ABOVE, R.id.freqList)
 
-            textInputSearchView.layoutParams = layoutParamsAbove
-            textInputSearchView.bringToFront()
-            searchIcon.layoutParams = layoutParamsAbove
-            searchIcon.bringToFront()
+            hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.layoutParams = layoutParamsAbove
+            hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.bringToFront()
 
-            val layoutParamsAlignEnd = searchFloatIt.layoutParams as RelativeLayout.LayoutParams
+            hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.layoutParams = layoutParamsAbove
+            hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.bringToFront()
+
+            val layoutParamsAlignEnd = hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.layoutParams as RelativeLayout.LayoutParams
             layoutParamsAlignEnd.addRule(RelativeLayout.END_OF, R.id.textInputSearchView)
             layoutParamsAlignEnd.addRule(RelativeLayout.ABOVE, R.id.freqList)
 
-            searchFloatIt.layoutParams = layoutParamsAlignEnd
-            searchFloatIt.bringToFront()
+            hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.layoutParams = layoutParamsAlignEnd
+            hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.bringToFront()
 
-            val layoutParamsAlignStart = searchClose.layoutParams as RelativeLayout.LayoutParams
+            val layoutParamsAlignStart = hybridApplicationViewBinding.searchEngineViewInclude.searchClose.layoutParams as RelativeLayout.LayoutParams
             layoutParamsAlignStart.addRule(RelativeLayout.START_OF, R.id.textInputSearchView)
             layoutParamsAlignStart.addRule(RelativeLayout.ABOVE, R.id.freqList)
 
-            searchClose.layoutParams = layoutParamsAlignStart
-            searchClose.bringToFront()
+            hybridApplicationViewBinding.searchEngineViewInclude.searchClose.layoutParams = layoutParamsAlignStart
+            hybridApplicationViewBinding.searchEngineViewInclude.searchClose.bringToFront()
         }
-        searchView.setAdapter(searchRecyclerViewAdapter)
 
-        searchView.setDropDownBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        searchView.isVerticalScrollBarEnabled = false
-        searchView.scrollBarSize = 0
+        hybridApplicationViewBinding.searchEngineViewInclude.searchView.setAdapter(searchRecyclerViewAdapter)
 
-        searchView.setTextColor(PublicVariable.colorLightDarkOpposite)
-        searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
+        hybridApplicationViewBinding.searchEngineViewInclude.searchView.setDropDownBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        hybridApplicationViewBinding.searchEngineViewInclude.searchView.isVerticalScrollBarEnabled = false
+        hybridApplicationViewBinding.searchEngineViewInclude.searchView.scrollBarSize = 0
+
+        hybridApplicationViewBinding.searchEngineViewInclude.searchView.setTextColor(PublicVariable.colorLightDarkOpposite)
+        hybridApplicationViewBinding.searchEngineViewInclude.searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
 
         val layerDrawableSearchIcon = getDrawable(R.drawable.search_icon) as RippleDrawable?
         val backgroundTemporarySearchIcon = layerDrawableSearchIcon!!.findDrawableByLayerId(R.id.backgroundTemporary)
@@ -1290,29 +1293,29 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         layerDrawableSearchIcon.setLayerInset(2,
                 functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13))
 
-        searchIcon.setImageDrawable(layerDrawableSearchIcon)
-        searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-        searchIcon.visibility = View.VISIBLE
+        hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.setImageDrawable(layerDrawableSearchIcon)
+        hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+        hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.visibility = View.VISIBLE
 
-        textInputSearchView.hintTextColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
-        textInputSearchView.boxStrokeColor = PublicVariable.primaryColor
+        hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.hintTextColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+        hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.boxStrokeColor = PublicVariable.primaryColor
 
         var backgroundTemporaryInput = GradientDrawable()
         try {
             val layerDrawableBackgroundInput = getDrawable(R.drawable.background_search_input) as LayerDrawable?
             backgroundTemporaryInput = layerDrawableBackgroundInput!!.findDrawableByLayerId(R.id.backgroundTemporary) as GradientDrawable
             backgroundTemporaryInput.setTint(PublicVariable.colorLightDark)
-            textInputSearchView.background = layerDrawableBackgroundInput
+            hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.background = layerDrawableBackgroundInput
         } catch (e: Exception) {
             e.printStackTrace()
-            textInputSearchView.background = null
+            hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.background = null
         }
 
         val finalBackgroundTemporaryInput = backgroundTemporaryInput
-        searchIcon.setOnClickListener {
+        hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.setOnClickListener {
             val bundleSearchEngineUsed = Bundle()
             bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.currentUser)
-            bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchEngineAdapter.SearchResultType.SearchFolders)
+            bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchResultType.SearchFolders)
 
             val firebaseAnalytics = FirebaseAnalytics.getInstance(applicationContext)
             firebaseAnalytics.logEvent(SearchEngineAdapter.SEARCH_ENGINE_USED_LOG, bundleSearchEngineUsed)
@@ -1359,28 +1362,28 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         delay(99)
 
         if (functionsClass.searchEngineSubscribed()) {
-            textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-            textInputSearchView.visibility = View.VISIBLE
+            hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+            hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.visibility = View.VISIBLE
 
-            searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-            searchIcon.visibility = View.INVISIBLE
+            hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+            hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.visibility = View.INVISIBLE
 
             val valueAnimatorCornerDown = ValueAnimator.ofInt(functionsClass.DpToInteger(51), functionsClass.DpToInteger(7))
             valueAnimatorCornerDown.duration = 777
             valueAnimatorCornerDown.addUpdateListener { animator ->
                 val animatorValue = animator.animatedValue as Int
 
-                textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
                 finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
             }
             valueAnimatorCornerDown.start()
 
-            val valueAnimatorScalesUp = ValueAnimator.ofInt(functionsClass.DpToInteger(51), switchWidgets.width)
+            val valueAnimatorScalesUp = ValueAnimator.ofInt(functionsClass.DpToInteger(51), hybridApplicationViewBinding.switchWidgets.width)
             valueAnimatorScalesUp.duration = 777
             valueAnimatorScalesUp.addUpdateListener { animator ->
                 val animatorValue = animator.animatedValue as Int
-                textInputSearchView.layoutParams.width = animatorValue
-                textInputSearchView.requestLayout()
+                hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.layoutParams.width = animatorValue
+                hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.requestLayout()
             }
             valueAnimatorScalesUp.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator) {
@@ -1388,14 +1391,17 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 }
 
                 override fun onAnimationEnd(animation: Animator) {
-                    searchView.requestFocus()
+                    hybridApplicationViewBinding.searchEngineViewInclude.searchView.requestFocus()
+
                     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
+                    inputMethodManager.showSoftInput(hybridApplicationViewBinding.searchEngineViewInclude.searchView, InputMethodManager.SHOW_IMPLICIT)
+
                     Handler().postDelayed({
-                        searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
-                        searchFloatIt.visibility = View.VISIBLE
-                        searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
-                        searchClose.visibility = View.VISIBLE
+                        hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                        hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.visibility = View.VISIBLE
+
+                        hybridApplicationViewBinding.searchEngineViewInclude.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                        hybridApplicationViewBinding.searchEngineViewInclude.searchClose.visibility = View.VISIBLE
                     }, 555)
                 }
 
@@ -1409,17 +1415,17 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             })
             valueAnimatorScalesUp.start()
 
-            searchFloatIt.setOnClickListener {
-                if (!searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResultItems.size > 0 && searchView.text.toString().length >= 2) {
-                    SearchEngineAdapter.allSearchResultItems.forEach { searchResultItem ->
+            hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.setOnClickListener {
+                if (hybridApplicationViewBinding.searchEngineViewInclude.searchView.text.toString().isNotEmpty() && SearchEngineAdapter.allSearchResults.size > 0 && hybridApplicationViewBinding.searchEngineViewInclude.searchView.text.toString().length >= 2) {
+                    SearchEngineAdapter.allSearchResults.forEach { searchResultItem ->
                         when (searchResultItem.searchResultType) {
-                            SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
+                            SearchResultType.SearchShortcuts -> {
                                 functionsClassRunServices.runUnlimitedShortcutsService(searchResultItem.PackageName!!, searchResultItem.ClassName!!)
                             }
-                            SearchEngineAdapter.SearchResultType.SearchFolders -> {
+                            SearchResultType.SearchFolders -> {
                                 functionsClass.runUnlimitedFolderService(searchResultItem.folderName)
                             }
-                            SearchEngineAdapter.SearchResultType.SearchWidgets -> {
+                            SearchResultType.SearchWidgets -> {
                                 functionsClass
                                         .runUnlimitedWidgetService(searchResultItem.appWidgetId!!,
                                                 searchResultItem.widgetLabel)
@@ -1429,7 +1435,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 }
             }
 
-            searchView.addTextChangedListener(object : TextWatcher {
+            hybridApplicationViewBinding.searchEngineViewInclude.searchView.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
                 }
@@ -1441,102 +1447,103 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 }
             })
 
-            searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
-                override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        if (SearchEngineAdapter.allSearchResultItems.size == 1 && !searchView.text.toString().isEmpty() && searchView.text.toString().length >= 2) {
-                            when (SearchEngineAdapter.allSearchResultItems[0].searchResultType) {
-                                SearchEngineAdapter.SearchResultType.SearchShortcuts -> {
-                                    functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResultItems[0].PackageName!!, SearchEngineAdapter.allSearchResultItems[0].ClassName!!)
-                                }
-                                SearchEngineAdapter.SearchResultType.SearchFolders -> {
-                                    functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResultItems[0].folderName)
-                                }
-                                SearchEngineAdapter.SearchResultType.SearchWidgets -> {
-                                    functionsClass
-                                            .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResultItems[0].appWidgetId!!,
-                                                    SearchEngineAdapter.allSearchResultItems[0].widgetLabel)
-                                }
+            hybridApplicationViewBinding.searchEngineViewInclude.searchView.setOnEditorActionListener { textView, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (SearchEngineAdapter.allSearchResults.size == 1 && !hybridApplicationViewBinding.searchEngineViewInclude.searchView.text.toString().isEmpty() && hybridApplicationViewBinding.searchEngineViewInclude.searchView.text.toString().length >= 2) {
+                        when (SearchEngineAdapter.allSearchResults[0].searchResultType) {
+                            SearchResultType.SearchShortcuts -> {
+                                functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResults[0].PackageName!!, SearchEngineAdapter.allSearchResults[0].ClassName!!)
                             }
-
-                            searchView.setText("")
-
-                            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                            inputMethodManager.hideSoftInputFromWindow(searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-
-                            val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
-                            valueAnimatorCornerUp.duration = 777
-                            valueAnimatorCornerUp.addUpdateListener { animator ->
-                                val animatorValue = animator.animatedValue as Int
-                                textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
-                                finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
+                            SearchResultType.SearchFolders -> {
+                                functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResults[0].folderName)
                             }
-                            valueAnimatorCornerUp.start()
-
-                            val valueAnimatorScales = ValueAnimator.ofInt(textInputSearchView.width, functionsClass.DpToInteger(51))
-                            valueAnimatorScales.duration = 777
-                            valueAnimatorScales.addUpdateListener { animator ->
-                                val animatorValue = animator.animatedValue as Int
-                                textInputSearchView.layoutParams.width = animatorValue
-                                textInputSearchView.requestLayout()
-                            }
-                            valueAnimatorScales.addListener(object : Animator.AnimatorListener {
-                                override fun onAnimationStart(animation: Animator) {
-
-                                }
-
-                                override fun onAnimationEnd(animation: Animator) {
-                                    textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                                    textInputSearchView.visibility = View.INVISIBLE
-                                    searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                                    searchIcon.visibility = View.VISIBLE
-                                    searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                                    searchFloatIt.visibility = View.INVISIBLE
-                                    searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                                    searchClose.visibility = View.INVISIBLE
-                                }
-
-                                override fun onAnimationCancel(animation: Animator) {
-
-                                }
-
-                                override fun onAnimationRepeat(animation: Animator) {
-
-                                }
-                            })
-                            valueAnimatorScales.start()
-                        } else {
-                            if (SearchEngineAdapter.allSearchResultItems.size > 0 && searchView.text.toString().length >= 2) {
-                                searchView.showDropDown()
+                            SearchResultType.SearchWidgets -> {
+                                functionsClass
+                                        .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResults[0].appWidgetId!!,
+                                                SearchEngineAdapter.allSearchResults[0].widgetLabel)
                             }
                         }
+
+                        hybridApplicationViewBinding.searchEngineViewInclude.searchView.setText("")
+
+                        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        inputMethodManager.hideSoftInputFromWindow(hybridApplicationViewBinding.searchEngineViewInclude.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
+                        val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
+                        valueAnimatorCornerUp.duration = 777
+                        valueAnimatorCornerUp.addUpdateListener { animator ->
+                            val animatorValue = animator.animatedValue as Int
+                            hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                            finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
+                        }
+                        valueAnimatorCornerUp.start()
+
+                        val valueAnimatorScales = ValueAnimator.ofInt(hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.width, functionsClass.DpToInteger(51))
+                        valueAnimatorScales.duration = 777
+                        valueAnimatorScales.addUpdateListener { animator ->
+                            val animatorValue = animator.animatedValue as Int
+                            hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.layoutParams.width = animatorValue
+                            hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.requestLayout()
+                        }
+                        valueAnimatorScales.addListener(object : Animator.AnimatorListener {
+                            override fun onAnimationStart(animation: Animator) {
+
+                            }
+
+                            override fun onAnimationEnd(animation: Animator) {
+                                hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                                hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.visibility = View.INVISIBLE
+
+                                hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                                hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.visibility = View.VISIBLE
+
+                                hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.visibility = View.INVISIBLE
+
+                                hybridApplicationViewBinding.searchEngineViewInclude.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                hybridApplicationViewBinding.searchEngineViewInclude.searchClose.visibility = View.INVISIBLE
+                            }
+
+                            override fun onAnimationCancel(animation: Animator) {
+
+                            }
+
+                            override fun onAnimationRepeat(animation: Animator) {
+
+                            }
+                        })
+                        valueAnimatorScales.start()
+                    } else {
+                        if (SearchEngineAdapter.allSearchResults.size > 0 && hybridApplicationViewBinding.searchEngineViewInclude.searchView.text.toString().length >= 2) {
+                            hybridApplicationViewBinding.searchEngineViewInclude.searchView.showDropDown()
+                        }
                     }
-
-                    return false
                 }
-            })
 
-            searchClose.setOnClickListener {
-                searchView.setText("")
+                false
+            }
+
+            hybridApplicationViewBinding.searchEngineViewInclude.searchClose.setOnClickListener {
+                hybridApplicationViewBinding.searchEngineViewInclude.searchView.setText("")
 
                 val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                inputMethodManager.hideSoftInputFromWindow(hybridApplicationViewBinding.searchEngineViewInclude.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
                 val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
                 valueAnimatorCornerUp.duration = 777
                 valueAnimatorCornerUp.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int
-                    textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                    hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
                     finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
                 }
                 valueAnimatorCornerUp.start()
 
-                val valueAnimatorScales = ValueAnimator.ofInt(textInputSearchView.width, functionsClass.DpToInteger(51))
+                val valueAnimatorScales = ValueAnimator.ofInt(hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.width, functionsClass.DpToInteger(51))
                 valueAnimatorScales.duration = 777
                 valueAnimatorScales.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int
-                    textInputSearchView.layoutParams.width = animatorValue
-                    textInputSearchView.requestLayout()
+                    hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.layoutParams.width = animatorValue
+                    hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.requestLayout()
                 }
                 valueAnimatorScales.addListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator) {
@@ -1544,14 +1551,17 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     }
 
                     override fun onAnimationEnd(animation: Animator) {
-                        textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                        textInputSearchView.visibility = View.INVISIBLE
-                        searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                        searchIcon.visibility = View.VISIBLE
-                        searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                        searchFloatIt.visibility = View.INVISIBLE
-                        searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                        searchClose.visibility = View.INVISIBLE
+                        hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                        hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.visibility = View.INVISIBLE
+
+                        hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                        hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.visibility = View.VISIBLE
+
+                        hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                        hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.visibility = View.INVISIBLE
+
+                        hybridApplicationViewBinding.searchEngineViewInclude.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                        hybridApplicationViewBinding.searchEngineViewInclude.searchClose.visibility = View.INVISIBLE
                     }
 
                     override fun onAnimationCancel(animation: Animator) {

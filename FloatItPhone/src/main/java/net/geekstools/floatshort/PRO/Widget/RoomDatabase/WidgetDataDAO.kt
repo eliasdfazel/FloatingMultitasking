@@ -26,8 +26,10 @@ interface WidgetDataDAO {
     @Query("DELETE FROM WidgetData WHERE PackageName = :PackageName AND ClassNameProvider = :ClassNameWidgetProvider")
     fun deleteByWidgetClassNameProviderWidget(PackageName: String, ClassNameWidgetProvider: String)
 
-
-
+    /*
+    *
+    *
+    * */
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNewWidgetDataSuspend(vararg arrayOfWidgetDataModels: WidgetDataModel)
