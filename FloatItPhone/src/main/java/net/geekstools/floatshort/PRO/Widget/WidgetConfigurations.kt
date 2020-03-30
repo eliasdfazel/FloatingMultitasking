@@ -220,12 +220,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             }
 
             widgetConfigurationsViewsBinding.switchFloating.bringToFront()
-
-            widgetConfigurationsViewsBinding.textInputSearchView.bringToFront()
-            widgetConfigurationsViewsBinding.searchView.bringToFront()
-            widgetConfigurationsViewsBinding.searchIcon.bringToFront()
-            widgetConfigurationsViewsBinding.searchFloatIt.bringToFront()
-            widgetConfigurationsViewsBinding.searchClose.bringToFront()
         }
 
         val drawAddWidget = getDrawable(R.drawable.draw_pref_add_widget) as LayerDrawable
@@ -1896,14 +1890,14 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     }
 
     private fun setupSearchView(searchRecyclerViewAdapter: SearchEngineAdapter) {
-        widgetConfigurationsViewsBinding.searchView.setAdapter(searchRecyclerViewAdapter)
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.setAdapter(searchRecyclerViewAdapter)
 
-        widgetConfigurationsViewsBinding.searchView.setDropDownBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        widgetConfigurationsViewsBinding.searchView.isVerticalScrollBarEnabled = false
-        widgetConfigurationsViewsBinding.searchView.scrollBarSize = 0
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.setDropDownBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.isVerticalScrollBarEnabled = false
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.scrollBarSize = 0
 
-        widgetConfigurationsViewsBinding.searchView.setTextColor(PublicVariable.colorLightDarkOpposite)
-        widgetConfigurationsViewsBinding.searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.setTextColor(PublicVariable.colorLightDarkOpposite)
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
 
         val layerDrawableSearchIcon = getDrawable(R.drawable.search_icon) as RippleDrawable?
         val backgroundTemporarySearchIcon = layerDrawableSearchIcon?.findDrawableByLayerId(R.id.backgroundTemporary)
@@ -1916,26 +1910,26 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         layerDrawableSearchIcon?.setLayerInset(2,
                 functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13))
 
-        widgetConfigurationsViewsBinding.searchIcon.setImageDrawable(layerDrawableSearchIcon)
-        widgetConfigurationsViewsBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-        widgetConfigurationsViewsBinding.searchIcon.visibility = View.VISIBLE
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchIcon.setImageDrawable(layerDrawableSearchIcon)
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchIcon.visibility = View.VISIBLE
 
-        widgetConfigurationsViewsBinding.textInputSearchView.hintTextColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
-        widgetConfigurationsViewsBinding.textInputSearchView.boxStrokeColor = PublicVariable.primaryColor
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.hintTextColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.boxStrokeColor = PublicVariable.primaryColor
 
         var backgroundTemporaryInput = GradientDrawable()
         try {
             val layerDrawableBackgroundInput = getDrawable(R.drawable.background_search_input) as LayerDrawable?
             backgroundTemporaryInput = layerDrawableBackgroundInput!!.findDrawableByLayerId(R.id.backgroundTemporary) as GradientDrawable
             backgroundTemporaryInput.setTint(PublicVariable.colorLightDark)
-            widgetConfigurationsViewsBinding.textInputSearchView.background = layerDrawableBackgroundInput
+            widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.background = layerDrawableBackgroundInput
         } catch (e: Exception) {
             e.printStackTrace()
-            widgetConfigurationsViewsBinding.textInputSearchView.background = null
+            widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.background = null
         }
 
         val finalBackgroundTemporaryInput = backgroundTemporaryInput
-        widgetConfigurationsViewsBinding.searchIcon.setOnClickListener {
+        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchIcon.setOnClickListener {
             val bundleSearchEngineUsed = Bundle()
             bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.currentUser)
             bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchResultType.SearchFolders)
@@ -1985,18 +1979,18 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         delay(90)
 
         if (functionsClass.searchEngineSubscribed()) {
-            widgetConfigurationsViewsBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-            widgetConfigurationsViewsBinding.textInputSearchView.visibility = View.VISIBLE
+            widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+            widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.visibility = View.VISIBLE
 
-            widgetConfigurationsViewsBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-            widgetConfigurationsViewsBinding.searchIcon.visibility = View.INVISIBLE
+            widgetConfigurationsViewsBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+            widgetConfigurationsViewsBinding.searchEngineViewInclude.searchIcon.visibility = View.INVISIBLE
 
             val valueAnimatorCornerDown = ValueAnimator.ofInt(functionsClass.DpToInteger(51), functionsClass.DpToInteger(7))
             valueAnimatorCornerDown.duration = 777
             valueAnimatorCornerDown.addUpdateListener { animator ->
                 val animatorValue = animator.animatedValue as Int
 
-                widgetConfigurationsViewsBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
                 finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
             }
             valueAnimatorCornerDown.start()
@@ -2005,8 +1999,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             valueAnimatorScalesUp.duration = 777
             valueAnimatorScalesUp.addUpdateListener { animator ->
                 val animatorValue = animator.animatedValue as Int
-                widgetConfigurationsViewsBinding.textInputSearchView.layoutParams.width = animatorValue
-                widgetConfigurationsViewsBinding.textInputSearchView.requestLayout()
+                widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.layoutParams.width = animatorValue
+                widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.requestLayout()
             }
             valueAnimatorScalesUp.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator) {
@@ -2014,16 +2008,16 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 }
 
                 override fun onAnimationEnd(animation: Animator) {
-                    widgetConfigurationsViewsBinding.searchView.requestFocus()
+                    widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.requestFocus()
 
                     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    inputMethodManager.showSoftInput(widgetConfigurationsViewsBinding.searchView, InputMethodManager.SHOW_IMPLICIT)
+                    inputMethodManager.showSoftInput(widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView, InputMethodManager.SHOW_IMPLICIT)
 
-                    widgetConfigurationsViewsBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
-                    widgetConfigurationsViewsBinding.searchFloatIt.visibility = View.VISIBLE
+                    widgetConfigurationsViewsBinding.searchEngineViewInclude.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                    widgetConfigurationsViewsBinding.searchEngineViewInclude.searchFloatIt.visibility = View.VISIBLE
 
-                    widgetConfigurationsViewsBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
-                    widgetConfigurationsViewsBinding.searchClose.visibility = View.VISIBLE
+                    widgetConfigurationsViewsBinding.searchEngineViewInclude.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                    widgetConfigurationsViewsBinding.searchEngineViewInclude.searchClose.visibility = View.VISIBLE
                 }
 
                 override fun onAnimationCancel(animation: Animator) {
@@ -2036,9 +2030,9 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             })
             valueAnimatorScalesUp.start()
 
-            widgetConfigurationsViewsBinding.searchFloatIt.setOnClickListener {
-                if (!widgetConfigurationsViewsBinding.searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResults.size > 0
-                        && widgetConfigurationsViewsBinding.searchView.text.toString().length >= 2) {
+            widgetConfigurationsViewsBinding.searchEngineViewInclude.searchFloatIt.setOnClickListener {
+                if (!widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResults.size > 0
+                        && widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.text.toString().length >= 2) {
                     SearchEngineAdapter.allSearchResults.forEach { searchResultItem ->
                         when (searchResultItem.searchResultType) {
                             SearchResultType.SearchShortcuts -> {
@@ -2057,7 +2051,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 }
             }
 
-            widgetConfigurationsViewsBinding.searchView.addTextChangedListener(object : TextWatcher {
+            widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
                 }
@@ -2071,12 +2065,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 }
             })
 
-            widgetConfigurationsViewsBinding.searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
                 override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         if (SearchEngineAdapter.allSearchResults.size == 1
-                                && !widgetConfigurationsViewsBinding.searchView.text.toString().isEmpty()
-                                && widgetConfigurationsViewsBinding.searchView.text.toString().length >= 2) {
+                                && !widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.text.toString().isEmpty()
+                                && widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.text.toString().length >= 2) {
                             when (SearchEngineAdapter.allSearchResults[0].searchResultType) {
                                 SearchResultType.SearchShortcuts -> {
                                     functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResults[0].PackageName!!, SearchEngineAdapter.allSearchResults[0].ClassName!!)
@@ -2091,26 +2085,26 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 }
                             }
 
-                            widgetConfigurationsViewsBinding.searchView.setText("")
+                            widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.setText("")
 
                             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                            inputMethodManager.hideSoftInputFromWindow(widgetConfigurationsViewsBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                            inputMethodManager.hideSoftInputFromWindow(widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
                             val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
                             valueAnimatorCornerUp.duration = 777
                             valueAnimatorCornerUp.addUpdateListener { animator ->
                                 val animatorValue = animator.animatedValue as Int
-                                widgetConfigurationsViewsBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                                widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
                                 finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
                             }
                             valueAnimatorCornerUp.start()
 
-                            val valueAnimatorScales = ValueAnimator.ofInt(widgetConfigurationsViewsBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
+                            val valueAnimatorScales = ValueAnimator.ofInt(widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.width, functionsClass.DpToInteger(51))
                             valueAnimatorScales.duration = 777
                             valueAnimatorScales.addUpdateListener { animator ->
                                 val animatorValue = animator.animatedValue as Int
-                                widgetConfigurationsViewsBinding.textInputSearchView.layoutParams.width = animatorValue
-                                widgetConfigurationsViewsBinding.textInputSearchView.requestLayout()
+                                widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.layoutParams.width = animatorValue
+                                widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.requestLayout()
                             }
                             valueAnimatorScales.addListener(object : Animator.AnimatorListener {
                                 override fun onAnimationStart(animation: Animator) {
@@ -2118,17 +2112,17 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 }
 
                                 override fun onAnimationEnd(animation: Animator) {
-                                    widgetConfigurationsViewsBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                                    widgetConfigurationsViewsBinding.textInputSearchView.visibility = View.INVISIBLE
+                                    widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                                    widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.visibility = View.INVISIBLE
 
-                                    widgetConfigurationsViewsBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                                    widgetConfigurationsViewsBinding.searchIcon.visibility = View.VISIBLE
+                                    widgetConfigurationsViewsBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                                    widgetConfigurationsViewsBinding.searchEngineViewInclude.searchIcon.visibility = View.VISIBLE
 
-                                    widgetConfigurationsViewsBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                                    widgetConfigurationsViewsBinding.searchFloatIt.visibility = View.INVISIBLE
+                                    widgetConfigurationsViewsBinding.searchEngineViewInclude.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                    widgetConfigurationsViewsBinding.searchEngineViewInclude.searchFloatIt.visibility = View.INVISIBLE
 
-                                    widgetConfigurationsViewsBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                                    widgetConfigurationsViewsBinding.searchClose.visibility = View.INVISIBLE
+                                    widgetConfigurationsViewsBinding.searchEngineViewInclude.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                    widgetConfigurationsViewsBinding.searchEngineViewInclude.searchClose.visibility = View.INVISIBLE
                                 }
 
                                 override fun onAnimationCancel(animation: Animator) {
@@ -2142,8 +2136,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             valueAnimatorScales.start()
                         } else {
                             if (SearchEngineAdapter.allSearchResults.size > 0
-                                    && widgetConfigurationsViewsBinding.searchView.text.toString().length >= 2) {
-                                widgetConfigurationsViewsBinding.searchView.showDropDown()
+                                    && widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.text.toString().length >= 2) {
+                                widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.showDropDown()
                             }
                         }
                     }
@@ -2152,27 +2146,27 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 }
             })
 
-            widgetConfigurationsViewsBinding.searchClose.setOnClickListener {
-                widgetConfigurationsViewsBinding.searchView.setText("")
+            widgetConfigurationsViewsBinding.searchEngineViewInclude.searchClose.setOnClickListener {
+                widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.setText("")
 
                 val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(widgetConfigurationsViewsBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                inputMethodManager.hideSoftInputFromWindow(widgetConfigurationsViewsBinding.searchEngineViewInclude.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
                 val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
                 valueAnimatorCornerUp.duration = 777
                 valueAnimatorCornerUp.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int
-                    widgetConfigurationsViewsBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                    widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
                     finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
                 }
                 valueAnimatorCornerUp.start()
 
-                val valueAnimatorScales = ValueAnimator.ofInt(widgetConfigurationsViewsBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
+                val valueAnimatorScales = ValueAnimator.ofInt(widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.width, functionsClass.DpToInteger(51))
                 valueAnimatorScales.duration = 777
                 valueAnimatorScales.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int
-                    widgetConfigurationsViewsBinding.textInputSearchView.layoutParams.width = animatorValue
-                    widgetConfigurationsViewsBinding.textInputSearchView.requestLayout()
+                    widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.layoutParams.width = animatorValue
+                    widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.requestLayout()
                 }
                 valueAnimatorScales.addListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator) {
@@ -2180,17 +2174,17 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
 
                     override fun onAnimationEnd(animation: Animator) {
-                        widgetConfigurationsViewsBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                        widgetConfigurationsViewsBinding.textInputSearchView.visibility = View.INVISIBLE
+                        widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                        widgetConfigurationsViewsBinding.searchEngineViewInclude.textInputSearchView.visibility = View.INVISIBLE
 
-                        widgetConfigurationsViewsBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                        widgetConfigurationsViewsBinding.searchIcon.visibility = View.VISIBLE
+                        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchIcon.visibility = View.VISIBLE
 
-                        widgetConfigurationsViewsBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                        widgetConfigurationsViewsBinding.searchFloatIt.visibility = View.INVISIBLE
+                        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchFloatIt.visibility = View.INVISIBLE
 
-                        widgetConfigurationsViewsBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                        widgetConfigurationsViewsBinding.searchClose.visibility = View.INVISIBLE
+                        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                        widgetConfigurationsViewsBinding.searchEngineViewInclude.searchClose.visibility = View.INVISIBLE
                     }
 
                     override fun onAnimationCancel(animation: Animator) {

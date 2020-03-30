@@ -916,14 +916,14 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
     }
 
     private fun setupSearchView(searchRecyclerViewAdapter: SearchEngineAdapter) {
-        foldersConfigurationViewBinding.searchView.setAdapter(searchRecyclerViewAdapter)
+        foldersConfigurationViewBinding.searchEngineViewInclude.searchView.setAdapter(searchRecyclerViewAdapter)
 
-        foldersConfigurationViewBinding.searchView.setDropDownBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        foldersConfigurationViewBinding.searchView.isVerticalScrollBarEnabled = false
-        foldersConfigurationViewBinding.searchView.scrollBarSize = 0
+        foldersConfigurationViewBinding.searchEngineViewInclude.searchView.setDropDownBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        foldersConfigurationViewBinding.searchEngineViewInclude.searchView.isVerticalScrollBarEnabled = false
+        foldersConfigurationViewBinding.searchEngineViewInclude.searchView.scrollBarSize = 0
 
-        foldersConfigurationViewBinding.searchView.setTextColor(PublicVariable.colorLightDarkOpposite)
-        foldersConfigurationViewBinding.searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
+        foldersConfigurationViewBinding.searchEngineViewInclude.searchView.setTextColor(PublicVariable.colorLightDarkOpposite)
+        foldersConfigurationViewBinding.searchEngineViewInclude.searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
 
         val layerDrawableSearchIcon = getDrawable(R.drawable.search_icon) as RippleDrawable?
         val backgroundTemporarySearchIcon = layerDrawableSearchIcon?.findDrawableByLayerId(R.id.backgroundTemporary)
@@ -936,26 +936,26 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
         layerDrawableSearchIcon?.setLayerInset(2,
                 functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13))
 
-        foldersConfigurationViewBinding.searchIcon.setImageDrawable(layerDrawableSearchIcon)
-        foldersConfigurationViewBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-        foldersConfigurationViewBinding.searchIcon.visibility = View.VISIBLE
+        foldersConfigurationViewBinding.searchEngineViewInclude.searchIcon.setImageDrawable(layerDrawableSearchIcon)
+        foldersConfigurationViewBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+        foldersConfigurationViewBinding.searchEngineViewInclude.searchIcon.visibility = View.VISIBLE
 
-        foldersConfigurationViewBinding.textInputSearchView.hintTextColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
-        foldersConfigurationViewBinding.textInputSearchView.boxStrokeColor = PublicVariable.primaryColor
+        foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.hintTextColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
+        foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.boxStrokeColor = PublicVariable.primaryColor
 
         var backgroundTemporaryInput = GradientDrawable()
         try {
             val layerDrawableBackgroundInput = getDrawable(R.drawable.background_search_input) as LayerDrawable?
             backgroundTemporaryInput = layerDrawableBackgroundInput!!.findDrawableByLayerId(R.id.backgroundTemporary) as GradientDrawable
             backgroundTemporaryInput.setTint(PublicVariable.colorLightDark)
-            foldersConfigurationViewBinding.textInputSearchView.background = layerDrawableBackgroundInput
+            foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.background = layerDrawableBackgroundInput
         } catch (e: Exception) {
             e.printStackTrace()
-            foldersConfigurationViewBinding.textInputSearchView.background = null
+            foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.background = null
         }
 
         val finalBackgroundTemporaryInput = backgroundTemporaryInput
-        foldersConfigurationViewBinding.searchIcon.setOnClickListener {
+        foldersConfigurationViewBinding.searchEngineViewInclude.searchIcon.setOnClickListener {
             val bundleSearchEngineUsed = Bundle()
             bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.currentUser)
             bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchResultType.SearchFolders)
@@ -1005,18 +1005,18 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
         delay(90)
 
         if (functionsClass.searchEngineSubscribed()) {
-            foldersConfigurationViewBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-            foldersConfigurationViewBinding.textInputSearchView.visibility = View.VISIBLE
+            foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+            foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.visibility = View.VISIBLE
 
-            foldersConfigurationViewBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-            foldersConfigurationViewBinding.searchIcon.visibility = View.INVISIBLE
+            foldersConfigurationViewBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+            foldersConfigurationViewBinding.searchEngineViewInclude.searchIcon.visibility = View.INVISIBLE
 
             val valueAnimatorCornerDown = ValueAnimator.ofInt(functionsClass.DpToInteger(51), functionsClass.DpToInteger(7))
             valueAnimatorCornerDown.duration = 777
             valueAnimatorCornerDown.addUpdateListener { animator ->
                 val animatorValue = animator.animatedValue as Int
 
-                foldersConfigurationViewBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
                 finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
             }
             valueAnimatorCornerDown.start()
@@ -1025,8 +1025,8 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
             valueAnimatorScalesUp.duration = 777
             valueAnimatorScalesUp.addUpdateListener { animator ->
                 val animatorValue = animator.animatedValue as Int
-                foldersConfigurationViewBinding.textInputSearchView.layoutParams.width = animatorValue
-                foldersConfigurationViewBinding.textInputSearchView.requestLayout()
+                foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.layoutParams.width = animatorValue
+                foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.requestLayout()
             }
             valueAnimatorScalesUp.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator) {
@@ -1034,16 +1034,16 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                 }
 
                 override fun onAnimationEnd(animation: Animator) {
-                    foldersConfigurationViewBinding.searchView.requestFocus()
+                    foldersConfigurationViewBinding.searchEngineViewInclude.searchView.requestFocus()
 
                     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    inputMethodManager.showSoftInput(foldersConfigurationViewBinding.searchView, InputMethodManager.SHOW_IMPLICIT)
+                    inputMethodManager.showSoftInput(foldersConfigurationViewBinding.searchEngineViewInclude.searchView, InputMethodManager.SHOW_IMPLICIT)
                     Handler().postDelayed({
-                        foldersConfigurationViewBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
-                        foldersConfigurationViewBinding.searchFloatIt.visibility = View.VISIBLE
+                        foldersConfigurationViewBinding.searchEngineViewInclude.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                        foldersConfigurationViewBinding.searchEngineViewInclude.searchFloatIt.visibility = View.VISIBLE
 
-                        foldersConfigurationViewBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
-                        foldersConfigurationViewBinding.searchClose.visibility = View.VISIBLE
+                        foldersConfigurationViewBinding.searchEngineViewInclude.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_up_bounce_interpolator))
+                        foldersConfigurationViewBinding.searchEngineViewInclude.searchClose.visibility = View.VISIBLE
                     }, 555)
                 }
 
@@ -1057,9 +1057,9 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
             })
             valueAnimatorScalesUp.start()
 
-            foldersConfigurationViewBinding.searchFloatIt.setOnClickListener {
-                if (!foldersConfigurationViewBinding.searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResults.size > 0
-                        && foldersConfigurationViewBinding.searchView.text.toString().length >= 2) {
+            foldersConfigurationViewBinding.searchEngineViewInclude.searchFloatIt.setOnClickListener {
+                if (!foldersConfigurationViewBinding.searchEngineViewInclude.searchView.text.toString().isEmpty() && SearchEngineAdapter.allSearchResults.size > 0
+                        && foldersConfigurationViewBinding.searchEngineViewInclude.searchView.text.toString().length >= 2) {
                     SearchEngineAdapter.allSearchResults.forEach { searchResultItem ->
                         when (searchResultItem.searchResultType) {
                             SearchResultType.SearchShortcuts -> {
@@ -1078,7 +1078,7 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                 }
             }
 
-            foldersConfigurationViewBinding.searchView.addTextChangedListener(object : TextWatcher {
+            foldersConfigurationViewBinding.searchEngineViewInclude.searchView.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
                 }
@@ -1090,12 +1090,12 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                 }
             })
 
-            foldersConfigurationViewBinding.searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            foldersConfigurationViewBinding.searchEngineViewInclude.searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
                 override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         if (SearchEngineAdapter.allSearchResults.size == 1
-                                && !foldersConfigurationViewBinding.searchView.text.toString().isEmpty()
-                                && foldersConfigurationViewBinding.searchView.text.toString().length >= 2) {
+                                && !foldersConfigurationViewBinding.searchEngineViewInclude.searchView.text.toString().isEmpty()
+                                && foldersConfigurationViewBinding.searchEngineViewInclude.searchView.text.toString().length >= 2) {
                             when (SearchEngineAdapter.allSearchResults[0].searchResultType) {
                                 SearchResultType.SearchShortcuts -> {
                                     functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResults[0].PackageName!!, SearchEngineAdapter.allSearchResults[0].ClassName!!)
@@ -1110,26 +1110,26 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                                 }
                             }
 
-                            foldersConfigurationViewBinding.searchView.setText("")
+                            foldersConfigurationViewBinding.searchEngineViewInclude.searchView.setText("")
 
                             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                            inputMethodManager.hideSoftInputFromWindow(foldersConfigurationViewBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                            inputMethodManager.hideSoftInputFromWindow(foldersConfigurationViewBinding.searchEngineViewInclude.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
                             val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
                             valueAnimatorCornerUp.duration = 777
                             valueAnimatorCornerUp.addUpdateListener { animator ->
                                 val animatorValue = animator.animatedValue as Int
-                                foldersConfigurationViewBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                                foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
                                 finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
                             }
                             valueAnimatorCornerUp.start()
 
-                            val valueAnimatorScales = ValueAnimator.ofInt(foldersConfigurationViewBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
+                            val valueAnimatorScales = ValueAnimator.ofInt(foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.width, functionsClass.DpToInteger(51))
                             valueAnimatorScales.duration = 777
                             valueAnimatorScales.addUpdateListener { animator ->
                                 val animatorValue = animator.animatedValue as Int
-                                foldersConfigurationViewBinding.textInputSearchView.layoutParams.width = animatorValue
-                                foldersConfigurationViewBinding.textInputSearchView.requestLayout()
+                                foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.layoutParams.width = animatorValue
+                                foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.requestLayout()
                             }
                             valueAnimatorScales.addListener(object : Animator.AnimatorListener {
                                 override fun onAnimationStart(animation: Animator) {
@@ -1137,17 +1137,17 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                                 }
 
                                 override fun onAnimationEnd(animation: Animator) {
-                                    foldersConfigurationViewBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                                    foldersConfigurationViewBinding.textInputSearchView.visibility = View.INVISIBLE
+                                    foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                                    foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.visibility = View.INVISIBLE
 
-                                    foldersConfigurationViewBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                                    foldersConfigurationViewBinding.searchIcon.visibility = View.VISIBLE
+                                    foldersConfigurationViewBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                                    foldersConfigurationViewBinding.searchEngineViewInclude.searchIcon.visibility = View.VISIBLE
 
-                                    foldersConfigurationViewBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                                    foldersConfigurationViewBinding.searchFloatIt.visibility = View.INVISIBLE
+                                    foldersConfigurationViewBinding.searchEngineViewInclude.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                    foldersConfigurationViewBinding.searchEngineViewInclude.searchFloatIt.visibility = View.INVISIBLE
 
-                                    foldersConfigurationViewBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                                    foldersConfigurationViewBinding.searchClose.visibility = View.INVISIBLE
+                                    foldersConfigurationViewBinding.searchEngineViewInclude.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                                    foldersConfigurationViewBinding.searchEngineViewInclude.searchClose.visibility = View.INVISIBLE
                                 }
 
                                 override fun onAnimationCancel(animation: Animator) {
@@ -1161,8 +1161,8 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                             valueAnimatorScales.start()
                         } else {
                             if (SearchEngineAdapter.allSearchResults.size > 0
-                                    && foldersConfigurationViewBinding.searchView.text.toString().length >= 2) {
-                                foldersConfigurationViewBinding.searchView.showDropDown()
+                                    && foldersConfigurationViewBinding.searchEngineViewInclude.searchView.text.toString().length >= 2) {
+                                foldersConfigurationViewBinding.searchEngineViewInclude.searchView.showDropDown()
                             }
                         }
                     }
@@ -1171,27 +1171,27 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                 }
             })
 
-            foldersConfigurationViewBinding.searchClose.setOnClickListener {
-                foldersConfigurationViewBinding.searchView.setText("")
+            foldersConfigurationViewBinding.searchEngineViewInclude.searchClose.setOnClickListener {
+                foldersConfigurationViewBinding.searchEngineViewInclude.searchView.setText("")
 
                 val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(foldersConfigurationViewBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                inputMethodManager.hideSoftInputFromWindow(foldersConfigurationViewBinding.searchEngineViewInclude.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
                 val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
                 valueAnimatorCornerUp.duration = 777
                 valueAnimatorCornerUp.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int
-                    foldersConfigurationViewBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
+                    foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
                     finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
                 }
                 valueAnimatorCornerUp.start()
 
-                val valueAnimatorScales = ValueAnimator.ofInt(foldersConfigurationViewBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
+                val valueAnimatorScales = ValueAnimator.ofInt(foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.width, functionsClass.DpToInteger(51))
                 valueAnimatorScales.duration = 777
                 valueAnimatorScales.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int
-                    foldersConfigurationViewBinding.textInputSearchView.layoutParams.width = animatorValue
-                    foldersConfigurationViewBinding.textInputSearchView.requestLayout()
+                    foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.layoutParams.width = animatorValue
+                    foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.requestLayout()
                 }
                 valueAnimatorScales.addListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator) {
@@ -1199,17 +1199,17 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                     }
 
                     override fun onAnimationEnd(animation: Animator) {
-                        foldersConfigurationViewBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                        foldersConfigurationViewBinding.textInputSearchView.visibility = View.INVISIBLE
+                        foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
+                        foldersConfigurationViewBinding.searchEngineViewInclude.textInputSearchView.visibility = View.INVISIBLE
 
-                        foldersConfigurationViewBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                        foldersConfigurationViewBinding.searchIcon.visibility = View.VISIBLE
+                        foldersConfigurationViewBinding.searchEngineViewInclude.searchIcon.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+                        foldersConfigurationViewBinding.searchEngineViewInclude.searchIcon.visibility = View.VISIBLE
 
-                        foldersConfigurationViewBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                        foldersConfigurationViewBinding.searchFloatIt.visibility = View.INVISIBLE
+                        foldersConfigurationViewBinding.searchEngineViewInclude.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                        foldersConfigurationViewBinding.searchEngineViewInclude.searchFloatIt.visibility = View.INVISIBLE
 
-                        foldersConfigurationViewBinding.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
-                        foldersConfigurationViewBinding.searchClose.visibility = View.INVISIBLE
+                        foldersConfigurationViewBinding.searchEngineViewInclude.searchClose.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_down_zero))
+                        foldersConfigurationViewBinding.searchEngineViewInclude.searchClose.visibility = View.INVISIBLE
                     }
 
                     override fun onAnimationCancel(animation: Animator) {
