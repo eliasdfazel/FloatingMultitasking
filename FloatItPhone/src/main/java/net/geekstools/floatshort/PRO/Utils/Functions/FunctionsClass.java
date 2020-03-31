@@ -161,9 +161,9 @@ import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.PopupOptionsFloatingCategory;
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.PopupOptionsFloatingShortcuts;
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash;
-import net.geekstools.floatshort.PRO.Widget.FloatingServices.WidgetUnlimitedFloating;
-import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
-import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
+import net.geekstools.floatshort.PRO.Widgets.FloatingServices.WidgetUnlimitedFloating;
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface;
+import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.io.BufferedReader;

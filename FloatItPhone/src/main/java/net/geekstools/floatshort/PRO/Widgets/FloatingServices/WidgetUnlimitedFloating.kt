@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Widget.FloatingServices
+package net.geekstools.floatshort.PRO.Widgets.FloatingServices
 
 import android.annotation.SuppressLint
 import android.app.Service

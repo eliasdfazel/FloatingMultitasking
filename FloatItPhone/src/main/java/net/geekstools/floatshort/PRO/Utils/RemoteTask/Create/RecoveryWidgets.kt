@@ -30,9 +30,9 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
-import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
-import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel
-import net.geekstools.floatshort.PRO.Widget.WidgetsReallocationProcess
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataModel
+import net.geekstools.floatshort.PRO.Widgets.WidgetsReallocationProcess
 
 class RecoveryWidgets : Service() {
 

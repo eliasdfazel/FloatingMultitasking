@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Widget
+package net.geekstools.floatshort.PRO.Widgets
 
 import android.animation.Animator
 import android.animation.ValueAnimator
@@ -34,8 +34,8 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
-import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
-import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataModel
 
 class WidgetsReallocationProcess : Activity() {
 

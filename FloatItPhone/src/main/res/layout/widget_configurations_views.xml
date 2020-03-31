@@ -15,7 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_transparent_high"
-    tools:context="net.geekstools.floatshort.PRO.Widget.WidgetConfigurations">
+    tools:context="net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations">
 
     <ScrollView
         android:id="@+id/configuredWidgetNestedScrollView"

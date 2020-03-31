@@ -10,6 +10,10 @@ class SearchEngineViewModel : ViewModel() {
         MutableLiveData<ArrayList<AdapterItemsSearchEngine>>()
     }
 
+    val allSearchResult: MutableLiveData<ArrayList<AdapterItemsSearchEngine>> by lazy {
+        MutableLiveData<ArrayList<AdapterItemsSearchEngine>>()
+    }
+
     override fun onCleared() {
         super.onCleared()
     }

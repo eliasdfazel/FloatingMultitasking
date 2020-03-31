@@ -84,7 +84,7 @@ public class RemoveAllActivity extends Activity {
         startService(App_Unlimited_HIS);
 
         /*Widgets*/
-        Intent Widget_Unlimited_Floating = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Widget.FloatingServices.WidgetUnlimitedFloating.class);
+        Intent Widget_Unlimited_Floating = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Widgets.FloatingServices.WidgetUnlimitedFloating.class);
         Widget_Unlimited_Floating.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(Widget_Unlimited_Floating);
 

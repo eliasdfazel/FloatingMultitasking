@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Widget.RoomDatabase
+package net.geekstools.floatshort.PRO.Widgets.RoomDatabase
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

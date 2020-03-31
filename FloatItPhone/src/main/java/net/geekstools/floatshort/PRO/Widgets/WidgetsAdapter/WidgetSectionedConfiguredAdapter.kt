@@ -7,7 +7,7 @@
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
-package net.geekstools.floatshort.PRO.Widget.WidgetsAdapter
+package net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -24,9 +24,9 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.imageview.customshapes.ShapesImage
 import java.util.*
 
-class WidgetSectionedInstalledAdapter(private val context: Context,
-                                      private val sectionLayoutResourceId: Int,
-                                      private val recyclerView: RecyclerView, private val baseAdapter: RecyclerView.Adapter<InstalledWidgetsAdapter.ViewHolder>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class WidgetSectionedConfiguredAdapter(private val context: Context,
+                                       private val sectionLayoutResourceId: Int,
+                                       private val recyclerView: RecyclerView, private val baseAdapter: RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val functionsClass: FunctionsClass = FunctionsClass(context)
 
@@ -42,22 +42,22 @@ class WidgetSectionedInstalledAdapter(private val context: Context,
 
         baseAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
-                validate = this@WidgetSectionedInstalledAdapter.baseAdapter.itemCount > 0
+                validate = this@WidgetSectionedConfiguredAdapter.baseAdapter.itemCount > 0
                 notifyDataSetChanged()
             }
 
             override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
-                validate = this@WidgetSectionedInstalledAdapter.baseAdapter.itemCount > 0
+                validate = this@WidgetSectionedConfiguredAdapter.baseAdapter.itemCount > 0
                 notifyItemRangeChanged(positionStart, itemCount)
             }
 
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                validate = this@WidgetSectionedInstalledAdapter.baseAdapter.itemCount > 0
+                validate = this@WidgetSectionedConfiguredAdapter.baseAdapter.itemCount > 0
                 notifyItemRangeInserted(positionStart, itemCount)
             }
 
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-                validate = this@WidgetSectionedInstalledAdapter.baseAdapter.itemCount > 0
+                validate = this@WidgetSectionedConfiguredAdapter.baseAdapter.itemCount > 0
                 notifyItemRangeRemoved(positionStart, itemCount)
             }
         })
@@ -93,7 +93,7 @@ class WidgetSectionedInstalledAdapter(private val context: Context,
             }
         } else {
             try {
-                baseAdapter.onBindViewHolder(viewHolder as InstalledWidgetsAdapter.ViewHolder, sectionedPositionToPosition(position))
+                baseAdapter.onBindViewHolder(viewHolder as ConfiguredWidgetsAdapter.ViewHolder, sectionedPositionToPosition(position))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -147,7 +147,6 @@ class WidgetSectionedInstalledAdapter(private val context: Context,
     }
 
     override fun getItemId(position: Int): Long {
-
         return (if (isSectionHeaderPosition(position)) {
             Int.MAX_VALUE - sectionSparseArray.indexOfKey(position).toLong()
         } else {

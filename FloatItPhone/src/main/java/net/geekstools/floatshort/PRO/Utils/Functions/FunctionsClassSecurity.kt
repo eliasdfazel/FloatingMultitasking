@@ -42,8 +42,8 @@ import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.PasswordVerification
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash
-import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
-import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
+import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset

@@ -110,7 +110,7 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/GeeksEmpire.Material" />
         <activity
-            android:name=".Widget.WidgetConfigurations"
+            android:name=".Widgets.WidgetConfigurations"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="true"
             android:resizeableActivity="true"
@@ -266,7 +266,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Widget.WidgetsReallocationProcess"
+            android:name=".Widgets.WidgetsReallocationProcess"
             android:excludeFromRecents="true"
             android:theme="@style/GeeksEmpire.Material" />
         <activity
@@ -385,7 +385,7 @@
             android:enabled="false"
             android:icon="@drawable/alias_widgets"
             android:label="@string/floatingWidget"
-            android:targetActivity=".Widget.WidgetConfigurations">
+            android:targetActivity=".Widgets.WidgetConfigurations">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -508,8 +508,7 @@
         <service
             android:name=".Folders.FloatingServices.Folder_Unlimited_Time" />
 
-        <service
-            android:name=".Widget.FloatingServices.WidgetUnlimitedFloating"/>
+        <service android:name=".Widgets.FloatingServices.WidgetUnlimitedFloating" />
 
         <service
             android:name=".Shortcuts.FloatingServices.App_Unlimited_HIS"/>

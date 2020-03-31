@@ -64,9 +64,9 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash;
-import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface;
-import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel;
-import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations;
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface;
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataModel;
+import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import static android.content.Context.ACCESSIBILITY_SERVICE;

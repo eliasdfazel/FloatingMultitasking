@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Widget.WidgetsAdapter
+package net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter
 
 import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
@@ -34,8 +34,8 @@ import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
-import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
-import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
+import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import java.util.*
 
 class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetConfigurations,

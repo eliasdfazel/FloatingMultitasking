@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Widget
+package net.geekstools.floatshort.PRO.Widgets
 
 import android.animation.Animator
 import android.animation.ValueAnimator
@@ -75,12 +75,12 @@ import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SwipeGestureListener
-import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataInterface
-import net.geekstools.floatshort.PRO.Widget.RoomDatabase.WidgetDataModel
-import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.ConfiguredWidgetsAdapter
-import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.InstalledWidgetsAdapter
-import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.WidgetSectionedConfiguredAdapter
-import net.geekstools.floatshort.PRO.Widget.WidgetsAdapter.WidgetSectionedInstalledAdapter
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
+import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataModel
+import net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter.ConfiguredWidgetsAdapter
+import net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter.InstalledWidgetsAdapter
+import net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter.WidgetSectionedConfiguredAdapter
+import net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter.WidgetSectionedInstalledAdapter
 import net.geekstools.floatshort.PRO.databinding.WidgetConfigurationsViewsBinding
 import java.util.*
 import kotlin.Comparator

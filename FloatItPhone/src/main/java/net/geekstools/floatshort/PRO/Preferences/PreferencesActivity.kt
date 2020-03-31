@@ -29,7 +29,7 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
-import net.geekstools.floatshort.PRO.Widget.WidgetConfigurations
+import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import kotlin.math.hypot
 
 

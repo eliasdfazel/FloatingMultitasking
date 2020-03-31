@@ -11,7 +11,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="51dp"
-    android:background="@color/dark_transparent_high">
+    android:background="@android:color/transparent">
 
     <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/textInputSearchView"
@@ -57,16 +57,16 @@
             android:dropDownAnchor="@id/searchView" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/searchIcon"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="3dp"
         android:visibility="invisible"
         android:background="@drawable/search_icon" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/searchFloatIt"
         android:layout_width="46dp"
         android:layout_height="46dp"
@@ -79,7 +79,7 @@
         android:visibility="invisible"
         android:src="@drawable/search_icon_float_it" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/searchClose"
         android:layout_width="46dp"
         android:layout_height="46dp"
