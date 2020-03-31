@@ -26,6 +26,9 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -38,6 +41,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
+import net.geekstools.floatshort.PRO.SearchEngine.Data.SearchEngineViewModel
 import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine
@@ -51,26 +55,57 @@ import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.databinding.SearchEngineViewBinding
 
-class InitializeSearchEngine(private val activity: AppCompatActivity, private val context: Context,
-                             private val searchEngineViewBinding: SearchEngineViewBinding,
-                             private val functionsClass: FunctionsClass,
-                             private val functionsClassRunServices: FunctionsClassRunServices,
-                             private val functionsClassSecurity: FunctionsClassSecurity,
-                             private val customIcons: LoadCustomIcons?,
-                             private val firebaseAuth: FirebaseAuth) {
+class SearchEngine(private val activity: AppCompatActivity, private val context: Context,
+                   private val searchEngineViewBinding: SearchEngineViewBinding,
+                   private val functionsClass: FunctionsClass,
+                   private val functionsClassRunServices: FunctionsClassRunServices,
+                   private val functionsClassSecurity: FunctionsClassSecurity,
+                   private val customIcons: LoadCustomIcons?,
+                   private val firebaseAuth: FirebaseAuth) {
 
     private val inputMethodManager: InputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-    /*
-    * define viewmodel and pass it as variable to loadsearchengine data
-    * and extract data loading from here and add to viewmodel class and observe changed of livedata here to setup views
-    * */
+    companion object {
+        var allSearchData: ArrayList<AdapterItemsSearchEngine> = ArrayList<AdapterItemsSearchEngine>()
+        var allSearchResults: ArrayList<AdapterItemsSearchEngine> = ArrayList<AdapterItemsSearchEngine>()
 
-    fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Default).async {
+        /**
+         * Clear Search Data and Search Results to Force Reloading
+         */
+        fun clearSearchDataToForceReload() {
+            allSearchResults.clear()
+            allSearchData.clear()
+        }
+    }
+
+    fun initializeSearchEngineData() {
+
+        val searchEngineViewModel: SearchEngineViewModel = ViewModelProvider(activity).get(SearchEngineViewModel::class.java)
+
+        searchEngineViewModel.allSearchData.observe(activity,
+                Observer { searchAdapterItems ->
+
+                    val searchRecyclerViewAdapter = SearchEngineAdapter(context, searchAdapterItems)
+
+                    activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+
+                    if (searchAdapterItems.size > 0) {
+                        setupSearchView(searchRecyclerViewAdapter)
+                    }
+                })
+
+        searchEngineViewModel.viewModelScope.launch {
+
+            loadSearchEngineData(searchEngineViewModel).await()
+        }
+    }
+
+    fun loadSearchEngineData(searchEngineViewModel: SearchEngineViewModel) = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
         var searchAdapterItems: ArrayList<AdapterItemsSearchEngine> = ArrayList<AdapterItemsSearchEngine>()
 
-        if (SearchEngineAdapter.allSearchData.isEmpty()) {
+        if (SearchEngine.allSearchData.isEmpty()) {
 
+            /*[Starting Data Loading Process]*/
             //Loading Applications
             val applicationInfoList = context.packageManager.queryIntentActivities(Intent().apply {
                 this.action = Intent.ACTION_MAIN
@@ -102,16 +137,15 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
                     }
 
             //Loading Folders
-            try {
-                context.getFileStreamPath(".categoryInfo").readLines().forEach {
-                    try {
-                        searchAdapterItems.add(AdapterItemsSearchEngine(it, functionsClass.readFileLine(it), SearchResultType.SearchFolders))
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
+            val categoryInformationFile = context.getFileStreamPath(".categoryInfo")
+            if (categoryInformationFile.exists()) {
+                categoryInformationFile.readLines().forEach {
+
+                    searchAdapterItems.add(
+                            AdapterItemsSearchEngine(it, functionsClass.readFileLine(it),
+                                    SearchResultType.SearchFolders)
+                    )
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
 
             //Loading Widgets
@@ -169,28 +203,16 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
                     }
                 }
             }
+            /*[Data Loading Process Finished]*/
 
-            val searchRecyclerViewAdapter = SearchEngineAdapter(context, searchAdapterItems)
+            searchEngineViewModel.allSearchData.postValue(searchAdapterItems)
 
-            withContext(Dispatchers.Main) {
-                activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-
-                if (searchAdapterItems.size > 0) {
-                    setupSearchView(searchRecyclerViewAdapter)
-                }
-            }
         } else {
-            searchAdapterItems = SearchEngineAdapter.allSearchData
+            /*[Starting Data Loading Process]*/
+            searchAdapterItems = SearchEngine.allSearchData
+            /*[Data Loading Process Finished]*/
 
-            val searchRecyclerViewAdapter = SearchEngineAdapter(context, searchAdapterItems)
-
-            withContext(Dispatchers.Main) {
-                activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-
-                if (searchAdapterItems.size > 0) {
-                    setupSearchView(searchRecyclerViewAdapter)
-                }
-            }
+            searchEngineViewModel.allSearchData.postValue(searchAdapterItems)
         }
     }
 
@@ -233,7 +255,13 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
         backgroundTemporaryInput?.setTint(PublicVariable.colorLightDark)
         searchEngineViewBinding.textInputSearchView.background = layerDrawableBackgroundInput
 
+        setupSearchEngineProcess(backgroundTemporaryInput)
+    }
+
+    private fun setupSearchEngineProcess(backgroundTemporaryInput: GradientDrawable?) {
+
         searchEngineViewBinding.searchIcon.setOnClickListener {
+
             val bundleSearchEngineUsed = Bundle()
             bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.currentUser)
             bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchResultType.SearchFolders)
@@ -260,24 +288,26 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
                             val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
                                 override fun onReceive(context: Context, intent: Intent) {
                                     if (intent.action == "SEARCH_ENGINE_AUTHENTICATED") {
-                                        backgroundTemporaryInput?.let { gradientDrawable -> performSearchEngine(gradientDrawable) }
+
+                                        performSearchEngine(backgroundTemporaryInput)
                                     }
                                 }
                             }
                             context.registerReceiver(broadcastReceiver, intentFilter)
                         }
                     } else {
-                        backgroundTemporaryInput?.let { gradientDrawable -> performSearchEngine(gradientDrawable) }
+
+                        performSearchEngine(backgroundTemporaryInput)
                     }
                 }
             } else {
-                backgroundTemporaryInput?.let { gradientDrawable -> performSearchEngine(gradientDrawable) }
+
+                performSearchEngine(backgroundTemporaryInput)
             }
         }
     }
 
-    private fun performSearchEngine(finalBackgroundTemporaryInput: GradientDrawable) = CoroutineScope(Dispatchers.Main).launch {
-        delay(99)
+    private fun performSearchEngine(finalBackgroundTemporaryInput: GradientDrawable?) = CoroutineScope(Dispatchers.Main).launch {
 
         if (functionsClass.searchEngineSubscribed()) {
             searchEngineViewBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
@@ -292,7 +322,7 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
                 val animatorValue = animator.animatedValue as Int
 
                 searchEngineViewBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
-                finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
+                finalBackgroundTemporaryInput?.cornerRadius = animatorValue.toFloat()
             }
             valueAnimatorCornerDown.start()
 
@@ -300,6 +330,7 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
             valueAnimatorScalesUp.duration = 777
             valueAnimatorScalesUp.addUpdateListener { animator ->
                 val animatorValue = animator.animatedValue as Int
+
                 searchEngineViewBinding.textInputSearchView.layoutParams.width = animatorValue
                 searchEngineViewBinding.textInputSearchView.requestLayout()
             }
@@ -333,8 +364,8 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
             valueAnimatorScalesUp.start()
 
             searchEngineViewBinding.searchFloatIt.setOnClickListener {
-                if (searchEngineViewBinding.searchView.text.toString().isNotEmpty() && SearchEngineAdapter.allSearchResults.size > 0 && searchEngineViewBinding.searchView.text.toString().length >= 2) {
-                    SearchEngineAdapter.allSearchResults.forEach { searchResultItem ->
+                if (searchEngineViewBinding.searchView.text.toString().isNotEmpty() && SearchEngine.allSearchResults.size > 0 && searchEngineViewBinding.searchView.text.toString().length >= 2) {
+                    SearchEngine.allSearchResults.forEach { searchResultItem ->
                         when (searchResultItem.searchResultType) {
                             SearchResultType.SearchShortcuts -> {
                                 functionsClassRunServices.runUnlimitedShortcutsService(searchResultItem.PackageName!!, searchResultItem.ClassName!!)
@@ -368,18 +399,18 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
 
             searchEngineViewBinding.searchView.setOnEditorActionListener { textView, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (SearchEngineAdapter.allSearchResults.size == 1 && !searchEngineViewBinding.searchView.text.toString().isEmpty() && searchEngineViewBinding.searchView.text.toString().length >= 2) {
-                        when (SearchEngineAdapter.allSearchResults[0].searchResultType) {
+                    if (SearchEngine.allSearchResults.size == 1 && searchEngineViewBinding.searchView.text.toString().isNotEmpty() && searchEngineViewBinding.searchView.text.toString().length >= 2) {
+                        when (SearchEngine.allSearchResults[0].searchResultType) {
                             SearchResultType.SearchShortcuts -> {
-                                functionsClassRunServices.runUnlimitedShortcutsService(SearchEngineAdapter.allSearchResults[0].PackageName!!, SearchEngineAdapter.allSearchResults[0].ClassName!!)
+                                functionsClassRunServices.runUnlimitedShortcutsService(SearchEngine.allSearchResults[0].PackageName!!, SearchEngine.allSearchResults[0].ClassName!!)
                             }
                             SearchResultType.SearchFolders -> {
-                                functionsClass.runUnlimitedFolderService(SearchEngineAdapter.allSearchResults[0].folderName)
+                                functionsClass.runUnlimitedFolderService(SearchEngine.allSearchResults[0].folderName)
                             }
                             SearchResultType.SearchWidgets -> {
                                 functionsClass
-                                        .runUnlimitedWidgetService(SearchEngineAdapter.allSearchResults[0].appWidgetId!!,
-                                                SearchEngineAdapter.allSearchResults[0].widgetLabel)
+                                        .runUnlimitedWidgetService(SearchEngine.allSearchResults[0].appWidgetId!!,
+                                                SearchEngine.allSearchResults[0].widgetLabel)
                             }
                         }
 
@@ -391,8 +422,9 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
                         valueAnimatorCornerUp.duration = 777
                         valueAnimatorCornerUp.addUpdateListener { animator ->
                             val animatorValue = animator.animatedValue as Int
+
                             searchEngineViewBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
-                            finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
+                            finalBackgroundTemporaryInput?.cornerRadius = animatorValue.toFloat()
                         }
                         valueAnimatorCornerUp.start()
 
@@ -400,6 +432,7 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
                         valueAnimatorScales.duration = 777
                         valueAnimatorScales.addUpdateListener { animator ->
                             val animatorValue = animator.animatedValue as Int
+
                             searchEngineViewBinding.textInputSearchView.layoutParams.width = animatorValue
                             searchEngineViewBinding.textInputSearchView.requestLayout()
                         }
@@ -432,7 +465,7 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
                         })
                         valueAnimatorScales.start()
                     } else {
-                        if (SearchEngineAdapter.allSearchResults.size > 0 && searchEngineViewBinding.searchView.text.toString().length >= 2) {
+                        if (SearchEngine.allSearchResults.size > 0 && searchEngineViewBinding.searchView.text.toString().length >= 2) {
                             searchEngineViewBinding.searchView.showDropDown()
                         }
                     }
@@ -450,8 +483,9 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
                 valueAnimatorCornerUp.duration = 777
                 valueAnimatorCornerUp.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int
+
                     searchEngineViewBinding.textInputSearchView.setBoxCornerRadii(animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat(), animatorValue.toFloat())
-                    finalBackgroundTemporaryInput.cornerRadius = animatorValue.toFloat()
+                    finalBackgroundTemporaryInput?.cornerRadius = animatorValue.toFloat()
                 }
                 valueAnimatorCornerUp.start()
 
@@ -459,6 +493,7 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
                 valueAnimatorScales.duration = 777
                 valueAnimatorScales.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int
+
                     searchEngineViewBinding.textInputSearchView.layoutParams.width = animatorValue
                     searchEngineViewBinding.textInputSearchView.requestLayout()
                 }

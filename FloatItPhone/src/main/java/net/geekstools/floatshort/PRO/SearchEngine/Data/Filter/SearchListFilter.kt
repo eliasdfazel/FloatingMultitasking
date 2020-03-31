@@ -2,11 +2,12 @@ package net.geekstools.floatshort.PRO.SearchEngine.Data.Filter
 
 import android.widget.Filter
 import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
+import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ListFilter(private val searchEngineAdapter: SearchEngineAdapter) : Filter() {
+class SearchListFilter(private val searchEngineAdapter: SearchEngineAdapter) : Filter() {
 
     private val lock = Object()
 
@@ -14,7 +15,7 @@ class ListFilter(private val searchEngineAdapter: SearchEngineAdapter) : Filter(
         val results = FilterResults()
 
         if (prefix == null || prefix.isEmpty()) {
-            SearchEngineAdapter.allSearchData?.let {
+            SearchEngine.allSearchData.let {
                 synchronized(lock) {
                     results.values = it
                     results.count = it.size
@@ -25,7 +26,7 @@ class ListFilter(private val searchEngineAdapter: SearchEngineAdapter) : Filter(
 
             val matchValues = ArrayList<AdapterItemsSearchEngine>()
 
-            SearchEngineAdapter.allSearchData?.let {
+            SearchEngine.allSearchData.let {
 
                 for (dataItem in it) {
                     when (dataItem.searchResultType) {
@@ -61,9 +62,9 @@ class ListFilter(private val searchEngineAdapter: SearchEngineAdapter) : Filter(
     override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
         results?.let {
             if (it.values != null) {
-                SearchEngineAdapter.allSearchResults = it.values as ArrayList<AdapterItemsSearchEngine>
+                SearchEngine.allSearchResults = it.values as ArrayList<AdapterItemsSearchEngine>
             } else {
-                SearchEngineAdapter.allSearchResults = null
+                SearchEngine.allSearchResults.clear()
             }
 
             if (it.count > 0) {

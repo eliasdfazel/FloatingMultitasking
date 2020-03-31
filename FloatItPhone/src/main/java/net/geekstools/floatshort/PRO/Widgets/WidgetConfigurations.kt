@@ -57,7 +57,7 @@ import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
-import net.geekstools.floatshort.PRO.SearchEngine.UI.InitializeSearchEngine
+import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
@@ -1088,7 +1088,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     .onCompletion {
 
                         /*Search Engine*/
-                        InitializeSearchEngine(activity = this@WidgetConfigurations, context = applicationContext,
+                        SearchEngine(activity = this@WidgetConfigurations, context = applicationContext,
                                 searchEngineViewBinding = widgetConfigurationsViewsBinding.searchEngineViewInclude,
                                 functionsClass = functionsClass,
                                 functionsClassRunServices = functionsClassRunServices,
@@ -1096,7 +1096,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {
 
-                            this.loadSearchEngineData().await()
+                            this.initializeSearchEngineData()
                         }
                         /*Search Engine*/
 

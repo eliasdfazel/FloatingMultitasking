@@ -1721,7 +1721,9 @@ public class FunctionsClass {
     }
 
     public void navigateToClass(Class returnClass, final Activity activityToFinish) {
-        context.startActivity(new Intent(context, returnClass).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        context.startActivity(new Intent(context, returnClass)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

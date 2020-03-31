@@ -106,9 +106,11 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
     public void onSwipe(int direction) {
         switch (direction) {
             case SimpleGestureFilterAdvance.SWIPE_DOWN:
+
                 break;
             case SimpleGestureFilterAdvance.SWIPE_LEFT:
                 context.sendBroadcast(new Intent(context.getString(R.string.savedActionAdvance)));
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -117,9 +119,11 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
                         }
                     }
                 }, 200);
+
                 break;
             case SimpleGestureFilterAdvance.SWIPE_RIGHT:
                 context.sendBroadcast(new Intent(context.getString(R.string.savedActionAdvance)));
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -128,9 +132,11 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
                         }
                     }
                 }, 200);
+
                 break;
             case SimpleGestureFilterAdvance.SWIPE_UP:
                 context.sendBroadcast(new Intent(context.getString(R.string.savedActionAdvance)));
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -139,6 +145,7 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
                         }
                     }
                 }, 200);
+
                 break;
         }
     }

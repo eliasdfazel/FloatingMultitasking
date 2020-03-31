@@ -30,7 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
+import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -111,7 +111,8 @@ class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetC
                         widgetDataInterface.close()
 
                         withContext(Dispatchers.Main) {
-                            SearchEngineAdapter.allSearchResults.clear()
+                            //Edit Folder Name
+                            SearchEngine.clearSearchDataToForceReload()
 
                             widgetConfigurationsActivity.forceLoadConfiguredWidgets()
                         }

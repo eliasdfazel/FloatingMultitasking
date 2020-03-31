@@ -46,6 +46,7 @@
         android:required="false" />
 
     <application
+        android:name=".FloatItPhoneApplication"
         android:allowBackup="true"
         android:appCategory="productivity"
         android:fullBackupContent="false"

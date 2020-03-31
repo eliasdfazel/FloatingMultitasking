@@ -29,8 +29,9 @@ import android.widget.TextView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.ListFilter;
+import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchListFilter;
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType;
+import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices;
@@ -48,10 +49,6 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
     private int searchLayoutId;
 
-
-    public static ArrayList<AdapterItemsSearchEngine> allSearchData = new ArrayList<AdapterItemsSearchEngine>();
-    public static ArrayList<AdapterItemsSearchEngine> allSearchResults = new ArrayList<AdapterItemsSearchEngine>();
-
     public static boolean alreadyAuthenticatedSearchEngine = false;
 
     public static String SEARCH_ENGINE_USED_LOG = "search_engine_used";
@@ -60,7 +57,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
     public SearchEngineAdapter(Context context, ArrayList<AdapterItemsSearchEngine> allSearchData) {
         this.context = context;
 
-        SearchEngineAdapter.allSearchData = allSearchData;
+        SearchEngine.Companion.setAllSearchData(allSearchData);
 
         functionsClass = new FunctionsClass(context);
         functionsClassRunServices = new FunctionsClassRunServices(context);
@@ -96,17 +93,18 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
     @Override
     public int getCount() {
 
-        return allSearchResults.size();
+        return SearchEngine.Companion.getAllSearchResults().size();
     }
 
     @Override
     public Object getItem(int position) {
 
-        return allSearchResults.get(position);
+        return SearchEngine.Companion.getAllSearchResults().get(position);
     }
 
     @Override
     public long getItemId(int position) {
+
         return position;
     }
 
@@ -131,21 +129,21 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
         int dominantColor = 0;
 
         /*Add Switch To Change for Different Type: Apps/Folders/Widgets*/
-        switch (SearchEngineAdapter.allSearchResults.get(position).getSearchResultType()) {
+        switch (SearchEngine.Companion.getAllSearchResults().get(position).getSearchResultType()) {
             case SearchResultType.SearchShortcuts: {
-                dominantColor = functionsClass.extractDominantColor(allSearchResults.get(position).getAppIcon());
+                dominantColor = functionsClass.extractDominantColor(SearchEngine.Companion.getAllSearchResults().get(position).getAppIcon());
 
-                viewHolder.itemAppIcon.setImageDrawable(allSearchResults.get(position).getAppIcon());
-                viewHolder.itemAppName.setText(allSearchResults.get(position).getAppName());
+                viewHolder.itemAppIcon.setImageDrawable(SearchEngine.Companion.getAllSearchResults().get(position).getAppIcon());
+                viewHolder.itemAppName.setText(SearchEngine.Companion.getAllSearchResults().get(position).getAppName());
 
                 break;
             }
             case SearchResultType.SearchFolders: {
                 dominantColor = context.getColor(R.color.default_color);
 
-                viewHolder.itemAppName.setText(allSearchResults.get(position).getFolderName());
+                viewHolder.itemAppName.setText(SearchEngine.Companion.getAllSearchResults().get(position).getFolderName());
 
-                viewHolder.itemInitialLetter.setText(String.valueOf(allSearchResults.get(position).getFolderName().charAt(0)).toUpperCase());
+                viewHolder.itemInitialLetter.setText(String.valueOf(SearchEngine.Companion.getAllSearchResults().get(position).getFolderName().charAt(0)).toUpperCase());
                 viewHolder.itemInitialLetter.setTextColor(PublicVariable.colorLightDarkOpposite);
 
                 Drawable backgroundDrawable = null;
@@ -162,10 +160,10 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                 break;
             }
             case SearchResultType.SearchWidgets: {
-                dominantColor = functionsClass.extractDominantColor(allSearchResults.get(position).getAppWidgetProviderInfo().loadPreviewImage(context, DisplayMetrics.DENSITY_MEDIUM));
+                dominantColor = functionsClass.extractDominantColor(SearchEngine.Companion.getAllSearchResults().get(position).getAppWidgetProviderInfo().loadPreviewImage(context, DisplayMetrics.DENSITY_MEDIUM));
 
-                viewHolder.itemAppIcon.setImageDrawable(allSearchResults.get(position).getAppWidgetProviderInfo().loadPreviewImage(context, DisplayMetrics.DENSITY_MEDIUM));
-                viewHolder.itemAppName.setText(allSearchResults.get(position).getWidgetLabel());
+                viewHolder.itemAppIcon.setImageDrawable(SearchEngine.Companion.getAllSearchResults().get(position).getAppWidgetProviderInfo().loadPreviewImage(context, DisplayMetrics.DENSITY_MEDIUM));
+                viewHolder.itemAppName.setText(SearchEngine.Companion.getAllSearchResults().get(position).getWidgetLabel());
 
                 break;
             }
@@ -190,29 +188,29 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                 FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
                 Bundle bundleSearchEngineQuery = new Bundle();
 
-                switch (SearchEngineAdapter.allSearchResults.get(position).getSearchResultType()) {
+                switch (SearchEngine.Companion.getAllSearchResults().get(position).getSearchResultType()) {
                     case SearchResultType.SearchShortcuts: {
                         functionsClassRunServices
-                                .runUnlimitedShortcutsService(allSearchResults.get(position).getPackageName(), allSearchResults.get(position).getClassName());
+                                .runUnlimitedShortcutsService(SearchEngine.Companion.getAllSearchResults().get(position).getPackageName(), SearchEngine.Companion.getAllSearchResults().get(position).getClassName());
 
-                        bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", allSearchResults.get(position).getPackageName());
+                        bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", SearchEngine.Companion.getAllSearchResults().get(position).getPackageName());
 
                         break;
                     }
                     case SearchResultType.SearchFolders: {
                         functionsClass
-                                .runUnlimitedFolderService(allSearchResults.get(position).getFolderName());
+                                .runUnlimitedFolderService(SearchEngine.Companion.getAllSearchResults().get(position).getFolderName());
 
-                        bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", allSearchResults.get(position).getFolderName());
+                        bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", SearchEngine.Companion.getAllSearchResults().get(position).getFolderName());
 
                         break;
                     }
                     case SearchResultType.SearchWidgets: {
                         functionsClass
-                                .runUnlimitedWidgetService(allSearchResults.get(position).getAppWidgetId(),
-                                        allSearchResults.get(position).getWidgetLabel());
+                                .runUnlimitedWidgetService(SearchEngine.Companion.getAllSearchResults().get(position).getAppWidgetId(),
+                                        SearchEngine.Companion.getAllSearchResults().get(position).getWidgetLabel());
 
-                        bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", allSearchResults.get(position).getWidgetLabel());
+                        bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", SearchEngine.Companion.getAllSearchResults().get(position).getWidgetLabel());
 
                         break;
                     }
@@ -229,7 +227,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
     @Override
     public Filter getFilter() {
 
-        return new ListFilter(SearchEngineAdapter.this);
+        return new SearchListFilter(SearchEngineAdapter.this);
     }
 
     static class ViewHolder {

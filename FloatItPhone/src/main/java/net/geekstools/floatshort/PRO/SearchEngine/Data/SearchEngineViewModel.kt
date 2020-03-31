@@ -10,6 +10,8 @@ class SearchEngineViewModel : ViewModel() {
         MutableLiveData<ArrayList<AdapterItemsSearchEngine>>()
     }
 
+
+    /*pass viewmodel to adapter*/
     val allSearchResult: MutableLiveData<ArrayList<AdapterItemsSearchEngine>> by lazy {
         MutableLiveData<ArrayList<AdapterItemsSearchEngine>>()
     }

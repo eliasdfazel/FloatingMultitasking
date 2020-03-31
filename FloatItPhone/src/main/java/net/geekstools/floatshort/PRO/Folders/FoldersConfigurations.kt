@@ -62,7 +62,7 @@ import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.FoldersListAdapter
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
-import net.geekstools.floatshort.PRO.SearchEngine.UI.InitializeSearchEngine
+import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.*
@@ -732,7 +732,7 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                         loadInstalledCustomIcons()
 
                         /*Search Engine*/
-                        InitializeSearchEngine(activity = this@FoldersConfigurations, context = applicationContext,
+                        SearchEngine(activity = this@FoldersConfigurations, context = applicationContext,
                                 searchEngineViewBinding = foldersConfigurationViewBinding.searchEngineViewInclude,
                                 functionsClass = functionsClass,
                                 functionsClassRunServices = functionsClassRunServices,
@@ -740,7 +740,7 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {
 
-                            this.loadSearchEngineData().await()
+                            this.initializeSearchEngineData()
                         }
                         /*Search Engine*/
                     }

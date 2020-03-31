@@ -66,7 +66,7 @@ import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
-import net.geekstools.floatshort.PRO.SearchEngine.UI.InitializeSearchEngine
+import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardHybridAdapter
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
@@ -805,7 +805,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 }
                 .onCompletion {
                     /*Search Engine*/
-                    InitializeSearchEngine(activity = this@ApplicationsView, context = applicationContext,
+                    SearchEngine(activity = this@ApplicationsView, context = applicationContext,
                             searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
                             functionsClass = functionsClass,
                             functionsClassRunServices = functionsClassRunServices,
@@ -813,7 +813,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                             customIcons = loadCustomIcons,
                             firebaseAuth = firebaseAuth).apply {
 
-                        this.loadSearchEngineData().await()
+                        this.initializeSearchEngineData()
                     }
                     /*Search Engine*/
 

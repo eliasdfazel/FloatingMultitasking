@@ -160,6 +160,9 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         ProgressBar loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
         loadingBarLTR.getIndeterminateDrawable().setColorFilter(getColor(R.color.dark), PorterDuff.Mode.MULTIPLY);
 
+        /*
+         * convert to interface
+         * */
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(getString(R.string.counterActionAdvance));
         intentFilter.addAction(getString(R.string.savedActionAdvance));
@@ -262,6 +265,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
+
         if (functionsClass.returnAPI() < 24) {
             one.setVisibility(View.INVISIBLE);
             two.setVisibility(View.INVISIBLE);
@@ -303,6 +307,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                 addTwo.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
                 two.setImageDrawable(addTwo);
             }
+
             one.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

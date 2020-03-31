@@ -35,7 +35,7 @@ import androidx.preference.Preference
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
+import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -208,7 +208,8 @@ fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
         preferencesDataUtilShape.functionsClass.addAppShortcuts()
         if (currentShape != preferencesDataUtilShape.sharedPreferences.getInt("iconShape", 0)) {
             PublicVariable.forceReload = true
-            SearchEngineAdapter.allSearchResults.clear()
+
+            SearchEngine.clearSearchDataToForceReload()
         }
         dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     }
@@ -283,7 +284,8 @@ fun listCustomIconsPackage(preferencesDataUtilShape: PreferencesDataUtilShape) {
 
         if (currentCustomIconPack != preferencesDataUtilShape.sharedPreferences.getString("customIcon", preferencesDataUtilShape.activity.packageName)) {
             PublicVariable.forceReload = true
-            SearchEngineAdapter.allSearchResults.clear()
+
+            SearchEngine.clearSearchDataToForceReload()
         }
         dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     }

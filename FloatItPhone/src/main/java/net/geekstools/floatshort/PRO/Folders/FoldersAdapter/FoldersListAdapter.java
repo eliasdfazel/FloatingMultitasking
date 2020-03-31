@@ -34,7 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.geekstools.floatshort.PRO.Folders.AppSelectionList;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter;
+import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
@@ -150,10 +150,14 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                     File file = context.getFileStreamPath(adapterItems.get(position).getCategory());
                     if (file.exists() && file.isFile()) {
                         if (adapterItems.get(position).getCategory().equals(PublicVariable.categoryName)) {
+
                             PublicVariable.categoryName = adapterItems.get(position).getCategory();
-                            context.startActivity(new Intent(context, AppSelectionList.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+                            context.startActivity(new Intent(context, AppSelectionList.class)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            );
                         } else {//Edit Folder Name
-                            SearchEngineAdapter.allSearchResults.clear();
+                            SearchEngine.Companion.clearSearchDataToForceReload();
 
                             String[] appsContent = functionsClass.readFileLine(adapterItems.get(position).getCategory());
                             if (PublicVariable.categoryName.length() == 0) {
@@ -175,6 +179,8 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                             context.startActivity(new Intent(context, AppSelectionList.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
                     } else {
+                        SearchEngine.Companion.clearSearchDataToForceReload();
+
                         if (PublicVariable.categoryName.length() == 0) {
                             PublicVariable.categoryName = PublicVariable.categoryName + "_" + System.currentTimeMillis();
                         }
@@ -216,11 +222,16 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                 }
 
                 File file = context.getFileStreamPath(adapterItems.get(position).getCategory());
-                if (file.exists() && file.isFile()) {
+                if (file.exists() && file.isFile()) {//Edit Folder Name
                     if (adapterItems.get(position).getCategory().equals(PublicVariable.categoryName)) {
                         PublicVariable.categoryName = adapterItems.get(position).getCategory();
-                        context.startActivity(new Intent(context, AppSelectionList.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                    } else {
+
+                        context.startActivity(new Intent(context, AppSelectionList.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        );
+                    } else {//Edit Folder Name
+                        SearchEngine.Companion.clearSearchDataToForceReload();
+
                         String[] appsContent = functionsClass.readFileLine(adapterItems.get(position).getCategory());
                         if (PublicVariable.categoryName.length() == 0) {
                             PublicVariable.categoryName = PublicVariable.categoryName + "_" + System.currentTimeMillis();
@@ -236,6 +247,8 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                         context.startActivity(new Intent(context, AppSelectionList.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     }
                 } else {
+                    SearchEngine.Companion.clearSearchDataToForceReload();
+
                     if (PublicVariable.categoryName.length() == 0) {
                         PublicVariable.categoryName = PublicVariable.categoryName + "_" + System.currentTimeMillis();
                     }
