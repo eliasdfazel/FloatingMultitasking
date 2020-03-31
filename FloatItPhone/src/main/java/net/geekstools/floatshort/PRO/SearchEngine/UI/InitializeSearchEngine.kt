@@ -61,6 +61,11 @@ class InitializeSearchEngine(private val activity: AppCompatActivity, private va
 
     private val inputMethodManager: InputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
+    /*
+    * define viewmodel and pass it as variable to loadsearchengine data
+    * and extract data loading from here and add to viewmodel class and observe changed of livedata here to setup views
+    * */
+
     fun loadSearchEngineData() = CoroutineScope(SupervisorJob() + Dispatchers.Default).async {
         var searchAdapterItems: ArrayList<AdapterItemsSearchEngine> = ArrayList<AdapterItemsSearchEngine>()
 
