@@ -144,7 +144,9 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
     private lateinit var waitingDialogue: Dialog
 
-    private var loadCustomIcons: LoadCustomIcons? = null
+    private val loadCustomIcons: LoadCustomIcons by lazy {
+        LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
+    }
 
     private lateinit var hybridApplicationViewBinding: HybridApplicationViewBinding
 
@@ -179,10 +181,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         mapIndexFirstItem = LinkedHashMap<String, Int>()
         mapIndexLastItem = LinkedHashMap<String, Int>()
         mapRangeIndex = LinkedHashMap<Int, String>()
-
-        if (functionsClass.loadCustomIcons()) {
-            loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
-        }
 
         /*All Loading Process*/
         initiateLoadingProcessAll()
@@ -806,6 +804,19 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     it
                 }
                 .onCompletion {
+                    /*Search Engine*/
+                    InitializeSearchEngine(activity = this@ApplicationsView, context = applicationContext,
+                            searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
+                            functionsClass = functionsClass,
+                            functionsClassRunServices = functionsClassRunServices,
+                            functionsClassSecurity = functionsClassSecurity,
+                            customIcons = loadCustomIcons,
+                            firebaseAuth = firebaseAuth).apply {
+
+                        this.loadSearchEngineData().await()
+                    }
+                    /*Search Engine*/
+
                     val splashAnimation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
                     hybridApplicationViewBinding.loadingSplash.startAnimation(splashAnimation)
                     splashAnimation.setAnimationListener(object : Animation.AnimationListener {
@@ -915,19 +926,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         loadApplicationsIndex().await()
 
         loadInstalledCustomIconPackages().await()
-
-        /*Search Engine*/
-        InitializeSearchEngine(activity = this@ApplicationsView, context = applicationContext,
-                searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
-                functionsClass = functionsClass,
-                functionsClassRunServices = functionsClassRunServices,
-                functionsClassSecurity = functionsClassSecurity,
-                customIcons = loadCustomIcons,
-                firebaseAuth = firebaseAuth).apply {
-
-            this.loadSearchEngineData().await()
-        }
-        /*Search Engine*/
 
         try {
             if (intent.hasExtra("goHome")) {
