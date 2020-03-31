@@ -142,7 +142,7 @@
         android:gravity="center"
         android:ellipsize="middle"
         android:singleLine="true"
-        android:text="@string/recover_category"
+        android:text="@string/recover_folder"
         android:textAllCaps="false"
         android:textColor="@color/light"
         android:textSize="19sp"
@@ -276,7 +276,7 @@
             android:padding="7dp"
             android:shadowColor="@android:color/black"
             android:shadowRadius="25"
-            android:text="@string/floatingCategory"
+            android:text="@string/floatingFolders"
             android:textColor="@color/default_color"
             android:textSize="53sp"/>
     </RelativeLayout>

@@ -54,7 +54,7 @@ public class RecoveryFoldersActivity extends Activity {
                 setCategoryRecovery.addCategory(Intent.CATEGORY_DEFAULT);
                 Intent intent = new Intent();
                 intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, setCategoryRecovery);
-                intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.recover_category));
+                intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.recover_folder));
                 intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, shortcutApp);
                 setResult(RESULT_OK, intent);
             } else if (getIntent().getAction().equals(Intent.ACTION_MAIN) || getIntent().getAction().equals(Intent.ACTION_VIEW)

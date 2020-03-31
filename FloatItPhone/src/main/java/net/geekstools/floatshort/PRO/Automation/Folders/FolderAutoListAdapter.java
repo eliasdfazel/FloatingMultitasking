@@ -66,15 +66,15 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
         functionsClass = new FunctionsClass(context);
 
         if (PublicVariable.autoID != null) {
-            if (PublicVariable.autoID.equals(context.getString(R.string.wifi_category))) {
+            if (PublicVariable.autoID.equals(context.getString(R.string.wifi_folder))) {
                 autoIdAppend = "Wifi";
-            } else if (PublicVariable.autoID.equals(context.getString(R.string.bluetooth_category))) {
+            } else if (PublicVariable.autoID.equals(context.getString(R.string.bluetooth_folder))) {
                 autoIdAppend = "Bluetooth";
-            } else if (PublicVariable.autoID.equals(context.getString(R.string.gps_category))) {
+            } else if (PublicVariable.autoID.equals(context.getString(R.string.gps_folder))) {
                 autoIdAppend = "Gps";
-            } else if (PublicVariable.autoID.equals(context.getString(R.string.nfc_category))) {
+            } else if (PublicVariable.autoID.equals(context.getString(R.string.nfc_folder))) {
                 autoIdAppend = "Nfc";
-            } else if (PublicVariable.autoID.equals(context.getString(R.string.time_category))) {
+            } else if (PublicVariable.autoID.equals(context.getString(R.string.time_folder))) {
                 autoIdAppend = "Time";
             }
         }
@@ -136,7 +136,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
         }
 
         try {
-            if (PublicVariable.autoID.equals(context.getString(R.string.time_category))) {
+            if (PublicVariable.autoID.equals(context.getString(R.string.time_folder))) {
                 File autoFile = context.getFileStreamPath(nameCategory + ".Time");
                 viewHolderBinder.autoChoice.setChecked(false);
                 viewHolderBinder.timeView.setTextSize(50);
@@ -168,7 +168,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
                 if (PublicVariable.autoID == null) {
                     Toast.makeText(context, context.getString(R.string.retry), Toast.LENGTH_LONG).show();
                 } else {
-                    if (PublicVariable.autoID.equals(context.getString(R.string.time_category))) {
+                    if (PublicVariable.autoID.equals(context.getString(R.string.time_folder))) {
                         final String nameCategory = adapterItems.get(position).getCategory();
 
                         File autoFile = context.getFileStreamPath(nameCategory + "." + autoIdAppend);

@@ -155,7 +155,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 getString(R.string.shortcuts)
             }
             "2" -> {
-                getString(R.string.floatingCategory)
+                getString(R.string.floatingFolders)
             }
             "3" -> {
                 getString(R.string.boot_warning)
@@ -389,7 +389,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 } else if (bootUpPreferences == "1") {
                     boot.summary = getString(R.string.shortcuts)
                 } else if (bootUpPreferences == "2") {
-                    boot.summary = getString(R.string.floatingCategory)
+                    boot.summary = getString(R.string.floatingFolders)
                 } else if (bootUpPreferences == "3") {
                     boot.summary = getString(R.string.boot_warning)
                 }

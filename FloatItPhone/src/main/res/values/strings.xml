@@ -109,11 +109,11 @@
     <string name="nfc">Apps for NFC</string>
     <string name="time">Apps for Time</string>
     <string name="auto_apps">Auto Applications</string>
-    <string name="wifi_category">Folders for WiFi</string>
-    <string name="bluetooth_category">Folders for Bluetooth</string>
-    <string name="gps_category">Folders for GPS</string>
-    <string name="nfc_category">Folders for NFC</string>
-    <string name="time_category">Folders for Time</string>
+    <string name="wifi_folder">Folders for WiFi</string>
+    <string name="bluetooth_folder">Folders for Bluetooth</string>
+    <string name="gps_folder">Folders for GPS</string>
+    <string name="nfc_folder">Folders for NFC</string>
+    <string name="time_folder">Folders for Time</string>
     <string name="auto_categories">Auto Folders</string>
     <string name="retry">Please Select a Feature</string>
     <string name="wait">Please, Be Patient!</string>
@@ -159,9 +159,9 @@
     <string name="createShortcut">Create Home Screen Shortcuts</string>
     <string name="createAlias">Create App Drawer Shortcuts</string>
     <string name="deleteAlias">Remove App Drawer Shortcuts</string>
-    <string name="floatingCategory">Floating Folders</string>
+    <string name="floatingFolders">Floating Folders</string>
     <string name="floatingWidget">Floating Widgets</string>
-    <string name="categoryHint">Floating Folders</string>
+    <string name="folderHint">Floating Folders</string>
     <string name="widgetHint">Floating Widgets</string>
     <string name="widgetLabelHint">Type A Widget Label</string>
     <string name="widgetPickerTitle">
@@ -172,11 +172,11 @@
     </string>
     <string name="floatingHint">Floating Shortcuts</string>
     <string name="recover_apps">Recover Floating Shortcuts</string>
-    <string name="recover_category">Recover Floating Folders</string>
+    <string name="recover_folder">Recover Floating Folders</string>
     <string name="recover_widgets">Recover Floating Widgets</string>
     <string name="reallocatingWidgets"> 🔁 Reconfiguring… </string>
     <string name="reconfiguringWidgets"> Reconfiguring… </string>
-    <string name="categoryDesc">Please Write a Folder Name</string>
+    <string name="folderDescription">Please Write a Folder Name</string>
     <string name="colortext">App Theme</string>
     <string name="themeTrans">Transparent Theme</string>
     <string name="blurryTitle">Blurry Theme</string>
@@ -214,13 +214,13 @@
     <string name="unpin">Unpin Shortcut</string>
     <string name="close">Minimize It</string>
     <string name="remove">Remove Shortcut</string>
-    <string name="pin_category">Pin Folder</string>
-    <string name="unpin_category">Unpin Folder</string>
-    <string name="remove_category">Remove</string>
+    <string name="pin_folder">Pin Folder</string>
+    <string name="unpin_folder">Unpin Folder</string>
+    <string name="remove_folder">Remove</string>
     <string name="floatIt">Float It</string>
     <string name="splitIt">Split It</string>
     <string name="deleteCategory">Delete</string>
-    <string name="edit_category">Edit: </string>
+    <string name="edit_folder">Edit: </string>
     <string name="autorecovs">Always Ready</string>
     <string name="syscache">Load &amp; Open Apps Faster</string>
     <string name="enableControlPanel">Control Panel Will Be Started Automatically</string>
@@ -242,7 +242,18 @@
         ]]>
     </string>
 
+    <!-- Search Engine -->
     <string name="searchHint">Type To Search</string>
+    <string name="searchFolderHint">
+        <![CDATA[
+            <small>| Folder</small>
+        ]]>
+    </string>
+    <string name="searchWidgetHint">
+        <![CDATA[
+            <small>| Widget</small>
+        ]]>
+    </string>
 
     <!-- Security Options -->
     <string name="securityServices">Security Services</string>
@@ -351,7 +362,7 @@
     <string-array name="Boot">
         <item name="1">@string/boot_none</item>
         <item name="2">@string/shortcuts</item>
-        <item name="3">@string/floatingCategory</item>
+        <item name="3">@string/floatingFolders</item>
         <item name="4">@string/boot_warning</item>
     </string-array>
 

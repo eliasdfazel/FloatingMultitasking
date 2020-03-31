@@ -294,7 +294,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             nfc.setBackground(drawNfc);
             time.setBackground(drawTime);
 
-            if (PublicVariable.autoID.equals(getString(R.string.wifi_category))) {
+            if (PublicVariable.autoID.equals(getString(R.string.wifi_folder))) {
                 backWifi.setTint(pressColor);
                 wifi.setBackground(drawWifi);
 
@@ -309,7 +309,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
                 gps.setBackground(drawGPS);
                 nfc.setBackground(drawNfc);
                 time.setBackground(drawTime);
-            } else if (PublicVariable.autoID.equals(getString(R.string.bluetooth_category))) {
+            } else if (PublicVariable.autoID.equals(getString(R.string.bluetooth_folder))) {
                 backBluetooth.setTint(pressColor);
                 bluetooth.setBackground(drawBluetooth);
 
@@ -324,7 +324,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
                 gps.setBackground(drawGPS);
                 nfc.setBackground(drawNfc);
                 time.setBackground(drawTime);
-            } else if (PublicVariable.autoID.equals(getString(R.string.gps_category))) {
+            } else if (PublicVariable.autoID.equals(getString(R.string.gps_folder))) {
                 backGPS.setTint(pressColor);
                 gps.setBackground(drawGPS);
 
@@ -339,7 +339,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
                 bluetooth.setBackground(drawBluetooth);
                 nfc.setBackground(drawNfc);
                 time.setBackground(drawTime);
-            } else if (PublicVariable.autoID.equals(getString(R.string.nfc_category))) {
+            } else if (PublicVariable.autoID.equals(getString(R.string.nfc_folder))) {
                 backNfc.setTint(pressColor);
                 nfc.setBackground(drawNfc);
 
@@ -354,7 +354,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
                 bluetooth.setBackground(drawBluetooth);
                 gps.setBackground(drawGPS);
                 time.setBackground(drawTime);
-            } else if (PublicVariable.autoID.equals(getString(R.string.time_category))) {
+            } else if (PublicVariable.autoID.equals(getString(R.string.time_folder))) {
                 backTime.setTint(pressColor);
                 time.setBackground(drawTime);
 
@@ -581,7 +581,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
     }
 
     public void autoWiFi() {
-        PublicVariable.autoID = getString(R.string.wifi_category);
+        PublicVariable.autoID = getString(R.string.wifi_folder);
         int API = android.os.Build.VERSION.SDK_INT;
         if (API > 22) {
             if (checkSelfPermission(Manifest.permission.ACCESS_WIFI_STATE) == PackageManager.PERMISSION_DENIED) {
@@ -596,7 +596,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
     }
 
     public void autoBluetooth() {
-        PublicVariable.autoID = getString(R.string.bluetooth_category);
+        PublicVariable.autoID = getString(R.string.bluetooth_folder);
         int API = android.os.Build.VERSION.SDK_INT;
         if (API > 22) {
             if (checkSelfPermission(Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_DENIED) {
@@ -611,7 +611,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
     }
 
     public void autoGPS() {
-        PublicVariable.autoID = getString(R.string.gps_category);
+        PublicVariable.autoID = getString(R.string.gps_folder);
         int API = android.os.Build.VERSION.SDK_INT;
         if (API > 22) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
@@ -626,7 +626,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
     }
 
     public void autoNfc() {
-        PublicVariable.autoID = getString(R.string.nfc_category);
+        PublicVariable.autoID = getString(R.string.nfc_folder);
         int API = android.os.Build.VERSION.SDK_INT;
         if (API > 22) {
             if (checkSelfPermission(Manifest.permission.NFC) == PackageManager.PERMISSION_DENIED) {
@@ -641,7 +641,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
     }
 
     public void autoTime() {
-        PublicVariable.autoID = getString(R.string.time_category);
+        PublicVariable.autoID = getString(R.string.time_folder);
 
         LoadAutoCategories loadAutoCategories = new LoadAutoCategories();
         loadAutoCategories.execute();

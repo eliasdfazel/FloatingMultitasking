@@ -32,7 +32,7 @@
         android:textSize="50sp"
         android:typeface="monospace"/>
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/categoryName"
         android:layout_width="match_parent"
         android:layout_height="33dp"
@@ -41,8 +41,9 @@
         android:cursorVisible="true"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         android:focusable="true"
+        android:focusableInTouchMode="true"
         android:gravity="center"
-        android:hint="@string/categoryDesc"
+        android:hint="@string/folderDescription"
         android:imeOptions="actionDone"
         android:inputType="text"
         android:maxLines="1"

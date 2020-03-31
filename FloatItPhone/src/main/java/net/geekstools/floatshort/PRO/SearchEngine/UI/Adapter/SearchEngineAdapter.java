@@ -16,6 +16,7 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -143,7 +144,9 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
             case SearchResultType.SearchFolders: {
                 dominantColor = context.getColor(R.color.default_color);
 
-                viewHolder.itemAppName.setText(SearchEngine.Companion.getAllSearchResults().get(position).getFolderName());
+                viewHolder.itemAppName.setText(Html.fromHtml(SearchEngine.Companion.getAllSearchResults().get(position).getFolderName()
+                        + " "
+                        + context.getString(R.string.searchFolderHint)));
 
                 viewHolder.itemInitialLetter.setText(String.valueOf(SearchEngine.Companion.getAllSearchResults().get(position).getFolderName().charAt(0)).toUpperCase());
                 viewHolder.itemInitialLetter.setTextColor(PublicVariable.colorLightDarkOpposite);
@@ -166,7 +169,11 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
                 viewHolder.itemAppIcon.setImageDrawable(SearchEngine.Companion.getAllSearchResults()
                         .get(position).getAppWidgetProviderInfo().loadPreviewImage(context, DisplayMetrics.DENSITY_MEDIUM));
-                viewHolder.itemAppName.setText(SearchEngine.Companion.getAllSearchResults().get(position).getWidgetLabel());
+
+                viewHolder.itemAppName.setText(Html.fromHtml(SearchEngine.Companion.getAllSearchResults().get(position).getWidgetLabel()
+                        + " "
+                        + context.getString(R.string.searchWidgetHint)));
+
 
                 viewHolder.itemInitialLetter.setText("");
 

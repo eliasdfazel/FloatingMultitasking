@@ -230,14 +230,14 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 try {
-                    if (adapterItems.get(position).getAppName().contains(context.getString(R.string.edit_category))) {
+                    if (adapterItems.get(position).getAppName().contains(context.getString(R.string.edit_folder))) {
                         context.startActivity(new Intent(context, FoldersConfigurations.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                    } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.remove_category))) {
+                    } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.remove_folder))) {
                         context.sendBroadcast(new Intent("Remove_Category_" + classNameCommand).putExtra("startId", startId));
-                    } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.unpin_category))) {
+                    } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.unpin_folder))) {
                         context.sendBroadcast(new Intent("Unpin_App_" + classNameCommand).putExtra("startId", startId));
-                    } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.pin_category))) {
+                    } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.pin_folder))) {
                         context.sendBroadcast(new Intent("Pin_App_" + classNameCommand).putExtra("startId", startId));
                     } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.splitIt))) {
                         if (functionsClassSecurity.isAppLocked(adapterItems.get(position).getPackageName()) || functionsClassSecurity.isAppLocked(folderName)) {

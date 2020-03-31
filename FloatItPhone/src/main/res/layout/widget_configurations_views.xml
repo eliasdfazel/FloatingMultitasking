@@ -86,7 +86,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/draw_recovery"
         android:visibility="gone"
-        android:contentDescription="@string/recover_category" />
+        android:contentDescription="@string/recover_folder" />
 
     <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
         apps:shape="light_bulb"
@@ -124,7 +124,7 @@
             android:ellipsize="start"
             android:singleLine="true"
             android:textAllCaps="false"
-            android:text="@string/categoryHint"
+            android:text="@string/folderHint"
             android:textSize="19sp"
             android:fontFamily="@font/upcil"
             apps:elevation="7dp"

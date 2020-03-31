@@ -201,6 +201,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
             @Override
             public void afterTextChanged(Editable editable) {
                 endEdited = editable.toString();
+
                 if (viewHolderBinder.addApp.isShown()) {
                     viewHolderBinder.addApp.setVisibility(View.INVISIBLE);
                 }

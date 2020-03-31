@@ -126,9 +126,9 @@ public class PopupOptionsFloatingCategory extends Service {
                     case FunctionsClass.DisplaySection.TopLeft:
                         if (functionsClass.returnAPI() < 24) {
                             popupItems = new String[]{
-                                    getString(R.string.pin_category),
-                                    getString(R.string.unpin_category),
-                                    getString(R.string.remove_category) + " " + categoryName,
+                                    getString(R.string.pin_folder),
+                                    getString(R.string.unpin_folder),
+                                    getString(R.string.remove_folder) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -138,9 +138,9 @@ public class PopupOptionsFloatingCategory extends Service {
                         } else {
                             popupItems = new String[]{
                                     getString(R.string.splitIt),
-                                    getString(R.string.pin_category),
-                                    getString(R.string.unpin_category),
-                                    getString(R.string.remove_category) + " " + categoryName,
+                                    getString(R.string.pin_folder),
+                                    getString(R.string.unpin_folder),
+                                    getString(R.string.remove_folder) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     null,
@@ -156,9 +156,9 @@ public class PopupOptionsFloatingCategory extends Service {
                     case FunctionsClass.DisplaySection.TopRight:
                         if (functionsClass.returnAPI() < 24) {
                             popupItems = new String[]{
-                                    getString(R.string.pin_category),
-                                    getString(R.string.unpin_category),
-                                    getString(R.string.remove_category) + " " + categoryName,
+                                    getString(R.string.pin_folder),
+                                    getString(R.string.unpin_folder),
+                                    getString(R.string.remove_folder) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -168,9 +168,9 @@ public class PopupOptionsFloatingCategory extends Service {
                         } else {
                             popupItems = new String[]{
                                     getString(R.string.splitIt),
-                                    getString(R.string.pin_category),
-                                    getString(R.string.unpin_category),
-                                    getString(R.string.remove_category) + " " + categoryName,
+                                    getString(R.string.pin_folder),
+                                    getString(R.string.unpin_folder),
+                                    getString(R.string.remove_folder) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     null,
@@ -186,9 +186,9 @@ public class PopupOptionsFloatingCategory extends Service {
                     case FunctionsClass.DisplaySection.BottomLeft:
                         if (functionsClass.returnAPI() < 24) {
                             popupItems = new String[]{
-                                    getString(R.string.remove_category) + " " + categoryName,
-                                    getString(R.string.unpin_category),
-                                    getString(R.string.pin_category),
+                                    getString(R.string.remove_folder) + " " + categoryName,
+                                    getString(R.string.unpin_folder),
+                                    getString(R.string.pin_folder),
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -197,9 +197,9 @@ public class PopupOptionsFloatingCategory extends Service {
                             };
                         } else {
                             popupItems = new String[]{
-                                    getString(R.string.remove_category) + " " + categoryName,
-                                    getString(R.string.unpin_category),
-                                    getString(R.string.pin_category),
+                                    getString(R.string.remove_folder) + " " + categoryName,
+                                    getString(R.string.unpin_folder),
+                                    getString(R.string.pin_folder),
                                     getString(R.string.splitIt),
                             };
                             popupItemsIcon = new Drawable[]{
@@ -216,9 +216,9 @@ public class PopupOptionsFloatingCategory extends Service {
                     case FunctionsClass.DisplaySection.BottomRight:
                         if (functionsClass.returnAPI() < 24) {
                             popupItems = new String[]{
-                                    getString(R.string.remove_category) + " " + categoryName,
-                                    getString(R.string.unpin_category),
-                                    getString(R.string.pin_category),
+                                    getString(R.string.remove_folder) + " " + categoryName,
+                                    getString(R.string.unpin_folder),
+                                    getString(R.string.pin_folder),
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -227,9 +227,9 @@ public class PopupOptionsFloatingCategory extends Service {
                             };
                         } else {
                             popupItems = new String[]{
-                                    getString(R.string.remove_category) + " " + categoryName,
-                                    getString(R.string.unpin_category),
-                                    getString(R.string.pin_category),
+                                    getString(R.string.remove_folder) + " " + categoryName,
+                                    getString(R.string.unpin_folder),
+                                    getString(R.string.pin_folder),
                                     getString(R.string.splitIt),
                             };
                             popupItemsIcon = new Drawable[]{
@@ -246,9 +246,9 @@ public class PopupOptionsFloatingCategory extends Service {
                     default:
                         if (functionsClass.returnAPI() < 24) {
                             popupItems = new String[]{
-                                    getString(R.string.pin_category),
-                                    getString(R.string.unpin_category),
-                                    getString(R.string.remove_category) + " " + categoryName,
+                                    getString(R.string.pin_folder),
+                                    getString(R.string.unpin_folder),
+                                    getString(R.string.remove_folder) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     popupItemsIconCategory,
@@ -258,9 +258,9 @@ public class PopupOptionsFloatingCategory extends Service {
                         } else {
                             popupItems = new String[]{
                                     getString(R.string.splitIt),
-                                    getString(R.string.pin_category),
-                                    getString(R.string.unpin_category),
-                                    getString(R.string.remove_category) + " " + categoryName,
+                                    getString(R.string.pin_folder),
+                                    getString(R.string.unpin_folder),
+                                    getString(R.string.remove_folder) + " " + categoryName,
                             };
                             popupItemsIcon = new Drawable[]{
                                     null,
@@ -311,7 +311,7 @@ public class PopupOptionsFloatingCategory extends Service {
                                             functionsClass.shapedAppIcon(packageName)));
                         }
                         navDrawerItemsSaved.add(new AdapterItems(
-                                getString(R.string.edit_category) + " " + categoryName,
+                                getString(R.string.edit_folder) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
 
@@ -329,7 +329,7 @@ public class PopupOptionsFloatingCategory extends Service {
                                             functionsClass.shapedAppIcon(packageName)));
                         }
                         navDrawerItemsSaved.add(new AdapterItems(
-                                getString(R.string.edit_category) + " " + categoryName,
+                                getString(R.string.edit_folder) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
 
@@ -338,7 +338,7 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                     case FunctionsClass.DisplaySection.BottomLeft:
                         navDrawerItemsSaved.add(new AdapterItems(
-                                getString(R.string.edit_category) + " " + categoryName,
+                                getString(R.string.edit_folder) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
                         for (String packageName : packagesNames) {
@@ -356,7 +356,7 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                     case FunctionsClass.DisplaySection.BottomRight:
                         navDrawerItemsSaved.add(new AdapterItems(
-                                getString(R.string.edit_category) + " " + categoryName,
+                                getString(R.string.edit_folder) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
                         for (String packageName : packagesNames) {
@@ -383,7 +383,7 @@ public class PopupOptionsFloatingCategory extends Service {
                                             functionsClass.shapedAppIcon(packageName)));
                         }
                         navDrawerItemsSaved.add(new AdapterItems(
-                                getString(R.string.edit_category) + " " + categoryName,
+                                getString(R.string.edit_folder) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
 
