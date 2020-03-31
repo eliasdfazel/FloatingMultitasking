@@ -57,9 +57,6 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
 
     String endEdited = "";
 
-    View anchorView;
-    ViewHolder viewHolder;
-
     LoadCustomIcons loadCustomIcons;
 
     public FoldersListAdapter(FoldersConfigurations foldersConfigurations, Context context, ArrayList<AdapterItems> adapterItems) {
@@ -79,9 +76,8 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
 
     @Override
     public FoldersListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        anchorView = LayoutInflater.from(context).inflate(R.layout.item_category, parent, false);
-        viewHolder = new ViewHolder(anchorView);
-        return viewHolder;
+
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_category, parent, false));
     }
 
     @Override
@@ -277,7 +273,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                     String categoryName = adapterItems.get(position).getCategory();
 
                     functionsClass.popupOptionCategory(foldersConfigurations, context,
-                            anchorView,
+                            viewHolderBinder.itemView,
                             categoryName, position);
                 }
                 return true;
@@ -300,7 +296,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                     String categoryName = adapterItems.get(position).getCategory();
 
                     functionsClass.popupOptionCategory(foldersConfigurations, context,
-                            anchorView,
+                            viewHolderBinder.itemView,
                             categoryName, position);
                 }
                 return true;

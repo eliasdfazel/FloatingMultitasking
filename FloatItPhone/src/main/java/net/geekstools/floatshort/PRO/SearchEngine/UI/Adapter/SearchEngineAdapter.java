@@ -136,6 +136,8 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                 viewHolder.itemAppIcon.setImageDrawable(SearchEngine.Companion.getAllSearchResults().get(position).getAppIcon());
                 viewHolder.itemAppName.setText(SearchEngine.Companion.getAllSearchResults().get(position).getAppName());
 
+                viewHolder.itemInitialLetter.setText("");
+
                 break;
             }
             case SearchResultType.SearchFolders: {
@@ -162,8 +164,11 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
             case SearchResultType.SearchWidgets: {
                 dominantColor = functionsClass.extractDominantColor(SearchEngine.Companion.getAllSearchResults().get(position).getAppWidgetProviderInfo().loadPreviewImage(context, DisplayMetrics.DENSITY_MEDIUM));
 
-                viewHolder.itemAppIcon.setImageDrawable(SearchEngine.Companion.getAllSearchResults().get(position).getAppWidgetProviderInfo().loadPreviewImage(context, DisplayMetrics.DENSITY_MEDIUM));
+                viewHolder.itemAppIcon.setImageDrawable(SearchEngine.Companion.getAllSearchResults()
+                        .get(position).getAppWidgetProviderInfo().loadPreviewImage(context, DisplayMetrics.DENSITY_MEDIUM));
                 viewHolder.itemAppName.setText(SearchEngine.Companion.getAllSearchResults().get(position).getWidgetLabel());
+
+                viewHolder.itemInitialLetter.setText("");
 
                 break;
             }
