@@ -76,6 +76,7 @@ class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetC
             functionsClass.popupOptionWidget(widgetConfigurationsActivity, widgetConfigurationsActivity, view,
                     adapterItems[position].packageName,
                     adapterItems[position].classNameProviderWidget,
+                    adapterItems[position].appWidgetId,
                     adapterItems[position].widgetLabel,
                     if (appWidgetProviderInfoLongClick.loadPreviewImage(widgetConfigurationsActivity, DisplayMetrics.DENSITY_LOW) != null) {
                         appWidgetProviderInfoLongClick.loadPreviewImage(widgetConfigurationsActivity, DisplayMetrics.DENSITY_HIGH)

@@ -3570,14 +3570,14 @@ public class FunctionsClass {
         layoutParams.width = sharedPrefPosition.getInt("WidgetWidth", initWidth);
         layoutParams.height = sharedPrefPosition.getInt("WidgetHeight", initHeight);
         layoutParams.x = sharedPrefPosition.getInt("X", 0);
-        layoutParams.y = sharedPrefPosition.getInt("Y", 0) / 2;
+        layoutParams.y = sharedPrefPosition.getInt("Y", 0) - (displayY() / 2);
+        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
 
         SharedPreferences.Editor editor = sharedPrefPosition.edit();
         editor.putInt("X", layoutParams.x);
         editor.putInt("Y", layoutParams.y);
         editor.apply();
 
-        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
         return layoutParams;
     }
 
@@ -3603,15 +3603,15 @@ public class FunctionsClass {
         layoutParams.gravity = Gravity.TOP | Gravity.START;
         layoutParams.width = sharedPrefPosition.getInt("WidgetWidth", initWidth);
         layoutParams.height = sharedPrefPosition.getInt("WidgetHeight", initHeight);
-        layoutParams.x = sharedPrefPosition.getInt("X", 0) / 2;
+        layoutParams.x = sharedPrefPosition.getInt("X", 0) - (displayX() / 2);
         layoutParams.y = sharedPrefPosition.getInt("Y", 0);
+        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
 
         SharedPreferences.Editor editor = sharedPrefPosition.edit();
         editor.putInt("X", layoutParams.x);
         editor.putInt("Y", layoutParams.y);
         editor.apply();
 
-        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
         return layoutParams;
     }
 
@@ -3917,7 +3917,9 @@ public class FunctionsClass {
         popupMenu.show();
     }
 
-    public void popupOptionWidget(WidgetConfigurations widgetConfigurations, final Context context, View anchorView, String packageName, final String providerClassName, String widgetLabel, Drawable widgetPreview, boolean addedWidgetRecovery) {
+    public void popupOptionWidget(WidgetConfigurations widgetConfigurations, final Context context, View anchorView,
+                                  String packageName, final String providerClassName, int widgetId,
+                                  String widgetLabel, Drawable widgetPreview, boolean addedWidgetRecovery) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
             popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Light);
@@ -4008,6 +4010,7 @@ public class FunctionsClass {
                         }).start();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             context.deleteSharedPreferences(providerClassName + packageName);
+                            context.deleteSharedPreferences(widgetId + packageName);
                         }
 
                         break;
