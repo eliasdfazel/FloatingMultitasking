@@ -1167,8 +1167,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     configuredWidgetsRecyclerViewAdapter
             )
             widgetSectionedConfiguredAdapter.setSections(configuredWidgetsSections.toArray(sectionsData))
-            widgetSectionedConfiguredAdapter.notifyDataSetChanged()
+
             widgetConfigurationsViewsBinding.configuredWidgetList.adapter = widgetSectionedConfiguredAdapter
+
+            configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged()
+            widgetSectionedConfiguredAdapter.notifyDataSetChanged()
 
             delay(333)
 
@@ -1184,9 +1187,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             installedWidgetsLoaded = false
             widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
             widgetConfigurationsViewsBinding.loadingSplash.visibility = View.VISIBLE
-
-            configuredWidgetsRecyclerViewAdapter.notifyDataSetChanged()
-            widgetSectionedConfiguredAdapter.notifyDataSetChanged()
         }
     }
 

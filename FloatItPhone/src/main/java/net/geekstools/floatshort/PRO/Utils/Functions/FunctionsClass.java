@@ -3570,7 +3570,7 @@ public class FunctionsClass {
         layoutParams.width = sharedPrefPosition.getInt("WidgetWidth", initWidth);
         layoutParams.height = sharedPrefPosition.getInt("WidgetHeight", initHeight);
         layoutParams.x = sharedPrefPosition.getInt("X", 0);
-        layoutParams.y = sharedPrefPosition.getInt("Y", 0) - (displayY() / 2);
+        layoutParams.y = sharedPrefPosition.getInt("Y", 0) /*- (displayY() / 2)*/;
         layoutParams.windowAnimations = android.R.style.Animation_Dialog;
 
         SharedPreferences.Editor editor = sharedPrefPosition.edit();
@@ -3603,7 +3603,7 @@ public class FunctionsClass {
         layoutParams.gravity = Gravity.TOP | Gravity.START;
         layoutParams.width = sharedPrefPosition.getInt("WidgetWidth", initWidth);
         layoutParams.height = sharedPrefPosition.getInt("WidgetHeight", initHeight);
-        layoutParams.x = sharedPrefPosition.getInt("X", 0) - (displayX() / 2);
+        layoutParams.x = sharedPrefPosition.getInt("X", 0) /*- (displayX() / 2)*/;
         layoutParams.y = sharedPrefPosition.getInt("Y", 0);
         layoutParams.windowAnimations = android.R.style.Animation_Dialog;
 
