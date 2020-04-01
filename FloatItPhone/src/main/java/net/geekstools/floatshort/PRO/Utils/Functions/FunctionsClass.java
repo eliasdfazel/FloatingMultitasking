@@ -3471,7 +3471,6 @@ public class FunctionsClass {
 
         FunctionsClassDebug.Companion.PrintDebug(packageName);
 
-
         SharedPreferences sharedPrefPosition = context.getSharedPreferences(packageName, Context.MODE_PRIVATE);
 
         layoutParams.gravity = Gravity.TOP | Gravity.START;
@@ -3545,6 +3544,74 @@ public class FunctionsClass {
         layoutParams.y = sharedPreferences.getInt("Y", 19);
         layoutParams.windowAnimations = android.R.style.Animation_Dialog;
 
+        return layoutParams;
+    }
+
+    public WindowManager.LayoutParams handleOrientationWidgetLandscape(String widgetIdentifier) {
+        WindowManager.LayoutParams layoutParams = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    PixelFormat.TRANSLUCENT);
+        } else {
+            layoutParams = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    PixelFormat.TRANSLUCENT);
+        }
+
+        int initWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 213f, context.getResources().getDisplayMetrics());
+        int initHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 133f, context.getResources().getDisplayMetrics());
+
+        SharedPreferences sharedPrefPosition = context.getSharedPreferences(widgetIdentifier, Context.MODE_PRIVATE);
+
+        layoutParams.gravity = Gravity.TOP | Gravity.START;
+        layoutParams.width = sharedPrefPosition.getInt("WidgetWidth", initWidth);
+        layoutParams.height = sharedPrefPosition.getInt("WidgetHeight", initHeight);
+        layoutParams.x = sharedPrefPosition.getInt("Y", 0);
+        layoutParams.y = displayY() - sharedPrefPosition.getInt("X", 0);
+
+        SharedPreferences.Editor editor = sharedPrefPosition.edit();
+        editor.putInt("X", layoutParams.x);
+        editor.putInt("Y", layoutParams.y);
+        editor.apply();
+
+        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
+        return layoutParams;
+    }
+
+    public WindowManager.LayoutParams handleOrientationWidgetPortrait(String widgetIdentifier) {
+        WindowManager.LayoutParams layoutParams = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    PixelFormat.TRANSLUCENT);
+        } else {
+            layoutParams = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    PixelFormat.TRANSLUCENT);
+        }
+
+        int initWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 213f, context.getResources().getDisplayMetrics());
+        int initHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 133f, context.getResources().getDisplayMetrics());
+
+        SharedPreferences sharedPrefPosition = context.getSharedPreferences(widgetIdentifier, Context.MODE_PRIVATE);
+
+        layoutParams.gravity = Gravity.TOP | Gravity.START;
+        layoutParams.width = sharedPrefPosition.getInt("WidgetWidth", initWidth);
+        layoutParams.height = sharedPrefPosition.getInt("WidgetHeight", initHeight);
+        layoutParams.x = displayX() - sharedPrefPosition.getInt("Y", 0);
+        layoutParams.y = sharedPrefPosition.getInt("X", 0);
+
+        SharedPreferences.Editor editor = sharedPrefPosition.edit();
+        editor.putInt("X", layoutParams.x);
+        editor.putInt("Y", layoutParams.y);
+        editor.apply();
+
+        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
         return layoutParams;
     }
 

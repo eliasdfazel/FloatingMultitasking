@@ -19,6 +19,7 @@ import android.appwidget.AppWidgetProviderInfo
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.IBinder
@@ -65,6 +66,41 @@ class WidgetUnlimitedFloating : Service() {
     }
 
     private val floatingWidgetsBinding: ArrayList<FloatingWidgetsBinding> = ArrayList<FloatingWidgetsBinding>()
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        when (newConfig.orientation) {
+            Configuration.ORIENTATION_PORTRAIT -> {
+
+                for (J in 0 until floatingWidgetsBinding.size) {
+                    try {
+                        if (floatingWidgetsBinding[J].root.isShown) {
+                            layoutParams[J] = functionsClass.handleOrientationWidgetPortrait("${appWidgetId[J]}" + appWidgetProviderInfo[J].provider.packageName)
+
+                            windowManager.updateViewLayout(floatingWidgetsBinding[J].root, layoutParams[J])
+                        }
+                    } catch (e: WindowManager.InvalidDisplayException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            Configuration.ORIENTATION_LANDSCAPE -> {
+
+                for (J in 0 until floatingWidgetsBinding.size) {
+                    try {
+                        if (floatingWidgetsBinding[J].root.isShown) {
+                            layoutParams[J] = functionsClass.handleOrientationWidgetLandscape("${appWidgetId[J]}" + appWidgetProviderInfo[J].provider.packageName)
+
+                            windowManager.updateViewLayout(floatingWidgetsBinding[J].root, layoutParams[J])
+                        }
+                    } catch (e: WindowManager.InvalidDisplayException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
+    }
 
     override fun onBind(intent: Intent?): IBinder? {
 
