@@ -3569,8 +3569,8 @@ public class FunctionsClass {
         layoutParams.gravity = Gravity.TOP | Gravity.START;
         layoutParams.width = sharedPrefPosition.getInt("WidgetWidth", initWidth);
         layoutParams.height = sharedPrefPosition.getInt("WidgetHeight", initHeight);
-        layoutParams.x = sharedPrefPosition.getInt("Y", 0);
-        layoutParams.y = displayY() - sharedPrefPosition.getInt("X", 0);
+        layoutParams.x = sharedPrefPosition.getInt("X", 0);
+        layoutParams.y = sharedPrefPosition.getInt("Y", 0) / 2;
 
         SharedPreferences.Editor editor = sharedPrefPosition.edit();
         editor.putInt("X", layoutParams.x);
@@ -3603,8 +3603,8 @@ public class FunctionsClass {
         layoutParams.gravity = Gravity.TOP | Gravity.START;
         layoutParams.width = sharedPrefPosition.getInt("WidgetWidth", initWidth);
         layoutParams.height = sharedPrefPosition.getInt("WidgetHeight", initHeight);
-        layoutParams.x = displayX() - sharedPrefPosition.getInt("Y", 0);
-        layoutParams.y = sharedPrefPosition.getInt("X", 0);
+        layoutParams.x = sharedPrefPosition.getInt("X", 0) / 2;
+        layoutParams.y = sharedPrefPosition.getInt("Y", 0);
 
         SharedPreferences.Editor editor = sharedPrefPosition.edit();
         editor.putInt("X", layoutParams.x);

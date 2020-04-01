@@ -334,6 +334,7 @@ class WidgetUnlimitedFloating : Service() {
 
                                 layoutParamsTouch.x = (initialX + (motionEvent.rawX - initialTouchX)).toInt()
                                 layoutParamsTouch.y = (initialY + (motionEvent.rawY - initialTouchY)).toInt()
+
                                 try {
                                     windowManager.updateViewLayout(floatingWidgetsBinding[startId].root, layoutParamsTouch)
                                 } catch (e: WindowManager.InvalidDisplayException) {
