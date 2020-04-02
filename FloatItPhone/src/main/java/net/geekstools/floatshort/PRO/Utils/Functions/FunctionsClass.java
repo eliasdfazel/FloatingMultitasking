@@ -3476,13 +3476,13 @@ public class FunctionsClass {
         layoutParams.gravity = Gravity.TOP | Gravity.START;
         layoutParams.x = sharedPrefPosition.getInt("Y", 0);
         layoutParams.y = displayY() - sharedPrefPosition.getInt("X", 0);
+        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
 
         SharedPreferences.Editor editor = sharedPrefPosition.edit();
         editor.putInt("X", layoutParams.x);
         editor.putInt("Y", layoutParams.y);
         editor.apply();
 
-        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
         return layoutParams;
     }
 
@@ -3511,13 +3511,13 @@ public class FunctionsClass {
         layoutParams.gravity = Gravity.TOP | Gravity.START;
         layoutParams.x = displayX() - sharedPrefPosition.getInt("Y", 0);
         layoutParams.y = sharedPrefPosition.getInt("X", 0);
+        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
 
         SharedPreferences.Editor editor = sharedPrefPosition.edit();
         editor.putInt("X", layoutParams.x);
         editor.putInt("Y", layoutParams.y);
         editor.apply();
 
-        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
         return layoutParams;
     }
 
@@ -3569,8 +3569,8 @@ public class FunctionsClass {
         layoutParams.gravity = Gravity.TOP | Gravity.START;
         layoutParams.width = sharedPrefPosition.getInt("WidgetWidth", initWidth);
         layoutParams.height = sharedPrefPosition.getInt("WidgetHeight", initHeight);
-        layoutParams.x = sharedPrefPosition.getInt("X", 0);
-        layoutParams.y = sharedPrefPosition.getInt("Y", 0) /*- (displayY() / 2)*/;
+        layoutParams.x = sharedPrefPosition.getInt("Y", 0);
+        layoutParams.y = sharedPrefPosition.getInt("X", 0);
         layoutParams.windowAnimations = android.R.style.Animation_Dialog;
 
         SharedPreferences.Editor editor = sharedPrefPosition.edit();
@@ -3603,8 +3603,8 @@ public class FunctionsClass {
         layoutParams.gravity = Gravity.TOP | Gravity.START;
         layoutParams.width = sharedPrefPosition.getInt("WidgetWidth", initWidth);
         layoutParams.height = sharedPrefPosition.getInt("WidgetHeight", initHeight);
-        layoutParams.x = sharedPrefPosition.getInt("X", 0) /*- (displayX() / 2)*/;
-        layoutParams.y = sharedPrefPosition.getInt("Y", 0);
+        layoutParams.x = sharedPrefPosition.getInt("Y", 0);
+        layoutParams.y = sharedPrefPosition.getInt("X", 0);
         layoutParams.windowAnimations = android.R.style.Animation_Dialog;
 
         SharedPreferences.Editor editor = sharedPrefPosition.edit();
