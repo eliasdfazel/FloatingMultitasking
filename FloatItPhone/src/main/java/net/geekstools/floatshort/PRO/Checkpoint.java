@@ -48,8 +48,11 @@ public class Checkpoint extends Activity {
                     if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             && Settings.canDrawOverlays(getApplicationContext())) {
+
                         functionsClass.savePreference(".Configuration", "Permissions", true);
+
                         startActivity(new Intent(getApplicationContext(), Configurations.class));
+
                         Checkpoint.this.finish();
                     }
                 }

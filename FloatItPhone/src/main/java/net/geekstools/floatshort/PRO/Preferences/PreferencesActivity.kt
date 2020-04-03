@@ -138,6 +138,7 @@ class PreferencesActivity : AppCompatActivity() {
             } else {
                 if (PublicVariable.forceReload) {
                     PublicVariable.forceReload = false
+
                     functionsClass.overrideBackPressToMain(this@PreferencesActivity, this@PreferencesActivity)
                 }
             }

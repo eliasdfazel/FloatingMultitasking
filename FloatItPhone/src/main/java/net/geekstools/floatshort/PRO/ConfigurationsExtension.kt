@@ -1,10 +1,13 @@
 package net.geekstools.floatshort.PRO
 
 import android.R
+import android.content.Intent
 import android.util.TypedValue
+import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
+import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
-fun ConfigurationsXYZ.checkUserInformation() {
+fun Configurations.checkUserInformation() {
 
     functionsClass.savePreference(".UserInformation", "isBetaTester", functionsClass.appVersionName(packageName).contains("[BETA]"))
     functionsClass.savePreference(".UserInformation", "installedVersionCode", functionsClass.appVersionCode(packageName))
@@ -17,7 +20,7 @@ fun ConfigurationsXYZ.checkUserInformation() {
     }
 }
 
-fun ConfigurationsXYZ.initializeParameterUI() {
+fun Configurations.initializeParameterUI() {
 
     val typedValue = TypedValue()
     if (theme.resolveAttribute(R.attr.actionBarSize, typedValue, true)) {
@@ -37,4 +40,60 @@ fun ConfigurationsXYZ.initializeParameterUI() {
 
     PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
     PublicVariable.HW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size.toFloat(), this.resources.displayMetrics).toInt()
+}
+
+fun Configurations.triggerOpenProcess() {
+
+    if (functionsClass.readPreference("OpenMode", "openClassName", ApplicationsView::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
+
+        Intent(applicationContext, FoldersConfigurations::class.java).apply {
+
+            startActivity(this)
+        }
+
+    } else {//Floating Shortcuts
+
+        Intent(applicationContext, ApplicationsView::class.java).apply {
+
+            startActivity(this)
+        }
+
+        functionsClass.addAppShortcuts()
+    }
+}
+
+fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<String>) {
+    if (functionsClass.readPreference("OpenMode", "openClassName", ApplicationsView::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
+
+        if (getFileStreamPath("Frequently").exists()) {
+            functionsClass.removeLine(".categoryInfo", "Frequently")
+            deleteFile("Frequently")
+        }
+
+        PublicVariable.frequentlyUsedApps = frequentAppsArray
+        PublicVariable.freqLength = frequentAppsArray.size
+
+        for (frequentApp in frequentAppsArray) {
+            functionsClass.saveFileAppendLine("Frequently", frequentApp)
+            functionsClass.saveFile(frequentApp + "Frequently", frequentApp)
+        }
+
+        functionsClass.saveFileAppendLine(".categoryInfo", "Frequently")
+
+        functionsClass.addAppShortcuts()
+
+        val categoryIntent = Intent(applicationContext, FoldersConfigurations::class.java)
+        startActivity(categoryIntent)
+    } else {//Floating Shortcuts
+        PublicVariable.frequentlyUsedApps = frequentAppsArray
+        PublicVariable.freqLength = PublicVariable.frequentlyUsedApps.size
+
+        Intent(applicationContext, ApplicationsView::class.java).apply {
+            putExtra("frequentApps", frequentAppsArray)
+            putExtra("frequentAppsNumbers", frequentAppsArray.size)
+            startActivity(this)
+        }
+
+        functionsClass.addAppShortcuts()
+    }
 }

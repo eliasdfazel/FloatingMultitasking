@@ -804,28 +804,31 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     it
                 }
                 .onCompletion {
-                    /*Search Engine*/
-                    SearchEngine(activity = this@ApplicationsView, context = applicationContext,
-                            searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
-                            functionsClass = functionsClass,
-                            functionsClassRunServices = functionsClassRunServices,
-                            functionsClassSecurity = functionsClassSecurity,
-                            customIcons = loadCustomIcons,
-                            firebaseAuth = firebaseAuth).apply {
-
-                        this.initializeSearchEngineData()
-                    }
-                    /*Search Engine*/
-
                     val splashAnimation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
                     hybridApplicationViewBinding.loadingSplash.startAnimation(splashAnimation)
                     splashAnimation.setAnimationListener(object : Animation.AnimationListener {
+
                         override fun onAnimationStart(animation: Animation?) {
+
                             if (loadFreq) {
                                 launch {
                                     loadFrequentlyUsedApplications().await()
+
+                                    /*Search Engine*/
+                                    SearchEngine(activity = this@ApplicationsView, context = applicationContext,
+                                            searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
+                                            functionsClass = functionsClass,
+                                            functionsClassRunServices = functionsClassRunServices,
+                                            functionsClassSecurity = functionsClassSecurity,
+                                            customIcons = loadCustomIcons,
+                                            firebaseAuth = firebaseAuth).apply {
+
+                                        this.initializeSearchEngineData()
+                                    }
+                                    /*Search Engine*/
                                 }
                             }
+
                             hybridApplicationViewBinding.switchFloating.visibility = View.VISIBLE
                         }
 
@@ -879,9 +882,9 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
         recyclerViewAdapter = CardHybridAdapter(this@ApplicationsView, applicationContext, applicationsAdapterItems)
 
-        if (intent.getStringArrayExtra("freq") != null) {
-            frequentlyUsedAppsList = intent.getStringArrayExtra("freq")
-            val freqLength = intent.getIntExtra("num", -1)
+        if (intent.getStringArrayExtra("frequentApps") != null) {
+            frequentlyUsedAppsList = intent.getStringArrayExtra("frequentApps")
+            val freqLength = intent.getIntExtra("frequentAppsNumbers", -1)
             PublicVariable.frequentlyUsedApps = frequentlyUsedAppsList
             PublicVariable.freqLength = freqLength
             if (freqLength > 1) {
@@ -889,22 +892,24 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             }
         }
 
-        if (!loadFreq) {
-            hybridApplicationViewBinding.MainView.removeView(hybridApplicationViewBinding.freqList)
-            val layoutParams = RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.MATCH_PARENT
-            )
-            hybridApplicationViewBinding.nestedScrollView.layoutParams = layoutParams
-        } else {
+        if (loadFreq) {
             val layoutParams = RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.MATCH_PARENT
             )
             layoutParams.addRule(RelativeLayout.ABOVE, R.id.freqList)
-            hybridApplicationViewBinding.scrollRelativeLayout.setPadding(0, hybridApplicationViewBinding.scrollRelativeLayout.paddingTop, 0, 0)
             hybridApplicationViewBinding.nestedScrollView.layoutParams = layoutParams
+
+            hybridApplicationViewBinding.scrollRelativeLayout.setPadding(0, hybridApplicationViewBinding.scrollRelativeLayout.paddingTop, 0, 0)
             hybridApplicationViewBinding.nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(66))
+        } else {
+            hybridApplicationViewBinding.MainView.removeView(hybridApplicationViewBinding.freqList)
+
+            val layoutParams = RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT
+            )
+            hybridApplicationViewBinding.nestedScrollView.layoutParams = layoutParams
         }
 
         recyclerViewAdapter.notifyDataSetChanged()
@@ -926,53 +931,20 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         loadApplicationsIndex().await()
 
         loadInstalledCustomIconPackages().await()
-
-        try {
-            if (intent.hasExtra("goHome")) {
-                if (intent.getBooleanExtra("goHome", false)) {
-                    Intent(Intent.ACTION_MAIN).let {
-                        it.addCategory(Intent.CATEGORY_HOME)
-                        it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(it)
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-
-            this@ApplicationsView.finish()
-        }
     }
 
     private fun loadFrequentlyUsedApplications() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
-        val layoutParamsAbove = hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.layoutParams as RelativeLayout.LayoutParams
+        val layoutParamsAbove = hybridApplicationViewBinding.searchEngineViewInclude.root.layoutParams as RelativeLayout.LayoutParams
         layoutParamsAbove.addRule(RelativeLayout.ABOVE, R.id.freqList)
 
-        hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.layoutParams = layoutParamsAbove
-        hybridApplicationViewBinding.searchEngineViewInclude.textInputSearchView.bringToFront()
-
-        hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.layoutParams = layoutParamsAbove
-        hybridApplicationViewBinding.searchEngineViewInclude.searchIcon.bringToFront()
-
-        val layoutParamsAlignEnd = hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.layoutParams as RelativeLayout.LayoutParams
-        layoutParamsAlignEnd.addRule(RelativeLayout.END_OF, R.id.textInputSearchView)
-        layoutParamsAlignEnd.addRule(RelativeLayout.ABOVE, R.id.freqList)
-
-        hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.layoutParams = layoutParamsAlignEnd
-        hybridApplicationViewBinding.searchEngineViewInclude.searchFloatIt.bringToFront()
-
-        val layoutParamsAlignStart = hybridApplicationViewBinding.searchEngineViewInclude.searchClose.layoutParams as RelativeLayout.LayoutParams
-        layoutParamsAlignStart.addRule(RelativeLayout.START_OF, R.id.textInputSearchView)
-        layoutParamsAlignStart.addRule(RelativeLayout.ABOVE, R.id.freqList)
-
-        hybridApplicationViewBinding.searchEngineViewInclude.searchClose.layoutParams = layoutParamsAlignStart
-        hybridApplicationViewBinding.searchEngineViewInclude.searchClose.bringToFront()
+        hybridApplicationViewBinding.searchEngineViewInclude.root.layoutParams = layoutParamsAbove
+        hybridApplicationViewBinding.searchEngineViewInclude.root.bringToFront()
 
         hybridApplicationViewBinding.freqItem.removeAllViews()
 
         frequentlyUsedAppsCounter = IntArray(25)
-        frequentlyUsedAppsList = intent.getStringArrayExtra("freq")
-        val freqLength = intent.getIntExtra("num", -1)
+        frequentlyUsedAppsList = intent.getStringArrayExtra("frequentApps")
+        val freqLength = intent.getIntExtra("frequentAppsNumbers", -1)
         if (getFileStreamPath("Frequently").exists()) {
             functionsClass.removeLine(".categoryInfo", "Frequently")
             deleteFile("Frequently")

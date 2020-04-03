@@ -935,6 +935,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         if (functionsClass.UsageStatsEnabled()) {
             PublicVariable.forceReload = true
+
             smart.isChecked = true
         } else {
             smart.isChecked = false
