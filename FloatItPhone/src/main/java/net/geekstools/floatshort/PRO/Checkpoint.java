@@ -128,7 +128,7 @@ public class Checkpoint extends Activity {
         }
     }
 
-    public void canOverlyPermission() {
+    private void canOverlyPermission() {
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.wait), Toast.LENGTH_LONG).show();
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this, R.style.GeeksEmpire_Dialogue_Light);

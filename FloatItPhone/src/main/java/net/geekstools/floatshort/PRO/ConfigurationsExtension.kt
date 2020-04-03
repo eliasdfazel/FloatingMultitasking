@@ -3,6 +3,9 @@ package net.geekstools.floatshort.PRO
 import android.R
 import android.content.Intent
 import android.util.TypedValue
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -95,5 +98,20 @@ fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<S
         }
 
         functionsClass.addAppShortcuts()
+    }
+}
+
+fun Configurations.indexFloatingShortcuts() = CoroutineScope(Dispatchers.IO).async {
+
+    if (getFileStreamPath(".uFile").exists()) {
+
+        functionsClass.readFileLine(".uFile").forEach {
+
+            functionsClass.IndexAppInfoShortcuts(
+                    functionsClass.appName(it) + " | " + it
+            )
+        }
+
+        functionsClass.updateRecoverShortcuts()
     }
 }

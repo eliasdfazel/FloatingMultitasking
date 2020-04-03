@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -68,16 +71,6 @@ class Configurations : AppCompatActivity() {
 
                 finish()
                 return
-            }
-        }
-
-        if (getFileStreamPath(".uFile").exists()) {
-
-            functionsClass.readFileLine(".uFile").forEach {
-
-                functionsClass.IndexAppInfoShortcuts(
-                        functionsClass.appName(it) + " | " + it
-                )
             }
         }
 
@@ -150,6 +143,8 @@ class Configurations : AppCompatActivity() {
                 this.apply()
             }
 
+            triggerOpenProcess()
+
             if (getFileStreamPath("Frequently").exists()) {
                 val freqDelete = functionsClass.readFileLine("Frequently")
 
@@ -160,11 +155,11 @@ class Configurations : AppCompatActivity() {
                 functionsClass.removeLine(".categoryInfo", "Frequently")
                 deleteFile("Frequently")
             }
-
-            triggerOpenProcess()
         }
 
-        functionsClass.updateRecoverShortcuts()
+        CoroutineScope(Dispatchers.IO).launch {
+            indexFloatingShortcuts().await()
+        }
 
         finish()
     }
