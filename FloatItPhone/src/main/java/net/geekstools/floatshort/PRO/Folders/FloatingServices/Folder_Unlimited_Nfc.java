@@ -317,6 +317,7 @@ public class Folder_Unlimited_Nfc extends Service {
 
         layoutParams[startId] = functionsClass.normalLayoutParams(HW, xPos, yPos);
         try {
+            floatingView[startId].setTag(startId);
             windowManager.addView(floatingView[startId], layoutParams[startId]);
         } catch (WindowManager.BadTokenException e) {
             e.printStackTrace();

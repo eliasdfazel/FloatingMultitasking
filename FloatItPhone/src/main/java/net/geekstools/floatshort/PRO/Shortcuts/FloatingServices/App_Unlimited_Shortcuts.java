@@ -257,6 +257,7 @@ public class App_Unlimited_Shortcuts extends Service {
         yPos = sharedPrefPosition.getInt("Y", yInit);
         layoutParams[startId] = functionsClass.normalLayoutParams(PublicVariable.HW, xPos, yPos);
         try {
+            floatingView[startId].setTag(startId);
             windowManager.addView(floatingView[startId], layoutParams[startId]);
         } catch (WindowManager.BadTokenException e) {
             e.printStackTrace();

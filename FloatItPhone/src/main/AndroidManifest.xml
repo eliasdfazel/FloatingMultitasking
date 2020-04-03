@@ -517,6 +517,7 @@
         <service
             android:name=".Shortcuts.FloatingServices.App_Unlimited_HIS"/>
         <!-- Float It -->
+
         <service
             android:name=".Utils.RemoteProcess.CloudNotificationHandler">
             <intent-filter>

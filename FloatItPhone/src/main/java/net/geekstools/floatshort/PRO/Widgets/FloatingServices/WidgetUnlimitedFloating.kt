@@ -232,6 +232,7 @@ class WidgetUnlimitedFloating : Service() {
                 appWidgetHostView[startId].setAppWidget(appWidgetId[startId], appWidgetProviderInfo[startId])
                 appWidgetHostView[startId].minimumHeight = initHeight
                 appWidgetHostView[startId].minimumWidth = initWidth
+
                 widgetLayout[startId].addView(appWidgetHostView[startId])
 
                 val widgetRelativeLayout = RelativeLayout.LayoutParams(initWidth, initHeight)
@@ -245,6 +246,7 @@ class WidgetUnlimitedFloating : Service() {
                 layoutParams[startId].windowAnimations = android.R.style.Animation_Dialog
 
                 try {
+                    floatingWidgetsBinding[startId].root.tag = startId
                     windowManager.addView(floatingWidgetsBinding[startId].root, layoutParams[startId])
                 } catch (e: WindowManager.InvalidDisplayException) {
                     e.printStackTrace()
