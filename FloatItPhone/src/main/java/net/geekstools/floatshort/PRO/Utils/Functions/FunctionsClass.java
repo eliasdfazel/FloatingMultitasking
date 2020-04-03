@@ -1243,6 +1243,8 @@ public class FunctionsClass {
                 context.startActivity(intent);
 
                 dialog.dismiss();
+
+                activity.finish();
             }
         });
         alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

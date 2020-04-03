@@ -343,12 +343,14 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             if (!Settings.ACTION_USAGE_ACCESS_SETTINGS.isEmpty()) {
                 if (sharedPreferences.getBoolean("smart", true)) {
                     smart.isChecked = true
+
                     val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
                     startActivity(intent)
 
                     activity?.finish()
                 } else if (!sharedPreferences.getBoolean("smart", true)) {
                     smart.isChecked = false
+
                     functionsClass.UsageAccess(activity, smart)
                 }
             }
