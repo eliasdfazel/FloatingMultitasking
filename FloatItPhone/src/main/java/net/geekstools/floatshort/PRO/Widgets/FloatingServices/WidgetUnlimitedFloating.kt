@@ -35,11 +35,13 @@ import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Widgets.Utils.FunctionsClassWidgets
 import net.geekstools.floatshort.PRO.databinding.FloatingWidgetsBinding
 
 class WidgetUnlimitedFloating : Service() {
 
     private lateinit var functionsClass: FunctionsClass
+    private lateinit var functionsClassWidgets: FunctionsClassWidgets
 
     private lateinit var windowManager: WindowManager
 
@@ -76,7 +78,8 @@ class WidgetUnlimitedFloating : Service() {
                 for (J in 0 until floatingWidgetsBinding.size) {
                     try {
                         if (floatingWidgetsBinding[J].root.isShown) {
-                            layoutParams[J] = functionsClass.handleOrientationWidgetPortrait("${appWidgetId[J]}" + appWidgetProviderInfo[J].provider.packageName)
+                            layoutParams.set(J,
+                                    functionsClassWidgets.handleOrientationWidgetPortrait("${appWidgetId[J]}" + appWidgetProviderInfo[J].provider.packageName))
 
                             windowManager.updateViewLayout(floatingWidgetsBinding[J].root, layoutParams[J])
                         }
@@ -90,7 +93,8 @@ class WidgetUnlimitedFloating : Service() {
                 for (J in 0 until floatingWidgetsBinding.size) {
                     try {
                         if (floatingWidgetsBinding[J].root.isShown) {
-                            layoutParams[J] = functionsClass.handleOrientationWidgetLandscape("${appWidgetId[J]}" + appWidgetProviderInfo[J].provider.packageName)
+                            layoutParams.set(J,
+                                    functionsClassWidgets.handleOrientationWidgetLandscape("${appWidgetId[J]}" + appWidgetProviderInfo[J].provider.packageName))
 
                             windowManager.updateViewLayout(floatingWidgetsBinding[J].root, layoutParams[J])
                         }
@@ -250,7 +254,6 @@ class WidgetUnlimitedFloating : Service() {
 
                 }
                 widgetLabel[startId].setOnTouchListener(object : View.OnTouchListener {
-                    val layoutParamsTouch = layoutParams[startId]
 
                     var initialX: Int = 0
                     var initialY: Int = 0
@@ -259,6 +262,7 @@ class WidgetUnlimitedFloating : Service() {
                     var initialTouchY: Float = 0f
 
                     override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
+                        val layoutParamsTouch = layoutParams[startId]
 
                         when (motionEvent.action) {
                             MotionEvent.ACTION_DOWN -> {
@@ -301,7 +305,6 @@ class WidgetUnlimitedFloating : Service() {
 
                 }
                 widgetMoveButton[startId].setOnTouchListener(object : View.OnTouchListener {
-                    val layoutParamsTouch = layoutParams[startId]
 
                     var initialX: Int = 0
                     var initialY: Int = 0
@@ -310,9 +313,15 @@ class WidgetUnlimitedFloating : Service() {
                     var initialTouchY: Float = 0f
 
                     override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
+                        val layoutParamsTouch = layoutParams[startId]
 
                         when (motionEvent.action) {
                             MotionEvent.ACTION_DOWN -> {
+
+
+                                println(">>> >> 1 > " + startId)
+                                println(">>> >> 2 > " + layoutParams[startId])
+                                println(">>> >> 3 > " + layoutParamsTouch)
 
                                 initialX = layoutParamsTouch.x
                                 initialY = layoutParamsTouch.y
@@ -347,7 +356,6 @@ class WidgetUnlimitedFloating : Service() {
                     }
                 })
 
-
                 widgetCloseButton[startId].setOnClickListener {
 
                     try {
@@ -370,7 +378,6 @@ class WidgetUnlimitedFloating : Service() {
                 }
 
                 widgetResizeControl[startId].setOnTouchListener(object : View.OnTouchListener {
-                    val layoutParamsTouch = layoutParams[startId]
 
                     var initialWidth: Int = 0
                     var initialHeight: Int = 0
@@ -379,6 +386,7 @@ class WidgetUnlimitedFloating : Service() {
                     var initialTouchY: Float = 0f
 
                     override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
+                        val layoutParamsTouch = layoutParams[startId]
 
                         when (motionEvent.action) {
                             MotionEvent.ACTION_DOWN -> {
@@ -425,6 +433,7 @@ class WidgetUnlimitedFloating : Service() {
         super.onCreate()
 
         functionsClass = FunctionsClass(applicationContext)
+        functionsClassWidgets = FunctionsClassWidgets(applicationContext)
 
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 

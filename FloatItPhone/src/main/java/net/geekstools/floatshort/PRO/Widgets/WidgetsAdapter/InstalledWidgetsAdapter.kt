@@ -42,7 +42,7 @@ class InstalledWidgetsAdapter(private val widgetConfigurationsActivity: WidgetCo
 
         lateinit var pickedWidgetPackageName: String
         lateinit var pickedWidgetClassNameProvider: String
-        lateinit var pickedWidgetConfigClassName: String
+        var pickedWidgetConfigClassName: String? = null
         lateinit var pickedAppWidgetProviderInfo: AppWidgetProviderInfo
 
         var pickedWidgetId = 0
@@ -76,8 +76,9 @@ class InstalledWidgetsAdapter(private val widgetConfigurationsActivity: WidgetCo
             pickedWidgetLabel = adapterItems[position].widgetLabel
             val widgetProvider = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetClassNameProvider)
 
-            if (pickedAppWidgetProviderInfo.configure != null) {
-                val configure = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetConfigClassName)
+            if (pickedAppWidgetProviderInfo.configure != null
+                    && pickedWidgetConfigClassName != null) {
+                val configure = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetConfigClassName!!)
 
                 try {
                     if (context.packageManager.getActivityInfo(configure, PackageManager.GET_META_DATA).exported) {
