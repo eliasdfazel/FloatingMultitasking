@@ -77,7 +77,7 @@ class RecoveryWidgets : Service() {
                             try {
                                 if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
 
-                                    if (functionsClass.loadCustomIcons()) {
+                                    if (functionsClass.customIconsEnable()) {
                                         val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
                                         loadCustomIcons.load()
                                         println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber())
@@ -164,7 +164,7 @@ class RecoveryWidgets : Service() {
                 try {
                     if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
 
-                        if (functionsClass.loadCustomIcons()) {
+                        if (functionsClass.customIconsEnable()) {
                             val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
                             loadCustomIcons.load()
                         }

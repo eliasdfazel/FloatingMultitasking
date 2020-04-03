@@ -70,7 +70,7 @@ public class FloatingSplash extends Service {
                 className = intent.getStringExtra("className");
                 appIcon = functionsClass.shapedAppIcon(getPackageManager().getActivityInfo(new ComponentName(packageName, className), 0)).mutate();
             } else {
-                appIcon = functionsClass.loadCustomIcons() ?
+                appIcon = functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName).mutate())
                         :
                         functionsClass.shapedAppIcon(packageName).mutate();
@@ -152,7 +152,7 @@ public class FloatingSplash extends Service {
         super.onCreate();
         functionsClass = new FunctionsClass(getApplicationContext());
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
     }

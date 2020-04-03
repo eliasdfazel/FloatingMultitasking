@@ -305,7 +305,7 @@ public class PopupOptionsFloatingCategory extends Service {
                             navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
-                                    functionsClass.loadCustomIcons() ?
+                                    functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
                                             :
                                             functionsClass.shapedAppIcon(packageName)));
@@ -323,7 +323,7 @@ public class PopupOptionsFloatingCategory extends Service {
                             navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
-                                    functionsClass.loadCustomIcons() ?
+                                    functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
                                             :
                                             functionsClass.shapedAppIcon(packageName)));
@@ -345,7 +345,7 @@ public class PopupOptionsFloatingCategory extends Service {
                             navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
-                                    functionsClass.loadCustomIcons() ?
+                                    functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
                                             :
                                             functionsClass.shapedAppIcon(packageName)));
@@ -363,7 +363,7 @@ public class PopupOptionsFloatingCategory extends Service {
                             navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
-                                    functionsClass.loadCustomIcons() ?
+                                    functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
                                             :
                                             functionsClass.shapedAppIcon(packageName)));
@@ -377,7 +377,7 @@ public class PopupOptionsFloatingCategory extends Service {
                             navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
-                                    functionsClass.loadCustomIcons() ?
+                                    functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
                                             :
                                             functionsClass.shapedAppIcon(packageName)));
@@ -450,7 +450,7 @@ public class PopupOptionsFloatingCategory extends Service {
         super.onCreate();
         functionsClass = new FunctionsClass(getApplicationContext());
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
     }

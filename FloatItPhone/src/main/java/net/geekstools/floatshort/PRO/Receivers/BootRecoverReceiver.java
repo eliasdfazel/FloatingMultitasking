@@ -45,7 +45,7 @@ public class BootRecoverReceiver extends BroadcastReceiver {
                     }
                 }
 
-                if (functionsClass.loadCustomIcons()) {
+                if (functionsClass.customIconsEnable()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
                     loadCustomIcons.load();
                     FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());

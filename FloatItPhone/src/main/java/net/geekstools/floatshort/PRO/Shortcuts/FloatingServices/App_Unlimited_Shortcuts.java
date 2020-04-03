@@ -150,7 +150,7 @@ public class App_Unlimited_Shortcuts extends Service {
     public int onStartCommand(Intent intent, final int flags, final int startId) {
         startIdCounter = startId;
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             if (loadCustomIcons == null) {
                 loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
             }
@@ -237,7 +237,7 @@ public class App_Unlimited_Shortcuts extends Service {
 
         appIcon[startId] = functionsClass.shapedAppIcon(activityInfo[startId]);
         iconColor[startId] = functionsClass.extractDominantColor(functionsClass.appIcon(activityInfo[startId]));
-        shapedIcon[startId].setImageDrawable(functionsClass.loadCustomIcons() ?
+        shapedIcon[startId].setImageDrawable(functionsClass.customIconsEnable() ?
                 loadCustomIcons.getDrawableIconForPackage(packageNames[startId], functionsClass.shapedAppIcon(activityInfo[startId]))
                 :
                 functionsClass.shapedAppIcon(activityInfo[startId]));
@@ -778,7 +778,7 @@ public class App_Unlimited_Shortcuts extends Service {
                     allowMove[intent.getIntExtra("startId", 1)] = false;
 
                     Drawable pinDrawable = null;
-                    if (functionsClass.loadCustomIcons()) {
+                    if (functionsClass.customIconsEnable()) {
                         pinDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate();
                     } else {
                         switch (functionsClass.shapesImageId()) {
@@ -945,7 +945,7 @@ public class App_Unlimited_Shortcuts extends Service {
                             if (floatingView[StartIdNotification].isShown()) {
                                 /*add dot*/
                                 Drawable dotDrawable = null;
-                                if (functionsClass.loadCustomIcons()) {
+                                if (functionsClass.customIconsEnable()) {
                                     dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[StartIdNotification]).mutate();
                                 } else {
                                     switch (functionsClass.shapesImageId()) {
@@ -1037,7 +1037,7 @@ public class App_Unlimited_Shortcuts extends Service {
 
         mapPackageNameStartId = new LinkedHashMap<String, Integer>();
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
     }

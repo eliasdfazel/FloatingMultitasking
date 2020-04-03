@@ -717,7 +717,7 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
             foldersConfigurationViewBinding.loadingSplash.startAnimation(animation)
         }
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons.load()
             FunctionsClassDebug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }

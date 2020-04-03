@@ -33,7 +33,7 @@ public class RemoteRecoveryActivity extends Activity {
 
         String packageName = getIntent().getStringExtra("packageName");
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
             loadCustomIcons.load();
             FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());

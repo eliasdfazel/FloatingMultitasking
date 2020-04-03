@@ -79,7 +79,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
             }
         }
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
         }
     }
@@ -126,7 +126,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
                 for (int i = 0; i < previewItems; i++) {
                     freqLayout = (RelativeLayout) activity.getLayoutInflater().inflate(R.layout.selected_apps_item, null);
                     imageView = functionsClass.initShapesImage(freqLayout, R.id.appSelectedItem);
-                    imageView.setImageDrawable(functionsClass.loadCustomIcons() ?
+                    imageView.setImageDrawable(functionsClass.customIconsEnable() ?
                             loadCustomIcons.getDrawableIconForPackage(categoryPackages[i], functionsClass.shapedAppIcon(categoryPackages[i]))
                             :
                             functionsClass.shapedAppIcon(categoryPackages[i]));

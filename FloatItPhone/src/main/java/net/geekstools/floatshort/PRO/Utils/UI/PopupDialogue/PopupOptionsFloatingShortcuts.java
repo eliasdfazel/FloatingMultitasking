@@ -301,7 +301,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
         super.onCreate();
         functionsClass = new FunctionsClass(getApplicationContext());
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
     }

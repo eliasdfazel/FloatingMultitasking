@@ -67,7 +67,7 @@ public class RecoveryShortcuts extends Service {
                                 appData = functionsClass.readFileLine(".uFile");
                                 FirebaseAppIndex.getInstance().removeAll();
 
-                                if (functionsClass.loadCustomIcons()) {
+                                if (functionsClass.customIconsEnable()) {
                                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
                                     loadCustomIcons.load();
                                     FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
@@ -110,7 +110,7 @@ public class RecoveryShortcuts extends Service {
                     appData = functionsClass.readFileLine(".uFile");
                     FirebaseAppIndex.getInstance().removeAll();
 
-                    if (functionsClass.loadCustomIcons()) {
+                    if (functionsClass.customIconsEnable()) {
                         LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
                         loadCustomIcons.load();
                         FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());

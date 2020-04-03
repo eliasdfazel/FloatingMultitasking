@@ -146,7 +146,7 @@ public class Folder_Unlimited_Wifi extends Service {
         FunctionsClassDebug.Companion.PrintDebug(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
         startIdCounter = startId;
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             if (loadCustomIcons == null) {
                 loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
             }
@@ -270,7 +270,7 @@ public class Folder_Unlimited_Wifi extends Service {
                 }
             }
             try {
-                one.setImageDrawable(functionsClass.loadCustomIcons() ?
+                one.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(categoryApps[0], functionsClass.shapedAppIcon(categoryApps[0]))
                         :
                         functionsClass.shapedAppIcon(categoryApps[0]));
@@ -279,7 +279,7 @@ public class Folder_Unlimited_Wifi extends Service {
                 one.setImageDrawable(null);
             }
             try {
-                two.setImageDrawable(functionsClass.loadCustomIcons() ?
+                two.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(categoryApps[1], functionsClass.shapedAppIcon(categoryApps[1]))
                         :
                         functionsClass.shapedAppIcon(categoryApps[1]));
@@ -288,7 +288,7 @@ public class Folder_Unlimited_Wifi extends Service {
                 two.setImageDrawable(null);
             }
             try {
-                three.setImageDrawable(functionsClass.loadCustomIcons() ?
+                three.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(categoryApps[2], functionsClass.shapedAppIcon(categoryApps[2]))
                         :
                         functionsClass.shapedAppIcon(categoryApps[2]));
@@ -297,7 +297,7 @@ public class Folder_Unlimited_Wifi extends Service {
                 three.setImageDrawable(null);
             }
             try {
-                four.setImageDrawable(functionsClass.loadCustomIcons() ?
+                four.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(categoryApps[3], functionsClass.shapedAppIcon(categoryApps[3]))
                         :
                         functionsClass.shapedAppIcon(categoryApps[3]));
@@ -543,7 +543,7 @@ public class Folder_Unlimited_Wifi extends Service {
                             if (floatingView[StartIdNotification].isShown()) {
                                 /*add dot*/
                                 Drawable dotDrawable =
-                                        functionsClass.loadCustomIcons() ?
+                                        functionsClass.customIconsEnable() ?
                                                 loadCustomIcons.getDrawableIconForPackage(notificationPackage, functionsClass.shapedAppIcon(notificationPackage).mutate()).mutate()
                                                 :
                                                 functionsClass.shapedAppIcon(notificationPackage).mutate();
@@ -968,7 +968,7 @@ public class Folder_Unlimited_Wifi extends Service {
         mapContentCategoryName = new LinkedHashMap<String, String>();
         mapCategoryNameStartId = new LinkedHashMap<String, Integer>();
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
     }

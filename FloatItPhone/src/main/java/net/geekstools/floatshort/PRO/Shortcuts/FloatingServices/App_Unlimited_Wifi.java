@@ -146,7 +146,7 @@ public class App_Unlimited_Wifi extends Service {
         FunctionsClassDebug.Companion.PrintDebug(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
         startIdCounter = startId;
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             if (loadCustomIcons == null) {
                 loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
             }
@@ -223,7 +223,7 @@ public class App_Unlimited_Wifi extends Service {
 
         appIcon[startId] = functionsClass.shapedAppIcon(packages[startId]);
         iconColor[startId] = functionsClass.extractDominantColor(functionsClass.appIcon(packages[startId]));
-        shapedIcon[startId].setImageDrawable(functionsClass.loadCustomIcons() ?
+        shapedIcon[startId].setImageDrawable(functionsClass.customIconsEnable() ?
                 loadCustomIcons.getDrawableIconForPackage(packages[startId], functionsClass.shapedAppIcon(packages[startId]))
                 :
                 functionsClass.shapedAppIcon(packages[startId]));
@@ -746,7 +746,7 @@ public class App_Unlimited_Wifi extends Service {
                     allowMove[intent.getIntExtra("startId", 1)] = false;
 
                     Drawable pinDrawable = null;
-                    if (functionsClass.loadCustomIcons()) {
+                    if (functionsClass.customIconsEnable()) {
                         pinDrawable = functionsClass.getAppIconDrawableCustomIcon(packages[intent.getIntExtra("startId", 1)]).mutate();
                     } else {
                         switch (functionsClass.shapesImageId()) {
@@ -905,7 +905,7 @@ public class App_Unlimited_Wifi extends Service {
                             if (floatingView[StartIdNotification].isShown()) {
                                 /*add dot*/
                                 Drawable dotDrawable = null;
-                                if (functionsClass.loadCustomIcons()) {
+                                if (functionsClass.customIconsEnable()) {
                                     dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packages[StartIdNotification]).mutate();
                                 } else {
                                     switch (functionsClass.shapesImageId()) {
@@ -993,7 +993,7 @@ public class App_Unlimited_Wifi extends Service {
 
         mapPackageNameStartId = new LinkedHashMap<String, Integer>();
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
     }

@@ -172,7 +172,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Folders.DeepLinkedFolders"
+            android:name=".Utils.RemoteTask.Create.DeepLinkedFolders"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter
                 android:autoVerify="true"

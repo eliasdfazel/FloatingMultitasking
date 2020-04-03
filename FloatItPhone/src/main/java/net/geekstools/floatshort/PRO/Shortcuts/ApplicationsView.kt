@@ -776,7 +776,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     private fun loadApplicationsData() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
         hybridApplicationViewBinding.indexView.removeAllViews()
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons?.load()
             PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons?.getTotalIconsNumber())
         }
@@ -858,7 +858,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                             }
                         }
 
-                        installedAppIcon = if (functionsClass.loadCustomIcons()) {
+                        installedAppIcon = if (functionsClass.customIconsEnable()) {
                             loadCustomIcons?.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(it.value.activityInfo))
                         } else {
                             functionsClass.shapedAppIcon(it.value.activityInfo)
@@ -987,7 +987,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             shapesImage.id = i
             shapesImage.setOnClickListener(this@ApplicationsView)
             shapesImage.setOnLongClickListener(this@ApplicationsView)
-            shapesImage.setImageDrawable(if (functionsClass.loadCustomIcons()) {
+            shapesImage.setImageDrawable(if (functionsClass.customIconsEnable()) {
                 loadCustomIcons?.getDrawableIconForPackage(frequentlyUsedAppsList[i], functionsClass.shapedAppIcon(frequentlyUsedAppsList[i]))
             } else {
                 functionsClass.shapedAppIcon(frequentlyUsedAppsList[i])

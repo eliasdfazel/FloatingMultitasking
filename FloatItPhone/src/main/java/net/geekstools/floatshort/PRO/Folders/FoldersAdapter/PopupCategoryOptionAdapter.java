@@ -87,7 +87,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                 break;
         }
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
         }
     }
@@ -128,7 +128,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                 break;
         }
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
         }
     }
@@ -170,11 +170,11 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
             if (context.getFileStreamPath(adapterItems.get(position).getPackageName() + ".SplitOne").exists()
                     && context.getFileStreamPath(adapterItems.get(position).getPackageName() + ".SplitTwo").exists()
                     && adapterItems.get(position).getAppName().equals(context.getString(R.string.splitIt))) {
-                splitOne = functionsClass.loadCustomIcons() ?
+                splitOne = functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitOne")))
                         :
                         functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitOne"));
-                splitTwo = functionsClass.loadCustomIcons() ?
+                splitTwo = functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitTwo")))
                         :
                         functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems.get(position).getPackageName() + ".SplitTwo"));
@@ -185,11 +185,11 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
                 viewHolder.split_one.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
                 viewHolder.split_two.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
             } else if (adapterItems.get(position).getAppName().equals(context.getString(R.string.splitIt))) {
-                splitOne = functionsClass.loadCustomIcons() ?
+                splitOne = functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[0], functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[0]))
                         :
                         functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[0]);
-                splitTwo = functionsClass.loadCustomIcons() ?
+                splitTwo = functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[1], functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[1]))
                         :
                         functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems.get(position).getPackageName())[1]);

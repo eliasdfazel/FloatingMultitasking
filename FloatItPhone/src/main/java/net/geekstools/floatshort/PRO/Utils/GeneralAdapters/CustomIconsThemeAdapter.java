@@ -72,7 +72,7 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
                 functionsClass.saveDefaultPreference("customIcon", adapterItems.get(position).getPackageName());
 
                 functionsClass.saveDefaultPreference("LitePreferences", false);
-                if (functionsClass.loadCustomIcons()) {
+                if (functionsClass.customIconsEnable()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, adapterItems.get(position).getPackageName());
                     loadCustomIcons.load();
                 }
@@ -87,7 +87,7 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
         viewHolderBinder.customIcon.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (functionsClass.loadCustomIcons()) {
+                if (functionsClass.customIconsEnable()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, adapterItems.get(position).getPackageName());
                     loadCustomIcons.load();
 

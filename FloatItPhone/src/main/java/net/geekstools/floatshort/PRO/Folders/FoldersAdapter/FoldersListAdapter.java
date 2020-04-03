@@ -69,7 +69,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
         PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
         }
     }
@@ -123,7 +123,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                 for (int i = 0; i < previewItems; i++) {
                     freqLayout = (RelativeLayout) foldersConfigurations.getLayoutInflater().inflate(R.layout.selected_apps_item, null);
                     imageView = functionsClass.initShapesImage(freqLayout, R.id.appSelectedItem);
-                    imageView.setImageDrawable(functionsClass.loadCustomIcons() ?
+                    imageView.setImageDrawable(functionsClass.customIconsEnable() ?
                             loadCustomIcons.getDrawableIconForPackage(categoryPackages[i], functionsClass.shapedAppIcon(categoryPackages[i]))
                             :
                             functionsClass.shapedAppIcon(categoryPackages[i]));

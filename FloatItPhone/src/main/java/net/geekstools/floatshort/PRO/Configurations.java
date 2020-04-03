@@ -43,8 +43,9 @@ import java.util.List;
 public class Configurations extends Activity {
 
     FunctionsClass functionsClass;
-    String[] freqAppsArray;
-    int numArray;
+
+    String[] frequentAppsArray;
+    int arraySize;
 
     String setAppIndex;
 
@@ -132,7 +133,7 @@ public class Configurations extends Activity {
                                 System.currentTimeMillis());                    //end
                 Collections.sort(queryUsageStats, new LastTimeLaunchedComparator());
                 try {
-                    freqAppsArray = retrieveFreqUsedApp();
+                    frequentAppsArray = retrieveFreqUsedApp();
                     String previousAppPack = queryUsageStats.get(1).getPackageName();
                     if (previousAppPack.contains("com.google.android.googlequicksearchbox")) {
                         Bundle bundleFirebaseAnalytics = new Bundle();
@@ -250,8 +251,8 @@ public class Configurations extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            AppIntent.putExtra("freq", freqAppsArray);
-            AppIntent.putExtra("num", numArray);
+            AppIntent.putExtra("freq", frequentAppsArray);
+            AppIntent.putExtra("num", arraySize);
             startActivity(AppIntent);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -272,8 +273,8 @@ public class Configurations extends Activity {
 
     public String[] retrieveFreqUsedApp() throws Exception {
         List<String> freqApps = functionsClass.letMeKnow(Configurations.this, (25), (86400000 * 7), System.currentTimeMillis());
-        numArray = freqApps.size();
-        return freqApps.toArray(new String[numArray]);
+        arraySize = freqApps.size();
+        return freqApps.toArray(new String[arraySize]);
     }
 
     private class LastTimeLaunchedComparator implements Comparator<UsageStats> {

@@ -127,7 +127,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                         val installedClassName = it.activityInfo.name
                         val installedAppName = functionsClass.activityLabel(it.activityInfo)
 
-                        val installedAppIcon = if (functionsClass.loadCustomIcons()) {
+                        val installedAppIcon = if (functionsClass.customIconsEnable()) {
                             customIcons?.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(it.activityInfo))
                         } else {
                             functionsClass.shapedAppIcon(it.activityInfo)
@@ -177,7 +177,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
 
                                 val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
                                 val newAppName = functionsClass.appName(packageName)
-                                val appIcon = if (functionsClass.loadCustomIcons()) {
+                                val appIcon = if (functionsClass.customIconsEnable()) {
                                     customIcons?.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
                                 } else {
                                     functionsClass.shapedAppIcon(packageName)

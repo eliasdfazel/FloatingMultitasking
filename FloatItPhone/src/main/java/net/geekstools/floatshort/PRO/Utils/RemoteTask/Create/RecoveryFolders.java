@@ -70,7 +70,7 @@ public class RecoveryFolders extends Service {
                         if (intent.getAction().equals("RECOVERY_AUTHENTICATED")) {
                             categoryData = functionsClass.readFileLine(".uCategory");
 
-                            if (functionsClass.loadCustomIcons()) {
+                            if (functionsClass.customIconsEnable()) {
                                 LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
                                 loadCustomIcons.load();
                                 FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
@@ -112,7 +112,7 @@ public class RecoveryFolders extends Service {
             } else {
                 categoryData = functionsClass.readFileLine(".uCategory");
 
-                if (functionsClass.loadCustomIcons()) {
+                if (functionsClass.customIconsEnable()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
                     loadCustomIcons.load();
                     FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());

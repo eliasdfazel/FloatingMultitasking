@@ -1059,7 +1059,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         configuredWidgetAvailable = false
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons.load()
             FunctionsClassDebug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }
@@ -1115,7 +1115,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         if (functionsClass.appIsInstalled(packageName)) {
                             val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
                             val newAppName = functionsClass.appName(packageName)
-                            val appIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+                            val appIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
                             if (widgetIndex == 0) {
                                 configuredWidgetsSections.add(WidgetSectionedConfiguredAdapter.Section(widgetIndex, newAppName, appIcon))
                                 indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
@@ -1209,7 +1209,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             })
         }
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons.load()
             FunctionsClassDebug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }
@@ -1235,7 +1235,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             if (packageName.isNotEmpty() && className.isNotEmpty()) {
 
                                 val newAppName = functionsClass.appName(packageName)
-                                val newAppIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+                                val newAppIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
 
                                 if (widgetIndex == 0) {
                                     installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
@@ -1270,7 +1270,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                         if (packageName.isNotEmpty() && className.isNotEmpty()) {
                             val newAppName = functionsClass.appName(packageName)
-                            val newAppIcon = if (functionsClass.loadCustomIcons()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+                            val newAppIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
 
                             if (widgetIndex == 0) {
                                 installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))

@@ -158,7 +158,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             functionsClass.setThemeColorAutomationFeature(FolderAutoFeatures.this, MainView, false);
         }
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
 
@@ -678,7 +678,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             try {
                 String[] appData = functionsClass.readFileLine(".categoryInfo");
 
-                if (functionsClass.loadCustomIcons()) {
+                if (functionsClass.customIconsEnable()) {
                     loadCustomIcons.load();
                     FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }

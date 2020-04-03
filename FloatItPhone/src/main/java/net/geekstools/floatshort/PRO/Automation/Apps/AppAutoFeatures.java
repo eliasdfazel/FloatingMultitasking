@@ -175,7 +175,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             functionsClass.setThemeColorAutomationFeature(AppAutoFeatures.this, MainView, false);
         }
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
 
@@ -703,7 +703,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                 adapterItems = new ArrayList<AdapterItems>();
                 mapIndexFirstItem = new LinkedHashMap<String, Integer>();
 
-                if (functionsClass.loadCustomIcons()) {
+                if (functionsClass.customIconsEnable()) {
                     loadCustomIcons.load();
                     FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }
@@ -713,7 +713,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                         try {
                             PackageName = applicationInfoList.get(appInfo).packageName;
                             AppName = functionsClass.appName(PackageName);
-                            AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
+                            AppIcon = functionsClass.customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
 
                             if (getFileStreamPath(PackageName + ".Time").exists()) {
                                 AppTime = functionsClass.readFile(PackageName + ".Time");

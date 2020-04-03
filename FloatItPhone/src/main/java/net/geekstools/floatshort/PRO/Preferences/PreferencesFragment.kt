@@ -928,7 +928,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             }
         }
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             shapes.icon = functionsClass.appIcon(functionsClass.customIconPackageName())
             shapes.summary = functionsClass.appName(functionsClass.customIconPackageName())
         }

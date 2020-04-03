@@ -94,7 +94,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                 break;
         }
 
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
         }
     }
@@ -171,7 +171,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                                             animationType, toY);
                             translateAnimation.setDuration((long) Math.abs(fromY));
 
-                            tempIcon.setImageDrawable(functionsClass.loadCustomIcons() ?
+                            tempIcon.setImageDrawable(functionsClass.customIconsEnable() ?
                                     loadCustomIcons.getDrawableIconForPackage(adapterItems.get(position).getPackageName(), functionsClass.shapedAppIcon(adapterItems.get(position).getPackageName()))
                                     :
                                     functionsClass.shapedAppIcon(adapterItems.get(position).getPackageName()));

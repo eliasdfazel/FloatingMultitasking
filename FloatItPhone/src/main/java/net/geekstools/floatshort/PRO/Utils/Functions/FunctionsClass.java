@@ -248,7 +248,7 @@ public class FunctionsClass {
     }
 
     /*Database & Indexing*/
-    public void IndexAppInfoShortcuts(final String contentAppIndex) throws Exception {
+    public void IndexAppInfoShortcuts(final String contentAppIndex){
         Uri BASE_URL =
                 Uri.parse("https://www.geeksempire.net/createshortcuts.html/");
         Indexable articleToIndex = new Indexable.Builder()
@@ -981,7 +981,7 @@ public class FunctionsClass {
             navDrawerItemsSaved.clear();
 
             LoadCustomIcons loadCustomIcons = null;
-            if (loadCustomIcons()) {
+            if (customIconsEnable()) {
                 loadCustomIcons = new LoadCustomIcons(context, customIconPackageName());
             }
 
@@ -994,7 +994,7 @@ public class FunctionsClass {
                                 appName(notificationPackage),
                                 readFile(notificationTime + "_" + "Notification" + "Title"),
                                 readFile(notificationTime + "_" + "Notification" + "Text"),
-                                loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(notificationPackage, shapedAppIcon(notificationPackage)) : shapedAppIcon(notificationPackage),
+                                customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(notificationPackage, shapedAppIcon(notificationPackage)) : shapedAppIcon(notificationPackage),
                                 shapedNotificationUser(Drawable.createFromPath(context.getFileStreamPath(notificationTime + "_" + "Notification" + "Icon").getPath())),
                                 readFile(notificationTime + "_" + "Notification" + "Key"),
                                 PublicVariable.notificationIntent.get(notificationTime)
@@ -3596,7 +3596,7 @@ public class FunctionsClass {
         if (shapesDrawables() == null) {
             backgroundDrawable = returnAPI() >= 28 ? resizeDrawable(context.getDrawable(R.drawable.ic_launcher).mutate(), 100, 100) : context.getDrawable(R.drawable.ic_launcher).mutate();
             backgroundDrawable.setAlpha(0);
-            if (!loadCustomIcons()) {
+            if (!customIconsEnable()) {
                 foregroundDrawable.setTint(extractVibrantColor(appIcon(PackageName)));
             }
         } else {
@@ -3607,7 +3607,7 @@ public class FunctionsClass {
                 e.printStackTrace();
             }
         }
-        if (loadCustomIcons()) {
+        if (customIconsEnable()) {
             backgroundDrawable = returnAPI() >= 28 ? resizeDrawable(appIcon(customIconPackageName()).mutate(), 100, 100) : appIcon(customIconPackageName()).mutate();
             backgroundDrawable.setTint(extractVibrantColor(appIcon(PackageName)));
         }
@@ -5105,32 +5105,34 @@ public class FunctionsClass {
         return readDefaultPreference("customIcon", context.getPackageName());
     }
 
-    public boolean loadCustomIcons() {
+    public boolean customIconsEnable() {
         boolean doLoadCustomIcon = false;
+
         if (customIconPackageName().equals(context.getPackageName())) {
             doLoadCustomIcon = false;
         } else if (!customIconPackageName().equals(context.getPackageName())) {
             doLoadCustomIcon = true;
         }
+
         return doLoadCustomIcon;
     }
 
     public Bitmap getAppIconBitmapCustomIcon(String packageName) {
         LoadCustomIcons loadCustomIcons = null;
-        if (loadCustomIcons()) {
+        if (customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(context, customIconPackageName());
             loadCustomIcons.load();
         }
-        return loadCustomIcons() ? loadCustomIcons.getIconForPackage(packageName, (appIconBitmap(packageName))) : (appIconBitmap(packageName));
+        return customIconsEnable() ? loadCustomIcons.getIconForPackage(packageName, (appIconBitmap(packageName))) : (appIconBitmap(packageName));
     }
 
     public Drawable getAppIconDrawableCustomIcon(String packageName) {
         LoadCustomIcons loadCustomIcons = null;
-        if (loadCustomIcons()) {
+        if (customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(context, customIconPackageName());
             loadCustomIcons.load();
         }
-        return loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(packageName, (appIcon(packageName))) : (appIcon(packageName));
+        return customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(packageName, (appIcon(packageName))) : (appIcon(packageName));
     }
 
     /*Action Center*/

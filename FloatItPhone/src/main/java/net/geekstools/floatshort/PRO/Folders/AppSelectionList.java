@@ -182,7 +182,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                             navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(aSavedLine),
                                     aSavedLine,
-                                    functionsClass.loadCustomIcons() ?
+                                    functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine))
                                             :
                                             functionsClass.shapedAppIcon(aSavedLine)));
@@ -234,13 +234,13 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
 
 
                     if (getFileStreamPath(PublicVariable.categoryName + ".SplitOne").exists()) {
-                        one.setImageDrawable(functionsClass.loadCustomIcons() ?
+                        one.setImageDrawable(functionsClass.customIconsEnable() ?
                                 loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")))
                                 :
                                 functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")));
                     }
                     if (getFileStreamPath(PublicVariable.categoryName + ".SplitTwo").exists()) {
-                        two.setImageDrawable(functionsClass.loadCustomIcons() ?
+                        two.setImageDrawable(functionsClass.customIconsEnable() ?
                                 loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")))
                                 :
                                 functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitTwo")));
@@ -287,7 +287,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         } else {
             splitHint.setTextColor(PublicVariable.primaryColorOpposite);
             if (getFileStreamPath(PublicVariable.categoryName + ".SplitOne").exists()) {
-                one.setImageDrawable(functionsClass.loadCustomIcons() ?
+                one.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")))
                         :
                         functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")));
@@ -297,7 +297,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                 one.setImageDrawable(addOne);
             }
             if (getFileStreamPath(PublicVariable.categoryName + ".SplitTwo").exists()) {
-                two.setImageDrawable(functionsClass.loadCustomIcons() ?
+                two.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")))
                         :
                         functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitTwo")));
@@ -318,7 +318,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                             navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(aSavedLine),
                                     aSavedLine,
-                                    functionsClass.loadCustomIcons() ?
+                                    functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine))
                                             :
                                             functionsClass.shapedAppIcon(aSavedLine)));
@@ -357,7 +357,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                             navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(aSavedLine),
                                     aSavedLine,
-                                    functionsClass.loadCustomIcons() ?
+                                    functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine))
                                             :
                                             functionsClass.shapedAppIcon(aSavedLine)));
@@ -418,7 +418,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
     }
 
     public void loadDataOff() {
-        if (functionsClass.loadCustomIcons()) {
+        if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
 
@@ -446,7 +446,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                             PackageName = applicationInfoList.get(appInfo).packageName;
                             AppName = functionsClass.appName(PackageName);
 //                            AppIcon = functionsClass.shapedAppIcon(PackageName);
-                            AppIcon = functionsClass.loadCustomIcons() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
+                            AppIcon = functionsClass.customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
 
                             adapterItems.add(new AdapterItems(AppName, PackageName, AppIcon));
                         } catch (Exception e) {
