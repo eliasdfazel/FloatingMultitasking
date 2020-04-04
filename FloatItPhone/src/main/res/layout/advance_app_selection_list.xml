@@ -11,7 +11,6 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/wholeAuto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -43,7 +42,7 @@
             android:paddingBottom="61dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/listFav"
+                android:id="@+id/recyclerListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="27dp"
@@ -76,7 +75,7 @@
         android:orientation="horizontal">
 
         <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/one"
+            android:id="@+id/firstSplitIcon"
             android:layout_width="57dp"
             android:layout_height="57dp"
             android:layout_marginStart="5dp"
@@ -84,7 +83,7 @@
             android:src="@drawable/add_quick_app"/>
 
         <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/two"
+            android:id="@+id/secondSplitIcon"
             android:layout_width="57dp"
             android:layout_height="57dp"
             android:layout_marginStart="5dp"
@@ -131,7 +130,7 @@
     </RelativeLayout>
 
     <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/categoryName"
+        android:id="@+id/folderNameView"
         android:layout_width="wrap_content"
         android:layout_height="53.70dp"
         android:layout_alignParentBottom="true"
@@ -155,7 +154,7 @@
         apps:rippleColor="@color/light" />
 
     <TextView
-        android:id="@+id/counter"
+        android:id="@+id/appSelectedCounterView"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@id/confirmLayout"
@@ -181,7 +180,7 @@
         android:visibility="invisible"/>
 
     <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/tempIcon"
+        android:id="@+id/temporaryFallingIcon"
         android:layout_width="47dp"
         android:layout_height="47dp"
         android:layout_alignParentEnd="true"
@@ -226,7 +225,7 @@
             android:indeterminateBehavior="cycle"/>
 
         <TextView
-            android:id="@+id/desc"
+            android:id="@+id/loadingDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

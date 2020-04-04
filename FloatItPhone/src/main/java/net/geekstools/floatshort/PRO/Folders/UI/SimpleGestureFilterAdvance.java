@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Folders;
+package net.geekstools.floatshort.PRO.Folders.UI;
 
 import android.content.Context;
 import android.view.GestureDetector;
@@ -76,30 +76,6 @@ public class SimpleGestureFilterAdvance extends SimpleOnGestureListener {
         this.running = status;
     }
 
-    public int getSwipeMaxDistance() {
-        return this.swipe_Max_Distance;
-    }
-
-    public void setSwipeMaxDistance(int distance) {
-        this.swipe_Max_Distance = distance;
-    }
-
-    public int getSwipeMinDistance() {
-        return this.swipe_Min_Distance;
-    }
-
-    public void setSwipeMinDistance(int distance) {
-        this.swipe_Min_Distance = distance;
-    }
-
-    public int getSwipeMinVelocity() {
-        return this.swipe_Min_Velocity;
-    }
-
-    public void setSwipeMinVelocity(int distance) {
-        this.swipe_Min_Velocity = distance;
-    }
-
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
@@ -135,6 +111,7 @@ public class SimpleGestureFilterAdvance extends SimpleOnGestureListener {
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         this.listener.onSingleTapUp();
+
         return false;
     }
 

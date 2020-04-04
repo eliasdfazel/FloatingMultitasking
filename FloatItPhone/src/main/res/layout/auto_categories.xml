@@ -39,7 +39,7 @@
             android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/listFav"
+                android:id="@+id/recyclerListView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@android:color/transparent"
@@ -75,7 +75,7 @@
             android:indeterminateBehavior="cycle"/>
 
         <TextView
-            android:id="@+id/desc"
+            android:id="@+id/loadingDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

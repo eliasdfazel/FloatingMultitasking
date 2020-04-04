@@ -2850,6 +2850,28 @@ public class FunctionsClass {
         return shapesImage;
     }
 
+    public ShapesImage initShapesImage(ShapesImage shapesImageView) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        switch (sharedPreferences.getInt("iconShape", 0)) {
+            case 1:
+                shapesImageView.setShapeDrawable(context.getDrawable(R.drawable.droplet_icon));
+                break;
+            case 2:
+                shapesImageView.setShapeDrawable(context.getDrawable(R.drawable.circle_icon));
+                break;
+            case 3:
+                shapesImageView.setShapeDrawable(context.getDrawable(R.drawable.square_icon));
+                break;
+            case 4:
+                shapesImageView.setShapeDrawable(context.getDrawable(R.drawable.squircle_icon));
+                break;
+            case 0:
+                shapesImageView.setShapeDrawable(null);
+                break;
+        }
+        return shapesImageView;
+    }
+
     public Drawable shapedNotificationUser(Drawable drawable) {
         Drawable drawableBack = new ColorDrawable(extractDominantColor(drawable));
         Drawable drawableFront = drawable;

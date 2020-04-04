@@ -187,7 +187,7 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
             super(view);
             item = (RelativeLayout) view.findViewById(R.id.item);
             shapedIcon = (ShapesImage) view.findViewById(R.id.icon);
-            appName = (TextView) view.findViewById(R.id.desc);
+            appName = (TextView) view.findViewById(R.id.loadingDescription);
             recoveryIndicator = (Button) view.findViewById(R.id.recoveryIndicator);
         }
     }

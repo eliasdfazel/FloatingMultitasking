@@ -66,7 +66,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
         functionsClass = new FunctionsClass(context);
         functionsClassSecurity = new FunctionsClassSecurity(context);
 
-        tempIcon = functionsClass.initShapesImage(activity, R.id.tempIcon);
+        tempIcon = functionsClass.initShapesImage(activity, R.id.temporaryFallingIcon);
 
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         dpHeight = displayMetrics.heightPixels;
@@ -220,7 +220,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
             super(view);
             item = (RelativeLayout) view.findViewById(R.id.item);
             appIcon = (ShapesImage) view.findViewById(R.id.icon);
-            appName = (TextView) view.findViewById(R.id.desc);
+            appName = (TextView) view.findViewById(R.id.loadingDescription);
             autoChoice = (CheckBox) view.findViewById(R.id.autoChoice);
         }
     }

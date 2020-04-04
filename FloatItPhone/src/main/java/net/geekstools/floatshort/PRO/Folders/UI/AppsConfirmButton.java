@@ -23,7 +23,6 @@ import android.view.MotionEvent;
 import android.view.animation.AnimationUtils;
 
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
-import net.geekstools.floatshort.PRO.Folders.SimpleGestureFilterAdvance;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;

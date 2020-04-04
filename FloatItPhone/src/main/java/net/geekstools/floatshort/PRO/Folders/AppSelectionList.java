@@ -31,20 +31,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.button.MaterialButton;
 
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSavedListAdapter;
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSelectionListAdapter;
@@ -53,7 +47,7 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
-import net.geekstools.imageview.customshapes.ShapesImage;
+import net.geekstools.floatshort.PRO.databinding.AdvanceAppSelectionListBinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,16 +60,6 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
     FunctionsClass functionsClass;
 
     ListPopupWindow listPopupWindow;
-    RelativeLayout popupAnchorView;
-    ScrollView nestedScrollView, nestedIndexScrollView;
-    RecyclerView loadView;
-    RelativeLayout wholeAuto, confirmLayout;
-    LinearLayout indexView, splitView;
-    RelativeLayout loadingSplash;
-    TextView desc, popupIndex, counterView, splitHint;
-    ImageView loadIcon;
-    ShapesImage tempIcon, one, two;
-    MaterialButton categoryName;
 
     List<ApplicationInfo> applicationInfoList;
     Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
@@ -92,43 +76,33 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
 
     LoadCustomIcons loadCustomIcons;
 
+    AdvanceAppSelectionListBinding advanceAppSelectionListBinding;
+
     @Override
     protected void onCreate(Bundle Saved) {
         super.onCreate(Saved);
-        setContentView(R.layout.advance_app_selection_list);
+        advanceAppSelectionListBinding = AdvanceAppSelectionListBinding.inflate(getLayoutInflater());
+        setContentView(advanceAppSelectionListBinding.getRoot());
 
         functionsClass = new FunctionsClass(getApplicationContext());
 
         listPopupWindow = new ListPopupWindow(AppSelectionList.this);
-        desc = (TextView) findViewById(R.id.desc);
-        counterView = (TextView) findViewById(R.id.counter);
-        loadIcon = (ImageView) findViewById(R.id.loadingLogo);
-        nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
-        nestedIndexScrollView = (ScrollView) findViewById(R.id.nestedIndexScrollView);
-        loadView = (RecyclerView) findViewById(R.id.listFav);
-        popupAnchorView = (RelativeLayout) findViewById(R.id.popupAnchorView);
-        indexView = (LinearLayout) findViewById(R.id.indexView);
-        splitView = (LinearLayout) findViewById(R.id.splitView);
-        wholeAuto = (RelativeLayout) findViewById(R.id.wholeAuto);
-        loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
-        tempIcon = (ShapesImage) findViewById(R.id.tempIcon);
-        tempIcon.bringToFront();
-        one = functionsClass.initShapesImage(AppSelectionList.this, R.id.one);
-        two = functionsClass.initShapesImage(AppSelectionList.this, R.id.two);
-        splitHint = (TextView) findViewById(R.id.splitHint);
-        confirmLayout = (RelativeLayout) findViewById(R.id.confirmLayout);
-        confirmLayout.bringToFront();
-        categoryName = (MaterialButton) findViewById(R.id.categoryName);
-        popupIndex = (TextView) findViewById(R.id.popupIndex);
+
+        advanceAppSelectionListBinding.temporaryFallingIcon.bringToFront();
+
+        /*advanceAppSelectionListBinding.firstSplitIcon = */functionsClass.initShapesImage(advanceAppSelectionListBinding.firstSplitIcon);
+        /*advanceAppSelectionListBinding.secondSplitIcon = */functionsClass.initShapesImage(advanceAppSelectionListBinding.secondSplitIcon);
+
+        advanceAppSelectionListBinding.confirmLayout.bringToFront();
 
         if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColorFloating(AppSelectionList.this, wholeAuto, true);
+            functionsClass.setThemeColorFloating(AppSelectionList.this, advanceAppSelectionListBinding.getRoot(), true);
         } else {
-            functionsClass.setThemeColorFloating(AppSelectionList.this, wholeAuto, false);
+            functionsClass.setThemeColorFloating(AppSelectionList.this, advanceAppSelectionListBinding.getRoot(), false);
         }
 
-        recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);
-        loadView.setLayoutManager(recyclerViewLayoutManager);
+        recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
+        advanceAppSelectionListBinding.recyclerListView.setLayoutManager(recyclerViewLayoutManager);
 
         adapterItems = new ArrayList<AdapterItems>();
         navDrawerItemsSaved = new ArrayList<AdapterItems>();
@@ -136,36 +110,41 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         mapIndexLastItem = new LinkedHashMap<String, Integer>();
         mapRangeIndex = new LinkedHashMap<Integer, String>();
 
-        Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
-        desc.setTypeface(face);
-        desc.setTextColor(PublicVariable.colorLightDarkOpposite);
-        desc.setText(PublicVariable.categoryName);
-        counterView.setTypeface(face);
-        counterView.bringToFront();
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "upcil.ttf");
+        advanceAppSelectionListBinding.loadingDescription.setTypeface(typeface);
+        advanceAppSelectionListBinding.loadingDescription.setTextColor(PublicVariable.colorLightDarkOpposite);
+        advanceAppSelectionListBinding.loadingDescription.setText(PublicVariable.categoryName);
+        advanceAppSelectionListBinding.appSelectedCounterView.setTypeface(typeface);
+        advanceAppSelectionListBinding.appSelectedCounterView.bringToFront();
 
         if (functionsClass.loadRecoveryIndicatorCategory(PublicVariable.categoryName)) {
-            categoryName.setText(PublicVariable.categoryName + " " + "\uD83D\uDD04");
+            advanceAppSelectionListBinding.folderNameView.setText(PublicVariable.categoryName + " " + "\uD83D\uDD04");
         } else {
-            categoryName.setText(PublicVariable.categoryName);
+            advanceAppSelectionListBinding.folderNameView.setText(PublicVariable.categoryName);
         }
 
-        categoryName.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
-        categoryName.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite));
+        advanceAppSelectionListBinding.folderNameView.setBackgroundColor(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColor, 51) : PublicVariable.primaryColor);
+        advanceAppSelectionListBinding.folderNameView.setRippleColor(ColorStateList.valueOf(functionsClass.appThemeTransparent() ? functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51) : PublicVariable.primaryColorOpposite));
 
         LayerDrawable layerDrawableLoadLogo = (LayerDrawable) getDrawable(R.drawable.ic_launcher_layer);
         BitmapDrawable gradientDrawableLoadLogo = (BitmapDrawable) layerDrawableLoadLogo.findDrawableByLayerId(R.id.ic_launcher_back_layer);
         gradientDrawableLoadLogo.setTint(PublicVariable.primaryColor);
-        loadIcon.setImageDrawable(layerDrawableLoadLogo);
+        advanceAppSelectionListBinding.loadingLogo.setImageDrawable(layerDrawableLoadLogo);
 
-        ProgressBar loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
-        loadingBarLTR.getIndeterminateDrawable().setColorFilter(getColor(R.color.dark), PorterDuff.Mode.MULTIPLY);
+        ProgressBar loadingProgress = (ProgressBar) findViewById(R.id.loadingProgress);
+        loadingProgress.getIndeterminateDrawable().setColorFilter(getColor(R.color.dark), PorterDuff.Mode.MULTIPLY);
 
         /*
+         *
+         *
          * convert to interface
+         * define view programmatically and add it to frameLayout
+         *
+         *
          * */
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(getString(R.string.counterActionAdvance));
-        intentFilter.addAction(getString(R.string.savedActionAdvance));
+        intentFilter.addAction(getString(R.string.savedActionAdvance));//Called From Button
         intentFilter.addAction(getString(R.string.savedActionHideAdvance));
         intentFilter.addAction(getString(R.string.checkboxActionAdvance));
         intentFilter.addAction(getString(R.string.splitActionAdvance));
@@ -173,8 +152,11 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(context.getString(R.string.counterActionAdvance))) {
-                    counterView.setText(String.valueOf(functionsClass.countLineInnerFile(PublicVariable.categoryName)));
+
+                    advanceAppSelectionListBinding.appSelectedCounterView.setText(String.valueOf(functionsClass.countLineInnerFile(PublicVariable.categoryName)));
+
                 } else if (intent.getAction().equals(context.getString(R.string.savedActionAdvance))) {
+
                     if (getFileStreamPath(PublicVariable.categoryName).exists() && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
                         navDrawerItemsSaved.clear();
                         String[] savedLine = functionsClass.readFileLine(PublicVariable.categoryName);
@@ -190,7 +172,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                         advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), navDrawerItemsSaved, 1);
                         listPopupWindow = new ListPopupWindow(AppSelectionList.this);
                         listPopupWindow.setAdapter(advanceSavedListAdapter);
-                        listPopupWindow.setAnchorView(popupAnchorView);
+                        listPopupWindow.setAnchorView(advanceAppSelectionListBinding.popupAnchorView);
                         listPopupWindow.setWidth(ListPopupWindow.WRAP_CONTENT);
                         listPopupWindow.setHeight(ListPopupWindow.WRAP_CONTENT);
                         listPopupWindow.setModal(true);
@@ -234,13 +216,13 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
 
 
                     if (getFileStreamPath(PublicVariable.categoryName + ".SplitOne").exists()) {
-                        one.setImageDrawable(functionsClass.customIconsEnable() ?
+                        advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(functionsClass.customIconsEnable() ?
                                 loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")))
                                 :
                                 functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")));
                     }
                     if (getFileStreamPath(PublicVariable.categoryName + ".SplitTwo").exists()) {
-                        two.setImageDrawable(functionsClass.customIconsEnable() ?
+                        advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(functionsClass.customIconsEnable() ?
                                 loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")))
                                 :
                                 functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitTwo")));
@@ -267,37 +249,37 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         super.onStart();
 
         if (functionsClass.returnAPI() < 24) {
-            one.setVisibility(View.INVISIBLE);
-            two.setVisibility(View.INVISIBLE);
-            splitHint.setVisibility(View.INVISIBLE);
+            advanceAppSelectionListBinding.firstSplitIcon.setVisibility(View.INVISIBLE);
+            advanceAppSelectionListBinding.secondSplitIcon.setVisibility(View.INVISIBLE);
+            advanceAppSelectionListBinding.splitHint.setVisibility(View.INVISIBLE);
 
             int padTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
-            loadView.setPaddingRelative(
-                    loadView.getPaddingStart(),
+            advanceAppSelectionListBinding.recyclerListView.setPaddingRelative(
+                    advanceAppSelectionListBinding.recyclerListView.getPaddingStart(),
                     padTop,
-                    loadView.getPaddingEnd(),
-                    loadView.getPaddingBottom());
+                    advanceAppSelectionListBinding.recyclerListView.getPaddingEnd(),
+                    advanceAppSelectionListBinding.recyclerListView.getPaddingBottom());
 
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.MATCH_PARENT
             );
             params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            nestedScrollView.setLayoutParams(params);
+            advanceAppSelectionListBinding.nestedScrollView.setLayoutParams(params);
         } else {
-            splitHint.setTextColor(PublicVariable.primaryColorOpposite);
+            advanceAppSelectionListBinding.splitHint.setTextColor(PublicVariable.primaryColorOpposite);
             if (getFileStreamPath(PublicVariable.categoryName + ".SplitOne").exists()) {
-                one.setImageDrawable(functionsClass.customIconsEnable() ?
+                advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")))
                         :
                         functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")));
             } else {
                 Drawable addOne = getDrawable(R.drawable.add_quick_app);
                 addOne.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
-                one.setImageDrawable(addOne);
+                advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(addOne);
             }
             if (getFileStreamPath(PublicVariable.categoryName + ".SplitTwo").exists()) {
-                two.setImageDrawable(functionsClass.customIconsEnable() ?
+                advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitOne")))
                         :
                         functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName + ".SplitTwo")));
@@ -305,10 +287,10 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
             } else {
                 Drawable addTwo = getDrawable(R.drawable.add_quick_app);
                 addTwo.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
-                two.setImageDrawable(addTwo);
+                advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(addTwo);
             }
 
-            one.setOnClickListener(new View.OnClickListener() {
+            advanceAppSelectionListBinding.firstSplitIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (getFileStreamPath(PublicVariable.categoryName).exists() && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
@@ -326,7 +308,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                         advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), navDrawerItemsSaved, 1);
                         listPopupWindow = new ListPopupWindow(AppSelectionList.this);
                         listPopupWindow.setAdapter(advanceSavedListAdapter);
-                        listPopupWindow.setAnchorView(popupAnchorView);
+                        listPopupWindow.setAnchorView(advanceAppSelectionListBinding.popupAnchorView);
                         listPopupWindow.setWidth(ListPopupWindow.WRAP_CONTENT);
                         listPopupWindow.setHeight(ListPopupWindow.WRAP_CONTENT);
                         listPopupWindow.setModal(true);
@@ -347,7 +329,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                     }
                 }
             });
-            two.setOnClickListener(new View.OnClickListener() {
+            advanceAppSelectionListBinding.secondSplitIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (getFileStreamPath(PublicVariable.categoryName).exists() && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
@@ -365,7 +347,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                         advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), navDrawerItemsSaved, 2);
                         listPopupWindow = new ListPopupWindow(AppSelectionList.this);
                         listPopupWindow.setAdapter(advanceSavedListAdapter);
-                        listPopupWindow.setAnchorView(popupAnchorView);
+                        listPopupWindow.setAnchorView(advanceAppSelectionListBinding.popupAnchorView);
                         listPopupWindow.setWidth(ListPopupWindow.WRAP_CONTENT);
                         listPopupWindow.setHeight(ListPopupWindow.WRAP_CONTENT);
                         listPopupWindow.setModal(true);
@@ -431,7 +413,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            indexView.removeAllViews();
+            advanceAppSelectionListBinding.indexView.removeAllViews();
         }
 
         @Override
@@ -466,31 +448,31 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            loadView.setAdapter(appSelectionListAdapter);
+            advanceAppSelectionListBinding.recyclerListView.setAdapter(appSelectionListAdapter);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    categoryName.setVisibility(View.VISIBLE);
+                    advanceAppSelectionListBinding.folderNameView.setVisibility(View.VISIBLE);
 
                     Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-                    loadingSplash.setVisibility(View.INVISIBLE);
-                    if (resetAdapter == false) {
-                        loadingSplash.startAnimation(anim);
+                    advanceAppSelectionListBinding.loadingSplash.setVisibility(View.INVISIBLE);
+                    if (!resetAdapter) {
+                        advanceAppSelectionListBinding.loadingSplash.startAnimation(anim);
                     }
                     sendBroadcast(new Intent(getString(R.string.visibilityActionAdvance)));
 
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
-                    counterView.startAnimation(animation);
+                    advanceAppSelectionListBinding.appSelectedCounterView.startAnimation(animation);
                     animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
-                            counterView.setText(String.valueOf(functionsClass.countLineInnerFile(PublicVariable.categoryName)));
+                            advanceAppSelectionListBinding.appSelectedCounterView.setText(String.valueOf(functionsClass.countLineInnerFile(PublicVariable.categoryName)));
                         }
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            counterView.setVisibility(View.VISIBLE);
+                            advanceAppSelectionListBinding.appSelectedCounterView.setVisibility(View.VISIBLE);
                         }
 
                         @Override
@@ -510,7 +492,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            indexView.removeAllViews();
+            advanceAppSelectionListBinding.indexView.removeAllViews();
         }
 
         @Override
@@ -542,17 +524,17 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                         .inflate(R.layout.side_index_item, null);
                 textView.setText(index.toUpperCase());
                 textView.setTextColor(PublicVariable.colorLightDarkOpposite);
-                indexView.addView(textView);
+                advanceAppSelectionListBinding.indexView.addView(textView);
             }
 
             TextView finalTextView = textView;
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    int upperRange = (int) (indexView.getY() - finalTextView.getHeight());
-                    for (int i = 0; i < indexView.getChildCount(); i++) {
-                        String indexText = ((TextView) indexView.getChildAt(i)).getText().toString();
-                        int indexRange = (int) (indexView.getChildAt(i).getY() + indexView.getY() + finalTextView.getHeight());
+                    int upperRange = (int) (advanceAppSelectionListBinding.indexView.getY() - finalTextView.getHeight());
+                    for (int i = 0; i < advanceAppSelectionListBinding.indexView.getChildCount(); i++) {
+                        String indexText = ((TextView) advanceAppSelectionListBinding.indexView.getChildAt(i)).getText().toString();
+                        int indexRange = (int) (advanceAppSelectionListBinding.indexView.getChildAt(i).getY() + advanceAppSelectionListBinding.indexView.getY() + finalTextView.getHeight());
                         for (int jRange = upperRange; jRange <= (indexRange); jRange++) {
                             mapRangeIndex.put(jRange, indexText);
                         }
@@ -570,13 +552,13 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
     public void setupFastScrollingIndexing() {
         Drawable popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon).mutate();
         popupIndexBackground.setTint(PublicVariable.primaryColorOpposite);
-        popupIndex.setBackground(popupIndexBackground);
+        advanceAppSelectionListBinding.popupIndex.setBackground(popupIndexBackground);
 
-        nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
-        nestedIndexScrollView.setVisibility(View.VISIBLE);
+        advanceAppSelectionListBinding.nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+        advanceAppSelectionListBinding.nestedIndexScrollView.setVisibility(View.VISIBLE);
 
         float popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (functionsClass.UsageStatsEnabled() ? functionsClass.DpToInteger(7) : functionsClass.DpToInteger(7));
-        nestedIndexScrollView.setOnTouchListener(new View.OnTouchListener() {
+        advanceAppSelectionListBinding.nestedIndexScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
@@ -587,10 +569,10 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                             String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
 
                             if (indexText != null) {
-                                popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
-                                popupIndex.setText(indexText);
-                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
-                                popupIndex.setVisibility(View.VISIBLE);
+                                advanceAppSelectionListBinding.popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                                advanceAppSelectionListBinding.popupIndex.setText(indexText);
+                                advanceAppSelectionListBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                advanceAppSelectionListBinding.popupIndex.setVisibility(View.VISIBLE);
                             }
                         }
 
@@ -603,25 +585,25 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                             String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
 
                             if (indexText != null) {
-                                if (!popupIndex.isShown()) {
-                                    popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
-                                    popupIndex.setVisibility(View.VISIBLE);
+                                if (!advanceAppSelectionListBinding.popupIndex.isShown()) {
+                                    advanceAppSelectionListBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
+                                    advanceAppSelectionListBinding.popupIndex.setVisibility(View.VISIBLE);
                                 }
-                                popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
-                                popupIndex.setText(indexText);
+                                advanceAppSelectionListBinding.popupIndex.setY(motionEvent.getRawY() - popupIndexOffsetY);
+                                advanceAppSelectionListBinding.popupIndex.setText(indexText);
 
                                 try {
-                                    nestedScrollView.smoothScrollTo(
+                                    advanceAppSelectionListBinding.nestedScrollView.smoothScrollTo(
                                             0,
-                                            ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+                                            ((int) advanceAppSelectionListBinding.recyclerListView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
                                     );
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             } else {
-                                if (popupIndex.isShown()) {
-                                    popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
-                                    popupIndex.setVisibility(View.INVISIBLE);
+                                if (advanceAppSelectionListBinding.popupIndex.isShown()) {
+                                    advanceAppSelectionListBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                                    advanceAppSelectionListBinding.popupIndex.setVisibility(View.INVISIBLE);
                                 }
                             }
                         }
@@ -631,26 +613,26 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                     case MotionEvent.ACTION_UP: {
                         if (functionsClass.litePreferencesEnabled()) {
                             try {
-                                nestedScrollView.smoothScrollTo(
+                                advanceAppSelectionListBinding.nestedScrollView.smoothScrollTo(
                                         0,
-                                        ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+                                        ((int) advanceAppSelectionListBinding.recyclerListView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
                                 );
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         } else {
-                            if (popupIndex.isShown()) {
+                            if (advanceAppSelectionListBinding.popupIndex.isShown()) {
                                 try {
-                                    nestedScrollView.smoothScrollTo(
+                                    advanceAppSelectionListBinding.nestedScrollView.smoothScrollTo(
                                             0,
-                                            ((int) loadView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
+                                            ((int) advanceAppSelectionListBinding.recyclerListView.getChildAt(mapIndexFirstItem.get(mapRangeIndex.get(((int) motionEvent.getY())))).getY())
                                     );
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
-                                popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
-                                popupIndex.setVisibility(View.INVISIBLE);
+                                advanceAppSelectionListBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out));
+                                advanceAppSelectionListBinding.popupIndex.setVisibility(View.INVISIBLE);
                             }
                         }
 

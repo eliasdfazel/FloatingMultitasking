@@ -27,7 +27,7 @@
         apps:shapeDrawable="@drawable/circle_icon"/>
 
     <TextView
-        android:id="@+id/desc"
+        android:id="@+id/loadingDescription"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_below="@+id/icon"

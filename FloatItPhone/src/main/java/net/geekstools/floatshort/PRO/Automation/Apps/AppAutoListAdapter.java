@@ -272,7 +272,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
             item = (RelativeLayout) view.findViewById(R.id.item);
             autoChoice = (CheckBox) view.findViewById(R.id.autoChoice);
             icon = (ShapesImage) view.findViewById(R.id.icon);
-            desc = (TextView) view.findViewById(R.id.desc);
+            desc = (TextView) view.findViewById(R.id.loadingDescription);
             time = (TextView) view.findViewById(R.id.time);
         }
     }

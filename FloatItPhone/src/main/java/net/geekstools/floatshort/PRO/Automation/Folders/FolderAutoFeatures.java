@@ -89,7 +89,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.auto_categories);
 
 
-        categorylist = (RecyclerView) findViewById(R.id.listFav);
+        categorylist = (RecyclerView) findViewById(R.id.recyclerListView);
         autoIdentifier = (LinearLayout) findViewById(R.id.autoid);
         autoIdentifier.bringToFront();
         MainView = (RelativeLayout) findViewById(R.id.MainView);
@@ -233,7 +233,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         }
 
         loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
-        desc = (TextView) findViewById(R.id.desc);
+        desc = (TextView) findViewById(R.id.loadingDescription);
         Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
         desc.setTypeface(face);
 
@@ -662,7 +662,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             }
 
             loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
-            desc = (TextView) findViewById(R.id.desc);
+            desc = (TextView) findViewById(R.id.loadingDescription);
             Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
             desc.setTypeface(face);
 

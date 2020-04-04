@@ -106,7 +106,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         super.onCreate(Saved);
         setContentView(R.layout.auto_apps);
 
-        loadView = (RecyclerView) findViewById(R.id.listFav);
+        loadView = (RecyclerView) findViewById(R.id.recyclerListView);
         nestedScrollView = (ScrollView) findViewById(R.id.nestedScrollView);
 
 
@@ -250,7 +250,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         }
 
         loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
-        desc = (TextView) findViewById(R.id.desc);
+        desc = (TextView) findViewById(R.id.loadingDescription);
         Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
         desc.setTypeface(face);
 
@@ -680,7 +680,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             }
 
             loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
-            desc = (TextView) findViewById(R.id.desc);
+            desc = (TextView) findViewById(R.id.loadingDescription);
             Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
             desc.setTypeface(face);
 

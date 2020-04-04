@@ -39,7 +39,7 @@
         apps:shapeDrawable="@drawable/droplet_icon"/>
 
     <TextView
-        android:id="@+id/desc"
+        android:id="@+id/loadingDescription"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
