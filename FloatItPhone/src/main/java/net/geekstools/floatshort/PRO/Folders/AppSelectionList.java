@@ -64,13 +64,11 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
     List<ApplicationInfo> applicationInfoList;
     Map<String, Integer> mapIndexFirstItem, mapIndexLastItem;
     Map<Integer, String> mapRangeIndex;
-    ArrayList<AdapterItems> adapterItems, navDrawerItemsSaved;
+    ArrayList<AdapterItems> installedAppsListItem, selectedAppsListItem;
     RecyclerView.Adapter appSelectionListAdapter;
     LinearLayoutManager recyclerViewLayoutManager;
     AppSavedListAdapter advanceSavedListAdapter;
 
-    String PackageName, AppName = "Application";
-    Drawable AppIcon;
 
     boolean resetAdapter = false;
 
@@ -89,13 +87,13 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         listPopupWindow = new ListPopupWindow(AppSelectionList.this);
 
         advanceAppSelectionListBinding.temporaryFallingIcon.bringToFront();
-
-        /*advanceAppSelectionListBinding.firstSplitIcon = */functionsClass.initShapesImage(advanceAppSelectionListBinding.firstSplitIcon);
-        /*advanceAppSelectionListBinding.secondSplitIcon = */functionsClass.initShapesImage(advanceAppSelectionListBinding.secondSplitIcon);
-
         advanceAppSelectionListBinding.confirmLayout.bringToFront();
 
-        if (functionsClass.appThemeTransparent() == true) {
+        functionsClass.initShapesImage(advanceAppSelectionListBinding.firstSplitIcon);
+        functionsClass.initShapesImage(advanceAppSelectionListBinding.secondSplitIcon);
+
+
+        if (functionsClass.appThemeTransparent()) {
             functionsClass.setThemeColorFloating(AppSelectionList.this, advanceAppSelectionListBinding.getRoot(), true);
         } else {
             functionsClass.setThemeColorFloating(AppSelectionList.this, advanceAppSelectionListBinding.getRoot(), false);
@@ -104,8 +102,9 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
         recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
         advanceAppSelectionListBinding.recyclerListView.setLayoutManager(recyclerViewLayoutManager);
 
-        adapterItems = new ArrayList<AdapterItems>();
-        navDrawerItemsSaved = new ArrayList<AdapterItems>();
+        installedAppsListItem = new ArrayList<AdapterItems>();
+        selectedAppsListItem = new ArrayList<AdapterItems>();
+
         mapIndexFirstItem = new LinkedHashMap<String, Integer>();
         mapIndexLastItem = new LinkedHashMap<String, Integer>();
         mapRangeIndex = new LinkedHashMap<Integer, String>();
@@ -142,6 +141,12 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
          *
          *
          * */
+        /**/
+//        AppsConfirmButton appsConfirmButton = new AppsConfirmButton(getApplicationContext());
+//        appsConfirmButton.setHeight(functionsClass.DpToInteger(63));
+//        appsConfirmButton.setWidth(functionsClass.DpToInteger(63));
+//        advanceAppSelectionListBinding.confirmLayout.addView(appsConfirmButton);
+        /**/
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(getString(R.string.counterActionAdvance));
         intentFilter.addAction(getString(R.string.savedActionAdvance));//Called From Button
@@ -158,10 +163,10 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                 } else if (intent.getAction().equals(context.getString(R.string.savedActionAdvance))) {
 
                     if (getFileStreamPath(PublicVariable.categoryName).exists() && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                        navDrawerItemsSaved.clear();
+                        selectedAppsListItem.clear();
                         String[] savedLine = functionsClass.readFileLine(PublicVariable.categoryName);
                         for (String aSavedLine : savedLine) {
-                            navDrawerItemsSaved.add(new AdapterItems(
+                            selectedAppsListItem.add(new AdapterItems(
                                     functionsClass.appName(aSavedLine),
                                     aSavedLine,
                                     functionsClass.customIconsEnable() ?
@@ -169,7 +174,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                                             :
                                             functionsClass.shapedAppIcon(aSavedLine)));
                         }
-                        advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), navDrawerItemsSaved, 1);
+                        advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), selectedAppsListItem, 1);
                         listPopupWindow = new ListPopupWindow(AppSelectionList.this);
                         listPopupWindow.setAdapter(advanceSavedListAdapter);
                         listPopupWindow.setAnchorView(advanceAppSelectionListBinding.popupAnchorView);
@@ -208,7 +213,9 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                     }
                 } else if ((intent.getAction().equals(getString(R.string.checkboxActionAdvance)))) {
                     resetAdapter = true;
-                    loadDataOff();
+
+                    new loadInstalledAppsData().execute();
+
                     listPopupWindow.dismiss();
                     sendBroadcast(new Intent(getString(R.string.visibilityActionAdvance)));
                 } else if (intent.getAction().equals(getString(R.string.splitActionAdvance))) {
@@ -236,7 +243,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
 
-        loadDataOff();
+        new loadInstalledAppsData().execute();
     }
 
     @Override
@@ -294,10 +301,10 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                 @Override
                 public void onClick(View view) {
                     if (getFileStreamPath(PublicVariable.categoryName).exists() && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                        navDrawerItemsSaved.clear();
+                        selectedAppsListItem.clear();
                         String[] savedLine = functionsClass.readFileLine(PublicVariable.categoryName);
                         for (String aSavedLine : savedLine) {
-                            navDrawerItemsSaved.add(new AdapterItems(
+                            selectedAppsListItem.add(new AdapterItems(
                                     functionsClass.appName(aSavedLine),
                                     aSavedLine,
                                     functionsClass.customIconsEnable() ?
@@ -305,7 +312,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                                             :
                                             functionsClass.shapedAppIcon(aSavedLine)));
                         }
-                        advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), navDrawerItemsSaved, 1);
+                        advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), selectedAppsListItem, 1);
                         listPopupWindow = new ListPopupWindow(AppSelectionList.this);
                         listPopupWindow.setAdapter(advanceSavedListAdapter);
                         listPopupWindow.setAnchorView(advanceAppSelectionListBinding.popupAnchorView);
@@ -333,10 +340,10 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                 @Override
                 public void onClick(View view) {
                     if (getFileStreamPath(PublicVariable.categoryName).exists() && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                        navDrawerItemsSaved.clear();
+                        selectedAppsListItem.clear();
                         String[] savedLine = functionsClass.readFileLine(PublicVariable.categoryName);
                         for (String aSavedLine : savedLine) {
-                            navDrawerItemsSaved.add(new AdapterItems(
+                            selectedAppsListItem.add(new AdapterItems(
                                     functionsClass.appName(aSavedLine),
                                     aSavedLine,
                                     functionsClass.customIconsEnable() ?
@@ -344,7 +351,7 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                                             :
                                             functionsClass.shapedAppIcon(aSavedLine)));
                         }
-                        advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), navDrawerItemsSaved, 2);
+                        advanceSavedListAdapter = new AppSavedListAdapter(AppSelectionList.this, getApplicationContext(), selectedAppsListItem, 2);
                         listPopupWindow = new ListPopupWindow(AppSelectionList.this);
                         listPopupWindow.setAdapter(advanceSavedListAdapter);
                         listPopupWindow.setAnchorView(advanceAppSelectionListBinding.popupAnchorView);
@@ -399,19 +406,14 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
 
     }
 
-    public void loadDataOff() {
-        if (functionsClass.customIconsEnable()) {
-            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
-        }
-
-        LoadApplicationsOffLimited loadApplicationsOffLimited = new LoadApplicationsOffLimited();
-        loadApplicationsOffLimited.execute();
-    }
-
-    private class LoadApplicationsOffLimited extends AsyncTask<Void, Void, Void> {
+    private class loadInstalledAppsData extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+            if (functionsClass.customIconsEnable()) {
+                loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
+            }
 
             advanceAppSelectionListBinding.indexView.removeAllViews();
         }
@@ -425,18 +427,18 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
                 for (int appInfo = 0; appInfo < applicationInfoList.size(); appInfo++) {
                     if (getApplicationContext().getPackageManager().getLaunchIntentForPackage(applicationInfoList.get(appInfo).packageName) != null) {
                         try {
-                            PackageName = applicationInfoList.get(appInfo).packageName;
-                            AppName = functionsClass.appName(PackageName);
+                            String PackageName = applicationInfoList.get(appInfo).packageName;
+                            String AppName = functionsClass.appName(PackageName);
 //                            AppIcon = functionsClass.shapedAppIcon(PackageName);
-                            AppIcon = functionsClass.customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
+                            Drawable AppIcon = functionsClass.customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
 
-                            adapterItems.add(new AdapterItems(AppName, PackageName, AppIcon));
+                            installedAppsListItem.add(new AdapterItems(AppName, PackageName, AppIcon));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
-                appSelectionListAdapter = new AppSelectionListAdapter(AppSelectionList.this, getApplicationContext(), adapterItems);
+                appSelectionListAdapter = new AppSelectionListAdapter(AppSelectionList.this, getApplicationContext(), installedAppsListItem);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -497,9 +499,9 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
 
         @Override
         protected Void doInBackground(Void... params) {
-            for (int itemCount = 0; itemCount < adapterItems.size(); itemCount++) {
+            for (int itemCount = 0; itemCount < installedAppsListItem.size(); itemCount++) {
                 try {
-                    String index = (adapterItems.get(itemCount).getAppName()).substring(0, 1).toUpperCase();
+                    String index = (installedAppsListItem.get(itemCount).getAppName()).substring(0, 1).toUpperCase();
                     if (mapIndexFirstItem.get(index) == null) {
                         mapIndexFirstItem.put(index, itemCount);
                     }

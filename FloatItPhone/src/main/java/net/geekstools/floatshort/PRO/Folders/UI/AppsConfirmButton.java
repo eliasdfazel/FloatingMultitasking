@@ -34,7 +34,8 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
 
     Context context;
 
-    SimpleGestureFilterAdvance detector;
+    SimpleGestureFilterAdvance simpleGestureFilterAdvance;
+
     BroadcastReceiver visibilityReceiver;
 
     LayerDrawable drawShow, drawDismiss;
@@ -50,10 +51,13 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
 
     public AppsConfirmButton(Context context) {
         super(context);
+        this.context = context;
+
+        initConfirmButton();
     }
 
     public void initConfirmButton() {
-        detector = new SimpleGestureFilterAdvance(context, this);
+        simpleGestureFilterAdvance = new SimpleGestureFilterAdvance(context, this);
 
         drawShow = (LayerDrawable) context.getDrawable(R.drawable.draw_saved_show);
         Drawable backShow = drawShow.findDrawableByLayerId(R.id.backgroundTemporary);
@@ -91,12 +95,13 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+
         getContext().unregisterReceiver(visibilityReceiver);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent me) {
-        this.detector.onTouchEvent(me);
+        this.simpleGestureFilterAdvance.onTouchEvent(me);
 
         return super.dispatchTouchEvent(me);
     }
@@ -110,12 +115,9 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
             case SimpleGestureFilterAdvance.SWIPE_LEFT:
                 context.sendBroadcast(new Intent(context.getString(R.string.savedActionAdvance)));
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                            AppsConfirmButton.this.setBackground(drawDismiss);
-                        }
+                new Handler().postDelayed(() -> {
+                    if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                        AppsConfirmButton.this.setBackground(drawDismiss);
                     }
                 }, 200);
 
@@ -123,12 +125,9 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
             case SimpleGestureFilterAdvance.SWIPE_RIGHT:
                 context.sendBroadcast(new Intent(context.getString(R.string.savedActionAdvance)));
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                            AppsConfirmButton.this.setBackground(drawDismiss);
-                        }
+                new Handler().postDelayed(() -> {
+                    if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                        AppsConfirmButton.this.setBackground(drawDismiss);
                     }
                 }, 200);
 
@@ -136,12 +135,9 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
             case SimpleGestureFilterAdvance.SWIPE_UP:
                 context.sendBroadcast(new Intent(context.getString(R.string.savedActionAdvance)));
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                            AppsConfirmButton.this.setBackground(drawDismiss);
-                        }
+                new Handler().postDelayed(() -> {
+                    if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                        AppsConfirmButton.this.setBackground(drawDismiss);
                     }
                 }, 200);
 
