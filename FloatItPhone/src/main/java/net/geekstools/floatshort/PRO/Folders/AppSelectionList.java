@@ -42,6 +42,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSavedListAdapter;
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSelectionListAdapter;
+import net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
@@ -142,10 +143,17 @@ public class AppSelectionList extends Activity implements View.OnClickListener {
          *
          * */
         /**/
-//        AppsConfirmButton appsConfirmButton = new AppsConfirmButton(getApplicationContext());
-//        appsConfirmButton.setHeight(functionsClass.DpToInteger(63));
-//        appsConfirmButton.setWidth(functionsClass.DpToInteger(63));
-//        advanceAppSelectionListBinding.confirmLayout.addView(appsConfirmButton);
+        AppsConfirmButton appsConfirmButton = new AppsConfirmButton(this, getApplicationContext(), functionsClass);
+        appsConfirmButton.setHeight(functionsClass.DpToInteger(63));
+        appsConfirmButton.setWidth(functionsClass.DpToInteger(63));
+        advanceAppSelectionListBinding.confirmLayout.addView(appsConfirmButton);
+        appsConfirmButton.bringToFront();
+        appsConfirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         /**/
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(getString(R.string.counterActionAdvance));

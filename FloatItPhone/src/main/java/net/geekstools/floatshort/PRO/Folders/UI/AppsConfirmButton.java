@@ -32,6 +32,7 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
 
     FunctionsClass functionsClass;
 
+    Activity activity;
     Context context;
 
     SimpleGestureFilterAdvance simpleGestureFilterAdvance;
@@ -40,11 +41,19 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
 
     LayerDrawable drawShow, drawDismiss;
 
+    public AppsConfirmButton(Activity activity, Context context, FunctionsClass functionsClass) {
+        super(context);
+
+        this.activity = activity;
+        this.context = context;
+        this.functionsClass = functionsClass;
+
+        initConfirmButton();
+    }
+
     public AppsConfirmButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-
-        functionsClass = new FunctionsClass(context);
 
         initConfirmButton();
     }
@@ -147,6 +156,6 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
 
     @Override
     public void onSingleTapUp() {
-        functionsClass.navigateToClass(FoldersConfigurations.class, (Activity) getContext());
+        functionsClass.navigateToClass(FoldersConfigurations.class, activity);
     }
 }
