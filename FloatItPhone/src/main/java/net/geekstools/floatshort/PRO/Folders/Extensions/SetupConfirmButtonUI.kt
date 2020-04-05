@@ -15,7 +15,6 @@ fun AppSelectionList.setupConfirmButtonUI(confirmButtonProcessInterface: Confirm
     appsConfirmButton.layoutParams = confirmButtonLayoutParams
     advanceAppSelectionListBinding.confirmLayout.addView(appsConfirmButton)
 
-    println(">>>>>>>>>>>>>>>>> 1")
     appsConfirmButton.bringToFront()
     appsConfirmButton.setOnClickListener {
 

@@ -7,9 +7,12 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +21,9 @@ import net.geekstools.floatshort.PRO.Folders.Extensions.loadInstalledAppsData
 import net.geekstools.floatshort.PRO.Folders.Extensions.setupConfirmButtonUI
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSavedListAdapter
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSelectionListAdapter
+import net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
+import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonViewInterface
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
@@ -29,7 +34,7 @@ import net.geekstools.floatshort.PRO.databinding.AdvanceAppSelectionListBinding
 import java.util.*
 
 class AppSelectionList : AppCompatActivity(), View.OnClickListener,
-        ConfirmButtonProcessInterface {
+        ConfirmButtonProcessInterface, ConfirmButtonViewInterface {
 
     val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
@@ -153,7 +158,6 @@ class AppSelectionList : AppCompatActivity(), View.OnClickListener,
     }
 
     override fun showSavedShortcutList() {
-        println(">>>>>>>>>>>>>>>>> 2")
 
         if (getFileStreamPath(PublicVariable.categoryName).exists()
                 && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
@@ -212,4 +216,38 @@ class AppSelectionList : AppCompatActivity(), View.OnClickListener,
         }
     }
     /*ConfirmButtonProcess*/
+
+    /*ConfirmButtonViewInterface*/
+    override fun makeItVisible(appsConfirmButton: AppsConfirmButton) {
+        val drawShow = applicationContext.getDrawable(R.drawable.draw_saved_show) as LayerDrawable
+        val backgroundTemporary  = drawShow.findDrawableByLayerId(R.id.backgroundTemporary)
+        backgroundTemporary.setTint(PublicVariable.primaryColorOpposite)
+        appsConfirmButton.background = drawShow
+
+        if (!appsConfirmButton.isShown) {
+            appsConfirmButton.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
+            appsConfirmButton.visibility = View.VISIBLE
+        }
+    }
+
+    override fun startCustomAnimation(appsConfirmButton: AppsConfirmButton, animation: Animation?) {
+        if (animation == null) {
+
+            appsConfirmButton.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_confirm_button))
+
+        } else {
+
+            appsConfirmButton.startAnimation(animation)
+
+        }
+    }
+
+    override fun setDismissBackground(appsConfirmButton: AppsConfirmButton) {
+        val drawDismiss = applicationContext.getDrawable(R.drawable.draw_saved_dismiss) as LayerDrawable
+        val backgroundTemporary: Drawable = drawDismiss.findDrawableByLayerId(R.id.backgroundTemporary)
+        backgroundTemporary.setTint(PublicVariable.primaryColor)
+
+        appsConfirmButton.background = drawDismiss
+    }
+    /*ConfirmButtonViewInterface*/
 }

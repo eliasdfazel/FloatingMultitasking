@@ -68,7 +68,6 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
     })
 
     resetAdapter = false
-    println(">>>>>>>>>>>>>>>>> 2")
 
     LoadApplicationsIndex().await()
 }
