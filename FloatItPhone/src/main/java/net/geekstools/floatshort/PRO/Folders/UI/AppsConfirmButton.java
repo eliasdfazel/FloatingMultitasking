@@ -17,12 +17,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.AnimationUtils;
 
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
+import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
@@ -30,23 +30,32 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
         implements SimpleGestureFilterAdvance.SimpleGestureListener {
 
-    FunctionsClass functionsClass;
-
     Activity activity;
     Context context;
+
+    FunctionsClass functionsClass;
+
+    ConfirmButtonProcessInterface confirmButtonProcessInterface;
 
     SimpleGestureFilterAdvance simpleGestureFilterAdvance;
 
     BroadcastReceiver visibilityReceiver;
 
-    LayerDrawable drawShow, drawDismiss;
+    LayerDrawable drawShow,
+            drawDismiss;
 
-    public AppsConfirmButton(Activity activity, Context context, FunctionsClass functionsClass) {
+    public AppsConfirmButton(Activity activity, Context context,
+                             FunctionsClass functionsClass,
+                             ConfirmButtonProcessInterface confirmButtonProcessInterface) {
+
         super(context);
 
         this.activity = activity;
         this.context = context;
+
         this.functionsClass = functionsClass;
+
+        this.confirmButtonProcessInterface = confirmButtonProcessInterface;
 
         initConfirmButton();
     }
@@ -122,33 +131,27 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
 
                 break;
             case SimpleGestureFilterAdvance.SWIPE_LEFT:
-                context.sendBroadcast(new Intent(context.getString(R.string.savedActionAdvance)));
+                confirmButtonProcessInterface.showSavedShortcutList();
 
-                new Handler().postDelayed(() -> {
-                    if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                        AppsConfirmButton.this.setBackground(drawDismiss);
-                    }
-                }, 200);
+                if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                    AppsConfirmButton.this.setBackground(drawDismiss);
+                }
 
                 break;
             case SimpleGestureFilterAdvance.SWIPE_RIGHT:
-                context.sendBroadcast(new Intent(context.getString(R.string.savedActionAdvance)));
+                confirmButtonProcessInterface.showSavedShortcutList();
 
-                new Handler().postDelayed(() -> {
-                    if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                        AppsConfirmButton.this.setBackground(drawDismiss);
-                    }
-                }, 200);
+                if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                    AppsConfirmButton.this.setBackground(drawDismiss);
+                }
 
                 break;
             case SimpleGestureFilterAdvance.SWIPE_UP:
-                context.sendBroadcast(new Intent(context.getString(R.string.savedActionAdvance)));
+                confirmButtonProcessInterface.showSavedShortcutList();
 
-                new Handler().postDelayed(() -> {
-                    if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                        AppsConfirmButton.this.setBackground(drawDismiss);
-                    }
-                }, 200);
+                if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                    AppsConfirmButton.this.setBackground(drawDismiss);
+                }
 
                 break;
         }
@@ -156,6 +159,7 @@ public class AppsConfirmButton extends androidx.appcompat.widget.AppCompatButton
 
     @Override
     public void onSingleTapUp() {
+
         functionsClass.navigateToClass(FoldersConfigurations.class, activity);
     }
 }

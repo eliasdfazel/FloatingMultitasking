@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
@@ -35,19 +36,26 @@ import java.util.ArrayList;
 
 public class AppSavedListAdapter extends BaseAdapter {
 
-    FunctionsClass functionsClass;
-    int splitNumber = 1, layoutInflater;
     private Context context;
-    private Activity activity;
+
+    private FunctionsClass functionsClass;
+
+    private ConfirmButtonProcessInterface confirmButtonProcessInterface;
+
+    private int splitNumber, layoutInflater;
+
     private ArrayList<AdapterItems> adapterItems;
 
-    public AppSavedListAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems, int splitNumber) {
-        this.activity = activity;
+    public AppSavedListAdapter(Context context, FunctionsClass functionsClass,
+                               ArrayList<AdapterItems> adapterItems, int splitNumber,
+                               ConfirmButtonProcessInterface confirmButtonProcessInterface) {
         this.context = context;
+        this.functionsClass = functionsClass;
+
+        this.confirmButtonProcessInterface = confirmButtonProcessInterface;
+
         this.adapterItems = adapterItems;
         this.splitNumber = splitNumber;
-
-        functionsClass = new FunctionsClass(context);
 
         switch (functionsClass.shapesImageId()) {
             case 1:
@@ -125,10 +133,12 @@ public class AppSavedListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 context.deleteFile(adapterItems.get(position).getPackageName()
                         + PublicVariable.categoryName);
+
                 functionsClass.removeLine(PublicVariable.categoryName,
                         adapterItems.get(position).getPackageName());
-                context.sendBroadcast(new Intent(context.getString(R.string.checkboxActionAdvance)));
-                context.sendBroadcast(new Intent(context.getString(R.string.counterActionAdvance)));
+
+                confirmButtonProcessInterface.shortcutDeleted();
+                confirmButtonProcessInterface.savedShortcutCounter();
             }
         });
         viewHolder.confirmItem.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +149,7 @@ public class AppSavedListAdapter extends BaseAdapter {
                 } else if (splitNumber == 2) {
                     functionsClass.saveFile(PublicVariable.categoryName + ".SplitTwo", adapterItems.get(position).getPackageName());
                 }
-                context.sendBroadcast(new Intent(context.getString(R.string.splitActionAdvance)));
+                confirmButtonProcessInterface.showSplitShortcutPicker();
                 context.sendBroadcast(new Intent(context.getString(R.string.visibilityActionAdvance)));
             }
         });

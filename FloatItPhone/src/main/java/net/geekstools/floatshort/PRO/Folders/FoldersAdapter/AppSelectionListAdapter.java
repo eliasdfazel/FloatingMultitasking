@@ -10,7 +10,7 @@
 
 package net.geekstools.floatshort.PRO.Folders.FoldersAdapter;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -28,12 +28,14 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
+import net.geekstools.floatshort.PRO.databinding.AdvanceAppSelectionListBinding;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.io.File;
@@ -42,14 +44,13 @@ import java.util.ArrayList;
 public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionListAdapter.ViewHolder> {
 
     private Context context;
-    private Activity activity;
 
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
 
-    ImageView tempIcon;
-    View view;
-    ViewHolder viewHolder;
+    ConfirmButtonProcessInterface confirmButtonProcessInterface;
+
+    ImageView temporaryFallingIcon;
 
     float fromX, fromY, toX, toY, dpHeight, dpWidth, systemUiHeight;
     int animationType, layoutInflater;
@@ -58,15 +59,19 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
 
     private ArrayList<AdapterItems> adapterItems;
 
-    public AppSelectionListAdapter(Activity activity, Context context, ArrayList<AdapterItems> adapterItems) {
-        this.activity = activity;
+    public AppSelectionListAdapter(Context context, AdvanceAppSelectionListBinding advanceAppSelectionListBinding, 
+                                   ArrayList<AdapterItems> adapterItems,
+                                   ConfirmButtonProcessInterface confirmButtonProcessInterface) {
         this.context = context;
         this.adapterItems = adapterItems;
+
+        this.confirmButtonProcessInterface = confirmButtonProcessInterface;
 
         functionsClass = new FunctionsClass(context);
         functionsClassSecurity = new FunctionsClassSecurity(context);
 
-        tempIcon = functionsClass.initShapesImage(activity, R.id.temporaryFallingIcon);
+
+        temporaryFallingIcon = functionsClass.initShapesImage(advanceAppSelectionListBinding.temporaryFallingIcon);
 
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         dpHeight = displayMetrics.heightPixels;
@@ -101,11 +106,11 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
 
     @Override
     public AppSelectionListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(context).inflate(layoutInflater, parent, false);
-        viewHolder = new ViewHolder(view);
-        return viewHolder;
+
+        return new ViewHolder(LayoutInflater.from(context).inflate(layoutInflater, parent, false));
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
         try {
@@ -121,12 +126,12 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
             if (PublicVariable.themeLightDark) {
                 viewHolderBinder.autoChoice.setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.dark)));
             } else if (!PublicVariable.themeLightDark) {
-                viewHolder.appName.setTextColor(context.getColor(R.color.light));
+                viewHolderBinder.appName.setTextColor(context.getColor(R.color.light));
                 viewHolderBinder.autoChoice.setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.light)));
             }
 
-            viewHolder.appIcon.setImageDrawable(adapterItems.get(position).getAppIcon());
-            viewHolder.appName.setText(adapterItems.get(position).getAppName());
+            viewHolderBinder.appIcon.setImageDrawable(adapterItems.get(position).getAppIcon());
+            viewHolderBinder.appName.setText(adapterItems.get(position).getAppName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -145,9 +150,10 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                             context.deleteFile(pack + PublicVariable.categoryName);
                             functionsClass.removeLine(PublicVariable.categoryName, adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
-                            context.sendBroadcast(new Intent(context.getString(R.string.counterActionAdvance)));
 
-                            context.sendBroadcast(new Intent(context.getString(R.string.savedActionHideAdvance)));
+                            confirmButtonProcessInterface.savedShortcutCounter();
+
+                            confirmButtonProcessInterface.hideSavedShortcutList();
                             context.sendBroadcast(new Intent(context.getString(R.string.visibilityActionAdvance)));
 
                             if (functionsClassSecurity.isAppLocked(PublicVariable.categoryName)) {
@@ -171,25 +177,26 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                                             animationType, toY);
                             translateAnimation.setDuration((long) Math.abs(fromY));
 
-                            tempIcon.setImageDrawable(functionsClass.customIconsEnable() ?
+                            temporaryFallingIcon.setImageDrawable(functionsClass.customIconsEnable() ?
                                     loadCustomIcons.getDrawableIconForPackage(adapterItems.get(position).getPackageName(), functionsClass.shapedAppIcon(adapterItems.get(position).getPackageName()))
                                     :
                                     functionsClass.shapedAppIcon(adapterItems.get(position).getPackageName()));
-                            tempIcon.startAnimation(translateAnimation);
+                            temporaryFallingIcon.startAnimation(translateAnimation);
                             translateAnimation.setAnimationListener(new Animation.AnimationListener() {
                                 @Override
                                 public void onAnimationStart(Animation animation) {
-                                    context.sendBroadcast(new Intent(context.getString(R.string.savedActionHideAdvance)));
+                                    confirmButtonProcessInterface.hideSavedShortcutList();
                                     context.sendBroadcast(new Intent(context.getString(R.string.visibilityActionAdvance)));
 
-                                    tempIcon.setVisibility(View.VISIBLE);
+                                    temporaryFallingIcon.setVisibility(View.VISIBLE);
                                 }
 
                                 @Override
                                 public void onAnimationEnd(Animation animation) {
-                                    tempIcon.setVisibility(View.INVISIBLE);
+                                    temporaryFallingIcon.setVisibility(View.INVISIBLE);
+
                                     context.sendBroadcast(new Intent(context.getString(R.string.animtaionActionAdvance)));
-                                    context.sendBroadcast(new Intent(context.getString(R.string.counterActionAdvance)));
+                                    confirmButtonProcessInterface.savedShortcutCounter();
                                 }
 
                                 @Override
