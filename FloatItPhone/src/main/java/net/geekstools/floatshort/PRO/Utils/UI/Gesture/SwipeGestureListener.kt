@@ -25,7 +25,13 @@ class SwipeGestureListener(private val context: Context,
     private var tapIndicator = false
 
 
+    /**
+     * Set Minimum Distance Of Swipe
+     */
     private var swipeMinDistance: Int  = 500
+    /**
+     * Set Maximum Distance Of Swipe
+     */
     private var swipeMaxDistance: Int  = 1000
 
     private var swipeMinVelocity: Int  = 10
@@ -44,12 +50,14 @@ class SwipeGestureListener(private val context: Context,
         if (abs(initVelocityY) >= this.swipeMinVelocity && yDistance > this.swipeMinDistance && xDistance < yDistance) {//Vertical
 
             swipeMode = if (downMotionEvent.y > moveMotionEvent.y) {//Down -> Up
+
                 gestureListenerInterface.onSwipeGesture(
                     GestureConstants.SwipeVertical(
                         GestureListenerConstants.SWIPE_UP), downMotionEvent, moveMotionEvent, initVelocityX, initVelocityY)
                 GestureListenerConstants.SWIPE_UP
 
             } else {//Up -> Down
+
                 gestureListenerInterface.onSwipeGesture(
                     GestureConstants.SwipeVertical(
                         GestureListenerConstants.SWIPE_DOWN), downMotionEvent, moveMotionEvent, initVelocityX, initVelocityY)
@@ -63,12 +71,14 @@ class SwipeGestureListener(private val context: Context,
         if (abs(initVelocityX) >= this.swipeMinVelocity && xDistance > this.swipeMinDistance && yDistance < xDistance) {//Horizontal
 
             swipeMode = if (downMotionEvent.x > moveMotionEvent.x) {//Right -> Left
+
                 gestureListenerInterface.onSwipeGesture(
                     GestureConstants.SwipeHorizontal(
                         GestureListenerConstants.SWIPE_LEFT), downMotionEvent, moveMotionEvent, initVelocityX, initVelocityY)
                 GestureListenerConstants.SWIPE_LEFT
 
             } else {//Left -> Right
+
                 gestureListenerInterface.onSwipeGesture(
                     GestureConstants.SwipeHorizontal(
                         GestureListenerConstants.SWIPE_RIGHT), downMotionEvent, moveMotionEvent, initVelocityX, initVelocityY)

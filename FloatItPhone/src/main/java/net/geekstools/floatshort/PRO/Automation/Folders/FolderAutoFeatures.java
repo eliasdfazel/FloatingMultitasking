@@ -41,7 +41,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -55,11 +54,16 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
-import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SimpleGestureFilterFull;
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants;
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants;
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface;
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SwipeGestureListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class FolderAutoFeatures extends AppCompatActivity implements View.OnClickListener, SimpleGestureFilterFull.SimpleGestureListener {
+public class FolderAutoFeatures extends AppCompatActivity implements View.OnClickListener, GestureListenerInterface {
 
     FunctionsClass functionsClass;
 
@@ -79,7 +83,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
     int color, pressColor;
 
-    SimpleGestureFilterFull simpleGestureFilterFull;
+    SwipeGestureListener swipeGestureListener;
 
     LoadCustomIcons loadCustomIcons;
 
@@ -105,7 +109,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         nfc = (Button) findViewById(R.id.nfc);
         time = (Button) findViewById(R.id.time);
 
-        simpleGestureFilterFull = new SimpleGestureFilterFull(getApplicationContext(), this);
+        swipeGestureListener = new SwipeGestureListener(getApplicationContext(), FolderAutoFeatures.this);
 
         functionsClass = new FunctionsClass(getApplicationContext());
         functionsClass.loadSavedColor();
@@ -164,7 +168,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
         adapterItems = new ArrayList<AdapterItems>();
 
-        recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), OrientationHelper.VERTICAL, false);
+        recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
         categorylist.setLayoutManager(recyclerViewLayoutManager);
 
         autoApps.setTextColor(getColor(R.color.light));
@@ -543,41 +547,46 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
+
     }
 
     @Override
-    public void onSwipe(int direction) {
-        switch (direction) {
-            case SimpleGestureFilterFull.SWIPE_RIGHT: {
-                FunctionsClassDebug.Companion.PrintDebug("Swipe Right");
+    public void onSwipeGesture(@NotNull GestureConstants gestureConstants, @NotNull MotionEvent downMotionEvent, @NotNull MotionEvent moveMotionEvent, float initVelocityX, float initVelocityY) {
+        if (gestureConstants instanceof GestureConstants.SwipeHorizontal) {
+            switch (((GestureConstants.SwipeHorizontal) gestureConstants).getHorizontalDirection()) {
+                case GestureListenerConstants.SWIPE_RIGHT: {
 
-                break;
-            }
-            case SimpleGestureFilterFull.SWIPE_LEFT: {
-                FunctionsClassDebug.Companion.PrintDebug("Swipe Left");
-                try {
-                    functionsClass.navigateToClass(FolderAutoFeatures.this, FolderAutoFeatures.class,
-                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
-                    finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    functionsClass.navigateToClass(FolderAutoFeatures.this, AppAutoFeatures.class,
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
+
+                    FolderAutoFeatures.this.finish();
+
+                    break;
                 }
+                case GestureListenerConstants.SWIPE_LEFT: {
 
-                break;
-            }
-            case SimpleGestureFilterFull.SWIPE_UP: {
-                FunctionsClassDebug.Companion.PrintDebug("Swipe UP");
-
-                break;
+                    break;
+                }
             }
         }
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent me) {
-        this.simpleGestureFilterFull.onTouchEvent(me);
+    public boolean dispatchTouchEvent(MotionEvent motionEvent) {
+        swipeGestureListener.onTouchEvent(motionEvent);
 
-        return super.dispatchTouchEvent(me);
+
+        return super.dispatchTouchEvent(motionEvent);
+    }
+
+    @Override
+    public void onSingleTapUp(@NotNull MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public void onLongPress(@NotNull MotionEvent motionEvent) {
+
     }
 
     public void autoWiFi() {
