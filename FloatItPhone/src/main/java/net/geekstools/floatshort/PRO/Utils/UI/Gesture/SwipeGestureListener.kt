@@ -28,13 +28,15 @@ class SwipeGestureListener(private val context: Context,
     /**
      * Set Minimum Distance Of Swipe
      */
-    private var swipeMinDistance: Int  = 500
+    var swipeMinDistance: Int  = 500
     /**
      * Set Maximum Distance Of Swipe
      */
-    private var swipeMaxDistance: Int  = 1000
-
-    private var swipeMinVelocity: Int  = 10
+    var swipeMaxDistance: Int  = 1000
+    /**
+     * Set Minimum Velocity Of Moving Finger
+     */
+    var swipeMinVelocity: Int  = 10
 
     private var mode: Int = GestureListenerConstants.MODE_DYNAMIC
     private var swipeMode: Int = 0

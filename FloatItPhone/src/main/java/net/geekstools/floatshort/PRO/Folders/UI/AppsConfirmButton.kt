@@ -25,15 +25,23 @@ import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonViewInterface
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
+import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SwipeGestureListener
 
-class AppsConfirmButton : AppCompatButton, SimpleGestureFilterAdvance.SimpleGestureListener, ConfirmButtonViewInterface {
+class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
+        ConfirmButtonViewInterface {
 
     private lateinit var activity: Activity
 
     lateinit var functionsClass: FunctionsClass
 
     private lateinit var confirmButtonProcessInterface: ConfirmButtonProcessInterface
-    private lateinit var simpleGestureFilterAdvance: SimpleGestureFilterAdvance
+
+    private val swipeGestureListener: SwipeGestureListener by lazy {
+        SwipeGestureListener(context, this@AppsConfirmButton)
+    }
 
     private lateinit var dismissDrawable: LayerDrawable
 
@@ -61,7 +69,7 @@ class AppsConfirmButton : AppCompatButton, SimpleGestureFilterAdvance.SimpleGest
     }
 
     private fun initializeConfirmButton() {
-        simpleGestureFilterAdvance = SimpleGestureFilterAdvance(context, this)
+        swipeGestureListener.swipeMinDistance = 100
 
         dismissDrawable = context.getDrawable(R.drawable.draw_saved_dismiss) as LayerDrawable
         val backgroundTemporary = dismissDrawable.findDrawableByLayerId(R.id.backgroundTemporary)
@@ -76,40 +84,52 @@ class AppsConfirmButton : AppCompatButton, SimpleGestureFilterAdvance.SimpleGest
     }
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
-        simpleGestureFilterAdvance.onTouchEvent(motionEvent)
+        swipeGestureListener.onTouchEvent(motionEvent)
+
         return super.dispatchTouchEvent(motionEvent)
     }
 
-    override fun onSwipe(direction: Int) {
-        when (direction) {
-            SimpleGestureFilterAdvance.SWIPE_DOWN -> {
+    override fun onSwipeGesture(gestureConstants: GestureConstants, downMotionEvent: MotionEvent, moveMotionEvent: MotionEvent, initVelocityX: Float, initVelocityY: Float) {
+        super.onSwipeGesture(gestureConstants, downMotionEvent, moveMotionEvent, initVelocityX, initVelocityY)
 
-            }
-            SimpleGestureFilterAdvance.SWIPE_LEFT -> {
-                confirmButtonProcessInterface.showSavedShortcutList()
+        when (gestureConstants) {
+            is GestureConstants.SwipeHorizontal -> {
+                when (gestureConstants.horizontalDirection) {
+                    GestureListenerConstants.SWIPE_RIGHT -> {
+                        confirmButtonProcessInterface.showSavedShortcutList()
 
-                if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                    this@AppsConfirmButton.background = dismissDrawable
+                        if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                            this@AppsConfirmButton.background = dismissDrawable
+                        }
+                    }
+                    GestureListenerConstants.SWIPE_LEFT -> {
+                        confirmButtonProcessInterface.showSavedShortcutList()
+
+                        if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                            this@AppsConfirmButton.background = dismissDrawable
+                        }
+                    }
                 }
             }
-            SimpleGestureFilterAdvance.SWIPE_RIGHT -> {
-                confirmButtonProcessInterface.showSavedShortcutList()
+            is GestureConstants.SwipeVertical -> {
+                when (gestureConstants.verticallDirection) {
+                    GestureListenerConstants.SWIPE_UP -> {
+                        confirmButtonProcessInterface.showSavedShortcutList()
 
-                if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                    this@AppsConfirmButton.background = dismissDrawable
-                }
-            }
-            SimpleGestureFilterAdvance.SWIPE_UP -> {
-                confirmButtonProcessInterface.showSavedShortcutList()
+                        if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                            this@AppsConfirmButton.background = dismissDrawable
+                        }
+                    }
+                    GestureListenerConstants.SWIPE_DOWN -> {
 
-                if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
-                    this@AppsConfirmButton.background = dismissDrawable
+                    }
                 }
             }
         }
     }
 
-    override fun onSingleTapUp() {
+    override fun onSingleTapUp(motionEvent: MotionEvent) {
+        super.onSingleTapUp(motionEvent)
 
         functionsClass.navigateToClass(FoldersConfigurations::class.java, activity)
     }
