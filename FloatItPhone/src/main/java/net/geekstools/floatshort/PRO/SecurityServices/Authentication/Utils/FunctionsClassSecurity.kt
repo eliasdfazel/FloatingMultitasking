@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Utils.Functions
+package net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils
 
 import android.app.Activity
 import android.app.ActivityOptions
@@ -40,6 +40,9 @@ import net.geekstools.floatshort.PRO.SecurityServices.Authentication.AuthActivit
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.AuthenticationDialogFragment
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.PasswordVerification
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
@@ -69,8 +72,6 @@ class FunctionsClassSecurity (var context: Context) {
     }
 
     /*Finger-Print Functions*/
-    val KEY_NAME_NOT_INVALIDATED = "key_not_invalidated"
-    val DEFAULT_KEY_NAME = "default_key"
 
     companion object AuthOpenAppValues {
         var alreadyAuthenticating: Boolean = false
@@ -112,45 +113,45 @@ class FunctionsClassSecurity (var context: Context) {
 
     fun resetAuthAppValues() {
         Handler().postDelayed({
-            AuthOpenAppValues.alreadyAuthenticating = false
+            alreadyAuthenticating = false
 
-            AuthOpenAppValues.authComponentName = null
-            AuthOpenAppValues.authSecondComponentName = null
+            authComponentName = null
+            authSecondComponentName = null
 
-            AuthOpenAppValues.authPositionX = 0
-            AuthOpenAppValues.authPositionY = 0
-            AuthOpenAppValues.authHW = 0
+            authPositionX = 0
+            authPositionY = 0
+            authHW = 0
 
-            AuthOpenAppValues.authWidgetProviderClassName = null
+            authWidgetProviderClassName = null
 
-            AuthOpenAppValues.authFloatingShortcuts = false
+            authFloatingShortcuts = false
 
-            AuthOpenAppValues.authSingleUnlockIt = false
-            AuthOpenAppValues.authFolderUnlockIt = false
-            AuthOpenAppValues.authForgotPinPassword = false
+            authSingleUnlockIt = false
+            authFolderUnlockIt = false
+            authForgotPinPassword = false
 
-            AuthOpenAppValues.authWidgetConfigurations = false
-            AuthOpenAppValues.authWidgetConfigurationsUnlock = false
-            AuthOpenAppValues.authFloatingWidget = false
+            authWidgetConfigurations = false
+            authWidgetConfigurationsUnlock = false
+            authFloatingWidget = false
 
-            AuthOpenAppValues.authSingleSplitIt = false
-            AuthOpenAppValues.authPairSplitIt = false
-            AuthOpenAppValues.authFreeform = false
+            authSingleSplitIt = false
+            authPairSplitIt = false
+            authFreeform = false
 
-            AuthOpenAppValues.keyStore = null
-            AuthOpenAppValues.keyGenerator = null
+            keyStore = null
+            keyGenerator = null
 
-            AuthOpenAppValues.authClassNameCommand = null
+            authClassNameCommand = null
 
-            AuthOpenAppValues.anchorView = null
+            anchorView = null
 
-            AuthOpenAppValues.authRecovery = false
+            authRecovery = false
 
-            AuthOpenAppValues.authSearchEngine = false
+            authSearchEngine = false
         }, 1000)
     }
 
-    inner class InvokeAuth(appCompatActivity: AppCompatActivity, internal var cipher: Cipher?, internal var keyName: String) {
+    inner class InvokeAuth(appCompatActivity: AppCompatActivity, private var cipher: Cipher?, private var keyName: String) {
         init {
             if (fingerprintSensorAvailable() && fingerprintEnrolled()) {
                 if (initCipher(this.cipher!!, this.keyName)) {
@@ -185,8 +186,8 @@ class FunctionsClassSecurity (var context: Context) {
 
     fun initCipher(cipher: Cipher, keyName: String): Boolean {
         return try {
-            AuthOpenAppValues.keyStore!!.load(null)
-            val key = AuthOpenAppValues.keyStore!!.getKey(keyName, null) as SecretKey
+            keyStore!!.load(null)
+            val key = keyStore!!.getKey(keyName, null) as SecretKey
             cipher.init(Cipher.ENCRYPT_MODE, key)
             true
         } catch (e: KeyPermanentlyInvalidatedException) {
@@ -220,57 +221,57 @@ class FunctionsClassSecurity (var context: Context) {
     private fun authConfirmed(activity: Activity, encrypted: ByteArray?) {
         if (encrypted != null) {
 
-            if (AuthOpenAppValues.authFloatingShortcuts) {
+            if (authFloatingShortcuts) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Opening... ***")
 
                 if (FunctionsClass(context).splashReveal()) {
                     val splashReveal = Intent(context, FloatingSplash::class.java)
-                    splashReveal.putExtra("packageName", FunctionsClassSecurity.authComponentName)
-                    splashReveal.putExtra("className", FunctionsClassSecurity.authSecondComponentName)
-                    splashReveal.putExtra("X", FunctionsClassSecurity.authPositionX)
-                    splashReveal.putExtra("Y", FunctionsClassSecurity.authPositionY)
-                    splashReveal.putExtra("HW", FunctionsClassSecurity.authHW)
+                    splashReveal.putExtra("packageName", authComponentName)
+                    splashReveal.putExtra("className", authSecondComponentName)
+                    splashReveal.putExtra("X", authPositionX)
+                    splashReveal.putExtra("Y", authPositionY)
+                    splashReveal.putExtra("HW", authHW)
                     context.startService(splashReveal)
                 } else {
                     if (FunctionsClass(context).FreeForm()) {
-                        FunctionsClass(context).openApplicationFreeForm(FunctionsClassSecurity.authComponentName,
-                                FunctionsClassSecurity.authPositionX,
+                        FunctionsClass(context).openApplicationFreeForm(authComponentName,
+                                authPositionX,
                                 FunctionsClass(context).displayX() / 2,
-                                FunctionsClassSecurity.authPositionY,
+                                authPositionY,
                                 FunctionsClass(context).displayY() / 2
                         )
                     } else {
-                        FunctionsClass(context).appsLaunchPad(FunctionsClassSecurity.authComponentName, FunctionsClassSecurity.authSecondComponentName)
+                        FunctionsClass(context).appsLaunchPad(authComponentName, authSecondComponentName)
                     }
                 }
 
 
 
-            } else if (AuthOpenAppValues.authSingleUnlockIt) {
+            } else if (authSingleUnlockIt) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Single Unlock It ***")
 
-                if (FunctionsClassSecurity.authWidgetConfigurationsUnlock) {
-                    doUnlockApps(FunctionsClassSecurity.authSecondComponentName!! + FunctionsClassSecurity.authWidgetProviderClassName)
+                if (authWidgetConfigurationsUnlock) {
+                    doUnlockApps(authSecondComponentName!! + authWidgetProviderClassName)
                 } else {
-                    doUnlockApps(FunctionsClassSecurity.authComponentName!!)
+                    doUnlockApps(authComponentName!!)
                 }
-            } else if (AuthOpenAppValues.authFolderUnlockIt) {
-                if (context.getFileStreamPath(FunctionsClassSecurity.authComponentName).exists() && context.getFileStreamPath(FunctionsClassSecurity.authComponentName).isFile()) {
-                    val packageNames = FunctionsClass(context).readFileLine(FunctionsClassSecurity.authComponentName)
+            } else if (authFolderUnlockIt) {
+                if (context.getFileStreamPath(authComponentName).exists() && context.getFileStreamPath(authComponentName).isFile()) {
+                    val packageNames = FunctionsClass(context).readFileLine(authComponentName)
                     for (packageName in packageNames!!) {
                         doUnlockApps(packageName)
                     }
-                    doUnlockApps(FunctionsClassSecurity.authComponentName!!)
+                    doUnlockApps(authComponentName!!)
                     uploadLockedAppsData()
                 }
-            } else if (AuthOpenAppValues.authForgotPinPassword) {
+            } else if (authForgotPinPassword) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Forgot Pin Password ***")
 
                 context.startActivity(Intent(context, PasswordVerification::class.java)
                         .putExtra("RESET_PASSWORD_BY_FINGER_PRINT", "RESET_PASSWORD_BY_FINGER_PRINT")
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
-            } else if (AuthOpenAppValues.authSingleSplitIt) {
+            } else if (authSingleSplitIt) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Split It ***")
 
                 if (!FunctionsClass(context).AccessibilityServiceEnabled() && !FunctionsClass(context).SettingServiceRunning(InteractionObserver::class.java)) {
@@ -279,17 +280,17 @@ class FunctionsClassSecurity (var context: Context) {
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 } else {
                     val accessibilityManager = context.getSystemService(ACCESSIBILITY_SERVICE) as AccessibilityManager
-                    PublicVariable.splitSinglePackage = AuthOpenAppValues.authComponentName
-                    PublicVariable.splitSingleClassName = AuthOpenAppValues.authSecondComponentName
+                    PublicVariable.splitSinglePackage = authComponentName
+                    PublicVariable.splitSingleClassName = authSecondComponentName
                     val event = AccessibilityEvent.obtain()
-                    event.setSource(AuthOpenAppValues.anchorView)
+                    event.setSource(anchorView)
                     event.eventType = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
                     event.action = 69201
-                    event.className = AuthOpenAppValues.authClassNameCommand
+                    event.className = authClassNameCommand
                     event.text.add(context.packageName)
                     accessibilityManager.sendAccessibilityEvent(event)
                 }
-            } else if (AuthOpenAppValues.authPairSplitIt) {
+            } else if (authPairSplitIt) {
                 if (!FunctionsClass(context).AccessibilityServiceEnabled() && !FunctionsClass(context).SettingServiceRunning(InteractionObserver::class.java)) {
                     context.startActivity(Intent(context, Checkpoint::class.java)
                             .putExtra(context.getString(R.string.splitIt), context.packageName)
@@ -297,14 +298,14 @@ class FunctionsClassSecurity (var context: Context) {
                 } else {
                     val accessibilityManager = context.getSystemService(ACCESSIBILITY_SERVICE) as AccessibilityManager
                     val event = AccessibilityEvent.obtain()
-                    event.setSource(FunctionsClassSecurity.anchorView)
+                    event.setSource(anchorView)
                     event.eventType = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
                     event.action = 10296
-                    event.className = FunctionsClassSecurity.authClassNameCommand
+                    event.className = authClassNameCommand
                     event.text.add(context.packageName)
                     accessibilityManager.sendAccessibilityEvent(event)
                 }
-            } else if (FunctionsClassSecurity.authFloatingWidget) {
+            } else if (authFloatingWidget) {
                 FunctionsClassDebug.PrintDebug("*** Authentication Confirmed | Floating Widget ***")
 
                 Thread {
@@ -323,23 +324,23 @@ class FunctionsClassSecurity (var context: Context) {
                             .build()
 
                     val widgetDataModelsReallocation = widgetDataInterface.initDataAccessObject()
-                            .loadWidgetByClassNameProviderWidget(FunctionsClassSecurity.authSecondComponentName!!, FunctionsClassSecurity.authWidgetProviderClassName!!)
+                            .loadWidgetByClassNameProviderWidget(authSecondComponentName!!, authWidgetProviderClassName!!)
 
                     activity.runOnUiThread {
                         FunctionsClass(context).runUnlimitedWidgetService(widgetDataModelsReallocation.WidgetId,
                                 widgetDataModelsReallocation.WidgetLabel)
                     }
                 }.start()
-            } else if (FunctionsClassSecurity.authWidgetConfigurations) {
+            } else if (authWidgetConfigurations) {
                 FunctionsClassDebug.PrintDebug("*** Authenticated | Open Widget Configurations ***")
 
                 WidgetConfigurations.Companion.alreadyAuthenticatedWidgets = true
-            } else if (FunctionsClassSecurity.authSearchEngine) {
+            } else if (authSearchEngine) {
                 FunctionsClassDebug.PrintDebug("*** Authenticated | Run Search Engine ***")
 
                 SearchEngineAdapter.alreadyAuthenticatedSearchEngine = true
                 context.sendBroadcast(Intent("SEARCH_ENGINE_AUTHENTICATED"))
-            } else if (FunctionsClassSecurity.authRecovery) {
+            } else if (authRecovery) {
                 FunctionsClassDebug.PrintDebug("*** Authenticated | Perform Recovery ***")
 
                 context.sendBroadcast(Intent("RECOVERY_AUTHENTICATED"))
@@ -348,21 +349,21 @@ class FunctionsClassSecurity (var context: Context) {
 
                 if (FunctionsClass(context).splashReveal()) {
                     val splashReveal = Intent(context, FloatingSplash::class.java)
-                    splashReveal.putExtra("packageName", FunctionsClassSecurity.authComponentName)
-                    splashReveal.putExtra("X", FunctionsClassSecurity.authPositionX)
-                    splashReveal.putExtra("Y", FunctionsClassSecurity.authPositionY)
-                    splashReveal.putExtra("HW", FunctionsClassSecurity.authHW)
+                    splashReveal.putExtra("packageName", authComponentName)
+                    splashReveal.putExtra("X", authPositionX)
+                    splashReveal.putExtra("Y", authPositionY)
+                    splashReveal.putExtra("HW", authHW)
                     context.startService(splashReveal)
                 } else {
                     if (FunctionsClass(context).FreeForm()) {
-                        FunctionsClass(context).openApplicationFreeForm(FunctionsClassSecurity.authComponentName,
-                                FunctionsClassSecurity.authPositionX,
+                        FunctionsClass(context).openApplicationFreeForm(authComponentName,
+                                authPositionX,
                                 FunctionsClass(context).displayX() / 2,
-                                FunctionsClassSecurity.authPositionY,
+                                authPositionY,
                                 FunctionsClass(context).displayY() / 2
                         )
                     } else {
-                        FunctionsClass(context).appsLaunchPad(FunctionsClassSecurity.authComponentName)
+                        FunctionsClass(context).appsLaunchPad(authComponentName)
                     }
                 }
             }
@@ -391,7 +392,7 @@ class FunctionsClassSecurity (var context: Context) {
 
     fun createKey(keyName: String, invalidatedByBiometricEnrollment: Boolean) {
         try {
-            AuthOpenAppValues.keyStore!!.load(null)
+            keyStore!!.load(null)
 
             val builder = KeyGenParameterSpec.Builder(keyName,
                     KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
@@ -402,8 +403,8 @@ class FunctionsClassSecurity (var context: Context) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 builder.setInvalidatedByBiometricEnrollment(invalidatedByBiometricEnrollment)
             }
-            AuthOpenAppValues.keyGenerator!!.init(builder.build())
-            AuthOpenAppValues.keyGenerator!!.generateKey()
+            keyGenerator!!.init(builder.build())
+            keyGenerator!!.generateKey()
         } catch (e: NoSuchAlgorithmException) {
             throw RuntimeException(e)
         } catch (e: InvalidAlgorithmParameterException) {

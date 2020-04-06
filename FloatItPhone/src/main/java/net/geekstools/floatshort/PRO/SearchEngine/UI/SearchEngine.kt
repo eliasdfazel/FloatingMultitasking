@@ -47,7 +47,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager

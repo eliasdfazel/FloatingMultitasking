@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity;
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 
 import java.security.KeyStore;
 import java.security.KeyStoreException;

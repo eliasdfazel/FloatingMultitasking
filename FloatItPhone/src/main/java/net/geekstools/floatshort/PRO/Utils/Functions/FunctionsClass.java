@@ -143,6 +143,7 @@ import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNoti
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Bluetooth;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Gps;

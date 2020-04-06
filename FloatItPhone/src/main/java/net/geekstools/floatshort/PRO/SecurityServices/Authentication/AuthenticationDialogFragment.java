@@ -60,7 +60,7 @@ import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Fingerprint.FingerprintProcessHelper;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSecurity;
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash;
@@ -472,11 +472,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                     }
                 }
             };
-            try {
-                getContext().registerReceiver(broadcastReceiver, intentFilter);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            getContext().registerReceiver(broadcastReceiver, intentFilter);
         } else {
             FunctionsClassDebug.Companion.PrintDebug("*** Finger Print Not Available ***");
 
