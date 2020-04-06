@@ -140,7 +140,7 @@ public class AppUnlimitedShortcuts extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, final int flags, final int serviceStartId) {
+    public int onStartCommand(Intent intent, final int flags, final int startId) {
 
         if (functionsClass.customIconsEnable()) {
             if (loadCustomIcons == null) {
@@ -151,31 +151,37 @@ public class AppUnlimitedShortcuts extends Service {
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         try {
-            packageNames[serviceStartId] = intent.getStringExtra("PackageName");
-            if (!packageNames[serviceStartId].equals(getString(R.string.remove_all_floatings))) {
-                classNames[serviceStartId] = intent.getStringExtra("ClassName");
+            packageNames[startId] = intent.getStringExtra("PackageName");
 
-                activityInformation[serviceStartId] = getPackageManager().getActivityInfo(new ComponentName(packageNames[serviceStartId], classNames[serviceStartId]), 0);
+            if (!functionsClass.appIsInstalled(packageNames[startId])) {
 
-                floatingView[serviceStartId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_shortcuts, null, false);
-                controlIcons[serviceStartId] = functionsClass.initShapesImage(floatingView[serviceStartId], R.id.controlIcon);
-                shapedIcons[serviceStartId] = functionsClass.initShapesImage(floatingView[serviceStartId], R.id.shapedIcon);
-                notificationDots[serviceStartId] = functionsClass.initShapesImage(floatingView[serviceStartId],
+                return START_NOT_STICKY;
+            }
+
+            if (!packageNames[startId].equals(getString(R.string.remove_all_floatings))) {
+                classNames[startId] = intent.getStringExtra("ClassName");
+
+                activityInformation[startId] = getPackageManager().getActivityInfo(new ComponentName(packageNames[startId], classNames[startId]), 0);
+
+                floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_shortcuts, null, false);
+                controlIcons[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.controlIcon);
+                shapedIcons[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.shapedIcon);
+                notificationDots[startId] = functionsClass.initShapesImage(floatingView[startId],
                         functionsClass.checkStickyEdge() ? R.id.notificationDotEnd : R.id.notificationDotStart);
 
-                movePermit[serviceStartId] = true;
+                movePermit[startId] = true;
 
-                touchingDelay[serviceStartId] = false;
-                stickedToEdge[serviceStartId] = false;
-                openPermit[serviceStartId] = true;
+                touchingDelay[startId] = false;
+                stickedToEdge[startId] = false;
+                openPermit[startId] = true;
             }
         } catch (Exception e) {
             e.printStackTrace();
             return Service.START_NOT_STICKY;
         }
 
-        if (packageNames[serviceStartId].equals(getString(R.string.remove_all_floatings))) {
-            for (int r = 1; r < serviceStartId; r++) {
+        if (packageNames[startId].equals(getString(R.string.remove_all_floatings))) {
+            for (int r = 1; r < startId; r++) {
                 try {
                     if (floatingView != null) {
                         if (floatingView[r].isShown()) {
@@ -221,21 +227,19 @@ public class AppUnlimitedShortcuts extends Service {
             return START_NOT_STICKY;
         }
 
-        mapPackageNameStartId.put(classNames[serviceStartId], serviceStartId);
-        if (functionsClass.appIsInstalled(packageNames[serviceStartId]) == false) {
-            return START_NOT_STICKY;
-        }
-        functionsClass.saveUnlimitedShortcutsService(packageNames[serviceStartId]);
+        mapPackageNameStartId.put(classNames[startId], startId);
+
+        functionsClass.saveUnlimitedShortcutsService(packageNames[startId]);
         functionsClass.updateRecoverShortcuts();
 
-        appIcons[serviceStartId] = functionsClass.shapedAppIcon(activityInformation[serviceStartId]);
-        iconColors[serviceStartId] = functionsClass.extractDominantColor(functionsClass.appIcon(activityInformation[serviceStartId]));
-        shapedIcons[serviceStartId].setImageDrawable(functionsClass.customIconsEnable() ?
-                loadCustomIcons.getDrawableIconForPackage(packageNames[serviceStartId], functionsClass.shapedAppIcon(activityInformation[serviceStartId]))
+        appIcons[startId] = functionsClass.shapedAppIcon(activityInformation[startId]);
+        iconColors[startId] = functionsClass.extractDominantColor(functionsClass.appIcon(activityInformation[startId]));
+        shapedIcons[startId].setImageDrawable(functionsClass.customIconsEnable() ?
+                loadCustomIcons.getDrawableIconForPackage(packageNames[startId], functionsClass.shapedAppIcon(activityInformation[startId]))
                 :
-                functionsClass.shapedAppIcon(activityInformation[serviceStartId]));
+                functionsClass.shapedAppIcon(activityInformation[startId]));
 
-        sharedPrefPosition = getSharedPreferences((classNames[serviceStartId]), MODE_PRIVATE);
+        sharedPrefPosition = getSharedPreferences((classNames[startId]), MODE_PRIVATE);
 
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
         PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, getApplicationContext().getResources().getDisplayMetrics());
@@ -244,10 +248,11 @@ public class AppUnlimitedShortcuts extends Service {
         yInitial = yInitial + 13;
         xPosition = sharedPrefPosition.getInt("X", xInitial);
         yPosition = sharedPrefPosition.getInt("Y", yInitial);
-        layoutParams[serviceStartId] = functionsClass.normalLayoutParams(PublicVariable.HW, xPosition, yPosition);
+        layoutParams[startId] = functionsClass.normalLayoutParams(PublicVariable.HW, xPosition, yPosition);
+
         try {
-            floatingView[serviceStartId].setTag(serviceStartId);
-            windowManager.addView(floatingView[serviceStartId], layoutParams[serviceStartId]);
+            floatingView[startId].setTag(startId);
+            windowManager.addView(floatingView[startId], layoutParams[startId]);
         } catch (WindowManager.BadTokenException e) {
             e.printStackTrace();
         }
@@ -255,105 +260,105 @@ public class AppUnlimitedShortcuts extends Service {
         xMove = xPosition;
         yMove = yPosition;
 
-        shapedIcons[serviceStartId].setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
+        shapedIcons[startId].setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
 
         if (!functionsClass.litePreferencesEnabled()) {
-            flingAnimationX[serviceStartId] = new FlingAnimation(new FloatValueHolder())
+            flingAnimationX[startId] = new FlingAnimation(new FloatValueHolder())
                     .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
-            flingAnimationY[serviceStartId] = new FlingAnimation(new FloatValueHolder())
+            flingAnimationY[startId] = new FlingAnimation(new FloatValueHolder())
                     .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
 
-            flingAnimationX[serviceStartId].setMaxValue(functionsClass.displayX() - PublicVariable.HW);
-            flingAnimationX[serviceStartId].setMinValue(0);
+            flingAnimationX[startId].setMaxValue(functionsClass.displayX() - PublicVariable.HW);
+            flingAnimationX[startId].setMinValue(0);
 
-            flingAnimationY[serviceStartId].setMaxValue(functionsClass.displayY() - PublicVariable.HW);
-            flingAnimationY[serviceStartId].setMinValue(0);
+            flingAnimationY[startId].setMaxValue(functionsClass.displayY() - PublicVariable.HW);
+            flingAnimationY[startId].setMinValue(0);
 
-            simpleOnGestureListener[serviceStartId] = new GestureDetector.SimpleOnGestureListener() {
+            simpleOnGestureListener[startId] = new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onFling(MotionEvent motionEventFirst, MotionEvent motionEventLast, float velocityX, float velocityY) {
 
-                    if (movePermit[serviceStartId]) {
-                        flingAnimationX[serviceStartId].setStartVelocity(velocityX);
-                        flingAnimationY[serviceStartId].setStartVelocity(velocityY);
+                    if (movePermit[startId]) {
+                        flingAnimationX[startId].setStartVelocity(velocityX);
+                        flingAnimationY[startId].setStartVelocity(velocityY);
 
-                        flingAnimationX[serviceStartId].setStartValue(flingPositionX);
-                        flingAnimationY[serviceStartId].setStartValue(flingPositionY);
+                        flingAnimationX[startId].setStartValue(flingPositionX);
+                        flingAnimationY[startId].setStartValue(flingPositionY);
 
                         try {
-                            flingAnimationX[serviceStartId].addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
+                            flingAnimationX[startId].addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
                                 @Override
                                 public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
-                                    if (floatingView[serviceStartId].isShown()) {
-                                        layoutParams[serviceStartId].x = (int) value;     // X movePoint
-                                        windowManager.updateViewLayout(floatingView[serviceStartId], layoutParams[serviceStartId]);
+                                    if (floatingView[startId].isShown()) {
+                                        layoutParams[startId].x = (int) value;     // X movePoint
+                                        windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
 
                                         xMove = (int) value;
                                     }
                                 }
                             });
-                            flingAnimationY[serviceStartId].addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
+                            flingAnimationY[startId].addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
                                 @Override
                                 public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
-                                    if (floatingView[serviceStartId].isShown()) {
-                                        layoutParams[serviceStartId].y = (int) value;     // Y movePoint
-                                        windowManager.updateViewLayout(floatingView[serviceStartId], layoutParams[serviceStartId]);
+                                    if (floatingView[startId].isShown()) {
+                                        layoutParams[startId].y = (int) value;     // Y movePoint
+                                        windowManager.updateViewLayout(floatingView[startId], layoutParams[startId]);
 
                                         yMove = (int) value;
                                     }
                                 }
                             });
 
-                            flingAnimationX[serviceStartId].start();
-                            flingAnimationY[serviceStartId].start();
+                            flingAnimationX[startId].start();
+                            flingAnimationY[startId].start();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
 
-                        openPermit[serviceStartId] = false;
+                        openPermit[startId] = false;
                     }
 
                     return false;
                 }
             };
 
-            flingAnimationX[serviceStartId].addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+            flingAnimationX[startId].addEndListener(new DynamicAnimation.OnAnimationEndListener() {
                 @Override
                 public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                    openPermit[serviceStartId] = true;
+                    openPermit[startId] = true;
                 }
             });
 
-            flingAnimationY[serviceStartId].addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+            flingAnimationY[startId].addEndListener(new DynamicAnimation.OnAnimationEndListener() {
                 @Override
                 public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                    openPermit[serviceStartId] = true;
+                    openPermit[startId] = true;
                 }
             });
 
-            gestureDetector[serviceStartId] = new GestureDetector(getApplicationContext(), simpleOnGestureListener[serviceStartId]);
+            gestureDetector[startId] = new GestureDetector(getApplicationContext(), simpleOnGestureListener[startId]);
         }
 
-        floatingView[serviceStartId].setOnTouchListener(new View.OnTouchListener() {
+        floatingView[startId].setOnTouchListener(new View.OnTouchListener() {
             int initialX, initialY;
             float initialTouchX, initialTouchY;
 
             @Override
             public boolean onTouch(final View view, MotionEvent motionEvent) {
                 try {
-                    flingAnimationX[serviceStartId].cancel();
-                    flingAnimationY[serviceStartId].cancel();
-                    gestureDetector[serviceStartId].onTouchEvent(motionEvent);
+                    flingAnimationX[startId].cancel();
+                    flingAnimationY[startId].cancel();
+                    gestureDetector[startId].onTouchEvent(motionEvent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 WindowManager.LayoutParams layoutParamsOnTouch;
-                if (stickedToEdge[serviceStartId] == true) {
-                    layoutParamsOnTouch = stickyEdgeParams[serviceStartId];
+                if (stickedToEdge[startId] == true) {
+                    layoutParamsOnTouch = stickyEdgeParams[startId];
                     layoutParamsOnTouch.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
                 } else {
-                    layoutParamsOnTouch = layoutParams[serviceStartId];
+                    layoutParamsOnTouch = layoutParams[startId];
                 }
 
                 switch (motionEvent.getAction()) {
@@ -367,16 +372,16 @@ public class AppUnlimitedShortcuts extends Service {
                         xMove = Math.round(initialTouchX);
                         yMove = Math.round(initialTouchY);
 
-                        touchingDelay[serviceStartId] = true;
+                        touchingDelay[startId] = true;
                         delayRunnable = new Runnable() {
                             @Override
                             public void run() {
-                                if (touchingDelay[serviceStartId] == true) {
-                                    removePermit[serviceStartId] = true;
+                                if (touchingDelay[startId] == true) {
+                                    removePermit[startId] = true;
                                     LayerDrawable drawClose = (LayerDrawable) getDrawable(R.drawable.draw_close_service);
                                     Drawable backPref = drawClose.findDrawableByLayerId(R.id.backgroundTemporary);
-                                    backPref.setTint(iconColors[serviceStartId]);
-                                    controlIcons[serviceStartId].setImageDrawable(drawClose);
+                                    backPref.setTint(iconColors[startId]);
+                                    controlIcons[startId].setImageDrawable(drawClose);
 
                                     Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                                     vibrator.vibrate(100);
@@ -385,9 +390,9 @@ public class AppUnlimitedShortcuts extends Service {
                                     getBackRunnable = new Runnable() {
                                         @Override
                                         public void run() {
-                                            if (removePermit[serviceStartId] == true) {
-                                                removePermit[serviceStartId] = false;
-                                                controlIcons[serviceStartId].setImageDrawable(null);
+                                            if (removePermit[startId] == true) {
+                                                removePermit[startId] = false;
+                                                controlIcons[startId].setImageDrawable(null);
                                             }
                                         }
                                     };
@@ -401,35 +406,35 @@ public class AppUnlimitedShortcuts extends Service {
                         runnablePressHold = new Runnable() {
                             @Override
                             public void run() {
-                                if (touchingDelay[serviceStartId] == true) {
+                                if (touchingDelay[startId] == true) {
                                     functionsClass.PopupOptionShortcuts(
-                                            floatingView[serviceStartId],
-                                            packageNames[serviceStartId],
-                                            classNames[serviceStartId],
+                                            floatingView[startId],
+                                            packageNames[startId],
+                                            classNames[startId],
                                             AppUnlimitedShortcuts.class.getSimpleName(),
-                                            serviceStartId,
+                                            startId,
                                             initialX,
                                             initialY
                                     );
 
-                                    openPermit[serviceStartId] = false;
+                                    openPermit[startId] = false;
                                 }
                             }
                         };
                         handlerPressHold.postDelayed(runnablePressHold, functionsClass.readDefaultPreference("delayPressHold", 333));
                         break;
                     case MotionEvent.ACTION_UP:
-                        touchingDelay[serviceStartId] = false;
+                        touchingDelay[startId] = false;
                         delayHandler.removeCallbacks(delayRunnable);
                         handlerPressHold.removeCallbacks(runnablePressHold);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                openPermit[serviceStartId] = true;
+                                openPermit[startId] = true;
                             }
                         }, 113);
 
-                        if (movePermit[serviceStartId] == true) {
+                        if (movePermit[startId] == true) {
                             layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);
                             layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);
                             FunctionsClassDebug.Companion.PrintDebug("X :: " + layoutParamsOnTouch.x + "\n" + " Y :: " + layoutParamsOnTouch.y);
@@ -439,7 +444,7 @@ public class AppUnlimitedShortcuts extends Service {
 
                             SharedPreferences sharedPrefPosition = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                             try {
-                                sharedPrefPosition = getSharedPreferences((classNames[serviceStartId]), MODE_PRIVATE);
+                                sharedPrefPosition = getSharedPreferences((classNames[startId]), MODE_PRIVATE);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -450,14 +455,14 @@ public class AppUnlimitedShortcuts extends Service {
                             editor.apply();
                         } else {
                             if (!functionsClass.litePreferencesEnabled()) {
-                                float initialTouchXBoundBack = getSharedPreferences((classNames[serviceStartId]), MODE_PRIVATE).getInt("X", 0);
+                                float initialTouchXBoundBack = getSharedPreferences((classNames[startId]), MODE_PRIVATE).getInt("X", 0);
                                 if (initialTouchXBoundBack < 0) {
                                     initialTouchXBoundBack = 0;
                                 } else if (initialTouchXBoundBack > functionsClass.displayX()) {
                                     initialTouchXBoundBack = functionsClass.displayX();
                                 }
 
-                                float initialTouchYBoundBack = getSharedPreferences((classNames[serviceStartId]), MODE_PRIVATE).getInt("Y", 0);
+                                float initialTouchYBoundBack = getSharedPreferences((classNames[startId]), MODE_PRIVATE).getInt("Y", 0);
                                 if (initialTouchYBoundBack < 0) {
                                     initialTouchYBoundBack = 0;
                                 } else if (initialTouchYBoundBack > functionsClass.displayY()) {
@@ -507,18 +512,18 @@ public class AppUnlimitedShortcuts extends Service {
                                 springAnimationX.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
                                     @Override
                                     public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
-                                        if (floatingView[serviceStartId].isShown()) {
+                                        if (floatingView[startId].isShown()) {
                                             layoutParamsOnTouch.x = (int) value;     // X movePoint
-                                            windowManager.updateViewLayout(floatingView[serviceStartId], layoutParamsOnTouch);
+                                            windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
                                         }
                                     }
                                 });
                                 springAnimationY.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
                                     @Override
                                     public void onAnimationUpdate(DynamicAnimation animation, float value, float velocity) {
-                                        if (floatingView[serviceStartId].isShown()) {
+                                        if (floatingView[startId].isShown()) {
                                             layoutParamsOnTouch.y = (int) value;     // Y movePoint
-                                            windowManager.updateViewLayout(floatingView[serviceStartId], layoutParamsOnTouch);
+                                            windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
                                         }
                                     }
                                 });
@@ -526,13 +531,13 @@ public class AppUnlimitedShortcuts extends Service {
                                 springAnimationX.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
                                     @Override
                                     public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                                        openPermit[serviceStartId] = true;
+                                        openPermit[startId] = true;
                                     }
                                 });
                                 springAnimationY.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
                                     @Override
                                     public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                                        openPermit[serviceStartId] = true;
+                                        openPermit[startId] = true;
                                     }
                                 });
 
@@ -544,10 +549,10 @@ public class AppUnlimitedShortcuts extends Service {
                         moveDetection = layoutParamsOnTouch;
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        if (movePermit[serviceStartId] == true) {
+                        if (movePermit[startId] == true) {
                             layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);
                             layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);
-                            windowManager.updateViewLayout(floatingView[serviceStartId], layoutParamsOnTouch);
+                            windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
                             moveDetection = layoutParamsOnTouch;
 
                             int difMoveX = (int) (layoutParamsOnTouch.x - initialTouchX);
@@ -556,8 +561,8 @@ public class AppUnlimitedShortcuts extends Service {
                                     || Math.abs(difMoveY) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))) {
                                 sendBroadcast(new Intent("Hide_PopupListView_Shortcuts"));
 
-                                openPermit[serviceStartId] = false;
-                                touchingDelay[serviceStartId] = false;
+                                openPermit[startId] = false;
+                                touchingDelay[startId] = false;
                                 delayHandler.removeCallbacks(delayRunnable);
                                 handlerPressHold.removeCallbacks(runnablePressHold);
                             }
@@ -568,7 +573,7 @@ public class AppUnlimitedShortcuts extends Service {
                             if (!functionsClass.litePreferencesEnabled()) {
                                 layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);     // X movePoint
                                 layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);     // Y movePoint
-                                windowManager.updateViewLayout(floatingView[serviceStartId], layoutParamsOnTouch);
+                                windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
 
                                 int difMoveX = (int) (layoutParamsOnTouch.x - initialTouchX);
                                 int difMoveY = (int) (layoutParamsOnTouch.y - initialTouchY);
@@ -576,8 +581,8 @@ public class AppUnlimitedShortcuts extends Service {
                                         || Math.abs(difMoveY) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))) {
                                     sendBroadcast(new Intent("Hide_PopupListView_Shortcuts"));
 
-                                    openPermit[serviceStartId] = false;
-                                    touchingDelay[serviceStartId] = false;
+                                    openPermit[startId] = false;
+                                    touchingDelay[startId] = false;
                                     delayHandler.removeCallbacks(delayRunnable);
                                     handlerPressHold.removeCallbacks(runnablePressHold);
                                 }
@@ -588,21 +593,21 @@ public class AppUnlimitedShortcuts extends Service {
                 return false;
             }
         });
-        floatingView[serviceStartId].setOnClickListener(new View.OnClickListener() {
+        floatingView[startId].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (removePermit[serviceStartId] == true) {
-                    if (floatingView[serviceStartId] == null) {
+                if (removePermit[startId] == true) {
+                    if (floatingView[startId] == null) {
                         return;
                     }
-                    if (floatingView[serviceStartId].isShown()) {
+                    if (floatingView[startId].isShown()) {
                         try {
-                            windowManager.removeView(floatingView[serviceStartId]);
+                            windowManager.removeView(floatingView[startId]);
                             getBackHandler.removeCallbacks(getBackRunnable);
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.FloatingShortcuts.remove(packageNames[serviceStartId]);
+                            PublicVariable.FloatingShortcuts.remove(packageNames[startId]);
                             PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
                             PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter - 1;
 
@@ -623,48 +628,48 @@ public class AppUnlimitedShortcuts extends Service {
                         }
                     }
                 } else {
-                    if (openPermit[serviceStartId]) {
-                        if (functionsClassSecurity.isAppLocked(packageNames[serviceStartId])) {
+                    if (openPermit[startId]) {
+                        if (functionsClassSecurity.isAppLocked(packageNames[startId])) {
                             FunctionsClassSecurity.AuthOpenAppValues.setAuthFloatingShortcuts(true);
 
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packageNames[serviceStartId]);
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(classNames[serviceStartId]);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packageNames[startId]);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(classNames[startId]);
 
                             if (moveDetection != null) {
                                 FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(moveDetection.x);
                                 FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(moveDetection.y);
                             } else {
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(layoutParams[serviceStartId].x);
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(layoutParams[serviceStartId].y);
+                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(layoutParams[startId].x);
+                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(layoutParams[startId].y);
                             }
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthHW(layoutParams[serviceStartId].width);
+                            FunctionsClassSecurity.AuthOpenAppValues.setAuthHW(layoutParams[startId].width);
 
                             functionsClassSecurity.openAuthInvocation();
                         } else {
                             if (functionsClass.splashReveal()) {
                                 Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);
-                                splashReveal.putExtra("packageName", packageNames[serviceStartId]);
-                                splashReveal.putExtra("className", classNames[serviceStartId]);
+                                splashReveal.putExtra("packageName", packageNames[startId]);
+                                splashReveal.putExtra("className", classNames[startId]);
                                 if (moveDetection != null) {
                                     splashReveal.putExtra("X", moveDetection.x);
                                     splashReveal.putExtra("Y", moveDetection.y);
                                 } else {
-                                    splashReveal.putExtra("X", layoutParams[serviceStartId].x);
-                                    splashReveal.putExtra("Y", layoutParams[serviceStartId].y);
+                                    splashReveal.putExtra("X", layoutParams[startId].x);
+                                    splashReveal.putExtra("Y", layoutParams[startId].y);
                                 }
-                                splashReveal.putExtra("HW", layoutParams[serviceStartId].width);
+                                splashReveal.putExtra("HW", layoutParams[startId].width);
                                 startService(splashReveal);
                             } else {
                                 if (functionsClass.FreeForm()) {
-                                    functionsClass.openApplicationFreeForm(packageNames[serviceStartId],
-                                            classNames[serviceStartId],
-                                            layoutParams[serviceStartId].x,
+                                    functionsClass.openApplicationFreeForm(packageNames[startId],
+                                            classNames[startId],
+                                            layoutParams[startId].x,
                                             (functionsClass.displayX() / 2),
-                                            layoutParams[serviceStartId].y,
+                                            layoutParams[startId].y,
                                             (functionsClass.displayY() / 2)
                                     );
                                 } else {
-                                    functionsClass.appsLaunchPad(packageNames[serviceStartId], classNames[serviceStartId]);
+                                    functionsClass.appsLaunchPad(packageNames[startId], classNames[startId]);
                                 }
                             }
                         }
@@ -675,26 +680,26 @@ public class AppUnlimitedShortcuts extends Service {
             }
         });
 
-        notificationDots[serviceStartId].setOnClickListener(new View.OnClickListener() {
+        notificationDots[startId].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 functionsClass.PopupNotificationShortcuts(
-                        floatingView[serviceStartId],
-                        packageNames[serviceStartId],
+                        floatingView[startId],
+                        packageNames[startId],
                         AppUnlimitedShortcuts.class.getSimpleName(),
-                        serviceStartId,
-                        iconColors[serviceStartId],
+                        startId,
+                        iconColors[startId],
                         xMove,
                         yMove,
-                        layoutParams[serviceStartId].width
+                        layoutParams[startId].width
                 );
             }
         });
-        notificationDots[serviceStartId].setOnLongClickListener(new View.OnLongClickListener() {
+        notificationDots[startId].setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 if (functionsClass.AccessibilityServiceEnabled() && functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                    functionsClass.sendInteractionObserverEvent(view, packageNames[serviceStartId], AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED, 66666);
+                    functionsClass.sendInteractionObserverEvent(view, packageNames[startId], AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED, 66666);
                 } else {
                     try {
                         Object sbservice = getSystemService("statusbar");
@@ -879,7 +884,7 @@ public class AppUnlimitedShortcuts extends Service {
                         }
                     }
                 } else if (intent.getAction().equals("Sticky_Edge")) {
-                    for (int r = 1; r <= serviceStartId; r++) {
+                    for (int r = 1; r <= startId; r++) {
                         try {
                             if (floatingView != null) {
                                 if (floatingView[r].isShown()) {
@@ -898,7 +903,7 @@ public class AppUnlimitedShortcuts extends Service {
                         }
                     }
                 } else if (intent.getAction().equals("Sticky_Edge_No")) {
-                    for (int r = 1; r <= serviceStartId; r++) {
+                    for (int r = 1; r <= startId; r++) {
                         try {
                             if (floatingView != null) {
                                 if (floatingView[r].isShown()) {
@@ -981,8 +986,8 @@ public class AppUnlimitedShortcuts extends Service {
         };
         registerReceiver(broadcastReceiver, intentFilter);
 
-        if (getFileStreamPath(packageNames[serviceStartId] + "_" + "Notification" + "Package").exists()) {
-            sendBroadcast(new Intent("Notification_Dot").putExtra("NotificationPackage", packageNames[serviceStartId]));
+        if (getFileStreamPath(packageNames[startId] + "_" + "Notification" + "Package").exists()) {
+            sendBroadcast(new Intent("Notification_Dot").putExtra("NotificationPackage", packageNames[startId]));
         }
 
         return Service.START_NOT_STICKY;

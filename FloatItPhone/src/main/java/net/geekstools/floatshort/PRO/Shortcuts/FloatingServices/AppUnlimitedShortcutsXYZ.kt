@@ -1,20 +1,20 @@
 package net.geekstools.floatshort.PRO.Shortcuts.FloatingServices
 
 import android.app.Service
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.IBinder
+import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.dynamicanimation.animation.FlingAnimation
+import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Widgets.Utils.FunctionsClassWidgets
 import net.geekstools.floatshort.PRO.databinding.FloatingShortcutsBinding
@@ -53,8 +53,8 @@ class AppUnlimitedShortcutsXYZ : Service() {
     private val packageNames: ArrayList<String> = ArrayList<String>()
     private val classNames: ArrayList<String> = ArrayList<String>()
 
-    private val appIcon: ArrayList<Drawable> = ArrayList<Drawable>()
-    private val iconColor: ArrayList<Int> = ArrayList<Int>()
+    private val appIcons: ArrayList<Drawable> = ArrayList<Drawable>()
+    private val iconColors: ArrayList<Int> = ArrayList<Int>()
 
 
     private val openPermit: ArrayList<Boolean> = ArrayList<Boolean>()
@@ -66,9 +66,9 @@ class AppUnlimitedShortcutsXYZ : Service() {
     private val stickedToEdge: ArrayList<Boolean> = ArrayList<Boolean>()
 
 
-    private val shapedIcon: ArrayList<ShapesImage> = ArrayList<ShapesImage>()
-    private val controlIcon: ArrayList<ShapesImage> = ArrayList<ShapesImage>()
-    private val notificationDot: ArrayList<ShapesImage> = ArrayList<ShapesImage>()
+    private val shapedIcons: ArrayList<ShapesImage> = ArrayList<ShapesImage>()
+    private val controlIcons: ArrayList<ShapesImage> = ArrayList<ShapesImage>()
+    private val notificationDots: ArrayList<ShapesImage> = ArrayList<ShapesImage>()
 
 
     lateinit var delayRunnable: Runnable
@@ -154,9 +154,91 @@ class AppUnlimitedShortcutsXYZ : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
 
         val startId = (serviceStartId - 1)
-        floatingShortcutsBinding.add(startId, FloatingShortcutsBinding.inflate(layoutInflater))
+
+        intent?.run {
+
+            packageNames[startId] = this@run.getStringExtra("PackageName")
+
+            if (!functionsClass.appIsInstalled(packageNames[startId])) {
+
+                return START_NOT_STICKY
+            }
+            /*
+             *
+             *
+             * Remove All Checkpoint
+             *
+             *
+             */
+            if (this@run.hasExtra(getString(R.string.remove_all_floatings))) {
+                if (this@run.getStringExtra(getString(R.string.remove_all_floatings)) == getString(R.string.remove_all_floatings)) {
 
 
+
+                    stopSelf()
+
+                    return START_NOT_STICKY
+                }
+            }
+
+            classNames.add(startId, intent.getStringExtra("ClassName"))
+            activityInformation.add(startId, packageManager.getActivityInfo(ComponentName(packageNames[startId], classNames[startId]), 0))
+
+            floatingShortcutsBinding.add(startId, FloatingShortcutsBinding.inflate(layoutInflater))
+
+            controlIcons.add(startId, functionsClass.initShapesImage(floatingShortcutsBinding[startId].controlIcon))
+            shapedIcons.add(startId, functionsClass.initShapesImage(floatingShortcutsBinding[startId].shapedIcon))
+            notificationDots.add(startId, functionsClass.initShapesImage(if (functionsClass.checkStickyEdge()) {
+                floatingShortcutsBinding[startId].notificationDotEnd
+            } else {
+                floatingShortcutsBinding[startId].notificationDotStart
+            }))
+
+            openPermit.add(startId, true)
+            movePermit.add(startId, true)
+
+            touchingDelay.add(startId, false)
+            stickedToEdge.add(startId, false)
+
+            mapPackageNameStartId.put(classNames[startId], startId)
+
+            /*Update Floating Shortcuts Database*/
+            functionsClass.saveUnlimitedShortcutsService(packageNames[startId])
+            functionsClass.updateRecoverShortcuts()
+            /*Update Floating Shortcuts Database*/
+
+            appIcons.add(startId, functionsClass.shapedAppIcon(activityInformation[startId]))
+            iconColors.add(startId, functionsClass.extractDominantColor(functionsClass.appIcon(activityInformation[startId])))
+
+            shapedIcons[startId].setImageDrawable(if (functionsClass.customIconsEnable()) {
+                loadCustomIcons.getDrawableIconForPackage(packageNames[startId], functionsClass.shapedAppIcon(activityInformation[startId]))
+            } else {
+                functionsClass.shapedAppIcon(activityInformation[startId])
+            })
+
+            sharedPrefPosition = getSharedPreferences(classNames[startId], Context.MODE_PRIVATE)
+
+            PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
+            PublicVariable.HW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size.toFloat(), applicationContext.resources.displayMetrics).toInt()
+
+            XY.xInitial = XY.xInitial + 13
+            XY.yInitial = XY.yInitial + 13
+            XY.xPosition = sharedPrefPosition.getInt("X", XY.xInitial)
+            XY.yPosition = sharedPrefPosition.getInt("Y", XY.yInitial)
+            layoutParams[startId] = functionsClass.normalLayoutParams(PublicVariable.HW, XY.xPosition, XY.yPosition)
+
+            try {
+                floatingShortcutsBinding.get(startId).root.setTag(startId)
+                windowManager.addView(floatingShortcutsBinding.get(startId).root, layoutParams[startId])
+            } catch (e: WindowManager.BadTokenException) {
+                e.printStackTrace()
+            }
+
+            XY.xMove = XY.xPosition
+            XY.yMove = XY.yPosition
+
+
+        }
 
         return Service.START_NOT_STICKY
     }

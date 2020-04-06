@@ -116,14 +116,6 @@ class WidgetUnlimitedFloating : Service() {
         super.onStartCommand(intent, flags, serviceStartId)
 
         val startId = (serviceStartId - 1)
-        floatingWidgetsBinding.add(startId, FloatingWidgetsBinding.inflate(layoutInflater))
-
-        widgetLayout.add(startId, floatingWidgetsBinding[startId].widgetViewGroup)
-        wholeViewWidget.add(startId, floatingWidgetsBinding[startId].wholeViewWidget)
-        widgetLabel.add(startId, floatingWidgetsBinding[startId].widgetLabel)
-        widgetMoveButton.add(startId, floatingWidgetsBinding[startId].widgetMoveButton)
-        widgetCloseButton.add(startId, floatingWidgetsBinding[startId].widgetCloseButton)
-        widgetResizeControl.add(startId, floatingWidgetsBinding[startId].widgetResizeControl)
 
         intent?.run {
 
@@ -166,6 +158,15 @@ class WidgetUnlimitedFloating : Service() {
                     return START_NOT_STICKY
                 }
             }
+
+            floatingWidgetsBinding.add(startId, FloatingWidgetsBinding.inflate(layoutInflater))
+
+            widgetLayout.add(startId, floatingWidgetsBinding[startId].widgetViewGroup)
+            wholeViewWidget.add(startId, floatingWidgetsBinding[startId].wholeViewWidget)
+            widgetLabel.add(startId, floatingWidgetsBinding[startId].widgetLabel)
+            widgetMoveButton.add(startId, floatingWidgetsBinding[startId].widgetMoveButton)
+            widgetCloseButton.add(startId, floatingWidgetsBinding[startId].widgetCloseButton)
+            widgetResizeControl.add(startId, floatingWidgetsBinding[startId].widgetResizeControl)
 
             appWidgetId.add(startId, this@run.getIntExtra("WidgetId", -1))
 
