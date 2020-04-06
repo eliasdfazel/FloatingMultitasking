@@ -21,6 +21,7 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_N
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Time;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.AppUnlimitedShortcuts;
 
 public class RemoveAllActivity extends Activity {
 
@@ -29,7 +30,7 @@ public class RemoveAllActivity extends Activity {
         super.onCreate(Saved);
 
         /*Apps*/
-        Intent App_Unlimited_Shortcuts = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Shortcuts.class);
+        Intent App_Unlimited_Shortcuts = new Intent(getApplicationContext(), AppUnlimitedShortcuts.class);
         App_Unlimited_Shortcuts.putExtra("PackageName", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Shortcuts);
 

@@ -243,7 +243,6 @@ class WidgetUnlimitedFloating : Service() {
                         functionsClass.normalWidgetLayoutParams(appWidgetProviderInfo[startId].provider.packageName,
                                 appWidgetId[startId],
                                 initWidth, initHeight))
-                layoutParams[startId].windowAnimations = android.R.style.Animation_Dialog
 
                 try {
                     floatingWidgetsBinding[startId].root.tag = startId

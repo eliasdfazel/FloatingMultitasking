@@ -40,7 +40,6 @@ import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Shortcuts;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
@@ -897,7 +896,7 @@ public class Folder_Unlimited_Wifi extends Service {
                 functionsClass.PopupNotificationShortcuts(
                         notificationDot[startId],
                         notificationDot[startId].getTag().toString(),
-                        App_Unlimited_Shortcuts.class.getSimpleName(),
+                        Folder_Unlimited_Wifi.class.getSimpleName(),
                         startId,
                         PublicVariable.primaryColor,
                         xMove,

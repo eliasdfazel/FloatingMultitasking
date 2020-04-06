@@ -483,7 +483,7 @@
             android:foregroundServiceType="dataSync"/>
         <!-- Float It -->
         <service
-            android:name=".Shortcuts.FloatingServices.App_Unlimited_Shortcuts"/>
+            android:name=".Shortcuts.FloatingServices.AppUnlimitedShortcuts"/>
         <service
             android:name=".Shortcuts.FloatingServices.App_Unlimited_Shortcuts_Package"/>
         <service
