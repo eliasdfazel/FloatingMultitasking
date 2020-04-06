@@ -12,7 +12,6 @@ package net.geekstools.floatshort.PRO.Folders.FoldersAdapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -26,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton;
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
@@ -40,21 +40,25 @@ public class AppSavedListAdapter extends BaseAdapter {
 
     private FunctionsClass functionsClass;
 
+    private AppsConfirmButton appsConfirmButton;
+
     private ConfirmButtonProcessInterface confirmButtonProcessInterface;
 
     private int splitNumber, layoutInflater;
 
-    private ArrayList<AdapterItems> adapterItems;
+    private ArrayList<AdapterItems> selectedAppsListItem;
 
     public AppSavedListAdapter(Context context, FunctionsClass functionsClass,
-                               ArrayList<AdapterItems> adapterItems, int splitNumber,
+                               ArrayList<AdapterItems> selectedAppsListItem, int splitNumber,
+                               AppsConfirmButton appsConfirmButton,
                                ConfirmButtonProcessInterface confirmButtonProcessInterface) {
         this.context = context;
         this.functionsClass = functionsClass;
+        this.appsConfirmButton = appsConfirmButton;
 
         this.confirmButtonProcessInterface = confirmButtonProcessInterface;
 
-        this.adapterItems = adapterItems;
+        this.selectedAppsListItem = selectedAppsListItem;
         this.splitNumber = splitNumber;
 
         switch (functionsClass.shapesImageId()) {
@@ -78,12 +82,12 @@ public class AppSavedListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return adapterItems.size();
+        return selectedAppsListItem.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return adapterItems.get(position);
+        return selectedAppsListItem.get(position);
     }
 
     @Override
@@ -119,8 +123,8 @@ public class AppSavedListAdapter extends BaseAdapter {
         viewHolder.confirmItem.setBackground(drawConfirm);
         viewHolder.textAppName.setTextColor(context.getColor(R.color.light));
 
-        viewHolder.imgIcon.setImageDrawable(adapterItems.get(position).getAppIcon());
-        viewHolder.textAppName.setText(adapterItems.get(position).getAppName());
+        viewHolder.imgIcon.setImageDrawable(selectedAppsListItem.get(position).getAppIcon());
+        viewHolder.textAppName.setText(selectedAppsListItem.get(position).getAppName());
 
         viewHolder.items.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,11 +135,11 @@ public class AppSavedListAdapter extends BaseAdapter {
         viewHolder.deleteItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.deleteFile(adapterItems.get(position).getPackageName()
+                context.deleteFile(selectedAppsListItem.get(position).getPackageName()
                         + PublicVariable.categoryName);
 
                 functionsClass.removeLine(PublicVariable.categoryName,
-                        adapterItems.get(position).getPackageName());
+                        selectedAppsListItem.get(position).getPackageName());
 
                 confirmButtonProcessInterface.shortcutDeleted();
                 confirmButtonProcessInterface.savedShortcutCounter();
@@ -145,12 +149,13 @@ public class AppSavedListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 if (splitNumber == 1) {
-                    functionsClass.saveFile(PublicVariable.categoryName + ".SplitOne", adapterItems.get(position).getPackageName());
+                    functionsClass.saveFile(PublicVariable.categoryName + ".SplitOne", selectedAppsListItem.get(position).getPackageName());
                 } else if (splitNumber == 2) {
-                    functionsClass.saveFile(PublicVariable.categoryName + ".SplitTwo", adapterItems.get(position).getPackageName());
+                    functionsClass.saveFile(PublicVariable.categoryName + ".SplitTwo", selectedAppsListItem.get(position).getPackageName());
                 }
+
                 confirmButtonProcessInterface.showSplitShortcutPicker();
-                context.sendBroadcast(new Intent(context.getString(R.string.visibilityActionAdvance)));
+                appsConfirmButton.makeItVisible();
             }
         });
 

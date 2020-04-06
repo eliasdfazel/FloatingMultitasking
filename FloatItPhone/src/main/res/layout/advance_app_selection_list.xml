@@ -120,13 +120,7 @@
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent"
         android:gravity="center">
-
-<!--        <net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton-->
-<!--            android:layout_width="63dp"-->
-<!--            android:layout_height="63dp"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:background="@drawable/draw_saved_show"-->
-<!--            android:visibility="invisible"/>-->
+        <!--        -->
     </RelativeLayout>
 
     <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
@@ -207,7 +201,7 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/loadingLogo"
             android:layout_width="170dp"
             android:layout_height="170dp"

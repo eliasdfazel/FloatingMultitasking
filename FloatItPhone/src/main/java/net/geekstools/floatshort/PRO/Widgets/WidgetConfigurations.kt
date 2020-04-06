@@ -1448,7 +1448,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
             val finalTextView = textView
 
-            delay(700)
+            delay(777)
 
             finalTextView?.let {
                 var upperRange = (widgetConfigurationsViewsBinding.indexView.y - it.height).roundToInt()
@@ -1498,7 +1498,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
             val finalTextView = textView
 
-            delay(700)
+            delay(777)
 
             finalTextView?.let {
                 var upperRange = (widgetConfigurationsViewsBinding.indexViewInstalled.y - it.height).roundToInt()

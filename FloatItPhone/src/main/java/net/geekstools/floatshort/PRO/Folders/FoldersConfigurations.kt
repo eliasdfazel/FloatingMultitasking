@@ -784,6 +784,18 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
     }
 
     private fun loadInstalledCustomIcons() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+        val packageManager = applicationContext.packageManager
+        //ACTION: com.novalauncher.THEME
+        //CATEGORY: com.novalauncher.category.CUSTOM_ICON_PICKER
+        val intentCustomIcons = Intent()
+        intentCustomIcons.action = "com.novalauncher.THEME"
+        intentCustomIcons.addCategory("com.novalauncher.category.CUSTOM_ICON_PICKER")
+        val resolveInfos = packageManager.queryIntentActivities(intentCustomIcons, 0)
 
+        PublicVariable.customIconsPackages.clear()
+        for (resolveInfo in resolveInfos) {
+            FunctionsClassDebug.PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
+            PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
+        }
     }
 }

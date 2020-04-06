@@ -995,45 +995,51 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
         withContext(Dispatchers.Default) {
             val indexCount = indexList.size
+
             for (indexNumber in 0 until indexCount) {
-                try {
-                    val indexText = indexList[indexNumber]!!
-                    if (mapIndexFirstItem[indexText] == null /*avoid duplication*/) {
-                        mapIndexFirstItem[indexText] = indexNumber
-                    }
-                    mapIndexLastItem[indexText] = indexNumber
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                val indexText = indexList[indexNumber]!!
+
+                if (mapIndexFirstItem[indexText] == null /*avoid duplication*/) {
+                    mapIndexFirstItem[indexText] = indexNumber
                 }
+
+                mapIndexLastItem[indexText] = indexNumber
             }
         }
 
+        var sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
         val indexListFinal: List<String> = ArrayList(mapIndexFirstItem.keys)
+
         indexListFinal.forEach { indexText ->
-            val sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
+            sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
             sideIndexItem.text = indexText.toUpperCase(Locale.getDefault())
             sideIndexItem.setTextColor(PublicVariable.colorLightDarkOpposite)
+
             hybridApplicationViewBinding.indexView.addView(sideIndexItem)
         }
 
-        val sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
-        Handler().postDelayed({
-            var upperRange = (hybridApplicationViewBinding.indexView.y - sideIndexItem.height).toInt()
-            for (number in 0 until hybridApplicationViewBinding.indexView.childCount) {
-                val indexText = (hybridApplicationViewBinding.indexView.getChildAt(number) as TextView).text.toString()
-                val indexRange = (hybridApplicationViewBinding.indexView.getChildAt(number).y + hybridApplicationViewBinding.indexView.y + sideIndexItem.height).toInt()
-                for (jRange in upperRange..indexRange) {
-                    mapRangeIndex[jRange] = indexText
-                }
+        val finalTextView = sideIndexItem
 
-                upperRange = indexRange
+        delay(777)
+
+        var upperRange = (hybridApplicationViewBinding.indexView.y - finalTextView.height).toInt()
+
+        for (number in 0 until hybridApplicationViewBinding.indexView.childCount) {
+            val indexText = (hybridApplicationViewBinding.indexView.getChildAt(number) as TextView).text.toString()
+            val indexRange = (hybridApplicationViewBinding.indexView.getChildAt(number).y + hybridApplicationViewBinding.indexView.y + finalTextView.height).toInt()
+
+            for (jRange in upperRange..indexRange) {
+                mapRangeIndex[jRange] = indexText
             }
 
-            setupFastScrollingIndexing()
-        },700)
+            upperRange = indexRange
+        }
+
+        setupFastScrollingIndexing()
     }
 
-    private fun setupFastScrollingIndexing() {
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupFastScrollingIndexing() = CoroutineScope(Dispatchers.Main).launch {
         val popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon)!!.mutate()
         popupIndexBackground.setTint(PublicVariable.primaryColorOpposite)
         hybridApplicationViewBinding.popupIndex.background = popupIndexBackground
@@ -1070,7 +1076,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                             try {
                                 hybridApplicationViewBinding.nestedScrollView.smoothScrollTo(
                                         0,
-                                        hybridApplicationViewBinding.applicationsListView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
+                                        hybridApplicationViewBinding.applicationsListView.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]!!).y.toInt()
                                 )
                             } catch (e: Exception) {
                                 e.printStackTrace()

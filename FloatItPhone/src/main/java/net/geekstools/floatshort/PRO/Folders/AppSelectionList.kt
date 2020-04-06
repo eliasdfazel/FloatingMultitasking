@@ -1,18 +1,16 @@
 package net.geekstools.floatshort.PRO.Folders
 
-import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +21,6 @@ import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSavedListAdapter
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSelectionListAdapter
 import net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
-import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonViewInterface
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
@@ -33,8 +30,8 @@ import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.databinding.AdvanceAppSelectionListBinding
 import java.util.*
 
-class AppSelectionList : AppCompatActivity(), View.OnClickListener,
-        ConfirmButtonProcessInterface, ConfirmButtonViewInterface {
+class AppSelectionList : AppCompatActivity(),
+        ConfirmButtonProcessInterface {
 
     val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
@@ -52,7 +49,7 @@ class AppSelectionList : AppCompatActivity(), View.OnClickListener,
     lateinit var recyclerViewLayoutManager: LinearLayoutManager
     var applicationInfoList: ArrayList<ApplicationInfo> = ArrayList<ApplicationInfo>()
     lateinit var appSelectionListAdapter: RecyclerView.Adapter<AppSelectionListAdapter.ViewHolder>
-    val adapterItems: ArrayList<AdapterItems> = ArrayList<AdapterItems>()
+    val installedAppsListItem: ArrayList<AdapterItems> = ArrayList<AdapterItems>()
 
     val mapIndexFirstItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
     val mapIndexLastItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
@@ -60,6 +57,8 @@ class AppSelectionList : AppCompatActivity(), View.OnClickListener,
 
     private val selectedAppsListItem: ArrayList<AdapterItems> = ArrayList<AdapterItems>()
     lateinit var advanceSavedListAdapter: AppSavedListAdapter
+
+    var appsConfirmButton: AppsConfirmButton? = null
 
     var resetAdapter = false
 
@@ -116,39 +115,133 @@ class AppSelectionList : AppCompatActivity(), View.OnClickListener,
             advanceAppSelectionListBinding.loadingProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(PublicVariable.vibrantColor, PorterDuff.Mode.MULTIPLY)
         }
 
-        setupConfirmButtonUI(this@AppSelectionList)
+        appsConfirmButton = setupConfirmButtonUI(this@AppSelectionList)
 
         loadInstalledAppsData()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun onStart() {
         super.onStart()
-    }
 
-    override fun onStop() {
-        super.onStop()
+        if (functionsClass.returnAPI() < 24) {
+
+            advanceAppSelectionListBinding.firstSplitIcon.visibility = View.INVISIBLE
+            advanceAppSelectionListBinding.secondSplitIcon.visibility = View.INVISIBLE
+            advanceAppSelectionListBinding.splitHint.visibility = View.INVISIBLE
+
+            val padTop = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, resources.displayMetrics).toInt()
+            advanceAppSelectionListBinding.recyclerListView.setPaddingRelative(
+                    advanceAppSelectionListBinding.recyclerListView.paddingStart,
+                    padTop,
+                    advanceAppSelectionListBinding.recyclerListView.paddingEnd,
+                    advanceAppSelectionListBinding.recyclerListView.paddingBottom)
+
+            val layoutParams = RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT
+            )
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+            advanceAppSelectionListBinding.nestedScrollView.layoutParams = layoutParams
+
+        } else {
+            advanceAppSelectionListBinding.splitHint.setTextColor(PublicVariable.primaryColorOpposite)
+
+            if (getFileStreamPath(PublicVariable.categoryName.toString() + ".SplitOne").exists()) {
+
+                advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne")))
+
+            } else {
+
+                val addOne = getDrawable(R.drawable.add_quick_app)
+                addOne!!.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175f))
+                advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(addOne)
+
+            }
+
+            if (getFileStreamPath(PublicVariable.categoryName.toString() + ".SplitTwo").exists()) {
+
+                advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitTwo")))
+
+            } else {
+
+                val addTwo = getDrawable(R.drawable.add_quick_app)
+                addTwo!!.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175f))
+                advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(addTwo)
+
+            }
+
+            advanceAppSelectionListBinding.firstSplitIcon.setOnClickListener {
+                if (getFileStreamPath(PublicVariable.categoryName).exists() && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                    selectedAppsListItem.clear()
+
+                    val savedLine = functionsClass.readFileLine(PublicVariable.categoryName)
+                    for (aSavedLine in savedLine) {
+                        selectedAppsListItem.add(AdapterItems(
+                                functionsClass.appName(aSavedLine),
+                                aSavedLine,
+                                if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
+                    }
+                    advanceSavedListAdapter = AppSavedListAdapter(applicationContext, functionsClass,
+                            selectedAppsListItem, 1,
+                            appsConfirmButton, this@AppSelectionList)
+                    listPopupWindow.setAdapter(advanceSavedListAdapter)
+                    listPopupWindow.anchorView = advanceAppSelectionListBinding.popupAnchorView
+                    listPopupWindow.width = android.widget.ListPopupWindow.WRAP_CONTENT
+                    listPopupWindow.height = android.widget.ListPopupWindow.WRAP_CONTENT
+                    listPopupWindow.isModal = true
+                    listPopupWindow.setBackgroundDrawable(null)
+                    listPopupWindow.show()
+                    listPopupWindow.setOnDismissListener {
+
+                        appsConfirmButton?.makeItVisible()
+                    }
+
+                    appsConfirmButton?.setDismissBackground()
+                }
+            }
+
+            advanceAppSelectionListBinding.secondSplitIcon.setOnClickListener {
+                if (getFileStreamPath(PublicVariable.categoryName).exists() && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                    selectedAppsListItem.clear()
+
+                    val savedLine = functionsClass.readFileLine(PublicVariable.categoryName)
+                    for (aSavedLine in savedLine) {
+                        selectedAppsListItem.add(AdapterItems(
+                                functionsClass.appName(aSavedLine),
+                                aSavedLine,
+                                if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
+                    }
+                    advanceSavedListAdapter = AppSavedListAdapter(applicationContext, functionsClass,
+                            selectedAppsListItem, 2,
+                            appsConfirmButton, this@AppSelectionList)
+                    listPopupWindow.setAdapter(advanceSavedListAdapter)
+                    listPopupWindow.anchorView = advanceAppSelectionListBinding.popupAnchorView
+                    listPopupWindow.width = android.widget.ListPopupWindow.WRAP_CONTENT
+                    listPopupWindow.height = android.widget.ListPopupWindow.WRAP_CONTENT
+                    listPopupWindow.isModal = true
+                    listPopupWindow.setBackgroundDrawable(null)
+                    listPopupWindow.show()
+                    listPopupWindow.setOnDismissListener {
+
+                        appsConfirmButton?.makeItVisible()
+                    }
+
+                    appsConfirmButton?.setDismissBackground()
+                }
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
+        this@AppSelectionList.finish()
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
 
         functionsClass.navigateToClass(FoldersConfigurations::class.java, this@AppSelectionList)
-    }
-
-    override fun onClick(view: View?) {
-
     }
 
     /*ConfirmButtonProcess*/
@@ -173,6 +266,7 @@ class AppSelectionList : AppCompatActivity(), View.OnClickListener,
             }
             advanceSavedListAdapter = AppSavedListAdapter(applicationContext, functionsClass,
                     selectedAppsListItem, 1,
+                    appsConfirmButton,
                     this@AppSelectionList)
 
             listPopupWindow.setAdapter(advanceSavedListAdapter)
@@ -183,7 +277,7 @@ class AppSelectionList : AppCompatActivity(), View.OnClickListener,
             listPopupWindow.isModal = true
             listPopupWindow.setOnDismissListener {
 
-                sendBroadcast(Intent(getString(R.string.visibilityActionAdvance)))
+                appsConfirmButton?.makeItVisible()
             }
             listPopupWindow.show()
         }
@@ -201,7 +295,6 @@ class AppSelectionList : AppCompatActivity(), View.OnClickListener,
         loadInstalledAppsData()
 
         listPopupWindow.dismiss()
-        sendBroadcast(Intent(getString(R.string.visibilityActionAdvance)))
     }
 
     override fun showSplitShortcutPicker() {
@@ -216,38 +309,4 @@ class AppSelectionList : AppCompatActivity(), View.OnClickListener,
         }
     }
     /*ConfirmButtonProcess*/
-
-    /*ConfirmButtonViewInterface*/
-    override fun makeItVisible(appsConfirmButton: AppsConfirmButton) {
-        val drawShow = applicationContext.getDrawable(R.drawable.draw_saved_show) as LayerDrawable
-        val backgroundTemporary  = drawShow.findDrawableByLayerId(R.id.backgroundTemporary)
-        backgroundTemporary.setTint(PublicVariable.primaryColorOpposite)
-        appsConfirmButton.background = drawShow
-
-        if (!appsConfirmButton.isShown) {
-            appsConfirmButton.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-            appsConfirmButton.visibility = View.VISIBLE
-        }
-    }
-
-    override fun startCustomAnimation(appsConfirmButton: AppsConfirmButton, animation: Animation?) {
-        if (animation == null) {
-
-            appsConfirmButton.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.scale_confirm_button))
-
-        } else {
-
-            appsConfirmButton.startAnimation(animation)
-
-        }
-    }
-
-    override fun setDismissBackground(appsConfirmButton: AppsConfirmButton) {
-        val drawDismiss = applicationContext.getDrawable(R.drawable.draw_saved_dismiss) as LayerDrawable
-        val backgroundTemporary: Drawable = drawDismiss.findDrawableByLayerId(R.id.backgroundTemporary)
-        backgroundTemporary.setTint(PublicVariable.primaryColor)
-
-        appsConfirmButton.background = drawDismiss
-    }
-    /*ConfirmButtonViewInterface*/
 }

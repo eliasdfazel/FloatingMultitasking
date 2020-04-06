@@ -12,7 +12,6 @@ package net.geekstools.floatshort.PRO.Folders.FoldersAdapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -28,6 +27,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton;
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
@@ -45,8 +45,10 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
 
     private Context context;
 
-    FunctionsClass functionsClass;
-    FunctionsClassSecurity functionsClassSecurity;
+    private FunctionsClass functionsClass;
+    private FunctionsClassSecurity functionsClassSecurity;
+
+    private AppsConfirmButton appsConfirmButton;
 
     ConfirmButtonProcessInterface confirmButtonProcessInterface;
 
@@ -59,15 +61,20 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
 
     private ArrayList<AdapterItems> adapterItems;
 
-    public AppSelectionListAdapter(Context context, AdvanceAppSelectionListBinding advanceAppSelectionListBinding, 
+    public AppSelectionListAdapter(Context context,
+                                   FunctionsClass functionsClass,
+                                   AdvanceAppSelectionListBinding advanceAppSelectionListBinding,
                                    ArrayList<AdapterItems> adapterItems,
+                                   AppsConfirmButton appsConfirmButton,
                                    ConfirmButtonProcessInterface confirmButtonProcessInterface) {
         this.context = context;
         this.adapterItems = adapterItems;
 
+        this.appsConfirmButton = appsConfirmButton;
+
         this.confirmButtonProcessInterface = confirmButtonProcessInterface;
 
-        functionsClass = new FunctionsClass(context);
+        this.functionsClass = functionsClass;
         functionsClassSecurity = new FunctionsClassSecurity(context);
 
 
@@ -154,7 +161,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                             confirmButtonProcessInterface.savedShortcutCounter();
 
                             confirmButtonProcessInterface.hideSavedShortcutList();
-                            context.sendBroadcast(new Intent(context.getString(R.string.visibilityActionAdvance)));
+                            appsConfirmButton.makeItVisible();
 
                             if (functionsClassSecurity.isAppLocked(PublicVariable.categoryName)) {
                                 functionsClassSecurity.doUnlockApps(adapterItems.get(position).getPackageName());
@@ -186,7 +193,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                                 @Override
                                 public void onAnimationStart(Animation animation) {
                                     confirmButtonProcessInterface.hideSavedShortcutList();
-                                    context.sendBroadcast(new Intent(context.getString(R.string.visibilityActionAdvance)));
+                                    appsConfirmButton.makeItVisible();
 
                                     temporaryFallingIcon.setVisibility(View.VISIBLE);
                                 }
@@ -195,7 +202,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                                 public void onAnimationEnd(Animation animation) {
                                     temporaryFallingIcon.setVisibility(View.INVISIBLE);
 
-                                    context.sendBroadcast(new Intent(context.getString(R.string.animtaionActionAdvance)));
+                                    appsConfirmButton.startCustomAnimation(null);
                                     confirmButtonProcessInterface.savedShortcutCounter();
                                 }
 
