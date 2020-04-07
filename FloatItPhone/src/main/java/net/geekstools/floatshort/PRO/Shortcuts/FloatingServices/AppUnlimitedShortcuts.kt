@@ -168,7 +168,7 @@ class AppUnlimitedShortcuts : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
-        FunctionsClassDebug.PrintDebug(this.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
+        FunctionsClassDebug.PrintDebug(this@AppUnlimitedShortcuts.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
         val startId = (serviceStartId - 1)
 
@@ -415,7 +415,7 @@ class AppUnlimitedShortcuts : Service() {
                                             floatingShortcutsBinding.get(startId).root,
                                             packageNames[startId],
                                             classNames[startId],
-                                            AppUnlimitedShortcuts::class.java.simpleName,
+                                            this@AppUnlimitedShortcuts.javaClass.simpleName,
                                             startId,
                                             initialX,
                                             initialY
