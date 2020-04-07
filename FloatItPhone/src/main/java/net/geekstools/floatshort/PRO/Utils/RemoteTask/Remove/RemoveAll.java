@@ -34,7 +34,7 @@ public class RemoveAll extends Service {
     public int onStartCommand(Intent intent, int flags, final int startId) {
         /*Apps*/
         Intent App_Unlimited_Shortcuts = new Intent(getApplicationContext(), AppUnlimitedShortcuts.class);
-        App_Unlimited_Shortcuts.putExtra("PackageName", getString(R.string.remove_all_floatings));
+        App_Unlimited_Shortcuts.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Shortcuts);
 
         Intent App_Unlimited_Wifi = new Intent(getApplicationContext(), net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Wifi.class);

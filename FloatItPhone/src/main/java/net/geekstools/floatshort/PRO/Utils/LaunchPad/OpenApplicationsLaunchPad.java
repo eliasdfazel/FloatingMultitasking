@@ -17,24 +17,38 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 
 public class OpenApplicationsLaunchPad extends Activity {
 
-    FunctionsClass functionsClass;
-
     @Override
     protected void onCreate(Bundle Saved) {
         super.onCreate(Saved);
-        functionsClass = new FunctionsClass(getApplicationContext());
+
+        FunctionsClass functionsClass = new FunctionsClass(getApplicationContext());
+
         String packageName = getIntent().getStringExtra("packageName");
+
         try {
             if (getIntent().hasExtra("className")) {
+
                 String className = getIntent().getStringExtra("className");
-                functionsClass.openApplicationFromActivity(OpenApplicationsLaunchPad.this, packageName, className);
+
+                functionsClass.
+                        openApplicationFromActivity(OpenApplicationsLaunchPad.this,
+                                packageName,
+                                className);
+
             } else {
-                functionsClass.openApplicationFromActivity(OpenApplicationsLaunchPad.this, packageName);
+
+                functionsClass
+                        .openApplicationFromActivity(OpenApplicationsLaunchPad.this,
+                                packageName);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            functionsClass.openApplicationFromActivity(OpenApplicationsLaunchPad.this, packageName);
+
+            functionsClass
+                    .openApplicationFromActivity(OpenApplicationsLaunchPad.this,
+                            packageName);
         }
+
         finish();
     }
 }

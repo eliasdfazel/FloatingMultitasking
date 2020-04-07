@@ -289,8 +289,6 @@
         <activity
             android:name=".Utils.LaunchPad.OpenApplicationsLaunchPad"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:noHistory="true"
-            android:excludeFromRecents="true"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
             android:theme="@style/Transparent"/>
