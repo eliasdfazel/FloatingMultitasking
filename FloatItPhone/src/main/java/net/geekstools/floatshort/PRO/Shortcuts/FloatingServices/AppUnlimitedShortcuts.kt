@@ -696,17 +696,6 @@ class AppUnlimitedShortcuts : Service() {
                 true
             }
 
-            /*
-            *
-            *
-            *
-            *
-            * Broadcast Receiver to Interface
-            *
-            *
-            *
-            *
-            * */
             if (serviceStartId == 1) {
                 val floatingShortcutClassInCommand: String = this@AppUnlimitedShortcuts.javaClass.simpleName
 
