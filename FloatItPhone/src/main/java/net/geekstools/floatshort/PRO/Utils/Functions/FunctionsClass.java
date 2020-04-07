@@ -2122,6 +2122,7 @@ public class FunctionsClass {
                 Toast(appName(packageName), Gravity.BOTTOM);
 
                 Intent launchIntentForPackage = context.getPackageManager().getLaunchIntentForPackage(packageName);
+                launchIntentForPackage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 instanceOfActivity.startActivity(launchIntentForPackage);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2147,6 +2148,7 @@ public class FunctionsClass {
 
                 Intent openAlias = new Intent();
                 openAlias.setClassName(packageName, className);
+                openAlias.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 instanceOfActivity.startActivity(openAlias);
             } catch (Exception e) {
                 e.printStackTrace();

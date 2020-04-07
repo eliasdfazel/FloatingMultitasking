@@ -708,7 +708,8 @@ class AppUnlimitedShortcuts : Service() {
             *
             * */
             if (serviceStartId == 1) {
-                val floatingShortcutClassInCommand = AppUnlimitedShortcuts::class.java.simpleName
+                val floatingShortcutClassInCommand: String = this@AppUnlimitedShortcuts.javaClass.simpleName
+
                 val intentFilter = IntentFilter()
                 intentFilter.addAction("Split_Apps_Single_$floatingShortcutClassInCommand")
                 intentFilter.addAction("Pin_App_$floatingShortcutClassInCommand")
@@ -720,6 +721,7 @@ class AppUnlimitedShortcuts : Service() {
                 intentFilter.addAction("Notification_Dot")
                 intentFilter.addAction("Notification_Dot_No")
                 val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+
                     override fun onReceive(context: Context, intent: Intent) {
                         if (intent.action == "Split_Apps_Single_$floatingShortcutClassInCommand" && PublicVariable.splitScreen) {
                             FunctionsClassDebug.PrintDebug("Split Apps Single")
@@ -747,27 +749,39 @@ class AppUnlimitedShortcuts : Service() {
                             FunctionsClassDebug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 0)]))
 
                             movePermit[intent.getIntExtra("startId", 0)] = false
-                            var pinDrawable: Drawable? = null
+                            var pinDrawable: Drawable = functionsClass.appIcon(activityInformation[intent.getIntExtra("startId", 0)]).mutate()
+
                             if (functionsClass.customIconsEnable()) {
                                 pinDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[intent.getIntExtra("startId", 0)]).mutate()
                             } else {
                                 when (functionsClass.shapesImageId()) {
                                     1 -> {
-                                        pinDrawable = getDrawable(R.drawable.pin_droplet_icon)
+                                        pinDrawable = getDrawable(R.drawable.pin_droplet_icon) as Drawable
                                         controlIcons[intent.getIntExtra("startId", 0)].setPadding(-3, -3, -3, -3)
                                     }
-                                    2 -> pinDrawable = getDrawable(R.drawable.pin_circle_icon)
-                                    3 -> pinDrawable = getDrawable(R.drawable.pin_square_icon)
-                                    4 -> pinDrawable = getDrawable(R.drawable.pin_squircle_icon)
-                                    0 -> pinDrawable = functionsClass.appIcon(activityInformation[intent.getIntExtra("startId", 0)]).mutate()
+                                    2 -> {
+                                        pinDrawable = getDrawable(R.drawable.pin_circle_icon) as Drawable
+                                    }
+                                    3 -> {
+                                        pinDrawable = getDrawable(R.drawable.pin_square_icon) as Drawable
+                                    }
+                                    4 -> {
+                                        pinDrawable = getDrawable(R.drawable.pin_squircle_icon) as Drawable
+                                    }
+                                    0 -> {
+                                        pinDrawable = functionsClass.appIcon(activityInformation[intent.getIntExtra("startId", 0)]).mutate()
+                                    }
                                 }
                             }
-                            pinDrawable!!.setTint(functionsClass.setColorAlpha(Color.RED, 175f))
+                            pinDrawable.setTint(functionsClass.setColorAlpha(Color.RED, 175f))
+
                             if (functionsClass.returnAPI() >= 26) {
-                                pinDrawable!!.alpha = 175
-                                pinDrawable!!.setTint(Color.RED)
+                                pinDrawable.alpha = 175
+                                pinDrawable.setTint(Color.RED)
+
                                 controlIcons[intent.getIntExtra("startId", 0)].alpha = 0.50f
                             }
+
                             controlIcons[intent.getIntExtra("startId", 0)].setImageDrawable(pinDrawable)
                         } else if (intent.action == "Unpin_App_$floatingShortcutClassInCommand") {
                             FunctionsClassDebug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 0)]))
@@ -800,6 +814,7 @@ class AppUnlimitedShortcuts : Service() {
                                     val splashReveal = Intent(applicationContext, FloatingSplash::class.java)
                                     splashReveal.putExtra("packageName", packageNames[intent.getIntExtra("startId", 0)])
                                     splashReveal.putExtra("className", classNames[intent.getIntExtra("startId", 0)])
+
                                     if (moveDetection != null) {
                                         splashReveal.putExtra("X", moveDetection.x)
                                         splashReveal.putExtra("Y", moveDetection.y)
@@ -807,6 +822,7 @@ class AppUnlimitedShortcuts : Service() {
                                         splashReveal.putExtra("X", layoutParams[intent.getIntExtra("startId", 0)].x)
                                         splashReveal.putExtra("Y", layoutParams[intent.getIntExtra("startId", 0)].y)
                                     }
+
                                     splashReveal.putExtra("HW", layoutParams[intent.getIntExtra("startId", 0)].width)
                                     startService(splashReveal)
                                 } else {
@@ -892,33 +908,35 @@ class AppUnlimitedShortcuts : Service() {
                                 if (floatingShortcutsBinding.get(startIdNotification) != null) {
                                     if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
                                         /*add dot*/
-                                        var dotDrawable: Drawable? = null
+                                        var dotDrawable: Drawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
                                         if (functionsClass.customIconsEnable()) {
                                             dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[startIdNotification]).mutate()
                                         } else {
                                             when (functionsClass.shapesImageId()) {
                                                 1 -> {
-                                                    dotDrawable = getDrawable(R.drawable.dot_droplet_icon)
+                                                    dotDrawable = getDrawable(R.drawable.dot_droplet_icon) as Drawable
                                                 }
                                                 2 -> {
-                                                    dotDrawable = getDrawable(R.drawable.dot_circle_icon)
+                                                    dotDrawable = getDrawable(R.drawable.dot_circle_icon) as Drawable
                                                 }
                                                 3 -> {
-                                                    dotDrawable = getDrawable(R.drawable.dot_square_icon)
+                                                    dotDrawable = getDrawable(R.drawable.dot_square_icon) as Drawable
                                                 }
                                                 4 -> {
-                                                    dotDrawable = getDrawable(R.drawable.dot_squircle_icon)
+                                                    dotDrawable = getDrawable(R.drawable.dot_squircle_icon) as Drawable
                                                 }
                                                 0 -> {
                                                     dotDrawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
                                                 }
                                             }
                                         }
+
                                         if (PublicVariable.themeLightDark) {
-                                            dotDrawable!!.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 1.30f))
+                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 1.30f))
                                         } else {
-                                            dotDrawable!!.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 0.50f))
+                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 0.50f))
                                         }
+
                                         notificationDots[startIdNotification].setImageDrawable(dotDrawable)
                                         notificationDots[startIdNotification].visibility = View.VISIBLE
                                     }
@@ -927,18 +945,14 @@ class AppUnlimitedShortcuts : Service() {
                                 e.printStackTrace()
                             }
                         } else if (intent.action == "Notification_Dot_No") {
-                            try {
-                                val notificationPackage: String = intent.getStringExtra("NotificationPackage")
-                                val startIdNotification: Int = mapPackageNameStartId[notificationPackage]!!
+                            val notificationPackage: String = intent.getStringExtra("NotificationPackage")
+                            val startIdNotification: Int = mapPackageNameStartId[notificationPackage]!!
 
-                                if (floatingShortcutsBinding.get(startIdNotification) != null) {
-                                    if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
-                                        /*remove dot*/
-                                        notificationDots[startIdNotification].visibility = View.INVISIBLE
-                                    }
+                            if (floatingShortcutsBinding.get(startIdNotification) != null) {
+                                if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
+                                    /*remove dot*/
+                                    notificationDots[startIdNotification].visibility = View.INVISIBLE
                                 }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
                             }
                         }
                     }
