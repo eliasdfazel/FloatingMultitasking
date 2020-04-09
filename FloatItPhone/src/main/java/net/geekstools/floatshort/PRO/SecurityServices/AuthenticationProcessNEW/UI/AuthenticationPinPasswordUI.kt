@@ -80,6 +80,16 @@ class AuthenticationPinPasswordUI : DialogFragment() {
 
         setupAuthenticationPinPasswordUI()
 
+        return authDialogContentBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        authDialogContentBinding.pinPasswordEditText.requestFocus()
+        val inputMethodManager: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(authDialogContentBinding.pinPasswordEditText, InputMethodManager.SHOW_IMPLICIT)
+
         authDialogContentBinding.pinPasswordEditText.setOnEditorActionListener { textView, actionId, event ->
 
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -107,7 +117,7 @@ class AuthenticationPinPasswordUI : DialogFragment() {
                 }
             }
 
-            true
+            false
         }
 
         authDialogContentBinding.pinPasswordEditText.addTextChangedListener(object : TextWatcher {
@@ -127,16 +137,22 @@ class AuthenticationPinPasswordUI : DialogFragment() {
         })
 
         authDialogContentBinding.cancelAuth.setOnLongClickListener {
+            SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
+
+            this@AuthenticationPinPasswordUI.dismiss()
+
             requireActivity().finish()
 
             true
         }
+    }
 
-        authDialogContentBinding.pinPasswordEditText.requestFocus()
-        val inputMethodManager: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(authDialogContentBinding.pinPasswordEditText, InputMethodManager.SHOW_IMPLICIT)
+    override fun onDismiss(dialogInterface: DialogInterface) {
+        super.onDismiss(dialogInterface)
+    }
 
-        return authDialogContentBinding.root
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
     }
 
     override fun onStart() {
@@ -148,23 +164,17 @@ class AuthenticationPinPasswordUI : DialogFragment() {
                 KeyEvent.KEYCODE_BACK -> {
                     SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
 
+                    this@AuthenticationPinPasswordUI.dismiss()
+
                     requireActivity().finish()
                 }
             }
 
-            true
+            false
         }
     }
 
     override fun onPause() {
         super.onPause()
-    }
-
-    override fun onDismiss(dialogInterface: DialogInterface) {
-        super.onDismiss(dialogInterface)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
     }
 }

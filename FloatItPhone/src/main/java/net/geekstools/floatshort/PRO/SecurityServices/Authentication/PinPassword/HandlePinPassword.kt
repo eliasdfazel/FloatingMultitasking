@@ -28,15 +28,14 @@ import android.widget.Toast
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.auth_handler_views.*
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.databinding.AuthHandlerViewsBinding
 import java.util.*
-
 
 class HandlePinPassword : Activity() {
 
@@ -48,9 +47,12 @@ class HandlePinPassword : Activity() {
 
     private var currentPasswordExist: Boolean = false
 
+    lateinit var authHandlerViewsBinding: AuthHandlerViewsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.auth_handler_views)
+        authHandlerViewsBinding = AuthHandlerViewsBinding.inflate(layoutInflater)
+        setContentView(authHandlerViewsBinding.root)
 
         functionClass = FunctionsClass(applicationContext)
         functionsClassSecurity = FunctionsClassSecurity(applicationContext)
@@ -75,28 +77,28 @@ class HandlePinPassword : Activity() {
         }
         firebaseUser = firebaseAuth.currentUser!!
 
-        pinFullViewScrollView.setBackgroundColor(PublicVariable.primaryColor)
-        pinFullView.setBackgroundColor(PublicVariable.primaryColor)
+        authHandlerViewsBinding.pinFullViewScrollView.setBackgroundColor(PublicVariable.primaryColor)
+        authHandlerViewsBinding.pinFullView.setBackgroundColor(PublicVariable.primaryColor)
 
-        textInputPasswordCurrent.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
-        textInputPinPassword.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
-        textInputPasswordRepeat.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
+        authHandlerViewsBinding.textInputPasswordCurrent.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
+        authHandlerViewsBinding.textInputPinPassword.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
+        authHandlerViewsBinding.textInputPasswordRepeat.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
 
-        textInputPasswordCurrent.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
-        textInputPinPassword.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
-        textInputPasswordRepeat.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
+        authHandlerViewsBinding.textInputPasswordCurrent.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
+        authHandlerViewsBinding.textInputPinPassword.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
+        authHandlerViewsBinding.textInputPasswordRepeat.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
 
-        passwordCurrent.setTextColor(PublicVariable.colorLightDarkOpposite)
-        pinPasswordEditText.setTextColor(PublicVariable.colorLightDarkOpposite)
-        passwordRepeat.setTextColor(PublicVariable.colorLightDarkOpposite)
+        authHandlerViewsBinding.passwordCurrent.setTextColor(PublicVariable.colorLightDarkOpposite)
+        authHandlerViewsBinding.pinPasswordEditText.setTextColor(PublicVariable.colorLightDarkOpposite)
+        authHandlerViewsBinding.passwordRepeat.setTextColor(PublicVariable.colorLightDarkOpposite)
 
         currentPasswordExist = (functionClass.readPreference(".Password", "Pin", "0") != "0")
         if (currentPasswordExist) {
-            textInputPasswordCurrent.visibility = View.VISIBLE
-            forgotPassword.visibility = View.VISIBLE
+            authHandlerViewsBinding.textInputPasswordCurrent.visibility = View.VISIBLE
+            authHandlerViewsBinding.forgotPassword.visibility = View.VISIBLE
         }
 
-        pinPasswordEditText.addTextChangedListener(object : TextWatcher {
+        authHandlerViewsBinding.pinPasswordEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
                 FunctionsClassDebug.PrintDebug("*** Pin Password == ${editable.toString()} ***")
             }
@@ -110,7 +112,7 @@ class HandlePinPassword : Activity() {
             }
         })
 
-        passwordRepeat.addTextChangedListener(object : TextWatcher {
+        authHandlerViewsBinding.passwordRepeat.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
                 FunctionsClassDebug.PrintDebug("*** Pin Password == ${editable.toString()} ***")
             }
@@ -124,7 +126,7 @@ class HandlePinPassword : Activity() {
             }
         })
 
-        pinPasswordEditText.setOnEditorActionListener { textView, actionId, event ->
+        authHandlerViewsBinding.pinPasswordEditText.setOnEditorActionListener { textView, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
 
             }
@@ -132,7 +134,7 @@ class HandlePinPassword : Activity() {
             false
         }
 
-        passwordRepeat.setOnEditorActionListener { textView, actionId, event ->
+        authHandlerViewsBinding.passwordRepeat.setOnEditorActionListener { textView, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (currentPasswordExist) {
                     editPinPassword()
@@ -144,7 +146,7 @@ class HandlePinPassword : Activity() {
             false
         }
 
-        donePassword.setOnClickListener {
+        authHandlerViewsBinding.donePassword.setOnClickListener {
             if (currentPasswordExist) {
                 editPinPassword()
             } else {
@@ -156,9 +158,9 @@ class HandlePinPassword : Activity() {
     override fun onStart() {
         super.onStart()
 
-        forgotPassword.setOnClickListener {
+        authHandlerViewsBinding.forgotPassword.setOnClickListener {
             functionClass.doVibrate(113)
-            spinKitView.visibility = View.VISIBLE
+            authHandlerViewsBinding.spinKitView.visibility = View.VISIBLE
 
             if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
                 FunctionsClassSecurity.AuthOpenAppValues.authComponentName = getString(R.string.securityServices)
@@ -184,7 +186,7 @@ class HandlePinPassword : Activity() {
                     functionClass.Toast(getString(R.string.passwordResetSent), Gravity.BOTTOM, getColor(R.color.red_transparent))
 
                     Handler().postDelayed({
-                        spinKitView.visibility = View.INVISIBLE
+                        authHandlerViewsBinding.spinKitView.visibility = View.INVISIBLE
                     }, 1333)
                 }
             }
@@ -195,10 +197,10 @@ class HandlePinPassword : Activity() {
         super.onResume()
 
         if (!functionsClassSecurity.fingerprintEnrolled()) {
-            securityWarningIcon.visibility = View.VISIBLE
-            securityWarningText.visibility = View.VISIBLE
+            authHandlerViewsBinding.securityWarningIcon.visibility = View.VISIBLE
+            authHandlerViewsBinding.securityWarningText.visibility = View.VISIBLE
 
-            securityWarningIcon.setOnClickListener {
+            authHandlerViewsBinding.securityWarningIcon.setOnClickListener {
                 functionClass.doVibrate(99)
 
                 val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -209,7 +211,7 @@ class HandlePinPassword : Activity() {
                 startActivity(intent)
             }
 
-            securityWarningText.setOnClickListener {
+            authHandlerViewsBinding.securityWarningText.setOnClickListener {
                 functionClass.doVibrate(99)
 
                 val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -229,16 +231,16 @@ class HandlePinPassword : Activity() {
     }
 
     private fun saveNewPinPassword() {
-        if (pinPasswordEditText.text.isNullOrBlank() || passwordRepeat.text.isNullOrBlank()) {
-            pinPasswordEditText.setText("")
-            passwordRepeat.setText("")
+        if (authHandlerViewsBinding.pinPasswordEditText.text.isNullOrBlank() || authHandlerViewsBinding.passwordRepeat.text.isNullOrBlank()) {
+            authHandlerViewsBinding.pinPasswordEditText.setText("")
+            authHandlerViewsBinding.passwordRepeat.setText("")
 
-            textInputPinPassword.error = getString(R.string.passwordError)
-            textInputPasswordRepeat.error = getString(R.string.passwordError)
+            authHandlerViewsBinding.textInputPinPassword.error = getString(R.string.passwordError)
+            authHandlerViewsBinding.textInputPasswordRepeat.error = getString(R.string.passwordError)
         } else {
-            if ((pinPasswordEditText.text.toString() == passwordRepeat.text.toString())) {
+            if ((authHandlerViewsBinding.pinPasswordEditText.text.toString() == authHandlerViewsBinding.passwordRepeat.text.toString())) {
                 try {
-                    functionsClassSecurity.saveEncryptedPinPassword(pinPasswordEditText.text.toString())
+                    functionsClassSecurity.saveEncryptedPinPassword(authHandlerViewsBinding.pinPasswordEditText.text.toString())
                     functionsClassSecurity.uploadLockedAppsData()
 
                     this@HandlePinPassword.finish()
@@ -247,26 +249,26 @@ class HandlePinPassword : Activity() {
                     e.printStackTrace()
                 }
             } else {
-                pinPasswordEditText.setText("")
-                passwordRepeat.setText("")
+                authHandlerViewsBinding.pinPasswordEditText.setText("")
+                authHandlerViewsBinding.passwordRepeat.setText("")
 
-                textInputPinPassword.error = getString(R.string.passwordError)
-                textInputPasswordRepeat.error = getString(R.string.passwordError)
+                authHandlerViewsBinding.textInputPinPassword.error = getString(R.string.passwordError)
+                authHandlerViewsBinding.textInputPasswordRepeat.error = getString(R.string.passwordError)
             }
         }
     }
 
     private fun editPinPassword() {
         try {
-            if (passwordCurrent.text.isNullOrBlank()) {
-                passwordCurrent.setText("")
-                passwordCurrent.error = getString(R.string.passwordError)
+            if (authHandlerViewsBinding.passwordCurrent.text.isNullOrBlank()) {
+                authHandlerViewsBinding.passwordCurrent.setText("")
+                authHandlerViewsBinding.passwordCurrent.error = getString(R.string.passwordError)
             } else {
-                if (functionsClassSecurity.isEncryptedPinPasswordEqual(passwordCurrent.text.toString())) {
+                if (functionsClassSecurity.isEncryptedPinPasswordEqual(authHandlerViewsBinding.passwordCurrent.text.toString())) {
                     saveNewPinPassword()
                 } else {
-                    passwordCurrent.setText("")
-                    passwordCurrent.error = getString(R.string.passwordError)
+                    authHandlerViewsBinding. passwordCurrent.setText("")
+                    authHandlerViewsBinding.passwordCurrent.error = getString(R.string.passwordError)
                 }
             }
         } catch (e: Exception) {
