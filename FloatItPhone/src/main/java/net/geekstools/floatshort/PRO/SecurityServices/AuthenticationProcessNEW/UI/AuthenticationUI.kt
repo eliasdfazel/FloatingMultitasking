@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.Extensions.setupAthenticationUIWindow
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 
 class AuthenticationUI : FragmentActivity() {
 
@@ -47,18 +48,64 @@ class AuthenticationUI : FragmentActivity() {
 
                 override fun onAuthenticationError(errorCode: Int, errorString: CharSequence) {
                     super.onAuthenticationError(errorCode, errorString)
+                    FunctionsClassDebug.PrintDebug("*** ${errorCode}. ${errorString} ***")
+
+                    when (errorCode) {
+                        BiometricPrompt.ERROR_USER_CANCELED -> {
+                            FunctionsClassDebug.PrintDebug("*** ERROR USER CANCELED ***")
+
+                            this@AuthenticationUI.finish()
+                        }
+                        BiometricPrompt.ERROR_CANCELED -> {
+                            FunctionsClassDebug.PrintDebug("*** ERROR CANCELED ***")
+
+                            this@AuthenticationUI.finish()
+                        }
+                        BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> {
+                            FunctionsClassDebug.PrintDebug("*** ERROR LOCKOUT PERMANENT ***")
+
+                            this@AuthenticationUI.finish()
+                        }
+                        BiometricPrompt.ERROR_LOCKOUT -> {
+                            FunctionsClassDebug.PrintDebug("*** ERROR LOCKOUT ***")
+                            /*
+                            *
+                            *
+                            *
+                            * Show Pin Password
+                            *
+                            *
+                            *
+                            */
+                        }
+                        BiometricPrompt.ERROR_TIMEOUT -> {
+                            FunctionsClassDebug.PrintDebug("*** ERROR TIMEOUT ***")
+                            /*
+                            *
+                            *
+                            *
+                            * Show Pin Password
+                            *
+                            *
+                            *
+                            */
+                        }
+                    }
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
+                    FunctionsClassDebug.PrintDebug("*** Authentication Failed ***")
 
                     authenticationCallback.failedAuthenticated()
                 }
 
                 override fun onAuthenticationSucceeded(authenticationResult: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(authenticationResult)
+                    FunctionsClassDebug.PrintDebug("*** Authentication Succeeded ***")
 
-                    authenticationCallback.authenticatedFloatingShortcuts()
+                    authenticationCallback
+                            .authenticatedFloatingShortcuts()
 
                     this@AuthenticationUI.finish()
                 }

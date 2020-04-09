@@ -600,20 +600,6 @@ class AppUnlimitedShortcuts : Service() {
                 } else {
                     if (openPermit[startId]) {
                         if (functionsClassSecurity.isAppLocked(packageNames[startId])) {
-                            /*FunctionsClassSecurity.AuthOpenAppValues.authFloatingShortcuts = true
-                            FunctionsClassSecurity.AuthOpenAppValues.authComponentName = packageNames[startId]
-                            FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName = classNames[startId]
-
-                            if (moveDetection != null) {
-                                FunctionsClassSecurity.AuthOpenAppValues.authPositionX = moveDetection.x
-                                FunctionsClassSecurity.AuthOpenAppValues.authPositionY = moveDetection.y
-                            } else {
-                                FunctionsClassSecurity.AuthOpenAppValues.authPositionX = layoutParams[startId].x
-                                FunctionsClassSecurity.AuthOpenAppValues.authPositionY = layoutParams[startId].y
-                            }
-
-                            FunctionsClassSecurity.AuthOpenAppValues.authHW = layoutParams[startId].width
-                            functionsClassSecurity.openAuthInvocation()*/
 
                             AuthenticationUI.authenticationCallback = object : AuthenticationCallback {
 
@@ -654,12 +640,13 @@ class AppUnlimitedShortcuts : Service() {
 
                                 }
                             }
-                            startActivity(Intent(applicationContext, AuthenticationUI::class.java)
-                                    .putExtra("PackageName", packageNames[startId])
-                                    .putExtra("ClassName", classNames[startId])
-                                    .putExtra("PrimaryColor", iconColors[startId])
-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                    ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
+
+                            startActivity(Intent(applicationContext, AuthenticationUI::class.java).apply {
+                                putExtra("PackageName", packageNames[startId])
+                                putExtra("ClassName", classNames[startId])
+                                putExtra("PrimaryColor", iconColors[startId])
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
                         } else {
                             if (functionsClass.splashReveal()) {
