@@ -1,31 +1,21 @@
 package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI
 
-import android.content.ComponentName
 import android.os.Bundle
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.Extensions.setupAthenticationUIWindow
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
+import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.Extensions.setupAuthenticationUIText
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.Extensions.setupAuthenticationUIWindow
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 
-class AuthenticationUI : FragmentActivity() {
-
-    /*
-    *
-    * define timer
-    *
-    *
-    * */
+class AuthenticationFingerprintUI : FragmentActivity() {
 
     val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
-    }
-
-    companion object {
-        lateinit var authenticationCallback: AuthenticationCallback
     }
 
     private var attemptCounter: Int = 0
@@ -33,11 +23,9 @@ class AuthenticationUI : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setupAthenticationUIWindow()
+        setupAuthenticationUIWindow()
 
-        val packageName: String = intent.getStringExtra("PackageName")!!
-        val className: String = intent.getStringExtra("ClassName")!!
-        val activityInformation = packageManager.getActivityInfo(ComponentName(packageName, className),0)
+        val dialogueTitle: String = setupAuthenticationUIText()
 
         val biometricManager = BiometricManager.from(applicationContext)
         if (biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS){
@@ -54,41 +42,42 @@ class AuthenticationUI : FragmentActivity() {
                         BiometricPrompt.ERROR_USER_CANCELED -> {
                             FunctionsClassDebug.PrintDebug("*** ERROR USER CANCELED ***")
 
-                            this@AuthenticationUI.finish()
+                            this@AuthenticationFingerprintUI.finish()
                         }
                         BiometricPrompt.ERROR_CANCELED -> {
                             FunctionsClassDebug.PrintDebug("*** ERROR CANCELED ***")
 
-                            this@AuthenticationUI.finish()
+                            this@AuthenticationFingerprintUI.finish()
                         }
                         BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> {
                             FunctionsClassDebug.PrintDebug("*** ERROR LOCKOUT PERMANENT ***")
 
-                            this@AuthenticationUI.finish()
+                            this@AuthenticationFingerprintUI.finish()
+                        }
+                        BiometricPrompt.ERROR_HW_NOT_PRESENT -> {
+                            FunctionsClassDebug.PrintDebug("*** ERROR HW NOT PRESENT ***")
+
+                            triggerPinPasswordFragment(dialogueTitle)
+                        }
+                        BiometricPrompt.ERROR_HW_UNAVAILABLE -> {
+                            FunctionsClassDebug.PrintDebug("*** ERROR HW UNAVAILABLE ***")
+
+                            triggerPinPasswordFragment(dialogueTitle)
                         }
                         BiometricPrompt.ERROR_LOCKOUT -> {
                             FunctionsClassDebug.PrintDebug("*** ERROR LOCKOUT ***")
-                            /*
-                            *
-                            *
-                            *
-                            * Show Pin Password
-                            *
-                            *
-                            *
-                            */
+
+                            triggerPinPasswordFragment(dialogueTitle)
                         }
                         BiometricPrompt.ERROR_TIMEOUT -> {
                             FunctionsClassDebug.PrintDebug("*** ERROR TIMEOUT ***")
-                            /*
-                            *
-                            *
-                            *
-                            * Show Pin Password
-                            *
-                            *
-                            *
-                            */
+
+                            triggerPinPasswordFragment(dialogueTitle)
+                        }
+                        else -> {
+                            FunctionsClassDebug.PrintDebug("*** ERROR UNKNOWN ***")
+
+                            triggerPinPasswordFragment(dialogueTitle)
                         }
                     }
                 }
@@ -97,26 +86,33 @@ class AuthenticationUI : FragmentActivity() {
                     super.onAuthenticationFailed()
                     FunctionsClassDebug.PrintDebug("*** Authentication Failed ***")
 
-                    authenticationCallback.failedAuthenticated()
+                    SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
+
+                    attemptCounter++
+                    if (attemptCounter == 3) {
+
+                        triggerPinPasswordFragment(dialogueTitle)
+                    }
                 }
 
                 override fun onAuthenticationSucceeded(authenticationResult: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(authenticationResult)
                     FunctionsClassDebug.PrintDebug("*** Authentication Succeeded ***")
 
-                    authenticationCallback
-                            .authenticatedFloatingShortcuts()
+                    SecurityInterfaceHolder.authenticationCallback
+                            .authenticatedFloatIt(null)
 
-                    this@AuthenticationUI.finish()
+                    attemptCounter = 0
+                    this@AuthenticationFingerprintUI.finish()
                 }
             }
 
-            val biometricPrompt = BiometricPrompt(this@AuthenticationUI,
+            val biometricPrompt = BiometricPrompt(this@AuthenticationFingerprintUI,
                     authenticationExecutor,
                     biometricCallback)
 
             val biometricPromptPromptInfo = BiometricPrompt.PromptInfo.Builder()
-                    .setTitle("${functionsClass.activityLabel(activityInformation)} 🔒")
+                    .setTitle("$dialogueTitle 🔒")
                     .setSubtitle("")
                     .setDescription("")
                     .setDeviceCredentialAllowed(true)
@@ -126,10 +122,14 @@ class AuthenticationUI : FragmentActivity() {
 
                 biometricPrompt
                         .authenticate(biometricPromptPromptInfo)
+
             } else {
 
-                authenticationCallback
+                SecurityInterfaceHolder.authenticationCallback
                         .failedAuthenticated()
+
+                triggerPinPasswordFragment(dialogueTitle)
+
             }
         }
     }
@@ -137,6 +137,20 @@ class AuthenticationUI : FragmentActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
 
-        this@AuthenticationUI.finish()
+        SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
+
+        this@AuthenticationFingerprintUI.finish()
+    }
+
+    private fun triggerPinPasswordFragment(dialogueTitle: String) {
+        SecurityInterfaceHolder.authenticationCallback.invokedPinPassword()
+
+        val extraInformation = Bundle()
+        extraInformation.putString("DialogueTitle", dialogueTitle)
+        extraInformation.putInt("PrimaryColor", intent.getIntExtra("PrimaryColor", getColor(R.color.default_color)))
+
+        val authenticationPinPasswordUI: AuthenticationPinPasswordUI = AuthenticationPinPasswordUI()
+        authenticationPinPasswordUI.arguments = extraInformation
+        authenticationPinPasswordUI.show(supportFragmentManager, this@AuthenticationFingerprintUI.javaClass.simpleName)
     }
 }

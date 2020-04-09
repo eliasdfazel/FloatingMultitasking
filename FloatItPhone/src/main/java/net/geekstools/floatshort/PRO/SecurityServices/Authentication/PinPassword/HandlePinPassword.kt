@@ -31,9 +31,9 @@ import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.auth_handler_views.*
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import java.util.*
 
@@ -79,15 +79,15 @@ class HandlePinPassword : Activity() {
         pinFullView.setBackgroundColor(PublicVariable.primaryColor)
 
         textInputPasswordCurrent.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
-        textInputPassword.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
+        textInputPinPassword.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
         textInputPasswordRepeat.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
 
         textInputPasswordCurrent.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
-        textInputPassword.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
+        textInputPinPassword.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
         textInputPasswordRepeat.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
 
         passwordCurrent.setTextColor(PublicVariable.colorLightDarkOpposite)
-        password.setTextColor(PublicVariable.colorLightDarkOpposite)
+        pinPasswordEditText.setTextColor(PublicVariable.colorLightDarkOpposite)
         passwordRepeat.setTextColor(PublicVariable.colorLightDarkOpposite)
 
         currentPasswordExist = (functionClass.readPreference(".Password", "Pin", "0") != "0")
@@ -96,7 +96,7 @@ class HandlePinPassword : Activity() {
             forgotPassword.visibility = View.VISIBLE
         }
 
-        password.addTextChangedListener(object : TextWatcher {
+        pinPasswordEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
                 FunctionsClassDebug.PrintDebug("*** Pin Password == ${editable.toString()} ***")
             }
@@ -124,7 +124,7 @@ class HandlePinPassword : Activity() {
             }
         })
 
-        password.setOnEditorActionListener { textView, actionId, event ->
+        pinPasswordEditText.setOnEditorActionListener { textView, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
 
             }
@@ -229,16 +229,16 @@ class HandlePinPassword : Activity() {
     }
 
     private fun saveNewPinPassword() {
-        if (password.text.isNullOrBlank() || passwordRepeat.text.isNullOrBlank()) {
-            password.setText("")
+        if (pinPasswordEditText.text.isNullOrBlank() || passwordRepeat.text.isNullOrBlank()) {
+            pinPasswordEditText.setText("")
             passwordRepeat.setText("")
 
-            textInputPassword.error = getString(R.string.passwordError)
+            textInputPinPassword.error = getString(R.string.passwordError)
             textInputPasswordRepeat.error = getString(R.string.passwordError)
         } else {
-            if ((password.text.toString() == passwordRepeat.text.toString())) {
+            if ((pinPasswordEditText.text.toString() == passwordRepeat.text.toString())) {
                 try {
-                    functionsClassSecurity.saveEncryptedPinPassword(password.text.toString())
+                    functionsClassSecurity.saveEncryptedPinPassword(pinPasswordEditText.text.toString())
                     functionsClassSecurity.uploadLockedAppsData()
 
                     this@HandlePinPassword.finish()
@@ -247,10 +247,10 @@ class HandlePinPassword : Activity() {
                     e.printStackTrace()
                 }
             } else {
-                password.setText("")
+                pinPasswordEditText.setText("")
                 passwordRepeat.setText("")
 
-                textInputPassword.error = getString(R.string.passwordError)
+                textInputPinPassword.error = getString(R.string.passwordError)
                 textInputPasswordRepeat.error = getString(R.string.passwordError)
             }
         }

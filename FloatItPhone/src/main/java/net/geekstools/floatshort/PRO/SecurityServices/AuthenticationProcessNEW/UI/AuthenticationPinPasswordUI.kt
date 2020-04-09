@@ -1,0 +1,170 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel on 3/26/20 3:43 PM
+ * Last modified 3/26/20 3:00 PM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI
+
+import android.content.Context
+import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.TypedValue
+import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.DialogFragment
+import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.Extensions.setupAuthenticationPinPasswordUI
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityFunctions
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.databinding.AuthDialogContentBinding
+
+class AuthenticationPinPasswordUI : DialogFragment() {
+
+    private lateinit var functionsClass: FunctionsClass
+    private lateinit var securityFunctions: SecurityFunctions
+
+    lateinit var authDialogContentBinding: AuthDialogContentBinding
+
+    object ExtraInformation {
+        var dialogueTitle: String? = null
+
+        var primaryColor: Int = 0
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        functionsClass = FunctionsClass(requireContext())
+        securityFunctions = SecurityFunctions(requireContext())
+
+        setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Dialog)
+
+        retainInstance = true
+
+        ExtraInformation.dialogueTitle = arguments?.getString("DialogueTitle")
+
+        ExtraInformation.primaryColor = arguments?.getInt("PrimaryColor", 0)!!
+    }
+
+    override fun onCreateView(layoutInflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 333f, resources.displayMetrics).toInt()
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        layoutParams.dimAmount = 0.57f
+        layoutParams.windowAnimations = android.R.style.Animation_Dialog
+
+        val dialoguePinPassword = requireDialog()
+        dialoguePinPassword.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
+        dialoguePinPassword.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialoguePinPassword.window?.decorView?.setBackgroundColor(Color.TRANSPARENT)
+        dialoguePinPassword.window?.attributes = layoutParams
+        dialoguePinPassword.window?.setWindowAnimations(android.R.style.Animation_Dialog)
+
+        dialoguePinPassword.setCancelable(false)
+        dialoguePinPassword.setCanceledOnTouchOutside(false)
+
+        authDialogContentBinding = AuthDialogContentBinding.inflate(getLayoutInflater())
+
+        setupAuthenticationPinPasswordUI()
+
+        authDialogContentBinding.pinPasswordEditText.setOnEditorActionListener { textView, actionId, event ->
+
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                if (authDialogContentBinding.pinPasswordEditText.text != null) {
+
+                    if (securityFunctions.isEncryptedPinPasswordEqual(authDialogContentBinding.pinPasswordEditText.text.toString())) {
+
+                        authDialogContentBinding.textInputPinPassword.isErrorEnabled = false
+
+                        SecurityInterfaceHolder.authenticationCallback
+                                .authenticatedFloatIt(null)
+
+                        requireActivity().finish()
+
+                    } else {
+
+                        authDialogContentBinding.textInputPinPassword.isErrorEnabled = true
+                        authDialogContentBinding.textInputPinPassword.error = getString(R.string.passwordError)
+
+                        SecurityInterfaceHolder.authenticationCallback
+                                .failedAuthenticated()
+
+                    }
+                }
+            }
+
+            true
+        }
+
+        authDialogContentBinding.pinPasswordEditText.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(sequence: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+
+                authDialogContentBinding.textInputPinPassword.isErrorEnabled = false
+            }
+        })
+
+        authDialogContentBinding.cancelAuth.setOnLongClickListener {
+            requireActivity().finish()
+
+            true
+        }
+
+        authDialogContentBinding.pinPasswordEditText.requestFocus()
+        val inputMethodManager: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(authDialogContentBinding.pinPasswordEditText, InputMethodManager.SHOW_IMPLICIT)
+
+        return authDialogContentBinding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        requireDialog().setOnKeyListener { dialogInterface, keyCode, keyEvent ->
+
+            when (keyCode) {
+                KeyEvent.KEYCODE_BACK -> {
+                    SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
+
+                    requireActivity().finish()
+                }
+            }
+
+            true
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onDismiss(dialogInterface: DialogInterface) {
+        super.onDismiss(dialogInterface)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+}

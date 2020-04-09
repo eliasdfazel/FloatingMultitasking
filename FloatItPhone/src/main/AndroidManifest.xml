@@ -331,7 +331,7 @@
             android:excludeFromRecents="true"
             android:theme="@style/AuthenticationTransparent" />
         <activity
-            android:name=".SecurityServices.AuthenticationProcessNEW.UI.AuthenticationUI"
+            android:name=".SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprintUI"
             android:excludeFromRecents="true"
             android:theme="@style/AuthenticationTransparent" />
         <activity

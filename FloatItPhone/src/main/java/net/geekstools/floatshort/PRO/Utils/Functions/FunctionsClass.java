@@ -5741,17 +5741,19 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
+        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ?
+                true : readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
     }
 
     public boolean floatingWidgetsPurchased() {
 
-        return /*BuildConfig.VERSION_NAME.contains("[BETA]") ? true :*/ readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
+        return /*BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG ? true :*/ readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
     }
 
     public boolean searchEngineSubscribed() {
 
-        return (BuildConfig.VERSION_NAME.contains("[BETA]") || BuildConfig.DEBUG) ? true : readPreference(".SubscribedItem", BillingManager.iapSearchEngines, false);
+        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ?
+                true : readPreference(".SubscribedItem", BillingManager.iapSearchEngines, false);
     }
 
     public boolean alreadyDonated() {

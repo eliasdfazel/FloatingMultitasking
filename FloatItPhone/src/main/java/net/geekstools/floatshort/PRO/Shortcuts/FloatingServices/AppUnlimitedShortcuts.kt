@@ -9,6 +9,7 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
+import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.util.TypedValue
@@ -24,8 +25,9 @@ import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationUI
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprintUI
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -601,10 +603,10 @@ class AppUnlimitedShortcuts : Service() {
                     if (openPermit[startId]) {
                         if (functionsClassSecurity.isAppLocked(packageNames[startId])) {
 
-                            AuthenticationUI.authenticationCallback = object : AuthenticationCallback {
+                            SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                                override fun authenticatedFloatingShortcuts() {
-                                    super.authenticatedFloatingShortcuts()
+                                override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                                    super.authenticatedFloatIt(extraInformation)
 
                                     if (functionsClass.splashReveal()) {
                                         val splashReveal = Intent(applicationContext, FloatingSplash::class.java)
@@ -637,11 +639,17 @@ class AppUnlimitedShortcuts : Service() {
                                 }
 
                                 override fun failedAuthenticated() {
+                                    super.failedAuthenticated()
+
+                                }
+
+                                override fun invokedPinPassword() {
+                                    super.invokedPinPassword()
 
                                 }
                             }
 
-                            startActivity(Intent(applicationContext, AuthenticationUI::class.java).apply {
+                            startActivity(Intent(applicationContext, AuthenticationFingerprintUI::class.java).apply {
                                 putExtra("PackageName", packageNames[startId])
                                 putExtra("ClassName", classNames[startId])
                                 putExtra("PrimaryColor", iconColors[startId])

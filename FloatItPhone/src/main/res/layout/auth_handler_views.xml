@@ -67,7 +67,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/textInputPassword"
+            android:id="@+id/textInputPinPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/textInputPasswordCurrent"
@@ -95,7 +95,7 @@
             apps:errorTextColor="@color/red">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
+                android:id="@+id/pinPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="5dp"
@@ -115,7 +115,7 @@
             android:id="@+id/textInputPasswordRepeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textInputPassword"
+            android:layout_below="@id/textInputPinPassword"
             android:layout_marginTop="9dp"
             android:layout_marginStart="19dp"
             android:layout_marginEnd="19dp"

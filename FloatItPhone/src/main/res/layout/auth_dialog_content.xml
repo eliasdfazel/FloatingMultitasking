@@ -10,16 +10,16 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="420dp"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
+    android:layout_width="333dp"
+    android:layout_height="wrap_content"
     android:paddingStart="7dp"
     android:paddingEnd="7dp"
     android:paddingTop="11dp"
     android:paddingBottom="11dp"
-    android:id="@+id/fingerprintContainer"
     android:background="@drawable/dialogue_rounded_background">
 
-    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
+    <androidx.appcompat.widget.AppCompatImageView xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/dialogueIcon"
         android:layout_width="49dp"
         android:layout_height="49dp"
@@ -27,7 +27,7 @@
         android:layout_alignParentStart="true"
         android:layout_margin="3dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/draw_security" />
 
     <TextView
         android:id="@+id/dialogueTitle"
@@ -45,45 +45,18 @@
         android:textColor="@color/dark"
         android:textSize="21sp" />
 
-    <!-- Auth Content -->
-    <TextView
-        android:id="@+id/fingerprint_status"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputPinPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_below="@id/dialogueTitle"
-        android:gravity="center_vertical"
-        android:lines="2"
-        android:text="@string/fingerprint_description"
-        android:textAppearance="@android:style/TextAppearance.Material.Subhead"
-        android:textColor="@color/hint_color"
-        android:textSize="15sp"
-        android:typeface="monospace"
-        android:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/fingerprint_icon"
-        android:layout_width="213dp"
-        android:layout_height="213dp"
-        android:layout_below="@+id/fingerprint_status"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:padding="3dp"
-        android:src="@drawable/draw_finger_print"
-        android:visibility="visible" />
-
-    <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/textInputPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fingerprint_status"
+        android:layout_below="@+id/dialogueTitle"
         android:layout_marginTop="3dp"
         android:padding="3dp"
         android:gravity="center_vertical"
         android:imeOptions="actionDone"
         android:hint="@string/pinHint"
         android:textColorHint="@color/default_color_light"
+
         apps:boxBackgroundMode="outline"
         apps:boxBackgroundColor="@android:color/transparent"
         apps:boxCornerRadiusTopStart="7dp"
@@ -96,39 +69,39 @@
         apps:hintAnimationEnabled="true"
         apps:hintTextColor="@color/default_color_light"
         apps:errorEnabled="true"
-        apps:errorTextColor="@color/red"
-        android:visibility="invisible">
+        apps:errorTextColor="@color/red" >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
+            android:id="@+id/pinPasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:gravity="center_vertical"
             android:imeOptions="actionDone"
-            android:lines="1"
-            android:inputType="numberPassword"
-            android:maxLines="1"
+
+            android:inputType="textPassword"
             android:textSize="29sp"
             android:textColor="@color/light"
             android:textColorHint="@color/light"
-            android:cursorVisible="false" />
+            android:cursorVisible="true" />
     </com.google.android.material.textfield.TextInputLayout>
     <!-- Auth Content -->
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelAuth"
         android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="57dp"
+        android:layout_below="@id/textInputPinPassword"
         android:layout_marginBottom="3dp"
-
         android:gravity="center"
         android:text="@android:string/cancel"
         android:textSize="13sp"
         android:textStyle="bold"
         android:typeface="monospace"
-        android:background="@drawable/ripple_effect_cancel" />
+
+        apps:rippleColor="@color/default_color"
+        apps:cornerRadius="7dp"
+        apps:backgroundTint="@android:color/transparent"/>
 
 </RelativeLayout>
