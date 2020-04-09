@@ -79,14 +79,14 @@
             android:paddingEnd="5dp"
             android:gravity="center_vertical"
             android:imeOptions="actionDone"
-
-            android:inputType="textPassword"
+            android:lines="1"
+            android:maxLines="1"
+            android:inputType="numberPassword"
             android:textSize="29sp"
             android:textColor="@color/light"
             android:textColorHint="@color/light"
             android:cursorVisible="true" />
     </com.google.android.material.textfield.TextInputLayout>
-    <!-- Auth Content -->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelAuth"
@@ -95,6 +95,7 @@
         android:layout_below="@id/textInputPinPassword"
         android:layout_marginBottom="3dp"
         android:gravity="center"
+        android:textAllCaps="false"
         android:text="@android:string/cancel"
         android:textSize="13sp"
         android:textStyle="bold"
