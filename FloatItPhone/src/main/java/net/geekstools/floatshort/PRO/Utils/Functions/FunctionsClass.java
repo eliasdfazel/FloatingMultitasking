@@ -5043,6 +5043,9 @@ public class FunctionsClass {
         return Color.rgb((int) r, (int) g, (int) b);
     }
 
+    /**
+     * 255 is Transparent.
+     */
     public int setColorAlpha(int color, float alphaValue /*1 -- 255*/) {
         int alpha = Math.round(Color.alpha(color) * alphaValue);
         int red = Color.red(color);

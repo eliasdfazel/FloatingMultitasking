@@ -1,6 +1,7 @@
 package net.geekstools.floatshort.PRO.Shortcuts.FloatingServices
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
 import android.app.Service
 import android.content.*
 import android.content.pm.ActivityInfo
@@ -23,12 +24,8 @@ import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authComponentName
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authFloatingShortcuts
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authHW
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authPositionX
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authPositionY
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationUI
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -573,20 +570,19 @@ class AppUnlimitedShortcuts : Service() {
                 }
             })
 
-            floatingShortcutsBinding[startId].root.setOnClickListener(View.OnClickListener {
+            floatingShortcutsBinding[startId].root.setOnClickListener {
                 if (removePermit[startId]) {
 
-                    if (floatingShortcutsBinding.get(startId).root.isShown()) {
+                    if (floatingShortcutsBinding[startId].root.isShown) {
                         try {
 
-                            windowManager.removeView(floatingShortcutsBinding.get(startId).root)
+                            windowManager.removeView(floatingShortcutsBinding[startId].root)
                             getBackHandler.removeCallbacks(getBackRunnable)
 
                         } catch (e: Exception) {
                             e.printStackTrace()
 
                         } finally {
-
                             PublicVariable.FloatingShortcuts.remove(packageNames[startId])
                             PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1
                             PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter - 1
@@ -604,25 +600,73 @@ class AppUnlimitedShortcuts : Service() {
                 } else {
                     if (openPermit[startId]) {
                         if (functionsClassSecurity.isAppLocked(packageNames[startId])) {
-                            authFloatingShortcuts = true
-                            authComponentName = packageNames[startId]
-                            authSecondComponentName = classNames[startId]
+                            /*FunctionsClassSecurity.AuthOpenAppValues.authFloatingShortcuts = true
+                            FunctionsClassSecurity.AuthOpenAppValues.authComponentName = packageNames[startId]
+                            FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName = classNames[startId]
 
                             if (moveDetection != null) {
-                                authPositionX = moveDetection.x
-                                authPositionY = moveDetection.y
+                                FunctionsClassSecurity.AuthOpenAppValues.authPositionX = moveDetection.x
+                                FunctionsClassSecurity.AuthOpenAppValues.authPositionY = moveDetection.y
                             } else {
-                                authPositionX = layoutParams[startId].x
-                                authPositionY = layoutParams[startId].y
+                                FunctionsClassSecurity.AuthOpenAppValues.authPositionX = layoutParams[startId].x
+                                FunctionsClassSecurity.AuthOpenAppValues.authPositionY = layoutParams[startId].y
                             }
 
-                            authHW = layoutParams[startId].width
-                            functionsClassSecurity.openAuthInvocation()
+                            FunctionsClassSecurity.AuthOpenAppValues.authHW = layoutParams[startId].width
+                            functionsClassSecurity.openAuthInvocation()*/
+
+                            AuthenticationUI.authenticationCallback = object : AuthenticationCallback {
+
+                                override fun authenticatedFloatingShortcuts() {
+                                    super.authenticatedFloatingShortcuts()
+
+                                    if (functionsClass.splashReveal()) {
+                                        val splashReveal = Intent(applicationContext, FloatingSplash::class.java)
+                                        splashReveal.putExtra("packageName", packageNames[startId])
+                                        splashReveal.putExtra("className", classNames[startId])
+
+                                        if (moveDetection != null) {
+                                            splashReveal.putExtra("X", moveDetection.x)
+                                            splashReveal.putExtra("Y", moveDetection.y)
+                                        } else {
+                                            splashReveal.putExtra("X", layoutParams[startId].x)
+                                            splashReveal.putExtra("Y", layoutParams[startId].y)
+                                        }
+                                        splashReveal.putExtra("HW", layoutParams[startId].width)
+                                        startService(splashReveal)
+
+                                    } else {
+                                        if (functionsClass.FreeForm()) {
+                                            functionsClass.openApplicationFreeForm(packageNames[startId],
+                                                    classNames[startId],
+                                                    layoutParams[startId].x,
+                                                    functionsClass.displayX() / 2,
+                                                    layoutParams[startId].y,
+                                                    functionsClass.displayY() / 2
+                                            )
+                                        } else {
+                                            functionsClass.appsLaunchPad(packageNames[startId], classNames[startId])
+                                        }
+                                    }
+                                }
+
+                                override fun failedAuthenticated() {
+
+                                }
+                            }
+                            startActivity(Intent(applicationContext, AuthenticationUI::class.java)
+                                    .putExtra("PackageName", packageNames[startId])
+                                    .putExtra("ClassName", classNames[startId])
+                                    .putExtra("PrimaryColor", iconColors[startId])
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                                    ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
+
                         } else {
                             if (functionsClass.splashReveal()) {
                                 val splashReveal = Intent(applicationContext, FloatingSplash::class.java)
                                 splashReveal.putExtra("packageName", packageNames[startId])
                                 splashReveal.putExtra("className", classNames[startId])
+
                                 if (moveDetection != null) {
                                     splashReveal.putExtra("X", moveDetection.x)
                                     splashReveal.putExtra("Y", moveDetection.y)
@@ -632,6 +676,7 @@ class AppUnlimitedShortcuts : Service() {
                                 }
                                 splashReveal.putExtra("HW", layoutParams[startId].width)
                                 startService(splashReveal)
+
                             } else {
                                 if (functionsClass.FreeForm()) {
                                     functionsClass.openApplicationFreeForm(packageNames[startId],
@@ -650,7 +695,7 @@ class AppUnlimitedShortcuts : Service() {
 
                     }
                 }
-            })
+            }
 
             notificationDots[startId].setOnClickListener {
 
@@ -676,6 +721,7 @@ class AppUnlimitedShortcuts : Service() {
                             66666)
                 } else {
                     try {
+                        @SuppressLint("WrongConstant")
                         val statusBarService = getSystemService("statusbar")
                         val statusBarManager = Class.forName("android.app.StatusBarManager")
                         val statuesBarInvocation = statusBarManager.getMethod("expandNotificationsPanel") //expandNotificationsPanel
@@ -684,6 +730,7 @@ class AppUnlimitedShortcuts : Service() {
                         firstException.printStackTrace()
 
                         try {
+                            @SuppressLint("WrongConstant")
                             val statusBarService = getSystemService("statusbar")
                             val statusBarManager = Class.forName("android.app.StatusBarManager")
                             val statuesBarInvocation = statusBarManager.getMethod("expand") //expandNotificationsPanel
@@ -779,19 +826,19 @@ class AppUnlimitedShortcuts : Service() {
                             controlIcons[intent.getIntExtra("startId", 0)].setImageDrawable(null)
                         } else if (intent.action == "Float_It_$floatingShortcutClassInCommand") {
                             if (functionsClassSecurity.isAppLocked(packageNames[intent.getIntExtra("startId", 0)])) {
-                                authFloatingShortcuts = true
-                                authComponentName = packageNames[intent.getIntExtra("startId", 0)]
-                                authSecondComponentName = classNames[intent.getIntExtra("startId", 0)]
+                                FunctionsClassSecurity.AuthOpenAppValues.authFloatingShortcuts = true
+                                FunctionsClassSecurity.AuthOpenAppValues.authComponentName = packageNames[intent.getIntExtra("startId", 0)]
+                                FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName = classNames[intent.getIntExtra("startId", 0)]
 
                                 if (moveDetection != null) {
-                                    authPositionX = moveDetection.x
-                                    authPositionY = moveDetection.y
+                                    FunctionsClassSecurity.AuthOpenAppValues.authPositionX = moveDetection.x
+                                    FunctionsClassSecurity.AuthOpenAppValues.authPositionY = moveDetection.y
                                 } else {
-                                    authPositionX = layoutParams[intent.getIntExtra("startId", 0)].x
-                                    authPositionY = layoutParams[intent.getIntExtra("startId", 0)].y
+                                    FunctionsClassSecurity.AuthOpenAppValues.authPositionX = layoutParams[intent.getIntExtra("startId", 0)].x
+                                    FunctionsClassSecurity.AuthOpenAppValues.authPositionY = layoutParams[intent.getIntExtra("startId", 0)].y
                                 }
 
-                                authHW = layoutParams[intent.getIntExtra("startId", 0)].width
+                                FunctionsClassSecurity.AuthOpenAppValues.authHW = layoutParams[intent.getIntExtra("startId", 0)].width
 
                                 functionsClassSecurity.openAuthInvocation()
                             } else {

@@ -329,7 +329,11 @@
             android:name="net.geekstools.floatshort.PRO.SecurityServices.Authentication.AuthActivityHelper"
             android:noHistory="true"
             android:excludeFromRecents="true"
-            android:theme="@style/AuthTransparent" />
+            android:theme="@style/AuthenticationTransparent" />
+        <activity
+            android:name=".SecurityServices.AuthenticationProcessNEW.UI.AuthenticationUI"
+            android:excludeFromRecents="true"
+            android:theme="@style/AuthenticationTransparent" />
         <activity
             android:name="net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword"
             android:noHistory="true"
