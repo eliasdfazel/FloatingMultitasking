@@ -834,39 +834,60 @@ class FloatingShortcutsForApplications : Service() {
                         } else if (intent.action == "Float_It_$floatingShortcutClassInCommand") {
                             if (functionsClassSecurity.isAppLocked(packageNames[intent.getIntExtra("startId", 1)])) {
 
-                                SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+                                if (!AuthenticationProcess.authenticationProcessInvoked) {
 
-                                    override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                                        super.authenticatedFloatIt(extraInformation)
+                                    AuthenticationProcess.authenticationProcessInvoked = true
+                                    AuthenticationProcess.authenticationProcessInvokedName = functionsClass.activityLabel(
+                                            packageManager.getActivityInfo(ComponentName.createRelative(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)]), 0)
+                                    )
 
-                                        openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)],
-                                                if (moveDetection != null) {
-                                                    (moveDetection!!)
-                                                    (moveDetection!!)
-                                                } else {
-                                                    (layoutParams[intent.getIntExtra("startId", 1)])
-                                                    (layoutParams[intent.getIntExtra("startId", 1)])
-                                                })
+                                    SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+
+                                        override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                                            super.authenticatedFloatIt(extraInformation)
+                                            Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+
+                                            openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)],
+                                                    if (moveDetection != null) {
+                                                        (moveDetection!!)
+                                                        (moveDetection!!)
+                                                    } else {
+                                                        (layoutParams[intent.getIntExtra("startId", 1)])
+                                                        (layoutParams[intent.getIntExtra("startId", 1)])
+                                                    })
+
+                                            AuthenticationProcess.authenticationProcessInvoked = false
+                                        }
+
+                                        override fun failedAuthenticated() {
+                                            super.failedAuthenticated()
+                                            Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "FailedAuthenticated")
+
+                                            AuthenticationProcess.authenticationProcessInvoked = false
+                                        }
+
+                                        override fun invokedPinPassword() {
+                                            super.invokedPinPassword()
+                                            Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "InvokedPinPassword")
+
+                                            AuthenticationProcess.authenticationProcessInvoked = false
+                                        }
                                     }
 
-                                    override fun failedAuthenticated() {
-                                        super.failedAuthenticated()
+                                    startActivity(Intent(applicationContext, AuthenticationFingerprintUI::class.java).apply {
+                                        putExtra("PackageName", packageNames[intent.getIntExtra("startId", 1)])
+                                        putExtra("ClassName", classNames[intent.getIntExtra("startId", 1)])
+                                        putExtra("PrimaryColor", iconColors[intent.getIntExtra("startId", 1)])
+                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
-                                    }
+                                } else {
 
-                                    override fun invokedPinPassword() {
-                                        super.invokedPinPassword()
-
-                                    }
+                                    Toast.makeText(applicationContext,
+                                            Html.fromHtml(getString(R.string.authenticationProcessInvoked, AuthenticationProcess.authenticationProcessInvokedName)),
+                                            Toast.LENGTH_LONG)
+                                            .show()
                                 }
-
-                                startActivity(Intent(applicationContext, AuthenticationFingerprintUI::class.java).apply {
-                                    putExtra("PackageName", packageNames[intent.getIntExtra("startId", 1)])
-                                    putExtra("ClassName", classNames[intent.getIntExtra("startId", 1)])
-                                    putExtra("PrimaryColor", iconColors[intent.getIntExtra("startId", 1)])
-                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
-
                             } else {
 
                                 openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)],
