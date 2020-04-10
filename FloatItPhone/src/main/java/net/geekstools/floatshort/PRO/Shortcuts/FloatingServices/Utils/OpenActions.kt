@@ -10,6 +10,7 @@ class OpenActions(private val context: Context, private val functionsClass: Func
 
     fun startProcess(packageName: String, className: String,
                      layoutParams: WindowManager.LayoutParams) {
+
         if (functionsClass.splashReveal()) {
 
             val splashReveal = Intent(context, FloatingSplash::class.java).apply {
