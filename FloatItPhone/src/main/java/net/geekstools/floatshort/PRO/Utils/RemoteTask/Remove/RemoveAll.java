@@ -23,7 +23,7 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_N
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Time;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.AppUnlimitedShortcuts;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForApplications;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 
 public class RemoveAll extends Service {
@@ -33,7 +33,7 @@ public class RemoveAll extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
         /*Apps*/
-        Intent App_Unlimited_Shortcuts = new Intent(getApplicationContext(), AppUnlimitedShortcuts.class);
+        Intent App_Unlimited_Shortcuts = new Intent(getApplicationContext(), FloatingShortcutsForApplications.class);
         App_Unlimited_Shortcuts.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Shortcuts);
 

@@ -28,19 +28,19 @@ import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.Funct
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprintUI
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.Utils.OpenActions
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
-import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash
 import net.geekstools.floatshort.PRO.databinding.FloatingShortcutsBinding
 import net.geekstools.imageview.customshapes.ShapesImage
 import kotlin.math.abs
 import kotlin.math.round
 import kotlin.math.roundToInt
 
-class AppUnlimitedShortcuts : Service() {
+class FloatingShortcutsForApplications : Service() {
 
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
@@ -49,13 +49,16 @@ class AppUnlimitedShortcuts : Service() {
     private lateinit var functionsClassSecurity: FunctionsClassSecurity
 
 
+    private lateinit var openActions: OpenActions
+
+
     private lateinit var windowManager: WindowManager
 
 
     private val layoutParams: ArrayList<WindowManager.LayoutParams> = ArrayList<WindowManager.LayoutParams>()
     private val stickyEdgeParams: ArrayList<WindowManager.LayoutParams> = ArrayList<WindowManager.LayoutParams>()
 
-    private lateinit var moveDetection: WindowManager.LayoutParams
+    private var moveDetection: WindowManager.LayoutParams? = null
 
     private object XY {
         var xPosition = 0
@@ -167,7 +170,7 @@ class AppUnlimitedShortcuts : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
-        FunctionsClassDebug.PrintDebug(this@AppUnlimitedShortcuts.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
+        FunctionsClassDebug.PrintDebug(this@FloatingShortcutsForApplications.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
         val startId = (serviceStartId - 1)
 
@@ -414,7 +417,7 @@ class AppUnlimitedShortcuts : Service() {
                                             floatingShortcutsBinding.get(startId).root,
                                             packageNames[startId],
                                             classNames[startId],
-                                            this@AppUnlimitedShortcuts.javaClass.simpleName,
+                                            this@FloatingShortcutsForApplications.javaClass.simpleName,
                                             startId,
                                             initialX,
                                             initialY
@@ -534,40 +537,58 @@ class AppUnlimitedShortcuts : Service() {
                             moveDetection = layoutParamsOnTouch
                         }
                         MotionEvent.ACTION_MOVE -> if (movePermit[startId]) {
+
                             layoutParamsOnTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt()
                             layoutParamsOnTouch.y = initialY + (motionEvent.rawY - initialTouchY).toInt()
-                            windowManager.updateViewLayout(floatingShortcutsBinding.get(startId).root, layoutParamsOnTouch)
+
+                            windowManager.updateViewLayout(floatingShortcutsBinding[startId].root, layoutParamsOnTouch)
+
                             moveDetection = layoutParamsOnTouch
+
                             val difMoveX = (layoutParamsOnTouch.x - initialTouchX).toInt()
                             val difMoveY = (layoutParamsOnTouch.y - initialTouchY).toInt()
+
                             if (abs(difMoveX) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)
                                     || abs(difMoveY) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)) {
+
                                 sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
+
                                 openPermit[startId] = false
                                 touchingDelay[startId] = false
+
                                 delayHandler.removeCallbacks(delayRunnable)
                                 handlerPressHold.removeCallbacks(runnablePressHold)
                             }
+
                             flingPositionX = layoutParamsOnTouch.x.toFloat()
                             flingPositionY = layoutParamsOnTouch.y.toFloat()
                         } else {
+
                             if (!functionsClass.litePreferencesEnabled()) {
+
                                 layoutParamsOnTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt() // X movePoint
                                 layoutParamsOnTouch.y = initialY + (motionEvent.rawY - initialTouchY).toInt() // Y movePoint
+
                                 windowManager.updateViewLayout(floatingShortcutsBinding.get(startId).root, layoutParamsOnTouch)
+
                                 val difMoveX = (layoutParamsOnTouch.x - initialTouchX).toInt()
                                 val difMoveY = (layoutParamsOnTouch.y - initialTouchY).toInt()
+
                                 if (abs(difMoveX) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)
                                         || abs(difMoveY) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)) {
+
                                     sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
+
                                     openPermit[startId] = false
                                     touchingDelay[startId] = false
+
                                     delayHandler.removeCallbacks(delayRunnable)
                                     handlerPressHold.removeCallbacks(runnablePressHold)
                                 }
                             }
                         }
                     }
+
                     return false
                 }
             })
@@ -601,6 +622,7 @@ class AppUnlimitedShortcuts : Service() {
                     }
                 } else {
                     if (openPermit[startId]) {
+
                         if (functionsClassSecurity.isAppLocked(packageNames[startId])) {
 
                             SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
@@ -608,34 +630,14 @@ class AppUnlimitedShortcuts : Service() {
                                 override fun authenticatedFloatIt(extraInformation: Bundle?) {
                                     super.authenticatedFloatIt(extraInformation)
 
-                                    if (functionsClass.splashReveal()) {
-                                        val splashReveal = Intent(applicationContext, FloatingSplash::class.java)
-                                        splashReveal.putExtra("packageName", packageNames[startId])
-                                        splashReveal.putExtra("className", classNames[startId])
-
-                                        if (moveDetection != null) {
-                                            splashReveal.putExtra("X", moveDetection.x)
-                                            splashReveal.putExtra("Y", moveDetection.y)
-                                        } else {
-                                            splashReveal.putExtra("X", layoutParams[startId].x)
-                                            splashReveal.putExtra("Y", layoutParams[startId].y)
-                                        }
-                                        splashReveal.putExtra("HW", layoutParams[startId].width)
-                                        startService(splashReveal)
-
-                                    } else {
-                                        if (functionsClass.FreeForm()) {
-                                            functionsClass.openApplicationFreeForm(packageNames[startId],
-                                                    classNames[startId],
-                                                    layoutParams[startId].x,
-                                                    functionsClass.displayX() / 2,
-                                                    layoutParams[startId].y,
-                                                    functionsClass.displayY() / 2
-                                            )
-                                        } else {
-                                            functionsClass.appsLaunchPad(packageNames[startId], classNames[startId])
-                                        }
-                                    }
+                                    openActions.startProcess(packageNames[startId], classNames[startId],
+                                            if (moveDetection != null) {
+                                                (moveDetection!!)
+                                                (moveDetection!!)
+                                            } else {
+                                                (layoutParams[startId])
+                                                (layoutParams[startId])
+                                            })
                                 }
 
                                 override fun failedAuthenticated() {
@@ -657,34 +659,15 @@ class AppUnlimitedShortcuts : Service() {
                             }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
                         } else {
-                            if (functionsClass.splashReveal()) {
-                                val splashReveal = Intent(applicationContext, FloatingSplash::class.java)
-                                splashReveal.putExtra("packageName", packageNames[startId])
-                                splashReveal.putExtra("className", classNames[startId])
 
-                                if (moveDetection != null) {
-                                    splashReveal.putExtra("X", moveDetection.x)
-                                    splashReveal.putExtra("Y", moveDetection.y)
-                                } else {
-                                    splashReveal.putExtra("X", layoutParams[startId].x)
-                                    splashReveal.putExtra("Y", layoutParams[startId].y)
-                                }
-                                splashReveal.putExtra("HW", layoutParams[startId].width)
-                                startService(splashReveal)
-
-                            } else {
-                                if (functionsClass.FreeForm()) {
-                                    functionsClass.openApplicationFreeForm(packageNames[startId],
-                                            classNames[startId],
-                                            layoutParams[startId].x,
-                                            functionsClass.displayX() / 2,
-                                            layoutParams[startId].y,
-                                            functionsClass.displayY() / 2
-                                    )
-                                } else {
-                                    functionsClass.appsLaunchPad(packageNames[startId], classNames[startId])
-                                }
-                            }
+                            openActions.startProcess(packageNames[startId], classNames[startId],
+                                    if (moveDetection != null) {
+                                        (moveDetection!!)
+                                        (moveDetection!!)
+                                    } else {
+                                        (layoutParams[startId])
+                                        (layoutParams[startId])
+                                    })
                         }
                     } else {
 
@@ -697,7 +680,7 @@ class AppUnlimitedShortcuts : Service() {
                 functionsClass.PopupNotificationShortcuts(
                         floatingShortcutsBinding[startId].root,
                         packageNames[startId],
-                        this@AppUnlimitedShortcuts.javaClass.simpleName,
+                        this@FloatingShortcutsForApplications.javaClass.simpleName,
                         startId,
                         iconColors[startId],
                         XY.xMove,
@@ -739,7 +722,7 @@ class AppUnlimitedShortcuts : Service() {
             }
 
             if (serviceStartId == 1) {
-                val floatingShortcutClassInCommand: String = this@AppUnlimitedShortcuts.javaClass.simpleName
+                val floatingShortcutClassInCommand: String = this@FloatingShortcutsForApplications.javaClass.simpleName
 
                 val intentFilter = IntentFilter()
                 intentFilter.addAction("Split_Apps_Single_$floatingShortcutClassInCommand")
@@ -771,24 +754,24 @@ class AppUnlimitedShortcuts : Service() {
                                             Intent.FLAG_ACTIVITY_MULTIPLE_TASK
                                     startActivity(splitSingle)
                                     PublicVariable.splitScreen = true
-                                    functionsClass.Toast(functionsClass.appName(packageNames[intent.getIntExtra("startId", 0)]), Gravity.TOP)
+                                    functionsClass.Toast(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]), Gravity.TOP)
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()
                                 }
                             }, 200)
                         } else if (intent.action == "Pin_App_$floatingShortcutClassInCommand") {
-                            FunctionsClassDebug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 0)]))
+                            FunctionsClassDebug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]))
 
-                            movePermit[intent.getIntExtra("startId", 0)] = false
-                            var pinDrawable: Drawable = functionsClass.appIcon(activityInformation[intent.getIntExtra("startId", 0)]).mutate()
+                            movePermit[intent.getIntExtra("startId", 1)] = false
+                            var pinDrawable: Drawable = functionsClass.appIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
 
                             if (functionsClass.customIconsEnable()) {
-                                pinDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[intent.getIntExtra("startId", 0)]).mutate()
+                                pinDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
                             } else {
                                 when (functionsClass.shapesImageId()) {
                                     1 -> {
                                         pinDrawable = getDrawable(R.drawable.pin_droplet_icon) as Drawable
-                                        controlIcons[intent.getIntExtra("startId", 0)].setPadding(-3, -3, -3, -3)
+                                        controlIcons[intent.getIntExtra("startId", 1)].setPadding(-3, -3, -3, -3)
                                     }
                                     2 -> {
                                         pinDrawable = getDrawable(R.drawable.pin_circle_icon) as Drawable
@@ -800,7 +783,7 @@ class AppUnlimitedShortcuts : Service() {
                                         pinDrawable = getDrawable(R.drawable.pin_squircle_icon) as Drawable
                                     }
                                     0 -> {
-                                        pinDrawable = functionsClass.appIcon(activityInformation[intent.getIntExtra("startId", 0)]).mutate()
+                                        pinDrawable = functionsClass.appIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
                                     }
                                 }
                             }
@@ -810,74 +793,74 @@ class AppUnlimitedShortcuts : Service() {
                                 pinDrawable.alpha = 175
                                 pinDrawable.setTint(Color.RED)
 
-                                controlIcons[intent.getIntExtra("startId", 0)].alpha = 0.50f
+                                controlIcons[intent.getIntExtra("startId", 1)].alpha = 0.50f
                             }
 
-                            controlIcons[intent.getIntExtra("startId", 0)].setImageDrawable(pinDrawable)
+                            controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable)
                         } else if (intent.action == "Unpin_App_$floatingShortcutClassInCommand") {
-                            FunctionsClassDebug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 0)]))
+                            FunctionsClassDebug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]))
 
-                            movePermit[intent.getIntExtra("startId", 0)] = true
-                            controlIcons[intent.getIntExtra("startId", 0)].setImageDrawable(null)
+                            movePermit[intent.getIntExtra("startId", 1)] = true
+                            controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(null)
                         } else if (intent.action == "Float_It_$floatingShortcutClassInCommand") {
-                            if (functionsClassSecurity.isAppLocked(packageNames[intent.getIntExtra("startId", 0)])) {
-                                FunctionsClassSecurity.AuthOpenAppValues.authFloatingShortcuts = true
-                                FunctionsClassSecurity.AuthOpenAppValues.authComponentName = packageNames[intent.getIntExtra("startId", 0)]
-                                FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName = classNames[intent.getIntExtra("startId", 0)]
+                            if (functionsClassSecurity.isAppLocked(packageNames[intent.getIntExtra("startId", 1)])) {
 
-                                if (moveDetection != null) {
-                                    FunctionsClassSecurity.AuthOpenAppValues.authPositionX = moveDetection.x
-                                    FunctionsClassSecurity.AuthOpenAppValues.authPositionY = moveDetection.y
-                                } else {
-                                    FunctionsClassSecurity.AuthOpenAppValues.authPositionX = layoutParams[intent.getIntExtra("startId", 0)].x
-                                    FunctionsClassSecurity.AuthOpenAppValues.authPositionY = layoutParams[intent.getIntExtra("startId", 0)].y
+                                SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+
+                                    override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                                        super.authenticatedFloatIt(extraInformation)
+
+                                        openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)],
+                                                if (moveDetection != null) {
+                                                    (moveDetection!!)
+                                                    (moveDetection!!)
+                                                } else {
+                                                    (layoutParams[intent.getIntExtra("startId", 1)])
+                                                    (layoutParams[intent.getIntExtra("startId", 1)])
+                                                })
+                                    }
+
+                                    override fun failedAuthenticated() {
+                                        super.failedAuthenticated()
+
+                                    }
+
+                                    override fun invokedPinPassword() {
+                                        super.invokedPinPassword()
+
+                                    }
                                 }
 
-                                FunctionsClassSecurity.AuthOpenAppValues.authHW = layoutParams[intent.getIntExtra("startId", 0)].width
+                                startActivity(Intent(applicationContext, AuthenticationFingerprintUI::class.java).apply {
+                                    putExtra("PackageName", packageNames[intent.getIntExtra("startId", 1)])
+                                    putExtra("ClassName", classNames[intent.getIntExtra("startId", 1)])
+                                    putExtra("PrimaryColor", iconColors[intent.getIntExtra("startId", 1)])
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
-                                functionsClassSecurity.openAuthInvocation()
                             } else {
-                                if (functionsClass.splashReveal()) {
-                                    if (!functionsClass.FreeForm()) {
-                                        functionsClass.saveDefaultPreference("freeForm", true)
-                                        Handler().postDelayed({ functionsClass.saveDefaultPreference("freeForm", false) }, 1000)
-                                    }
-                                    val splashReveal = Intent(applicationContext, FloatingSplash::class.java)
-                                    splashReveal.putExtra("packageName", packageNames[intent.getIntExtra("startId", 0)])
-                                    splashReveal.putExtra("className", classNames[intent.getIntExtra("startId", 0)])
 
-                                    if (moveDetection != null) {
-                                        splashReveal.putExtra("X", moveDetection.x)
-                                        splashReveal.putExtra("Y", moveDetection.y)
-                                    } else {
-                                        splashReveal.putExtra("X", layoutParams[intent.getIntExtra("startId", 0)].x)
-                                        splashReveal.putExtra("Y", layoutParams[intent.getIntExtra("startId", 0)].y)
-                                    }
-
-                                    splashReveal.putExtra("HW", layoutParams[intent.getIntExtra("startId", 0)].width)
-                                    startService(splashReveal)
-                                } else {
-                                    functionsClass.openApplicationFreeForm(packageNames[intent.getIntExtra("startId", 0)],
-                                            classNames[intent.getIntExtra("startId", 0)],
-                                            layoutParams[intent.getIntExtra("startId", 0)].x,
-                                            functionsClass.displayX() / 2,
-                                            layoutParams[intent.getIntExtra("startId", 0)].y,
-                                            functionsClass.displayY() / 2
-                                    )
-                                }
+                                openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)],
+                                        if (moveDetection != null) {
+                                            (moveDetection!!)
+                                            (moveDetection!!)
+                                        } else {
+                                            (layoutParams[intent.getIntExtra("startId", 1)])
+                                            (layoutParams[intent.getIntExtra("startId", 1)])
+                                        })
                             }
                         } else if (intent.action == "Remove_App_$floatingShortcutClassInCommand") {
-                            if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 0)) == null) {
+                            if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)) == null) {
                                 return
                             }
 
-                            if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 0)).root.isShown()) {
+                            if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root.isShown()) {
                                 try {
-                                    windowManager.removeView(floatingShortcutsBinding.get(intent.getIntExtra("startId", 0)).root)
+                                    windowManager.removeView(floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root)
                                 } catch (e: java.lang.Exception) {
                                     e.printStackTrace()
                                 } finally {
-                                    PublicVariable.FloatingShortcuts.remove(packageNames[intent.getIntExtra("startId", 0)])
+                                    PublicVariable.FloatingShortcuts.remove(packageNames[intent.getIntExtra("startId", 1)])
                                     PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1
                                     PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter - 1
                                     if (PublicVariable.floatingCounter == 0) {
@@ -896,7 +879,7 @@ class AppUnlimitedShortcuts : Service() {
                                         try {
                                             stickedToEdge[removeCount] = true
 
-                                            stickyEdgeParams[removeCount] = functionsClass.moveToEdge(this@AppUnlimitedShortcuts.classNames.get(removeCount), layoutParams[removeCount].height)
+                                            stickyEdgeParams[removeCount] = functionsClass.moveToEdge(this@FloatingShortcutsForApplications.classNames.get(removeCount), layoutParams[removeCount].height)
 
                                             windowManager.updateViewLayout(floatingShortcutsBinding.get(removeCount).root, stickyEdgeParams[removeCount])
                                         } catch (e: WindowManager.InvalidDisplayException) {
@@ -915,7 +898,7 @@ class AppUnlimitedShortcuts : Service() {
                                             try {
                                                 stickedToEdge[stickyCounter] = false
 
-                                                val sharedPreferencesPositionBroadcast = getSharedPreferences(this@AppUnlimitedShortcuts.classNames.get(stickyCounter), Context.MODE_PRIVATE)
+                                                val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForApplications.classNames.get(stickyCounter), Context.MODE_PRIVATE)
                                                 XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
                                                 XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
 
@@ -1003,6 +986,8 @@ class AppUnlimitedShortcuts : Service() {
         super.onCreate()
 
         functionsClassSecurity = FunctionsClassSecurity(applicationContext)
+
+        openActions = OpenActions(applicationContext, functionsClass)
 
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
     }
