@@ -2355,6 +2355,14 @@ public class FunctionsClass {
         context.startActivity(intent);
     }
 
+    public void goToHomeScreen() {
+        Intent homeScreen = new Intent(Intent.ACTION_MAIN);
+        homeScreen.addCategory(Intent.CATEGORY_HOME);
+        homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(homeScreen,
+                ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,android.R.anim.fade_out).toBundle());
+    }
+
     /*File Functions*/
     public void saveBitmapIcon(String fileName, Bitmap bitmapToSave) {
         FileOutputStream fileOutputStream = null;

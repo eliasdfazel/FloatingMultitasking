@@ -260,6 +260,13 @@
     <string name="changePin">Pin Password</string>
     <string name="changePinSummary">Create Or Edit Pin Password</string>
     <string name="passwordError">Password Error ⚠</string>
+    <string name="authenticationProcessInvoked">
+        <![CDATA[
+            Authentication Process Has Invoked
+            <br/>
+            First Authenticate <b>%1$s</b>
+        ]]>
+    </string>
 
     <!-- Finger Print -->
     <string name="authing">Fingerprint Authentication</string>

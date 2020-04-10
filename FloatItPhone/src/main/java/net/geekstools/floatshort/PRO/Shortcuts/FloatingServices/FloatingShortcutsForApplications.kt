@@ -12,11 +12,14 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
+import android.text.Html
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.View.OnTouchListener
 import android.view.accessibility.AccessibilityEvent
+import android.widget.Toast
 import androidx.dynamicanimation.animation.FlingAnimation
 import androidx.dynamicanimation.animation.FloatValueHolder
 import androidx.dynamicanimation.animation.SpringAnimation
@@ -62,13 +65,13 @@ class FloatingShortcutsForApplications : Service() {
 
     private object XY {
         var xPosition = 0
-        var yPosition:Int = 0
+        var yPosition: Int = 0
 
-        var xInitial:Int = 13
-        var yInitial:Int = 13
+        var xInitial: Int = 13
+        var yInitial: Int = 13
 
-        var xMove:Int = 0
-        var yMove:Int = 0
+        var xMove: Int = 0
+        var yMove: Int = 0
     }
 
     private val activityInformation: ArrayList<ActivityInfo> = ArrayList<ActivityInfo>()
@@ -94,6 +97,11 @@ class FloatingShortcutsForApplications : Service() {
     private val controlIcons: ArrayList<ShapesImage> = ArrayList<ShapesImage>()
     private val notificationDots: ArrayList<ShapesImage> = ArrayList<ShapesImage>()
 
+
+    private object AuthenticationProcess {
+        var authenticationProcessInvoked: Boolean = false
+        var authenticationProcessInvokedName: String = ""
+    }
 
     lateinit var delayRunnable: Runnable
     lateinit var getBackRunnable: Runnable
@@ -625,39 +633,60 @@ class FloatingShortcutsForApplications : Service() {
 
                         if (functionsClassSecurity.isAppLocked(packageNames[startId])) {
 
-                            SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+                            if (!AuthenticationProcess.authenticationProcessInvoked) {
 
-                                override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                                    super.authenticatedFloatIt(extraInformation)
+                                AuthenticationProcess.authenticationProcessInvoked = true
+                                AuthenticationProcess.authenticationProcessInvokedName = functionsClass.activityLabel(
+                                        packageManager.getActivityInfo(ComponentName.createRelative(packageNames[startId], classNames[startId]), 0)
+                                )
 
-                                    openActions.startProcess(packageNames[startId], classNames[startId],
-                                            if (moveDetection != null) {
-                                                (moveDetection!!)
-                                                (moveDetection!!)
-                                            } else {
-                                                (layoutParams[startId])
-                                                (layoutParams[startId])
-                                            })
+                                SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+
+                                    override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                                        super.authenticatedFloatIt(extraInformation)
+                                        Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+
+                                        openActions.startProcess(packageNames[startId], classNames[startId],
+                                                if (moveDetection != null) {
+                                                    (moveDetection!!)
+                                                    (moveDetection!!)
+                                                } else {
+                                                    (layoutParams[startId])
+                                                    (layoutParams[startId])
+                                                })
+
+                                        AuthenticationProcess.authenticationProcessInvoked = false
+                                    }
+
+                                    override fun failedAuthenticated() {
+                                        super.failedAuthenticated()
+                                        Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "FailedAuthenticated")
+
+                                        AuthenticationProcess.authenticationProcessInvoked = false
+                                    }
+
+                                    override fun invokedPinPassword() {
+                                        super.invokedPinPassword()
+                                        Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "InvokedPinPassword")
+
+                                        AuthenticationProcess.authenticationProcessInvoked = false
+                                    }
                                 }
 
-                                override fun failedAuthenticated() {
-                                    super.failedAuthenticated()
+                                startActivity(Intent(applicationContext, AuthenticationFingerprintUI::class.java).apply {
+                                    putExtra("PackageName", packageNames[startId])
+                                    putExtra("ClassName", classNames[startId])
+                                    putExtra("PrimaryColor", iconColors[startId])
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
-                                }
+                            } else {
 
-                                override fun invokedPinPassword() {
-                                    super.invokedPinPassword()
-
-                                }
+                                Toast.makeText(applicationContext,
+                                        Html.fromHtml(getString(R.string.authenticationProcessInvoked, AuthenticationProcess.authenticationProcessInvokedName)),
+                                        Toast.LENGTH_LONG)
+                                        .show()
                             }
-
-                            startActivity(Intent(applicationContext, AuthenticationFingerprintUI::class.java).apply {
-                                putExtra("PackageName", packageNames[startId])
-                                putExtra("ClassName", classNames[startId])
-                                putExtra("PrimaryColor", iconColors[startId])
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
-
                         } else {
 
                             openActions.startProcess(packageNames[startId], classNames[startId],

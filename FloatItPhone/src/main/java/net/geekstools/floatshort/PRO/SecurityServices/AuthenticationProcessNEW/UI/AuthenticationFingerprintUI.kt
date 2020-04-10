@@ -42,15 +42,24 @@ class AuthenticationFingerprintUI : FragmentActivity() {
                         BiometricPrompt.ERROR_USER_CANCELED -> {
                             FunctionsClassDebug.PrintDebug("*** ERROR USER CANCELED ***")
 
+                            SecurityInterfaceHolder.authenticationCallback
+                                    .failedAuthenticated()
+
                             this@AuthenticationFingerprintUI.finish()
                         }
                         BiometricPrompt.ERROR_CANCELED -> {
                             FunctionsClassDebug.PrintDebug("*** ERROR CANCELED ***")
 
+                            SecurityInterfaceHolder.authenticationCallback
+                                    .failedAuthenticated()
+
                             this@AuthenticationFingerprintUI.finish()
                         }
                         BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> {
                             FunctionsClassDebug.PrintDebug("*** ERROR LOCKOUT PERMANENT ***")
+
+                            SecurityInterfaceHolder.authenticationCallback
+                                    .failedAuthenticated()
 
                             this@AuthenticationFingerprintUI.finish()
                         }
@@ -135,8 +144,6 @@ class AuthenticationFingerprintUI : FragmentActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-
         SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
 
         this@AuthenticationFingerprintUI.finish()
