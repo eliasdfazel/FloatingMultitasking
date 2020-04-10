@@ -26,8 +26,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.BindServices
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
@@ -80,7 +81,8 @@ class RecoveryWidgets : Service() {
                                     if (functionsClass.customIconsEnable()) {
                                         val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
                                         loadCustomIcons.load()
-                                        println("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber())
+
+                                        FunctionsClassDebug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber())
                                     }
 
                                     val widgetDataInterface: WidgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)

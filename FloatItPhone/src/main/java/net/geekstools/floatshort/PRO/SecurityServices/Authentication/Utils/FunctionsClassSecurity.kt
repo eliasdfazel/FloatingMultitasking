@@ -375,7 +375,7 @@ class FunctionsClassSecurity (var context: Context) {
     }
 
     fun authError() {
-        println("Auth Error")
+
     }
 
     private fun tryEncrypt(activity: Activity, cipher: Cipher) {

@@ -320,11 +320,6 @@ class WidgetUnlimitedFloating : Service() {
                         when (motionEvent.action) {
                             MotionEvent.ACTION_DOWN -> {
 
-
-                                println(">>> >> 1 > " + startId)
-                                println(">>> >> 2 > " + layoutParams[startId])
-                                println(">>> >> 3 > " + layoutParamsTouch)
-
                                 initialX = layoutParamsTouch.x
                                 initialY = layoutParamsTouch.y
 
