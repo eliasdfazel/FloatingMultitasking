@@ -50,7 +50,7 @@ public class ReceiverWifi extends BroadcastReceiver {
             } else if (wifiManager.isWifiEnabled() == false) {
                 if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
                     Intent w = new Intent(context, FloatingShortcutsForWifi.class);
-                    w.putExtra("pack", context.getString(R.string.remove_all_floatings));
+                    w.putExtra(context.getString(R.string.remove_all_floatings), context.getString(R.string.remove_all_floatings));
                     w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(w);
 

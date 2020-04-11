@@ -26,9 +26,9 @@ import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcut
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForFrequentlyApplications;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForGps;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForHIS;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForNfc;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForTime;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsNfc;
 
 public class RemoveAllActivity extends Activity {
 
@@ -53,7 +53,7 @@ public class RemoveAllActivity extends Activity {
         App_Unlimited_Gps.putExtra("pack", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Gps);
 
-        Intent App_Unlimited_Nfc = new Intent(getApplicationContext(), FloatingShortcutsNfc.class);
+        Intent App_Unlimited_Nfc = new Intent(getApplicationContext(), FloatingShortcutsForNfc.class);
         App_Unlimited_Nfc.putExtra("pack", getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Nfc);
 

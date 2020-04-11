@@ -30,8 +30,8 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_G
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Nfc;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForGps;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForNfc;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsNfc;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
@@ -137,7 +137,7 @@ public class BindServices extends Service {
 
                                     PublicVariable.receiverNFC = true;
                                 } else if (nfcManager.getDefaultAdapter().isEnabled() == false) {
-                                    Intent nfcShortcutsRemove = new Intent(context, FloatingShortcutsNfc.class);
+                                    Intent nfcShortcutsRemove = new Intent(context, FloatingShortcutsForNfc.class);
                                     nfcShortcutsRemove.putExtra("PackageName", context.getString(R.string.remove_all_floatings));
                                     nfcShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(nfcShortcutsRemove);

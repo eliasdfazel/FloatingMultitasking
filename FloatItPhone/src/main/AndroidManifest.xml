@@ -498,7 +498,7 @@
         <service
             android:name=".Shortcuts.FloatingServices.FloatingShortcutsForGps"/>
         <service
-            android:name=".Shortcuts.FloatingServices.FloatingShortcutsNfc"/>
+            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForNfc"/>
         <service
             android:name=".Shortcuts.FloatingServices.FloatingShortcutsForTime"/>
 

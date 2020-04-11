@@ -148,9 +148,9 @@ import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForBluetooth;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForGps;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForHIS;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForNfc;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForTime;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsNfc;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager;
@@ -562,7 +562,7 @@ public class FunctionsClass {
         }
         PublicVariable.allFloatingCounter++;
 
-        Intent u = new Intent(context, FloatingShortcutsNfc.class);
+        Intent u = new Intent(context, FloatingShortcutsForNfc.class);
         u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
