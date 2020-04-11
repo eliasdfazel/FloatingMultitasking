@@ -17,7 +17,8 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import net.geekstools.floatshort.PRO.BindServices
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprintUI
+import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
@@ -60,8 +61,8 @@ class RecoveryAll : Service() {
                 }
             }
 
-            startActivity(Intent(applicationContext, AuthenticationFingerprintUI::class.java).apply {
-                putExtra("OtherTitle", this@RecoveryAll.javaClass.simpleName)
+            startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
+                putExtra("OtherTitle", getString(R.string.recover_all))
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 

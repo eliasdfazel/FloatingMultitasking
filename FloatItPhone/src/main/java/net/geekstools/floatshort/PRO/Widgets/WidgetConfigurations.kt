@@ -32,6 +32,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
@@ -60,9 +61,15 @@ import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
-import net.geekstools.floatshort.PRO.Utils.Functions.*
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
@@ -753,17 +760,47 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 }
 
         if (functionsClass.readPreference(".Password", "Pin", "0") == "0" && functionsClass.securityServicesSubscribed()) {
+
             startActivity(Intent(applicationContext, HandlePinPassword::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                     ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
-        } else {
-            if (!WidgetConfigurations.alreadyAuthenticatedWidgets) {
-                if (functionsClass.securityServicesSubscribed()) {
-                    FunctionsClassSecurity.AuthOpenAppValues.authComponentName = getString(R.string.securityServices)
-                    FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName = packageName
-                    FunctionsClassSecurity.AuthOpenAppValues.authWidgetConfigurations = true
 
-                    functionsClassSecurity.openAuthInvocation()
+        } else {
+
+            if (!WidgetConfigurations.alreadyAuthenticatedWidgets) {
+
+                if (functionsClass.securityServicesSubscribed()) {
+
+                    SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+
+                        override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                            super.authenticatedFloatIt(extraInformation)
+                            Log.d(this@WidgetConfigurations.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+
+                            WidgetConfigurations.alreadyAuthenticatedWidgets = true
+                        }
+
+                        override fun failedAuthenticated() {
+                            super.failedAuthenticated()
+                            Log.d(this@WidgetConfigurations.javaClass.simpleName, "FailedAuthenticated")
+
+                            if (AuthenticationFingerprint.attemptCounter == 5) {
+                                this@WidgetConfigurations.finish()
+                            }
+
+                            WidgetConfigurations.alreadyAuthenticatedWidgets = false
+                        }
+
+                        override fun invokedPinPassword() {
+                            super.invokedPinPassword()
+                            Log.d(this@WidgetConfigurations.javaClass.simpleName, "InvokedPinPassword")
+                        }
+                    }
+
+                    startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
+                        putExtra("OtherTitle", getString(R.string.floatingWidget))
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
                 }
             }
         }

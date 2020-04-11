@@ -27,7 +27,7 @@ import androidx.dynamicanimation.animation.SpringForce
 import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprintUI
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
@@ -674,7 +674,7 @@ class FloatingShortcutsForApplications : Service() {
                                     }
                                 }
 
-                                startActivity(Intent(applicationContext, AuthenticationFingerprintUI::class.java).apply {
+                                startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
                                     putExtra("PackageName", packageNames[startId])
                                     putExtra("ClassName", classNames[startId])
                                     putExtra("PrimaryColor", iconColors[startId])
@@ -875,7 +875,7 @@ class FloatingShortcutsForApplications : Service() {
                                         }
                                     }
 
-                                    startActivity(Intent(applicationContext, AuthenticationFingerprintUI::class.java).apply {
+                                    startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
                                         putExtra("PackageName", packageNames[intent.getIntExtra("startId", 1)])
                                         putExtra("ClassName", classNames[intent.getIntExtra("startId", 1)])
                                         putExtra("PrimaryColor", iconColors[intent.getIntExtra("startId", 1)])

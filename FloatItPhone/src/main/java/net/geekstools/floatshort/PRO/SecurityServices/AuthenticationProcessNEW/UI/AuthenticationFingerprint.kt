@@ -12,13 +12,17 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.U
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 
-class AuthenticationFingerprintUI : FragmentActivity() {
+class AuthenticationFingerprint : FragmentActivity() {
 
     val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
 
-    private var attemptCounter: Int = 0
+    companion object {
+        var attemptCounter: Int = 0
+    }
+
+    private val maximumAttempt: Int = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +49,7 @@ class AuthenticationFingerprintUI : FragmentActivity() {
                             SecurityInterfaceHolder.authenticationCallback
                                     .failedAuthenticated()
 
-                            this@AuthenticationFingerprintUI.finish()
+                            this@AuthenticationFingerprint.finish()
                         }
                         BiometricPrompt.ERROR_CANCELED -> {
                             FunctionsClassDebug.PrintDebug("*** ERROR CANCELED ***")
@@ -53,7 +57,7 @@ class AuthenticationFingerprintUI : FragmentActivity() {
                             SecurityInterfaceHolder.authenticationCallback
                                     .failedAuthenticated()
 
-                            this@AuthenticationFingerprintUI.finish()
+                            this@AuthenticationFingerprint.finish()
                         }
                         BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> {
                             FunctionsClassDebug.PrintDebug("*** ERROR LOCKOUT PERMANENT ***")
@@ -61,7 +65,7 @@ class AuthenticationFingerprintUI : FragmentActivity() {
                             SecurityInterfaceHolder.authenticationCallback
                                     .failedAuthenticated()
 
-                            this@AuthenticationFingerprintUI.finish()
+                            this@AuthenticationFingerprint.finish()
                         }
                         BiometricPrompt.ERROR_HW_NOT_PRESENT -> {
                             FunctionsClassDebug.PrintDebug("*** ERROR HW NOT PRESENT ***")
@@ -95,10 +99,11 @@ class AuthenticationFingerprintUI : FragmentActivity() {
                     super.onAuthenticationFailed()
                     FunctionsClassDebug.PrintDebug("*** Authentication Failed ***")
 
-                    SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
+                    SecurityInterfaceHolder.authenticationCallback
+                            .failedAuthenticated()
 
-                    attemptCounter++
-                    if (attemptCounter == 3) {
+                    AuthenticationFingerprint.attemptCounter++
+                    if (AuthenticationFingerprint.attemptCounter == maximumAttempt) {
 
                         triggerPinPasswordFragment(dialogueTitle)
                     }
@@ -111,12 +116,12 @@ class AuthenticationFingerprintUI : FragmentActivity() {
                     SecurityInterfaceHolder.authenticationCallback
                             .authenticatedFloatIt(null)
 
-                    attemptCounter = 0
-                    this@AuthenticationFingerprintUI.finish()
+                    AuthenticationFingerprint.attemptCounter = 0
+                    this@AuthenticationFingerprint.finish()
                 }
             }
 
-            val biometricPrompt = BiometricPrompt(this@AuthenticationFingerprintUI,
+            val biometricPrompt = BiometricPrompt(this@AuthenticationFingerprint,
                     authenticationExecutor,
                     biometricCallback)
 
@@ -134,9 +139,6 @@ class AuthenticationFingerprintUI : FragmentActivity() {
 
             } else {
 
-                SecurityInterfaceHolder.authenticationCallback
-                        .failedAuthenticated()
-
                 triggerPinPasswordFragment(dialogueTitle)
 
             }
@@ -144,9 +146,11 @@ class AuthenticationFingerprintUI : FragmentActivity() {
     }
 
     override fun onBackPressed() {
+        AuthenticationFingerprint.attemptCounter = 0
+
         SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
 
-        this@AuthenticationFingerprintUI.finish()
+        this@AuthenticationFingerprint.finish()
     }
 
     private fun triggerPinPasswordFragment(dialogueTitle: String) {
@@ -158,6 +162,6 @@ class AuthenticationFingerprintUI : FragmentActivity() {
 
         val authenticationPinPasswordUI: AuthenticationPinPasswordUI = AuthenticationPinPasswordUI()
         authenticationPinPasswordUI.arguments = extraInformation
-        authenticationPinPasswordUI.show(supportFragmentManager, this@AuthenticationFingerprintUI.javaClass.simpleName)
+        authenticationPinPasswordUI.show(supportFragmentManager, this@AuthenticationFingerprint.javaClass.simpleName)
     }
 }

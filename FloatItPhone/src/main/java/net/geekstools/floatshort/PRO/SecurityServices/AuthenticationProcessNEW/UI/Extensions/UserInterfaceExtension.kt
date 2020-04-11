@@ -7,11 +7,11 @@ import android.graphics.Color
 import android.text.Html
 import android.view.WindowManager
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprintUI
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationPinPasswordUI
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
-fun AuthenticationFingerprintUI.setupAuthenticationUIWindow() {
+fun AuthenticationFingerprint.setupAuthenticationUIWindow() {
     val primaryColor: Int = intent.getIntExtra("PrimaryColor", getColor(R.color.default_color))
 
     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -23,7 +23,7 @@ fun AuthenticationFingerprintUI.setupAuthenticationUIWindow() {
     window.decorView.setBackgroundColor(functionsClass.setColorAlpha(primaryColor, 113f))
 }
 
-fun AuthenticationFingerprintUI.setupAuthenticationUIText() : String {
+fun AuthenticationFingerprint.setupAuthenticationUIText() : String {
 
     var dialogueTitle = getString(R.string.app_name)
 

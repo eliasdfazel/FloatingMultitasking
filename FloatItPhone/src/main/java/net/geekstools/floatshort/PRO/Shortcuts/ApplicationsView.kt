@@ -678,14 +678,29 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             is GestureConstants.SwipeHorizontal -> {
                 when (gestureConstants.horizontalDirection) {
                     GestureListenerConstants.SWIPE_RIGHT -> {
-                        if (functionsClass.floatingWidgetsPurchased()) {
-                            functionsClass.navigateToClass(this@ApplicationsView, WidgetConfigurations::class.java,
-                                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
-                        } else {
-                            InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
+                        if (functionsClass.networkConnection() && firebaseAuth.currentUser != null) {
 
-                            functionsClass.navigateToClass(this@ApplicationsView, InAppBilling::class.java,
-                                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+                            if (functionsClass.floatingWidgetsPurchased()) {
+
+                                functionsClass.navigateToClass(this@ApplicationsView, WidgetConfigurations::class.java,
+                                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+
+                            } else {
+                                InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
+
+                                startActivity(Intent(applicationContext, InAppBilling::class.java)
+                                        .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
+                                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
+
+                            }
+                        } else {
+                            if (functionsClass.networkConnection()) {
+                                Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
+                            }
+
+                            if (firebaseAuth.currentUser == null) {
+                                Toast.makeText(applicationContext, getString(R.string.authError), Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {

@@ -57,6 +57,31 @@ import javax.crypto.spec.SecretKeySpec
 
 class FunctionsClassSecurity (var context: Context) {
 
+    /*
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+    fun openAuthInvocation() {
+
+
+
+        context.startActivity(Intent(context, AuthActivityHelper::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
+
+
+
+
+
+    }
+
     /*Lock/Unlock Apps*/
     fun doLockApps(PackageName: String) {
         if (FunctionsClass(context).readPreference(".Password", "Pin", "0") == "0") {
@@ -177,11 +202,6 @@ class FunctionsClassSecurity (var context: Context) {
                 }
             }
         }
-    }
-
-    fun openAuthInvocation() {
-        context.startActivity(Intent(context, AuthActivityHelper::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
     }
 
     fun initCipher(cipher: Cipher, keyName: String): Boolean {
