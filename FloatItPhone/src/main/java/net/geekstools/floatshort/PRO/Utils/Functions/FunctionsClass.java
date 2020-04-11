@@ -494,13 +494,13 @@ public class FunctionsClass {
                 return;
             }
         }
-        PublicVariable.floatingCounter++;
+        PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForWifi.class);
-        u.putExtra("pack", packageName);
+        u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -516,13 +516,13 @@ public class FunctionsClass {
                 return;
             }
         }
-        PublicVariable.floatingCounter++;
+        PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForBluetooth.class);
-        u.putExtra("pack", packageName);
+        u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -538,13 +538,13 @@ public class FunctionsClass {
                 return;
             }
         }
-        PublicVariable.floatingCounter++;
+        PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForGps.class);
-        u.putExtra("pack", packageName);
+        u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -560,13 +560,13 @@ public class FunctionsClass {
                 return;
             }
         }
-        PublicVariable.floatingCounter++;
+        PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsNfc.class);
-        u.putExtra("pack", packageName);
+        u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -582,13 +582,13 @@ public class FunctionsClass {
                 return;
             }
         }
-        PublicVariable.floatingCounter++;
+        PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForTime.class);
-        u.putExtra("pack", packageName);
+        u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -604,14 +604,14 @@ public class FunctionsClass {
                 return;
             }
         }
-        PublicVariable.floatingCounter++;
+        PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForHIS.class);
-        u.putExtra("packageName", packageName);
-        u.putExtra("className", className);
+        u.putExtra("PackageName", packageName);
+        u.putExtra("ClassName", className);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -700,24 +700,24 @@ public class FunctionsClass {
             }
         }
         try {
-            PublicVariable.floatingCounter++;
-            PublicVariable.floatingCategoryCounter_category++;
-            PublicVariable.categoriesCounter++;
-            PublicVariable.FloatingCategories.add(PublicVariable.categoriesCounter, categoryName);
+            PublicVariable.allFloatingCounter++;
+            PublicVariable.floatingFolderCounter_Folder++;
+            PublicVariable.FloatingFolderCounter++;
+            PublicVariable.FloatingFoldersList.add(PublicVariable.FloatingFolderCounter, categoryName);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
 
-            PublicVariable.floatingCounter = PublicVariable.floatingCounter + 1;
-            PublicVariable.floatingCategoryCounter_category = PublicVariable.floatingCategoryCounter_category + 1;
-            PublicVariable.categoriesCounter = PublicVariable.categoriesCounter + 1;
-            PublicVariable.FloatingCategories.add(PublicVariable.categoriesCounter, categoryName);
+            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter + 1;
+            PublicVariable.floatingFolderCounter_Folder = PublicVariable.floatingFolderCounter_Folder + 1;
+            PublicVariable.FloatingFolderCounter = PublicVariable.FloatingFolderCounter + 1;
+            PublicVariable.FloatingFoldersList.add(PublicVariable.FloatingFolderCounter, categoryName);
         }
 
         Intent c = new Intent(context, Folder_Unlimited_Floating.class);
         c.putExtra("categoryName", categoryName);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -733,15 +733,15 @@ public class FunctionsClass {
                 return;
             }
         }
-        PublicVariable.floatingCounter++;
-        PublicVariable.floatingCategoryCounter_wifi++;
+        PublicVariable.allFloatingCounter++;
+        PublicVariable.floatingFolderCounter_Wifi++;
 
         Intent c = new Intent(context, Folder_Unlimited_Wifi.class);
         c.putExtra("categoryName", categoryName);
         c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -757,15 +757,15 @@ public class FunctionsClass {
                 return;
             }
         }
-        PublicVariable.floatingCounter++;
-        PublicVariable.floatingCategoryCounter_bluetooth++;
+        PublicVariable.allFloatingCounter++;
+        PublicVariable.floatingFolderCounter_Bluetooth++;
 
         Intent c = new Intent(context, Folder_Unlimited_Bluetooth.class);
         c.putExtra("categoryName", categoryName);
         c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -781,15 +781,15 @@ public class FunctionsClass {
                 return;
             }
         }
-        PublicVariable.floatingCounter++;
-        PublicVariable.floatingCategoryCounter_gps++;
+        PublicVariable.allFloatingCounter++;
+        PublicVariable.floatingFolderCounter_Gps++;
 
         Intent c = new Intent(context, Folder_Unlimited_Gps.class);
         c.putExtra("categoryName", categoryName);
         c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -805,15 +805,15 @@ public class FunctionsClass {
                 return;
             }
         }
-        PublicVariable.floatingCounter++;
-        PublicVariable.floatingCategoryCounter_nfc++;
+        PublicVariable.allFloatingCounter++;
+        PublicVariable.floatingFolderCounter_Nfc++;
 
         Intent c = new Intent(context, Folder_Unlimited_Nfc.class);
         c.putExtra("categoryName", categoryName);
         c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -829,15 +829,15 @@ public class FunctionsClass {
                 return;
             }
         }
-        PublicVariable.floatingCounter++;
-        PublicVariable.floatingCategoryCounter_time++;
+        PublicVariable.allFloatingCounter++;
+        PublicVariable.floatingFolderCounter_Time++;
 
         Intent c = new Intent(context, Folder_Unlimited_Time.class);
         c.putExtra("categoryName", categoryName);
         c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -940,17 +940,15 @@ public class FunctionsClass {
         }
 
         try {
-            PublicVariable.floatingCounter++;
-            PublicVariable.floatingWidgetsCounter_Widgets++;
-            PublicVariable.widgetsCounter++;
-            PublicVariable.FloatingWidgets.add(PublicVariable.widgetsCounter, WidgetId);
+            PublicVariable.allFloatingCounter++;
+            PublicVariable.floatingWidgetsCounter++;
+            PublicVariable.FloatingWidgets.add(PublicVariable.floatingWidgetsCounter, WidgetId);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
 
-            PublicVariable.floatingCounter = PublicVariable.floatingCounter + 1;
-            PublicVariable.floatingWidgetsCounter_Widgets = PublicVariable.floatingWidgetsCounter_Widgets + 1;
-            PublicVariable.widgetsCounter = PublicVariable.widgetsCounter + 1;
-            PublicVariable.FloatingWidgets.add(PublicVariable.widgetsCounter, WidgetId);
+            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter + 1;
+            PublicVariable.floatingWidgetsCounter = PublicVariable.floatingWidgetsCounter + 1;
+            PublicVariable.FloatingWidgets.add(PublicVariable.floatingWidgetsCounter, WidgetId);
         }
 
         Intent w = new Intent(context, WidgetUnlimitedFloating.class);
@@ -959,7 +957,7 @@ public class FunctionsClass {
         w.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(w);
 
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT < 26) {
                 context.startService(new Intent(context, BindServices.class));
             } else {

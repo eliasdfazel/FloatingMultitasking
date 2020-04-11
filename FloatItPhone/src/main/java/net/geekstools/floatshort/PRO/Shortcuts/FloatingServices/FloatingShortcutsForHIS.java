@@ -148,8 +148,7 @@ public class FloatingShortcutsForHIS extends Service {
     @Override
     public int onStartCommand(Intent intent, final int flags, final int startId) {
         FunctionsClassDebug.Companion.PrintDebug(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
-        FunctionsClassDebug.Companion.PrintDebug("HIS PackageName: " + intent.getStringExtra("packageName"));
-        FunctionsClassDebug.Companion.PrintDebug("HIS ClassName: " + intent.getStringExtra("className"));
+
         startIdCounter = startId;
 
         if (functionsClass.customIconsEnable()) {
@@ -162,9 +161,9 @@ public class FloatingShortcutsForHIS extends Service {
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         try {
             allowMove[startId] = true;
-            packageNames[startId] = intent.getStringExtra("packageName");
+            packageNames[startId] = intent.getStringExtra("PackageName");
             if (!packageNames[startId].equals(getString(R.string.remove_all_floatings))) {
-                classNames[startId] = intent.getStringExtra("className");
+                classNames[startId] = intent.getStringExtra("ClassName");
 
                 componentName[startId] = new ComponentName(packageNames[startId], classNames[startId]);
                 activityInfo[startId] = getPackageManager().getActivityInfo(componentName[startId], 0);
@@ -194,16 +193,16 @@ public class FloatingShortcutsForHIS extends Service {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             } finally {
-                                PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                                PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                                if (PublicVariable.floatingCounter == 0) {
+                                if (PublicVariable.allFloatingCounter == 0) {
                                     if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                             .getBoolean("stable", true) == false) {
                                         stopService(new Intent(getApplicationContext(), BindServices.class));
                                     }
                                 }
                             }
-                        } else if (PublicVariable.floatingCounter == 0) {
+                        } else if (PublicVariable.allFloatingCounter == 0) {
                             if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                     .getBoolean("stable", true) == false) {
                                 stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -616,9 +615,9 @@ public class FloatingShortcutsForHIS extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                            if (PublicVariable.floatingCounter == 0) {
+                            if (PublicVariable.allFloatingCounter == 0) {
                                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                         .getBoolean("stable", true) == false) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -834,9 +833,9 @@ public class FloatingShortcutsForHIS extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                            if (PublicVariable.floatingCounter == 0) {
+                            if (PublicVariable.allFloatingCounter == 0) {
                                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                         .getBoolean("stable", true) == false) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));

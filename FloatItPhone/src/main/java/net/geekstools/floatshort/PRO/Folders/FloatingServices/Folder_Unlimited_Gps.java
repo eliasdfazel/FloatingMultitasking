@@ -220,16 +220,16 @@ public class Folder_Unlimited_Gps extends Service {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             } finally {
-                                PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                                PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                                if (PublicVariable.floatingCounter == 0) {
+                                if (PublicVariable.allFloatingCounter == 0) {
                                     if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                             .getBoolean("stable", true) == false) {
                                         stopService(new Intent(getApplicationContext(), BindServices.class));
                                     }
                                 }
                             }
-                        } else if (PublicVariable.floatingCounter == 0) {
+                        } else if (PublicVariable.allFloatingCounter == 0) {
                             if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                     .getBoolean("stable", true) == false) {
                                 stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -240,8 +240,8 @@ public class Folder_Unlimited_Gps extends Service {
                     e.printStackTrace();
                 }
             }
-            PublicVariable.FloatingCategories.clear();
-            PublicVariable.categoriesCounter = -1;
+            PublicVariable.FloatingFoldersList.clear();
+            PublicVariable.FloatingFolderCounter = -1;
             try {
                 if (broadcastReceiver != null) {
                     try {
@@ -458,18 +458,18 @@ public class Folder_Unlimited_Gps extends Service {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 } finally {
-                                    PublicVariable.FloatingCategories.remove(categoryName[intent.getIntExtra("startId", 1)]);
-                                    PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
-                                    PublicVariable.floatingCategoryCounter_gps = PublicVariable.floatingCategoryCounter_gps - 1;
-                                    PublicVariable.categoriesCounter = PublicVariable.categoriesCounter - 1;
+                                    PublicVariable.FloatingFoldersList.remove(categoryName[intent.getIntExtra("startId", 1)]);
+                                    PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
+                                    PublicVariable.floatingFolderCounter_Gps = PublicVariable.floatingFolderCounter_Gps - 1;
+                                    PublicVariable.FloatingFolderCounter = PublicVariable.FloatingFolderCounter - 1;
 
-                                    if (PublicVariable.floatingCounter == 0) {
+                                    if (PublicVariable.allFloatingCounter == 0) {
                                         if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                                 .getBoolean("stable", true) == false) {
                                             stopService(new Intent(getApplicationContext(), BindServices.class));
                                         }
                                     }
-                                    if (PublicVariable.floatingCategoryCounter_gps == 0) {
+                                    if (PublicVariable.floatingFolderCounter_Gps == 0) {
                                         if (broadcastReceiver != null) {
                                             try {
                                                 unregisterReceiver(broadcastReceiver);
@@ -480,7 +480,7 @@ public class Folder_Unlimited_Gps extends Service {
                                         stopSelf();
                                     }
                                 }
-                            } else if (PublicVariable.floatingCounter == 0) {
+                            } else if (PublicVariable.allFloatingCounter == 0) {
                                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                         .getBoolean("stable", true) == false) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));

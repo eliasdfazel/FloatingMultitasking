@@ -156,7 +156,7 @@ public class FloatingShortcutsForGps extends Service {
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         try {
             allowMove[startId] = true;
-            packages[startId] = intent.getStringExtra("pack");
+            packages[startId] = intent.getStringExtra("PackageName");
 
             floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_shortcuts, null, false);
             controlIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.controlIcon);
@@ -182,16 +182,16 @@ public class FloatingShortcutsForGps extends Service {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             } finally {
-                                PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                                PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                                if (PublicVariable.floatingCounter == 0) {
+                                if (PublicVariable.allFloatingCounter == 0) {
                                     if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                             .getBoolean("stable", true) == false) {
                                         stopService(new Intent(getApplicationContext(), BindServices.class));
                                     }
                                 }
                             }
-                        } else if (PublicVariable.floatingCounter == 0) {
+                        } else if (PublicVariable.allFloatingCounter == 0) {
                             if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                     .getBoolean("stable", true) == false) {
                                 stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -598,9 +598,9 @@ public class FloatingShortcutsForGps extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                            if (PublicVariable.floatingCounter == 0) {
+                            if (PublicVariable.allFloatingCounter == 0) {
                                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                         .getBoolean("stable", true) == false) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -836,9 +836,9 @@ public class FloatingShortcutsForGps extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                            if (PublicVariable.floatingCounter == 0) {
+                            if (PublicVariable.allFloatingCounter == 0) {
                                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                         .getBoolean("stable", true) == false) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));

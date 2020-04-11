@@ -24,9 +24,9 @@ import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
@@ -78,9 +78,9 @@ public class RecoveryFolders extends Service {
 
                             for (String aCategoryData : categoryData) {
                                 runService = true;
-                                if (PublicVariable.FloatingCategories != null) {
-                                    for (int check = 0; check < PublicVariable.FloatingCategories.size(); check++) {
-                                        if (aCategoryData.equals(PublicVariable.FloatingCategories.get(check))) {
+                                if (PublicVariable.FloatingFoldersList != null) {
+                                    for (int check = 0; check < PublicVariable.FloatingFoldersList.size(); check++) {
+                                        if (aCategoryData.equals(PublicVariable.FloatingFoldersList.get(check))) {
                                             runService = false;
                                         }
                                     }
@@ -120,9 +120,9 @@ public class RecoveryFolders extends Service {
 
                 for (String aCategoryData : categoryData) {
                     runService = true;
-                    if (PublicVariable.FloatingCategories != null) {
-                        for (int check = 0; check < PublicVariable.FloatingCategories.size(); check++) {
-                            if (aCategoryData.equals(PublicVariable.FloatingCategories.get(check))) {
+                    if (PublicVariable.FloatingFoldersList != null) {
+                        for (int check = 0; check < PublicVariable.FloatingFoldersList.size(); check++) {
+                            if (aCategoryData.equals(PublicVariable.FloatingFoldersList.get(check))) {
                                 runService = false;
                             }
                         }
@@ -147,7 +147,7 @@ public class RecoveryFolders extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (PublicVariable.floatingCounter == 0) {
+            if (PublicVariable.allFloatingCounter == 0) {
                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                         .getBoolean("stable", true) == false) {
                     stopService(new Intent(getApplicationContext(), BindServices.class));

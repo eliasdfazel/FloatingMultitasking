@@ -182,16 +182,16 @@ public class FloatingShortcutsForFrequentlyApplications extends Service {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             } finally {
-                                PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                                PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                                if (PublicVariable.floatingCounter == 0) {
+                                if (PublicVariable.allFloatingCounter == 0) {
                                     if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                             .getBoolean("stable", true) == false) {
                                         stopService(new Intent(getApplicationContext(), BindServices.class));
                                     }
                                 }
                             }
-                        } else if (PublicVariable.floatingCounter == 0) {
+                        } else if (PublicVariable.allFloatingCounter == 0) {
                             if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                     .getBoolean("stable", true) == false) {
                                 stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -202,8 +202,8 @@ public class FloatingShortcutsForFrequentlyApplications extends Service {
                     e.printStackTrace();
                 }
             }
-            PublicVariable.FloatingShortcuts.clear();
-            PublicVariable.shortcutsCounter = -1;
+            PublicVariable.FloatingShortcutsList.clear();
+            PublicVariable.FloatingShortcutsCounter = -1;
             try {
                 if (broadcastReceiver != null) {
                     try {
@@ -601,11 +601,11 @@ public class FloatingShortcutsForFrequentlyApplications extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.FloatingShortcuts.remove(packages[startId]);
-                            PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
-                            PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter - 1;
+                            PublicVariable.FloatingShortcutsList.remove(packages[startId]);
+                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
+                            PublicVariable.FloatingShortcutsCounter = PublicVariable.FloatingShortcutsCounter - 1;
 
-                            if (PublicVariable.floatingCounter == 0) {
+                            if (PublicVariable.allFloatingCounter == 0) {
                                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                         .getBoolean("stable", true) == false) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -841,11 +841,11 @@ public class FloatingShortcutsForFrequentlyApplications extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.FloatingShortcuts.remove(packages[intent.getIntExtra("startId", 1)]);
-                            PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
-                            PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter - 1;
+                            PublicVariable.FloatingShortcutsList.remove(packages[intent.getIntExtra("startId", 1)]);
+                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
+                            PublicVariable.FloatingShortcutsCounter = PublicVariable.FloatingShortcutsCounter - 1;
 
-                            if (PublicVariable.floatingCounter == 0) {
+                            if (PublicVariable.allFloatingCounter == 0) {
                                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                         .getBoolean("stable", true) == false) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));

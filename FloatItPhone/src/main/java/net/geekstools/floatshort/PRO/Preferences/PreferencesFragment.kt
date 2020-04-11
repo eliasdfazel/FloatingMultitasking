@@ -185,7 +185,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 context?.startService(Intent(context, BindServices::class.java))
             } else if (!sharedPreferences.getBoolean("stable", true)) {
                 PublicVariable.Stable = false
-                if (PublicVariable.floatingCounter == 0) {
+                if (PublicVariable.allFloatingCounter == 0) {
                     context?.stopService(Intent(context, BindServices::class.java))
                 }
                 functionsClass.saveDefaultPreference("LitePreferences", false)

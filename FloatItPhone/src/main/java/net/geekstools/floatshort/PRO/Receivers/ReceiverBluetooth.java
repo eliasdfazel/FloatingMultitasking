@@ -20,7 +20,6 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_B
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForBluetooth;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
@@ -36,23 +35,26 @@ public class ReceiverBluetooth extends BroadcastReceiver {
             if (functionsClass.customIconsEnable()) {
                 LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
                 loadCustomIcons.load();
-                FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
             }
 
             final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            if (bluetoothAdapter.isEnabled() == true && PublicVariable.receiveBluetooth == false) {
+            if (bluetoothAdapter.isEnabled() == true
+                    && PublicVariable.receiveBluetooth == false) {
+
                 Intent bluetooth = new Intent(context, RecoveryBluetooth.class);
                 bluetooth.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(bluetooth);
+
                 PublicVariable.receiveBluetooth = true;
+
             } else if (bluetoothAdapter.isEnabled() == false) {
                 Intent w = new Intent(context, FloatingShortcutsForBluetooth.class);
-                w.putExtra("pack", context.getString(R.string.remove_all_floatings));
+                w.putExtra(context.getString(R.string.remove_all_floatings), context.getString(R.string.remove_all_floatings));
                 w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(w);
 
                 Intent c = new Intent(context, Folder_Unlimited_Bluetooth.class);
-                c.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
+                c.putExtra(context.getString(R.string.remove_all_floatings), context.getString(R.string.remove_all_floatings));
                 c.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(c);
 

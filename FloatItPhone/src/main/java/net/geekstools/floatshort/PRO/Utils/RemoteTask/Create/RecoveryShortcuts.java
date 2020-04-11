@@ -25,10 +25,10 @@ import androidx.preference.PreferenceManager;
 import com.google.firebase.appindexing.FirebaseAppIndex;
 
 import net.geekstools.floatshort.PRO.BindServices;
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices;
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
@@ -75,9 +75,9 @@ public class RecoveryShortcuts extends Service {
 
                                 for (String anAppData : appData) {
                                     runService = true;
-                                    if (PublicVariable.FloatingShortcuts != null) {
-                                        for (int check = 0; check < PublicVariable.FloatingShortcuts.size(); check++) {
-                                            if (anAppData.equals(PublicVariable.FloatingShortcuts.get(check))) {
+                                    if (PublicVariable.FloatingShortcutsList != null) {
+                                        for (int check = 0; check < PublicVariable.FloatingShortcutsList.size(); check++) {
+                                            if (anAppData.equals(PublicVariable.FloatingShortcutsList.get(check))) {
                                                 runService = false;
                                             }
                                         }
@@ -118,9 +118,9 @@ public class RecoveryShortcuts extends Service {
 
                     for (String anAppData : appData) {
                         runService = true;
-                        if (PublicVariable.FloatingShortcuts != null) {
-                            for (int check = 0; check < PublicVariable.FloatingShortcuts.size(); check++) {
-                                if (anAppData.equals(PublicVariable.FloatingShortcuts.get(check))) {
+                        if (PublicVariable.FloatingShortcutsList != null) {
+                            for (int check = 0; check < PublicVariable.FloatingShortcutsList.size(); check++) {
+                                if (anAppData.equals(PublicVariable.FloatingShortcutsList.get(check))) {
                                     runService = false;
                                 }
                             }
@@ -145,7 +145,7 @@ public class RecoveryShortcuts extends Service {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (PublicVariable.floatingCounter == 0) {
+                if (PublicVariable.allFloatingCounter == 0) {
                     if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                             .getBoolean("stable", true) == false) {
                         stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -159,7 +159,7 @@ public class RecoveryShortcuts extends Service {
             }
             stopSelf();
         }
-        if (PublicVariable.floatingCounter == 0) {
+        if (PublicVariable.allFloatingCounter == 0) {
             if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                     .getBoolean("stable", true) == false) {
                 stopService(new Intent(getApplicationContext(), BindServices.class));

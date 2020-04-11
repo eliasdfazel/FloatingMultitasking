@@ -28,15 +28,15 @@ class FunctionsClassRunServices(var context: Context) {
         }
 
         try {
-            PublicVariable.floatingCounter++
-            PublicVariable.shortcutsCounter++
-            PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName)
+            PublicVariable.allFloatingCounter++
+            PublicVariable.FloatingShortcutsCounter++
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
         } catch (e: IndexOutOfBoundsException) {
             e.printStackTrace()
 
-            PublicVariable.floatingCounter = PublicVariable.floatingCounter + 1
-            PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter + 1
-            PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName)
+            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter + 1
+            PublicVariable.FloatingShortcutsCounter = PublicVariable.FloatingShortcutsCounter + 1
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
         }
 
         Intent(context, FloatingShortcutsForApplications::class.java).apply {
@@ -47,7 +47,7 @@ class FunctionsClassRunServices(var context: Context) {
             context.startService(this)
         }
 
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(Intent(context, BindServices::class.java))
             } else {
@@ -63,15 +63,15 @@ class FunctionsClassRunServices(var context: Context) {
         }
 
         try {
-            PublicVariable.floatingCounter++
-            PublicVariable.shortcutsCounter++
-            PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName)
+            PublicVariable.allFloatingCounter++
+            PublicVariable.FloatingShortcutsCounter++
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
         } catch (e: IndexOutOfBoundsException) {
             e.printStackTrace()
 
-            PublicVariable.floatingCounter = PublicVariable.floatingCounter + 1
-            PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter + 1
-            PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName)
+            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter + 1
+            PublicVariable.FloatingShortcutsCounter = PublicVariable.FloatingShortcutsCounter + 1
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
         }
 
         Intent(context, FloatingShortcutsForFrequentlyApplications::class.java).apply {
@@ -81,7 +81,7 @@ class FunctionsClassRunServices(var context: Context) {
             context.startService(this)
         }
 
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(Intent(context, BindServices::class.java))
             } else {
@@ -97,15 +97,15 @@ class FunctionsClassRunServices(var context: Context) {
         }
 
         try {
-            PublicVariable.floatingCounter++
-            PublicVariable.shortcutsCounter++
-            PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName)
+            PublicVariable.allFloatingCounter++
+            PublicVariable.FloatingShortcutsCounter++
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
         } catch (e: IndexOutOfBoundsException) {
             e.printStackTrace()
 
-            PublicVariable.floatingCounter = PublicVariable.floatingCounter + 1
-            PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter + 1
-            PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName)
+            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter + 1
+            PublicVariable.FloatingShortcutsCounter = PublicVariable.FloatingShortcutsCounter + 1
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
         }
 
         Intent(context, FloatingShortcutsForFrequentlyApplications::class.java).apply {
@@ -115,7 +115,7 @@ class FunctionsClassRunServices(var context: Context) {
             context.startService(this)
         }
 
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(Intent(context, BindServices::class.java))
             } else {

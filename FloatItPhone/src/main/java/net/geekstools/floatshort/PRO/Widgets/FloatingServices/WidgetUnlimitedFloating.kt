@@ -129,16 +129,16 @@ class WidgetUnlimitedFloating : Service() {
                                 } catch (e: Exception) {
                                     e.printStackTrace()
                                 } finally {
-                                    PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1
+                                    PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
 
-                                    if (PublicVariable.floatingCounter == 0) {
+                                    if (PublicVariable.allFloatingCounter == 0) {
                                         if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
 
                                             stopService(Intent(applicationContext, BindServices::class.java))
                                         }
                                     }
                                 }
-                            } else if (PublicVariable.floatingCounter == 0) {
+                            } else if (PublicVariable.allFloatingCounter == 0) {
 
                                 if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
 
@@ -151,7 +151,7 @@ class WidgetUnlimitedFloating : Service() {
                     }
 
                     PublicVariable.FloatingWidgets.clear()
-                    PublicVariable.widgetsCounter = -1
+                    PublicVariable.floatingWidgetsCounter = -1
 
                     stopSelf()
 
@@ -359,10 +359,10 @@ class WidgetUnlimitedFloating : Service() {
                         windowManager.removeView(floatingWidgetsBinding[startId].root)
                     } finally {
                         PublicVariable.FloatingWidgets.remove(appWidgetId[startId] as Any)
-                        PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1
-                        PublicVariable.widgetsCounter = PublicVariable.widgetsCounter - 1
+                        PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
+                        PublicVariable.floatingWidgetsCounter = PublicVariable.floatingWidgetsCounter - 1
 
-                        if (PublicVariable.floatingCounter == 0) {
+                        if (PublicVariable.allFloatingCounter == 0) {
 
                             if (!PreferenceManager.getDefaultSharedPreferences(applicationContext)
                                             .getBoolean("stable", true)) {

@@ -19,20 +19,23 @@ import java.util.Map;
 
 public class PublicVariable {
 
-    public static int floatingCounter = 0;
-    public static int shortcutsCounter = -1;
+    public static int allFloatingCounter = 0;
 
-    public static int floatingCategoryCounter_category = 0;
-    public static int floatingCategoryCounter_wifi = 0;
-    public static int floatingCategoryCounter_bluetooth = 0;
-    public static int floatingCategoryCounter_gps = 0;
-    public static int floatingCategoryCounter_nfc = 0;
-    public static int floatingCategoryCounter_time = 0;
-    public static int categoriesCounter = -1;
-    public static int floatingWidgetsCounter_Widgets = 0;
-    public static int widgetsCounter = -1;
+    public static int FloatingShortcutsCounter = -1;
+
+    public static int floatingFolderCounter_Folder = 0;
+    public static int floatingFolderCounter_Wifi = 0;
+    public static int floatingFolderCounter_Bluetooth = 0;
+    public static int floatingFolderCounter_Gps = 0;
+    public static int floatingFolderCounter_Nfc = 0;
+    public static int floatingFolderCounter_Time = 0;
+    public static int FloatingFolderCounter = -1;
+
+    public static int floatingWidgetsCounter = -1;
+
     public static int HW = 0;
     public static int size;
+
     public static int actionBarHeight;
     public static int statusBarHeight;
     public static int navigationBarHeight;
@@ -78,9 +81,11 @@ public class PublicVariable {
 
     public static String[] frequentlyUsedApps;
 
-    public static ArrayList<String> FloatingShortcuts = new ArrayList<String>();
+    public static ArrayList<String> FloatingShortcutsList = new ArrayList<String>();
     public static ArrayList<String> RecoveryShortcuts = new ArrayList<String>();
-    public static ArrayList<String> FloatingCategories = new ArrayList<String>();
+
+    public static ArrayList<String> FloatingFoldersList = new ArrayList<String>();
+
     public static ArrayList<Integer> FloatingWidgets = new ArrayList<Integer>();
 
     public static List<String> customIconsPackages = new ArrayList<String>();

@@ -12,6 +12,7 @@ package net.geekstools.floatshort.PRO.Automation;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.TypedValue;
 
@@ -41,10 +42,10 @@ public class RecoveryBluetooth extends Service {
 
                     Intent steady = new Intent(getApplicationContext(), BindServices.class);
                     steady.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    if (functionsClass.returnAPI() < 26) {
-                        startService(steady);
-                    } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startForegroundService(steady);
+                    } else {
+                        startService(steady);
                     }
                 }
             } catch (Exception e) {
@@ -63,10 +64,10 @@ public class RecoveryBluetooth extends Service {
 
                     Intent steady = new Intent(getApplicationContext(), BindServices.class);
                     steady.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    if (functionsClass.returnAPI() < 26) {
-                        startService(steady);
-                    } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startForegroundService(steady);
+                    } else {
+                        startService(steady);
                     }
                 }
             } catch (Exception e) {
