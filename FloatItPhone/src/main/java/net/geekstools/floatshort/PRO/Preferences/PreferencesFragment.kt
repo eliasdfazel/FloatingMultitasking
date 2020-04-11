@@ -51,7 +51,7 @@ import com.bumptech.glide.request.target.Target
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDataActivity
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug

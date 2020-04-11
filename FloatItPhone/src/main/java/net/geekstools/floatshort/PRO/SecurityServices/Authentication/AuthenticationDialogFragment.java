@@ -70,6 +70,7 @@ import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations;
 
 import static android.content.Context.ACCESSIBILITY_SERVICE;
 
+@Deprecated
 public class AuthenticationDialogFragment extends DialogFragment {
 
     private FunctionsClass functionsClass;

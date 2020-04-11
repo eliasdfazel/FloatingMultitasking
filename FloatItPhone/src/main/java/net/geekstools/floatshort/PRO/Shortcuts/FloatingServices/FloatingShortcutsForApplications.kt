@@ -252,7 +252,7 @@ class FloatingShortcutsForApplications : Service() {
             touchingDelay.add(startId, false)
             stickedToEdge.add(startId, false)
 
-            mapPackageNameStartId.put(classNames[startId], startId)
+            mapPackageNameStartId.put(packageNames[startId], startId)
 
             /*Update Floating Shortcuts Database*/
             functionsClass.saveUnlimitedShortcutsService(packageNames[startId])
@@ -1031,8 +1031,10 @@ class FloatingShortcutsForApplications : Service() {
                 registerReceiver(broadcastReceiver, intentFilter)
             }
 
-            if (getFileStreamPath(packageNames.get(startId) + "_" + "Notification" + "Package").exists()) {
-                sendBroadcast(Intent("Notification_Dot").putExtra("NotificationPackage", packageNames.get(startId)))
+            if (getFileStreamPath(packageNames[startId] + "_" + "Notification" + "Package").exists()) {
+
+                sendBroadcast(Intent("Notification_Dot")
+                        .putExtra("NotificationPackage", packageNames[startId]))
             }
         }
 

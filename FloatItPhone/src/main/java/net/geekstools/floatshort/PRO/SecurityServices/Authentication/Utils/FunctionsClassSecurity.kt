@@ -38,8 +38,8 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.AuthActivityHelper
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.AuthenticationDialogFragment
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.PasswordVerification
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.PinPassword.HandlePinPassword
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.PinPassword.PasswordVerification
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -55,6 +55,7 @@ import java.security.cert.CertificateException
 import javax.crypto.*
 import javax.crypto.spec.SecretKeySpec
 
+@Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
 class FunctionsClassSecurity (var context: Context) {
 
     /*
@@ -68,6 +69,7 @@ class FunctionsClassSecurity (var context: Context) {
      *
      *
      */
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun openAuthInvocation() {
 
 
@@ -83,6 +85,7 @@ class FunctionsClassSecurity (var context: Context) {
     }
 
     /*Lock/Unlock Apps*/
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun doLockApps(PackageName: String) {
         if (FunctionsClass(context).readPreference(".Password", "Pin", "0") == "0") {
             context.startActivity(Intent(context, HandlePinPassword::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
@@ -91,13 +94,14 @@ class FunctionsClassSecurity (var context: Context) {
             FunctionsClass(context).savePreference(".LockedApps", PackageName, true)
         }
     }
-
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun doUnlockApps(PackageName: String) {
         FunctionsClass(context).savePreference(".LockedApps", PackageName, false)
     }
 
     /*Finger-Print Functions*/
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     companion object AuthOpenAppValues {
         var alreadyAuthenticating: Boolean = false
 
@@ -136,6 +140,7 @@ class FunctionsClassSecurity (var context: Context) {
         var authSearchEngine: Boolean = false
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun resetAuthAppValues() {
         Handler().postDelayed({
             alreadyAuthenticating = false
@@ -176,6 +181,7 @@ class FunctionsClassSecurity (var context: Context) {
         }, 1000)
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     inner class InvokeAuth(appCompatActivity: AppCompatActivity, private var cipher: Cipher?, private var keyName: String) {
         init {
             if (fingerprintSensorAvailable() && fingerprintEnrolled()) {
@@ -204,6 +210,7 @@ class FunctionsClassSecurity (var context: Context) {
         }
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun initCipher(cipher: Cipher, keyName: String): Boolean {
         return try {
             keyStore!!.load(null)
@@ -229,6 +236,7 @@ class FunctionsClassSecurity (var context: Context) {
         }
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun Authed(activity: Activity, withFingerprint: Boolean, cryptoObject: FingerprintManager.CryptoObject?) {
         if (withFingerprint) {
             assert(cryptoObject != null)
@@ -238,6 +246,7 @@ class FunctionsClassSecurity (var context: Context) {
         }
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     private fun authConfirmed(activity: Activity, encrypted: ByteArray?) {
         if (encrypted != null) {
 
@@ -410,6 +419,7 @@ class FunctionsClassSecurity (var context: Context) {
 
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun createKey(keyName: String, invalidatedByBiometricEnrollment: Boolean) {
         try {
             keyStore!!.load(null)
@@ -437,12 +447,14 @@ class FunctionsClassSecurity (var context: Context) {
 
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun fingerprintSensorAvailable(): Boolean {
         val fingerprintManagerCompat = FingerprintManagerCompat.from(context)
 
         return fingerprintManagerCompat.isHardwareDetected
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun fingerprintEnrolled(): Boolean {
         val fingerprintManagerCompat = FingerprintManagerCompat.from(context)
 
@@ -466,15 +478,18 @@ class FunctionsClassSecurity (var context: Context) {
      */
 
     /*Lock Functions*/
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun isAppLocked(authComponentName: String): Boolean {
         return FunctionsClass(context).readPreference(".LockedApps", authComponentName, false)
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun saveEncryptedPinPassword(plainTextPassword: String) {
         val passwordToSave = encryptEncodedData(plainTextPassword, FirebaseAuth.getInstance().currentUser!!.uid).asList().toString()
         FunctionsClass(context).savePreference(".Password", "Pin", passwordToSave)
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun isEncryptedPinPasswordEqual(plainTextPassword: String): Boolean {
         var passwordEqual = false
 
@@ -487,18 +502,21 @@ class FunctionsClassSecurity (var context: Context) {
     }
 
     /*(En/De)crypt Functions*/
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     @Throws(Exception::class)
     fun generateEncryptionKey(passwordKey: String): SecretKeySpec {
 
         return SecretKeySpec(passwordKey.toByteArray(), "AES")
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun generatePasswordKey(rawString: String): String {
         val rawPasswordString = rawString + "0000000000000000"
         val passwordKey: String = rawPasswordString.substring(0, 16)
         return passwordKey
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     @Throws(Exception::class)
     fun encryptEncodedData(plainText: String, rawString: String): ByteArray {
         //First Encode
@@ -513,6 +531,7 @@ class FunctionsClassSecurity (var context: Context) {
         return cipher.doFinal(encodedText.toByteArray(Charset.defaultCharset()))
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     @Throws(Exception::class)
     fun decryptEncodedData(encryptedByteArray: ByteArray, rawString: String): String? {
         //First Decrypt
@@ -535,16 +554,19 @@ class FunctionsClassSecurity (var context: Context) {
         return plainText
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     @Throws(Exception::class)
     fun encodeStringBase64(plainText: String): String {
         return Base64.encodeToString(plainText.toByteArray(), Base64.DEFAULT)
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     @Throws(Exception::class)
     fun decodeStringBase64(encodedText: String): String {
         return String(Base64.decode(encodedText, Base64.DEFAULT))
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun rawStringToByteArray(rawString: String): ByteArray {
         var listOfRawString = rawString.replace("[", "").replace("]", "").split(",")
 
@@ -561,6 +583,7 @@ class FunctionsClassSecurity (var context: Context) {
     }
 
     /*Upload/Download Functions .LockedApps*/
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun uploadLockedAppsData() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         val firebaseStorage = FirebaseStorage.getInstance()
@@ -586,6 +609,7 @@ class FunctionsClassSecurity (var context: Context) {
         }
     }
 
+    @Deprecated("This Is Deprecated", ReplaceWith("SecurityInterfaceHolder.authenticationCallback & startActivity(Intent(context, AuthenticationFingerprint::class.java))", ""))
     fun downloadLockedAppsData() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         val firebaseStorage = FirebaseStorage.getInstance()

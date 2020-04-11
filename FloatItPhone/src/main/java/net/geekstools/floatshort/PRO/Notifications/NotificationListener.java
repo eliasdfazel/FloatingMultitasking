@@ -124,31 +124,8 @@ public class NotificationListener extends NotificationListenerService {
                     public void onReceive(Context context, Intent intent) {
                         try {
                             if (intent.getAction().equals("Remove_Notification_Key")) {
+
                                 NotificationListener.this.cancelNotification(intent.getStringExtra("notification_key"));
-
-                                try {
-                                    String notificationPackage = intent.getStringExtra("notification_package");
-                                    String notificationTime = intent.getStringExtra("notification_time");
-
-                                    FunctionsClassDebug.Companion.PrintDebug("::: Remove Package ::: " + notificationPackage);
-                                    FunctionsClassDebug.Companion.PrintDebug("::: Remove Time ::: " + notificationTime);
-                                    FunctionsClassDebug.Companion.PrintDebug("::: Broadcast Remove Key ::: " + intent.getStringExtra("notification_key"));
-
-                                    deleteFile(notificationTime + "_" + "Notification" + "Key");
-                                    deleteFile(notificationTime + "_" + "Notification" + "Title");
-                                    deleteFile(notificationTime + "_" + "Notification" + "Text");
-                                    deleteFile(notificationTime + "_" + "Notification" + "Icon");
-
-                                    functionsClass.removeLine(notificationPackage + "_" + "Notification" + "Package", notificationTime);
-                                    if (functionsClass.countLineInnerFile(notificationPackage + "_" + "Notification" + "Package") == 0) {
-                                        deleteFile(notificationPackage + "_" + "Notification" + "Package");
-                                        sendBroadcast(new Intent("Notification_Dot_No").putExtra("NotificationPackage", notificationPackage));
-                                        PublicVariable.notificationIntent.clear();
-                                    }
-                                    PublicVariable.notificationIntent.remove(notificationTime);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

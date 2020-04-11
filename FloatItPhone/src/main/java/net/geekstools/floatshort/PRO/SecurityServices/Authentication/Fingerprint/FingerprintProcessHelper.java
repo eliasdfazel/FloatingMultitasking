@@ -28,13 +28,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword;
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.PinPassword.HandlePinPassword;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 
 import java.util.Locale;
 
+@Deprecated
 public class FingerprintProcessHelper extends FingerprintManager.AuthenticationCallback {
 
     private static final long ERROR_TIMEOUT_MILLIS = 1600;

@@ -227,7 +227,7 @@ public class FloatingShortcutsForHIS extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
-        mapPackageNameStartId.put(classNames[startId], startId);
+        mapPackageNameStartId.put(packageNames[startId], startId);
         if (functionsClass.appIsInstalled(packageNames[startId]) == false) {
             return START_NOT_STICKY;
         }

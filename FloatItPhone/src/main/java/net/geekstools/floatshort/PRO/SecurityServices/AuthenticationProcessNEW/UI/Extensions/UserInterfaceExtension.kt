@@ -11,6 +11,15 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.U
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationPinPasswordUI
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
+object UserInterfaceExtraData {
+    const val PackageName = "PackageName"
+    const val ClassName = "ClassName"
+
+    const val OtherTitle = "OtherTitle"
+
+    const val PrimaryColor = "PrimaryColor"
+}
+
 fun AuthenticationFingerprint.setupAuthenticationUIWindow() {
     val primaryColor: Int = intent.getIntExtra("PrimaryColor", getColor(R.color.default_color))
 
@@ -27,18 +36,18 @@ fun AuthenticationFingerprint.setupAuthenticationUIText() : String {
 
     var dialogueTitle = getString(R.string.app_name)
 
-    if (intent.hasExtra("PackageName")
-            && intent.hasExtra("ClassName")) {
+    if (intent.hasExtra(UserInterfaceExtraData.PackageName)
+            && intent.hasExtra(UserInterfaceExtraData.ClassName)) {
 
-        val packageName = intent.getStringExtra("PackageName")!!
-        val className = intent.getStringExtra("ClassName")!!
+        val packageName = intent.getStringExtra(UserInterfaceExtraData.PackageName)!!
+        val className = intent.getStringExtra(UserInterfaceExtraData.ClassName)!!
 
         val activityInformation: ActivityInfo? = packageManager.getActivityInfo(ComponentName(packageName, className),0)
         dialogueTitle = functionsClass.activityLabel(activityInformation)
 
-    } else if (intent.hasExtra("OtherTitle")) {
+    } else if (intent.hasExtra(UserInterfaceExtraData.OtherTitle)) {
 
-        dialogueTitle = intent.getStringExtra("OtherTitle")!!
+        dialogueTitle = intent.getStringExtra(UserInterfaceExtraData.OtherTitle)!!
     }
 
     return dialogueTitle

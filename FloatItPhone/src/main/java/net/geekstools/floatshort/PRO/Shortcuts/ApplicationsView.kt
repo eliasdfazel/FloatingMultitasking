@@ -31,6 +31,7 @@ import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -67,11 +68,11 @@ import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authComponentName
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authHW
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authPositionX
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authPositionY
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.Extensions.UserInterfaceExtraData
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityFunctions
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardHybridAdapter
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
@@ -101,14 +102,18 @@ import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
 import kotlin.math.hypot
 
-class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickListener, OnTouchListener, GestureListenerInterface {
+class ApplicationsView : AppCompatActivity(),
+        View.OnClickListener, OnLongClickListener,
+        OnTouchListener,
+        GestureListenerInterface {
 
     private lateinit var functionsClassDataActivity: FunctionsClassDataActivity
 
     private lateinit var functionsClass: FunctionsClass
     private lateinit var functionsClassRunServices: FunctionsClassRunServices
-    private lateinit var functionsClassSecurity: FunctionsClassSecurity
     private lateinit var functionsClassDialogues: FunctionsClassDialogues
+
+    private lateinit var securityFunctions: SecurityFunctions
 
     private lateinit var applicationInfoList: List<ResolveInfo>
 
@@ -160,8 +165,9 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
 
         functionsClass = FunctionsClass(applicationContext)
         functionsClassRunServices = FunctionsClassRunServices(applicationContext)
-        functionsClassSecurity = FunctionsClassSecurity(applicationContext)
         functionsClassDialogues = FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
+
+        securityFunctions = SecurityFunctions(applicationContext)
 
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()
@@ -584,8 +590,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                         }
                     }
                 }
-
-        functionsClassSecurity.resetAuthAppValues()
     }
 
     override fun onPause() {
@@ -649,23 +653,48 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         if (view is ImageView) {
             val position = view.id
 
-            functionsClassRunServices.runUnlimitedShortcutsServiceFrequently(frequentlyUsedAppsList[position])
+            functionsClassRunServices
+                    .runUnlimitedShortcutsServiceFrequently(frequentlyUsedAppsList[position])
         }
     }
 
     override fun onLongClick(view: View?): Boolean {
         if (view is ImageView) {
             val position = view.id
-            if (functionsClassSecurity.isAppLocked(frequentlyUsedAppsList[position])) {
-                authComponentName = frequentlyUsedAppsList[position]
+            if (securityFunctions.isAppLocked(frequentlyUsedAppsList[position])) {
 
-                authPositionX = functionsClass.displayX() / 2
-                authPositionY = functionsClass.displayY() / 2
-                authHW = PublicVariable.HW
+                SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                functionsClassSecurity.openAuthInvocation()
+                    override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                        super.authenticatedFloatIt(extraInformation)
+                        Log.d(this@ApplicationsView.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+
+                        functionsClass
+                                .appsLaunchPad(frequentlyUsedAppsList[position])
+                    }
+
+                    override fun failedAuthenticated() {
+                        super.failedAuthenticated()
+                        Log.d(this@ApplicationsView.javaClass.simpleName, "FailedAuthenticated")
+
+                    }
+
+                    override fun invokedPinPassword() {
+                        super.invokedPinPassword()
+                        Log.d(this@ApplicationsView.javaClass.simpleName, "InvokedPinPassword")
+
+                    }
+                }
+
+                startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
+                    putExtra(UserInterfaceExtraData.OtherTitle, functionsClass.appName(frequentlyUsedAppsList[position]))
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
+
             } else {
-                functionsClass.appsLaunchPad(frequentlyUsedAppsList[position])
+
+                functionsClass
+                        .appsLaunchPad(frequentlyUsedAppsList[position])
             }
         }
         return true
@@ -754,7 +783,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                                     waitingDialogue.dismiss()
                                 }
                             } finally {
-                                functionsClassSecurity.downloadLockedAppsData()
+                                securityFunctions.downloadLockedAppsData()
                             }
                         }
                     }
@@ -883,7 +912,8 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                 override fun onAnimationStart(animation: Animation?) {
 
                     if (loadFreq) {
-                        launch {
+                        CoroutineScope(Dispatchers.Main).launch {
+
                             loadFrequentlyUsedApplications().await()
                         }
                     }
@@ -974,8 +1004,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             deleteFile("Frequently")
         }
         functionsClass.saveFileAppendLine(".categoryInfo", "Frequently")
-
-
 
         for (i in 0 until freqLength) {
             val freqLayout = layoutInflater.inflate(R.layout.freq_item, null) as RelativeLayout

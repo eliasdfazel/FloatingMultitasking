@@ -139,8 +139,8 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_N
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Time;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
-import net.geekstools.floatshort.PRO.Notifications.NavAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
+import net.geekstools.floatshort.PRO.Notifications.PopupAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
@@ -1001,7 +1001,10 @@ public class FunctionsClass {
                 );
             }
             PopupShortcutsNotification popupShortcutsNotification =
-                    new PopupShortcutsNotification(context, navDrawerItemsSaved, className, notificationPackage, startId,
+                    new PopupShortcutsNotification(context,
+                            navDrawerItemsSaved,
+                            className, notificationPackage, iconColor,
+                            startId,
                             X, Y, HW);
 
             final ListPopupWindow listPopupWindow = new ListPopupWindow(context);

@@ -22,8 +22,8 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -34,6 +34,7 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 
+@Deprecated
 public class AuthActivityHelper extends AppCompatActivity {
 
     static final String DEFAULT_KEY_NAME = "default_key";

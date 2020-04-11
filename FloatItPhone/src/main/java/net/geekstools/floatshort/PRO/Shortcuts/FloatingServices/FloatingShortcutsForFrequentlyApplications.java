@@ -42,6 +42,7 @@ import androidx.preference.PreferenceManager;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityFunctions;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
@@ -57,7 +58,7 @@ import java.util.Map;
 public class FloatingShortcutsForFrequentlyApplications extends Service {
 
     FunctionsClass functionsClass;
-    FunctionsClassSecurity functionsClassSecurity;
+    SecurityFunctions securityFunctions;
 
     WindowManager windowManager;
     WindowManager.LayoutParams[] layoutParams;
@@ -623,19 +624,23 @@ public class FloatingShortcutsForFrequentlyApplications extends Service {
                     }
                 } else {
                     if (openIt[startId]) {
-                        if (functionsClassSecurity.isAppLocked(packages[startId])) {
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packages[startId]);
+                        if (securityFunctions.isAppLocked(packages[startId])) {
 
-                            if (moveDetection != null) {
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(moveDetection.x);
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(moveDetection.y);
-                            } else {
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionX(layoutParams[startId].x);
-                                FunctionsClassSecurity.AuthOpenAppValues.setAuthPositionY(layoutParams[startId].y);
-                            }
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthHW(layoutParams[startId].width);
 
-                            functionsClassSecurity.openAuthInvocation();
+                            /*****
+                             *
+                             *
+                             *
+                             *
+                             *
+                             *
+                             *
+                             *
+                             *
+                             *
+                             *****/
+
+
                         } else {
                             if (functionsClass.splashReveal()) {
                                 Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);
@@ -786,7 +791,7 @@ public class FloatingShortcutsForFrequentlyApplications extends Service {
                     allowMove[intent.getIntExtra("startId", 1)] = true;
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(null);
                 } else if (intent.getAction().equals("Float_It_" + className)) {
-                    if (functionsClassSecurity.isAppLocked(packages[intent.getIntExtra("startId", 1)])) {
+                    if (securityFunctions.isAppLocked(packages[intent.getIntExtra("startId", 1)])) {
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(packages[intent.getIntExtra("startId", 1)]);
 
                         if (moveDetection != null) {
@@ -798,7 +803,7 @@ public class FloatingShortcutsForFrequentlyApplications extends Service {
                         }
                         FunctionsClassSecurity.AuthOpenAppValues.setAuthHW(layoutParams[intent.getIntExtra("startId", 1)].width);
 
-                        functionsClassSecurity.openAuthInvocation();
+                        securityFunctions.openAuthInvocation();
                     } else {
                         if (functionsClass.splashReveal()) {
                             if (!functionsClass.FreeForm()) {
@@ -974,7 +979,7 @@ public class FloatingShortcutsForFrequentlyApplications extends Service {
     public void onCreate() {
         super.onCreate();
         functionsClass = new FunctionsClass(getApplicationContext());
-        functionsClassSecurity = new FunctionsClassSecurity(getApplicationContext());
+        securityFunctions = new SecurityFunctions(getApplicationContext());
 
         array = getApplicationContext().getPackageManager().getInstalledApplications(0).size() * 2;
         layoutParams = new WindowManager.LayoutParams[array];
