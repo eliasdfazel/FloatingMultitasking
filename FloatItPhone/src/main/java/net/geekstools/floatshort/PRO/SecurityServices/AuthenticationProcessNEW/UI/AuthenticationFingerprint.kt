@@ -145,6 +145,12 @@ class AuthenticationFingerprint : FragmentActivity() {
         }
     }
 
+    override fun onDestroy() {
+        SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
+
+        super.onDestroy()
+    }
+
     override fun onBackPressed() {
         AuthenticationFingerprint.attemptCounter = 0
 
