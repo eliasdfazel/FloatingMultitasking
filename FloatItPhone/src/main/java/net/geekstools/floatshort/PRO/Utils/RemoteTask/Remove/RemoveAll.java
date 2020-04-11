@@ -45,23 +45,23 @@ public class RemoveAll extends Service {
         startService(App_Unlimited_Shortcuts);
 
         Intent App_Unlimited_Wifi = new Intent(getApplicationContext(), FloatingShortcutsForWifi.class);
-        App_Unlimited_Wifi.putExtra("pack", getString(R.string.remove_all_floatings));
+        App_Unlimited_Wifi.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Wifi);
 
         Intent App_Unlimited_Bluetooth = new Intent(getApplicationContext(), FloatingShortcutsForBluetooth.class);
-        App_Unlimited_Bluetooth.putExtra("pack", getString(R.string.remove_all_floatings));
+        App_Unlimited_Bluetooth.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Bluetooth);
 
         Intent App_Unlimited_Gps = new Intent(getApplicationContext(), FloatingShortcutsForGps.class);
-        App_Unlimited_Gps.putExtra("pack", getString(R.string.remove_all_floatings));
+        App_Unlimited_Gps.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Gps);
 
         Intent App_Unlimited_Nfc = new Intent(getApplicationContext(), FloatingShortcutsForNfc.class);
-        App_Unlimited_Nfc.putExtra("pack", getString(R.string.remove_all_floatings));
+        App_Unlimited_Nfc.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Nfc);
 
         Intent App_Unlimited_Time = new Intent(getApplicationContext(), FloatingShortcutsForTime.class);
-        App_Unlimited_Time.putExtra("pack", getString(R.string.remove_all_floatings));
+        App_Unlimited_Time.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Time);
 
         /*Categories*/
@@ -74,7 +74,7 @@ public class RemoveAll extends Service {
         startService(Category_Unlimited_Wifi);
 
         Intent Category_Unlimited_Bluetooth = new Intent(getApplicationContext(), Folder_Unlimited_Bluetooth.class);
-        Category_Unlimited_Bluetooth.putExtra("categoryName", getString(R.string.remove_all_floatings));
+        Category_Unlimited_Bluetooth.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Bluetooth);
 
         Intent Category_Unlimited_Gps = new Intent(getApplicationContext(), Folder_Unlimited_Gps.class);
@@ -101,7 +101,7 @@ public class RemoveAll extends Service {
 
         /*Frequently*/
         Intent App_Unlimited_Shortcuts_Frequently = new Intent(getApplicationContext(), FloatingShortcutsForFrequentlyApplications.class);
-        App_Unlimited_Shortcuts_Frequently.putExtra("PackageName", getString(R.string.remove_all_floatings));
+        App_Unlimited_Shortcuts_Frequently.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(App_Unlimited_Shortcuts_Frequently);
 
         stopSelf();
