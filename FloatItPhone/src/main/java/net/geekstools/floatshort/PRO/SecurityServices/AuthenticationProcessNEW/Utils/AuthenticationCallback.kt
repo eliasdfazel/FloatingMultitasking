@@ -6,7 +6,7 @@ import android.util.Log
 interface AuthenticationCallback {
 
     fun authenticatedFloatIt(extraInformation: Bundle?) {
-        Log.d(this@AuthenticationCallback.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+        Log.d(this@AuthenticationCallback.javaClass.simpleName, "AuthenticatedFloatIt")
 
     }
 

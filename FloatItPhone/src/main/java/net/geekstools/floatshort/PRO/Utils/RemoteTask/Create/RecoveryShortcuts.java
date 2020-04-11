@@ -49,8 +49,11 @@ public class RecoveryShortcuts extends Service {
         PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());
 
         if (getApplicationContext().getFileStreamPath(".uFile").exists()) {
+
+            boolean authenticatedFloatIt = (intent.getBooleanExtra("AuthenticatedFloatIt", false));
+
             try {
-                if (functionsClass.securityServicesSubscribed() && !FunctionsClassSecurity.AuthOpenAppValues.getAlreadyAuthenticating()) {
+                if (functionsClass.securityServicesSubscribed() && !FunctionsClassSecurity.AuthOpenAppValues.getAlreadyAuthenticating() && !authenticatedFloatIt) {
                     FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(getPackageName());
                     FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(getPackageName());
                     FunctionsClassSecurity.AuthOpenAppValues.setAuthRecovery(true);

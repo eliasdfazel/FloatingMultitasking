@@ -53,8 +53,11 @@ public class RecoveryFolders extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
+
+        boolean authenticatedFloatIt = (intent.getBooleanExtra("AuthenticatedFloatIt", false));
+
         try {
-            if (functionsClass.securityServicesSubscribed() && !FunctionsClassSecurity.AuthOpenAppValues.getAlreadyAuthenticating()) {
+            if (functionsClass.securityServicesSubscribed() && !FunctionsClassSecurity.AuthOpenAppValues.getAlreadyAuthenticating() && !authenticatedFloatIt) {
                 FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(getPackageName());
                 FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(getPackageName());
                 FunctionsClassSecurity.AuthOpenAppValues.setAuthRecovery(true);

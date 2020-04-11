@@ -59,7 +59,13 @@ class RecoveryWidgets : Service() {
             stopSelf()
             return START_NOT_STICKY
         }
-        if (functionsClass.securityServicesSubscribed() && !FunctionsClassSecurity.alreadyAuthenticating) {
+
+        var authenticatedFloatIt: Boolean = false
+        intent?.let {
+            authenticatedFloatIt = (intent.getBooleanExtra("AuthenticatedFloatIt", false))
+        }
+
+        if (functionsClass.securityServicesSubscribed() && !FunctionsClassSecurity.alreadyAuthenticating && !authenticatedFloatIt) {
             FunctionsClassSecurity.authComponentName = packageName
             FunctionsClassSecurity.authSecondComponentName = packageName
             FunctionsClassSecurity.authRecovery = true

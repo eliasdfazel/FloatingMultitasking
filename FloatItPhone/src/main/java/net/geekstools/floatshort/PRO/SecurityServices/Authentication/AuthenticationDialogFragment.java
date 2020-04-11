@@ -44,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.DialogFragment;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -66,7 +67,6 @@ import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash;
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataModel;
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations;
-import net.geekstools.imageview.customshapes.ShapesImage;
 
 import static android.content.Context.ACCESSIBILITY_SERVICE;
 
@@ -77,10 +77,9 @@ public class AuthenticationDialogFragment extends DialogFragment {
 
     private Dialog dialog;
 
-    private View fingerprintContent;
-    private ShapesImage dialogueIcon;
+    private AppCompatImageView dialogueIcon;
     private ImageView fingerprintIcon;
-    private TextView dialogueTitle, fingerprintHint;
+    private TextView dialogueTitle;
     private TextInputLayout textInputPinPassword;
     private TextInputEditText pinPasswordEditText;
     private Button cancelAuth;
@@ -126,20 +125,16 @@ public class AuthenticationDialogFragment extends DialogFragment {
 
         View viewContainer = inflater.inflate(R.layout.auth_dialog_content, container, false);
 
-//        fingerprintContent = (RelativeLayout) viewContainer.findViewById(R.id.fingerprintContainer);
-//        fingerprintHint = (TextView) viewContainer.findViewById(R.id.fingerprint_status);
         fingerprintIcon = (ImageView) viewContainer.findViewById(R.id.fingerprint_icon);
-        dialogueIcon = (ShapesImage) viewContainer.findViewById(R.id.dialogueIcon);
+        dialogueIcon = (AppCompatImageView) viewContainer.findViewById(R.id.dialogueIcon);
         dialogueTitle = (TextView) viewContainer.findViewById(R.id.dialogueTitle);
         textInputPinPassword = (TextInputLayout) viewContainer.findViewById(R.id.textInputPinPassword);
         pinPasswordEditText = (TextInputEditText) viewContainer.findViewById(R.id.pinPasswordEditText);
         cancelAuth = (Button) viewContainer.findViewById(R.id.cancelAuth);
 
-        fingerprintContent.setBackgroundTintList(ColorStateList.valueOf(PublicVariable.colorLightDark));
 
         String componentName = functionsClass.appName(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName());
 
-        dialogueIcon.setShapeDrawable(functionsClass.shapesDrawables());
         if (FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurationsUnlock()
                 || FunctionsClassSecurity.AuthOpenAppValues.getAuthFloatingWidget()
                 || FunctionsClassSecurity.AuthOpenAppValues.getAuthWidgetConfigurations()
@@ -149,7 +144,6 @@ public class AuthenticationDialogFragment extends DialogFragment {
                     .shapedAppIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName()));
 
             dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
-            fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthSecondComponentName())));
             cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
             cancelAuth.setBackgroundColor(PublicVariable.colorLightDark);
 
@@ -171,7 +165,6 @@ public class AuthenticationDialogFragment extends DialogFragment {
                 );
 
                 dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
-                fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(activityInfo)));
                 cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
                 cancelAuth.setBackgroundColor(PublicVariable.colorLightDark);
 
@@ -190,7 +183,6 @@ public class AuthenticationDialogFragment extends DialogFragment {
             );
 
             dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite);
-            fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
             cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite);
             cancelAuth.setBackgroundColor(PublicVariable.colorLightDark);
 
@@ -386,8 +378,6 @@ public class AuthenticationDialogFragment extends DialogFragment {
                                     functionsClassSecurity.resetAuthAppValues();
                                 }
                             } else {
-                                fingerprintHint.setTextColor(getContext().getColor(R.color.warning_color));
-                                fingerprintHint.setText(getString(R.string.passwordError));
 
                                 textInputPinPassword.setError(getString(R.string.passwordError));
                             }
@@ -408,8 +398,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                fingerprintHint.setText("");
-                fingerprintHint.setTextColor(functionsClass.extractVibrantColor(functionsClass.appIcon(FunctionsClassSecurity.AuthOpenAppValues.getAuthComponentName())));
+
             }
 
             @Override
@@ -426,7 +415,7 @@ public class AuthenticationDialogFragment extends DialogFragment {
                     getContext(),
                     getActivity().getSystemService(FingerprintManager.class),
                     fingerprintIcon,
-                    fingerprintHint,
+                    new TextView(getContext()),
                     pinPasswordEditText,
                     new FingerprintProcessHelper.Callback() {
                         @Override
@@ -453,8 +442,6 @@ public class AuthenticationDialogFragment extends DialogFragment {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     if (intent.getAction().equals("SHOW_PASSWORD")) {
-                        fingerprintHint.setHeight(functionsClass.DpToInteger(13));
-                        fingerprintHint.setText("");
 
                         fingerprintIcon.setVisibility(View.INVISIBLE);
 
@@ -476,8 +463,6 @@ public class AuthenticationDialogFragment extends DialogFragment {
             getContext().registerReceiver(broadcastReceiver, intentFilter);
         } else {
             FunctionsClassDebug.Companion.PrintDebug("*** Finger Print Not Available ***");
-
-            fingerprintHint.setText("");
 
             fingerprintIcon.setVisibility(View.INVISIBLE);
 

@@ -5523,23 +5523,23 @@ public class FunctionsClass {
         }
 
         Intent CancelStable = new Intent(context, RemoteController.class);
-        CancelStable.putExtra("RemoteController", "CancelRemote");
+        CancelStable.putExtra("RemoteController", RemoteController.COMMANDS.CancelRemote);
         PendingIntent cancelPending = PendingIntent.getService(context, 0, CancelStable, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent RecoverAll = new Intent(context, RemoteController.class);
-        RecoverAll.putExtra("RemoteController", "RecoverAll");
+        RecoverAll.putExtra("RemoteController", RemoteController.COMMANDS.RecoverAll);
         PendingIntent pendingRecoverAll = PendingIntent.getService(context, 1, RecoverAll, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent RemoveAll = new Intent(context, RemoteController.class);
-        RemoveAll.putExtra("RemoteController", "RemoveAll");
+        RemoveAll.putExtra("RemoteController", RemoteController.COMMANDS.RemoveAll);
         PendingIntent pendingRemoveAll = PendingIntent.getService(context, 2, RemoveAll, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent Sticky_Edge = new Intent(context, RemoteController.class);
-        Sticky_Edge.putExtra("RemoteController", "Sticky_Edge");
+        Sticky_Edge.putExtra("RemoteController", RemoteController.COMMANDS.Sticky_Edge);
         PendingIntent pendingSticky_Edge = PendingIntent.getService(context, 3, Sticky_Edge, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent Sticky_Edge_No = new Intent(context, RemoteController.class);
-        Sticky_Edge_No.putExtra("RemoteController", "Sticky_Edge_No");
+        Sticky_Edge_No.putExtra("RemoteController", RemoteController.COMMANDS.Sticky_Edge_No);
         PendingIntent pendingSticky_Edge_No = PendingIntent.getService(context, 4, Sticky_Edge_No, PendingIntent.FLAG_UPDATE_CURRENT);
 
         remoteNotification.setOnClickPendingIntent(R.id.recoverAll, pendingRecoverAll);
