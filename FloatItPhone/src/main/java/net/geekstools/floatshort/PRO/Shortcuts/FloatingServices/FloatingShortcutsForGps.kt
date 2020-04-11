@@ -767,8 +767,10 @@ class FloatingShortcutsForGps : Service() {
                                             Intent.FLAG_ACTIVITY_NEW_TASK or
                                             Intent.FLAG_ACTIVITY_MULTIPLE_TASK
                                     startActivity(splitSingle)
+
                                     PublicVariable.splitScreen = true
-                                    functionsClass.Toast(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]), Gravity.TOP)
+
+                                    functionsClass.Toast(functionsClass.appName(PublicVariable.splitSinglePackage), Gravity.TOP)
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()
                                 }

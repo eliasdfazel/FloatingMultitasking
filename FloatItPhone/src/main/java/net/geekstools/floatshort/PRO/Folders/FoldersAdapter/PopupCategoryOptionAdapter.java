@@ -27,9 +27,9 @@ import android.widget.TextView;
 import net.geekstools.floatshort.PRO.Checkpoint;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
@@ -157,10 +157,10 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
             viewHolder.items = (RelativeLayout) convertView.findViewById(R.id.items);
-            viewHolder.imgIcon = (ShapesImage) convertView.findViewById(R.id.iconItem);
+            viewHolder.imgIcon = (ShapesImage) convertView.findViewById(R.id.iconViewItem);
             viewHolder.split_one = (ShapesImage) convertView.findViewById(R.id.split_one);
             viewHolder.split_two = (ShapesImage) convertView.findViewById(R.id.split_two);
-            viewHolder.textAppName = (TextView) convertView.findViewById(R.id.itemAppName);
+            viewHolder.textAppName = (TextView) convertView.findViewById(R.id.titleViewItem);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

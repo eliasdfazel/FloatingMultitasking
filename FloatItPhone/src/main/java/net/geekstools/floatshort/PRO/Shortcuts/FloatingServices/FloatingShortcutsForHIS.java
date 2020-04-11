@@ -744,7 +744,7 @@ public class FloatingShortcutsForHIS extends Service {
                                 startActivity(splitSingle);
                                 PublicVariable.splitScreen = true;
 
-                                functionsClass.Toast(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]), Gravity.TOP);
+                                functionsClass.Toast(functionsClass.appName(PublicVariable.splitSinglePackage), Gravity.TOP);
                             } catch (NullPointerException e) {
                                 e.printStackTrace();
                             }

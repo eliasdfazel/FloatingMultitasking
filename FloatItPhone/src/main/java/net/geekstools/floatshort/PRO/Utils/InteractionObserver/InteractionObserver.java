@@ -82,6 +82,7 @@ public class InteractionObserver extends AccessibilityService {
                             if (intent.getAction().equals("perform_split_single") && doSplitSingle == true) {
                                 doSplitSingle = false;
                                 performGlobalAction(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
+
                                 sendBroadcast(new Intent("Split_Apps_Single_" + classNameCommand));
                             }
                         }

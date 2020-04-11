@@ -46,7 +46,7 @@
         android:background="@android:color/transparent" />
 
     <TextView
-        android:id="@+id/itemAppName"
+        android:id="@+id/titleViewItem"
         android:layout_width="match_parent"
         android:layout_height="47dp"
         android:layout_centerVertical="true"

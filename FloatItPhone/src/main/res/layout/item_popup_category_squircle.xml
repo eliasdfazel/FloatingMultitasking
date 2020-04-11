@@ -24,7 +24,7 @@
         android:visibility="visible">
 
         <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/iconItem"
+            android:id="@+id/iconViewItem"
             android:layout_width="39dp"
             android:layout_height="39dp"
             android:layout_alignParentStart="true"
@@ -38,7 +38,7 @@
             android:id="@+id/split_one"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignTop="@id/iconItem"
+            android:layout_alignTop="@id/iconViewItem"
             android:layout_alignParentStart="true"
             android:layout_marginStart="19dp"
             android:foregroundGravity="center"
@@ -49,7 +49,7 @@
             android:id="@+id/split_two"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignBottom="@id/iconItem"
+            android:layout_alignBottom="@id/iconViewItem"
             android:layout_alignParentStart="true"
             android:layout_marginStart="19dp"
             android:foregroundGravity="center"
@@ -57,11 +57,11 @@
             apps:shapeDrawable="@drawable/squircle_icon"/>
 
         <TextView
-            android:id="@+id/itemAppName"
+            android:id="@+id/titleViewItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/iconItem"
+            android:layout_toEndOf="@id/iconViewItem"
             android:gravity="center_vertical"
             android:padding="6dp"
             android:text="@string/app_name"

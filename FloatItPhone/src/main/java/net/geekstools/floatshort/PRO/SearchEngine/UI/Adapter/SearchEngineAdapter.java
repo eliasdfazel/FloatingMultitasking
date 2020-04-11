@@ -121,7 +121,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
             viewHolder.searchItem = (RelativeLayout) convertView.findViewById(R.id.searchItem);
             viewHolder.itemAppIcon = (ShapesImage) convertView.findViewById(R.id.itemAppIcon);
             viewHolder.itemInitialLetter = (TextView) convertView.findViewById(R.id.itemInitialLetter);
-            viewHolder.itemAppName = (TextView) convertView.findViewById(R.id.itemAppName);
+            viewHolder.itemAppName = (TextView) convertView.findViewById(R.id.titleViewItem);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

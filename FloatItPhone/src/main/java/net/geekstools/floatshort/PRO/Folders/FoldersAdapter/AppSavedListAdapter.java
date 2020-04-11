@@ -104,8 +104,8 @@ public class AppSavedListAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
             viewHolder.items = (RelativeLayout) convertView.findViewById(R.id.items);
-            viewHolder.imgIcon = (ImageView) convertView.findViewById(R.id.iconItem);
-            viewHolder.textAppName = (TextView) convertView.findViewById(R.id.itemAppName);
+            viewHolder.imgIcon = (ImageView) convertView.findViewById(R.id.iconViewItem);
+            viewHolder.textAppName = (TextView) convertView.findViewById(R.id.titleViewItem);
             viewHolder.deleteItem = (Button) convertView.findViewById(R.id.deleteItem);
             viewHolder.confirmItem = (Button) convertView.findViewById(R.id.confirmItem);
             convertView.setTag(viewHolder);
