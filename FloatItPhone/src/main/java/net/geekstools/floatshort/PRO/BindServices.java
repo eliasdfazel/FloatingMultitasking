@@ -29,9 +29,9 @@ import net.geekstools.floatshort.PRO.Automation.RecoveryWifi;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Gps;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Nfc;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Gps;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Nfc;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Wifi;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForGps;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsNfc;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
@@ -86,7 +86,7 @@ public class BindServices extends Service {
                                     }
                                 } else if (wifiManager.isWifiEnabled() == false) {
                                     if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
-                                        Intent wifiShortcutsRemove = new Intent(context, App_Unlimited_Wifi.class);
+                                        Intent wifiShortcutsRemove = new Intent(context, FloatingShortcutsForWifi.class);
                                         wifiShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_floatings));
                                         wifiShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         context.startService(wifiShortcutsRemove);
@@ -112,7 +112,7 @@ public class BindServices extends Service {
 
                                     PublicVariable.receiverGPS = true;
                                 } else if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
-                                    Intent gpsShortcutsRemove = new Intent(context, App_Unlimited_Gps.class);
+                                    Intent gpsShortcutsRemove = new Intent(context, FloatingShortcutsForGps.class);
                                     gpsShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_floatings));
                                     gpsShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(gpsShortcutsRemove);
@@ -137,7 +137,7 @@ public class BindServices extends Service {
 
                                     PublicVariable.receiverNFC = true;
                                 } else if (nfcManager.getDefaultAdapter().isEnabled() == false) {
-                                    Intent nfcShortcutsRemove = new Intent(context, App_Unlimited_Nfc.class);
+                                    Intent nfcShortcutsRemove = new Intent(context, FloatingShortcutsNfc.class);
                                     nfcShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_floatings));
                                     nfcShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(nfcShortcutsRemove);

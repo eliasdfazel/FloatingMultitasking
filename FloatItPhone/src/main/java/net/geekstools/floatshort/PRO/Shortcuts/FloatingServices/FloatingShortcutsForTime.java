@@ -41,9 +41,9 @@ import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
@@ -54,7 +54,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class App_Unlimited_Shortcuts_Package extends Service {
+public class FloatingShortcutsForTime extends Service {
 
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
@@ -82,14 +82,14 @@ public class App_Unlimited_Shortcuts_Package extends Service {
 
     Map<String, Integer> mapPackageNameStartId;
 
-    LoadCustomIcons loadCustomIcons;
-
     GestureDetector.SimpleOnGestureListener[] simpleOnGestureListener;
     GestureDetector[] gestureDetector;
 
     FlingAnimation[] flingAnimationX, flingAnimationY;
 
     float flingPositionX = 0, flingPositionY = 0;
+
+    LoadCustomIcons loadCustomIcons;
 
     int startIdCounter = 1;
 
@@ -156,7 +156,7 @@ public class App_Unlimited_Shortcuts_Package extends Service {
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         try {
             allowMove[startId] = true;
-            packages[startId] = intent.getStringExtra("PackageName");
+            packages[startId] = intent.getStringExtra("pack");
 
             floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_shortcuts, null, false);
             controlIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.controlIcon);
@@ -202,8 +202,6 @@ public class App_Unlimited_Shortcuts_Package extends Service {
                     e.printStackTrace();
                 }
             }
-            PublicVariable.FloatingShortcuts.clear();
-            PublicVariable.shortcutsCounter = -1;
             try {
                 if (broadcastReceiver != null) {
                     try {
@@ -218,7 +216,6 @@ public class App_Unlimited_Shortcuts_Package extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
-
         mapPackageNameStartId.put(packages[startId], startId);
         if (functionsClass.appIsInstalled(packages[startId]) == false) {
             return START_NOT_STICKY;
@@ -269,6 +266,7 @@ public class App_Unlimited_Shortcuts_Package extends Service {
             simpleOnGestureListener[startId] = new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onFling(MotionEvent motionEventFirst, MotionEvent motionEventLast, float velocityX, float velocityY) {
+
                     if (allowMove[startId]) {
                         flingAnimationX[startId].setStartVelocity(velocityX);
                         flingAnimationY[startId].setStartVelocity(velocityY);
@@ -333,7 +331,6 @@ public class App_Unlimited_Shortcuts_Package extends Service {
         floatingView[startId].setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-
             }
         });
         floatingView[startId].setOnTouchListener(new View.OnTouchListener() {
@@ -355,7 +352,7 @@ public class App_Unlimited_Shortcuts_Package extends Service {
                     layoutParamsOnTouch = StickyEdgeParams[startId];
                     layoutParamsOnTouch.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
                 } else {
-                    layoutParamsOnTouch = App_Unlimited_Shortcuts_Package.this.layoutParams[startId];
+                    layoutParamsOnTouch = layoutParams[startId];
                 }
 
                 switch (motionEvent.getAction()) {
@@ -406,7 +403,7 @@ public class App_Unlimited_Shortcuts_Package extends Service {
                                     functionsClass.PopupOptionShortcuts(
                                             floatingView[startId],
                                             packages[startId],
-                                            App_Unlimited_Shortcuts_Package.class.getSimpleName(),
+                                            FloatingShortcutsForTime.class.getSimpleName(),
                                             startId,
                                             initialX,
                                             initialY + PublicVariable.statusBarHeight
@@ -601,9 +598,7 @@ public class App_Unlimited_Shortcuts_Package extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.FloatingShortcuts.remove(packages[startId]);
                             PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
-                            PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter - 1;
 
                             if (PublicVariable.floatingCounter == 0) {
                                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
@@ -674,7 +669,7 @@ public class App_Unlimited_Shortcuts_Package extends Service {
                 functionsClass.PopupNotificationShortcuts(
                         floatingView[startId],
                         packages[startId],
-                        App_Unlimited_Shortcuts_Package.class.getSimpleName(),
+                        FloatingShortcutsForTime.class.getSimpleName(),
                         startId,
                         iconColor[startId],
                         xMove,
@@ -710,7 +705,7 @@ public class App_Unlimited_Shortcuts_Package extends Service {
             }
         });
 
-        final String className = App_Unlimited_Shortcuts_Package.class.getSimpleName();
+        final String className = FloatingShortcutsForTime.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Single_" + className);
         intentFilter.addAction("Pin_App_" + className);
@@ -841,9 +836,7 @@ public class App_Unlimited_Shortcuts_Package extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.FloatingShortcuts.remove(packages[intent.getIntExtra("startId", 1)]);
                             PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
-                            PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter - 1;
 
                             if (PublicVariable.floatingCounter == 0) {
                                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())

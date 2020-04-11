@@ -41,9 +41,9 @@ import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
@@ -54,7 +54,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class App_Unlimited_Bluetooth extends Service {
+public class FloatingShortcutsForBluetooth extends Service {
 
     FunctionsClass functionsClass;
     FunctionsClassSecurity functionsClassSecurity;
@@ -403,7 +403,7 @@ public class App_Unlimited_Bluetooth extends Service {
                                     functionsClass.PopupOptionShortcuts(
                                             floatingView[startId],
                                             packages[startId],
-                                            App_Unlimited_Bluetooth.class.getSimpleName(),
+                                            FloatingShortcutsForBluetooth.class.getSimpleName(),
                                             startId,
                                             initialX,
                                             initialY + PublicVariable.statusBarHeight
@@ -669,7 +669,7 @@ public class App_Unlimited_Bluetooth extends Service {
                 functionsClass.PopupNotificationShortcuts(
                         floatingView[startId],
                         packages[startId],
-                        App_Unlimited_Bluetooth.class.getSimpleName(),
+                        FloatingShortcutsForBluetooth.class.getSimpleName(),
                         startId,
                         iconColor[startId],
                         xMove,
@@ -705,7 +705,7 @@ public class App_Unlimited_Bluetooth extends Service {
             }
         });
 
-        final String className = App_Unlimited_Bluetooth.class.getSimpleName();
+        final String className = FloatingShortcutsForBluetooth.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Single_" + className);
         intentFilter.addAction("Pin_App_" + className);

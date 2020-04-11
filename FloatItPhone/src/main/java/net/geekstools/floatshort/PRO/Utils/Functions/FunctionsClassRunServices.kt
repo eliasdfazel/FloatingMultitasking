@@ -16,8 +16,8 @@ import android.os.Build
 import android.provider.Settings
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.Checkpoint
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Shortcuts_Frequently
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForApplications
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForFrequentlyApplications
 
 class FunctionsClassRunServices(var context: Context) {
 
@@ -74,7 +74,7 @@ class FunctionsClassRunServices(var context: Context) {
             PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName)
         }
 
-        Intent(context, App_Unlimited_Shortcuts_Frequently::class.java).apply {
+        Intent(context, FloatingShortcutsForFrequentlyApplications::class.java).apply {
             putExtra("PackageName", packageName)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
@@ -108,7 +108,7 @@ class FunctionsClassRunServices(var context: Context) {
             PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName)
         }
 
-        Intent(context, App_Unlimited_Shortcuts_Frequently::class.java).apply {
+        Intent(context, FloatingShortcutsForFrequentlyApplications::class.java).apply {
             putExtra("PackageName", packageName)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 

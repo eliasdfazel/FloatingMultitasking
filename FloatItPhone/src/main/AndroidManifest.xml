@@ -487,20 +487,20 @@
         <!-- Float It -->
         <service
             android:name=".Shortcuts.FloatingServices.FloatingShortcutsForApplications"/>
+
         <service
-            android:name=".Shortcuts.FloatingServices.App_Unlimited_Shortcuts_Package"/>
+            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForFrequentlyApplications"/>
+
         <service
-            android:name=".Shortcuts.FloatingServices.App_Unlimited_Shortcuts_Frequently"/>
+            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForWifi"/>
         <service
-            android:name=".Shortcuts.FloatingServices.App_Unlimited_Wifi"/>
+            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForBluetooth"/>
         <service
-            android:name=".Shortcuts.FloatingServices.App_Unlimited_Bluetooth"/>
+            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForGps"/>
         <service
-            android:name=".Shortcuts.FloatingServices.App_Unlimited_Gps"/>
+            android:name=".Shortcuts.FloatingServices.FloatingShortcutsNfc"/>
         <service
-            android:name=".Shortcuts.FloatingServices.App_Unlimited_Nfc"/>
-        <service
-            android:name=".Shortcuts.FloatingServices.App_Unlimited_Time"/>
+            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForTime"/>
 
         <service
             android:name=".Folders.FloatingServices.Folder_Unlimited_Floating" />
@@ -518,7 +518,7 @@
         <service android:name=".Widgets.FloatingServices.WidgetUnlimitedFloating" />
 
         <service
-            android:name=".Shortcuts.FloatingServices.App_Unlimited_HIS"/>
+            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForHIS"/>
         <!-- Float It -->
 
         <service

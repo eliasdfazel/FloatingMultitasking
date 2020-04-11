@@ -18,7 +18,7 @@ import android.net.wifi.WifiManager;
 import net.geekstools.floatshort.PRO.Automation.RecoveryWifi;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Wifi;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
@@ -49,7 +49,7 @@ public class ReceiverWifi extends BroadcastReceiver {
                 }
             } else if (wifiManager.isWifiEnabled() == false) {
                 if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
-                    Intent w = new Intent(context, App_Unlimited_Wifi.class);
+                    Intent w = new Intent(context, FloatingShortcutsForWifi.class);
                     w.putExtra("pack", context.getString(R.string.remove_all_floatings));
                     w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(w);

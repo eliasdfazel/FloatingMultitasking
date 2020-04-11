@@ -145,12 +145,12 @@ import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Bluetooth;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Gps;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_HIS;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Nfc;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Time;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Wifi;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForBluetooth;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForGps;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForHIS;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForTime;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsNfc;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager;
@@ -496,7 +496,7 @@ public class FunctionsClass {
         }
         PublicVariable.floatingCounter++;
 
-        Intent u = new Intent(context, App_Unlimited_Wifi.class);
+        Intent u = new Intent(context, FloatingShortcutsForWifi.class);
         u.putExtra("pack", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
@@ -518,7 +518,7 @@ public class FunctionsClass {
         }
         PublicVariable.floatingCounter++;
 
-        Intent u = new Intent(context, App_Unlimited_Bluetooth.class);
+        Intent u = new Intent(context, FloatingShortcutsForBluetooth.class);
         u.putExtra("pack", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
@@ -540,7 +540,7 @@ public class FunctionsClass {
         }
         PublicVariable.floatingCounter++;
 
-        Intent u = new Intent(context, App_Unlimited_Gps.class);
+        Intent u = new Intent(context, FloatingShortcutsForGps.class);
         u.putExtra("pack", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
@@ -562,7 +562,7 @@ public class FunctionsClass {
         }
         PublicVariable.floatingCounter++;
 
-        Intent u = new Intent(context, App_Unlimited_Nfc.class);
+        Intent u = new Intent(context, FloatingShortcutsNfc.class);
         u.putExtra("pack", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
@@ -584,7 +584,7 @@ public class FunctionsClass {
         }
         PublicVariable.floatingCounter++;
 
-        Intent u = new Intent(context, App_Unlimited_Time.class);
+        Intent u = new Intent(context, FloatingShortcutsForTime.class);
         u.putExtra("pack", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
@@ -606,7 +606,7 @@ public class FunctionsClass {
         }
         PublicVariable.floatingCounter++;
 
-        Intent u = new Intent(context, App_Unlimited_HIS.class);
+        Intent u = new Intent(context, FloatingShortcutsForHIS.class);
         u.putExtra("packageName", packageName);
         u.putExtra("className", className);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -18,7 +18,7 @@ import android.location.LocationManager;
 import net.geekstools.floatshort.PRO.Automation.RecoveryGps;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Gps;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Gps;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForGps;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
@@ -46,7 +46,7 @@ public class ReceiverGPS extends BroadcastReceiver {
                 context.startService(gps);
                 PublicVariable.receiverGPS = true;
             } else if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
-                Intent w = new Intent(context, App_Unlimited_Gps.class);
+                Intent w = new Intent(context, FloatingShortcutsForGps.class);
                 w.putExtra("pack", context.getString(R.string.remove_all_floatings));
                 w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(w);
