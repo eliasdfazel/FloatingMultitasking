@@ -41,7 +41,7 @@ import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash
 import net.geekstools.imageview.customshapes.ShapesImage
 import java.util.*
 
-class PopupCategoryOptionAdapter : BaseAdapter {
+class PopupFolderOptionAdapter : BaseAdapter {
 
     private var context: Context
 
@@ -224,7 +224,7 @@ class PopupCategoryOptionAdapter : BaseAdapter {
 
                             override fun authenticatedFloatIt(extraInformation: Bundle?) {
                                 super.authenticatedFloatIt(extraInformation)
-                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+                                Log.d(this@PopupFolderOptionAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                                 if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
                                     context.startActivity(Intent(context, Checkpoint::class.java)
@@ -246,14 +246,14 @@ class PopupCategoryOptionAdapter : BaseAdapter {
 
                             override fun failedAuthenticated() {
                                 super.failedAuthenticated()
-                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "FailedAuthenticated")
+                                Log.d(this@PopupFolderOptionAdapter.javaClass.simpleName, "FailedAuthenticated")
 
 
                             }
 
                             override fun invokedPinPassword() {
                                 super.invokedPinPassword()
-                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "InvokedPinPassword")
+                                Log.d(this@PopupFolderOptionAdapter.javaClass.simpleName, "InvokedPinPassword")
 
                             }
                         }
@@ -288,7 +288,7 @@ class PopupCategoryOptionAdapter : BaseAdapter {
 
                             override fun authenticatedFloatIt(extraInformation: Bundle?) {
                                 super.authenticatedFloatIt(extraInformation)
-                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+                                Log.d(this@PopupFolderOptionAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                                 if (functionsClass.splashReveal()) {
                                     val splashReveal = Intent(context, FloatingSplash::class.java)
@@ -313,14 +313,14 @@ class PopupCategoryOptionAdapter : BaseAdapter {
 
                             override fun failedAuthenticated() {
                                 super.failedAuthenticated()
-                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "FailedAuthenticated")
+                                Log.d(this@PopupFolderOptionAdapter.javaClass.simpleName, "FailedAuthenticated")
 
 
                             }
 
                             override fun invokedPinPassword() {
                                 super.invokedPinPassword()
-                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "InvokedPinPassword")
+                                Log.d(this@PopupFolderOptionAdapter.javaClass.simpleName, "InvokedPinPassword")
 
                             }
                         }

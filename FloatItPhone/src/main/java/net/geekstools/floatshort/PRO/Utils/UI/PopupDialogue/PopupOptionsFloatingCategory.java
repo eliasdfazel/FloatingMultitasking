@@ -24,7 +24,7 @@ import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.PopupCategoryOptionAdapter;
+import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.PopupFolderOptionAdapter;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
@@ -49,7 +49,7 @@ public class PopupOptionsFloatingCategory extends Service {
             MODE = "Options";
     String[] packagesNames;
 
-    PopupCategoryOptionAdapter popupCategoryOptionAdapter;
+    PopupFolderOptionAdapter popupFolderOptionAdapter;
     LoadCustomIcons loadCustomIcons;
 
     @Override
@@ -281,8 +281,8 @@ public class PopupOptionsFloatingCategory extends Service {
                             popupItemsIcon[i]));
                 }
 
-                popupCategoryOptionAdapter =
-                        new PopupCategoryOptionAdapter(getApplicationContext(),
+                popupFolderOptionAdapter =
+                        new PopupFolderOptionAdapter(getApplicationContext(),
                                 navDrawerItemsSaved, categoryName, classNameCommand, startIdCommand);
             } else if (MODE.equals("AppsList")) {
                 packagesNames = intent.getStringArrayExtra("PackagesNames");
@@ -392,12 +392,12 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                 }
 
-                popupCategoryOptionAdapter =
-                        new PopupCategoryOptionAdapter(getApplicationContext(),
+                popupFolderOptionAdapter =
+                        new PopupFolderOptionAdapter(getApplicationContext(),
                                 navDrawerItemsSaved, categoryName, classNameCommand, startIdCommand, xPosition, yPosition, HW);
             }
 
-            popupOptionsItems.setAdapter(popupCategoryOptionAdapter);
+            popupOptionsItems.setAdapter(popupFolderOptionAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
