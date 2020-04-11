@@ -1,0 +1,393 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel on 3/24/20 1:15 PM
+ * Last modified 3/24/20 12:47 PM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+package net.geekstools.floatshort.PRO.Folders.FoldersAdapter
+
+import android.app.Activity
+import android.app.ActivityOptions
+import android.content.Context
+import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityManager
+import android.widget.BaseAdapter
+import android.widget.RelativeLayout
+import android.widget.TextView
+import net.geekstools.floatshort.PRO.Checkpoint
+import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
+import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityFunctions
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
+import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
+import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash
+import net.geekstools.imageview.customshapes.ShapesImage
+import java.util.*
+
+class PopupCategoryOptionAdapter : BaseAdapter {
+
+    private var context: Context
+
+    private var functionsClass: FunctionsClass
+    private var securityFunctions: SecurityFunctions
+
+    private var splitOne: Drawable? = null
+    private var splitTwo: Drawable? = null
+
+    private var loadCustomIcons: LoadCustomIcons? = null
+
+    private var adapterItems: ArrayList<AdapterItems>
+
+    private var folderName: String
+
+    private var classNameCommand: String
+    private var startId: Int
+
+    private var layoutInflater = 0
+
+    private var xPosition = 0
+    private var yPosition = 0
+
+    private var HW = 0
+
+    constructor(context: Context, adapterItems: ArrayList<AdapterItems>, folderName: String, classNameCommand: String, startId: Int) {
+        this.context = context
+
+        this.adapterItems = adapterItems
+
+        this.folderName = folderName
+
+        this.classNameCommand = classNameCommand
+        this.startId = startId
+
+        functionsClass = FunctionsClass(context)
+        securityFunctions = SecurityFunctions(context)
+
+        PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
+        when (functionsClass.shapesImageId()) {
+            1 -> layoutInflater = R.layout.item_popup_category_droplet
+            2 -> layoutInflater = R.layout.item_popup_category_circle
+            3 -> layoutInflater = R.layout.item_popup_category_square
+            4 -> layoutInflater = R.layout.item_popup_category_squircle
+            0 -> layoutInflater = R.layout.item_popup_category_noshape
+        }
+        if (functionsClass.customIconsEnable()) {
+            loadCustomIcons = LoadCustomIcons(context, functionsClass.customIconPackageName())
+        }
+    }
+
+    constructor(context: Context, adapterItems: ArrayList<AdapterItems>, folderName: String, classNameCommand: String, startId: Int,
+                xPosition: Int, yPosition: Int, HW: Int) {
+        this.context = context
+        this.adapterItems = adapterItems
+        this.folderName = folderName
+        this.classNameCommand = classNameCommand
+        this.startId = startId
+        this.xPosition = xPosition
+        this.yPosition = yPosition
+        this.HW = HW
+
+        functionsClass = FunctionsClass(context)
+        securityFunctions = SecurityFunctions(context)
+
+        PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
+
+        when (functionsClass.shapesImageId()) {
+            1 -> layoutInflater = R.layout.item_popup_category_droplet
+            2 -> layoutInflater = R.layout.item_popup_category_circle
+            3 -> layoutInflater = R.layout.item_popup_category_square
+            4 -> layoutInflater = R.layout.item_popup_category_squircle
+            0 -> layoutInflater = R.layout.item_popup_category_noshape
+        }
+
+        if (functionsClass.customIconsEnable()) {
+            loadCustomIcons = LoadCustomIcons(context, functionsClass.customIconPackageName())
+        }
+    }
+
+    override fun getCount(): Int {
+        return adapterItems.size
+    }
+
+    override fun getItem(position: Int): Any {
+
+        return adapterItems[position]
+    }
+
+    override fun getItemId(position: Int): Long {
+
+        return position.toLong()
+    }
+
+    override fun getView(position: Int, initialConvertView: View?, parent: ViewGroup?): View? {
+        var convertView = initialConvertView
+
+        val viewHolder: ViewHolder
+        if (convertView == null) {
+            val inflater = context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            convertView = inflater.inflate(layoutInflater, null)
+
+            viewHolder = ViewHolder()
+            viewHolder.items = convertView.findViewById<View>(R.id.items) as RelativeLayout
+            viewHolder.imgIcon = convertView.findViewById<View>(R.id.iconViewItem) as ShapesImage
+            viewHolder.split_one = convertView.findViewById<View>(R.id.split_one) as ShapesImage
+            viewHolder.split_two = convertView.findViewById<View>(R.id.split_two) as ShapesImage
+            viewHolder.textAppName = convertView.findViewById<View>(R.id.titleViewItem) as TextView
+
+            convertView.tag = viewHolder
+        } else {
+            viewHolder = convertView.tag as ViewHolder
+        }
+        try {
+            if (context.getFileStreamPath(adapterItems[position].packageName + ".SplitOne").exists()
+                    && context.getFileStreamPath(adapterItems[position].packageName + ".SplitTwo").exists()
+                    && adapterItems[position].appName == context.getString(R.string.splitIt)) {
+
+                splitOne = if (functionsClass.customIconsEnable()) {
+                    loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFile(adapterItems[position].packageName + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems[position].packageName + ".SplitOne")))
+                } else {
+                    functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems[position].packageName + ".SplitOne"))
+                }
+                splitTwo = if (functionsClass.customIconsEnable()) {
+                    loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFile(adapterItems[position].packageName + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems[position].packageName + ".SplitTwo")))
+                } else {
+                    functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems[position].packageName + ".SplitTwo"))
+                }
+                viewHolder.split_one!!.setImageDrawable(splitOne)
+                viewHolder.split_two!!.setImageDrawable(splitTwo)
+
+                viewHolder.split_one!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+                viewHolder.split_two!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+
+            } else if (adapterItems[position].appName == context.getString(R.string.splitIt)) {
+                splitOne = if (functionsClass.customIconsEnable()) loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems[position].packageName)[0], functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)[0])) else functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)[0])
+                splitTwo = if (functionsClass.customIconsEnable()) loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems[position].packageName)[1], functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)[1])) else functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)[1])
+                viewHolder!!.split_one!!.setImageDrawable(splitOne)
+                viewHolder.split_two!!.setImageDrawable(splitTwo)
+                viewHolder.split_one!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+                viewHolder.split_two!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+            } else {
+                viewHolder!!.split_one!!.setImageDrawable(null)
+                viewHolder.split_two!!.setImageDrawable(null)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        viewHolder!!.imgIcon!!.setImageDrawable(adapterItems[position].appIcon)
+        viewHolder.textAppName!!.text = adapterItems[position].appName
+        viewHolder.imgIcon!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+        viewHolder.textAppName!!.alpha = if (functionsClass.readDefaultPreference("autoTrans", 255) < 130) 0.70f else 1.0f
+
+        val itemsListColor: Int = if (functionsClass.appThemeTransparent() == true) {
+            functionsClass.setColorAlpha(PublicVariable.colorLightDark, 77f)
+        } else {
+            PublicVariable.colorLightDark
+        }
+
+        val drawPopupShortcut = context.getDrawable(R.drawable.popup_shortcut_whole) as LayerDrawable?
+        val backPopupShortcut = drawPopupShortcut!!.findDrawableByLayerId(R.id.backgroundTemporary)
+        backPopupShortcut.setTint(itemsListColor)
+        viewHolder.items!!.background = drawPopupShortcut
+        viewHolder.textAppName!!.setTextColor(PublicVariable.colorLightDarkOpposite)
+        convertView?.setOnClickListener { view ->
+            try {
+                if (adapterItems[position].appName.contains(context.getString(R.string.edit_folder))) {
+                    context.startActivity(Intent(context, FoldersConfigurations::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                } else if (adapterItems[position].appName.contains(context.getString(R.string.remove_folder))) {
+                    context.sendBroadcast(Intent("Remove_Category_$classNameCommand").putExtra("startId", startId))
+                } else if (adapterItems[position].appName.contains(context.getString(R.string.unpin_folder))) {
+                    context.sendBroadcast(Intent("Unpin_App_$classNameCommand").putExtra("startId", startId))
+                } else if (adapterItems[position].appName.contains(context.getString(R.string.pin_folder))) {
+                    context.sendBroadcast(Intent("Pin_App_$classNameCommand").putExtra("startId", startId))
+                } else if (adapterItems[position].appName.contains(context.getString(R.string.splitIt))) {
+                    if (functionsClass.securityServicesSubscribed()) {
+
+                        SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+
+                            override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                                super.authenticatedFloatIt(extraInformation)
+                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+
+                                if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
+                                    context.startActivity(Intent(context, Checkpoint::class.java)
+                                            .putExtra(context.getString(R.string.splitIt), context.packageName)
+                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                                } else {
+                                    val accessibilityManager = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+
+                                    val accessibilityEvent = AccessibilityEvent.obtain()
+                                    accessibilityEvent.setSource(view)
+                                    accessibilityEvent.eventType = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+                                    accessibilityEvent.action = 10296
+                                    accessibilityEvent.className = classNameCommand
+                                    accessibilityEvent.text.add(context.packageName)
+
+                                    accessibilityManager.sendAccessibilityEvent(accessibilityEvent)
+                                }
+                            }
+
+                            override fun failedAuthenticated() {
+                                super.failedAuthenticated()
+                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "FailedAuthenticated")
+
+
+                            }
+
+                            override fun invokedPinPassword() {
+                                super.invokedPinPassword()
+                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "InvokedPinPassword")
+
+                            }
+                        }
+
+                        context.startActivity(Intent(context, AuthenticationFingerprint::class.java).apply {
+                            putExtra("OtherTitle", context.getString(R.string.securityServices))
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }, ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle())
+
+                    } else {
+                        if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
+                            context.startActivity(Intent(context, Checkpoint::class.java)
+                                    .putExtra(context.getString(R.string.splitIt), context.packageName)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                        } else {
+                            val accessibilityManager = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+
+                            val accessibilityEvent = AccessibilityEvent.obtain()
+                            accessibilityEvent.setSource(view)
+                            accessibilityEvent.eventType = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+                            accessibilityEvent.action = 10296
+                            accessibilityEvent.className = classNameCommand
+                            accessibilityEvent.text.add(context.packageName)
+
+                            accessibilityManager.sendAccessibilityEvent(accessibilityEvent)
+                        }
+                    }
+                } else { //Open Applications
+                    if (securityFunctions.isAppLocked(adapterItems[position].packageName) || securityFunctions.isAppLocked(folderName)) {
+
+                        SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+
+                            override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                                super.authenticatedFloatIt(extraInformation)
+                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+
+                                if (functionsClass.splashReveal()) {
+                                    val splashReveal = Intent(context, FloatingSplash::class.java)
+                                    splashReveal.putExtra("packageName", adapterItems[position].packageName)
+                                    splashReveal.putExtra("X", xPosition)
+                                    splashReveal.putExtra("Y", yPosition)
+                                    splashReveal.putExtra("HW", HW)
+                                    context.startService(splashReveal)
+                                } else {
+                                    if (functionsClass.FreeForm()) {
+                                        functionsClass.openApplicationFreeForm(adapterItems[position].packageName,
+                                                xPosition,
+                                                functionsClass.displayX() / 2,
+                                                yPosition,
+                                                functionsClass.displayY() / 2
+                                        )
+                                    } else {
+                                        functionsClass.appsLaunchPad(adapterItems[position].packageName)
+                                    }
+                                }
+                            }
+
+                            override fun failedAuthenticated() {
+                                super.failedAuthenticated()
+                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "FailedAuthenticated")
+
+
+                            }
+
+                            override fun invokedPinPassword() {
+                                super.invokedPinPassword()
+                                Log.d(this@PopupCategoryOptionAdapter.javaClass.simpleName, "InvokedPinPassword")
+
+                            }
+                        }
+
+                        context.startActivity(Intent(context, AuthenticationFingerprint::class.java).apply {
+                            putExtra("OtherTitle", context.getString(R.string.securityServices))
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }, ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle())
+
+                    } else {
+                        if (functionsClass.splashReveal()) {
+                            val splashReveal = Intent(context, FloatingSplash::class.java)
+                            splashReveal.putExtra("packageName", adapterItems[position].packageName)
+                            splashReveal.putExtra("X", xPosition)
+                            splashReveal.putExtra("Y", yPosition)
+                            splashReveal.putExtra("HW", HW)
+                            context.startService(splashReveal)
+                        } else {
+                            if (functionsClass.FreeForm()) {
+                                functionsClass.openApplicationFreeForm(adapterItems[position].packageName,
+                                        xPosition,
+                                        functionsClass.displayX() / 2,
+                                        yPosition,
+                                        functionsClass.displayY() / 2
+                                )
+                            } else {
+                                functionsClass.appsLaunchPad(adapterItems[position].packageName)
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            context.sendBroadcast(Intent("Hide_PopupListView_Category"))
+        }
+        convertView?.setOnLongClickListener { view ->
+            if (functionsClass.returnAPI() >= 24) {
+                if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
+                    context.startActivity(Intent(context, Checkpoint::class.java)
+                            .putExtra(context.getString(R.string.splitIt), context.packageName)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                } else {
+                    PublicVariable.splitSinglePackage = adapterItems[position].packageName
+                    if (functionsClass.appIsInstalled(PublicVariable.splitSinglePackage)) {
+                        val accessibilityManager = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+                        val accessibilityEvent = AccessibilityEvent.obtain()
+                        accessibilityEvent.setSource(view)
+                        accessibilityEvent.eventType = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+                        accessibilityEvent.action = 69201
+                        accessibilityEvent.className = classNameCommand
+                        accessibilityEvent.text.add(context.packageName)
+                        accessibilityManager.sendAccessibilityEvent(accessibilityEvent)
+                    }
+                }
+            }
+            context.sendBroadcast(Intent("Hide_PopupListView_Category"))
+            true
+        }
+        return convertView
+    }
+
+    internal class ViewHolder {
+        var items: RelativeLayout? = null
+        var imgIcon: ShapesImage? = null
+        var split_one: ShapesImage? = null
+        var split_two: ShapesImage? = null
+        var textAppName: TextView? = null
+    }
+}
