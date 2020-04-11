@@ -68,15 +68,15 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authComponentName
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authHW
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authPositionX
+import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authPositionY
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardHybridAdapter
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
 import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authComponentName
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authHW
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authPositionX
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity.AuthOpenAppValues.authPositionY
 import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Utils.IAP.Util.PurchasesCheckpoint
@@ -774,12 +774,13 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         loadApplicationsData()
     }
 
-    private fun loadApplicationsData() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
-        hybridApplicationViewBinding.indexView.removeAllViews()
+    private fun loadApplicationsData() = CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
+        withContext(Dispatchers.Main) {
+            hybridApplicationViewBinding.indexView.removeAllViews()
+        }
 
         if (functionsClass.customIconsEnable()) {
-            loadCustomIcons?.load()
-            PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons?.getTotalIconsNumber())
+            loadCustomIcons.load()
         }
 
         applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
@@ -805,42 +806,18 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     it
                 }
                 .onCompletion {
-                    val splashAnimation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
-                    hybridApplicationViewBinding.loadingSplash.startAnimation(splashAnimation)
-                    splashAnimation.setAnimationListener(object : Animation.AnimationListener {
 
-                        override fun onAnimationStart(animation: Animation?) {
+                    if (intent.getStringArrayExtra("frequentApps") != null) {
+                        frequentlyUsedAppsList = intent.getStringArrayExtra("frequentApps")
+                        val freqLength = intent.getIntExtra("frequentAppsNumbers", -1)
 
-                            if (loadFreq) {
-                                launch {
-                                    loadFrequentlyUsedApplications().await()
+                        PublicVariable.frequentlyUsedApps = frequentlyUsedAppsList
+                        PublicVariable.freqLength = freqLength
 
-                                    /*Search Engine*/
-                                    SearchEngine(activity = this@ApplicationsView, context = applicationContext,
-                                            searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
-                                            functionsClass = functionsClass,
-                                            functionsClassRunServices = functionsClassRunServices,
-                                            functionsClassSecurity = functionsClassSecurity,
-                                            customIcons = loadCustomIcons,
-                                            firebaseAuth = firebaseAuth).apply {
-
-                                        this.initializeSearchEngineData()
-                                    }
-                                    /*Search Engine*/
-                                }
-                            }
-
-                            hybridApplicationViewBinding.switchFloating.visibility = View.VISIBLE
+                        if (freqLength > 1) {
+                            loadFreq = true
                         }
-
-                        override fun onAnimationRepeat(animation: Animation?) {
-
-                        }
-
-                        override fun onAnimationEnd(animation: Animation?) {
-                            hybridApplicationViewBinding.loadingSplash.visibility = View.INVISIBLE
-                        }
-                    })
+                    }
                 }
                 .withIndex().collect {
                     try {
@@ -863,7 +840,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                         }
 
                         installedAppIcon = if (functionsClass.customIconsEnable()) {
-                            loadCustomIcons?.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(it.value.activityInfo))
+                            loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(it.value.activityInfo))
                         } else {
                             functionsClass.shapedAppIcon(it.value.activityInfo)
                         }
@@ -881,53 +858,82 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                     }
                 }
 
-        recyclerViewAdapter = CardHybridAdapter(this@ApplicationsView, applicationContext, applicationsAdapterItems)
+        withContext(Dispatchers.Main) {
+            recyclerViewAdapter = CardHybridAdapter(this@ApplicationsView, applicationContext, applicationsAdapterItems)
 
-        if (intent.getStringArrayExtra("frequentApps") != null) {
-            frequentlyUsedAppsList = intent.getStringArrayExtra("frequentApps")
-            val freqLength = intent.getIntExtra("frequentAppsNumbers", -1)
-            PublicVariable.frequentlyUsedApps = frequentlyUsedAppsList
-            PublicVariable.freqLength = freqLength
-            if (freqLength > 1) {
-                loadFreq = true
+            val splashAnimation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
+            hybridApplicationViewBinding.loadingSplash.startAnimation(splashAnimation)
+            splashAnimation.setAnimationListener(object : Animation.AnimationListener {
+
+                override fun onAnimationStart(animation: Animation?) {
+
+                    if (loadFreq) {
+                        launch {
+                            loadFrequentlyUsedApplications().await()
+                        }
+                    }
+
+                    /*Search Engine*/
+                    SearchEngine(activity = this@ApplicationsView, context = applicationContext,
+                            searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
+                            functionsClass = functionsClass,
+                            functionsClassRunServices = functionsClassRunServices,
+                            functionsClassSecurity = functionsClassSecurity,
+                            customIcons = loadCustomIcons,
+                            firebaseAuth = firebaseAuth).apply {
+
+                        this.initializeSearchEngineData()
+                    }
+                    /*Search Engine*/
+
+                    hybridApplicationViewBinding.switchFloating.visibility = View.VISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation?) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    hybridApplicationViewBinding.loadingSplash.visibility = View.INVISIBLE
+                }
+            })
+
+            if (loadFreq) {
+                val layoutParams = RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.MATCH_PARENT
+                )
+                layoutParams.addRule(RelativeLayout.ABOVE, R.id.freqList)
+                hybridApplicationViewBinding.nestedScrollView.layoutParams = layoutParams
+
+                hybridApplicationViewBinding.scrollRelativeLayout.setPadding(0, hybridApplicationViewBinding.scrollRelativeLayout.paddingTop, 0, 0)
+                hybridApplicationViewBinding.nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(66))
+            } else {
+                hybridApplicationViewBinding.MainView.removeView(hybridApplicationViewBinding.freqList)
+
+                val layoutParams = RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.MATCH_PARENT
+                )
+                hybridApplicationViewBinding.nestedScrollView.layoutParams = layoutParams
             }
-        }
 
-        if (loadFreq) {
-            val layoutParams = RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.MATCH_PARENT
+            recyclerViewAdapter.notifyDataSetChanged()
+            val sectionsData = arrayOfNulls<HybridSectionedGridRecyclerViewAdapter.Section>(sections.size)
+            val hybridSectionedGridRecyclerViewAdapter = HybridSectionedGridRecyclerViewAdapter(
+                    applicationContext,
+                    R.layout.hybrid_sections,
+                    R.id.section_text,
+                    hybridApplicationViewBinding.applicationsListView,
+                    recyclerViewAdapter
             )
-            layoutParams.addRule(RelativeLayout.ABOVE, R.id.freqList)
-            hybridApplicationViewBinding.nestedScrollView.layoutParams = layoutParams
 
-            hybridApplicationViewBinding.scrollRelativeLayout.setPadding(0, hybridApplicationViewBinding.scrollRelativeLayout.paddingTop, 0, 0)
-            hybridApplicationViewBinding.nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(66))
-        } else {
-            hybridApplicationViewBinding.MainView.removeView(hybridApplicationViewBinding.freqList)
+            hybridSectionedGridRecyclerViewAdapter.setSections(sections.toArray(sectionsData))
+            hybridApplicationViewBinding.applicationsListView.adapter = hybridSectionedGridRecyclerViewAdapter
 
-            val layoutParams = RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.MATCH_PARENT
-            )
-            hybridApplicationViewBinding.nestedScrollView.layoutParams = layoutParams
+            recyclerViewLayoutManager.scrollToPosition(0)
+            hybridApplicationViewBinding.nestedScrollView.scrollTo(0, 0)
         }
-
-        recyclerViewAdapter.notifyDataSetChanged()
-        val sectionsData = arrayOfNulls<HybridSectionedGridRecyclerViewAdapter.Section>(sections.size)
-        val hybridSectionedGridRecyclerViewAdapter = HybridSectionedGridRecyclerViewAdapter(
-                applicationContext,
-                R.layout.hybrid_sections,
-                R.id.section_text,
-                hybridApplicationViewBinding.applicationsListView,
-                recyclerViewAdapter
-        )
-
-        hybridSectionedGridRecyclerViewAdapter.setSections(sections.toArray(sectionsData))
-        hybridApplicationViewBinding.applicationsListView.adapter = hybridSectionedGridRecyclerViewAdapter
-
-        recyclerViewLayoutManager.scrollToPosition(0)
-        hybridApplicationViewBinding.nestedScrollView.scrollTo(0, 0)
 
         loadApplicationsIndex().await()
 
@@ -935,6 +941,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
     }
 
     private fun loadFrequentlyUsedApplications() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
+
         val layoutParamsAbove = hybridApplicationViewBinding.searchEngineViewInclude.root.layoutParams as RelativeLayout.LayoutParams
         layoutParamsAbove.addRule(RelativeLayout.ABOVE, R.id.freqList)
 
@@ -942,6 +949,8 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         hybridApplicationViewBinding.searchEngineViewInclude.root.bringToFront()
 
         hybridApplicationViewBinding.freqItem.removeAllViews()
+
+        hybridApplicationViewBinding.freqList.visibility = View.VISIBLE
 
         frequentlyUsedAppsCounter = IntArray(25)
         frequentlyUsedAppsList = intent.getStringArrayExtra("frequentApps")
@@ -952,7 +961,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
         }
         functionsClass.saveFileAppendLine(".categoryInfo", "Frequently")
 
-        hybridApplicationViewBinding.freqList.visibility = View.VISIBLE
+
 
         for (i in 0 until freqLength) {
             val freqLayout = layoutInflater.inflate(R.layout.freq_item, null) as RelativeLayout
@@ -961,7 +970,7 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
             shapesImage.setOnClickListener(this@ApplicationsView)
             shapesImage.setOnLongClickListener(this@ApplicationsView)
             shapesImage.setImageDrawable(if (functionsClass.customIconsEnable()) {
-                loadCustomIcons?.getDrawableIconForPackage(frequentlyUsedAppsList[i], functionsClass.shapedAppIcon(frequentlyUsedAppsList[i]))
+                loadCustomIcons.getDrawableIconForPackage(frequentlyUsedAppsList[i], functionsClass.shapedAppIcon(frequentlyUsedAppsList[i]))
             } else {
                 functionsClass.shapedAppIcon(frequentlyUsedAppsList[i])
             })
