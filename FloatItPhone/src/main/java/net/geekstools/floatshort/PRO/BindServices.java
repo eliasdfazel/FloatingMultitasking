@@ -87,7 +87,7 @@ public class BindServices extends Service {
                                 } else if (wifiManager.isWifiEnabled() == false) {
                                     if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
                                         Intent wifiShortcutsRemove = new Intent(context, FloatingShortcutsForWifi.class);
-                                        wifiShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_floatings));
+                                        wifiShortcutsRemove.putExtra("PackageName", context.getString(R.string.remove_all_floatings));
                                         wifiShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         context.startService(wifiShortcutsRemove);
 
@@ -113,7 +113,7 @@ public class BindServices extends Service {
                                     PublicVariable.receiverGPS = true;
                                 } else if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
                                     Intent gpsShortcutsRemove = new Intent(context, FloatingShortcutsForGps.class);
-                                    gpsShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_floatings));
+                                    gpsShortcutsRemove.putExtra("PackageName", context.getString(R.string.remove_all_floatings));
                                     gpsShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(gpsShortcutsRemove);
 
@@ -138,7 +138,7 @@ public class BindServices extends Service {
                                     PublicVariable.receiverNFC = true;
                                 } else if (nfcManager.getDefaultAdapter().isEnabled() == false) {
                                     Intent nfcShortcutsRemove = new Intent(context, FloatingShortcutsNfc.class);
-                                    nfcShortcutsRemove.putExtra("pack", context.getString(R.string.remove_all_floatings));
+                                    nfcShortcutsRemove.putExtra("PackageName", context.getString(R.string.remove_all_floatings));
                                     nfcShortcutsRemove.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startService(nfcShortcutsRemove);
 
