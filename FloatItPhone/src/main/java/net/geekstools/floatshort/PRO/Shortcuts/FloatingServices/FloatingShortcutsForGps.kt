@@ -43,7 +43,7 @@ import kotlin.math.abs
 import kotlin.math.round
 import kotlin.math.roundToInt
 
-class FloatingShortcutsForBluetooth : Service() {
+class FloatingShortcutsForGps : Service() {
 
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
@@ -175,7 +175,7 @@ class FloatingShortcutsForBluetooth : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
         super.onStartCommand(intent, flags, serviceStartId)
-        FunctionsClassDebug.PrintDebug(this@FloatingShortcutsForBluetooth.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
+        FunctionsClassDebug.PrintDebug(this@FloatingShortcutsForGps.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
         val startId = (serviceStartId - 1)
 
@@ -415,7 +415,7 @@ class FloatingShortcutsForBluetooth : Service() {
                                     functionsClass.PopupOptionShortcuts(
                                             floatingShortcutsBinding.get(startId).root,
                                             packageNames[startId],
-                                            this@FloatingShortcutsForBluetooth.javaClass.simpleName,
+                                            this@FloatingShortcutsForGps.javaClass.simpleName,
                                             startId,
                                             initialX,
                                             initialY
@@ -630,7 +630,7 @@ class FloatingShortcutsForBluetooth : Service() {
 
                                     override fun authenticatedFloatIt(extraInformation: Bundle?) {
                                         super.authenticatedFloatIt(extraInformation)
-                                        Log.d(this@FloatingShortcutsForBluetooth.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+                                        Log.d(this@FloatingShortcutsForGps.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                                         openActions.startProcess(packageNames[startId],
                                                 if (moveDetection != null) {
@@ -646,14 +646,14 @@ class FloatingShortcutsForBluetooth : Service() {
 
                                     override fun failedAuthenticated() {
                                         super.failedAuthenticated()
-                                        Log.d(this@FloatingShortcutsForBluetooth.javaClass.simpleName, "FailedAuthenticated")
+                                        Log.d(this@FloatingShortcutsForGps.javaClass.simpleName, "FailedAuthenticated")
 
                                         AuthenticationProcess.authenticationProcessInvoked = false
                                     }
 
                                     override fun invokedPinPassword() {
                                         super.invokedPinPassword()
-                                        Log.d(this@FloatingShortcutsForBluetooth.javaClass.simpleName, "InvokedPinPassword")
+                                        Log.d(this@FloatingShortcutsForGps.javaClass.simpleName, "InvokedPinPassword")
 
                                         AuthenticationProcess.authenticationProcessInvoked = false
                                     }
@@ -694,7 +694,7 @@ class FloatingShortcutsForBluetooth : Service() {
                 functionsClass.PopupNotificationShortcuts(
                         floatingShortcutsBinding[startId].root,
                         packageNames[startId],
-                        this@FloatingShortcutsForBluetooth.javaClass.simpleName,
+                        this@FloatingShortcutsForGps.javaClass.simpleName,
                         startId,
                         iconColors[startId],
                         XY.xMove,
@@ -736,7 +736,7 @@ class FloatingShortcutsForBluetooth : Service() {
             }
 
             if (serviceStartId == 1) {
-                val floatingShortcutClassInCommand: String = this@FloatingShortcutsForBluetooth.javaClass.simpleName
+                val floatingShortcutClassInCommand: String = this@FloatingShortcutsForGps.javaClass.simpleName
 
                 val intentFilter = IntentFilter()
                 intentFilter.addAction("Split_Apps_Single_$floatingShortcutClassInCommand")
@@ -828,7 +828,7 @@ class FloatingShortcutsForBluetooth : Service() {
 
                                         override fun authenticatedFloatIt(extraInformation: Bundle?) {
                                             super.authenticatedFloatIt(extraInformation)
-                                            Log.d(this@FloatingShortcutsForBluetooth.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+                                            Log.d(this@FloatingShortcutsForGps.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                                             openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)],
                                                     if (moveDetection != null) {
@@ -844,14 +844,14 @@ class FloatingShortcutsForBluetooth : Service() {
 
                                         override fun failedAuthenticated() {
                                             super.failedAuthenticated()
-                                            Log.d(this@FloatingShortcutsForBluetooth.javaClass.simpleName, "FailedAuthenticated")
+                                            Log.d(this@FloatingShortcutsForGps.javaClass.simpleName, "FailedAuthenticated")
 
                                             AuthenticationProcess.authenticationProcessInvoked = false
                                         }
 
                                         override fun invokedPinPassword() {
                                             super.invokedPinPassword()
-                                            Log.d(this@FloatingShortcutsForBluetooth.javaClass.simpleName, "InvokedPinPassword")
+                                            Log.d(this@FloatingShortcutsForGps.javaClass.simpleName, "InvokedPinPassword")
 
                                             AuthenticationProcess.authenticationProcessInvoked = false
                                         }
@@ -911,7 +911,7 @@ class FloatingShortcutsForBluetooth : Service() {
                                         try {
                                             stickedToEdge[removeCount] = true
 
-                                            stickyEdgeParams[removeCount] = functionsClass.moveToEdge(this@FloatingShortcutsForBluetooth.packageNames.get(removeCount), layoutParams[removeCount].height)
+                                            stickyEdgeParams[removeCount] = functionsClass.moveToEdge(this@FloatingShortcutsForGps.packageNames.get(removeCount), layoutParams[removeCount].height)
 
                                             windowManager.updateViewLayout(floatingShortcutsBinding.get(removeCount).root, stickyEdgeParams[removeCount])
                                         } catch (e: WindowManager.InvalidDisplayException) {
@@ -930,7 +930,7 @@ class FloatingShortcutsForBluetooth : Service() {
                                             try {
                                                 stickedToEdge[stickyCounter] = false
 
-                                                val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForBluetooth.packageNames.get(stickyCounter), Context.MODE_PRIVATE)
+                                                val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForGps.packageNames.get(stickyCounter), Context.MODE_PRIVATE)
                                                 XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
                                                 XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
 

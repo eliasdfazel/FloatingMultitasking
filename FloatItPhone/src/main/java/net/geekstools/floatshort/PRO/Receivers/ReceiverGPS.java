@@ -47,7 +47,7 @@ public class ReceiverGPS extends BroadcastReceiver {
                 PublicVariable.receiverGPS = true;
             } else if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
                 Intent w = new Intent(context, FloatingShortcutsForGps.class);
-                w.putExtra("pack", context.getString(R.string.remove_all_floatings));
+                w.putExtra(context.getString(R.string.remove_all_floatings), context.getString(R.string.remove_all_floatings));
                 w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(w);
 
