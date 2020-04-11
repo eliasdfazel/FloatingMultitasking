@@ -4,10 +4,8 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.app.ActivityOptions
 import android.appwidget.AppWidgetManager
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.content.res.ColorStateList
@@ -20,6 +18,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -44,10 +43,12 @@ import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
 import net.geekstools.floatshort.PRO.SearchEngine.Data.SearchEngineViewModel
 import net.geekstools.floatshort.PRO.SearchEngine.UI.Adapter.SearchEngineAdapter
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
 import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager
@@ -59,7 +60,6 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                    private val searchEngineViewBinding: SearchEngineViewBinding,
                    private val functionsClass: FunctionsClass,
                    private val functionsClassRunServices: FunctionsClassRunServices,
-                   private val functionsClassSecurity: FunctionsClassSecurity,
                    private val customIcons: LoadCustomIcons?,
                    private val firebaseAuth: FirebaseAuth) {
 
@@ -276,24 +276,37 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                     }, ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
                 } else {
                     if (!SearchEngineAdapter.alreadyAuthenticatedSearchEngine) {
+
                         if (functionsClass.securityServicesSubscribed()) {
-                            FunctionsClassSecurity.AuthOpenAppValues.authComponentName = context.getString(R.string.securityServices)
-                            FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName = context.packageName
-                            FunctionsClassSecurity.AuthOpenAppValues.authSearchEngine = true
 
-                            functionsClassSecurity.openAuthInvocation()
+                            SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                            val intentFilter = IntentFilter()
-                            intentFilter.addAction("SEARCH_ENGINE_AUTHENTICATED")
-                            val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-                                override fun onReceive(context: Context, intent: Intent) {
-                                    if (intent.action == "SEARCH_ENGINE_AUTHENTICATED") {
+                                override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                                    super.authenticatedFloatIt(extraInformation)
+                                    Log.d(this@SearchEngine.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                                        performSearchEngine(backgroundTemporaryInput)
-                                    }
+                                    performSearchEngine(backgroundTemporaryInput)
+                                }
+
+                                override fun failedAuthenticated() {
+                                    super.failedAuthenticated()
+                                    Log.d(this@SearchEngine.javaClass.simpleName, "FailedAuthenticated")
+
+
+                                }
+
+                                override fun invokedPinPassword() {
+                                    super.invokedPinPassword()
+                                    Log.d(this@SearchEngine.javaClass.simpleName, "InvokedPinPassword")
+
                                 }
                             }
-                            context.registerReceiver(broadcastReceiver, intentFilter)
+
+                            context.startActivity(Intent(context, AuthenticationFingerprint::class.java).apply {
+                                putExtra("OtherTitle", context.getString(R.string.securityServices))
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }, ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle())
+
                         }
                     } else {
 

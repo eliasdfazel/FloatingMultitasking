@@ -893,7 +893,6 @@ class ApplicationsView : AppCompatActivity(), View.OnClickListener, OnLongClickL
                             searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
                             functionsClass = functionsClass,
                             functionsClassRunServices = functionsClassRunServices,
-                            functionsClassSecurity = functionsClassSecurity,
                             customIcons = loadCustomIcons,
                             firebaseAuth = firebaseAuth).apply {
 

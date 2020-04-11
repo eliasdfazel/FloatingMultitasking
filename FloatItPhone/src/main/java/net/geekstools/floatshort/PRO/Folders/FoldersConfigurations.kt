@@ -752,7 +752,6 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                                 searchEngineViewBinding = foldersConfigurationViewBinding.searchEngineViewInclude,
                                 functionsClass = functionsClass,
                                 functionsClassRunServices = functionsClassRunServices,
-                                functionsClassSecurity = functionsClassSecurity,
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {
 

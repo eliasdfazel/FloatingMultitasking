@@ -60,7 +60,6 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.SecurityServices.Authentication.PinPassword.HandlePinPassword
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
@@ -97,9 +96,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
-    private val functionsClassSecurity: FunctionsClassSecurity by lazy {
-        FunctionsClassSecurity(applicationContext)
-    }
+
     private val functionsClassRunServices: FunctionsClassRunServices by lazy {
         FunctionsClassRunServices(applicationContext)
     }
@@ -1130,7 +1127,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 searchEngineViewBinding = widgetConfigurationsViewsBinding.searchEngineViewInclude,
                                 functionsClass = functionsClass,
                                 functionsClassRunServices = functionsClassRunServices,
-                                functionsClassSecurity = functionsClassSecurity,
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {
 
