@@ -30,9 +30,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton;
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.databinding.AdvanceAppSelectionListBinding;
@@ -46,7 +46,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
     private Context context;
 
     private FunctionsClass functionsClass;
-    private FunctionsClassSecurity functionsClassSecurity;
+    private SecurityFunctions securityFunctions;
 
     private AppsConfirmButton appsConfirmButton;
 
@@ -75,7 +75,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
         this.confirmButtonProcessInterface = confirmButtonProcessInterface;
 
         this.functionsClass = functionsClass;
-        functionsClassSecurity = new FunctionsClassSecurity(context);
+        securityFunctions = new SecurityFunctions(context);
 
 
         temporaryFallingIcon = functionsClass.initShapesImage(advanceAppSelectionListBinding.temporaryFallingIcon);
@@ -163,8 +163,8 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                             confirmButtonProcessInterface.hideSavedShortcutList();
                             appsConfirmButton.makeItVisible();
 
-                            if (functionsClassSecurity.isAppLocked(PublicVariable.categoryName)) {
-                                functionsClassSecurity.doUnlockApps(adapterItems.get(position).getPackageName());
+                            if (securityFunctions.isAppLocked(PublicVariable.categoryName)) {
+                                securityFunctions.doUnlockApps(adapterItems.get(position).getPackageName());
                             }
                         } else {
                             functionsClass.saveFile(
@@ -173,8 +173,8 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                                     PublicVariable.categoryName, pack);
                             viewHolderBinder.autoChoice.setChecked(true);
 
-                            if (functionsClassSecurity.isAppLocked(PublicVariable.categoryName)) {
-                                functionsClassSecurity.doLockApps(adapterItems.get(position).getPackageName());
+                            if (securityFunctions.isAppLocked(PublicVariable.categoryName)) {
+                                securityFunctions.doLockApps(adapterItems.get(position).getPackageName());
                             }
 
                             TranslateAnimation translateAnimation =

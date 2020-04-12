@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils
+package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils
 
 import android.os.Bundle
 import android.util.Log

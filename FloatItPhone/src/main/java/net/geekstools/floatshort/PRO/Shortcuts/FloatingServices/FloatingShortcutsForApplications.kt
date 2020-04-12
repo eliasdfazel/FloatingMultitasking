@@ -27,10 +27,10 @@ import androidx.dynamicanimation.animation.SpringForce
 import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityFunctions
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint.AuthenticationFingerprint
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.Utils.OpenActions
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
@@ -187,7 +187,7 @@ class FloatingShortcutsForApplications : Service() {
             if (this@run.hasExtra(getString(R.string.remove_all_floatings))) {
                 if (this@run.getStringExtra(getString(R.string.remove_all_floatings)) == getString(R.string.remove_all_floatings)) {
 
-                    for (removeCount in 0 until startId) {
+                    for (removeCount in 0 until floatingShortcutsBinding.size) {
                         try {
                             if (floatingShortcutsBinding[removeCount].root.isShown) {
                                 try {
@@ -930,15 +930,15 @@ class FloatingShortcutsForApplications : Service() {
                                 }
                             }
                         } else if (intent.action == "Sticky_Edge") {
-                            for (removeCount in 0 until startId) {
+                            for (stickyCounter in 0 until floatingShortcutsBinding.size) {
                                 try {
-                                    if (floatingShortcutsBinding.get(removeCount).root.isShown) {
+                                    if (floatingShortcutsBinding[stickyCounter].root.isShown) {
                                         try {
-                                            stickedToEdge[removeCount] = true
+                                            stickedToEdge[stickyCounter] = true
 
-                                            stickyEdgeParams[removeCount] = functionsClass.moveToEdge(this@FloatingShortcutsForApplications.classNames.get(removeCount), layoutParams[removeCount].height)
+                                            stickyEdgeParams.add(stickyCounter, functionsClass.moveToEdge(this@FloatingShortcutsForApplications.classNames.get(stickyCounter), layoutParams[stickyCounter].height))
 
-                                            windowManager.updateViewLayout(floatingShortcutsBinding.get(removeCount).root, stickyEdgeParams[removeCount])
+                                            windowManager.updateViewLayout(floatingShortcutsBinding[stickyCounter].root, stickyEdgeParams[stickyCounter])
                                         } catch (e: WindowManager.InvalidDisplayException) {
                                             e.printStackTrace()
                                         }
@@ -948,9 +948,9 @@ class FloatingShortcutsForApplications : Service() {
                                 }
                             }
                         } else if (intent.action == "Sticky_Edge_No") {
-                            for (stickyCounter in 0 until startId) {
+                            for (stickyCounter in 0 until floatingShortcutsBinding.size) {
                                 try {
-                                    if (floatingShortcutsBinding.get(stickyCounter).root.isShown()) {
+                                    if (floatingShortcutsBinding.get(stickyCounter).root.isShown) {
                                         try {
                                             try {
                                                 stickedToEdge[stickyCounter] = false

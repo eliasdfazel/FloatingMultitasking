@@ -1,11 +1,14 @@
-package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils
+package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils
 
+import android.app.ActivityOptions
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.util.Base64
 import androidx.biometric.BiometricManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.HandlePinPassword
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import java.io.File
 import java.nio.charset.Charset
@@ -14,20 +17,39 @@ import javax.crypto.spec.SecretKeySpec
 
 class SecurityFunctions (var context: Context) {
 
-    private val functionsClass: FunctionsClass = FunctionsClass(context)
-
     fun canPerformFingerprintProcess() : Boolean {
         val biometricManager = BiometricManager.from(context)
 
         return (biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS)
     }
 
+    /*Lock/Unlock Apps*/
+    fun doLockApps(identifier: String) {
+
+        if (FunctionsClass(context).readPreference(".Password", "Pin", "0") == "0") {
+
+            context.startActivity(Intent(context, HandlePinPassword::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+        } else {
+
+            FunctionsClass(context).savePreference(".LockedApps", identifier, true)
+        }
+    }
+
+    fun doUnlockApps(identifier: String) {
+        FunctionsClass(context).savePreference(".LockedApps", identifier, false)
+    }
+
     /*Lock Functions*/
-    fun isAppLocked(authComponentName: String): Boolean {
-        return functionsClass.readPreference(".LockedApps", authComponentName, false)
+    fun isAppLocked(identifier: String): Boolean {
+        val functionsClass: FunctionsClass = FunctionsClass(context)
+
+        return functionsClass.readPreference(".LockedApps", identifier, false)
     }
 
     fun saveEncryptedPinPassword(plainTextPassword: String) {
+        val functionsClass: FunctionsClass = FunctionsClass(context)
+
         val passwordToSave = encryptEncodedData(plainTextPassword, FirebaseAuth.getInstance().currentUser!!.uid).asList().toString()
         functionsClass.savePreference(".Password", "Pin", passwordToSave)
     }

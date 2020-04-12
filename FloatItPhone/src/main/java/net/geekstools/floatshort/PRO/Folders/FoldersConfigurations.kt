@@ -63,7 +63,7 @@ import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.*
@@ -99,8 +99,8 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
-    private val functionsClassSecurity: FunctionsClassSecurity by lazy {
-        FunctionsClassSecurity(applicationContext)
+    private val securityFunctions: SecurityFunctions by lazy {
+        SecurityFunctions(applicationContext)
     }
     private val functionsClassDialogues: FunctionsClassDialogues by lazy {
         FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
@@ -549,7 +549,6 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                 }
 
         functionsClass.addAppShortcuts()
-        functionsClassSecurity.resetAuthAppValues()
     }
 
     override fun onPause() {
@@ -695,7 +694,7 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
                                     waitingDialogue.dismiss()
                                 }
                             } finally {
-                                functionsClassSecurity.downloadLockedAppsData()
+                                securityFunctions.downloadLockedAppsData()
                             }
                         }
                     }

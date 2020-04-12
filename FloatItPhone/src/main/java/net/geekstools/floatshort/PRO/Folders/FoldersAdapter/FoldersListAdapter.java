@@ -273,7 +273,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                     PublicVariable.itemPosition = position;
                     String categoryName = adapterItems.get(position).getCategory();
 
-                    functionsClass.popupOptionCategory(foldersConfigurations, context,
+                    functionsClass.popupOptionFolders(foldersConfigurations, context,
                             viewHolderBinder.itemView,
                             categoryName, position);
                 }
@@ -296,7 +296,7 @@ public class FoldersListAdapter extends RecyclerView.Adapter<FoldersListAdapter.
                     PublicVariable.itemPosition = position;
                     String categoryName = adapterItems.get(position).getCategory();
 
-                    functionsClass.popupOptionCategory(foldersConfigurations, context,
+                    functionsClass.popupOptionFolders(foldersConfigurations, context,
                             viewHolderBinder.itemView,
                             categoryName, position);
                 }

@@ -67,6 +67,7 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -143,7 +144,11 @@ import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.Notifications.PopupAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity;
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions.UserInterfaceExtraData;
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint.AuthenticationFingerprint;
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback;
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions;
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForBluetooth;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForGps;
@@ -166,6 +171,8 @@ import net.geekstools.floatshort.PRO.Widgets.FloatingServices.WidgetUnlimitedFlo
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -198,12 +205,8 @@ public class FunctionsClass {
 
     Context context;
 
-    FunctionsClassSecurity functionsClassSecurity;
-
     public FunctionsClass(Context context) {
         this.context = context;
-
-        functionsClassSecurity = new FunctionsClassSecurity(context);
     }
 
     public static boolean ComponentEnabled(PackageManager packageManager, String packageName, String className) {
@@ -641,11 +644,6 @@ public class FunctionsClass {
                     }
                 }
             };
-            try {
-                context.unregisterReceiver(counterReceiver);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             context.registerReceiver(counterReceiver, intentFilter);
         } catch (Exception e) {
             e.printStackTrace();
@@ -2438,28 +2436,9 @@ public class FunctionsClass {
     }
 
     public String[] readFileLine(String fileName) {
-        String[] contentLine = null;
-        if (context.getFileStreamPath(fileName).exists()) {
-            try {
-                FileInputStream fileInputStream = new FileInputStream(context.getFileStreamPath(fileName));
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+        FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
 
-                int count = countLineInnerFile(fileName);
-                contentLine = new String[count];
-                String line = "";
-                int i = 0;
-                while ((line = bufferedReader.readLine()) != null) {
-                    contentLine[i] = line;
-                    i++;
-                }
-
-                fileInputStream.close();
-                bufferedReader.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return contentLine;
+        return functionsClassIO.readFileLines(fileName);
     }
 
     public String readFile(String fileName) {
@@ -3626,7 +3605,9 @@ public class FunctionsClass {
             }
         }
 
-        String[] menuItems = functionsClassSecurity.isAppLocked(PackageName) ? context.getResources().getStringArray(R.array.ContextMenuUnlock) : context.getResources().getStringArray(R.array.ContextMenuLock);
+
+        SecurityFunctions securityFunctions = new SecurityFunctions(context);
+        String[] menuItems = securityFunctions.isAppLocked(PackageName) ? context.getResources().getStringArray(R.array.ContextMenuUnlock) : context.getResources().getStringArray(R.array.ContextMenuLock);
         Drawable backgroundDrawable = shapesDrawables();
         Drawable foregroundDrawable = returnAPI() >= 28 ? resizeDrawable(context.getDrawable(R.drawable.w_pref_popup).mutate(), 100, 100) : context.getDrawable(R.drawable.w_pref_popup).mutate();
         if (shapesDrawables() == null) {
@@ -3714,16 +3695,40 @@ public class FunctionsClass {
                         }
                     }, 50);
                 } else if (item.getItemId() == 3) {
-                    if (functionsClassSecurity.isAppLocked(PackageName)) {
-                        FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(PackageName);
-                        FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(true);
+                    if (securityFunctions.isAppLocked(PackageName)) {
 
-                        functionsClassSecurity.openAuthInvocation();
+                        SecurityInterfaceHolder.authenticationCallback = new AuthenticationCallback() {
+
+                            @Override
+                            public void invokedPinPassword() {
+
+                            }
+
+                            @Override
+                            public void failedAuthenticated() {
+
+                            }
+
+                            @Override
+                            public void authenticatedFloatIt(@Nullable Bundle extraInformation) {
+
+                                securityFunctions.doUnlockApps(PackageName);
+
+                                securityFunctions.uploadLockedAppsData();
+                            }
+                        };
+
+                        context.startActivity(new Intent(context, AuthenticationFingerprint.class)
+                                        .putExtra(UserInterfaceExtraData.OtherTitle, appName(PackageName))
+                                        .putExtra(UserInterfaceExtraData.DoLockUnlock, true)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                                ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle());
+
                     } else {
                         if (securityServicesSubscribed() || BuildConfig.DEBUG) {
-                            functionsClassSecurity.doLockApps(PackageName);
+                            securityFunctions.doLockApps(PackageName);
 
-                            functionsClassSecurity.uploadLockedAppsData();
+                            securityFunctions.uploadLockedAppsData();
                         } else {
                             InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
 
@@ -3741,7 +3746,7 @@ public class FunctionsClass {
         popupMenu.show();
     }
 
-    public void popupOptionCategory(FoldersConfigurations foldersConfigurations, final Context context, View anchorView, final String categoryName, final int indicatorPosition) {
+    public void popupOptionFolders(FoldersConfigurations foldersConfigurations, final Context context, View anchorView, final String folderName, final int indicatorPosition) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -3753,7 +3758,7 @@ public class FunctionsClass {
             }
         }
         String[] menuItems;
-        if (loadRecoveryIndicatorCategory(categoryName)) {
+        if (loadRecoveryIndicatorCategory(folderName)) {
             menuItems = context.getResources().getStringArray(R.array.ContextMenuCategoryRemove);
         } else {
             menuItems = context.getResources().getStringArray(R.array.ContextMenuCategory);
@@ -3767,7 +3772,9 @@ public class FunctionsClass {
                     .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>"))
                     .setIcon(popupItemIcon);
         }
-        if (functionsClassSecurity.isAppLocked(categoryName)) {
+
+        SecurityFunctions securityFunctions = new SecurityFunctions(context);
+        if (securityFunctions.isAppLocked(folderName)) {
             popupMenu.getMenu()
                     .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.unLockIt) + "</font>"))
                     .setIcon(popupItemIcon);
@@ -3800,7 +3807,7 @@ public class FunctionsClass {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == 0) {
                     PublicVariable.size = 26;
-                    runUnlimitedFolderService(categoryName);
+                    runUnlimitedFolderService(folderName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -3810,7 +3817,7 @@ public class FunctionsClass {
                     }, 100);
                 } else if (item.getItemId() == 1) {
                     PublicVariable.size = 52;
-                    runUnlimitedFolderService(categoryName);
+                    runUnlimitedFolderService(folderName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -3820,7 +3827,7 @@ public class FunctionsClass {
                     }, 100);
                 } else if (item.getItemId() == 2) {
                     PublicVariable.size = 78;
-                    runUnlimitedFolderService(categoryName);
+                    runUnlimitedFolderService(folderName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -3829,22 +3836,22 @@ public class FunctionsClass {
                         }
                     }, 100);
                 } else if (item.getItemId() == 3) {
-                    if (!loadRecoveryIndicatorCategory(categoryName)) {
-                        saveFileAppendLine(".uCategory", categoryName);
+                    if (!loadRecoveryIndicatorCategory(folderName)) {
+                        saveFileAppendLine(".uCategory", folderName);
                     } else {
-                        removeLine(".uCategory", categoryName);
+                        removeLine(".uCategory", folderName);
                     }
 
                     foldersConfigurations.loadFolders();
                 } else if (item.getItemId() == 4) {
                     try {
-                        String[] categoryContent = readFileLine(categoryName);
+                        String[] categoryContent = readFileLine(folderName);
                         for (String packageName : categoryContent) {
-                            context.deleteFile(packageName + categoryName);
+                            context.deleteFile(packageName + folderName);
                         }
-                        removeLine(".categoryInfo", categoryName);
-                        removeLine(".uCategory", categoryName);
-                        context.deleteFile(categoryName);
+                        removeLine(".categoryInfo", folderName);
+                        removeLine(".uCategory", folderName);
+                        context.deleteFile(folderName);
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
@@ -3852,22 +3859,54 @@ public class FunctionsClass {
                         foldersConfigurations.loadFolders();
                     }
                 } else if (item.getItemId() == 5) {
-                    if (functionsClassSecurity.isAppLocked(categoryName)) {
-                        FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(categoryName);
-                        FunctionsClassSecurity.AuthOpenAppValues.setAuthFolderUnlockIt(true);
+                    if (securityFunctions.isAppLocked(folderName)) {
 
-                        functionsClassSecurity.openAuthInvocation();
+                        SecurityInterfaceHolder.authenticationCallback = new AuthenticationCallback() {
+
+                            @Override
+                            public void invokedPinPassword() {
+
+                            }
+
+                            @Override
+                            public void failedAuthenticated() {
+
+                            }
+
+                            @Override
+                            public void authenticatedFloatIt(@Nullable Bundle extraInformation) {
+
+                                if (context.getFileStreamPath(folderName).exists() && context.getFileStreamPath(folderName).isFile()) {
+                                    String[] packageNames = readFileLine(folderName);
+
+                                    for (String packageName : packageNames) {
+                                        securityFunctions.doUnlockApps(packageName);
+                                    }
+
+                                    securityFunctions.doUnlockApps(folderName);
+                                    securityFunctions.uploadLockedAppsData();
+                                }
+                            }
+                        };
+
+                        context.startActivity(new Intent(context, AuthenticationFingerprint.class)
+                                        .putExtra(UserInterfaceExtraData.OtherTitle, folderName)
+                                        .putExtra(UserInterfaceExtraData.DoLockUnlock, true)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                                ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle());
+
                     } else {
                         if (securityServicesSubscribed() || BuildConfig.DEBUG) {
-                            if (context.getFileStreamPath(categoryName).exists() && context.getFileStreamPath(categoryName).isFile()) {
-                                savePreference(".LockedApps", categoryName, true);
 
-                                String[] packageNames = readFileLine(categoryName);
+                            if (context.getFileStreamPath(folderName).exists() && context.getFileStreamPath(folderName).isFile()) {
+                                savePreference(".LockedApps", folderName, true);
+
+                                String[] packageNames = readFileLine(folderName);
                                 for (String packageName : packageNames) {
-                                    functionsClassSecurity.doLockApps(packageName);
+                                    securityFunctions.doLockApps(packageName);
                                 }
 
-                                functionsClassSecurity.uploadLockedAppsData();
+                                securityFunctions.uploadLockedAppsData();
                             }
                         } else {
                             InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
@@ -3909,7 +3948,9 @@ public class FunctionsClass {
                     .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>"))
                     .setIcon(popupItemIcon);
         }
-        if (functionsClassSecurity.isAppLocked(packageName + providerClassName)) {
+
+        SecurityFunctions securityFunctions = new SecurityFunctions(context);
+        if (securityFunctions.isAppLocked(packageName + providerClassName)) {
             popupMenu.getMenu()
                     .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.unLockIt) + "</font>"))
                     .setIcon(popupItemIcon);
@@ -4020,19 +4061,38 @@ public class FunctionsClass {
                         break;
                     }
                     case 3: {
-                        if (functionsClassSecurity.isAppLocked(packageName + providerClassName)) {
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthComponentName(widgetLabel);
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthSecondComponentName(packageName);
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthSingleUnlockIt(true);
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetProviderClassName(providerClassName);
-                            FunctionsClassSecurity.AuthOpenAppValues.setAuthWidgetConfigurationsUnlock(true);
+                        if (securityFunctions.isAppLocked(packageName + providerClassName)) {
 
-                            functionsClassSecurity.openAuthInvocation();
+                            SecurityInterfaceHolder.authenticationCallback = new AuthenticationCallback() {
+
+                                @Override
+                                public void invokedPinPassword() {
+
+                                }
+
+                                @Override
+                                public void failedAuthenticated() {
+
+                                }
+
+                                @Override
+                                public void authenticatedFloatIt(@Nullable Bundle extraInformation) {
+
+                                    securityFunctions.doUnlockApps(packageName + providerClassName);
+                                }
+                            };
+
+                            context.startActivity(new Intent(context, AuthenticationFingerprint.class)
+                                            .putExtra(UserInterfaceExtraData.OtherTitle, widgetLabel)
+                                            .putExtra(UserInterfaceExtraData.DoLockUnlock, true)
+                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                                    ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle());
+
                         } else {
                             if (securityServicesSubscribed() || BuildConfig.DEBUG) {
-                                functionsClassSecurity.doLockApps(packageName + providerClassName);
+                                securityFunctions.doLockApps(packageName + providerClassName);
 
-                                functionsClassSecurity.uploadLockedAppsData();
+                                securityFunctions.uploadLockedAppsData();
                             } else {
                                 InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
 

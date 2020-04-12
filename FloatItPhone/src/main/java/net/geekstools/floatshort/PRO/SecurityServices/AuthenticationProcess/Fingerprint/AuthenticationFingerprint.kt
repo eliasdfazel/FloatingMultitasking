@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI
+package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint
 
 import android.os.Bundle
 import androidx.biometric.BiometricManager
@@ -6,9 +6,10 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.Extensions.setupAuthenticationUIText
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.Extensions.setupAuthenticationUIWindow
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions.setupAuthenticationUIText
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions.setupAuthenticationUIWindow
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.AuthenticationPinPasswordUI
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 
@@ -102,8 +103,8 @@ class AuthenticationFingerprint : FragmentActivity() {
                     SecurityInterfaceHolder.authenticationCallback
                             .failedAuthenticated()
 
-                    AuthenticationFingerprint.attemptCounter++
-                    if (AuthenticationFingerprint.attemptCounter == maximumAttempt) {
+                    attemptCounter++
+                    if (attemptCounter == maximumAttempt) {
 
                         triggerPinPasswordFragment(dialogueTitle)
                     }
@@ -116,7 +117,7 @@ class AuthenticationFingerprint : FragmentActivity() {
                     SecurityInterfaceHolder.authenticationCallback
                             .authenticatedFloatIt(null)
 
-                    AuthenticationFingerprint.attemptCounter = 0
+                    attemptCounter = 0
                     this@AuthenticationFingerprint.finish()
                 }
             }
@@ -126,7 +127,7 @@ class AuthenticationFingerprint : FragmentActivity() {
                     biometricCallback)
 
             val biometricPromptPromptInfo = BiometricPrompt.PromptInfo.Builder()
-                    .setTitle("$dialogueTitle 🔒")
+                    .setTitle("$dialogueTitle")
                     .setSubtitle("")
                     .setDescription("")
                     .setDeviceCredentialAllowed(true)
@@ -152,7 +153,7 @@ class AuthenticationFingerprint : FragmentActivity() {
     }
 
     override fun onBackPressed() {
-        AuthenticationFingerprint.attemptCounter = 0
+        attemptCounter = 0
 
         SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
 

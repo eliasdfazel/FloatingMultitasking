@@ -27,10 +27,10 @@ import androidx.dynamicanimation.animation.SpringForce
 import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityFunctions
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint.AuthenticationFingerprint
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.Utils.OpenActions
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
@@ -184,7 +184,7 @@ class FloatingShortcutsForWifi : Service() {
             if (this@run.hasExtra(getString(R.string.remove_all_floatings))) {
                 if (this@run.getStringExtra(getString(R.string.remove_all_floatings)) == getString(R.string.remove_all_floatings)) {
 
-                    for (removeCount in 0 until startId) {
+                    for (removeCount in 0 until floatingShortcutsBinding.size) {
                         try {
                             if (floatingShortcutsBinding[removeCount].root.isShown) {
                                 try {
@@ -907,13 +907,13 @@ class FloatingShortcutsForWifi : Service() {
                                 }
                             }
                         } else if (intent.action == "Sticky_Edge") {
-                            for (removeCount in 0 until startId) {
+                            for (removeCount in 0 until floatingShortcutsBinding.size) {
                                 try {
                                     if (floatingShortcutsBinding.get(removeCount).root.isShown) {
                                         try {
                                             stickedToEdge[removeCount] = true
 
-                                            stickyEdgeParams[removeCount] = functionsClass.moveToEdge(this@FloatingShortcutsForWifi.packageNames.get(removeCount), layoutParams[removeCount].height)
+                                            stickyEdgeParams.add(removeCount, functionsClass.moveToEdge(this@FloatingShortcutsForWifi.packageNames.get(removeCount), layoutParams[removeCount].height))
 
                                             windowManager.updateViewLayout(floatingShortcutsBinding.get(removeCount).root, stickyEdgeParams[removeCount])
                                         } catch (e: WindowManager.InvalidDisplayException) {
@@ -925,9 +925,9 @@ class FloatingShortcutsForWifi : Service() {
                                 }
                             }
                         } else if (intent.action == "Sticky_Edge_No") {
-                            for (stickyCounter in 0 until startId) {
+                            for (stickyCounter in 0 until floatingShortcutsBinding.size) {
                                 try {
-                                    if (floatingShortcutsBinding.get(stickyCounter).root.isShown()) {
+                                    if (floatingShortcutsBinding.get(stickyCounter).root.isShown) {
                                         try {
                                             try {
                                                 stickedToEdge[stickyCounter] = false

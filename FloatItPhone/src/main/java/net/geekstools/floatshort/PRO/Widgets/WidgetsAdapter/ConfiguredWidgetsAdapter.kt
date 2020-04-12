@@ -87,7 +87,7 @@ class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetC
 
             functionsClass.doVibrate(77)
 
-            true
+            false
         }
 
         viewHolder.widgetLabel.setOnEditorActionListener { textView, actionId, keyEvent ->

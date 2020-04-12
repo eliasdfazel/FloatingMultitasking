@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.PinPassword
+package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword
 
 import android.app.Activity
 import android.app.ActivityOptions

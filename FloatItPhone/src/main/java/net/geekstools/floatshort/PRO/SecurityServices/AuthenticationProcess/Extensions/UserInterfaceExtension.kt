@@ -1,4 +1,4 @@
-package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.Extensions
+package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions
 
 import android.content.ComponentName
 import android.content.pm.ActivityInfo
@@ -7,11 +7,13 @@ import android.graphics.Color
 import android.text.Html
 import android.view.WindowManager
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationPinPasswordUI
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint.AuthenticationFingerprint
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.AuthenticationPinPasswordUI
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 object UserInterfaceExtraData {
+    const val DoLockUnlock = "DoLockUnlock"
+
     const val PackageName = "PackageName"
     const val ClassName = "ClassName"
 
@@ -34,7 +36,7 @@ fun AuthenticationFingerprint.setupAuthenticationUIWindow() {
 
 fun AuthenticationFingerprint.setupAuthenticationUIText() : String {
 
-    var dialogueTitle = getString(R.string.app_name)
+    var dialogueTitle = getString(R.string.securityServices) + "🔒"
 
     if (intent.hasExtra(UserInterfaceExtraData.PackageName)
             && intent.hasExtra(UserInterfaceExtraData.ClassName)) {
@@ -50,10 +52,17 @@ fun AuthenticationFingerprint.setupAuthenticationUIText() : String {
         dialogueTitle = intent.getStringExtra(UserInterfaceExtraData.OtherTitle)!!
     }
 
+    if (intent.getBooleanExtra(UserInterfaceExtraData.DoLockUnlock, false)) {
+        dialogueTitle = "$dialogueTitle 🔓"
+    } else {
+        dialogueTitle = "$dialogueTitle 🔒"
+    }
+
     return dialogueTitle
 }
 
 fun AuthenticationPinPasswordUI.setupAuthenticationPinPasswordUI() {
+
     authDialogContentBinding.root.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)
 
     authDialogContentBinding.cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite)

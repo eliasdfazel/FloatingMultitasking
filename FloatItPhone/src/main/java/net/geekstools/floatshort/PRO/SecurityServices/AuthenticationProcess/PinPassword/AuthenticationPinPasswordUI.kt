@@ -7,7 +7,7 @@
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
-package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI
+package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword
 
 import android.content.Context
 import android.content.DialogInterface
@@ -22,9 +22,9 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.Extensions.setupAuthenticationPinPasswordUI
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityFunctions
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions.setupAuthenticationPinPasswordUI
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.databinding.AuthDialogContentBinding
 
