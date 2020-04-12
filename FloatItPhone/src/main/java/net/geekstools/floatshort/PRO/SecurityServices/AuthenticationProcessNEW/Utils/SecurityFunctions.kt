@@ -3,6 +3,7 @@ package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.
 import android.content.Context
 import android.net.Uri
 import android.util.Base64
+import androidx.biometric.BiometricManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
@@ -14,6 +15,12 @@ import javax.crypto.spec.SecretKeySpec
 class SecurityFunctions (var context: Context) {
 
     private val functionsClass: FunctionsClass = FunctionsClass(context)
+
+    fun canPerformFingerprintProcess() : Boolean {
+        val biometricManager = BiometricManager.from(context)
+
+        return (biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS)
+    }
 
     /*Lock Functions*/
     fun isAppLocked(authComponentName: String): Boolean {

@@ -20,6 +20,7 @@ import android.os.Handler
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -30,7 +31,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SecurityServices.Authentication.Utils.FunctionsClassSecurity
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.AuthenticationFingerprint
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.UI.Extensions.UserInterfaceExtraData
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.AuthenticationCallback
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityFunctions
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcessNEW.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -40,7 +45,7 @@ import java.util.*
 class HandlePinPassword : Activity() {
 
     private lateinit var functionClass: FunctionsClass
-    private lateinit var functionsClassSecurity: FunctionsClassSecurity
+    private lateinit var securityFunctions: SecurityFunctions
 
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseUser: FirebaseUser
@@ -55,7 +60,7 @@ class HandlePinPassword : Activity() {
         setContentView(authHandlerViewsBinding.root)
 
         functionClass = FunctionsClass(applicationContext)
-        functionsClassSecurity = FunctionsClassSecurity(applicationContext)
+        securityFunctions = SecurityFunctions(applicationContext)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -162,12 +167,34 @@ class HandlePinPassword : Activity() {
             functionClass.doVibrate(113)
             authHandlerViewsBinding.spinKitView.visibility = View.VISIBLE
 
-            if (functionsClassSecurity.fingerprintSensorAvailable() && functionsClassSecurity.fingerprintEnrolled()) {
-                FunctionsClassSecurity.AuthOpenAppValues.authComponentName = getString(R.string.securityServices)
-                FunctionsClassSecurity.AuthOpenAppValues.authSecondComponentName = packageName
-                FunctionsClassSecurity.AuthOpenAppValues.authForgotPinPassword = true
+            if (securityFunctions.canPerformFingerprintProcess()) {
 
-                functionsClassSecurity.openAuthInvocation()
+                SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+
+                    override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                        super.authenticatedFloatIt(extraInformation)
+                        Log.d(this@HandlePinPassword.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+
+                    }
+
+                    override fun failedAuthenticated() {
+                        super.failedAuthenticated()
+                        Log.d(this@HandlePinPassword.javaClass.simpleName, "FailedAuthenticated")
+
+                    }
+
+                    override fun invokedPinPassword() {
+                        super.invokedPinPassword()
+                        Log.d(this@HandlePinPassword.javaClass.simpleName, "InvokedPinPassword")
+
+                    }
+                }
+
+                startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
+                    putExtra(UserInterfaceExtraData.OtherTitle, getString(R.string.changePin))
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
+
             } else {
                 val actionCodeSettings = ActionCodeSettings.newBuilder()
                         .setUrl("https://floating-shortcuts-pro.firebaseapp.com")
@@ -196,7 +223,7 @@ class HandlePinPassword : Activity() {
     override fun onResume() {
         super.onResume()
 
-        if (!functionsClassSecurity.fingerprintEnrolled()) {
+        if (!securityFunctions.canPerformFingerprintProcess()) {
             authHandlerViewsBinding.securityWarningIcon.visibility = View.VISIBLE
             authHandlerViewsBinding.securityWarningText.visibility = View.VISIBLE
 
@@ -240,8 +267,8 @@ class HandlePinPassword : Activity() {
         } else {
             if ((authHandlerViewsBinding.pinPasswordEditText.text.toString() == authHandlerViewsBinding.passwordRepeat.text.toString())) {
                 try {
-                    functionsClassSecurity.saveEncryptedPinPassword(authHandlerViewsBinding.pinPasswordEditText.text.toString())
-                    functionsClassSecurity.uploadLockedAppsData()
+                    securityFunctions.saveEncryptedPinPassword(authHandlerViewsBinding.pinPasswordEditText.text.toString())
+                    securityFunctions.uploadLockedAppsData()
 
                     this@HandlePinPassword.finish()
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -264,7 +291,7 @@ class HandlePinPassword : Activity() {
                 authHandlerViewsBinding.passwordCurrent.setText("")
                 authHandlerViewsBinding.passwordCurrent.error = getString(R.string.passwordError)
             } else {
-                if (functionsClassSecurity.isEncryptedPinPasswordEqual(authHandlerViewsBinding.passwordCurrent.text.toString())) {
+                if (securityFunctions.isEncryptedPinPasswordEqual(authHandlerViewsBinding.passwordCurrent.text.toString())) {
                     saveNewPinPassword()
                 } else {
                     authHandlerViewsBinding. passwordCurrent.setText("")
