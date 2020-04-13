@@ -8,7 +8,7 @@ import android.util.Base64
 import androidx.biometric.BiometricManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.HandlePinPassword
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.PinPasswordConfigurations
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import java.io.File
 import java.nio.charset.Charset
@@ -28,7 +28,7 @@ class SecurityFunctions (var context: Context) {
 
         if (FunctionsClass(context).readPreference(".Password", "Pin", "0") == "0") {
 
-            context.startActivity(Intent(context, HandlePinPassword::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            context.startActivity(Intent(context, PinPasswordConfigurations::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                     ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
         } else {
 

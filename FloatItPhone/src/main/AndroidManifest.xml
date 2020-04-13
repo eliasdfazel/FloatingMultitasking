@@ -335,7 +335,7 @@
             android:excludeFromRecents="true"
             android:theme="@style/AuthenticationTransparent" />
         <activity
-            android:name="net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.HandlePinPassword"
+            android:name="net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.PinPasswordConfigurations"
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:theme="@style/GeeksEmpire.Material"
@@ -354,7 +354,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.PasswordVerification"
+            android:name="net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.PinPasswordVerification"
             android:label="@string/app_name"
             android:noHistory="true"
             android:excludeFromRecents="true"

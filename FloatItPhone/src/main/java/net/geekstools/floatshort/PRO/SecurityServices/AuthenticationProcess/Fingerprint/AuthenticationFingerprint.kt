@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions.setupAuthenticationUIText
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions.setupAuthenticationUIWindow
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.AuthenticationPinPasswordUI
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.AuthenticationPinPassword
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
@@ -167,8 +167,8 @@ class AuthenticationFingerprint : FragmentActivity() {
         extraInformation.putString("DialogueTitle", dialogueTitle)
         extraInformation.putInt("PrimaryColor", intent.getIntExtra("PrimaryColor", getColor(R.color.default_color)))
 
-        val authenticationPinPasswordUI: AuthenticationPinPasswordUI = AuthenticationPinPasswordUI()
-        authenticationPinPasswordUI.arguments = extraInformation
-        authenticationPinPasswordUI.show(supportFragmentManager, this@AuthenticationFingerprint.javaClass.simpleName)
+        val authenticationPinPassword: AuthenticationPinPassword = AuthenticationPinPassword()
+        authenticationPinPassword.arguments = extraInformation
+        authenticationPinPassword.show(supportFragmentManager, this@AuthenticationFingerprint.javaClass.simpleName)
     }
 }

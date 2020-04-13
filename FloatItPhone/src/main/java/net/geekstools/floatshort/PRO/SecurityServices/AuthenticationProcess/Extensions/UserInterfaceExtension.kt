@@ -8,7 +8,7 @@ import android.text.Html
 import android.view.WindowManager
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint.AuthenticationFingerprint
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.AuthenticationPinPasswordUI
+import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.AuthenticationPinPassword
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 object UserInterfaceExtraData {
@@ -61,24 +61,24 @@ fun AuthenticationFingerprint.setupAuthenticationUIText() : String {
     return dialogueTitle
 }
 
-fun AuthenticationPinPasswordUI.setupAuthenticationPinPasswordUI() {
+fun AuthenticationPinPassword.setupAuthenticationPinPasswordUI() {
 
     authDialogContentBinding.root.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)
 
     authDialogContentBinding.cancelAuth.setTextColor(PublicVariable.colorLightDarkOpposite)
     authDialogContentBinding.cancelAuth.setBackgroundColor(PublicVariable.colorLightDark)
-    authDialogContentBinding.cancelAuth.rippleColor = ColorStateList.valueOf(AuthenticationPinPasswordUI.ExtraInformation.primaryColor)
+    authDialogContentBinding.cancelAuth.rippleColor = ColorStateList.valueOf(AuthenticationPinPassword.ExtraInformation.primaryColor)
 
-    authDialogContentBinding.pinPasswordEditText.setHintTextColor(AuthenticationPinPasswordUI.ExtraInformation.primaryColor)
+    authDialogContentBinding.pinPasswordEditText.setHintTextColor(AuthenticationPinPassword.ExtraInformation.primaryColor)
     authDialogContentBinding.pinPasswordEditText.setTextColor(PublicVariable.colorLightDarkOpposite)
 
-    authDialogContentBinding.textInputPinPassword.hintTextColor = ColorStateList.valueOf(AuthenticationPinPasswordUI.ExtraInformation.primaryColor)
-    authDialogContentBinding.textInputPinPassword.defaultHintTextColor = ColorStateList.valueOf(AuthenticationPinPasswordUI.ExtraInformation.primaryColor)
+    authDialogContentBinding.textInputPinPassword.hintTextColor = ColorStateList.valueOf(AuthenticationPinPassword.ExtraInformation.primaryColor)
+    authDialogContentBinding.textInputPinPassword.defaultHintTextColor = ColorStateList.valueOf(AuthenticationPinPassword.ExtraInformation.primaryColor)
 
     authDialogContentBinding.dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
     authDialogContentBinding.dialogueTitle.text = Html.fromHtml("<big><font color='" + PublicVariable.colorLightDarkOpposite + "'>"
             +
-            AuthenticationPinPasswordUI.ExtraInformation.dialogueTitle + " 🔒 "
+            AuthenticationPinPassword.ExtraInformation.dialogueTitle + " 🔒 "
             +
             "</font></big>")
 }

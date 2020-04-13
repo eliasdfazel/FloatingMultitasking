@@ -42,7 +42,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.AuthHandlerViewsBinding
 import java.util.*
 
-class HandlePinPassword : Activity() {
+class PinPasswordConfigurations : Activity() {
 
     private lateinit var functionClass: FunctionsClass
     private lateinit var securityFunctions: SecurityFunctions
@@ -52,7 +52,7 @@ class HandlePinPassword : Activity() {
 
     private var currentPasswordExist: Boolean = false
 
-    lateinit var authHandlerViewsBinding: AuthHandlerViewsBinding
+    private lateinit var authHandlerViewsBinding: AuthHandlerViewsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +77,7 @@ class HandlePinPassword : Activity() {
         if (firebaseAuth.currentUser == null) {
             Toast.makeText(applicationContext, getString(R.string.authError), Toast.LENGTH_LONG).show()
 
-            this@HandlePinPassword.finish()
+            this@PinPasswordConfigurations.finish()
             return
         }
         firebaseUser = firebaseAuth.currentUser!!
@@ -173,19 +173,19 @@ class HandlePinPassword : Activity() {
 
                     override fun authenticatedFloatIt(extraInformation: Bundle?) {
                         super.authenticatedFloatIt(extraInformation)
-                        Log.d(this@HandlePinPassword.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+                        Log.d(this@PinPasswordConfigurations.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                     }
 
                     override fun failedAuthenticated() {
                         super.failedAuthenticated()
-                        Log.d(this@HandlePinPassword.javaClass.simpleName, "FailedAuthenticated")
+                        Log.d(this@PinPasswordConfigurations.javaClass.simpleName, "FailedAuthenticated")
 
                     }
 
                     override fun invokedPinPassword() {
                         super.invokedPinPassword()
-                        Log.d(this@HandlePinPassword.javaClass.simpleName, "InvokedPinPassword")
+                        Log.d(this@PinPasswordConfigurations.javaClass.simpleName, "InvokedPinPassword")
 
                     }
                 }
@@ -254,7 +254,7 @@ class HandlePinPassword : Activity() {
     override fun onBackPressed() {
         startActivity(Intent(applicationContext, PreferencesActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                 ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
-        this@HandlePinPassword.finish()
+        this@PinPasswordConfigurations.finish()
     }
 
     private fun saveNewPinPassword() {
@@ -270,7 +270,7 @@ class HandlePinPassword : Activity() {
                     securityFunctions.saveEncryptedPinPassword(authHandlerViewsBinding.pinPasswordEditText.text.toString())
                     securityFunctions.uploadLockedAppsData()
 
-                    this@HandlePinPassword.finish()
+                    this@PinPasswordConfigurations.finish()
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                 } catch (e: Exception) {
                     e.printStackTrace()

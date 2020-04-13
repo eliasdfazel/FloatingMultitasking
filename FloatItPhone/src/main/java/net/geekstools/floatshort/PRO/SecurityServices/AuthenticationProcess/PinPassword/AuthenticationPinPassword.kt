@@ -28,7 +28,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.databinding.AuthDialogContentBinding
 
-class AuthenticationPinPasswordUI : DialogFragment() {
+class AuthenticationPinPassword : DialogFragment() {
 
     private lateinit var functionsClass: FunctionsClass
     private lateinit var securityFunctions: SecurityFunctions
@@ -139,7 +139,7 @@ class AuthenticationPinPasswordUI : DialogFragment() {
         authDialogContentBinding.cancelAuth.setOnLongClickListener {
             SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
 
-            this@AuthenticationPinPasswordUI.dismiss()
+            this@AuthenticationPinPassword.dismiss()
 
             requireActivity().finish()
 
@@ -164,7 +164,7 @@ class AuthenticationPinPasswordUI : DialogFragment() {
                 KeyEvent.KEYCODE_BACK -> {
                     SecurityInterfaceHolder.authenticationCallback.failedAuthenticated()
 
-                    this@AuthenticationPinPasswordUI.dismiss()
+                    this@AuthenticationPinPassword.dismiss()
 
                     requireActivity().finish()
                 }

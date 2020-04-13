@@ -24,7 +24,7 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 
-class PasswordVerification : Activity() {
+class PinPasswordVerification : Activity() {
 
     private lateinit var functionsClass: FunctionsClass
 
@@ -44,13 +44,13 @@ class PasswordVerification : Activity() {
         if (intent.hasExtra("RESET_PASSWORD_BY_FINGER_PRINT")) {
             functionsClass.savePreference(".Password", "Pin", "0")
             Handler().postDelayed({
-                startActivity(Intent(applicationContext, HandlePinPassword::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
             }, 2333)
         } else {
             FirebaseDynamicLinks.getInstance()
                     .getDynamicLink(intent)
-                    .addOnSuccessListener(this@PasswordVerification) { pendingDynamicLinkData ->
+                    .addOnSuccessListener(this@PinPasswordVerification) { pendingDynamicLinkData ->
                         // Get deep link from result (may be null if no link is found)
                         var deepLink: Uri? = null
                         if (pendingDynamicLinkData != null) {
@@ -65,7 +65,7 @@ class PasswordVerification : Activity() {
 
                         functionsClass.savePreference(".Password", "Pin", "0")
                         Handler().postDelayed({
-                            startActivity(Intent(applicationContext, HandlePinPassword::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                            startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                     ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
                         }, 2333)
                     }
@@ -76,6 +76,6 @@ class PasswordVerification : Activity() {
     }
 
     override fun onBackPressed() {
-        this@PasswordVerification.finish()
+        this@PinPasswordVerification.finish()
     }
 }
