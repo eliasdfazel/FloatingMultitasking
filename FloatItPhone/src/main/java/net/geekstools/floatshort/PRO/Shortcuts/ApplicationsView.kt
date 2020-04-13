@@ -43,7 +43,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
@@ -94,6 +93,7 @@ import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SwipeGestureListener
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogue
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveData
+import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFastScroller
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.HybridApplicationViewBinding
 import java.io.File
@@ -138,7 +138,7 @@ class ApplicationsView : AppCompatActivity(),
 
     private lateinit var frequentlyUsedAppsList: Array<String>
     private lateinit var frequentlyUsedAppsCounter: IntArray
-    var loadFreq = false
+    var loadFrequentlyApps = false
 
     private val swipeGestureListener: SwipeGestureListener by lazy {
         SwipeGestureListener(applicationContext, this@ApplicationsView)
@@ -819,9 +819,6 @@ class ApplicationsView : AppCompatActivity(),
     }
 
     private fun loadApplicationsData() = CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
-        withContext(Dispatchers.Main) {
-            hybridApplicationViewBinding.indexView.removeAllViews()
-        }
 
         if (functionsClass.customIconsEnable()) {
             loadCustomIcons.load()
@@ -859,7 +856,7 @@ class ApplicationsView : AppCompatActivity(),
                         PublicVariable.freqLength = freqLength
 
                         if (freqLength > 1) {
-                            loadFreq = true
+                            loadFrequentlyApps = true
                         }
                     }
                 }
@@ -911,7 +908,7 @@ class ApplicationsView : AppCompatActivity(),
 
                 override fun onAnimationStart(animation: Animation?) {
 
-                    if (loadFreq) {
+                    if (loadFrequentlyApps) {
                         CoroutineScope(Dispatchers.Main).launch {
 
                             loadFrequentlyUsedApplications().await()
@@ -942,7 +939,7 @@ class ApplicationsView : AppCompatActivity(),
                 }
             })
 
-            if (loadFreq) {
+            if (loadFrequentlyApps) {
                 val layoutParams = RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.MATCH_PARENT
@@ -951,7 +948,6 @@ class ApplicationsView : AppCompatActivity(),
                 hybridApplicationViewBinding.nestedScrollView.layoutParams = layoutParams
 
                 hybridApplicationViewBinding.scrollRelativeLayout.setPadding(0, hybridApplicationViewBinding.scrollRelativeLayout.paddingTop, 0, 0)
-                hybridApplicationViewBinding.nestedIndexScrollView.setPadding(0, 0, 0, functionsClass.DpToInteger(66))
             } else {
                 hybridApplicationViewBinding.MainView.removeView(hybridApplicationViewBinding.freqList)
 
@@ -979,7 +975,27 @@ class ApplicationsView : AppCompatActivity(),
             hybridApplicationViewBinding.nestedScrollView.scrollTo(0, 0)
         }
 
-        loadApplicationsIndex().await()
+        /*Indexed Popup Fast Scroller*/
+        val indexedFastScroller: IndexedFastScroller = IndexedFastScroller(
+                context = applicationContext,
+                functionsClass = functionsClass,
+                layoutInflater = layoutInflater,
+                rootView = hybridApplicationViewBinding.MainView,
+                scrollView = hybridApplicationViewBinding.nestedScrollView,
+                recyclerView = hybridApplicationViewBinding.applicationsListView,
+                fastScrollerIndexViewBinding = hybridApplicationViewBinding.fastScrollerIndexInclude
+        )
+        indexedFastScroller.initializeIndexView(0,
+                0,
+                0,
+                0
+        ).loadApplicationsIndexData(
+                mapIndexFirstItem,
+                mapIndexLastItem,
+                mapRangeIndex,
+                indexList
+        ).await()
+        /*Indexed Popup Fast Scroller*/
 
         loadInstalledCustomIconPackages().await()
     }
@@ -1040,135 +1056,4 @@ class ApplicationsView : AppCompatActivity(),
             PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
         }
     }
-
-    /*Indexing*/
-    private fun loadApplicationsIndex() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
-        hybridApplicationViewBinding.indexView.removeAllViews()
-
-        withContext(Dispatchers.Default) {
-            val indexCount = indexList.size
-
-            for (indexNumber in 0 until indexCount) {
-                val indexText = indexList[indexNumber]!!
-
-                if (mapIndexFirstItem[indexText] == null /*avoid duplication*/) {
-                    mapIndexFirstItem[indexText] = indexNumber
-                }
-
-                mapIndexLastItem[indexText] = indexNumber
-            }
-        }
-
-        var sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
-        val indexListFinal: List<String> = ArrayList(mapIndexFirstItem.keys)
-
-        indexListFinal.forEach { indexText ->
-            sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
-            sideIndexItem.text = indexText.toUpperCase(Locale.getDefault())
-            sideIndexItem.setTextColor(PublicVariable.colorLightDarkOpposite)
-
-            hybridApplicationViewBinding.indexView.addView(sideIndexItem)
-        }
-
-        val finalTextView = sideIndexItem
-
-        delay(777)
-
-        var upperRange = (hybridApplicationViewBinding.indexView.y - finalTextView.height).toInt()
-
-        for (number in 0 until hybridApplicationViewBinding.indexView.childCount) {
-            val indexText = (hybridApplicationViewBinding.indexView.getChildAt(number) as TextView).text.toString()
-            val indexRange = (hybridApplicationViewBinding.indexView.getChildAt(number).y + hybridApplicationViewBinding.indexView.y + finalTextView.height).toInt()
-
-            for (jRange in upperRange..indexRange) {
-                mapRangeIndex[jRange] = indexText
-            }
-
-            upperRange = indexRange
-        }
-
-        setupFastScrollingIndexing()
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setupFastScrollingIndexing() = CoroutineScope(Dispatchers.Main).launch {
-        val popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon)!!.mutate()
-        popupIndexBackground.setTint(PublicVariable.primaryColorOpposite)
-        hybridApplicationViewBinding.popupIndex.background = popupIndexBackground
-
-        hybridApplicationViewBinding.nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-        hybridApplicationViewBinding.nestedIndexScrollView.visibility = View.VISIBLE
-
-        val popupIndexOffsetY = (PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + if (functionsClass.UsageStatsEnabled()) functionsClass.DpToInteger(7) else functionsClass.DpToInteger(7)).toFloat()
-        hybridApplicationViewBinding.nestedIndexScrollView.setOnTouchListener { view, motionEvent ->
-            when(motionEvent.action){
-                MotionEvent.ACTION_DOWN -> {
-                    if (!functionsClass.litePreferencesEnabled()) {
-                        val indexText = mapRangeIndex[motionEvent.y.toInt()]
-
-                        if (indexText != null) {
-                            hybridApplicationViewBinding.popupIndex.y = motionEvent.rawY - popupIndexOffsetY
-                            hybridApplicationViewBinding.popupIndex.text = indexText
-                            hybridApplicationViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                            hybridApplicationViewBinding.popupIndex.visibility = View.VISIBLE
-                        }
-                    }
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    if (!functionsClass.litePreferencesEnabled()) {
-                        val indexText = mapRangeIndex[motionEvent.y.toInt()]
-
-                        if (indexText != null) {
-                            if (!hybridApplicationViewBinding.popupIndex.isShown) {
-                                hybridApplicationViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                                hybridApplicationViewBinding.popupIndex.visibility = View.VISIBLE
-                            }
-                            hybridApplicationViewBinding.popupIndex.y = motionEvent.rawY - popupIndexOffsetY
-                            hybridApplicationViewBinding.popupIndex.text = indexText
-                            try {
-                                hybridApplicationViewBinding.nestedScrollView.smoothScrollTo(
-                                        0,
-                                        hybridApplicationViewBinding.applicationsListView.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]!!).y.toInt()
-                                )
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        } else {
-                            if (hybridApplicationViewBinding.popupIndex.isShown) {
-                                hybridApplicationViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                                hybridApplicationViewBinding.popupIndex.visibility = View.INVISIBLE
-                            }
-                        }
-                    }
-                }
-                MotionEvent.ACTION_UP -> {
-                    if (functionsClass.litePreferencesEnabled()) {
-                        try {
-                            hybridApplicationViewBinding.nestedScrollView.smoothScrollTo(
-                                    0,
-                                    hybridApplicationViewBinding.applicationsListView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
-                            )
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        if (hybridApplicationViewBinding.popupIndex.isShown) {
-                            try {
-                                hybridApplicationViewBinding.nestedScrollView.smoothScrollTo(
-                                        0,
-                                        hybridApplicationViewBinding.applicationsListView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
-                                )
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                            hybridApplicationViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                            hybridApplicationViewBinding.popupIndex.visibility = View.INVISIBLE
-                        }
-                    }
-                }
-            }
-            true
-        }
-    }
-    /*Indexing*/
 }
