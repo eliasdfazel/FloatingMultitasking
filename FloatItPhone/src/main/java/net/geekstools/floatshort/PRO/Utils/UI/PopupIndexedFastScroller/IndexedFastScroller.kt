@@ -135,16 +135,14 @@ class IndexedFastScroller(private val context: Context,
                                 fastScrollerIndexViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
                                 fastScrollerIndexViewBinding.popupIndex.visibility = View.VISIBLE
                             }
+
                             fastScrollerIndexViewBinding.popupIndex.y = motionEvent.rawY - popupIndexOffsetY
                             fastScrollerIndexViewBinding.popupIndex.text = indexText
-                            try {
-                                scrollView.smoothScrollTo(
-                                        0,
-                                        recyclerView.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]!!).y.toInt()
-                                )
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
+
+                            scrollView.smoothScrollTo(
+                                    0,
+                                    recyclerView.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]!!).y.toInt()
+                            )
                         } else {
                             if (fastScrollerIndexViewBinding.popupIndex.isShown) {
                                 fastScrollerIndexViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
@@ -155,24 +153,18 @@ class IndexedFastScroller(private val context: Context,
                 }
                 MotionEvent.ACTION_UP -> {
                     if (functionsClass.litePreferencesEnabled()) {
-                        try {
+                        scrollView.smoothScrollTo(
+                                0,
+                                recyclerView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
+                        )
+                    } else {
+                        if (fastScrollerIndexViewBinding.popupIndex.isShown) {
+
                             scrollView.smoothScrollTo(
                                     0,
                                     recyclerView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
                             )
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        if (fastScrollerIndexViewBinding.popupIndex.isShown) {
-                            try {
-                                scrollView.smoothScrollTo(
-                                        0,
-                                        recyclerView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
-                                )
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
+
                             fastScrollerIndexViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
                             fastScrollerIndexViewBinding.popupIndex.visibility = View.INVISIBLE
                         }
@@ -181,8 +173,5 @@ class IndexedFastScroller(private val context: Context,
             }
             true
         }
-
-        fastScrollerIndexViewBinding.root.bringToFront()
-        fastScrollerIndexViewBinding.popupIndex.bringToFront()
     }
 }
