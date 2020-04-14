@@ -41,17 +41,13 @@ class AppSelectionList : AppCompatActivity(),
     }
 
 
-    lateinit var recyclerViewLayoutManager: LinearLayoutManager
+    private lateinit var recyclerViewLayoutManager: LinearLayoutManager
     var applicationInfoList: ArrayList<ApplicationInfo> = ArrayList<ApplicationInfo>()
     lateinit var appSelectionListAdapter: RecyclerView.Adapter<AppSelectionListAdapter.ViewHolder>
     val installedAppsListItem: ArrayList<AdapterItems> = ArrayList<AdapterItems>()
 
-    val mapIndexFirstItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
-    val mapIndexLastItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
-    val mapRangeIndex: LinkedHashMap<Int, String> = LinkedHashMap<Int, String>()
-
     private val selectedAppsListItem: ArrayList<AdapterItems> = ArrayList<AdapterItems>()
-    lateinit var advanceSavedListAdapter: AppSavedListAdapter
+    private lateinit var advanceSavedListAdapter: AppSavedListAdapter
 
     var appsConfirmButton: AppsConfirmButton? = null
 

@@ -46,7 +46,10 @@ class IndexedFastScroller(private val context: Context,
      **/
     var popupEnable: Boolean = true
     /**
-     * Set Offset For Popup View Of Index Text
+     * Set Integer Number Of Offset For Popup View Of Index Text.
+     * It Will Automatically Convert It To DP.
+     *
+     * Default Value Is 7dp.
      **/
     var popupOffset: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
             7F,
@@ -80,9 +83,9 @@ class IndexedFastScroller(private val context: Context,
     }
 
     /**
-     * When Populating Your List Get First Char Of Each Item Title By itemTextTitle.substring(0, 1).toUpperCase(Locale.getDefault())
-     * & Add It To A ArrayList<String>
-     * Then Pass It As
+     * When Populating Your List Get First Char Of Each Item Title By itemTextTitle.substring(0, 1).toUpperCase(Locale.getDefault()).
+     * & Add It To A ArrayList<String>.
+     * Then Pass It As...
      * @param listOfNewCharOfItemsForIndex ArrayList<String>
      **/
     fun loadIndexData(
