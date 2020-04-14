@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.FastScrollerIndexViewBinding
 import java.util.*
@@ -60,6 +61,8 @@ class IndexedFastScroller(private val context: Context,
     var popupBackgroundShape: Drawable? = null
 
     init {
+        FunctionsClassDebug.PrintDebug("*** Indexed Fast Scroller Initialized ***")
+
         popupOffset = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 popupOffset.toFloat(),
                 context.resources.displayMetrics).toInt()
@@ -219,6 +222,7 @@ class IndexedFastScroller(private val context: Context,
                     }
                 }
             }
+
             true
         }
     }

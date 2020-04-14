@@ -104,6 +104,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
     private val mapIndexFirstItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
     private val mapIndexLastItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
+
     private val mapIndexFirstItemInstalled: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
     private val mapIndexLastItemInstalled: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
 
@@ -1670,6 +1671,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         val popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (if (functionsClass.UsageStatsEnabled()) functionsClass.DpToInteger(7) else functionsClass.DpToInteger(7)).toFloat()
 
         widgetConfigurationsViewsBinding.installedNestedIndexScrollView.setOnTouchListener { view, motionEvent ->
+
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
                     if (functionsClass.litePreferencesEnabled()) {
@@ -1709,6 +1711,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 widgetConfigurationsViewsBinding.popupIndex.visibility = View.INVISIBLE
                             }
                         }
+
+                        println(">>> >> > " + indexText)
                     }
                 }
                 MotionEvent.ACTION_UP -> {
