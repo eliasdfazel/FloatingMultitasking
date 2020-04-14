@@ -982,9 +982,8 @@ class ApplicationsView : AppCompatActivity(),
                 0,
                 0,
                 0
-        ).loadIndexData(
-                listOfNewCharOfItemsForIndex = listOfNewCharOfItemsForIndex
         ).await()
+                .loadIndexData(listOfNewCharOfItemsForIndex = listOfNewCharOfItemsForIndex).await()
         /*Indexed Popup Fast Scroller*/
 
         loadInstalledCustomIconPackages().await()

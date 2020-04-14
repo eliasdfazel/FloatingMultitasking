@@ -12,7 +12,6 @@ package net.geekstools.floatshort.PRO.Widgets
 
 import android.animation.Animator
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.appwidget.AppWidgetHost
@@ -39,7 +38,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
@@ -78,6 +76,7 @@ import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SwipeGestureListener
+import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFastScroller
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataModel
 import net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter.ConfiguredWidgetsAdapter
@@ -88,7 +87,6 @@ import net.geekstools.floatshort.PRO.databinding.WidgetConfigurationsViewsBindin
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
-import kotlin.collections.LinkedHashMap
 import kotlin.math.hypot
 import kotlin.math.roundToInt
 
@@ -101,18 +99,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     private val functionsClassRunServices: FunctionsClassRunServices by lazy {
         FunctionsClassRunServices(applicationContext)
     }
-
-    private val mapIndexFirstItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
-    private val mapIndexLastItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
-
-    private val mapIndexFirstItemInstalled: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
-    private val mapIndexLastItemInstalled: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
-
-    private val mapRangeIndex: LinkedHashMap<Int, String> = LinkedHashMap<Int, String>()
-    private val mapRangeIndexInstalled: LinkedHashMap<Int, String> = LinkedHashMap<Int, String>()
-
-    private val indexItems: NavigableMap<String, Int> = TreeMap<String, Int>()
-    private val indexItemsInstalled: NavigableMap<String, Int> = TreeMap<String, Int>()
 
     private val indexListConfigured: ArrayList<String> = ArrayList<String>()
     private val indexListInstalled: ArrayList<String> = ArrayList<String>()
@@ -183,9 +169,9 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         widgetConfigurationsViewsBinding.configuredWidgetList.layoutManager = configuredWidgetsRecyclerViewLayoutManager
 
         if (functionsClass.appThemeTransparent()) {
-            functionsClass.setThemeColorFloating(this, widgetConfigurationsViewsBinding.wholeWidget, true)
+            functionsClass.setThemeColorFloating(this, widgetConfigurationsViewsBinding.MainView, true)
         } else {
-            functionsClass.setThemeColorFloating(this, widgetConfigurationsViewsBinding.wholeWidget, false)
+            functionsClass.setThemeColorFloating(this, widgetConfigurationsViewsBinding.MainView, false)
         }
 
         appWidgetManager = AppWidgetManager.getInstance(applicationContext)
@@ -266,7 +252,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
             if (!PublicVariable.actionCenter) {
                 if (widgetConfigurationsViewsBinding.installedNestedScrollView.isShown) {
-                    widgetConfigurationsViewsBinding.installedNestedIndexScrollView.visibility = View.INVISIBLE
+
+                    widgetConfigurationsViewsBinding.fastScrollerIndexIncludeInstalled.nestedIndexScrollView.visibility = View.INVISIBLE
 
                     if (!configuredWidgetAvailable) {
                         widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
@@ -588,11 +575,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         }
 
         widgetConfigurationsViewsBinding.addWidget.setOnClickListener {
-            functionsClass.doVibrate(77)
+            functionsClass.doVibrate(177)
 
             if (widgetConfigurationsViewsBinding.installedNestedScrollView.isShown) {
+
                 widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.INVISIBLE
-                widgetConfigurationsViewsBinding.installedNestedIndexScrollView.visibility = View.INVISIBLE
+                widgetConfigurationsViewsBinding.fastScrollerIndexIncludeInstalled.nestedIndexScrollView.visibility = View.INVISIBLE
 
                 if (!configuredWidgetAvailable) {
                     widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
@@ -803,6 +791,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             functionsClass.doVibrate(77)
 
             widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.INVISIBLE
+            widgetConfigurationsViewsBinding.fastScrollerIndexIncludeInstalled.nestedIndexScrollView.visibility = View.INVISIBLE
+
             if (!configuredWidgetAvailable) {
                 widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
             }
@@ -1439,104 +1429,44 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         widgetConfigurationsViewsBinding.loadingInstalledWidgets.visibility = View.INVISIBLE
     }
 
-    fun loadWidgetsIndexConfigured() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
-        withContext(Dispatchers.Main) {
-            widgetConfigurationsViewsBinding.indexView.removeAllViews()
-        }
-
-        val indexCount = indexListConfigured.size
-        for (navItem in 0 until indexCount) {
-            val indexText = indexListConfigured[navItem]
-            if (mapIndexFirstItem[indexText] == null /*avoid duplication*/) {
-                mapIndexFirstItem[indexText] = navItem
-            }
-
-            mapIndexLastItem[indexText] = navItem
-        }
-
-        withContext(Dispatchers.Main) {
-            var textView: TextView? = null
-
-            val indexListFinal: List<String> = ArrayList(mapIndexFirstItem.keys)
-            for (index in indexListFinal) {
-                textView = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
-                textView.text = index.toUpperCase(Locale.getDefault())
-                textView.setTextColor(PublicVariable.colorLightDarkOpposite)
-
-                widgetConfigurationsViewsBinding.indexView.addView(textView)
-            }
-
-            val finalTextView = textView
-
-            delay(777)
-
-            finalTextView?.let {
-                var upperRange = (widgetConfigurationsViewsBinding.indexView.y - it.height).roundToInt()
-
-                for (i in 0 until widgetConfigurationsViewsBinding.indexView.childCount) {
-                    val indexText = (widgetConfigurationsViewsBinding.indexView.getChildAt(i) as TextView).text.toString()
-                    val indexRange = (widgetConfigurationsViewsBinding.indexView.getChildAt(i).y + widgetConfigurationsViewsBinding.indexView.y + it.height).roundToInt()
-
-                    for (jRange in upperRange..indexRange) {
-                        mapRangeIndex[jRange] = indexText
-                    }
-
-                    upperRange = indexRange
-                }
-            }
-
-            setupFastScrollingIndexingConfigured()
-        }
+    private fun loadWidgetsIndexConfigured() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
+        /*Indexed Popup Fast Scroller*/
+        val indexedFastScroller: IndexedFastScroller = IndexedFastScroller(
+                context = applicationContext,
+                layoutInflater = layoutInflater,
+                rootView = widgetConfigurationsViewsBinding.MainView,
+                nestedScrollView = widgetConfigurationsViewsBinding.configuredWidgetNestedScrollView,
+                recyclerView = widgetConfigurationsViewsBinding.configuredWidgetList,
+                fastScrollerIndexViewBinding = widgetConfigurationsViewsBinding.fastScrollerIndexIncludeConfigured
+        )
+        indexedFastScroller.popupEnable = !functionsClass.litePreferencesEnabled()
+        indexedFastScroller.initializeIndexView(0,
+                0,
+                0,
+                0
+        ).await()
+                .loadIndexData(listOfNewCharOfItemsForIndex = indexListConfigured).await()
+        /*Indexed Popup Fast Scroller*/
     }
 
-    fun loadWidgetsIndexInstalled() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-        withContext(Dispatchers.Main) {
-            widgetConfigurationsViewsBinding.indexViewInstalled.removeAllViews()
-        }
-
-        val indexCount = indexListInstalled.size
-        for (navItem in 0 until indexCount) {
-            val indexText = indexListInstalled[navItem]
-            if (mapIndexFirstItemInstalled[indexText] == null /*avoid duplication*/) {
-                mapIndexFirstItemInstalled[indexText] = navItem
-            }
-
-            mapIndexLastItemInstalled[indexText] = navItem
-        }
-
-        withContext(Dispatchers.Main) {
-            var textView: TextView? = null
-
-            val indexListFinal: List<String> = ArrayList(mapIndexFirstItemInstalled.keys)
-            for (index in indexListFinal) {
-                textView = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
-                textView.text = index.toUpperCase(Locale.getDefault())
-                textView.setTextColor(PublicVariable.colorLightDarkOpposite)
-
-                widgetConfigurationsViewsBinding.indexViewInstalled.addView(textView)
-            }
-
-            val finalTextView = textView
-
-            delay(777)
-
-            finalTextView?.let {
-                var upperRange = (widgetConfigurationsViewsBinding.indexViewInstalled.y - it.height).roundToInt()
-
-                for (i in 0 until widgetConfigurationsViewsBinding.indexViewInstalled.childCount) {
-                    val indexText = (widgetConfigurationsViewsBinding.indexViewInstalled.getChildAt(i) as TextView).text.toString()
-                    val indexRange = (widgetConfigurationsViewsBinding.indexViewInstalled.getChildAt(i).y + widgetConfigurationsViewsBinding.indexViewInstalled.y + it.height).roundToInt()
-
-                    for (jRange in upperRange..indexRange) {
-                        mapRangeIndexInstalled[jRange] = indexText
-                    }
-
-                    upperRange = indexRange
-                }
-            }
-
-            setupFastScrollingIndexingInstalled()
-        }
+    private fun loadWidgetsIndexInstalled() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+        /*Indexed Popup Fast Scroller*/
+        val indexedFastScroller: IndexedFastScroller = IndexedFastScroller(
+                context = applicationContext,
+                layoutInflater = layoutInflater,
+                rootView = widgetConfigurationsViewsBinding.MainView,
+                nestedScrollView = widgetConfigurationsViewsBinding.installedNestedScrollView,
+                recyclerView = widgetConfigurationsViewsBinding.installedWidgetList,
+                fastScrollerIndexViewBinding = widgetConfigurationsViewsBinding.fastScrollerIndexIncludeInstalled
+        )
+        indexedFastScroller.popupEnable = !functionsClass.litePreferencesEnabled()
+        indexedFastScroller.initializeIndexView(0,
+                0,
+                0,
+                0
+        ).await()
+                .loadIndexData(listOfNewCharOfItemsForIndex = indexListInstalled).await()
+        /*Indexed Popup Fast Scroller*/
     }
 
     private fun loadInstalledCustomIconPackages() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
@@ -1579,170 +1509,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         appWidgetManager.bindAppWidgetIdIfAllowed(widgetId, appWidgetProviderInfo.provider, bundle)
 
         widgetView.addView(hostView)
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    fun setupFastScrollingIndexingConfigured() {
-        val popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon)?.mutate()
-        popupIndexBackground?.setTint(PublicVariable.primaryColorOpposite)
-        widgetConfigurationsViewsBinding.popupIndex.background = popupIndexBackground
-
-        widgetConfigurationsViewsBinding.nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-        widgetConfigurationsViewsBinding.nestedIndexScrollView.visibility = View.VISIBLE
-
-        val popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (if (functionsClass.UsageStatsEnabled()) functionsClass.DpToInteger(7) else functionsClass.DpToInteger(7)).toFloat()
-
-        widgetConfigurationsViewsBinding.nestedIndexScrollView.setOnTouchListener { view, motionEvent ->
-            when (motionEvent.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    if (functionsClass.litePreferencesEnabled()) {
-
-                    } else {
-                        val indexText = mapRangeIndex[motionEvent.y.toInt()]
-                        if (indexText != null) {
-                            widgetConfigurationsViewsBinding.popupIndex.y = motionEvent.rawY - popupIndexOffsetY
-                            widgetConfigurationsViewsBinding.popupIndex.text = indexText
-                            widgetConfigurationsViewsBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                            widgetConfigurationsViewsBinding.popupIndex.visibility = View.VISIBLE
-                        }
-                    }
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    if (functionsClass.litePreferencesEnabled()) {
-                    } else {
-                        val indexText = mapRangeIndex[motionEvent.y.toInt()]
-                        if (indexText != null) {
-                            if (!widgetConfigurationsViewsBinding.popupIndex.isShown) {
-                                widgetConfigurationsViewsBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                                widgetConfigurationsViewsBinding.popupIndex.visibility = View.VISIBLE
-                            }
-                            widgetConfigurationsViewsBinding.popupIndex.y = motionEvent.rawY - popupIndexOffsetY
-                            widgetConfigurationsViewsBinding.popupIndex.text = indexText
-
-                            widgetConfigurationsViewsBinding.configuredWidgetNestedScrollView.smoothScrollTo(
-                                    0,
-                                    widgetConfigurationsViewsBinding.configuredWidgetList.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]
-                                            ?: 0).y.roundToInt()
-                            )
-                        } else {
-                            if (widgetConfigurationsViewsBinding.popupIndex.isShown) {
-                                widgetConfigurationsViewsBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                                widgetConfigurationsViewsBinding.popupIndex.visibility = View.INVISIBLE
-                            }
-                        }
-                    }
-                }
-                MotionEvent.ACTION_UP -> {
-                    if (functionsClass.litePreferencesEnabled()) {
-                        widgetConfigurationsViewsBinding.configuredWidgetNestedScrollView.smoothScrollTo(
-                                0,
-                                widgetConfigurationsViewsBinding.configuredWidgetList.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]
-                                        ?: 0).y.roundToInt()
-                        )
-
-                    } else {
-                        if (widgetConfigurationsViewsBinding.popupIndex.isShown) {
-                            widgetConfigurationsViewsBinding.configuredWidgetNestedScrollView.smoothScrollTo(
-                                    0,
-                                    widgetConfigurationsViewsBinding.configuredWidgetList.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]
-                                            ?: 0).y.roundToInt()
-                            )
-
-                            widgetConfigurationsViewsBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                            widgetConfigurationsViewsBinding.popupIndex.visibility = View.INVISIBLE
-                        }
-                    }
-                }
-            }
-
-            true
-        }
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    fun setupFastScrollingIndexingInstalled() {
-        val popupIndexBackground = getDrawable(R.drawable.ic_launcher_balloon)?.mutate()
-        popupIndexBackground?.setTint(PublicVariable.primaryColorOpposite)
-        widgetConfigurationsViewsBinding.popupIndex.background = popupIndexBackground
-
-        widgetConfigurationsViewsBinding.installedNestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-        widgetConfigurationsViewsBinding.installedNestedIndexScrollView.visibility = View.VISIBLE
-
-        val popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (if (functionsClass.UsageStatsEnabled()) functionsClass.DpToInteger(7) else functionsClass.DpToInteger(7)).toFloat()
-
-        widgetConfigurationsViewsBinding.installedNestedIndexScrollView.setOnTouchListener { view, motionEvent ->
-
-            when (motionEvent.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    if (functionsClass.litePreferencesEnabled()) {
-
-                    } else {
-                        val indexText = mapRangeIndexInstalled[motionEvent.y.toInt()]
-                        if (indexText != null) {
-                            widgetConfigurationsViewsBinding.popupIndex.y = motionEvent.rawY - popupIndexOffsetY
-                            widgetConfigurationsViewsBinding.popupIndex.text = indexText
-                            widgetConfigurationsViewsBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                            widgetConfigurationsViewsBinding.popupIndex.visibility = View.VISIBLE
-                        }
-                    }
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    if (functionsClass.litePreferencesEnabled()) {
-
-                    } else {
-                        val indexText = mapRangeIndexInstalled[motionEvent.y.toInt()]
-                        if (indexText != null) {
-                            if (!widgetConfigurationsViewsBinding.popupIndex.isShown) {
-                                widgetConfigurationsViewsBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_in))
-                                widgetConfigurationsViewsBinding.popupIndex.visibility = View.VISIBLE
-                            }
-
-                            widgetConfigurationsViewsBinding.popupIndex.y = motionEvent.rawY - popupIndexOffsetY
-                            widgetConfigurationsViewsBinding.popupIndex.text = indexText
-
-                            widgetConfigurationsViewsBinding.installedNestedScrollView.smoothScrollTo(
-                                    0,
-                                    widgetConfigurationsViewsBinding.installedWidgetList.getChildAt(mapIndexFirstItemInstalled[mapRangeIndexInstalled[motionEvent.y.toInt()]]
-                                            ?: 0).y.roundToInt()
-                            )
-                        } else {
-                            if (widgetConfigurationsViewsBinding.popupIndex.isShown) {
-                                widgetConfigurationsViewsBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                                widgetConfigurationsViewsBinding.popupIndex.visibility = View.INVISIBLE
-                            }
-                        }
-
-                        println(">>> >> > " + indexText)
-                    }
-                }
-                MotionEvent.ACTION_UP -> {
-                    if (functionsClass.litePreferencesEnabled()) {
-                        try {
-                            widgetConfigurationsViewsBinding.installedNestedScrollView.smoothScrollTo(
-                                    0,
-                                    widgetConfigurationsViewsBinding.installedWidgetList.getChildAt(mapIndexFirstItemInstalled[mapRangeIndexInstalled[motionEvent.y.toInt()]]
-                                            ?: 0).y.roundToInt()
-                            )
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        if (widgetConfigurationsViewsBinding.popupIndex.isShown) {
-                            widgetConfigurationsViewsBinding.installedNestedScrollView.smoothScrollTo(
-                                    0,
-                                    widgetConfigurationsViewsBinding.installedWidgetList.getChildAt(mapIndexFirstItemInstalled[mapRangeIndexInstalled[motionEvent.y.toInt()]]
-                                            ?: 0).y.roundToInt()
-                            )
-
-                            widgetConfigurationsViewsBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out))
-                            widgetConfigurationsViewsBinding.popupIndex.visibility = View.INVISIBLE
-                        }
-                    }
-                }
-            }
-
-            true
-        }
     }
 
     val scaleDownListener: Animator.AnimatorListener = object : Animator.AnimatorListener {

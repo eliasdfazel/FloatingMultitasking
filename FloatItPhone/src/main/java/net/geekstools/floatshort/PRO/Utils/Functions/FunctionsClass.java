@@ -5810,7 +5810,7 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? true :
+        return //(BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? true :
                 readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
     }
 
