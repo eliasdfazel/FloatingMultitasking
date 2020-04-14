@@ -99,7 +99,6 @@ import net.geekstools.floatshort.PRO.databinding.HybridApplicationViewBinding
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.LinkedHashMap
 import kotlin.math.hypot
 
 class ApplicationsView : AppCompatActivity(),
@@ -117,11 +116,8 @@ class ApplicationsView : AppCompatActivity(),
 
     private lateinit var applicationInfoList: List<ResolveInfo>
 
-    private lateinit var mapIndexFirstItem: LinkedHashMap<String, Int>
-    private lateinit var mapIndexLastItem: LinkedHashMap<String, Int>
-    private lateinit var mapRangeIndex: LinkedHashMap<Int, String>
+    private var listOfNewCharOfItemsForIndex: ArrayList<String> = ArrayList<String>()
     private lateinit var indexItems: NavigableMap<String, Int>
-    private lateinit var indexList: ArrayList<String?>
 
     private lateinit var applicationsAdapterItems: ArrayList<AdapterItemsApplications>
     private lateinit var sections: ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>
@@ -178,16 +174,11 @@ class ApplicationsView : AppCompatActivity(),
         recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(105), OrientationHelper.VERTICAL, false)
         hybridApplicationViewBinding.applicationsListView.layoutManager = recyclerViewLayoutManager
 
-        indexList = ArrayList<String?>()
         sections = ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>()
         indexItems = TreeMap<String, Int>()
 
         applicationInfoList = ArrayList<ResolveInfo>()
         applicationsAdapterItems = ArrayList<AdapterItemsApplications>()
-
-        mapIndexFirstItem = LinkedHashMap<String, Int>()
-        mapIndexLastItem = LinkedHashMap<String, Int>()
-        mapRangeIndex = LinkedHashMap<Int, String>()
 
         /*All Loading Process*/
         initiateLoadingProcessAll()
@@ -831,8 +822,10 @@ class ApplicationsView : AppCompatActivity(),
         val applicationInfoListSorted = applicationInfoList.sortedWith(ResolveInfo.DisplayNameComparator(packageManager))
 
         var itemOfIndex = 1
-        var newChar: String? = null
+        var newChar: String = "A"
         var oldChar: String? = null
+
+        listOfNewCharOfItemsForIndex.clear()
 
         applicationInfoListSorted.asFlow()
                 .onEach {
@@ -875,7 +868,7 @@ class ApplicationsView : AppCompatActivity(),
                             if (oldChar != newChar) {
                                 sections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
 
-                                indexList.add(newChar)
+                                listOfNewCharOfItemsForIndex.add(newChar)
                                 itemOfIndex = 1
                             }
                         }
@@ -889,7 +882,7 @@ class ApplicationsView : AppCompatActivity(),
                         applicationsAdapterItems.add(AdapterItemsApplications(installedAppName!!, installedPackageName!!, installedClassName!!, installedAppIcon!!,
                                 SearchResultType.SearchShortcuts))
                     } finally {
-                        indexList.add(newChar)
+                        listOfNewCharOfItemsForIndex.add(newChar)
                         indexItems[newChar] = itemOfIndex++
 
                         hybridItem += 1
@@ -978,22 +971,19 @@ class ApplicationsView : AppCompatActivity(),
         /*Indexed Popup Fast Scroller*/
         val indexedFastScroller: IndexedFastScroller = IndexedFastScroller(
                 context = applicationContext,
-                functionsClass = functionsClass,
                 layoutInflater = layoutInflater,
                 rootView = hybridApplicationViewBinding.MainView,
-                scrollView = hybridApplicationViewBinding.nestedScrollView,
+                nestedScrollView = hybridApplicationViewBinding.nestedScrollView,
                 recyclerView = hybridApplicationViewBinding.applicationsListView,
                 fastScrollerIndexViewBinding = hybridApplicationViewBinding.fastScrollerIndexInclude
         )
+        indexedFastScroller.popupEnable = !functionsClass.litePreferencesEnabled()
         indexedFastScroller.initializeIndexView(0,
                 0,
                 0,
                 0
-        ).loadApplicationsIndexData(
-                mapIndexFirstItem,
-                mapIndexLastItem,
-                mapRangeIndex,
-                indexList
+        ).loadIndexData(
+                listOfNewCharOfItemsForIndex = listOfNewCharOfItemsForIndex
         ).await()
         /*Indexed Popup Fast Scroller*/
 

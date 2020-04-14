@@ -2,6 +2,8 @@ package net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -13,22 +15,52 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.FastScrollerIndexViewBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
-
+/**
+ * You Must Enable ViewBinding.
+ * Just Add The Below Configuration To Your App Level Gradle In Android Section
+ * viewBinding { enabled = true }
+ *
+ *
+ * @param rootView Instance Of Root (Base) View In Your Layout
+ * @param nestedScrollView Follow This Hierarchy: ScrollView -> RelativeLayout -> RecyclerView
+ * @param recyclerView Instance Of A RecyclerView That You Want To Populate With Items
+ *
+ *
+ * Add Index Layout As <include /> In Your Layout. Be Careful With Layers.
+ * @param fastScrollerIndexViewBinding Pass ViewBinding Instance Of Fast Scroller Layout That Added Using <include />
+ **/
 class IndexedFastScroller(private val context: Context,
-                          private val functionsClass: FunctionsClass,
                           private val layoutInflater: LayoutInflater,
                           private val rootView: ViewGroup,
-                          private val scrollView: ScrollView,
+                          private val nestedScrollView: ScrollView,
                           private val recyclerView: RecyclerView,
                           private val fastScrollerIndexViewBinding: FastScrollerIndexViewBinding) {
 
-    var popupOffset: Int = functionsClass.DpToInteger(7)
+    /**
+     * Enable Popup View Of Index Text
+     **/
+    var popupEnable: Boolean = true
+    /**
+     * Set Offset For Popup View Of Index Text
+     **/
+    var popupOffset: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+            7F,
+            context.resources.displayMetrics).toInt()
+    /**
+     * Set A Drawable As Background Of Popup View Of Index Text
+     **/
+    var popupBackgroundShape: Drawable? = null
+
+    init {
+        popupOffset = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                popupOffset.toFloat(),
+                context.resources.displayMetrics).toInt()
+    }
 
     fun initializeIndexView(paddingTop: Int, paddingBottom: Int,
                             paddingStart: Int, paddingEnd: Int) : IndexedFastScroller {
@@ -47,17 +79,27 @@ class IndexedFastScroller(private val context: Context,
         return this@IndexedFastScroller
     }
 
-    fun loadApplicationsIndexData(mapIndexFirstItem: LinkedHashMap<String, Int>, mapIndexLastItem: LinkedHashMap<String, Int>,
-                                  mapRangeIndex: LinkedHashMap<Int, String>,
-                                  indexList: ArrayList<String?>) = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
+    /**
+     * When Populating Your List Get First Char Of Each Item Title By itemTextTitle.substring(0, 1).toUpperCase(Locale.getDefault())
+     * & Add It To A ArrayList<String>
+     * Then Pass It As
+     * @param listOfNewCharOfItemsForIndex ArrayList<String>
+     **/
+    fun loadIndexData(
+            listOfNewCharOfItemsForIndex: ArrayList<String>) = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
+
+        val mapIndexFirstItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
+        val mapIndexLastItem: LinkedHashMap<String, Int> = LinkedHashMap<String, Int>()
+
+        val mapRangeIndex: LinkedHashMap<Int, String> = LinkedHashMap<Int, String>()
 
         withContext(Dispatchers.Default) {
-            val indexCount = indexList.size
 
-            for (indexNumber in 0 until indexCount) {
-                val indexText = indexList[indexNumber]!!
+            for (indexNumber in 0 until listOfNewCharOfItemsForIndex.size) {
+                val indexText = listOfNewCharOfItemsForIndex[indexNumber]
 
-                if (mapIndexFirstItem[indexText] == null /*avoid duplication*/) {
+                /*Avoid Duplication*/
+                if (mapIndexFirstItem[indexText] == null) {
                     mapIndexFirstItem[indexText] = indexNumber
                 }
 
@@ -97,11 +139,14 @@ class IndexedFastScroller(private val context: Context,
                 mapRangeIndex)
     }
 
+    /**
+     * Setup Popup View Of Index With Touch On List Of Index
+     **/
     @SuppressLint("ClickableViewAccessibility")
     private fun setupFastScrollingIndexing(mapIndexFirstItem: LinkedHashMap<String, Int>,
                                            mapRangeIndex: LinkedHashMap<Int, String>) = CoroutineScope(Dispatchers.Main).launch {
 
-        val popupIndexBackground = context.getDrawable(R.drawable.ic_launcher_balloon)?.mutate()
+        val popupIndexBackground: Drawable? = popupBackgroundShape?:context.getDrawable(R.drawable.ic_launcher_balloon)?.mutate()
         popupIndexBackground?.setTint(PublicVariable.primaryColorOpposite)
         fastScrollerIndexViewBinding.popupIndex.background = popupIndexBackground
 
@@ -115,7 +160,7 @@ class IndexedFastScroller(private val context: Context,
 
             when(motionEvent.action){
                 MotionEvent.ACTION_DOWN -> {
-                    if (!functionsClass.litePreferencesEnabled()) {
+                    if (popupEnable) {
                         val indexText = mapRangeIndex[motionEvent.y.toInt()]
 
                         if (indexText != null) {
@@ -127,7 +172,7 @@ class IndexedFastScroller(private val context: Context,
                     }
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    if (!functionsClass.litePreferencesEnabled()) {
+                    if (popupEnable) {
                         val indexText = mapRangeIndex[motionEvent.y.toInt()]
 
                         if (indexText != null) {
@@ -139,7 +184,7 @@ class IndexedFastScroller(private val context: Context,
                             fastScrollerIndexViewBinding.popupIndex.y = motionEvent.rawY - popupIndexOffsetY
                             fastScrollerIndexViewBinding.popupIndex.text = indexText
 
-                            scrollView.smoothScrollTo(
+                            nestedScrollView.smoothScrollTo(
                                     0,
                                     recyclerView.getChildAt(mapIndexFirstItem[mapRangeIndex[motionEvent.y.toInt()]]!!).y.toInt()
                             )
@@ -152,15 +197,10 @@ class IndexedFastScroller(private val context: Context,
                     }
                 }
                 MotionEvent.ACTION_UP -> {
-                    if (functionsClass.litePreferencesEnabled()) {
-                        scrollView.smoothScrollTo(
-                                0,
-                                recyclerView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
-                        )
-                    } else {
+                    if (popupEnable) {
                         if (fastScrollerIndexViewBinding.popupIndex.isShown) {
 
-                            scrollView.smoothScrollTo(
+                            nestedScrollView.smoothScrollTo(
                                     0,
                                     recyclerView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
                             )
@@ -168,6 +208,11 @@ class IndexedFastScroller(private val context: Context,
                             fastScrollerIndexViewBinding.popupIndex.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
                             fastScrollerIndexViewBinding.popupIndex.visibility = View.INVISIBLE
                         }
+                    } else {
+                        nestedScrollView.smoothScrollTo(
+                                0,
+                                recyclerView.getChildAt(mapIndexFirstItem.get(mapRangeIndex[motionEvent.y.toInt()])!!).y.toInt()
+                        )
                     }
                 }
             }
