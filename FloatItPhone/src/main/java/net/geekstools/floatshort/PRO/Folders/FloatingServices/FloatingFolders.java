@@ -54,6 +54,7 @@ import java.util.Map;
 public class FloatingFolders extends Service {
 
     FunctionsClass functionsClass;
+
     WindowManager windowManager;
     WindowManager.LayoutParams[] layoutParams;
     WindowManager.LayoutParams[] StickyEdgeParams;
@@ -970,10 +971,5 @@ public class FloatingFolders extends Service {
         if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 }

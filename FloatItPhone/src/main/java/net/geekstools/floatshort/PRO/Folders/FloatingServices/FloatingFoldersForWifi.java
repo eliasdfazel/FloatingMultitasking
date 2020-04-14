@@ -971,9 +971,4 @@ public class FloatingFoldersForWifi extends Service {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
         }
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 }
