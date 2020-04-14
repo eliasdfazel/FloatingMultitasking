@@ -51,7 +51,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Folder_Unlimited_Wifi extends Service {
+public class FloatingFoldersForNfc extends Service {
 
     FunctionsClass functionsClass;
     WindowManager windowManager;
@@ -325,7 +325,7 @@ public class Folder_Unlimited_Wifi extends Service {
         xMove = xPos;
         yMove = yPos;
 
-        final String className = Folder_Unlimited_Wifi.class.getSimpleName();
+        final String className = FloatingFoldersForNfc.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Pair_" + className);
         intentFilter.addAction("Split_Apps_Single_" + className);
@@ -460,7 +460,7 @@ public class Folder_Unlimited_Wifi extends Service {
                                 } finally {
                                     PublicVariable.FloatingFoldersList.remove(categoryName[intent.getIntExtra("startId", 1)]);
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
-                                    PublicVariable.floatingFolderCounter_Wifi = PublicVariable.floatingFolderCounter_Wifi - 1;
+                                    PublicVariable.floatingFolderCounter_Nfc = PublicVariable.floatingFolderCounter_Nfc - 1;
                                     PublicVariable.FloatingFolderCounter = PublicVariable.FloatingFolderCounter - 1;
 
                                     if (PublicVariable.allFloatingCounter == 0) {
@@ -469,7 +469,7 @@ public class Folder_Unlimited_Wifi extends Service {
                                             stopService(new Intent(getApplicationContext(), BindServices.class));
                                         }
                                     }
-                                    if (PublicVariable.floatingFolderCounter_Wifi == 0) {
+                                    if (PublicVariable.floatingFolderCounter_Nfc == 0) {
                                         if (broadcastReceiver != null) {
                                             try {
                                                 unregisterReceiver(broadcastReceiver);
@@ -896,7 +896,7 @@ public class Folder_Unlimited_Wifi extends Service {
                 functionsClass.PopupNotificationShortcuts(
                         notificationDot[startId],
                         notificationDot[startId].getTag().toString(),
-                        Folder_Unlimited_Wifi.class.getSimpleName(),
+                        FloatingFoldersForNfc.class.getSimpleName(),
                         startId,
                         PublicVariable.primaryColor,
                         xMove,

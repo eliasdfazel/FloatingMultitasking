@@ -51,7 +51,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Folder_Unlimited_Bluetooth extends Service {
+public class FloatingFoldersForWifi extends Service {
 
     FunctionsClass functionsClass;
     WindowManager windowManager;
@@ -145,59 +145,6 @@ public class Folder_Unlimited_Bluetooth extends Service {
         FunctionsClassDebug.Companion.PrintDebug(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
         startIdCounter = startId;
 
-        if (intent.hasExtra(getString(R.string.remove_all_floatings))) {
-            if (intent.getStringExtra(getString(R.string.remove_all_floatings)).equals(getString(R.string.remove_all_floatings))) {
-                for (int r = 1; r < startId; r++) {
-                    try {
-                        if (floatingView != null) {
-                            if (floatingView[r].isShown()) {
-                                try {
-                                    windowManager.removeView(floatingView[r]);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                } finally {
-                                    PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
-
-                                    if (PublicVariable.allFloatingCounter == 0) {
-                                        if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                                .getBoolean("stable", true) == false) {
-                                            stopService(new Intent(getApplicationContext(), BindServices.class));
-                                        }
-                                    }
-                                }
-                            } else if (PublicVariable.allFloatingCounter == 0) {
-                                if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                        .getBoolean("stable", true) == false) {
-                                    stopService(new Intent(getApplicationContext(), BindServices.class));
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                PublicVariable.FloatingFoldersList.clear();
-                PublicVariable.FloatingFolderCounter = -1;
-
-                try {
-                    if (broadcastReceiver != null) {
-                        try {
-                            unregisterReceiver(broadcastReceiver);
-                        } catch (IllegalArgumentException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                stopSelf();
-            }
-
-            return START_NOT_STICKY;
-        }
-
         if (functionsClass.customIconsEnable()) {
             if (loadCustomIcons == null) {
                 loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
@@ -263,8 +210,53 @@ public class Folder_Unlimited_Bluetooth extends Service {
         }
         wholeCategoryFloating.setBackground(drawableBack);
 
-        mapCategoryNameStartId.put(categoryName[startId], startId);
+        if (categoryName[startId].equals(getString(R.string.remove_all_floatings))) {
+            for (int r = 1; r < startId; r++) {
+                try {
+                    if (floatingView != null) {
+                        if (floatingView[r].isShown()) {
+                            try {
+                                windowManager.removeView(floatingView[r]);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            } finally {
+                                PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
+                                if (PublicVariable.allFloatingCounter == 0) {
+                                    if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                            .getBoolean("stable", true) == false) {
+                                        stopService(new Intent(getApplicationContext(), BindServices.class));
+                                    }
+                                }
+                            }
+                        } else if (PublicVariable.allFloatingCounter == 0) {
+                            if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                    .getBoolean("stable", true) == false) {
+                                stopService(new Intent(getApplicationContext(), BindServices.class));
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            PublicVariable.FloatingFoldersList.clear();
+            PublicVariable.FloatingFolderCounter = -1;
+            try {
+                if (broadcastReceiver != null) {
+                    try {
+                        unregisterReceiver(broadcastReceiver);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            stopSelf();
+            return START_NOT_STICKY;
+        }
+        mapCategoryNameStartId.put(categoryName[startId], startId);
         String[] categoryApps = functionsClass.readFileLine(categoryName[startId]);
         if (categoryApps != null) {
             if (categoryApps.length > 0) {
@@ -333,7 +325,7 @@ public class Folder_Unlimited_Bluetooth extends Service {
         xMove = xPos;
         yMove = yPos;
 
-        final String className = Folder_Unlimited_Bluetooth.class.getSimpleName();
+        final String className = FloatingFoldersForWifi.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Pair_" + className);
         intentFilter.addAction("Split_Apps_Single_" + className);
@@ -468,7 +460,7 @@ public class Folder_Unlimited_Bluetooth extends Service {
                                 } finally {
                                     PublicVariable.FloatingFoldersList.remove(categoryName[intent.getIntExtra("startId", 1)]);
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
-                                    PublicVariable.floatingFolderCounter_Bluetooth = PublicVariable.floatingFolderCounter_Bluetooth - 1;
+                                    PublicVariable.floatingFolderCounter_Wifi = PublicVariable.floatingFolderCounter_Wifi - 1;
                                     PublicVariable.FloatingFolderCounter = PublicVariable.FloatingFolderCounter - 1;
 
                                     if (PublicVariable.allFloatingCounter == 0) {
@@ -477,7 +469,7 @@ public class Folder_Unlimited_Bluetooth extends Service {
                                             stopService(new Intent(getApplicationContext(), BindServices.class));
                                         }
                                     }
-                                    if (PublicVariable.floatingFolderCounter_Bluetooth == 0) {
+                                    if (PublicVariable.floatingFolderCounter_Wifi == 0) {
                                         if (broadcastReceiver != null) {
                                             try {
                                                 unregisterReceiver(broadcastReceiver);
@@ -580,7 +572,11 @@ public class Folder_Unlimited_Bluetooth extends Service {
                 }
             }
         };
-        registerReceiver(broadcastReceiver, intentFilter);
+        try {
+            registerReceiver(broadcastReceiver, intentFilter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (!functionsClass.litePreferencesEnabled()) {
             flingAnimationX[startId] = new FlingAnimation(new FloatValueHolder())
@@ -900,7 +896,7 @@ public class Folder_Unlimited_Bluetooth extends Service {
                 functionsClass.PopupNotificationShortcuts(
                         notificationDot[startId],
                         notificationDot[startId].getTag().toString(),
-                        Folder_Unlimited_Bluetooth.class.getSimpleName(),
+                        FloatingFoldersForWifi.class.getSimpleName(),
                         startId,
                         PublicVariable.primaryColor,
                         xMove,

@@ -16,7 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import net.geekstools.floatshort.PRO.Automation.RecoveryBluetooth;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Bluetooth;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForBluetooth;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForBluetooth;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
@@ -53,7 +53,7 @@ public class ReceiverBluetooth extends BroadcastReceiver {
                 w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(w);
 
-                Intent c = new Intent(context, Folder_Unlimited_Bluetooth.class);
+                Intent c = new Intent(context, FloatingFoldersForBluetooth.class);
                 c.putExtra(context.getString(R.string.remove_all_floatings), context.getString(R.string.remove_all_floatings));
                 c.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(c);

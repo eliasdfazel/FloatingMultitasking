@@ -51,7 +51,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Folder_Unlimited_Gps extends Service {
+public class FloatingFoldersForGps extends Service {
 
     FunctionsClass functionsClass;
     WindowManager windowManager;
@@ -325,7 +325,7 @@ public class Folder_Unlimited_Gps extends Service {
         xMove = xPos;
         yMove = yPos;
 
-        final String className = Folder_Unlimited_Gps.class.getSimpleName();
+        final String className = FloatingFoldersForGps.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Pair_" + className);
         intentFilter.addAction("Split_Apps_Single_" + className);
@@ -896,7 +896,7 @@ public class Folder_Unlimited_Gps extends Service {
                 functionsClass.PopupNotificationShortcuts(
                         notificationDot[startId],
                         notificationDot[startId].getTag().toString(),
-                        Folder_Unlimited_Gps.class.getSimpleName(),
+                        FloatingFoldersForGps.class.getSimpleName(),
                         startId,
                         PublicVariable.primaryColor,
                         xMove,

@@ -16,7 +16,7 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 
 import net.geekstools.floatshort.PRO.Automation.RecoveryWifi;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForWifi;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
@@ -54,7 +54,7 @@ public class ReceiverWifi extends BroadcastReceiver {
                     w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(w);
 
-                    Intent c = new Intent(context, Folder_Unlimited_Wifi.class);
+                    Intent c = new Intent(context, FloatingFoldersForWifi.class);
                     c.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
                     c.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startService(c);

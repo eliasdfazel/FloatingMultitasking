@@ -503,17 +503,17 @@
             android:name=".Shortcuts.FloatingServices.FloatingShortcutsForTime"/>
 
         <service
-            android:name=".Folders.FloatingServices.Folder_Unlimited_Floating" />
+            android:name=".Folders.FloatingServices.FloatingFolders" />
         <service
-            android:name=".Folders.FloatingServices.Folder_Unlimited_Wifi" />
+            android:name=".Folders.FloatingServices.FloatingFoldersForWifi" />
         <service
-            android:name=".Folders.FloatingServices.Folder_Unlimited_Bluetooth" />
+            android:name=".Folders.FloatingServices.FloatingFoldersForBluetooth" />
         <service
-            android:name=".Folders.FloatingServices.Folder_Unlimited_Gps" />
+            android:name=".Folders.FloatingServices.FloatingFoldersForGps" />
         <service
-            android:name=".Folders.FloatingServices.Folder_Unlimited_Nfc" />
+            android:name=".Folders.FloatingServices.FloatingFoldersForNfc" />
         <service
-            android:name=".Folders.FloatingServices.Folder_Unlimited_Time" />
+            android:name=".Folders.FloatingServices.FloatingFoldersForTime" />
 
         <service android:name=".Widgets.FloatingServices.WidgetUnlimitedFloating" />
 

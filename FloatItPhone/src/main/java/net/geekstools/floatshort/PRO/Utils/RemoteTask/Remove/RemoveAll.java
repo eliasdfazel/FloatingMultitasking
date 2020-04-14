@@ -16,12 +16,12 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Bluetooth;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Floating;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Gps;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Nfc;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Time;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.Folder_Unlimited_Wifi;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFolders;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForBluetooth;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForGps;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForNfc;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForTime;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForWifi;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForApplications;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForBluetooth;
@@ -65,27 +65,27 @@ public class RemoveAll extends Service {
         startService(App_Unlimited_Time);
 
         /*Categories*/
-        Intent Category_Unlimited_Category = new Intent(getApplicationContext(), Folder_Unlimited_Floating.class);
+        Intent Category_Unlimited_Category = new Intent(getApplicationContext(), FloatingFolders.class);
         Category_Unlimited_Category.putExtra("categoryName", getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Category);
 
-        Intent Category_Unlimited_Wifi = new Intent(getApplicationContext(), Folder_Unlimited_Wifi.class);
+        Intent Category_Unlimited_Wifi = new Intent(getApplicationContext(), FloatingFoldersForWifi.class);
         Category_Unlimited_Wifi.putExtra("categoryName", getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Wifi);
 
-        Intent Category_Unlimited_Bluetooth = new Intent(getApplicationContext(), Folder_Unlimited_Bluetooth.class);
+        Intent Category_Unlimited_Bluetooth = new Intent(getApplicationContext(), FloatingFoldersForBluetooth.class);
         Category_Unlimited_Bluetooth.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Bluetooth);
 
-        Intent Category_Unlimited_Gps = new Intent(getApplicationContext(), Folder_Unlimited_Gps.class);
+        Intent Category_Unlimited_Gps = new Intent(getApplicationContext(), FloatingFoldersForGps.class);
         Category_Unlimited_Gps.putExtra("categoryName", getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Gps);
 
-        Intent Category_Unlimited_Nfc = new Intent(getApplicationContext(), Folder_Unlimited_Nfc.class);
+        Intent Category_Unlimited_Nfc = new Intent(getApplicationContext(), FloatingFoldersForNfc.class);
         Category_Unlimited_Nfc.putExtra("categoryName", getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Nfc);
 
-        Intent Category_Unlimited_Time = new Intent(getApplicationContext(), Folder_Unlimited_Time.class);
+        Intent Category_Unlimited_Time = new Intent(getApplicationContext(), FloatingFoldersForTime.class);
         Category_Unlimited_Time.putExtra("categoryName", getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Time);
 
