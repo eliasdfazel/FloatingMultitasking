@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 12:54 AM
+ * Last modified 4/15/20 3:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,6 +10,7 @@
 
 package net.geekstools.floatshort.PRO.Folders.FloatingServices;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,7 +24,6 @@ import android.os.IBinder;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +39,7 @@ import androidx.dynamicanimation.animation.SpringForce;
 import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.Utils.FloatingFoldersUtils;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
@@ -55,31 +56,27 @@ public class FloatingFolders extends Service {
 
     FunctionsClass functionsClass;
 
+    FloatingFoldersUtils floatingFoldersUtils;
+
     WindowManager windowManager;
 
     WindowManager.LayoutParams[] layoutParams;
     WindowManager.LayoutParams[] stickyEdgeParams;
 
-    ViewGroup[] floatingView;
-    RelativeLayout wholeFloatingFolder;
-
-    ShapesImage bottomRight, topLeft, bottomLeft, topRight;
-    ShapesImage[] pin, notificationDot;
+    ShapesImage[] pinIndicatorView,
+            notificationDotView;
 
     int xPosition, yPosition, xInitial = 19, yInitial = 19, xMove, yMove;
 
-    int array, folderSize;
     String[] folderName;
+
     boolean[] movePermit, touchingDelay, stickedToEdge, openPermit;
 
     String notificationPackage;
     boolean showNotificationDot = false;
 
-    BroadcastReceiver broadcastReceiver;
-    SharedPreferences sharedPrefPosition;
-
-    Map<String, String> mapContentCategoryName;
-    Map<String, Integer> mapCategoryNameStartId;
+    Map<String, String> mapContentFolderName;
+    Map<String, Integer> mapFolderNameStartId;
 
     Runnable runnablePressHold = null;
     Handler handlerPressHold = new Handler();
@@ -93,7 +90,12 @@ public class FloatingFolders extends Service {
 
     float flingPositionX = 0, flingPositionY = 0;
 
+    /*delete*/
     int startIdCounter = 1;
+
+    ViewGroup[] floatingView;
+    RelativeLayout wholeFloatingFolder;
+    /*delete*/
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -145,166 +147,51 @@ public class FloatingFolders extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
-        FunctionsClassDebug.Companion.PrintDebug(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
-        startIdCounter = startId;
 
-        if (functionsClass.customIconsEnable()) {
-            if (loadCustomIcons == null) {
-                loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
-            }
-        }
-
-        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        try {
-            folderName[startId] = intent.getStringExtra("categoryName");
-
-            touchingDelay[startId] = false;
-            stickedToEdge[startId] = false;
-            movePermit[startId] = true;
-            openPermit[startId] = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Service.START_NOT_STICKY;
-        }
-
-        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_medium, null, false);
-        if (PublicVariable.size == 13 || PublicVariable.size == 26) {
-            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_small, null, false);
-            folderSize = 24;
-        } else if (PublicVariable.size == 39 || PublicVariable.size == 52) {
-            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_medium, null, false);
-            folderSize = 36;
-        } else if (PublicVariable.size == 65 || PublicVariable.size == 78) {
-            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_large, null, false);
-            folderSize = 48;
-        }
-
-        wholeFloatingFolder = floatingView[startId].findViewById(R.id.wholeCategoryFloating);
-
-        bottomRight = functionsClass.initShapesImage(floatingView[startId], R.id.bottomRight);
-        topLeft = functionsClass.initShapesImage(floatingView[startId], R.id.topLeft);
-        bottomLeft = functionsClass.initShapesImage(floatingView[startId], R.id.bottomLeft);
-        topRight = functionsClass.initShapesImage(floatingView[startId], R.id.topRight);
-
-        pin[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.pin);
-        notificationDot[startId] = functionsClass.initShapesImage(floatingView[startId],
-                functionsClass.checkStickyEdge() ? R.id.notificationDotEnd : R.id.notificationDotStart);
-
-        Drawable drawableBack = null;
-        switch (functionsClass.shapesImageId()) {
-            case 1:
-                drawableBack = getDrawable(R.drawable.category_droplet_icon);
-                break;
-            case 2:
-                drawableBack = getDrawable(R.drawable.category_circle_icon);
-                break;
-            case 3:
-                drawableBack = getDrawable(R.drawable.category_square_icon);
-                break;
-            case 4:
-                drawableBack = getDrawable(R.drawable.category_squircle_icon);
-                break;
-            case 0:
-                drawableBack = null;
-                break;
-        }
-        if (drawableBack != null) {
-            drawableBack.setTint(PublicVariable.primaryColor);
-            drawableBack.setAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
-        }
-        wholeFloatingFolder.setBackground(drawableBack);
-
-        if (folderName[startId].equals(getString(R.string.remove_all_floatings))) {
-            for (int r = 1; r < startId; r++) {
-                try {
-                    if (floatingView != null) {
-                        if (floatingView[r].isShown()) {
-                            try {
-                                windowManager.removeView(floatingView[r]);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            } finally {
-                                PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
-
-                                if (PublicVariable.allFloatingCounter == 0) {
-                                    if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                            .getBoolean("stable", true) == false) {
-                                        stopService(new Intent(getApplicationContext(), BindServices.class));
-                                    }
-                                }
-                            }
-                        } else if (PublicVariable.allFloatingCounter == 0) {
-                            if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                    .getBoolean("stable", true) == false) {
-                                stopService(new Intent(getApplicationContext(), BindServices.class));
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            PublicVariable.FloatingFoldersList.clear();
-            PublicVariable.FloatingFolderCounter = -1;
-            try {
-                if (broadcastReceiver != null) {
-                    try {
-                        unregisterReceiver(broadcastReceiver);
-                    } catch (IllegalArgumentException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            stopSelf();
-            return START_NOT_STICKY;
-        }
-        mapCategoryNameStartId.put(folderName[startId], startId);
-        String[] categoryApps = functionsClass.readFileLine(folderName[startId]);
-        if (categoryApps != null) {
-            if (categoryApps.length > 0) {
-                for (int i = 0; i < categoryApps.length; i++) {
-                    mapContentCategoryName.put(categoryApps[i], folderName[startId]);
-                    if (getFileStreamPath(categoryApps[i] + "_" + "Notification" + "Package").exists()) {
+        mapFolderNameStartId.put(folderName[startId], startId);
+        String[] appsInFolder = functionsClass.readFileLine(folderName[startId]);
+        if (appsInFolder != null) {
+            if (appsInFolder.length > 0) {
+                for (int i = 0; i < appsInFolder.length; i++) {
+                    mapContentFolderName.put(appsInFolder[i], folderName[startId]);
+                    if (getFileStreamPath(appsInFolder[i] + "_" + "Notification" + "Package").exists()) {
                         showNotificationDot = true;
-                        notificationPackage = categoryApps[i];
+                        notificationPackage = appsInFolder[i];
                     }
                 }
             }
             try {
                 bottomRight.setImageDrawable(functionsClass.customIconsEnable() ?
-                        loadCustomIcons.getDrawableIconForPackage(categoryApps[0], functionsClass.shapedAppIcon(categoryApps[0]))
+                        loadCustomIcons.getDrawableIconForPackage(appsInFolder[0], functionsClass.shapedAppIcon(appsInFolder[0]))
                         :
-                        functionsClass.shapedAppIcon(categoryApps[0]));
+                        functionsClass.shapedAppIcon(appsInFolder[0]));
                 bottomRight.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
             } catch (Exception e) {
                 bottomRight.setImageDrawable(null);
             }
             try {
                 topLeft.setImageDrawable(functionsClass.customIconsEnable() ?
-                        loadCustomIcons.getDrawableIconForPackage(categoryApps[1], functionsClass.shapedAppIcon(categoryApps[1]))
+                        loadCustomIcons.getDrawableIconForPackage(appsInFolder[1], functionsClass.shapedAppIcon(appsInFolder[1]))
                         :
-                        functionsClass.shapedAppIcon(categoryApps[1]));
+                        functionsClass.shapedAppIcon(appsInFolder[1]));
                 topLeft.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
             } catch (Exception e) {
                 topLeft.setImageDrawable(null);
             }
             try {
                 bottomLeft.setImageDrawable(functionsClass.customIconsEnable() ?
-                        loadCustomIcons.getDrawableIconForPackage(categoryApps[2], functionsClass.shapedAppIcon(categoryApps[2]))
+                        loadCustomIcons.getDrawableIconForPackage(appsInFolder[2], functionsClass.shapedAppIcon(appsInFolder[2]))
                         :
-                        functionsClass.shapedAppIcon(categoryApps[2]));
+                        functionsClass.shapedAppIcon(appsInFolder[2]));
                 bottomLeft.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
             } catch (Exception e) {
                 bottomLeft.setImageDrawable(null);
             }
             try {
                 topRight.setImageDrawable(functionsClass.customIconsEnable() ?
-                        loadCustomIcons.getDrawableIconForPackage(categoryApps[3], functionsClass.shapedAppIcon(categoryApps[3]))
+                        loadCustomIcons.getDrawableIconForPackage(appsInFolder[3], functionsClass.shapedAppIcon(appsInFolder[3]))
                         :
-                        functionsClass.shapedAppIcon(categoryApps[3]));
+                        functionsClass.shapedAppIcon(appsInFolder[3]));
                 topRight.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
             } catch (Exception e) {
                 topRight.setImageDrawable(null);
@@ -313,11 +200,11 @@ public class FloatingFolders extends Service {
 
         int HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, folderSize * 2, this.getResources().getDisplayMetrics());
         String nameForPosition = folderName[startId];
-        sharedPrefPosition = getSharedPreferences(nameForPosition, MODE_PRIVATE);
+        SharedPreferences sharedPreferencesPosition = getSharedPreferences(nameForPosition, MODE_PRIVATE);
         xInitial = xInitial + 13;
         yInitial = yInitial + 13;
-        xPosition = sharedPrefPosition.getInt("X", xInitial);
-        yPosition = sharedPrefPosition.getInt("Y", yInitial);
+        xPosition = sharedPreferencesPosition.getInt("X", xInitial);
+        yPosition = sharedPreferencesPosition.getInt("Y", yInitial);
 
         layoutParams[startId] = functionsClass.normalLayoutParams(HW, xPosition, yPosition);
         try {
@@ -330,7 +217,7 @@ public class FloatingFolders extends Service {
         xMove = xPosition;
         yMove = yPosition;
 
-        final String className = FloatingFolders.class.getSimpleName();
+        final String className = FloatingFolders.this.getClass().getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Pair_" + className);
         intentFilter.addAction("Split_Apps_Single_" + className);
@@ -341,7 +228,7 @@ public class FloatingFolders extends Service {
         intentFilter.addAction("Sticky_Edge_No");
         intentFilter.addAction("Notification_Dot");
         intentFilter.addAction("Notification_Dot_No");
-        broadcastReceiver = new BroadcastReceiver() {
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("Split_Apps_Pair_" + className) && PublicVariable.splitScreen == true) {
@@ -423,7 +310,7 @@ public class FloatingFolders extends Service {
                         }
                     }, 200);
                 } else if (intent.getAction().equals("Pin_App_" + className)) {
-                    movePermit[intent.getIntExtra("startId", 1)] = false;
+                    movePermit[intent.getIntExtra("startId", 0)] = false;
                     Drawable drawableBack = null;
                     switch (functionsClass.shapesImageId()) {
                         case 1:
@@ -447,47 +334,42 @@ public class FloatingFolders extends Service {
                             drawableBack.setTint(context.getColor(R.color.red_transparent));
                             break;
                     }
-                    pin[intent.getIntExtra("startId", 1)].setImageDrawable(drawableBack);
+                    pinIndicatorView[intent.getIntExtra("startId", 0)].setImageDrawable(drawableBack);
                 } else if (intent.getAction().equals("Unpin_App_" + className)) {
-                    movePermit[intent.getIntExtra("startId", 1)] = true;
-                    pin[intent.getIntExtra("startId", 1)].setImageDrawable(null);
+                    movePermit[intent.getIntExtra("startId", 0)] = true;
+                    pinIndicatorView[intent.getIntExtra("startId", 0)].setImageDrawable(null);
                 } else if (intent.getAction().equals("Remove_Category_" + className)) {
                     try {
                         if (floatingView != null) {
-                            if (floatingView[intent.getIntExtra("startId", 1)] == null) {
+                            if (floatingView[intent.getIntExtra("startId", 0)] == null) {
                                 return;
                             }
-                            if (floatingView[intent.getIntExtra("startId", 1)].isShown()) {
+                            if (floatingView[intent.getIntExtra("startId", 0)].isShown()) {
                                 try {
-                                    windowManager.removeView(floatingView[intent.getIntExtra("startId", 1)]);
+                                    windowManager.removeView(floatingView[intent.getIntExtra("startId", 0)]);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 } finally {
-                                    PublicVariable.FloatingFoldersList.remove(folderName[intent.getIntExtra("startId", 1)]);
+                                    PublicVariable.floatingFoldersList.remove(folderName[intent.getIntExtra("startId", 0)]);
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
-                                    PublicVariable.floatingFolderCounter_Folder = PublicVariable.floatingFolderCounter_Folder - 1;
-                                    PublicVariable.FloatingFolderCounter = PublicVariable.FloatingFolderCounter - 1;
+                                    PublicVariable.floatingFolderCounter = PublicVariable.floatingFolderCounter - 1;
+
+                                    floatingFoldersUtils.floatingFoldersCounterType(FloatingFolders.this.getClass().getSimpleName());
 
                                     if (PublicVariable.allFloatingCounter == 0) {
-                                        if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                                .getBoolean("stable", true) == false) {
+                                        if (!PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                                .getBoolean("stable", true)) {
                                             stopService(new Intent(getApplicationContext(), BindServices.class));
                                         }
                                     }
-                                    if (PublicVariable.floatingFolderCounter_Folder == 0) {
-                                        if (broadcastReceiver != null) {
-                                            try {
-                                                unregisterReceiver(broadcastReceiver);
-                                            } catch (IllegalArgumentException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
+                                    if (FloatingFoldersUtils.FloatingFoldersCounterType.getFloatingFoldersCounterType().get(FloatingFolders.this.getClass().getSimpleName()) == 0) {
+
                                         stopSelf();
                                     }
                                 }
                             } else if (PublicVariable.allFloatingCounter == 0) {
-                                if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                        .getBoolean("stable", true) == false) {
+                                if (!PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                        .getBoolean("stable", true)) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));
                                 }
                             }
@@ -520,11 +402,11 @@ public class FloatingFolders extends Service {
                                 if (floatingView[r].isShown()) {
                                     try {
                                         try {
-                                            sharedPrefPosition = getSharedPreferences((folderName[r]), MODE_PRIVATE);
+                                            SharedPreferences sharedPreferencesPosition = getSharedPreferences((folderName[r]), MODE_PRIVATE);
 
                                             stickedToEdge[r] = false;
-                                            xPosition = sharedPrefPosition.getInt("X", xInitial);
-                                            yPosition = sharedPrefPosition.getInt("Y", yInitial);
+                                            xPosition = sharedPreferencesPosition.getInt("X", xInitial);
+                                            yPosition = sharedPreferencesPosition.getInt("Y", yInitial);
                                             windowManager.updateViewLayout(floatingView[r], functionsClass.backFromEdge(layoutParams[r].height, xPosition, yPosition));
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -541,8 +423,8 @@ public class FloatingFolders extends Service {
                 } else if (intent.getAction().equals("Notification_Dot")) {
                     try {
                         String notificationPackage = intent.getStringExtra("NotificationPackage");
-                        String categoryNameNotification = mapContentCategoryName.get(notificationPackage);
-                        int StartIdNotification = mapCategoryNameStartId.get(categoryNameNotification);
+                        String folderNameNotification = mapContentFolderName.get(notificationPackage);
+                        int StartIdNotification = mapFolderNameStartId.get(folderNameNotification);
                         if (floatingView[StartIdNotification] != null) {
                             if (floatingView[StartIdNotification].isShown()) {
                                 /*add dot*/
@@ -552,9 +434,9 @@ public class FloatingFolders extends Service {
                                                 :
                                                 functionsClass.shapedAppIcon(notificationPackage).mutate();
 
-                                notificationDot[StartIdNotification].setImageDrawable(dotDrawable);
-                                notificationDot[StartIdNotification].setVisibility(View.VISIBLE);
-                                notificationDot[StartIdNotification].setTag(notificationPackage);
+                                notificationDotView[StartIdNotification].setImageDrawable(dotDrawable);
+                                notificationDotView[StartIdNotification].setVisibility(View.VISIBLE);
+                                notificationDotView[StartIdNotification].setTag(notificationPackage);
                             }
                         }
                     } catch (Exception e) {
@@ -563,12 +445,12 @@ public class FloatingFolders extends Service {
                 } else if (intent.getAction().equals("Notification_Dot_No")) {
                     try {
                         String notificationPackage = intent.getStringExtra("NotificationPackage");
-                        String categoryNameNotification = mapContentCategoryName.get(notificationPackage);
-                        int StartIdNotification = mapCategoryNameStartId.get(categoryNameNotification);
+                        String folderNameNotification = mapContentFolderName.get(notificationPackage);
+                        int StartIdNotification = mapFolderNameStartId.get(folderNameNotification);
                         if (floatingView[StartIdNotification] != null) {
                             if (floatingView[StartIdNotification].isShown()) {
                                 /*remove dot*/
-                                notificationDot[StartIdNotification].setVisibility(View.INVISIBLE);
+                                notificationDotView[StartIdNotification].setVisibility(View.INVISIBLE);
                             }
                         }
                     } catch (Exception e) {
@@ -895,13 +777,13 @@ public class FloatingFolders extends Service {
                 }
             }
         });
-        notificationDot[startId].setOnClickListener(new View.OnClickListener() {
+        notificationDotView[startId].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 functionsClass.PopupNotificationShortcuts(
-                        notificationDot[startId],
-                        notificationDot[startId].getTag().toString(),
-                        FloatingFolders.class.getSimpleName(),
+                        notificationDotView[startId],
+                        notificationDotView[startId].getTag().toString(),
+                        FloatingFolders.this.getClass().getSimpleName(),
                         startId,
                         PublicVariable.primaryColor,
                         xMove,
@@ -910,24 +792,26 @@ public class FloatingFolders extends Service {
                 );
             }
         });
-        notificationDot[startId].setOnLongClickListener(new View.OnLongClickListener() {
+        notificationDotView[startId].setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 if (functionsClass.AccessibilityServiceEnabled() && functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                    functionsClass.sendInteractionObserverEvent(view, notificationDot[startId].getTag().toString(), AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED, 66666);
+                    functionsClass.sendInteractionObserverEvent(view, notificationDotView[startId].getTag().toString(), AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED, 66666);
                 } else {
                     try {
-                        Object sbservice = getSystemService("statusbar");
-                        Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-                        Method showsb = statusbarManager.getMethod("expandNotificationsPanel");//expandNotificationsPanel
-                        showsb.invoke(sbservice);
+                        @SuppressLint("WrongConstant")
+                        Object statusBarService = getSystemService("statusbar");
+                        Class<?> statusBarManager = Class.forName("android.app.StatusBarManager");
+                        Method statuesBarInvocation = statusBarManager.getMethod("expandNotificationsPanel");//expandNotificationsPanel
+                        statuesBarInvocation.invoke(statusBarService);
                     } catch (Exception e) {
                         e.printStackTrace();
                         try {
-                            Object sbservice = getSystemService("statusbar");
-                            Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-                            Method showsb = statusbarManager.getMethod("expand");//expandNotificationsPanel
-                            showsb.invoke(sbservice);
+                            @SuppressLint("WrongConstant")
+                            Object statusBarService = getSystemService("statusbar");
+                            Class<?> statusBarManager = Class.forName("android.app.StatusBarManager");
+                            Method statuesBarInvocation = statusBarManager.getMethod("expand");//expandNotificationsPanel
+                            statuesBarInvocation.invoke(statusBarService);
                         } catch (Exception e1) {
                             e1.printStackTrace();
                         }
@@ -947,15 +831,17 @@ public class FloatingFolders extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        functionsClass = new FunctionsClass(getApplicationContext());
 
-        array = getApplicationContext().getPackageManager().getInstalledApplications(0).size() * 2;
+        functionsClass = new FunctionsClass(getApplicationContext());
+        floatingFoldersUtils = new FloatingFoldersUtils();
+
+        int array = getApplicationContext().getPackageManager().getInstalledApplications(0).size() * 2;
         layoutParams = new WindowManager.LayoutParams[array];
         stickyEdgeParams = new WindowManager.LayoutParams[array];
         floatingView = new ViewGroup[array];
         folderName = new String[array];
-        pin = new ShapesImage[array];
-        notificationDot = new ShapesImage[array];
+        pinIndicatorView = new ShapesImage[array];
+        notificationDotView = new ShapesImage[array];
         movePermit = new boolean[array];
         touchingDelay = new boolean[array];
         stickedToEdge = new boolean[array];
@@ -968,8 +854,8 @@ public class FloatingFolders extends Service {
             flingAnimationY = new FlingAnimation[array];
         }
 
-        mapContentCategoryName = new LinkedHashMap<String, String>();
-        mapCategoryNameStartId = new LinkedHashMap<String, Integer>();
+        mapContentFolderName = new LinkedHashMap<String, String>();
+        mapFolderNameStartId = new LinkedHashMap<String, Integer>();
 
         if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());

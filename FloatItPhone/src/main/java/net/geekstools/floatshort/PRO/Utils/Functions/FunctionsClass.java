@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 1:13 AM
+ * Last modified 4/15/20 3:07 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -700,19 +700,19 @@ public class FunctionsClass {
         try {
             PublicVariable.allFloatingCounter++;
             PublicVariable.floatingFolderCounter_Folder++;
-            PublicVariable.FloatingFolderCounter++;
-            PublicVariable.FloatingFoldersList.add(PublicVariable.FloatingFolderCounter, categoryName);
+            PublicVariable.floatingFolderCounter++;
+            PublicVariable.floatingFoldersList.add(PublicVariable.floatingFolderCounter, categoryName);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
 
             PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter + 1;
             PublicVariable.floatingFolderCounter_Folder = PublicVariable.floatingFolderCounter_Folder + 1;
-            PublicVariable.FloatingFolderCounter = PublicVariable.FloatingFolderCounter + 1;
-            PublicVariable.FloatingFoldersList.add(PublicVariable.FloatingFolderCounter, categoryName);
+            PublicVariable.floatingFolderCounter = PublicVariable.floatingFolderCounter + 1;
+            PublicVariable.floatingFoldersList.add(PublicVariable.floatingFolderCounter, categoryName);
         }
 
         Intent c = new Intent(context, FloatingFolders.class);
-        c.putExtra("categoryName", categoryName);
+        c.putExtra("folderName", categoryName);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
         if (PublicVariable.allFloatingCounter == 1) {
@@ -735,7 +735,7 @@ public class FunctionsClass {
         PublicVariable.floatingFolderCounter_Wifi++;
 
         Intent c = new Intent(context, FloatingFoldersForWifi.class);
-        c.putExtra("categoryName", categoryName);
+        c.putExtra("folderName", categoryName);
         c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
@@ -759,7 +759,7 @@ public class FunctionsClass {
         PublicVariable.floatingFolderCounter_Bluetooth++;
 
         Intent c = new Intent(context, FloatingFoldersForBluetooth.class);
-        c.putExtra("categoryName", categoryName);
+        c.putExtra("folderName", categoryName);
         c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
@@ -783,7 +783,7 @@ public class FunctionsClass {
         PublicVariable.floatingFolderCounter_Gps++;
 
         Intent c = new Intent(context, FloatingFoldersForGps.class);
-        c.putExtra("categoryName", categoryName);
+        c.putExtra("folderName", categoryName);
         c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
@@ -807,7 +807,7 @@ public class FunctionsClass {
         PublicVariable.floatingFolderCounter_Nfc++;
 
         Intent c = new Intent(context, FloatingFoldersForNfc.class);
-        c.putExtra("categoryName", categoryName);
+        c.putExtra("folderName", categoryName);
         c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
@@ -831,7 +831,7 @@ public class FunctionsClass {
         PublicVariable.floatingFolderCounter_Time++;
 
         Intent c = new Intent(context, FloatingFoldersForTime.class);
-        c.putExtra("categoryName", categoryName);
+        c.putExtra("folderName", categoryName);
         c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
@@ -853,7 +853,7 @@ public class FunctionsClass {
         try {
             Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingCategory.class);
             popupOptionsFloatingCategory.putExtra("MODE", "AppsList");
-            popupOptionsFloatingCategory.putExtra("categoryName", categoryName);
+            popupOptionsFloatingCategory.putExtra("folderName", categoryName);
             popupOptionsFloatingCategory.putExtra("PackagesNames", packagesName);
             popupOptionsFloatingCategory.putExtra("classNameCommand", classNameCommand);
             popupOptionsFloatingCategory.putExtra("startIdCommand", startIdCommand);
@@ -895,7 +895,7 @@ public class FunctionsClass {
         try {
             Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingCategory.class);
             popupOptionsFloatingCategory.putExtra("MODE", "Options");
-            popupOptionsFloatingCategory.putExtra("categoryName", categoryName);
+            popupOptionsFloatingCategory.putExtra("folderName", categoryName);
             popupOptionsFloatingCategory.putExtra("classNameCommand", classNameCommand);
             popupOptionsFloatingCategory.putExtra("startIdCommand", startIdCommand);
             popupOptionsFloatingCategory.putExtra("X", X);

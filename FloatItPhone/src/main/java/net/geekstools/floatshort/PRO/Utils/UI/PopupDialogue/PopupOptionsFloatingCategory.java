@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/15/20 3:07 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -76,7 +76,7 @@ public class PopupOptionsFloatingCategory extends Service {
         startIdCommand = intent.getIntExtra("startIdCommand", 0);
         MODE = intent.getStringExtra("MODE");
         classNameCommand = intent.getStringExtra("classNameCommand");
-        categoryName = intent.getStringExtra("categoryName");
+        categoryName = intent.getStringExtra("folderName");
 
         HW = intent.getIntExtra("HW", 0);
         xPosition = intent.getIntExtra("X", 0);

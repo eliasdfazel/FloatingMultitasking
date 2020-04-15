@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 2:16 PM
- * Last modified 3/25/20 2:16 PM
+ * Created by Elias Fazel
+ * Last modified 4/15/20 1:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,7 +21,7 @@ public class PublicVariable {
 
     public static int allFloatingCounter = 0;
 
-    public static int FloatingShortcutsCounter = -1;
+    public static int floatingShortcutsCounter = -1;
 
     public static int floatingFolderCounter_Folder = 0;
     public static int floatingFolderCounter_Wifi = 0;
@@ -29,7 +29,7 @@ public class PublicVariable {
     public static int floatingFolderCounter_Gps = 0;
     public static int floatingFolderCounter_Nfc = 0;
     public static int floatingFolderCounter_Time = 0;
-    public static int FloatingFolderCounter = -1;
+    public static int floatingFolderCounter = -1;
 
     public static int floatingWidgetsCounter = -1;
 
@@ -84,7 +84,7 @@ public class PublicVariable {
     public static ArrayList<String> FloatingShortcutsList = new ArrayList<String>();
     public static ArrayList<String> RecoveryShortcuts = new ArrayList<String>();
 
-    public static ArrayList<String> FloatingFoldersList = new ArrayList<String>();
+    public static ArrayList<String> floatingFoldersList = new ArrayList<String>();
 
     public static ArrayList<Integer> FloatingWidgets = new ArrayList<Integer>();
 

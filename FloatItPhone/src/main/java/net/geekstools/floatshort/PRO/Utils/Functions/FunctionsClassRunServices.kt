@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 11:33 AM
+ * Created by Elias Fazel
+ * Last modified 4/15/20 1:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -29,14 +29,14 @@ class FunctionsClassRunServices(var context: Context) {
 
         try {
             PublicVariable.allFloatingCounter++
-            PublicVariable.FloatingShortcutsCounter++
-            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
+            PublicVariable.floatingShortcutsCounter++
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.floatingShortcutsCounter, packageName)
         } catch (e: IndexOutOfBoundsException) {
             e.printStackTrace()
 
             PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter + 1
-            PublicVariable.FloatingShortcutsCounter = PublicVariable.FloatingShortcutsCounter + 1
-            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
+            PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter + 1
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.floatingShortcutsCounter, packageName)
         }
 
         Intent(context, FloatingShortcutsForApplications::class.java).apply {
@@ -64,14 +64,14 @@ class FunctionsClassRunServices(var context: Context) {
 
         try {
             PublicVariable.allFloatingCounter++
-            PublicVariable.FloatingShortcutsCounter++
-            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
+            PublicVariable.floatingShortcutsCounter++
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.floatingShortcutsCounter, packageName)
         } catch (e: IndexOutOfBoundsException) {
             e.printStackTrace()
 
             PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter + 1
-            PublicVariable.FloatingShortcutsCounter = PublicVariable.FloatingShortcutsCounter + 1
-            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
+            PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter + 1
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.floatingShortcutsCounter, packageName)
         }
 
         Intent(context, FloatingShortcutsForFrequentlyApplications::class.java).apply {
@@ -98,14 +98,14 @@ class FunctionsClassRunServices(var context: Context) {
 
         try {
             PublicVariable.allFloatingCounter++
-            PublicVariable.FloatingShortcutsCounter++
-            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
+            PublicVariable.floatingShortcutsCounter++
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.floatingShortcutsCounter, packageName)
         } catch (e: IndexOutOfBoundsException) {
             e.printStackTrace()
 
             PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter + 1
-            PublicVariable.FloatingShortcutsCounter = PublicVariable.FloatingShortcutsCounter + 1
-            PublicVariable.FloatingShortcutsList.add(PublicVariable.FloatingShortcutsCounter, packageName)
+            PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter + 1
+            PublicVariable.FloatingShortcutsList.add(PublicVariable.floatingShortcutsCounter, packageName)
         }
 
         Intent(context, FloatingShortcutsForFrequentlyApplications::class.java).apply {

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:39 AM
+ * Created by Elias Fazel
+ * Last modified 4/15/20 3:12 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -52,7 +52,7 @@ public class ReceiverNFC extends BroadcastReceiver {
                 context.startService(w);
 
                 Intent c = new Intent(context, FloatingFoldersForNfc.class);
-                c.putExtra("categoryName", context.getString(R.string.remove_all_floatings));
+                c.putExtra(context.getString(R.string.remove_all_floatings), context.getString(R.string.remove_all_floatings));
                 c.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startService(c);
 

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 12:50 AM
+ * Last modified 4/15/20 3:07 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -177,8 +177,8 @@ public class FloatingFoldersForBluetooth extends Service {
                     }
                 }
 
-                PublicVariable.FloatingFoldersList.clear();
-                PublicVariable.FloatingFolderCounter = -1;
+                PublicVariable.floatingFoldersList.clear();
+                PublicVariable.floatingFolderCounter = -1;
 
                 try {
                     if (broadcastReceiver != null) {
@@ -206,7 +206,7 @@ public class FloatingFoldersForBluetooth extends Service {
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         try {
-            categoryName[startId] = intent.getStringExtra("categoryName");
+            categoryName[startId] = intent.getStringExtra("folderName");
 
             touchingDelay[startId] = false;
             StickyEdge[startId] = false;
@@ -218,15 +218,15 @@ public class FloatingFoldersForBluetooth extends Service {
         }
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_medium, null, false);
+        floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_folder_medium, null, false);
         if (PublicVariable.size == 13 || PublicVariable.size == 26) {
-            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_small, null, false);
+            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_folder_small, null, false);
             categorySize = 24;
         } else if (PublicVariable.size == 39 || PublicVariable.size == 52) {
-            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_medium, null, false);
+            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_folder_medium, null, false);
             categorySize = 36;
         } else if (PublicVariable.size == 65 || PublicVariable.size == 78) {
-            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_large, null, false);
+            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_folder_large, null, false);
             categorySize = 48;
         }
 
@@ -235,7 +235,7 @@ public class FloatingFoldersForBluetooth extends Service {
         two = functionsClass.initShapesImage(floatingView[startId], R.id.topLeft);
         three = functionsClass.initShapesImage(floatingView[startId], R.id.bottomLeft);
         four = functionsClass.initShapesImage(floatingView[startId], R.id.topRight);
-        pin[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.pin);
+        pin[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.pinIndicatorView);
         notificationDot[startId] = functionsClass.initShapesImage(floatingView[startId],
                 functionsClass.checkStickyEdge() ? R.id.notificationDotEnd : R.id.notificationDotStart);
 
@@ -466,10 +466,11 @@ public class FloatingFoldersForBluetooth extends Service {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 } finally {
-                                    PublicVariable.FloatingFoldersList.remove(categoryName[intent.getIntExtra("startId", 1)]);
+                                    PublicVariable.floatingFoldersList.remove(categoryName[intent.getIntExtra("startId", 1)]);
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
+                                    PublicVariable.floatingFolderCounter = PublicVariable.floatingFolderCounter - 1;
+
                                     PublicVariable.floatingFolderCounter_Bluetooth = PublicVariable.floatingFolderCounter_Bluetooth - 1;
-                                    PublicVariable.FloatingFolderCounter = PublicVariable.FloatingFolderCounter - 1;
 
                                     if (PublicVariable.allFloatingCounter == 0) {
                                         if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())

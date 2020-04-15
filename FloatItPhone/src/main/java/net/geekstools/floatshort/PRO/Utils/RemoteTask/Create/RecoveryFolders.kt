@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 12:48 PM
- * Last modified 3/28/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/15/20 1:53 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -148,11 +148,11 @@ class RecoveryFolders : Service() {
         for (aFolderLine in foldersDataLines) {
             permitOpenFloatingFolder = true
 
-            if (PublicVariable.FloatingFoldersList != null) {
+            if (PublicVariable.floatingFoldersList != null) {
 
-                for (check in PublicVariable.FloatingFoldersList.indices) {
+                for (check in PublicVariable.floatingFoldersList.indices) {
 
-                    if (aFolderLine == PublicVariable.FloatingFoldersList[check]) {
+                    if (aFolderLine == PublicVariable.floatingFoldersList[check]) {
                         permitOpenFloatingFolder = false
                     }
                 }

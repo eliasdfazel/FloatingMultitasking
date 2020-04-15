@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/15/20 12:50 AM
+  ~ Last modified 4/15/20 1:38 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -60,7 +60,7 @@
     </RelativeLayout>
 
     <net.geekstools.imageview.customshapes.ShapesImage
-        android:id="@+id/pin"
+        android:id="@+id/pinIndicatorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"

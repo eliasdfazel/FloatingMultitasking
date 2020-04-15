@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 12:48 PM
- * Last modified 3/28/20 12:38 PM
+ * Created by Elias Fazel
+ * Last modified 4/15/20 2:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -66,11 +66,11 @@ public class RemoveAll extends Service {
 
         /*Categories*/
         Intent Category_Unlimited_Category = new Intent(getApplicationContext(), FloatingFolders.class);
-        Category_Unlimited_Category.putExtra("categoryName", getString(R.string.remove_all_floatings));
+        Category_Unlimited_Category.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Category);
 
         Intent Category_Unlimited_Wifi = new Intent(getApplicationContext(), FloatingFoldersForWifi.class);
-        Category_Unlimited_Wifi.putExtra("categoryName", getString(R.string.remove_all_floatings));
+        Category_Unlimited_Wifi.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Wifi);
 
         Intent Category_Unlimited_Bluetooth = new Intent(getApplicationContext(), FloatingFoldersForBluetooth.class);
@@ -78,20 +78,20 @@ public class RemoveAll extends Service {
         startService(Category_Unlimited_Bluetooth);
 
         Intent Category_Unlimited_Gps = new Intent(getApplicationContext(), FloatingFoldersForGps.class);
-        Category_Unlimited_Gps.putExtra("categoryName", getString(R.string.remove_all_floatings));
+        Category_Unlimited_Gps.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Gps);
 
         Intent Category_Unlimited_Nfc = new Intent(getApplicationContext(), FloatingFoldersForNfc.class);
-        Category_Unlimited_Nfc.putExtra("categoryName", getString(R.string.remove_all_floatings));
+        Category_Unlimited_Nfc.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Nfc);
 
         Intent Category_Unlimited_Time = new Intent(getApplicationContext(), FloatingFoldersForTime.class);
-        Category_Unlimited_Time.putExtra("categoryName", getString(R.string.remove_all_floatings));
+        Category_Unlimited_Time.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(Category_Unlimited_Time);
 
         /*HIS*/
         Intent App_Unlimited_HIS = new Intent(getApplicationContext(), FloatingShortcutsForHIS.class);
-        App_Unlimited_HIS.putExtra("packageName", getString(R.string.remove_all_floatings));
+        App_Unlimited_HIS.putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings));
         startService(App_Unlimited_HIS);
 
         /*Widgets*/

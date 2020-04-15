@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 12:48 PM
- * Last modified 3/28/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/15/20 3:14 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -162,72 +162,75 @@ public class FloatingShortcutsForHIS extends Service {
         try {
             allowMove[startId] = true;
             packageNames[startId] = intent.getStringExtra("PackageName");
-            if (!packageNames[startId].equals(getString(R.string.remove_all_floatings))) {
-                classNames[startId] = intent.getStringExtra("ClassName");
 
-                componentName[startId] = new ComponentName(packageNames[startId], classNames[startId]);
-                activityInfo[startId] = getPackageManager().getActivityInfo(componentName[startId], 0);
+            classNames[startId] = intent.getStringExtra("ClassName");
 
-                floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_shortcuts, null, false);
-                controlIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.controlIcon);
-                shapedIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.shapedIcon);
-                notificationDot[startId] = functionsClass.initShapesImage(floatingView[startId],
-                        functionsClass.checkStickyEdge() ? R.id.notificationDotEnd : R.id.notificationDotStart);
+            componentName[startId] = new ComponentName(packageNames[startId], classNames[startId]);
+            activityInfo[startId] = getPackageManager().getActivityInfo(componentName[startId], 0);
 
-                touchingDelay[startId] = false;
-                StickyEdge[startId] = false;
-                openIt[startId] = true;
-            }
+            floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_shortcuts, null, false);
+            controlIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.controlIcon);
+            shapedIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.shapedIcon);
+            notificationDot[startId] = functionsClass.initShapesImage(floatingView[startId],
+                    functionsClass.checkStickyEdge() ? R.id.notificationDotEnd : R.id.notificationDotStart);
+
+            touchingDelay[startId] = false;
+            StickyEdge[startId] = false;
+            openIt[startId] = true;
         } catch (Exception e) {
             e.printStackTrace();
             return Service.START_NOT_STICKY;
         }
 
-        if (packageNames[startId].equals(getString(R.string.remove_all_floatings))) {
-            for (int r = 1; r < startId; r++) {
-                try {
-                    if (floatingView != null) {
-                        if (floatingView[r].isShown()) {
-                            try {
-                                windowManager.removeView(floatingView[r]);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            } finally {
-                                PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
+        if (intent.hasExtra(getString(R.string.remove_all_floatings))) {
+            if (intent.getStringExtra(getString(R.string.remove_all_floatings)).equals(getString(R.string.remove_all_floatings))) {
+                for (int r = 1; r < startId; r++) {
+                    try {
+                        if (floatingView != null) {
+                            if (floatingView[r].isShown()) {
+                                try {
+                                    windowManager.removeView(floatingView[r]);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                                if (PublicVariable.allFloatingCounter == 0) {
-                                    if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                            .getBoolean("stable", true) == false) {
-                                        stopService(new Intent(getApplicationContext(), BindServices.class));
+                                    if (PublicVariable.allFloatingCounter == 0) {
+                                        if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                                .getBoolean("stable", true) == false) {
+                                            stopService(new Intent(getApplicationContext(), BindServices.class));
+                                        }
                                     }
                                 }
+                            } else if (PublicVariable.allFloatingCounter == 0) {
+                                if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                        .getBoolean("stable", true) == false) {
+                                    stopService(new Intent(getApplicationContext(), BindServices.class));
+                                }
                             }
-                        } else if (PublicVariable.allFloatingCounter == 0) {
-                            if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                    .getBoolean("stable", true) == false) {
-                                stopService(new Intent(getApplicationContext(), BindServices.class));
-                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    if (broadcastReceiver != null) {
+                        try {
+                            unregisterReceiver(broadcastReceiver);
+                        } catch (IllegalArgumentException e) {
+                            e.printStackTrace();
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                stopSelf();
+                return START_NOT_STICKY;
             }
-            try {
-                if (broadcastReceiver != null) {
-                    try {
-                        unregisterReceiver(broadcastReceiver);
-                    } catch (IllegalArgumentException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            stopSelf();
-            return START_NOT_STICKY;
         }
+
         mapPackageNameStartId.put(packageNames[startId], startId);
+
         if (functionsClass.appIsInstalled(packageNames[startId]) == false) {
             return START_NOT_STICKY;
         }

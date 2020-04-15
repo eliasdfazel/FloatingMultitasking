@@ -1,3 +1,13 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel
+ * Last modified 4/15/20 2:38 AM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 package net.geekstools.floatshort.PRO.Shortcuts.FloatingServices
 
 import android.annotation.SuppressLint
@@ -107,7 +117,7 @@ class FloatingShortcutsForApplications : Service() {
     lateinit var getBackRunnable: Runnable
     lateinit var runnablePressHold: Runnable
 
-    var delayHandler = Handler()
+    var delayHandler: Handler = Handler()
     var getBackHandler: Handler = Handler()
     var handlerPressHold: Handler = Handler()
 
@@ -217,7 +227,7 @@ class FloatingShortcutsForApplications : Service() {
                     }
 
                     PublicVariable.FloatingShortcutsList.clear()
-                    PublicVariable.FloatingShortcutsCounter = -1
+                    PublicVariable.floatingShortcutsCounter = -1
 
                     stopSelf()
                 }
@@ -617,7 +627,7 @@ class FloatingShortcutsForApplications : Service() {
                             PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
 
                             PublicVariable.FloatingShortcutsList.remove(packageNames[startId])
-                            PublicVariable.FloatingShortcutsCounter = PublicVariable.FloatingShortcutsCounter - 1
+                            PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter - 1
 
                             if (PublicVariable.allFloatingCounter == 0) {
                                 if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
@@ -917,7 +927,7 @@ class FloatingShortcutsForApplications : Service() {
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
 
                                     PublicVariable.FloatingShortcutsList.remove(packageNames[intent.getIntExtra("startId", 1)])
-                                    PublicVariable.FloatingShortcutsCounter = PublicVariable.FloatingShortcutsCounter - 1
+                                    PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter - 1
 
                                     if (PublicVariable.allFloatingCounter == 0) {
                                         if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
