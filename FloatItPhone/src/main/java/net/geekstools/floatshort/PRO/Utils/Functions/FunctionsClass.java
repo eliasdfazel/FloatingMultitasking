@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 5:49 PM
- * Last modified 3/28/20 5:31 PM
+ * Created by Elias Fazel
+ * Last modified 4/15/20 1:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -4334,18 +4334,20 @@ public class FunctionsClass {
         forNull.setAlpha(0);
         LayerDrawable widgetShortcutIcon = (LayerDrawable) context.getDrawable(R.drawable.widget_home_screen_shortcuts);
         try {
-            widgetShortcutIcon.setDrawableByLayerId(R.id.one, widgetPreviewDrawable);
+            widgetShortcutIcon.setDrawableByLayerId(R.id.widgetPreviewHomeShortcut, widgetPreviewDrawable);
         } catch (Exception e) {
-            widgetShortcutIcon.setDrawableByLayerId(R.id.one, forNull);
+            widgetShortcutIcon.setDrawableByLayerId(R.id.widgetPreviewHomeShortcut, forNull);
         }
+
         try {
             if (widgetPreviewDrawable.getIntrinsicHeight() < DpToInteger(77)) {
 
             } else {
-                widgetShortcutIcon.setDrawableByLayerId(R.id.two, getAppIconDrawableCustomIcon(packageName));
+                widgetShortcutIcon.setDrawableByLayerId(R.id.appIconHomeShortcut, getAppIconDrawableCustomIcon(packageName));
             }
+
         } catch (Exception e) {
-            widgetShortcutIcon.setDrawableByLayerId(R.id.two, forNull);
+            widgetShortcutIcon.setDrawableByLayerId(R.id.appIconHomeShortcut, forNull);
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -4374,24 +4376,6 @@ public class FunctionsClass {
         differentIntent.putExtra("ShortcutsId", providerClassName);
         differentIntent.putExtra("ShortcutLabel", shortcutName);
 
-        Drawable forNull = context.getDrawable(R.drawable.ic_launcher);
-        forNull.setAlpha(0);
-        LayerDrawable widgetShortcutIcon = (LayerDrawable) context.getDrawable(R.drawable.widget_home_screen_shortcuts);
-        try {
-            widgetShortcutIcon.setDrawableByLayerId(R.id.one, widgetPreviewDrawable);
-        } catch (Exception e) {
-            widgetShortcutIcon.setDrawableByLayerId(R.id.one, forNull);
-        }
-        try {
-            if (widgetPreviewDrawable.getIntrinsicHeight() < DpToInteger(52)) {
-
-            } else {
-                widgetShortcutIcon.setDrawableByLayerId(R.id.two, getAppIconDrawableCustomIcon(packageName));
-            }
-        } catch (Exception e) {
-            widgetShortcutIcon.setDrawableByLayerId(R.id.two, forNull);
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             List<String> shortcutToDelete = new ArrayList<String>();
             shortcutToDelete.add((packageName + providerClassName));
@@ -4401,7 +4385,6 @@ public class FunctionsClass {
             Intent removeIntent = new Intent();
             removeIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent);
             removeIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName);
-            removeIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, layerDrawableToBitmap(widgetShortcutIcon));
             removeIntent.putExtra("duplicate", true);
             removeIntent.setAction("com.android.launcher.action.UNINSTALL_SHORTCUT");
             context.sendBroadcast(removeIntent);

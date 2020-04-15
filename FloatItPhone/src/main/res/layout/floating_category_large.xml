@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright © 2019 By Geeks Empire.
+  ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 11/11/19 7:18 PM
-  ~ Last modified 11/11/19 7:16 PM
+  ~ Created by Elias Fazel
+  ~ Last modified 4/15/20 12:50 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -23,7 +23,7 @@
         android:gravity="center">
 
         <net.geekstools.imageview.customshapes.ShapesImage
-            android:id="@+id/one"
+            android:id="@+id/bottomRight"
             android:layout_width="33dp"
             android:layout_height="33dp"
             android:layout_alignParentEnd="true"
@@ -32,29 +32,29 @@
             android:scaleType="centerCrop"/>
 
         <net.geekstools.imageview.customshapes.ShapesImage
-            android:id="@+id/two"
+            android:id="@+id/topLeft"
             android:layout_width="33dp"
             android:layout_height="33dp"
-            android:layout_above="@id/one"
-            android:layout_toStartOf="@id/one"
+            android:layout_above="@id/bottomRight"
+            android:layout_toStartOf="@id/bottomRight"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"/>
 
         <net.geekstools.imageview.customshapes.ShapesImage
-            android:id="@+id/three"
+            android:id="@+id/bottomLeft"
             android:layout_width="33dp"
             android:layout_height="33dp"
-            android:layout_below="@id/two"
-            android:layout_toStartOf="@id/one"
+            android:layout_below="@id/topLeft"
+            android:layout_toStartOf="@id/bottomRight"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"/>
 
         <net.geekstools.imageview.customshapes.ShapesImage
-            android:id="@+id/four"
+            android:id="@+id/topRight"
             android:layout_width="33dp"
             android:layout_height="33dp"
-            android:layout_above="@id/one"
-            android:layout_toEndOf="@id/two"
+            android:layout_above="@id/bottomRight"
+            android:layout_toEndOf="@id/topLeft"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"/>
     </RelativeLayout>

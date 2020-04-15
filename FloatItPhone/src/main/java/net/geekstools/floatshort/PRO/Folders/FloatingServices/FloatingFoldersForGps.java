@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 12:48 PM
- * Last modified 3/28/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/15/20 12:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -178,10 +178,10 @@ public class FloatingFoldersForGps extends Service {
         }
 
         wholeCategoryFloating = floatingView[startId].findViewById(R.id.wholeCategoryFloating);
-        one = functionsClass.initShapesImage(floatingView[startId], R.id.one);
-        two = functionsClass.initShapesImage(floatingView[startId], R.id.two);
-        three = functionsClass.initShapesImage(floatingView[startId], R.id.three);
-        four = functionsClass.initShapesImage(floatingView[startId], R.id.four);
+        one = functionsClass.initShapesImage(floatingView[startId], R.id.bottomRight);
+        two = functionsClass.initShapesImage(floatingView[startId], R.id.topLeft);
+        three = functionsClass.initShapesImage(floatingView[startId], R.id.bottomLeft);
+        four = functionsClass.initShapesImage(floatingView[startId], R.id.topRight);
         pin[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.pin);
         notificationDot[startId] = functionsClass.initShapesImage(floatingView[startId],
                 functionsClass.checkStickyEdge() ? R.id.notificationDotEnd : R.id.notificationDotStart);

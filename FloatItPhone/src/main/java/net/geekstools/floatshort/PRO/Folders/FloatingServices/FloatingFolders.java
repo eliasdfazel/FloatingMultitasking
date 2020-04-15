@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 4/15/20 12:41 AM
- * Last modified 4/15/20 12:41 AM
+ * Created by Elias Fazel
+ * Last modified 4/15/20 12:54 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -58,18 +58,19 @@ public class FloatingFolders extends Service {
     WindowManager windowManager;
 
     WindowManager.LayoutParams[] layoutParams;
-    WindowManager.LayoutParams[] StickyEdgeParams;
+    WindowManager.LayoutParams[] stickyEdgeParams;
 
     ViewGroup[] floatingView;
-    RelativeLayout wholeCategoryFloating;
-    ShapesImage one, two, three, four;
+    RelativeLayout wholeFloatingFolder;
+
+    ShapesImage bottomRight, topLeft, bottomLeft, topRight;
     ShapesImage[] pin, notificationDot;
 
-    int xPos, yPos, xInit = 19, yInit = 19, xMove, yMove;
+    int xPosition, yPosition, xInitial = 19, yInitial = 19, xMove, yMove;
 
-    int array, categorySize;
-    String[] categoryName;
-    boolean[] allowMove, touchingDelay, trans, StickyEdge, openIt;
+    int array, folderSize;
+    String[] folderName;
+    boolean[] movePermit, touchingDelay, stickedToEdge, openPermit;
 
     String notificationPackage;
     boolean showNotificationDot = false;
@@ -103,7 +104,7 @@ public class FloatingFolders extends Service {
                     try {
                         if (floatingView != null) {
                             if (floatingView[J].isShown()) {
-                                layoutParams[J] = functionsClass.handleOrientationPortrait(categoryName[J], layoutParams[J].height);
+                                layoutParams[J] = functionsClass.handleOrientationPortrait(folderName[J], layoutParams[J].height);
                                 windowManager.updateViewLayout(floatingView[J], layoutParams[J]);
                             }
                         }
@@ -119,7 +120,7 @@ public class FloatingFolders extends Service {
                     try {
                         if (floatingView != null) {
                             if (floatingView[J].isShown()) {
-                                layoutParams[J] = functionsClass.handleOrientationLandscape(categoryName[J], layoutParams[J].height);
+                                layoutParams[J] = functionsClass.handleOrientationLandscape(folderName[J], layoutParams[J].height);
                                 windowManager.updateViewLayout(floatingView[J], layoutParams[J]);
                             }
                         }
@@ -155,12 +156,12 @@ public class FloatingFolders extends Service {
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         try {
-            categoryName[startId] = intent.getStringExtra("categoryName");
+            folderName[startId] = intent.getStringExtra("categoryName");
 
             touchingDelay[startId] = false;
-            StickyEdge[startId] = false;
-            allowMove[startId] = true;
-            openIt[startId] = true;
+            stickedToEdge[startId] = false;
+            movePermit[startId] = true;
+            openPermit[startId] = true;
         } catch (Exception e) {
             e.printStackTrace();
             return Service.START_NOT_STICKY;
@@ -170,20 +171,22 @@ public class FloatingFolders extends Service {
         floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_medium, null, false);
         if (PublicVariable.size == 13 || PublicVariable.size == 26) {
             floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_small, null, false);
-            categorySize = 24;
+            folderSize = 24;
         } else if (PublicVariable.size == 39 || PublicVariable.size == 52) {
             floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_medium, null, false);
-            categorySize = 36;
+            folderSize = 36;
         } else if (PublicVariable.size == 65 || PublicVariable.size == 78) {
             floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_category_large, null, false);
-            categorySize = 48;
+            folderSize = 48;
         }
 
-        wholeCategoryFloating = floatingView[startId].findViewById(R.id.wholeCategoryFloating);
-        one = functionsClass.initShapesImage(floatingView[startId], R.id.one);
-        two = functionsClass.initShapesImage(floatingView[startId], R.id.two);
-        three = functionsClass.initShapesImage(floatingView[startId], R.id.three);
-        four = functionsClass.initShapesImage(floatingView[startId], R.id.four);
+        wholeFloatingFolder = floatingView[startId].findViewById(R.id.wholeCategoryFloating);
+
+        bottomRight = functionsClass.initShapesImage(floatingView[startId], R.id.bottomRight);
+        topLeft = functionsClass.initShapesImage(floatingView[startId], R.id.topLeft);
+        bottomLeft = functionsClass.initShapesImage(floatingView[startId], R.id.bottomLeft);
+        topRight = functionsClass.initShapesImage(floatingView[startId], R.id.topRight);
+
         pin[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.pin);
         notificationDot[startId] = functionsClass.initShapesImage(floatingView[startId],
                 functionsClass.checkStickyEdge() ? R.id.notificationDotEnd : R.id.notificationDotStart);
@@ -210,9 +213,9 @@ public class FloatingFolders extends Service {
             drawableBack.setTint(PublicVariable.primaryColor);
             drawableBack.setAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
         }
-        wholeCategoryFloating.setBackground(drawableBack);
+        wholeFloatingFolder.setBackground(drawableBack);
 
-        if (categoryName[startId].equals(getString(R.string.remove_all_floatings))) {
+        if (folderName[startId].equals(getString(R.string.remove_all_floatings))) {
             for (int r = 1; r < startId; r++) {
                 try {
                     if (floatingView != null) {
@@ -258,12 +261,12 @@ public class FloatingFolders extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
-        mapCategoryNameStartId.put(categoryName[startId], startId);
-        String[] categoryApps = functionsClass.readFileLine(categoryName[startId]);
+        mapCategoryNameStartId.put(folderName[startId], startId);
+        String[] categoryApps = functionsClass.readFileLine(folderName[startId]);
         if (categoryApps != null) {
             if (categoryApps.length > 0) {
                 for (int i = 0; i < categoryApps.length; i++) {
-                    mapContentCategoryName.put(categoryApps[i], categoryName[startId]);
+                    mapContentCategoryName.put(categoryApps[i], folderName[startId]);
                     if (getFileStreamPath(categoryApps[i] + "_" + "Notification" + "Package").exists()) {
                         showNotificationDot = true;
                         notificationPackage = categoryApps[i];
@@ -271,52 +274,52 @@ public class FloatingFolders extends Service {
                 }
             }
             try {
-                one.setImageDrawable(functionsClass.customIconsEnable() ?
+                bottomRight.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(categoryApps[0], functionsClass.shapedAppIcon(categoryApps[0]))
                         :
                         functionsClass.shapedAppIcon(categoryApps[0]));
-                one.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
+                bottomRight.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
             } catch (Exception e) {
-                one.setImageDrawable(null);
+                bottomRight.setImageDrawable(null);
             }
             try {
-                two.setImageDrawable(functionsClass.customIconsEnable() ?
+                topLeft.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(categoryApps[1], functionsClass.shapedAppIcon(categoryApps[1]))
                         :
                         functionsClass.shapedAppIcon(categoryApps[1]));
-                two.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
+                topLeft.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
             } catch (Exception e) {
-                two.setImageDrawable(null);
+                topLeft.setImageDrawable(null);
             }
             try {
-                three.setImageDrawable(functionsClass.customIconsEnable() ?
+                bottomLeft.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(categoryApps[2], functionsClass.shapedAppIcon(categoryApps[2]))
                         :
                         functionsClass.shapedAppIcon(categoryApps[2]));
-                three.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
+                bottomLeft.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
             } catch (Exception e) {
-                three.setImageDrawable(null);
+                bottomLeft.setImageDrawable(null);
             }
             try {
-                four.setImageDrawable(functionsClass.customIconsEnable() ?
+                topRight.setImageDrawable(functionsClass.customIconsEnable() ?
                         loadCustomIcons.getDrawableIconForPackage(categoryApps[3], functionsClass.shapedAppIcon(categoryApps[3]))
                         :
                         functionsClass.shapedAppIcon(categoryApps[3]));
-                four.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
+                topRight.setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
             } catch (Exception e) {
-                four.setImageDrawable(null);
+                topRight.setImageDrawable(null);
             }
         }
 
-        int HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, categorySize * 2, this.getResources().getDisplayMetrics());
-        String nameForPosition = categoryName[startId];
+        int HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, folderSize * 2, this.getResources().getDisplayMetrics());
+        String nameForPosition = folderName[startId];
         sharedPrefPosition = getSharedPreferences(nameForPosition, MODE_PRIVATE);
-        xInit = xInit + 13;
-        yInit = yInit + 13;
-        xPos = sharedPrefPosition.getInt("X", xInit);
-        yPos = sharedPrefPosition.getInt("Y", yInit);
+        xInitial = xInitial + 13;
+        yInitial = yInitial + 13;
+        xPosition = sharedPrefPosition.getInt("X", xInitial);
+        yPosition = sharedPrefPosition.getInt("Y", yInitial);
 
-        layoutParams[startId] = functionsClass.normalLayoutParams(HW, xPos, yPos);
+        layoutParams[startId] = functionsClass.normalLayoutParams(HW, xPosition, yPosition);
         try {
             floatingView[startId].setTag(startId);
             windowManager.addView(floatingView[startId], layoutParams[startId]);
@@ -324,8 +327,8 @@ public class FloatingFolders extends Service {
             e.printStackTrace();
         }
 
-        xMove = xPos;
-        yMove = yPos;
+        xMove = xPosition;
+        yMove = yPosition;
 
         final String className = FloatingFolders.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
@@ -420,7 +423,7 @@ public class FloatingFolders extends Service {
                         }
                     }, 200);
                 } else if (intent.getAction().equals("Pin_App_" + className)) {
-                    allowMove[intent.getIntExtra("startId", 1)] = false;
+                    movePermit[intent.getIntExtra("startId", 1)] = false;
                     Drawable drawableBack = null;
                     switch (functionsClass.shapesImageId()) {
                         case 1:
@@ -446,7 +449,7 @@ public class FloatingFolders extends Service {
                     }
                     pin[intent.getIntExtra("startId", 1)].setImageDrawable(drawableBack);
                 } else if (intent.getAction().equals("Unpin_App_" + className)) {
-                    allowMove[intent.getIntExtra("startId", 1)] = true;
+                    movePermit[intent.getIntExtra("startId", 1)] = true;
                     pin[intent.getIntExtra("startId", 1)].setImageDrawable(null);
                 } else if (intent.getAction().equals("Remove_Category_" + className)) {
                     try {
@@ -460,7 +463,7 @@ public class FloatingFolders extends Service {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 } finally {
-                                    PublicVariable.FloatingFoldersList.remove(categoryName[intent.getIntExtra("startId", 1)]);
+                                    PublicVariable.FloatingFoldersList.remove(folderName[intent.getIntExtra("startId", 1)]);
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
                                     PublicVariable.floatingFolderCounter_Folder = PublicVariable.floatingFolderCounter_Folder - 1;
                                     PublicVariable.FloatingFolderCounter = PublicVariable.FloatingFolderCounter - 1;
@@ -498,9 +501,9 @@ public class FloatingFolders extends Service {
                             if (floatingView != null) {
                                 if (floatingView[r].isShown()) {
                                     try {
-                                        StickyEdge[r] = true;
-                                        StickyEdgeParams[r] = functionsClass.moveToEdge(categoryName[r], layoutParams[r].height);
-                                        windowManager.updateViewLayout(floatingView[r], StickyEdgeParams[r]);
+                                        stickedToEdge[r] = true;
+                                        stickyEdgeParams[r] = functionsClass.moveToEdge(folderName[r], layoutParams[r].height);
+                                        windowManager.updateViewLayout(floatingView[r], stickyEdgeParams[r]);
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -517,12 +520,12 @@ public class FloatingFolders extends Service {
                                 if (floatingView[r].isShown()) {
                                     try {
                                         try {
-                                            sharedPrefPosition = getSharedPreferences((categoryName[r]), MODE_PRIVATE);
+                                            sharedPrefPosition = getSharedPreferences((folderName[r]), MODE_PRIVATE);
 
-                                            StickyEdge[r] = false;
-                                            xPos = sharedPrefPosition.getInt("X", xInit);
-                                            yPos = sharedPrefPosition.getInt("Y", yInit);
-                                            windowManager.updateViewLayout(floatingView[r], functionsClass.backFromEdge(layoutParams[r].height, xPos, yPos));
+                                            stickedToEdge[r] = false;
+                                            xPosition = sharedPrefPosition.getInt("X", xInitial);
+                                            yPosition = sharedPrefPosition.getInt("Y", yInitial);
+                                            windowManager.updateViewLayout(floatingView[r], functionsClass.backFromEdge(layoutParams[r].height, xPosition, yPosition));
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -586,17 +589,17 @@ public class FloatingFolders extends Service {
             flingAnimationY[startId] = new FlingAnimation(new FloatValueHolder())
                     .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
 
-            flingAnimationX[startId].setMaxValue(functionsClass.displayX() - categorySize);
+            flingAnimationX[startId].setMaxValue(functionsClass.displayX() - folderSize);
             flingAnimationX[startId].setMinValue(0);
 
-            flingAnimationY[startId].setMaxValue(functionsClass.displayY() - categorySize);
+            flingAnimationY[startId].setMaxValue(functionsClass.displayY() - folderSize);
             flingAnimationY[startId].setMinValue(0);
 
             simpleOnGestureListener[startId] = new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onFling(MotionEvent motionEventFirst, MotionEvent motionEventLast, float velocityX, float velocityY) {
 
-                    if (allowMove[startId]) {
+                    if (movePermit[startId]) {
                         flingAnimationX[startId].setStartVelocity(velocityX);
                         flingAnimationY[startId].setStartVelocity(velocityY);
 
@@ -633,7 +636,7 @@ public class FloatingFolders extends Service {
                             e.printStackTrace();
                         }
 
-                        openIt[startId] = false;
+                        openPermit[startId] = false;
                     }
 
                     return false;
@@ -643,14 +646,14 @@ public class FloatingFolders extends Service {
             flingAnimationX[startId].addEndListener(new DynamicAnimation.OnAnimationEndListener() {
                 @Override
                 public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                    openIt[startId] = true;
+                    openPermit[startId] = true;
                 }
             });
 
             flingAnimationY[startId].addEndListener(new DynamicAnimation.OnAnimationEndListener() {
                 @Override
                 public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                    openIt[startId] = true;
+                    openPermit[startId] = true;
                 }
             });
 
@@ -674,8 +677,8 @@ public class FloatingFolders extends Service {
                 }
 
                 WindowManager.LayoutParams layoutParamsOnTouch;
-                if (StickyEdge[startId] == true) {
-                    layoutParamsOnTouch = StickyEdgeParams[startId];
+                if (stickedToEdge[startId] == true) {
+                    layoutParamsOnTouch = stickyEdgeParams[startId];
                     layoutParamsOnTouch.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
                 } else {
                     layoutParamsOnTouch = layoutParams[startId];
@@ -698,13 +701,13 @@ public class FloatingFolders extends Service {
                                 if (touchingDelay[startId] == true) {
                                     functionsClass.PopupOptionFolder(
                                             view,
-                                            categoryName[startId],
+                                            folderName[startId],
                                             className,
                                             startId,
                                             initialX,
                                             initialY + PublicVariable.statusBarHeight
                                     );
-                                    openIt[startId] = false;
+                                    openPermit[startId] = false;
                                 }
                             }
                         };
@@ -717,11 +720,11 @@ public class FloatingFolders extends Service {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                openIt[startId] = true;
+                                openPermit[startId] = true;
                             }
                         }, 113);
 
-                        if (allowMove[startId] == true) {
+                        if (movePermit[startId] == true) {
                             layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);
                             layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);
                             FunctionsClassDebug.Companion.PrintDebug("X :: " + layoutParamsOnTouch.x + "\n" + " Y :: " + layoutParamsOnTouch.y);
@@ -729,7 +732,7 @@ public class FloatingFolders extends Service {
                             xMove = layoutParamsOnTouch.x;
                             yMove = layoutParamsOnTouch.y;
 
-                            String nameForPosition = categoryName[startId];
+                            String nameForPosition = folderName[startId];
                             SharedPreferences sharedPrefPosition = getSharedPreferences(nameForPosition, MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPrefPosition.edit();
                             editor.putInt("X", layoutParamsOnTouch.x);
@@ -737,14 +740,14 @@ public class FloatingFolders extends Service {
                             editor.apply();
                         } else {
                             if (!functionsClass.litePreferencesEnabled()) {
-                                float initialTouchXBoundBack = getSharedPreferences((categoryName[startId]), MODE_PRIVATE).getInt("X", 0);
+                                float initialTouchXBoundBack = getSharedPreferences((folderName[startId]), MODE_PRIVATE).getInt("X", 0);
                                 if (initialTouchXBoundBack < 0) {
                                     initialTouchXBoundBack = 0;
                                 } else if (initialTouchXBoundBack > functionsClass.displayX()) {
                                     initialTouchXBoundBack = functionsClass.displayX();
                                 }
 
-                                float initialTouchYBoundBack = getSharedPreferences((categoryName[startId]), MODE_PRIVATE).getInt("Y", 0);
+                                float initialTouchYBoundBack = getSharedPreferences((folderName[startId]), MODE_PRIVATE).getInt("Y", 0);
                                 if (initialTouchYBoundBack < 0) {
                                     initialTouchYBoundBack = 0;
                                 } else if (initialTouchYBoundBack > functionsClass.displayY()) {
@@ -813,13 +816,13 @@ public class FloatingFolders extends Service {
                                 springAnimationX.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
                                     @Override
                                     public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                                        openIt[startId] = true;
+                                        openPermit[startId] = true;
                                     }
                                 });
                                 springAnimationY.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
                                     @Override
                                     public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                                        openIt[startId] = true;
+                                        openPermit[startId] = true;
                                     }
                                 });
 
@@ -831,7 +834,7 @@ public class FloatingFolders extends Service {
                         break;
                     }
                     case MotionEvent.ACTION_MOVE: {
-                        if (allowMove[startId] == true) {
+                        if (movePermit[startId] == true) {
                             layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);
                             layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);
                             windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
@@ -842,7 +845,7 @@ public class FloatingFolders extends Service {
                             int difMoveY = (int) (layoutParamsOnTouch.y - initialTouchY);
                             if (Math.abs(difMoveX) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))
                                     || Math.abs(difMoveY) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))) {
-                                openIt[startId] = false;
+                                openPermit[startId] = false;
                                 touchingDelay[startId] = false;
                                 handlerPressHold.removeCallbacks(runnablePressHold);
                             }
@@ -861,7 +864,7 @@ public class FloatingFolders extends Service {
                                         || Math.abs(difMoveY) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))) {
                                     sendBroadcast(new Intent("Hide_PopupListView_Shortcuts"));
 
-                                    openIt[startId] = false;
+                                    openPermit[startId] = false;
                                     touchingDelay[startId] = false;
                                     handlerPressHold.removeCallbacks(runnablePressHold);
                                 }
@@ -876,11 +879,11 @@ public class FloatingFolders extends Service {
         floatingView[startId].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (openIt[startId]) {
+                if (openPermit[startId]) {
                     functionsClass.PopupAppListFolder(
                             view,
-                            categoryName[startId],
-                            functionsClass.readFileLine(categoryName[startId]),
+                            folderName[startId],
+                            functionsClass.readFileLine(folderName[startId]),
                             className,
                             startId,
                             xMove,
@@ -948,16 +951,15 @@ public class FloatingFolders extends Service {
 
         array = getApplicationContext().getPackageManager().getInstalledApplications(0).size() * 2;
         layoutParams = new WindowManager.LayoutParams[array];
-        StickyEdgeParams = new WindowManager.LayoutParams[array];
+        stickyEdgeParams = new WindowManager.LayoutParams[array];
         floatingView = new ViewGroup[array];
-        categoryName = new String[array];
+        folderName = new String[array];
         pin = new ShapesImage[array];
         notificationDot = new ShapesImage[array];
-        allowMove = new boolean[array];
+        movePermit = new boolean[array];
         touchingDelay = new boolean[array];
-        trans = new boolean[array];
-        StickyEdge = new boolean[array];
-        openIt = new boolean[array];
+        stickedToEdge = new boolean[array];
+        openPermit = new boolean[array];
         if (!functionsClass.litePreferencesEnabled()) {
             simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener[array];
             gestureDetector = new GestureDetector[array];
