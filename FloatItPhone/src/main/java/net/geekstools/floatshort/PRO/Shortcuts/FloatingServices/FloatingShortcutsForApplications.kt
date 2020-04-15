@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 2:38 AM
+ * Last modified 4/15/20 4:28 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -918,10 +918,10 @@ class FloatingShortcutsForApplications : Service() {
                                 return
                             }
 
-                            if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root.isShown()) {
+                            if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root.isShown) {
                                 try {
                                     windowManager.removeView(floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root)
-                                } catch (e: java.lang.Exception) {
+                                } catch (e: Exception) {
                                     e.printStackTrace()
                                 } finally {
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
@@ -941,20 +941,16 @@ class FloatingShortcutsForApplications : Service() {
                             }
                         } else if (intent.action == "Sticky_Edge") {
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
-                                try {
-                                    if (floatingShortcutsBinding[stickyCounter].root.isShown) {
-                                        try {
-                                            stickedToEdge[stickyCounter] = true
+                                if (floatingShortcutsBinding[stickyCounter].root.isShown) {
+                                    try {
+                                        stickedToEdge[stickyCounter] = true
 
-                                            stickyEdgeParams.add(stickyCounter, functionsClass.moveToEdge(this@FloatingShortcutsForApplications.classNames.get(stickyCounter), layoutParams[stickyCounter].height))
+                                        stickyEdgeParams.add(stickyCounter, functionsClass.moveToEdge(this@FloatingShortcutsForApplications.classNames.get(stickyCounter), layoutParams[stickyCounter].height))
 
-                                            windowManager.updateViewLayout(floatingShortcutsBinding[stickyCounter].root, stickyEdgeParams[stickyCounter])
-                                        } catch (e: WindowManager.InvalidDisplayException) {
-                                            e.printStackTrace()
-                                        }
+                                        windowManager.updateViewLayout(floatingShortcutsBinding[stickyCounter].root, stickyEdgeParams[stickyCounter])
+                                    } catch (e: WindowManager.BadTokenException) {
+                                        e.printStackTrace()
                                     }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
                                 }
                             }
                         } else if (intent.action == "Sticky_Edge_No") {

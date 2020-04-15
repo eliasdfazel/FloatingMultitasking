@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel
+ * Last modified 4/15/20 4:44 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -355,6 +355,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+
             context.sendBroadcast(Intent("Hide_PopupListView_Category"))
         }
         convertView?.setOnLongClickListener { view ->
