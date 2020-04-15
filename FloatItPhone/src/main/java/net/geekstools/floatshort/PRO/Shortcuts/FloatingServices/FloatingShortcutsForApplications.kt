@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 4:28 AM
+ * Last modified 4/15/20 5:49 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -777,39 +777,39 @@ class FloatingShortcutsForApplications : Service() {
                 val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
                     override fun onReceive(context: Context, intent: Intent) {
+
                         if (intent.action == "Split_Apps_Single_$floatingShortcutClassInCommand" && PublicVariable.splitScreen) {
-                            FunctionsClassDebug.PrintDebug("Split Apps Single")
 
                             PublicVariable.splitScreen = false
+
                             Handler().postDelayed({
-                                try {
-                                    var splitSingle: Intent? = Intent()
-                                    if (PublicVariable.splitSingleClassName != null) {
-                                        splitSingle!!.setClassName(PublicVariable.splitSinglePackage, PublicVariable.splitSingleClassName)
-                                    } else {
-                                        splitSingle = packageManager.getLaunchIntentForPackage(PublicVariable.splitSinglePackage)
-                                    }
-                                    splitSingle!!.flags = Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT or
-                                            Intent.FLAG_ACTIVITY_NEW_TASK or
-                                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-                                    startActivity(splitSingle)
 
-                                    PublicVariable.splitScreen = true
-
-                                    functionsClass.Toast(functionsClass.appName(PublicVariable.splitSinglePackage), Gravity.TOP)
-
-                                } catch (e: NullPointerException) {
-                                    e.printStackTrace()
+                                var splitSingle: Intent? = Intent()
+                                if (PublicVariable.splitSingleClassName != null) {
+                                    splitSingle?.setClassName(PublicVariable.splitSinglePackage, PublicVariable.splitSingleClassName)
+                                } else {
+                                    splitSingle = packageManager.getLaunchIntentForPackage(PublicVariable.splitSinglePackage)
                                 }
+                                splitSingle?.flags = Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT or
+                                        Intent.FLAG_ACTIVITY_NEW_TASK or
+                                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+                                startActivity(splitSingle)
+
+                                PublicVariable.splitScreen = true
+
+                                functionsClass.Toast(functionsClass.appName(PublicVariable.splitSinglePackage), Gravity.TOP)
+
                             }, 200)
+
                         } else if (intent.action == "Pin_App_$floatingShortcutClassInCommand") {
-                            FunctionsClassDebug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]))
 
                             movePermit[intent.getIntExtra("startId", 1)] = false
                             var pinDrawable: Drawable = functionsClass.appIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
 
                             if (functionsClass.customIconsEnable()) {
+
                                 pinDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
+
                             } else {
                                 when (functionsClass.shapesImageId()) {
                                     1 -> {
@@ -840,12 +840,14 @@ class FloatingShortcutsForApplications : Service() {
                             }
 
                             controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable)
+
                         } else if (intent.action == "Unpin_App_$floatingShortcutClassInCommand") {
-                            FunctionsClassDebug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]))
 
                             movePermit[intent.getIntExtra("startId", 1)] = true
                             controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(null)
+
                         } else if (intent.action == "Float_It_$floatingShortcutClassInCommand") {
+
                             if (securityFunctions.isAppLocked(packageNames[intent.getIntExtra("startId", 1)])) {
 
                                 if (!AuthenticationProcess.authenticationProcessInvoked) {
@@ -914,6 +916,7 @@ class FloatingShortcutsForApplications : Service() {
                                         })
                             }
                         } else if (intent.action == "Remove_App_$floatingShortcutClassInCommand") {
+
                             if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)) == null) {
                                 return
                             }
@@ -923,6 +926,7 @@ class FloatingShortcutsForApplications : Service() {
                                     windowManager.removeView(floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root)
                                 } catch (e: Exception) {
                                     e.printStackTrace()
+
                                 } finally {
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
 
@@ -939,7 +943,9 @@ class FloatingShortcutsForApplications : Service() {
                                     }
                                 }
                             }
+
                         } else if (intent.action == "Sticky_Edge") {
+
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
                                 if (floatingShortcutsBinding[stickyCounter].root.isShown) {
                                     try {
@@ -953,81 +959,76 @@ class FloatingShortcutsForApplications : Service() {
                                     }
                                 }
                             }
+
                         } else if (intent.action == "Sticky_Edge_No") {
+
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
-                                try {
-                                    if (floatingShortcutsBinding.get(stickyCounter).root.isShown) {
-                                        try {
-                                            try {
-                                                stickedToEdge[stickyCounter] = false
+                                if (floatingShortcutsBinding.get(stickyCounter).root.isShown) {
+                                    try {
+                                        stickedToEdge[stickyCounter] = false
 
-                                                val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForApplications.classNames.get(stickyCounter), Context.MODE_PRIVATE)
-                                                XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
-                                                XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
+                                        val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForApplications.classNames[stickyCounter], Context.MODE_PRIVATE)
+                                        XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
+                                        XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
 
-                                                windowManager.updateViewLayout(floatingShortcutsBinding.get(stickyCounter).root, functionsClass.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
-                                            } catch (e: WindowManager.BadTokenException) {
-                                                e.printStackTrace()
-                                            }
-                                        } catch (e: Exception) {
-                                            e.printStackTrace()
-                                        }
+                                        windowManager.updateViewLayout(floatingShortcutsBinding[stickyCounter].root, functionsClass.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
+
+                                    } catch (e: WindowManager.BadTokenException) {
+                                        e.printStackTrace()
                                     }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
                                 }
                             }
+
                         } else if (intent.action == "Notification_Dot") {
-                            try {
-                                val notificationPackage: String = intent.getStringExtra("NotificationPackage")
-                                val startIdNotification: Int = mapPackageNameStartId[notificationPackage]!!
 
-                                if (floatingShortcutsBinding.get(startIdNotification) != null) {
-                                    if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
-                                        /*add dot*/
-                                        var dotDrawable: Drawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
-                                        if (functionsClass.customIconsEnable()) {
-                                            dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[startIdNotification]).mutate()
-                                        } else {
-                                            when (functionsClass.shapesImageId()) {
-                                                1 -> {
-                                                    dotDrawable = getDrawable(R.drawable.dot_droplet_icon) as Drawable
-                                                }
-                                                2 -> {
-                                                    dotDrawable = getDrawable(R.drawable.dot_circle_icon) as Drawable
-                                                }
-                                                3 -> {
-                                                    dotDrawable = getDrawable(R.drawable.dot_square_icon) as Drawable
-                                                }
-                                                4 -> {
-                                                    dotDrawable = getDrawable(R.drawable.dot_squircle_icon) as Drawable
-                                                }
-                                                0 -> {
-                                                    dotDrawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
-                                                }
-                                            }
-                                        }
-
-                                        if (PublicVariable.themeLightDark) {
-                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 1.30f))
-                                        } else {
-                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 0.50f))
-                                        }
-
-                                        notificationDots[startIdNotification].setImageDrawable(dotDrawable)
-                                        notificationDots[startIdNotification].visibility = View.VISIBLE
-                                    }
-                                }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        } else if (intent.action == "Notification_Dot_No") {
                             val notificationPackage: String = intent.getStringExtra("NotificationPackage")
                             val startIdNotification: Int = mapPackageNameStartId[notificationPackage]!!
 
                             if (floatingShortcutsBinding.get(startIdNotification) != null) {
                                 if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
-                                    /*remove dot*/
+                                    /*Add Dot*/
+                                    var dotDrawable: Drawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
+                                    if (functionsClass.customIconsEnable()) {
+                                        dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[startIdNotification]).mutate()
+                                    } else {
+                                        when (functionsClass.shapesImageId()) {
+                                            1 -> {
+                                                dotDrawable = getDrawable(R.drawable.dot_droplet_icon) as Drawable
+                                            }
+                                            2 -> {
+                                                dotDrawable = getDrawable(R.drawable.dot_circle_icon) as Drawable
+                                            }
+                                            3 -> {
+                                                dotDrawable = getDrawable(R.drawable.dot_square_icon) as Drawable
+                                            }
+                                            4 -> {
+                                                dotDrawable = getDrawable(R.drawable.dot_squircle_icon) as Drawable
+                                            }
+                                            0 -> {
+                                                dotDrawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
+                                            }
+                                        }
+                                    }
+
+                                    if (PublicVariable.themeLightDark) {
+                                        dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 1.30f))
+                                    } else {
+                                        dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 0.50f))
+                                    }
+
+                                    notificationDots[startIdNotification].setImageDrawable(dotDrawable)
+                                    notificationDots[startIdNotification].visibility = View.VISIBLE
+                                }
+                            }
+
+                        } else if (intent.action == "Notification_Dot_No") {
+
+                            val notificationPackage: String = intent.getStringExtra("NotificationPackage")
+                            val startIdNotification: Int = mapPackageNameStartId[notificationPackage]!!
+
+                            if (floatingShortcutsBinding.get(startIdNotification) != null) {
+                                if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
+                                    /*Remove Dot*/
                                     notificationDots[startIdNotification].visibility = View.INVISIBLE
                                 }
                             }
