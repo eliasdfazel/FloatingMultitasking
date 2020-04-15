@@ -1,11 +1,26 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel on $file.created
+ * Last modified 4/15/20 12:33 AM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 package net.geekstools.floatshort.PRO.Folders.FloatingServices
 
 import android.app.Service
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.IBinder
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 
 class FloatingFoldersXYZ : Service() {
+
+    private val functionsClass: FunctionsClass by lazy {
+        FunctionsClass(applicationContext)
+    }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
