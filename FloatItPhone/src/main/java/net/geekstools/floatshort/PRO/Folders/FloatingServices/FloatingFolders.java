@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 12:48 PM
- * Last modified 3/28/20 10:35 AM
+ * Created by Elias Fazel on 4/15/20 12:41 AM
+ * Last modified 4/15/20 12:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -56,6 +56,7 @@ public class FloatingFolders extends Service {
     FunctionsClass functionsClass;
 
     WindowManager windowManager;
+
     WindowManager.LayoutParams[] layoutParams;
     WindowManager.LayoutParams[] StickyEdgeParams;
 
