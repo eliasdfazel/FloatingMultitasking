@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 5:49 AM
+ * Last modified 4/15/20 5:56 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -454,7 +454,7 @@ class FloatingShortcutsForApplications : Service() {
 
                             Handler().postDelayed({
                                 openPermit[startId] = true
-                            }, 113)
+                            }, 130)
 
                             if (movePermit[startId]) {
                                 layoutParamsOnTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt()

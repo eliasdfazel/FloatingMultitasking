@@ -42,7 +42,7 @@ import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.imageview.customshapes.ShapesImage
 import kotlin.math.abs
 
-class FloatingFolders : Service() {
+class FloatingFoldersForBluetooth : Service() {
 
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
@@ -150,7 +150,7 @@ class FloatingFolders : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
         super.onStartCommand(intent, flags, serviceStartId)
-        FunctionsClassDebug.PrintDebug(this@FloatingFolders.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
+        FunctionsClassDebug.PrintDebug(this@FloatingFoldersForBluetooth.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
         val startId = (serviceStartId - 1)
 
@@ -189,7 +189,7 @@ class FloatingFolders : Service() {
                     }
 
                     PublicVariable.floatingFoldersList.clear()
-                    FloatingFoldersUtils.floatingFoldersCounterType[this@FloatingFolders.javaClass.simpleName] = -1
+                    FloatingFoldersUtils.floatingFoldersCounterType[this@FloatingFoldersForBluetooth.javaClass.simpleName] = -1
 
                     stopSelf()
                 }
@@ -267,7 +267,7 @@ class FloatingFolders : Service() {
                     }
                 }
 
-            //bottomRight
+                //bottomRight
                 try {
 
                     bottomRight.setImageDrawable(if (functionsClass.customIconsEnable()) {
@@ -459,7 +459,7 @@ class FloatingFolders : Service() {
                                     functionsClass.PopupOptionFolder(
                                             view,
                                             folderName[startId],
-                                            this@FloatingFolders.javaClass.simpleName,
+                                            this@FloatingFoldersForBluetooth.javaClass.simpleName,
                                             startId,
                                             initialX,
                                             initialY + PublicVariable.statusBarHeight
@@ -645,7 +645,7 @@ class FloatingFolders : Service() {
                             view,
                             folderName[startId],
                             functionsClass.readFileLine(folderName[startId]),
-                            this@FloatingFolders.javaClass.simpleName,
+                            this@FloatingFoldersForBluetooth.javaClass.simpleName,
                             startId,
                             XY.xMove,
                             XY.yMove,
@@ -659,7 +659,7 @@ class FloatingFolders : Service() {
                 functionsClass.PopupNotificationShortcuts(
                         notificationDotView[startId],
                         notificationDotView[startId].tag.toString(),
-                        this@FloatingFolders.javaClass.simpleName,
+                        this@FloatingFoldersForBluetooth.javaClass.simpleName,
                         startId,
                         PublicVariable.primaryColor,
                         XY.xMove,
@@ -701,7 +701,7 @@ class FloatingFolders : Service() {
             }
 
             if (serviceStartId == 1) {
-                val floatingFolderClassInCommand: String = this@FloatingFolders.javaClass.simpleName
+                val floatingFolderClassInCommand: String = this@FloatingFoldersForBluetooth.javaClass.simpleName
 
                 val intentFilter = IntentFilter()
                 intentFilter.addAction("Split_Apps_Pair_$floatingFolderClassInCommand")
@@ -850,7 +850,7 @@ class FloatingFolders : Service() {
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
                                     PublicVariable.floatingFolderCounter = PublicVariable.floatingFolderCounter - 1
 
-                                    floatingFoldersUtils.floatingFoldersCounterType(this@FloatingFolders.javaClass.simpleName)
+                                    floatingFoldersUtils.floatingFoldersCounterType(this@FloatingFoldersForBluetooth.javaClass.simpleName)
 
                                     if (PublicVariable.allFloatingCounter == 0) {
                                         if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
@@ -859,7 +859,7 @@ class FloatingFolders : Service() {
                                         }
                                     }
 
-                                    if (floatingFoldersCounterType[this@FloatingFolders.javaClass.getSimpleName()] == 0) {
+                                    if (floatingFoldersCounterType[this@FloatingFoldersForBluetooth.javaClass.getSimpleName()] == 0) {
 
                                         stopSelf()
                                     }
