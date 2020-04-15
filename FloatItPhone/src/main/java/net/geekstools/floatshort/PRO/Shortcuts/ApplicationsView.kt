@@ -28,7 +28,6 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -57,7 +56,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
@@ -96,7 +94,6 @@ import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveD
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFastScroller
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.HybridApplicationViewBinding
-import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.hypot
@@ -151,6 +148,10 @@ class ApplicationsView : AppCompatActivity(),
     }
 
     private lateinit var hybridApplicationViewBinding: HybridApplicationViewBinding
+
+    private object Google {
+        const val SignInRequest: Int = 666
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -508,7 +509,7 @@ class ApplicationsView : AppCompatActivity(),
 
             val googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
             googleSignInClient.signInIntent.run {
-                startActivityForResult(this, 666)
+                startActivityForResult(this, Google.SignInRequest)
             }
 
             ViewModelProvider(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
@@ -743,41 +744,32 @@ class ApplicationsView : AppCompatActivity(),
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                666 -> {
+                Google.SignInRequest -> {
                     val googleSignInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
                     val googleSignInAccount = googleSignInAccountTask.getResult(ApiException::class.java)
 
                     val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
-                    firebaseAuth.signInWithCredential(authCredential).addOnSuccessListener {
-                        val firebaseUser = firebaseAuth.currentUser
-                        if (firebaseUser != null) {
-                            functionsClass.savePreference(".UserInformation", "userEmail", firebaseUser.email)
-
-                            try {
-                                val betaFile = File("/data/data/$packageName/shared_prefs/.UserInformation.xml")
-                                val uriBetaFile = Uri.fromFile(betaFile)
-                                val firebaseStorage = FirebaseStorage.getInstance()
-                                val storageReference = firebaseStorage.getReference("/Users/" + "API" + functionsClass.returnAPI() + "/" +
-                                        functionsClass.readPreference(".UserInformation", "userEmail", null))
-                                val uploadTask = storageReference.putFile(uriBetaFile)
-                                uploadTask.addOnFailureListener { exception ->
-                                    exception.printStackTrace()
-
-                                    ViewModelProvider(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
-                                        this.dialogueTitle.value = getString(R.string.error)
-                                        this.dialogueMessage.value = exception.message
-                                    }
-                                }.addOnSuccessListener {
+                    firebaseAuth.signInWithCredential(authCredential)
+                            .addOnSuccessListener {
+                                val firebaseUser = firebaseAuth.currentUser
+                                if (firebaseUser != null) {
                                     PrintDebug("Firebase Activities Done Successfully")
+
+                                    functionsClass.savePreference(".UserInformation", "userEmail", firebaseUser.email)
+
                                     functionsClass.Toast(getString(R.string.signinFinished), Gravity.TOP)
+
+                                    securityFunctions.downloadLockedAppsData()
 
                                     waitingDialogue.dismiss()
                                 }
-                            } finally {
-                                securityFunctions.downloadLockedAppsData()
+                            }.addOnFailureListener { exception ->
+
+                                ViewModelProvider(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
+                                    this.dialogueTitle.value = getString(R.string.error)
+                                    this.dialogueMessage.value = exception.message
+                                }
                             }
-                        }
-                    }
                 }
             }
         } else {

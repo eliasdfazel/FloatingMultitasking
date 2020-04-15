@@ -47,9 +47,9 @@ class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDat
         val dialog = Dialog(functionsClassDataActivity.activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialogue_message)
-        dialog.window!!.attributes = layoutParams
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+        dialog.window?.attributes = layoutParams
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.decorView?.setBackgroundColor(Color.TRANSPARENT)
         dialog.setCancelable(true)
 
         val dialogueView: View = dialog.findViewById<RelativeLayout>(R.id.dialogueView)

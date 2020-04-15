@@ -53,9 +53,9 @@ class WaitingDialogue {
         val dialog = Dialog(initActivity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.waiting_dialogue)
-        dialog.window!!.attributes = layoutParams
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
+        dialog.window?.attributes = layoutParams
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.decorView?.setBackgroundColor(Color.TRANSPARENT)
         dialog.setCancelable(true)
 
         dialog.dialogueView.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)

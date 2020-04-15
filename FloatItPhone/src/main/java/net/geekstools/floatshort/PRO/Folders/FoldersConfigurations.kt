@@ -23,7 +23,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.LayerDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.Gravity
@@ -47,7 +46,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -84,13 +82,14 @@ import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogue
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveData
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.FoldersConfigurationViewBinding
-import java.io.File
 import java.nio.charset.Charset
 import java.util.*
 import kotlin.math.hypot
 import kotlin.math.roundToInt
 
-class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.OnLongClickListener, GestureListenerInterface {
+class FoldersConfigurations : AppCompatActivity(),
+        View.OnClickListener, View.OnLongClickListener,
+        GestureListenerInterface {
 
     private val functionsClassDataActivity: FunctionsClassDataActivity by lazy {
         FunctionsClassDataActivity(this@FoldersConfigurations)
@@ -127,6 +126,10 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
     private lateinit var waitingDialogue: Dialog
 
     private lateinit var foldersConfigurationViewBinding: FoldersConfigurationViewBinding
+
+    private object Google {
+        const val SignInRequest: Int = 666
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -475,7 +478,7 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
 
             val googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
             googleSignInClient.signInIntent.run {
-                startActivityForResult(this, 666)
+                startActivityForResult(this, Google.SignInRequest)
             }
 
             ViewModelProvider(this@FoldersConfigurations).get(WaitingDialogueLiveData::class.java).run {
@@ -663,41 +666,32 @@ class FoldersConfigurations : AppCompatActivity(), View.OnClickListener, View.On
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                666 -> {
+                Google.SignInRequest -> {
                     val googleSignInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
                     val googleSignInAccount = googleSignInAccountTask.getResult(ApiException::class.java)
 
                     val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
-                    firebaseAuth.signInWithCredential(authCredential).addOnSuccessListener {
-                        val firebaseUser = firebaseAuth.currentUser
-                        if (firebaseUser != null) {
-                            functionsClass.savePreference(".UserInformation", "userEmail", firebaseUser.email)
-
-                            try {
-                                val betaFile = File("/data/data/$packageName/shared_prefs/.UserInformation.xml")
-                                val uriBetaFile = Uri.fromFile(betaFile)
-                                val firebaseStorage = FirebaseStorage.getInstance()
-                                val storageReference = firebaseStorage.getReference("/Users/" + "API" + functionsClass.returnAPI() + "/" +
-                                        functionsClass.readPreference(".UserInformation", "userEmail", null))
-                                val uploadTask = storageReference.putFile(uriBetaFile)
-                                uploadTask.addOnFailureListener { exception ->
-                                    exception.printStackTrace()
-
-                                    ViewModelProvider(this@FoldersConfigurations).get(WaitingDialogueLiveData::class.java).run {
-                                        this.dialogueTitle.value = getString(R.string.error)
-                                        this.dialogueMessage.value = exception.message
-                                    }
-                                }.addOnSuccessListener {
+                    firebaseAuth.signInWithCredential(authCredential)
+                            .addOnSuccessListener {
+                                val firebaseUser = firebaseAuth.currentUser
+                                if (firebaseUser != null) {
                                     FunctionsClassDebug.PrintDebug("Firebase Activities Done Successfully")
+
+                                    functionsClass.savePreference(".UserInformation", "userEmail", firebaseUser.email)
+
                                     functionsClass.Toast(getString(R.string.signinFinished), Gravity.TOP)
+
+                                    securityFunctions.downloadLockedAppsData()
 
                                     waitingDialogue.dismiss()
                                 }
-                            } finally {
-                                securityFunctions.downloadLockedAppsData()
+                            }.addOnFailureListener { exception ->
+
+                                ViewModelProvider(this@FoldersConfigurations).get(WaitingDialogueLiveData::class.java).run {
+                                    this.dialogueTitle.value = getString(R.string.error)
+                                    this.dialogueMessage.value = exception.message
+                                }
                             }
-                        }
-                    }
                 }
             }
         } else {

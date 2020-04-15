@@ -77,6 +77,8 @@
             android:gravity="start|top"
             android:textIsSelectable="true"
             android:linksClickable="true"
+            android:autoLink="web"
+            android:textColorLink="@color/default_color_game_light"
             android:text="@string/app_name"
             android:textColor="@color/dark"
             android:textSize="15sp"
