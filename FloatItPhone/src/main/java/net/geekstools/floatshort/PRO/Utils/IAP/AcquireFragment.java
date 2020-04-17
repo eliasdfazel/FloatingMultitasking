@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 4:41 PM
+ * Last modified 4/16/20 6:34 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -355,6 +355,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                 new SkuDetailsResponseListener() {
                     @Override
                     public void onSkuDetailsResponse(BillingResult billingResult, List<SkuDetails> skuDetailsListInApp) {
+
                         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsListInApp != null) {
                             List<SkuRowData> skuRowDataList = new ArrayList<>();
 

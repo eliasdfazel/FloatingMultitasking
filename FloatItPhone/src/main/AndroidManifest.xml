@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/16/20 4:57 PM
+  ~ Last modified 4/16/20 7:08 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -362,6 +362,15 @@
             android:theme="@style/TransparentInAppUpdate" />
         <activity
             android:name=".Utils.InAppStore.DigitalAssets.InitializeInAppBilling"
+            android:theme="@style/GeeksEmpire.Material.IAP.DARK">
+            <intent-filter>
+                <action android:name="RESPONSE_OWNED"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Utils.IAP.InAppBilling"
             android:theme="@style/GeeksEmpire.Material.IAP.DARK">
             <intent-filter>
                 <action android:name="RESPONSE_OWNED"/>

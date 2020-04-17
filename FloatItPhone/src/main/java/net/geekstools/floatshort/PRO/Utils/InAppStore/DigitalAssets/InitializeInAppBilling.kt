@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 6:17 PM
+ * Last modified 4/16/20 7:09 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,18 +13,25 @@ package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.android.billingclient.api.SkuDetails
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.setupInAppBillingUI
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.SubscriptionPurchase
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchaseFlowController
 import net.geekstools.floatshort.PRO.databinding.InAppBillingViewBinding
 
-class InitializeInAppBilling : AppCompatActivity() {
+class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
 
     val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
+
+    val oneTimePurchase: InAppBillingData by lazy {
+        InAppBillingData()
+    }
+
 
     object Entry {
         const val PurchaseType = "PurchaseType"
@@ -48,9 +55,9 @@ class InitializeInAppBilling : AppCompatActivity() {
 
             when(intent.getStringExtra(Entry.PurchaseType)) {
                 Entry.OneTimePurchase -> {
-                    val oneTimePurchase: Fragment = OneTimePurchase()
+                    val oneTimePurchase: Fragment = OneTimePurchase(this@InitializeInAppBilling, oneTimePurchase)
                     oneTimePurchase.arguments = Bundle().apply {
-                        putString(intent.getStringExtra(Entry.ItemToPurchase), InAppBillingData.InAppItemDonation)
+                        putString(Entry.ItemToPurchase, intent.getStringExtra(Entry.ItemToPurchase))
                     }
 
                     supportFragmentManager
@@ -60,9 +67,9 @@ class InitializeInAppBilling : AppCompatActivity() {
                             .commit()
                 }
                 Entry.SubscriptionPurchase -> {
-                    val subscriptionPurchase: Fragment = SubscriptionPurchase()
+                    val subscriptionPurchase: Fragment = SubscriptionPurchase(this@InitializeInAppBilling, oneTimePurchase)
                     subscriptionPurchase.arguments = Bundle().apply {
-                        putString(intent.getStringExtra(Entry.ItemToPurchase), InAppBillingData.InAppItemDonation)
+                        putString(Entry.ItemToPurchase, intent.getStringExtra(Entry.ItemToPurchase))
                     }
 
                     supportFragmentManager
@@ -76,5 +83,17 @@ class InitializeInAppBilling : AppCompatActivity() {
 
             this@InitializeInAppBilling.finish()
         }
+    }
+
+    override fun purchaseFlowDisrupted() {
+
+    }
+
+    override fun purchaseFlowSucceeded(skuDetails: SkuDetails) {
+
+    }
+
+    override fun purchaseFlowPaid(skuDetails: SkuDetails) {
+
     }
 }
