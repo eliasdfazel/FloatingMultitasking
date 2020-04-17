@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/16/20 4:41 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,6 +20,7 @@ import com.google.android.material.button.MaterialButton;
 
 import net.geekstools.floatshort.PRO.R;
 
+@Deprecated
 public final class RowViewHolder extends RecyclerView.ViewHolder {
     public TextView purchaseItemName, purchaseItemDescription, purchaseItemPrice;
     public MaterialButton purchaseItemButton;

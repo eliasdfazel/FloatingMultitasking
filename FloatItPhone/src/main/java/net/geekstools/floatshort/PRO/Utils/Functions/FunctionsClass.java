@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 3:07 AM
+ * Last modified 4/16/20 6:12 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -5793,24 +5793,25 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return //(BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? true :
+        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
                 readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
     }
 
     public boolean floatingWidgetsPurchased() {
 
-        return BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG ? true :
+        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
                 readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
     }
 
     public boolean searchEngineSubscribed() {
 
-        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? true :
+        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
                 readPreference(".SubscribedItem", BillingManager.iapSearchEngines, false);
     }
 
     public boolean alreadyDonated() {
 
-        return readPreference(".PurchasedItem", BillingManager.iapDonation, false);
+        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
+                readPreference(".PurchasedItem", BillingManager.iapDonation, false);
     }
 }

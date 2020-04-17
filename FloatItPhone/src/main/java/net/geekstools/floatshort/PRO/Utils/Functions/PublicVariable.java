@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 1:58 AM
+ * Last modified 4/16/20 5:07 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -66,6 +66,10 @@ public class PublicVariable {
 
     public static boolean inMemory = false;
     public static boolean hearBeatCheckPoint = false;
+    /**
+     * True -> Light
+     * False -> Dark
+     **/
     public static boolean themeLightDark = true;
     public static boolean Stable = false;
     public static boolean actionCenter = false;

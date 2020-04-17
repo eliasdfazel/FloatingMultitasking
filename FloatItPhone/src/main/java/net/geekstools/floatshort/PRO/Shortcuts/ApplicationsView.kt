@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 7:00 PM
- * Last modified 3/26/20 6:19 PM
+ * Created by Elias Fazel
+ * Last modified 4/16/20 6:07 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -76,9 +76,9 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplicat
 import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.RecycleViewSmoothLayoutGrid
-import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
-import net.geekstools.floatshort.PRO.Utils.IAP.Util.PurchasesCheckpoint
-import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchasesCheckpoint
 import net.geekstools.floatshort.PRO.Utils.InAppUpdate.InAppUpdateProcess
 import net.geekstools.floatshort.PRO.Utils.RemoteProcess.LicenseValidator
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
@@ -294,11 +294,11 @@ class ApplicationsView : AppCompatActivity(),
                             ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
 
                 } else {
-                    InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
 
-                    startActivity(Intent(applicationContext, InAppBilling::class.java)
-                            .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
-                            ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
+                    startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
+                        putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
+                        putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemFloatingWidgets)
+                    }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
 
                 }
             } else {
@@ -707,12 +707,11 @@ class ApplicationsView : AppCompatActivity(),
                                         ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
 
                             } else {
-                                InAppBilling.ItemIAB = BillingManager.iapFloatingWidgets
 
-                                startActivity(Intent(applicationContext, InAppBilling::class.java)
-                                        .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
-                                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
-
+                                startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
+                                    putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
+                                    putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemFloatingWidgets)
+                                }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
                             }
                         } else {
                             if (functionsClass.networkConnection()) {

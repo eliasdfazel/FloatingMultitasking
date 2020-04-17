@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:31 PM
+ * Created by Elias Fazel
+ * Last modified 4/16/20 4:41 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -68,6 +68,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+@Deprecated
 public class AcquireFragment extends DialogFragment implements View.OnClickListener {
 
     Activity activity;

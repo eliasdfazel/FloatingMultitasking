@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 4:18 PM
+ * Last modified 4/16/20 4:48 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -17,15 +17,27 @@ class InAppBillingData {
     companion object SKU {
         val SKUS = HashMap<String, ArrayList<String>>()
 
-        const val iapDonation = "donation"
-        const val iapFloatingWidgets = "floating.widgets"
-        const val iapSecurityServices = "security.services"
-        const val iapSearchEngines = "search.engines"
+        /**
+         * One Time Purchase: Sku for Donation
+         **/
+        const val InAppItemDonation = "donation"
+        /**
+         * One Time Purchase: Sku for Floating Widgets
+         **/
+        const val InAppItemFloatingWidgets = "floating.widgets"
+        /**
+         * Subscription Purchase: Sku for Security Services
+         **/
+        const val InAppItemSecurityServices = "security.services"
+        /**
+         * Subscription Purchase: Sku for Search Engine
+         **/
+        const val InAppItemSearchEngines = "search.engines"
     }
 
     init {
-        InAppBillingData.SKUS[BillingClient.SkuType.INAPP] = arrayListOf(SKU.iapDonation, SKU.iapFloatingWidgets)
-        InAppBillingData.SKUS[BillingClient.SkuType.SUBS] = arrayListOf(SKU.iapSecurityServices, SKU.iapSearchEngines)
+        InAppBillingData.SKUS[BillingClient.SkuType.INAPP] = arrayListOf(SKU.InAppItemDonation, SKU.InAppItemFloatingWidgets)
+        InAppBillingData.SKUS[BillingClient.SkuType.SUBS] = arrayListOf(SKU.InAppItemSecurityServices, SKU.InAppItemSearchEngines)
     }
 
     /**

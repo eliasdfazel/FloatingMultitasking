@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 4:36 PM
+ * Last modified 4/16/20 6:22 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,7 +18,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
 
 class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) {
 
@@ -45,7 +45,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) {
                 override fun onBillingSetupFinished(billingResult: BillingResult) {
 
                     if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        functionsClass.savePreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false)
+                        functionsClass.savePreference(".PurchasedItem", InAppBillingData.InAppItemFloatingWidgets, false)
 
                         val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
 
@@ -55,7 +55,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) {
                             functionsClass.savePreference(".PurchasedItem", purchase.sku, true)
 
                             //Consume Donation
-                            if (purchase.sku == BillingManager.iapDonation
+                            if (purchase.sku == InAppBillingData.InAppItemDonation
                                     && functionsClass.alreadyDonated()) {
 
                                 val consumeResponseListener = ConsumeResponseListener { billingResult, purchaseToken ->
@@ -86,7 +86,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) {
                 override fun onBillingSetupFinished(billingResult: BillingResult) {
 
                     if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        functionsClass.savePreference(".SubscribedItem", BillingManager.iapSecurityServices, false)
+                        functionsClass.savePreference(".SubscribedItem", InAppBillingData.InAppItemSecurityServices, false)
 
                         val purchases = billingClient.queryPurchases(BillingClient.SkuType.SUBS).purchasesList
                         for (purchase in purchases) {
