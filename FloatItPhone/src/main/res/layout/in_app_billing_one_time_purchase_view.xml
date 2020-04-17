@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/16/20 11:45 PM
+  ~ Last modified 4/17/20 1:41 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -18,7 +18,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="11dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/itemTitleView"
@@ -26,7 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:gravity="center_vertical"
-            android:textSize="37sp"
+            android:text="@string/app_name"
+            android:textSize="57sp"
+            android:fontFamily="@font/upcil"
 
             apps:layout_constraintTop_toTopOf="parent"/>
 
@@ -36,7 +40,10 @@
             android:layout_height="match_parent"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
-            android:textSize="23sp"
+            android:textSize="17sp"
+            android:linksClickable="true"
+            android:autoLink="web"
+            android:textColorLink="@color/default_color_light"
 
             apps:layout_constraintTop_toBottomOf="@id/itemTitleView"/>
 
@@ -46,6 +53,7 @@
             android:id="@+id/centerPurchaseButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
 
             apps:layout_constraintTop_toBottomOf="@id/itemDescriptionView"/>
 
@@ -78,6 +86,7 @@
             android:id="@+id/bottomPurchaseButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
 
             apps:layout_constraintTop_toBottomOf="@id/itemScreenshotsView"/>
 

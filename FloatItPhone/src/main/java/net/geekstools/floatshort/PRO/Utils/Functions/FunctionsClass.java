@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 6:12 PM
+ * Last modified 4/17/20 1:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -2052,15 +2052,16 @@ public class FunctionsClass {
         }
     }
 
-    private String capitalize(String s) {
-        if (s == null || s.length() == 0) {
+    private String capitalize(String aWord) {
+        if (aWord == null || aWord.length() == 0) {
             return "";
         }
-        char first = s.charAt(0);
+
+        char first = aWord.charAt(0);
         if (Character.isUpperCase(first)) {
-            return s;
+            return aWord;
         } else {
-            return Character.toUpperCase(first) + s.substring(1);
+            return Character.toUpperCase(first) + aWord.substring(1);
         }
     }
 

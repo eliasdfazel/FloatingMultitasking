@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 11:59 PM
+ * Last modified 4/17/20 2:07 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -143,8 +143,8 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                         for (int i = 1; i <= screenshotsNumber; i++) {
                             FunctionsClassDebug.Companion.PrintDebug(">>> " + mapIndexURI.get(i) + " <<<");
 
-                            RelativeLayout demoLayout = (RelativeLayout) activity.getLayoutInflater().inflate(R.layout.iap_demo_layout, null);
-                            ImageView demoItem = (ImageView) demoLayout.findViewById(R.id.DemoItem);
+                            RelativeLayout demoLayout = (RelativeLayout) activity.getLayoutInflater().inflate(R.layout.in_app_billing_screenshots, null);
+                            ImageView demoItem = (ImageView) demoLayout.findViewById(R.id.screenshotItemView);
 
                             demoItem.setImageDrawable(mapIndexDrawable.get(i));
                             demoItem.setOnClickListener(AcquireFragment.this);
@@ -188,8 +188,8 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                         }
 
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapSearchEngines)) {
-                            itemIABDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("search_engine_description")));
-                            screenshotsNumber = (int) firebaseRemoteConfig.getLong("search_engine_demo_screenshots");
+                            itemIABDemoDescription.setText(Html.fromHtml(firebaseRemoteConfig.getString("search_engines_description")));
+                            screenshotsNumber = (int) firebaseRemoteConfig.getLong("search_engines_demo_screenshots");
                         }
 
                         if (InAppBilling.ItemIAB.equals(BillingManager.iapSecurityServices)) {
@@ -241,6 +241,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
                                                     mapIndexURI.put(drawableIndex, screenshotURI);
 
                                                     if (screenshotsNumber == glideLoadCounter) {
+
                                                         activity.runOnUiThread(new Runnable() {
                                                             @Override
                                                             public void run() {

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/17/20 12:59 AM
+ * Last modified 4/17/20 2:34 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,35 +10,66 @@
 
 package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items
 
+import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.SkuDetailsParams
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.*
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.Extensions.setScreenshots
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.Extensions.setupOneTimePurchaseUI
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchaseFlowController
 import net.geekstools.floatshort.PRO.databinding.InAppBillingOneTimePurchaseViewBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 class OneTimePurchase (private val purchaseFlowController: PurchaseFlowController,
-                       private val inAppBillingData: InAppBillingData) : Fragment() {
+                       private val inAppBillingData: InAppBillingData) : Fragment(), View.OnClickListener {
 
     lateinit var inAppBillingOneTimePurchaseViewBinding: InAppBillingOneTimePurchaseViewBinding
 
-    private val listOfItem: ArrayList<String> = ArrayList<String>()
+    private val requestManager: RequestManager by lazy {
+        Glide.with(requireContext())
+    }
+
+
+    private val listOfItems: ArrayList<String> = ArrayList<String>()
+
+    val mapIndexDrawable = TreeMap<Int, Drawable>()
+    val mapIndexURI = TreeMap<Int, Uri>()
+
+    var screenshotsNumber: Int = 6
+    var glideLoadCounter: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        listOfItem.add(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.InAppItemDonation)
+        listOfItems.add(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.InAppItemDonation)
     }
 
     override fun onCreateView(layoutInflater: LayoutInflater, viewGroup: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -51,12 +82,14 @@ class OneTimePurchase (private val purchaseFlowController: PurchaseFlowControlle
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupOneTimePurchaseUI()
+
         val billingClient = BillingClient.newBuilder(requireActivity()).setListener { billingResult, mutableList ->
 
         }.enablePendingPurchases().build()
 
         val skuDetailsParams = SkuDetailsParams.newBuilder()
-                .setSkusList(listOfItem)
+                .setSkusList(listOfItems)
                 .setType(BillingClient.SkuType.INAPP)
                 .build()
 
@@ -114,12 +147,59 @@ class OneTimePurchase (private val purchaseFlowController: PurchaseFlowControlle
 
                             if (skuDetailsListInApp.isNotEmpty()) {
 
+                                inAppBillingOneTimePurchaseViewBinding.itemTitleView.text = (listOfItems[0].convertToItemTitle())
+
                                 val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
                                 firebaseRemoteConfig.setConfigSettingsAsync(FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build())
                                 firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
                                 firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
 
+                                    inAppBillingOneTimePurchaseViewBinding
+                                            .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigDescriptionKey()))
 
+                                    (inAppBillingOneTimePurchaseViewBinding
+                                            .centerPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigPriceInformation())
+                                    (inAppBillingOneTimePurchaseViewBinding
+                                            .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigPriceInformation())
+
+                                    screenshotsNumber = firebaseRemoteConfig.getLong(listOfItems[0].convertToRemoteConfigScreenshotNumberKey()).toInt()
+
+                                    for (i in 1..screenshotsNumber) {
+                                        val firebaseStorage = FirebaseStorage.getInstance()
+                                        val firebaseStorageReference = firebaseStorage.reference
+                                        val storageReference = firebaseStorageReference
+                                                .child("Assets/Images/Screenshots/${listOfItems[0].convertToStorageScreenshotsDirectory()}/IAP.Demo/${listOfItems[0].convertToStorageScreenshotsFileName(i)}")
+                                        storageReference.downloadUrl.addOnSuccessListener { screenshotLink ->
+
+                                            requestManager
+                                                    .load(screenshotLink)
+                                                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                                                    .addListener(object : RequestListener<Drawable> {
+                                                        override fun onLoadFailed(glideException: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+
+                                                            return false
+                                                        }
+
+                                                        override fun onResourceReady(resource: Drawable, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                                                            glideLoadCounter++
+
+                                                            val beforeToken: String = screenshotLink.toString().split("?alt=media&token=")[0]
+                                                            val drawableIndex = beforeToken[beforeToken.length - 5].toString().toInt()
+
+                                                            mapIndexDrawable[drawableIndex] = resource
+                                                            mapIndexURI[drawableIndex] = screenshotLink
+
+                                                            if (glideLoadCounter == screenshotsNumber) {
+
+                                                                setScreenshots()
+                                                            }
+
+                                                            return false
+                                                        }
+
+                                                    }).submit()
+                                        }
+                                    }
 
                                 }.addOnFailureListener {
 
@@ -132,8 +212,36 @@ class OneTimePurchase (private val purchaseFlowController: PurchaseFlowControlle
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (requestManager.isPaused) {
+            requestManager.resumeRequests()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        requestManager.pauseAllRequests()
+    }
+
     override fun onDetach() {
         super.onDetach()
 
+        listOfItems.clear()
+    }
+
+    override fun onClick(view: View?) {
+
+        when(view) {
+            is ImageView -> {
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(view.getTag().toString())
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    requireContext().startActivity(this@apply)
+                }
+            }
+        }
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright © 2019 By Geeks Empire.
+  ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 11/11/19 7:18 PM
-  ~ Last modified 11/11/19 7:16 PM
+  ~ Created by Elias Fazel
+  ~ Last modified 4/17/20 2:07 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -14,11 +14,11 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/DemoItem"
+        android:id="@+id/screenshotItemView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="7dp"
         android:scaleType="fitCenter"
-        android:contentDescription="@string/floatingWidget" />
+        android:contentDescription="@string/app_name" />
 
 </RelativeLayout>
