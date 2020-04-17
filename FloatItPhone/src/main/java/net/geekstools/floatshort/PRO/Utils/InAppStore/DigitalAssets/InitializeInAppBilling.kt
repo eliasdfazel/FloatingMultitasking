@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 7:09 PM
+ * Last modified 4/17/20 12:59 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -11,6 +11,7 @@
 package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.android.billingclient.api.SkuDetails
@@ -28,10 +29,12 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
         FunctionsClass(applicationContext)
     }
 
-    val oneTimePurchase: InAppBillingData by lazy {
+    private val inAppBillingData: InAppBillingData by lazy {
         InAppBillingData()
     }
 
+    var oneTimePurchase: Fragment? = null
+    var subscriptionPurchase: Fragment? = null
 
     object Entry {
         const val PurchaseType = "PurchaseType"
@@ -55,27 +58,27 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
 
             when(intent.getStringExtra(Entry.PurchaseType)) {
                 Entry.OneTimePurchase -> {
-                    val oneTimePurchase: Fragment = OneTimePurchase(this@InitializeInAppBilling, oneTimePurchase)
-                    oneTimePurchase.arguments = Bundle().apply {
+                    oneTimePurchase = OneTimePurchase(this@InitializeInAppBilling, inAppBillingData)
+                    oneTimePurchase!!.arguments = Bundle().apply {
                         putString(Entry.ItemToPurchase, intent.getStringExtra(Entry.ItemToPurchase))
                     }
 
                     supportFragmentManager
                             .beginTransaction()
                             .setCustomAnimations(android.R.anim.fade_in, 0)
-                            .replace(R.id.fragmentPlaceHolder, oneTimePurchase, "One Time Purchase")
+                            .replace(R.id.fragmentPlaceHolder, oneTimePurchase!!, "One Time Purchase")
                             .commit()
                 }
                 Entry.SubscriptionPurchase -> {
-                    val subscriptionPurchase: Fragment = SubscriptionPurchase(this@InitializeInAppBilling, oneTimePurchase)
-                    subscriptionPurchase.arguments = Bundle().apply {
+                    subscriptionPurchase = SubscriptionPurchase(this@InitializeInAppBilling, inAppBillingData)
+                    subscriptionPurchase!!.arguments = Bundle().apply {
                         putString(Entry.ItemToPurchase, intent.getStringExtra(Entry.ItemToPurchase))
                     }
 
                     supportFragmentManager
                             .beginTransaction()
                             .setCustomAnimations(android.R.anim.fade_in, 0)
-                            .replace(R.id.fragmentPlaceHolder, subscriptionPurchase, "One Time Purchase")
+                            .replace(R.id.fragmentPlaceHolder, subscriptionPurchase!!, "One Time Purchase")
                             .commit()
                 }
             }
@@ -85,8 +88,20 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
         }
     }
 
-    override fun purchaseFlowDisrupted() {
+    override fun purchaseFlowDisrupted(errorMessage: String?) {
+        Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Disrupted: ${errorMessage}")
 
+        oneTimePurchase?.let {
+            supportFragmentManager
+                    .beginTransaction()
+                    .remove(it)
+        }
+
+        subscriptionPurchase?.let {
+            supportFragmentManager
+                    .beginTransaction()
+                    .remove(it)
+        }
     }
 
     override fun purchaseFlowSucceeded(skuDetails: SkuDetails) {
@@ -94,6 +109,6 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
     }
 
     override fun purchaseFlowPaid(skuDetails: SkuDetails) {
-
+        functionsClass.savePreference(".PurchasedItem", skuDetails.sku, true)
     }
 }

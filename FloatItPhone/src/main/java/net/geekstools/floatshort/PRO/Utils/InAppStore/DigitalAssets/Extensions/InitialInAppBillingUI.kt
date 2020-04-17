@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 5:41 PM
+ * Last modified 4/17/20 12:06 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,9 +10,12 @@
 
 package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.view.View
 import android.view.WindowManager
+import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 
@@ -30,5 +33,26 @@ fun InitializeInAppBilling.setupInAppBillingUI() {
         if (Build.VERSION.SDK_INT > 25) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
+    }
+
+    inAppBillingViewBinding.shareFloatIt.setOnClickListener {
+
+        val sharingText: String = getString(R.string.shareTitle) + "\n" +
+                "" + getString(R.string.shareSummary) + "\n" +
+                "" + "${getString(R.string.play_store_link)}${packageName}"
+
+        Intent(Intent.ACTION_SEND).apply {
+            putExtra(Intent.EXTRA_TEXT, sharingText)
+            type = "text/plain"
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            startActivity(this@apply)
+        }
+    }
+
+    inAppBillingViewBinding.rateFloatIt.setOnClickListener {
+
+        startActivity(Intent(Intent.ACTION_VIEW,
+                Uri.parse(getString(R.string.play_store_link) + packageName)))
     }
 }
