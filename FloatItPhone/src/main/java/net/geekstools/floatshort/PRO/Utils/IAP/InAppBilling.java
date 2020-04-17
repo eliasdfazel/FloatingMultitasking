@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:32 PM
+ * Created by Elias Fazel
+ * Last modified 4/16/20 4:33 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,6 +25,7 @@ import net.geekstools.floatshort.PRO.Utils.IAP.Util.PurchasesCheckpoint;
 import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingProvider;
 
+@Deprecated
 public class InAppBilling extends AppCompatActivity implements BillingProvider {
 
     private static final String DIALOG_TAG = "InAppBillingDialogue";

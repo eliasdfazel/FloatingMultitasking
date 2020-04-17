@@ -2,13 +2,13 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 4:37 PM
+ * Last modified 4/16/20 4:36 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Utils.IAP.Util
+package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils
 
 import androidx.appcompat.app.AppCompatActivity
 import com.android.billingclient.api.*
@@ -20,7 +20,6 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager
 
-@Deprecated("", ReplaceWith("net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils"))
 class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) {
 
     val functionsClass: FunctionsClass = FunctionsClass(appCompatActivity)
