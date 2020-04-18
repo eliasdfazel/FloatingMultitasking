@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/17/20 1:11 AM
+ * Last modified 4/18/20 1:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -159,6 +159,7 @@ import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcut
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling;
 import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager;
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData;
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Utils.LaunchPad.OpenApplicationsLaunchPad;
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.FloatingWidgetHomeScreenShortcuts;
@@ -5795,24 +5796,24 @@ public class FunctionsClass {
     public boolean securityServicesSubscribed() {
 
         return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
-                readPreference(".SubscribedItem", BillingManager.iapSecurityServices, false);
-    }
-
-    public boolean floatingWidgetsPurchased() {
-
-        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
-                readPreference(".PurchasedItem", BillingManager.iapFloatingWidgets, false);
+                readPreference(".SubscribedItem", InAppBillingData.InAppItemSecurityServices, false);
     }
 
     public boolean searchEngineSubscribed() {
 
         return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
-                readPreference(".SubscribedItem", BillingManager.iapSearchEngines, false);
+                readPreference(".SubscribedItem", InAppBillingData.InAppItemSearchEngines, false);
+    }
+
+    public boolean floatingWidgetsPurchased() {
+
+        return //(BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
+                readPreference(".PurchasedItem", InAppBillingData.InAppItemFloatingWidgets, false);
     }
 
     public boolean alreadyDonated() {
 
-        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
-                readPreference(".PurchasedItem", BillingManager.iapDonation, false);
+        return //(BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
+                readPreference(".PurchasedItem", InAppBillingData.InAppItemDonation, false);
     }
 }

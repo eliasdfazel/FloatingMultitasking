@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 6:22 PM
+ * Last modified 4/18/20 1:07 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -70,7 +70,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) {
                                 billingClient.consumeAsync(consumeParams.build(), consumeResponseListener)
                             }
 
-                            purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.INAPP)
+                            PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.INAPP)
                         }
                     }
                 }
@@ -94,7 +94,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) {
 
                             functionsClass.savePreference(".SubscribedItem", purchase.sku, true)
 
-                            purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.SUBS)
+                            PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.SUBS)
                         }
                     }
                 }
@@ -108,19 +108,22 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) {
         return billingClient
     }
 
-    private fun purchaseAcknowledgeProcess(billingClient: BillingClient, purchase: Purchase, purchaseType: String) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+    companion object {
 
-        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-            PrintDebug("*** ${purchase.sku} Purchase Acknowledged: ${purchase.isAcknowledged} ***")
+        fun purchaseAcknowledgeProcess(billingClient: BillingClient, purchase: Purchase, purchaseType: String) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
-            if (!purchase.isAcknowledged) {
+            if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                PrintDebug("*** ${purchase.sku} Purchase Acknowledged: ${purchase.isAcknowledged} ***")
 
-                val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-                        .setPurchaseToken(purchase.purchaseToken)
+                if (!purchase.isAcknowledged) {
 
-                val aPurchaseResult: BillingResult = billingClient.acknowledgePurchase(acknowledgePurchaseParams.build())
+                    val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+                            .setPurchaseToken(purchase.purchaseToken)
 
-                PrintDebug("*** Purchased Acknowledged Result: ${purchase.sku} -> ${aPurchaseResult.debugMessage} ***")
+                    val aPurchaseResult: BillingResult = billingClient.acknowledgePurchase(acknowledgePurchaseParams.build())
+
+                    PrintDebug("*** Purchased Acknowledged Result: ${purchase.sku} -> ${aPurchaseResult.debugMessage} ***")
+                }
             }
         }
     }

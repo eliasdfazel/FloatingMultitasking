@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/17/20 11:37 PM
+ * Last modified 4/18/20 12:12 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -12,6 +12,7 @@ package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.Exten
 
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.SkuDetails
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase
 
 fun OneTimePurchase.oneTimePurchasePurchaseFlow(skuDetails: SkuDetails) {
@@ -32,6 +33,6 @@ private fun OneTimePurchase.purchaseFlowCommand(skuDetails: SkuDetails) {
             .setSkuDetails(skuDetails)
             .build()
 
-    val billingResult = billingClient.launchBillingFlow(requireActivity(), billingFlowParams)
+    val billingResult = billingClient.launchBillingFlow(requireActivity() as InitializeInAppBilling, billingFlowParams)
     purchaseFlowController.purchaseFlowInitial(billingResult)
 }

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/17/20 11:36 PM
+ * Last modified 4/18/20 1:21 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.SkuDetails
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -31,6 +32,7 @@ import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.s
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.SubscriptionPurchase
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchaseFlowController
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchasesCheckpoint
 import net.geekstools.floatshort.PRO.databinding.InAppBillingViewBinding
 
 class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
@@ -98,6 +100,22 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
         }
     }
 
+    override fun purchaseFlowInitial(billingResult: BillingResult?) {
+        Log.d(this@InitializeInAppBilling.javaClass.simpleName, "${billingResult?.debugMessage}")
+
+        when (billingResult?.responseCode) {
+            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
+
+                functionsClass
+                        .savePreference(".PurchasedItem",
+                                intent.getStringExtra(Entry.ItemToPurchase),
+                                true)
+
+                this@InitializeInAppBilling.finish()
+            }
+        }
+    }
+
     override fun purchaseFlowDisrupted(errorMessage: String?) {
         Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Disrupted: ${errorMessage}")
 
@@ -115,7 +133,7 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
 
         val snackbar = Snackbar.make(inAppBillingViewBinding.root,
                 getString(R.string.purchaseFlowDisrupted),
-                Snackbar.LENGTH_LONG)
+                Snackbar.LENGTH_INDEFINITE)
         snackbar.setBackgroundTint(PublicVariable.primaryColor)
         snackbar.setTextColor(PublicVariable.colorLightDarkOpposite)
         snackbar.setActionTextColor(getColor(R.color.default_color_game_light))
@@ -144,25 +162,22 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
         snackbar.show()
     }
 
-    override fun purchaseFlowInitial(billingResult: BillingResult) {
-        Log.d(this@InitializeInAppBilling.javaClass.simpleName, billingResult.debugMessage)
-
-        when (billingResult.responseCode) {
-            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
-
-                functionsClass
-                        .savePreference(".PurchasedItem",
-                                intent.getStringExtra(Entry.ItemToPurchase),
-                                true)
-
-                this@InitializeInAppBilling.finish()
-            }
-        }
-    }
-
     override fun purchaseFlowSucceeded(skuDetails: SkuDetails) {
         Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Succeeded: ${skuDetails}")
 
+    }
+
+    override fun purchaseFlowPaid(billingClient: BillingClient, purchase: Purchase) {
+        Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Paid: ${purchase}")
+
+        PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.INAPP)
+
+        functionsClass
+                .savePreference(".PurchasedItem",
+                        purchase.sku,
+                        true)
+
+        this@InitializeInAppBilling.finish()
     }
 
     override fun purchaseFlowPaid(skuDetails: SkuDetails) {

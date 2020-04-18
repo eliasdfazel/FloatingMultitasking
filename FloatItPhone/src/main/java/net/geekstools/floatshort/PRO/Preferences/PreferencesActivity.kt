@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 1:51 PM
+ * Created by Elias Fazel
+ * Last modified 4/18/20 1:21 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,7 +28,8 @@ import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
-import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import kotlin.math.hypot
 
@@ -37,7 +38,7 @@ class PreferencesActivity : AppCompatActivity() {
 
     lateinit var functionsClass: FunctionsClass
 
-    var FromWidgetsConfigurations: Boolean = false
+    private var fromWidgetsConfigurations: Boolean = false
 
     lateinit var rootLayout: View
 
@@ -110,7 +111,7 @@ class PreferencesActivity : AppCompatActivity() {
             rootLayout.visibility = View.VISIBLE
         }
 
-        FromWidgetsConfigurations = if (intent.hasExtra("FromWidgetsConfigurations")) intent.getBooleanExtra("FromWidgetsConfigurations", false) else false
+        fromWidgetsConfigurations = if (intent.hasExtra("FromWidgetsConfigurations")) intent.getBooleanExtra("FromWidgetsConfigurations", false) else false
     }
 
     override fun onStart() {
@@ -118,10 +119,10 @@ class PreferencesActivity : AppCompatActivity() {
 
         giftIcon.setOnClickListener {
 
-            startActivity(Intent(applicationContext, InAppBilling::class.java)
-                    .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null)),
-                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
-
+            startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
+                putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
+                putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemDonation)
+            }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
         }
 
         facebookIcon.setOnClickListener {
@@ -132,7 +133,7 @@ class PreferencesActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         try {
-            if (FromWidgetsConfigurations) {
+            if (fromWidgetsConfigurations) {
                 val intent = Intent(applicationContext, WidgetConfigurations::class.java)
                 startActivity(intent)
             } else {
