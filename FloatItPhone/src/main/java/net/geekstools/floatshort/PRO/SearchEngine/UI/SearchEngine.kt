@@ -1,3 +1,13 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel
+ * Last modified 4/18/20 1:26 AM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 package net.geekstools.floatshort.PRO.SearchEngine.UI
 
 import android.animation.Animator
@@ -50,8 +60,8 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEn
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
-import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
-import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.databinding.SearchEngineViewBinding
@@ -540,10 +550,13 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                 valueAnimatorScales.start()
             }
         } else {
-            InAppBilling.ItemIAB = BillingManager.iapSearchEngines
 
-            activity.startActivity(Intent(context, InAppBilling::class.java),
-                    ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+            context.startActivity(Intent(context, InitializeInAppBilling::class.java).apply {
+                putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.SubscriptionPurchase)
+                putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemSearchEngines)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }, ActivityOptions.makeCustomAnimation(context, R.anim.down_up, android.R.anim.fade_out).toBundle())
+
         }
 
     }

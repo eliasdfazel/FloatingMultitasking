@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:19 PM
+ * Created by Elias Fazel
+ * Last modified 4/18/20 1:27 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -57,8 +57,8 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDataActivity
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDialogues
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
-import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling
-import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 
 class PreferencesFragment : PreferenceFragmentCompat() {
@@ -329,11 +329,13 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 startActivity(Intent(context, PinPasswordConfigurations::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
             } else {
-                InAppBilling.ItemIAB = BillingManager.iapSecurityServices
-                startActivity(Intent(context, InAppBilling::class.java)
-                        .putExtra("UserEmailAddress", functionsClass.readPreference(".UserInformation", "userEmail", null))
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                        ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
+                startActivity(Intent(requireContext(), InitializeInAppBilling::class.java).apply {
+                    putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.SubscriptionPurchase)
+                    putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemSecurityServices)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }, ActivityOptions.makeCustomAnimation(requireContext(), R.anim.down_up, android.R.anim.fade_out).toBundle())
+
             }
 
             true

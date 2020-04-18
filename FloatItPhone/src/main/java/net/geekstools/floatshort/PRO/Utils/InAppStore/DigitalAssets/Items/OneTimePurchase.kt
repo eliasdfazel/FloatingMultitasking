@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 1:19 AM
+ * Last modified 4/18/20 1:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -98,7 +98,7 @@ class OneTimePurchase (val purchaseFlowController: PurchaseFlowController,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        listOfItems.add(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.InAppItemDonation)
+        listOfItems.add(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
     }
 
     override fun onCreateView(layoutInflater: LayoutInflater, viewGroup: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -175,7 +175,7 @@ class OneTimePurchase (val purchaseFlowController: PurchaseFlowController,
 
                                 oneTimePurchasePurchaseFlow(skuDetailsListInApp[0])
 
-                                if (listOfItems[0] == InAppBillingData.InAppItemDonation) {
+                                if (listOfItems[0] == InAppBillingData.SKU.InAppItemDonation) {
 
                                     inAppBillingOneTimePurchaseViewBinding.itemTitleView.visibility = View.GONE
                                     inAppBillingOneTimePurchaseViewBinding.itemDescriptionView.text =

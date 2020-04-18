@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/17/20 11:12 PM
+ * Last modified 4/18/20 1:32 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,7 +14,7 @@ import com.android.billingclient.api.BillingClient
 
 class InAppBillingData {
 
-    companion object SKU {
+    object SKU {
         val SKUS = HashMap<String, ArrayList<String>>()
 
         /**
@@ -36,8 +36,8 @@ class InAppBillingData {
     }
 
     init {
-        InAppBillingData.SKUS[BillingClient.SkuType.INAPP] = arrayListOf(SKU.InAppItemDonation, SKU.InAppItemFloatingWidgets)
-        InAppBillingData.SKUS[BillingClient.SkuType.SUBS] = arrayListOf(SKU.InAppItemSecurityServices, SKU.InAppItemSearchEngines)
+        InAppBillingData.SKU.SKUS[BillingClient.SkuType.INAPP] = arrayListOf(SKU.InAppItemDonation, SKU.InAppItemFloatingWidgets)
+        InAppBillingData.SKU.SKUS[BillingClient.SkuType.SUBS] = arrayListOf(SKU.InAppItemSecurityServices, SKU.InAppItemSearchEngines)
     }
 
     /**
@@ -47,6 +47,6 @@ class InAppBillingData {
      **/
     fun getAllSkusByType(@BillingClient.SkuType skuType: String) : ArrayList<String>? {
 
-        return InAppBillingData.SKUS[skuType]
+        return InAppBillingData.SKU.SKUS[skuType]
     }
 }

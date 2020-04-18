@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 6:07 PM
+ * Last modified 4/18/20 1:26 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -298,6 +298,7 @@ class ApplicationsView : AppCompatActivity(),
                     startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
                         putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
                         putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemFloatingWidgets)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
 
                 }
@@ -711,6 +712,7 @@ class ApplicationsView : AppCompatActivity(),
                                 startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
                                     putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
                                     putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemFloatingWidgets)
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                 }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
                             }
                         } else {

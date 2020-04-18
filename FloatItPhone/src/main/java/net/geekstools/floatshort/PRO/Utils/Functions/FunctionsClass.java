@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 1:20 AM
+ * Last modified 4/18/20 1:38 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -157,9 +157,8 @@ import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcut
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForTime;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
-import net.geekstools.floatshort.PRO.Utils.IAP.InAppBilling;
-import net.geekstools.floatshort.PRO.Utils.IAP.billing.BillingManager;
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData;
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling;
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Utils.LaunchPad.OpenApplicationsLaunchPad;
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.FloatingWidgetHomeScreenShortcuts;
@@ -3732,12 +3731,13 @@ public class FunctionsClass {
 
                             securityFunctions.uploadLockedAppsData();
                         } else {
-                            InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
 
-                            context.startActivity(new Intent(context, InAppBilling.class)
-                                            .putExtra("UserEmailAddress", readPreference(".UserInformation", "userEmail", null))
+                            context.startActivity(new Intent(context, InitializeInAppBilling.class)
+                                            .putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.SubscriptionPurchase)
+                                            .putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemSecurityServices)
                                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                    ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                                    ActivityOptions.makeCustomAnimation(context, R.anim.down_up, android.R.anim.fade_out).toBundle());
+
                         }
                     }
                 }
@@ -3911,12 +3911,13 @@ public class FunctionsClass {
                                 securityFunctions.uploadLockedAppsData();
                             }
                         } else {
-                            InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
 
-                            context.startActivity(new Intent(context, InAppBilling.class)
-                                            .putExtra("UserEmailAddress", readPreference(".UserInformation", "userEmail", null))
+                            context.startActivity(new Intent(context, InitializeInAppBilling.class)
+                                            .putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.SubscriptionPurchase)
+                                            .putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemSecurityServices)
                                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                    ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                                    ActivityOptions.makeCustomAnimation(context, R.anim.down_up, android.R.anim.fade_out).toBundle());
+
                         }
                     }
                 }
@@ -4096,12 +4097,13 @@ public class FunctionsClass {
 
                                 securityFunctions.uploadLockedAppsData();
                             } else {
-                                InAppBilling.ItemIAB = BillingManager.iapSecurityServices;
 
-                                context.startActivity(new Intent(context, InAppBilling.class)
-                                                .putExtra("UserEmailAddress", readPreference(".UserInformation", "userEmail", null))
+                                context.startActivity(new Intent(context, InitializeInAppBilling.class)
+                                                .putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.SubscriptionPurchase)
+                                                .putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemSecurityServices)
                                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                        ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                                        ActivityOptions.makeCustomAnimation(context, R.anim.down_up, android.R.anim.fade_out).toBundle());
+
                             }
                         }
 
@@ -5262,10 +5264,12 @@ public class FunctionsClass {
         preferencesView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                context.startActivity(new Intent(context, InAppBilling.class)
-                                .putExtra("UserEmailAddress", readPreference(".UserInformation", "userEmail", null))
+
+                context.startActivity(new Intent(context, InitializeInAppBilling.class)
+                                .putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
+                                .putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemDonation)
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                        ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                        ActivityOptions.makeCustomAnimation(context, R.anim.down_up, android.R.anim.fade_out).toBundle());
 
                 return false;
             }
@@ -5796,24 +5800,24 @@ public class FunctionsClass {
     public boolean securityServicesSubscribed() {
 
         return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
-                readPreference(".SubscribedItem", InAppBillingData.InAppItemSecurityServices, false);
+                readPreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSecurityServices, false);
     }
 
     public boolean searchEngineSubscribed() {
 
         return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
-                readPreference(".SubscribedItem", InAppBillingData.InAppItemSearchEngines, false);
+                readPreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSearchEngines, false);
     }
 
     public boolean floatingWidgetsPurchased() {
 
         return //(BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
-                readPreference(".PurchasedItem", InAppBillingData.InAppItemFloatingWidgets, false);
+                readPreference(".PurchasedItem", InAppBillingData.SKU.InAppItemFloatingWidgets, false);
     }
 
     public boolean alreadyDonated() {
 
         return //(BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
-                readPreference(".PurchasedItem", InAppBillingData.InAppItemDonation, false);
+                readPreference(".PurchasedItem", InAppBillingData.SKU.InAppItemDonation, false);
     }
 }

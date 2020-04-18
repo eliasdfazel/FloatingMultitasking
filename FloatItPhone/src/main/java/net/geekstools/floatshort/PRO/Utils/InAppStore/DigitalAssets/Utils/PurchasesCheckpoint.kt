@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 1:07 AM
+ * Last modified 4/18/20 1:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -45,7 +45,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) {
                 override fun onBillingSetupFinished(billingResult: BillingResult) {
 
                     if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        functionsClass.savePreference(".PurchasedItem", InAppBillingData.InAppItemFloatingWidgets, false)
+                        functionsClass.savePreference(".PurchasedItem", InAppBillingData.SKU.InAppItemFloatingWidgets, false)
 
                         val purchases = billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList
 
@@ -55,7 +55,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) {
                             functionsClass.savePreference(".PurchasedItem", purchase.sku, true)
 
                             //Consume Donation
-                            if (purchase.sku == InAppBillingData.InAppItemDonation
+                            if (purchase.sku == InAppBillingData.SKU.InAppItemDonation
                                     && functionsClass.alreadyDonated()) {
 
                                 val consumeResponseListener = ConsumeResponseListener { billingResult, purchaseToken ->
@@ -86,7 +86,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) {
                 override fun onBillingSetupFinished(billingResult: BillingResult) {
 
                     if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        functionsClass.savePreference(".SubscribedItem", InAppBillingData.InAppItemSecurityServices, false)
+                        functionsClass.savePreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSecurityServices, false)
 
                         val purchases = billingClient.queryPurchases(BillingClient.SkuType.SUBS).purchasesList
                         for (purchase in purchases) {
