@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 1:38 AM
+ * Last modified 4/18/20 2:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -3726,7 +3726,7 @@ public class FunctionsClass {
                                 ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle());
 
                     } else {
-                        if (securityServicesSubscribed() || BuildConfig.DEBUG) {
+                        if (securityServicesSubscribed()) {
                             securityFunctions.doLockApps(PackageName);
 
                             securityFunctions.uploadLockedAppsData();
@@ -3898,7 +3898,7 @@ public class FunctionsClass {
                                 ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle());
 
                     } else {
-                        if (securityServicesSubscribed() || BuildConfig.DEBUG) {
+                        if (securityServicesSubscribed()) {
 
                             if (context.getFileStreamPath(folderName).exists() && context.getFileStreamPath(folderName).isFile()) {
                                 savePreference(".LockedApps", folderName, true);
@@ -4092,7 +4092,7 @@ public class FunctionsClass {
                                     ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle());
 
                         } else {
-                            if (securityServicesSubscribed() || BuildConfig.DEBUG) {
+                            if (securityServicesSubscribed()) {
                                 securityFunctions.doLockApps(packageName + providerClassName);
 
                                 securityFunctions.uploadLockedAppsData();

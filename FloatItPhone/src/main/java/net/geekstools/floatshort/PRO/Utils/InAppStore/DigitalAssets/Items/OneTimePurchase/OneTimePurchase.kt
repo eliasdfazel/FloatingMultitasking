@@ -2,13 +2,13 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 1:36 AM
+ * Last modified 4/18/20 2:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items
+package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -38,9 +38,9 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.*
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
-import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.Extensions.oneTimePurchasePurchaseFlow
-import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.Extensions.setScreenshots
-import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.Extensions.setupOneTimePurchaseUI
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase.Extensions.oneTimePurchaseFlow
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase.Extensions.setScreenshots
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase.Extensions.setupOneTimePurchaseUI
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchaseFlowController
 import net.geekstools.floatshort.PRO.databinding.InAppBillingOneTimePurchaseViewBinding
 import java.util.*
@@ -173,7 +173,7 @@ class OneTimePurchase (val purchaseFlowController: PurchaseFlowController,
 
                             if (skuDetailsListInApp.isNotEmpty()) {
 
-                                oneTimePurchasePurchaseFlow(skuDetailsListInApp[0])
+                                oneTimePurchaseFlow(skuDetailsListInApp[0])
 
                                 if (listOfItems[0] == InAppBillingData.SKU.InAppItemDonation) {
 

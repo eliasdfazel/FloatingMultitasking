@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 1:21 AM
+ * Last modified 4/18/20 2:53 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -29,8 +29,8 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.setupInAppBillingUI
-import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase
-import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.SubscriptionPurchase
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase.OneTimePurchase
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.SubscriptionPurchase.SubscriptionPurchase
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchaseFlowController
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchasesCheckpoint
 import net.geekstools.floatshort.PRO.databinding.InAppBillingViewBinding
@@ -100,6 +100,11 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
         }
     }
 
+    override fun onBackPressed() {
+
+        this@InitializeInAppBilling.finish()
+    }
+
     override fun purchaseFlowInitial(billingResult: BillingResult?) {
         Log.d(this@InitializeInAppBilling.javaClass.simpleName, "${billingResult?.debugMessage}")
 
@@ -145,11 +150,10 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
             override fun onDismissed(transientBottomBar: Snackbar?, transitionEvent: Int) {
                 super.onDismissed(transientBottomBar, transitionEvent)
 
-                this@InitializeInAppBilling.finish()
-
                 startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
                     putExtra(InitializeInAppBilling.Entry.PurchaseType, intent.getStringExtra(Entry.PurchaseType))
                     putExtra(InitializeInAppBilling.Entry.ItemToPurchase, intent.getStringExtra(Entry.ItemToPurchase))
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
             }
         })

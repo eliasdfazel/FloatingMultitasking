@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:28 PM
+ * Created by Elias Fazel
+ * Last modified 4/18/20 2:59 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -166,7 +166,8 @@ public class CardHybridAdapter extends RecyclerView.Adapter<CardHybridAdapter.Vi
 
                 functionsClass.popupOptionShortcuts(functionsClassRunServices, context, view,
                         packageName, className);
-                return true;
+
+                return false;
             }
         });
     }
