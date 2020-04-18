@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/17/20 1:41 AM
+  ~ Last modified 4/17/20 11:21 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -21,6 +21,20 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingBottom="16dp">
+
+        <net.geeksempire.loadingspin.SpinKitView
+            android:id="@+id/waitingView"
+            android:layout_width="321dp"
+            android:layout_height="321dp"
+            android:padding="33dp"
+
+            apps:layout_constraintTop_toTopOf="parent"
+            apps:layout_constraintBottom_toBottomOf="parent"
+            apps:layout_constraintStart_toStartOf="parent"
+            apps:layout_constraintEnd_toEndOf="parent"
+
+            apps:SpinKit_Color="@color/default_color_game_light"
+            apps:SpinKit_Style="PulseRing"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/itemTitleView"

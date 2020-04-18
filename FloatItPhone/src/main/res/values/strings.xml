@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 3/29/20 1:00 PM
-  ~ Last modified 3/29/20 12:59 PM
+  ~ Created by Elias Fazel
+  ~ Last modified 4/17/20 11:34 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -93,6 +93,7 @@
                 </small>
         ]]>
     </string>
+    <string name="retry">Retry Now</string>
     <string name="observeSum">Android 7.0 (Nougat) &amp; Higher</string>
     <string name="grant">Grant Permission</string>
     <string name="read">Read More</string>
@@ -115,7 +116,7 @@
     <string name="nfc_folder">Folders for NFC</string>
     <string name="time_folder">Folders for Time</string>
     <string name="auto_categories">Auto Folders</string>
-    <string name="retry">Please Select a Feature</string>
+    <string name="selectAutoFeature">Please Select a Feature</string>
     <string name="wait">Please, Be Patient!</string>
     <string name="stable">Control Panel</string>
     <string name="automation">Automation Features</string>
@@ -317,6 +318,7 @@
             ✨ Please, Rate Float It 🌟🌟🌟🌟🌟
         ]]>
     </string>
+    <string name="purchaseFlowDisrupted">Purchase Flow Disrupted</string>
 
     <string-array name="ContextMenuLock">
         <item name="1">Small</item>

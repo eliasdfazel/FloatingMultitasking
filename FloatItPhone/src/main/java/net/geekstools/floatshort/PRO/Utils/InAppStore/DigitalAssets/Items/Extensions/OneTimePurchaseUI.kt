@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/17/20 2:23 AM
+ * Last modified 4/17/20 11:20 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -38,4 +38,6 @@ fun OneTimePurchase.setScreenshots() = CoroutineScope(Dispatchers.Main).launch {
 
         inAppBillingOneTimePurchaseViewBinding.itemScreenshotsListView.addView(inAppBillingScreenshots)
     }
+
+    inAppBillingOneTimePurchaseViewBinding.waitingView.visibility = View.GONE
 }

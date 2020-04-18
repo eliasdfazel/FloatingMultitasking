@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:17 PM
+ * Created by Elias Fazel
+ * Last modified 4/17/20 11:24 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -144,7 +144,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
             @Override
             public void onClick(View view) {
                 if (PublicVariable.autoID == null) {
-                    Toast.makeText(context, context.getString(R.string.retry), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, context.getString(R.string.selectAutoFeature), Toast.LENGTH_LONG).show();
                 } else {
                     if (PublicVariable.autoID.equals(context.getString(R.string.wifi))) {
                         final String pack = adapterItems.get(position).getPackageName();
@@ -241,7 +241,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
                     } else {
-                        Toast.makeText(context, context.getString(R.string.retry), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.selectAutoFeature), Toast.LENGTH_LONG).show();
                     }
                 }
             }

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 4:48 PM
+ * Last modified 4/17/20 11:12 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,19 +18,19 @@ class InAppBillingData {
         val SKUS = HashMap<String, ArrayList<String>>()
 
         /**
-         * One Time Purchase: Sku for Donation
+         * One Time Purchase: Sku for Donation - Sku: donation
          **/
         const val InAppItemDonation = "donation"
         /**
-         * One Time Purchase: Sku for Floating Widgets
+         * One Time Purchase: Sku for Floating Widgets - Sku: floating.widgets
          **/
         const val InAppItemFloatingWidgets = "floating.widgets"
         /**
-         * Subscription Purchase: Sku for Security Services
+         * Subscription Purchase: Sku for Security Services - Sku: security.services
          **/
         const val InAppItemSecurityServices = "security.services"
         /**
-         * Subscription Purchase: Sku for Search Engine
+         * Subscription Purchase: Sku for Search Engine - Sku: search.engines
          **/
         const val InAppItemSearchEngines = "search.engines"
     }

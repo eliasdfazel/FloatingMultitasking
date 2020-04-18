@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/17/20 2:34 AM
+ * Last modified 4/17/20 11:02 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,15 +15,13 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import com.android.billingclient.api.BillingClient
-import com.android.billingclient.api.BillingClientStateListener
-import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.SkuDetailsParams
+import com.android.billingclient.api.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.DataSource
@@ -40,6 +38,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.*
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.Extensions.oneTimePurchasePurchaseFlow
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.Extensions.setScreenshots
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.Extensions.setupOneTimePurchaseUI
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchaseFlowController
@@ -47,15 +46,18 @@ import net.geekstools.floatshort.PRO.databinding.InAppBillingOneTimePurchaseView
 import java.util.*
 import kotlin.collections.ArrayList
 
-class OneTimePurchase (private val purchaseFlowController: PurchaseFlowController,
-                       private val inAppBillingData: InAppBillingData) : Fragment(), View.OnClickListener {
+class OneTimePurchase (val purchaseFlowController: PurchaseFlowController,
+                       val inAppBillingData: InAppBillingData) : Fragment(), View.OnClickListener, PurchasesUpdatedListener {
 
-    lateinit var inAppBillingOneTimePurchaseViewBinding: InAppBillingOneTimePurchaseViewBinding
+    lateinit var billingClient: BillingClient
+
+    private val billingClientBuilder: BillingClient.Builder by lazy {
+        BillingClient.newBuilder(requireActivity())//.build()
+    }
 
     private val requestManager: RequestManager by lazy {
         Glide.with(requireContext())
     }
-
 
     private val listOfItems: ArrayList<String> = ArrayList<String>()
 
@@ -65,6 +67,12 @@ class OneTimePurchase (private val purchaseFlowController: PurchaseFlowControlle
     var screenshotsNumber: Int = 6
     var glideLoadCounter: Int = 0
 
+    lateinit var inAppBillingOneTimePurchaseViewBinding: InAppBillingOneTimePurchaseViewBinding
+
+    override fun onPurchasesUpdated(billingResult: BillingResult?, purchasesList: MutableList<Purchase>?) {//ResponseCode 7 = Item Owned
+        Log.d(this@OneTimePurchase.javaClass.simpleName, "PurchasesUpdated: ${billingResult?.debugMessage}")
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,14 +92,9 @@ class OneTimePurchase (private val purchaseFlowController: PurchaseFlowControlle
 
         setupOneTimePurchaseUI()
 
-        val billingClient = BillingClient.newBuilder(requireActivity()).setListener { billingResult, mutableList ->
+        billingClient = billingClientBuilder.setListener { billingResult, mutableList ->
 
         }.enablePendingPurchases().build()
-
-        val skuDetailsParams = SkuDetailsParams.newBuilder()
-                .setSkusList(listOfItems)
-                .setType(BillingClient.SkuType.INAPP)
-                .build()
 
         billingClient.startConnection(object : BillingClientStateListener {
 
@@ -101,6 +104,11 @@ class OneTimePurchase (private val purchaseFlowController: PurchaseFlowControlle
             }
 
             override fun onBillingSetupFinished(billingResult: BillingResult?) {
+
+                val skuDetailsParams = SkuDetailsParams.newBuilder()
+                        .setSkusList(listOfItems)
+                        .setType(BillingClient.SkuType.INAPP)
+                        .build()
 
                 billingClient.querySkuDetailsAsync(skuDetailsParams) { queryBillingResult, skuDetailsListInApp ->
                     FunctionsClassDebug.PrintDebug("Billing Result: ${queryBillingResult.debugMessage} | Sku Details List In App Purchase: $skuDetailsListInApp")
@@ -153,6 +161,8 @@ class OneTimePurchase (private val purchaseFlowController: PurchaseFlowControlle
                                 firebaseRemoteConfig.setConfigSettingsAsync(FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build())
                                 firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
                                 firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
+
+                                    oneTimePurchasePurchaseFlow(skuDetailsListInApp[0])
 
                                     inAppBillingOneTimePurchaseViewBinding
                                             .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigDescriptionKey()))

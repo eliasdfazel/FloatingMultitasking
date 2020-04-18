@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 4:41 PM
+ * Last modified 4/17/20 9:37 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -102,6 +102,7 @@ public class SkusAdapter extends RecyclerView.Adapter<RowViewHolder> implements 
 
     @Override
     public void onButtonClicked(int position) {
+
         SkuRowData skuRowData = getData(position);
         billingProvider.getBillingManager().startPurchaseFlow(skuRowData.getSkuDetails());
 

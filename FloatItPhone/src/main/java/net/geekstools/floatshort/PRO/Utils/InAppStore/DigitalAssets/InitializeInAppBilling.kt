@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/17/20 12:59 AM
+ * Last modified 4/17/20 11:36 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,13 +10,23 @@
 
 package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
+import android.view.Gravity
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.SkuDetails
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.setupInAppBillingUI
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.SubscriptionPurchase
@@ -102,13 +112,67 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
                     .beginTransaction()
                     .remove(it)
         }
+
+        val snackbar = Snackbar.make(inAppBillingViewBinding.root,
+                getString(R.string.purchaseFlowDisrupted),
+                Snackbar.LENGTH_LONG)
+        snackbar.setBackgroundTint(PublicVariable.primaryColor)
+        snackbar.setTextColor(PublicVariable.colorLightDarkOpposite)
+        snackbar.setActionTextColor(getColor(R.color.default_color_game_light))
+        snackbar.setAction(Html.fromHtml(getString(R.string.retry))) {
+
+        }
+        snackbar.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+
+            override fun onDismissed(transientBottomBar: Snackbar?, transitionEvent: Int) {
+                super.onDismissed(transientBottomBar, transitionEvent)
+
+                this@InitializeInAppBilling.finish()
+
+                startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
+                    putExtra(InitializeInAppBilling.Entry.PurchaseType, intent.getStringExtra(Entry.PurchaseType))
+                    putExtra(InitializeInAppBilling.Entry.ItemToPurchase, intent.getStringExtra(Entry.ItemToPurchase))
+                }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
+            }
+        })
+
+        val snackbarView = snackbar.view
+        val frameLayoutLayoutParams = snackbarView.layoutParams as FrameLayout.LayoutParams
+        frameLayoutLayoutParams.gravity = Gravity.BOTTOM
+        snackbarView.layoutParams = frameLayoutLayoutParams
+
+        snackbar.show()
+    }
+
+    override fun purchaseFlowInitial(billingResult: BillingResult) {
+        Log.d(this@InitializeInAppBilling.javaClass.simpleName, billingResult.debugMessage)
+
+        when (billingResult.responseCode) {
+            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
+
+                functionsClass
+                        .savePreference(".PurchasedItem",
+                                intent.getStringExtra(Entry.ItemToPurchase),
+                                true)
+
+                this@InitializeInAppBilling.finish()
+            }
+        }
     }
 
     override fun purchaseFlowSucceeded(skuDetails: SkuDetails) {
+        Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Succeeded: ${skuDetails}")
 
     }
 
     override fun purchaseFlowPaid(skuDetails: SkuDetails) {
-        functionsClass.savePreference(".PurchasedItem", skuDetails.sku, true)
+        Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Paid: ${skuDetails}")
+
+        functionsClass
+                .savePreference(".PurchasedItem",
+                        skuDetails.sku,
+                        true)
+
+        this@InitializeInAppBilling.finish()
     }
 }
