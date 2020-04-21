@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:17 PM
+ * Created by Elias Fazel
+ * Last modified 4/21/20 6:14 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,32 +34,16 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 
 import java.util.ArrayList;
 
-public class AppSavedListAdapter extends BaseAdapter {
+public class SavedAppsListPopupAdapter extends BaseAdapter {
 
-    private Context context;
 
-    private FunctionsClass functionsClass;
+    private int layoutInflater;
 
-    private AppsConfirmButton appsConfirmButton;
 
-    private ConfirmButtonProcessInterface confirmButtonProcessInterface;
-
-    private int splitNumber, layoutInflater;
-
-    private ArrayList<AdapterItems> selectedAppsListItem;
-
-    public AppSavedListAdapter(Context context, FunctionsClass functionsClass,
-                               ArrayList<AdapterItems> selectedAppsListItem, int splitNumber,
-                               AppsConfirmButton appsConfirmButton,
-                               ConfirmButtonProcessInterface confirmButtonProcessInterface) {
-        this.context = context;
-        this.functionsClass = functionsClass;
-        this.appsConfirmButton = appsConfirmButton;
-
-        this.confirmButtonProcessInterface = confirmButtonProcessInterface;
-
-        this.selectedAppsListItem = selectedAppsListItem;
-        this.splitNumber = splitNumber;
+    public SavedAppsListPopupAdapter(Context context, FunctionsClass functionsClass,
+                                     ArrayList<AdapterItems> selectedAppsListItem, int splitNumber,
+                                     AppsConfirmButton appsConfirmButton,
+                                     ConfirmButtonProcessInterface confirmButtonProcessInterface) {
 
         switch (functionsClass.shapesImageId()) {
             case 1:
@@ -86,7 +70,7 @@ public class AppSavedListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public AdapterItems getItem(int position) {
         return selectedAppsListItem.get(position);
     }
 
@@ -97,42 +81,42 @@ public class AppSavedListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
+        ViewHolder savedAppsListPopupAdapterViewHolder = null;
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(layoutInflater, null);
 
-            viewHolder = new ViewHolder();
-            viewHolder.items = (RelativeLayout) convertView.findViewById(R.id.items);
-            viewHolder.imgIcon = (ImageView) convertView.findViewById(R.id.iconViewItem);
-            viewHolder.textAppName = (TextView) convertView.findViewById(R.id.titleViewItem);
-            viewHolder.deleteItem = (Button) convertView.findViewById(R.id.deleteItem);
-            viewHolder.confirmItem = (Button) convertView.findViewById(R.id.confirmItem);
-            convertView.setTag(viewHolder);
+            savedAppsListPopupAdapterViewHolder = new ViewHolder();
+            savedAppsListPopupAdapterViewHolder.items = (RelativeLayout) convertView.findViewById(R.id.items);
+            savedAppsListPopupAdapterViewHolder.imgIcon = (ImageView) convertView.findViewById(R.id.iconViewItem);
+            savedAppsListPopupAdapterViewHolder.textAppName = (TextView) convertView.findViewById(R.id.titleViewItem);
+            savedAppsListPopupAdapterViewHolder.deleteItem = (Button) convertView.findViewById(R.id.deleteItem);
+            savedAppsListPopupAdapterViewHolder.confirmItem = (Button) convertView.findViewById(R.id.confirmItem);
+            convertView.setTag(savedAppsListPopupAdapterViewHolder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            savedAppsListPopupAdapterViewHolder = (ViewHolder) convertView.getTag();
         }
 
         if (functionsClass.returnAPI() < 24) {
-            viewHolder.confirmItem.setVisibility(View.INVISIBLE);
+            savedAppsListPopupAdapterViewHolder.confirmItem.setVisibility(View.INVISIBLE);
         }
 
         LayerDrawable drawConfirm = (LayerDrawable) context.getDrawable(R.drawable.ripple_effect_confirm);
         Drawable backConfirm = drawConfirm.findDrawableByLayerId(R.id.backgroundTemporary);
         backConfirm.setTint(PublicVariable.primaryColorOpposite);
-        viewHolder.confirmItem.setBackground(drawConfirm);
-        viewHolder.textAppName.setTextColor(context.getColor(R.color.light));
+        savedAppsListPopupAdapterViewHolder.confirmItem.setBackground(drawConfirm);
+        savedAppsListPopupAdapterViewHolder.textAppName.setTextColor(context.getColor(R.color.light));
 
-        viewHolder.imgIcon.setImageDrawable(selectedAppsListItem.get(position).getAppIcon());
-        viewHolder.textAppName.setText(selectedAppsListItem.get(position).getAppName());
+        savedAppsListPopupAdapterViewHolder.imgIcon.setImageDrawable(selectedAppsListItem.get(position).getAppIcon());
+        savedAppsListPopupAdapterViewHolder.textAppName.setText(selectedAppsListItem.get(position).getAppName());
 
-        viewHolder.items.setOnClickListener(new View.OnClickListener() {
+        savedAppsListPopupAdapterViewHolder.items.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
-        viewHolder.deleteItem.setOnClickListener(new View.OnClickListener() {
+        savedAppsListPopupAdapterViewHolder.deleteItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 context.deleteFile(selectedAppsListItem.get(position).getPackageName()
@@ -145,7 +129,7 @@ public class AppSavedListAdapter extends BaseAdapter {
                 confirmButtonProcessInterface.savedShortcutCounter();
             }
         });
-        viewHolder.confirmItem.setOnClickListener(new View.OnClickListener() {
+        savedAppsListPopupAdapterViewHolder.confirmItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (splitNumber == 1) {
@@ -167,7 +151,7 @@ public class AppSavedListAdapter extends BaseAdapter {
         gradientDrawableBack.setTint(PublicVariable.primaryColorOpposite);
         gradientDrawableBackMask.setTint(PublicVariable.colorLightDark);
 
-        viewHolder.items.setBackground(rippleDrawableBack);
+        savedAppsListPopupAdapterViewHolder.items.setBackground(rippleDrawableBack);
 
         return convertView;
     }

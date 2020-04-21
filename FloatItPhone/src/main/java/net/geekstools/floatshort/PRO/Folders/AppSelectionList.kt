@@ -1,3 +1,13 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel
+ * Last modified 4/21/20 6:18 AM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 package net.geekstools.floatshort.PRO.Folders
 
 import android.content.pm.ApplicationInfo
@@ -17,8 +27,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.geekstools.floatshort.PRO.Folders.Extensions.loadInstalledAppsData
 import net.geekstools.floatshort.PRO.Folders.Extensions.setupConfirmButtonUI
-import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSavedListAdapter
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSelectionListAdapter
+import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.SavedAppsListPopupAdapter
 import net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
 import net.geekstools.floatshort.PRO.R
@@ -47,7 +57,6 @@ class AppSelectionList : AppCompatActivity(),
     val installedAppsListItem: ArrayList<AdapterItems> = ArrayList<AdapterItems>()
 
     private val selectedAppsListItem: ArrayList<AdapterItems> = ArrayList<AdapterItems>()
-    private lateinit var advanceSavedListAdapter: AppSavedListAdapter
 
     var appsConfirmButton: AppsConfirmButton? = null
 
@@ -172,10 +181,10 @@ class AppSelectionList : AppCompatActivity(),
                                 aSavedLine,
                                 if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
                     }
-                    advanceSavedListAdapter = AppSavedListAdapter(applicationContext, functionsClass,
+                    val savedAppsListPopupAdapter = SavedAppsListPopupAdapter(applicationContext, functionsClass,
                             selectedAppsListItem, 1,
                             appsConfirmButton, this@AppSelectionList)
-                    listPopupWindow.setAdapter(advanceSavedListAdapter)
+                    listPopupWindow.setAdapter(savedAppsListPopupAdapter)
                     listPopupWindow.anchorView = advanceAppSelectionListBinding.popupAnchorView
                     listPopupWindow.width = android.widget.ListPopupWindow.WRAP_CONTENT
                     listPopupWindow.height = android.widget.ListPopupWindow.WRAP_CONTENT
@@ -202,10 +211,10 @@ class AppSelectionList : AppCompatActivity(),
                                 aSavedLine,
                                 if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
                     }
-                    advanceSavedListAdapter = AppSavedListAdapter(applicationContext, functionsClass,
+                    val savedAppsListPopupAdapter = SavedAppsListPopupAdapter(applicationContext, functionsClass,
                             selectedAppsListItem, 2,
                             appsConfirmButton, this@AppSelectionList)
-                    listPopupWindow.setAdapter(advanceSavedListAdapter)
+                    listPopupWindow.setAdapter(savedAppsListPopupAdapter)
                     listPopupWindow.anchorView = advanceAppSelectionListBinding.popupAnchorView
                     listPopupWindow.width = android.widget.ListPopupWindow.WRAP_CONTENT
                     listPopupWindow.height = android.widget.ListPopupWindow.WRAP_CONTENT
@@ -255,12 +264,12 @@ class AppSelectionList : AppCompatActivity(),
                         aSavedLine,
                         if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
             }
-            advanceSavedListAdapter = AppSavedListAdapter(applicationContext, functionsClass,
+            val savedAppsListPopupAdapter = SavedAppsListPopupAdapter(applicationContext, functionsClass,
                     selectedAppsListItem, 1,
                     appsConfirmButton,
                     this@AppSelectionList)
 
-            listPopupWindow.setAdapter(advanceSavedListAdapter)
+            listPopupWindow.setAdapter(savedAppsListPopupAdapter)
             listPopupWindow.setBackgroundDrawable(null)
             listPopupWindow.anchorView = advanceAppSelectionListBinding.popupAnchorView
             listPopupWindow.width = ListPopupWindow.WRAP_CONTENT
