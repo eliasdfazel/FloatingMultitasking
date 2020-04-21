@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 6:18 AM
+ * Last modified 4/21/20 9:23 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -181,9 +181,11 @@ class AppSelectionList : AppCompatActivity(),
                                 aSavedLine,
                                 if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
                     }
-                    val savedAppsListPopupAdapter = SavedAppsListPopupAdapter(applicationContext, functionsClass,
-                            selectedAppsListItem, 1,
-                            appsConfirmButton, this@AppSelectionList)
+                    val savedAppsListPopupAdapter = appsConfirmButton?.let { it1 ->
+                        SavedAppsListPopupAdapter(applicationContext, functionsClass,
+                                selectedAppsListItem, 1,
+                                it1, this@AppSelectionList)
+                    }
                     listPopupWindow.setAdapter(savedAppsListPopupAdapter)
                     listPopupWindow.anchorView = advanceAppSelectionListBinding.popupAnchorView
                     listPopupWindow.width = android.widget.ListPopupWindow.WRAP_CONTENT
@@ -211,9 +213,11 @@ class AppSelectionList : AppCompatActivity(),
                                 aSavedLine,
                                 if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
                     }
-                    val savedAppsListPopupAdapter = SavedAppsListPopupAdapter(applicationContext, functionsClass,
-                            selectedAppsListItem, 2,
-                            appsConfirmButton, this@AppSelectionList)
+                    val savedAppsListPopupAdapter = appsConfirmButton?.let { it1 ->
+                        SavedAppsListPopupAdapter(applicationContext, functionsClass,
+                                selectedAppsListItem, 2,
+                                it1, this@AppSelectionList)
+                    }
                     listPopupWindow.setAdapter(savedAppsListPopupAdapter)
                     listPopupWindow.anchorView = advanceAppSelectionListBinding.popupAnchorView
                     listPopupWindow.width = android.widget.ListPopupWindow.WRAP_CONTENT
@@ -264,10 +268,12 @@ class AppSelectionList : AppCompatActivity(),
                         aSavedLine,
                         if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
             }
-            val savedAppsListPopupAdapter = SavedAppsListPopupAdapter(applicationContext, functionsClass,
-                    selectedAppsListItem, 1,
-                    appsConfirmButton,
-                    this@AppSelectionList)
+            val savedAppsListPopupAdapter = appsConfirmButton?.let {
+                SavedAppsListPopupAdapter(applicationContext, functionsClass,
+                        selectedAppsListItem, 1,
+                        it,
+                        this@AppSelectionList)
+            }
 
             listPopupWindow.setAdapter(savedAppsListPopupAdapter)
             listPopupWindow.setBackgroundDrawable(null)

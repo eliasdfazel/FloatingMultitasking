@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 6:29 PM
- * Last modified 3/28/20 6:25 PM
+ * Created by Elias Fazel
+ * Last modified 4/21/20 9:28 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1485,7 +1485,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         }
     }
 
-    fun createWidget(context: Context?, widgetView: ViewGroup, appWidgetManager: AppWidgetManager, appWidgetHost: AppWidgetHost, appWidgetProviderInfo: AppWidgetProviderInfo, widgetId: Int) {
+    fun createWidget(context: Context, widgetView: ViewGroup, appWidgetManager: AppWidgetManager, appWidgetHost: AppWidgetHost, appWidgetProviderInfo: AppWidgetProviderInfo, widgetId: Int) {
         widgetView.removeAllViews()
 
         val functionsClass = FunctionsClass(context)
