@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/20 5:07 PM
+ * Last modified 4/21/20 10:19 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -57,7 +57,7 @@ public class PublicVariable {
     public static float confirmButtonY;
 
     public static String autoID = null;
-    public static String categoryName = "FloatingCategory";
+    public static String folderName = "FloatingFolder";
     public static String splitPairPackage;
     public static String splitSinglePackage;
     public static String splitSingleClassName;

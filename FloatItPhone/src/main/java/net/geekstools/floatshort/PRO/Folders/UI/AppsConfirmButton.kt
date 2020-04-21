@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:32 PM
+ * Created by Elias Fazel
+ * Last modified 4/21/20 10:19 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -98,14 +98,14 @@ class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
                     GestureListenerConstants.SWIPE_RIGHT -> {
                         confirmButtonProcessInterface.showSavedShortcutList()
 
-                        if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                        if (functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
                             this@AppsConfirmButton.background = dismissDrawable
                         }
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
                         confirmButtonProcessInterface.showSavedShortcutList()
 
-                        if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                        if (functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
                             this@AppsConfirmButton.background = dismissDrawable
                         }
                     }
@@ -116,7 +116,7 @@ class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
                     GestureListenerConstants.SWIPE_UP -> {
                         confirmButtonProcessInterface.showSavedShortcutList()
 
-                        if (functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                        if (functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
                             this@AppsConfirmButton.background = dismissDrawable
                         }
                     }

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 9:24 AM
+ * Last modified 4/21/20 10:19 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -110,9 +110,9 @@ class SavedAppsListPopupAdapter(private val context: Context, private val functi
         savedAppsListPopupAdapterViewHolder.deleteItem?.setOnClickListener {
 
             context.deleteFile(selectedAppsListItem[position].packageName
-                    + PublicVariable.categoryName)
+                    + PublicVariable.folderName)
 
-            functionsClass.removeLine(PublicVariable.categoryName,
+            functionsClass.removeLine(PublicVariable.folderName,
                     selectedAppsListItem[position].packageName)
 
             confirmButtonProcessInterface.shortcutDeleted()
@@ -125,12 +125,12 @@ class SavedAppsListPopupAdapter(private val context: Context, private val functi
             if (splitNumber == 1) {
 
                 functionsClass
-                        .saveFile(PublicVariable.categoryName.toString()
+                        .saveFile(PublicVariable.folderName.toString()
                                 + ".SplitOne", selectedAppsListItem[position].packageName)
             } else if (splitNumber == 2) {
 
                 functionsClass
-                        .saveFile(PublicVariable.categoryName.toString()
+                        .saveFile(PublicVariable.folderName.toString()
                                 + ".SplitTwo", selectedAppsListItem[position].packageName)
             }
 

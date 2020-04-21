@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:26 PM
+ * Created by Elias Fazel
+ * Last modified 4/21/20 10:19 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -122,7 +122,7 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
     public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
         try {
             final String packageName = adapterItems.get(position).getPackageName();
-            File autoFile = context.getFileStreamPath(packageName + PublicVariable.categoryName);
+            File autoFile = context.getFileStreamPath(packageName + PublicVariable.folderName);
             viewHolderBinder.autoChoice.setChecked(false);
             if (autoFile.exists()) {
                 viewHolderBinder.autoChoice.setChecked(true);
@@ -152,10 +152,10 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                         break;
                     case MotionEvent.ACTION_UP:
                         final String pack = adapterItems.get(position).getPackageName();
-                        File autoFile = context.getFileStreamPath(pack + PublicVariable.categoryName);
+                        File autoFile = context.getFileStreamPath(pack + PublicVariable.folderName);
                         if (autoFile.exists()) {
-                            context.deleteFile(pack + PublicVariable.categoryName);
-                            functionsClass.removeLine(PublicVariable.categoryName, adapterItems.get(position).getPackageName());
+                            context.deleteFile(pack + PublicVariable.folderName);
+                            functionsClass.removeLine(PublicVariable.folderName, adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
 
                             confirmButtonProcessInterface.savedShortcutCounter();
@@ -163,17 +163,17 @@ public class AppSelectionListAdapter extends RecyclerView.Adapter<AppSelectionLi
                             confirmButtonProcessInterface.hideSavedShortcutList();
                             appsConfirmButton.makeItVisible();
 
-                            if (securityFunctions.isAppLocked(PublicVariable.categoryName)) {
+                            if (securityFunctions.isAppLocked(PublicVariable.folderName)) {
                                 securityFunctions.doUnlockApps(adapterItems.get(position).getPackageName());
                             }
                         } else {
                             functionsClass.saveFile(
-                                    pack + PublicVariable.categoryName, pack);
+                                    pack + PublicVariable.folderName, pack);
                             functionsClass.saveFileAppendLine(
-                                    PublicVariable.categoryName, pack);
+                                    PublicVariable.folderName, pack);
                             viewHolderBinder.autoChoice.setChecked(true);
 
-                            if (securityFunctions.isAppLocked(PublicVariable.categoryName)) {
+                            if (securityFunctions.isAppLocked(PublicVariable.folderName)) {
                                 securityFunctions.doLockApps(adapterItems.get(position).getPackageName());
                             }
 

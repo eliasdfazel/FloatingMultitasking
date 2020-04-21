@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 9:23 AM
+ * Last modified 4/21/20 10:19 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -91,14 +91,14 @@ class AppSelectionList : AppCompatActivity(),
         val typeface = Typeface.createFromAsset(assets, "upcil.ttf")
         advanceAppSelectionListBinding.loadingDescription.typeface = typeface
         advanceAppSelectionListBinding.loadingDescription.setTextColor(PublicVariable.colorLightDarkOpposite)
-        advanceAppSelectionListBinding.loadingDescription.text = PublicVariable.categoryName
+        advanceAppSelectionListBinding.loadingDescription.text = PublicVariable.folderName
         advanceAppSelectionListBinding.appSelectedCounterView.typeface = typeface
         advanceAppSelectionListBinding.appSelectedCounterView.bringToFront()
 
-        if (functionsClass.loadRecoveryIndicatorCategory(PublicVariable.categoryName)) {
-            advanceAppSelectionListBinding.folderNameView.text = "${PublicVariable.categoryName} \uD83D\uDD04"
+        if (functionsClass.loadRecoveryIndicatorCategory(PublicVariable.folderName)) {
+            advanceAppSelectionListBinding.folderNameView.text = "${PublicVariable.folderName} \uD83D\uDD04"
         } else {
-            advanceAppSelectionListBinding.folderNameView.text = PublicVariable.categoryName
+            advanceAppSelectionListBinding.folderNameView.text = PublicVariable.folderName
         }
 
         advanceAppSelectionListBinding.folderNameView.setBackgroundColor(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
@@ -146,9 +146,9 @@ class AppSelectionList : AppCompatActivity(),
         } else {
             advanceAppSelectionListBinding.splitHint.setTextColor(PublicVariable.primaryColorOpposite)
 
-            if (getFileStreamPath(PublicVariable.categoryName.toString() + ".SplitOne").exists()) {
+            if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitOne").exists()) {
 
-                advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne")))
+                advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne")))
 
             } else {
 
@@ -158,9 +158,9 @@ class AppSelectionList : AppCompatActivity(),
 
             }
 
-            if (getFileStreamPath(PublicVariable.categoryName.toString() + ".SplitTwo").exists()) {
+            if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitTwo").exists()) {
 
-                advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitTwo")))
+                advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitTwo")))
 
             } else {
 
@@ -171,10 +171,10 @@ class AppSelectionList : AppCompatActivity(),
             }
 
             advanceAppSelectionListBinding.firstSplitIcon.setOnClickListener {
-                if (getFileStreamPath(PublicVariable.categoryName).exists() && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
                     selectedAppsListItem.clear()
 
-                    val savedLine = functionsClass.readFileLine(PublicVariable.categoryName)
+                    val savedLine = functionsClass.readFileLine(PublicVariable.folderName)
                     for (aSavedLine in savedLine) {
                         selectedAppsListItem.add(AdapterItems(
                                 functionsClass.appName(aSavedLine),
@@ -203,10 +203,10 @@ class AppSelectionList : AppCompatActivity(),
             }
 
             advanceAppSelectionListBinding.secondSplitIcon.setOnClickListener {
-                if (getFileStreamPath(PublicVariable.categoryName).exists() && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+                if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
                     selectedAppsListItem.clear()
 
-                    val savedLine = functionsClass.readFileLine(PublicVariable.categoryName)
+                    val savedLine = functionsClass.readFileLine(PublicVariable.folderName)
                     for (aSavedLine in savedLine) {
                         selectedAppsListItem.add(AdapterItems(
                                 functionsClass.appName(aSavedLine),
@@ -251,17 +251,17 @@ class AppSelectionList : AppCompatActivity(),
     /*ConfirmButtonProcess*/
     override fun savedShortcutCounter() {
 
-        advanceAppSelectionListBinding.appSelectedCounterView.text = functionsClass.countLineInnerFile(PublicVariable.categoryName).toString()
+        advanceAppSelectionListBinding.appSelectedCounterView.text = functionsClass.countLineInnerFile(PublicVariable.folderName).toString()
     }
 
     override fun showSavedShortcutList() {
 
-        if (getFileStreamPath(PublicVariable.categoryName).exists()
-                && functionsClass.countLineInnerFile(PublicVariable.categoryName) > 0) {
+        if (getFileStreamPath(PublicVariable.folderName).exists()
+                && functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
 
             selectedAppsListItem.clear()
 
-            val savedLine = functionsClass.readFileLine(PublicVariable.categoryName)
+            val savedLine = functionsClass.readFileLine(PublicVariable.folderName)
             for (aSavedLine in savedLine) {
                 selectedAppsListItem.add(AdapterItems(
                         functionsClass.appName(aSavedLine),
@@ -307,11 +307,11 @@ class AppSelectionList : AppCompatActivity(),
         listPopupWindow.dismiss()
 
 
-        if (getFileStreamPath(PublicVariable.categoryName.toString() + ".SplitOne").exists()) {
-            advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne")))
+        if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitOne").exists()) {
+            advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne")))
         }
-        if (getFileStreamPath(PublicVariable.categoryName.toString() + ".SplitTwo").exists()) {
-            advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.categoryName.toString() + ".SplitTwo")))
+        if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitTwo").exists()) {
+            advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitTwo")))
         }
     }
     /*ConfirmButtonProcess*/

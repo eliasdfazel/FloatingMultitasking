@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 3:12 AM
+ * Last modified 4/21/20 9:40 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,7 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.nfc.NfcManager;
 
-import net.geekstools.floatshort.PRO.Automation.RecoveryNfc;
+import net.geekstools.floatshort.PRO.Automation.RecoveryServices.RecoveryNfc;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForNfc;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForNfc;

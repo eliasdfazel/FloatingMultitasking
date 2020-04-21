@@ -2,13 +2,13 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 5:27 AM
+ * Last modified 4/21/20 9:40 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Automation
+package net.geekstools.floatshort.PRO.Automation.RecoveryServices
 
 import android.app.Service
 import android.content.Intent
@@ -17,7 +17,7 @@ import android.util.TypedValue
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
-class RecoveryGps : Service() {
+class RecoveryBluetooth : Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
 
@@ -32,10 +32,10 @@ class RecoveryGps : Service() {
         PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
         PublicVariable.HW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size.toFloat(), this.resources.displayMetrics).toInt()
 
-        if (getFileStreamPath(".auto" + this@RecoveryGps.javaClass.simpleName.replace("Recovery", "")).exists()
-                && getFileStreamPath(".auto" + this@RecoveryGps.javaClass.simpleName.replace("Recovery", "")).isFile) {
+        if (getFileStreamPath(".auto" + this@RecoveryBluetooth.javaClass.simpleName.replace("Recovery", "")).exists()
+                && getFileStreamPath(".auto" + this@RecoveryBluetooth.javaClass.simpleName.replace("Recovery", "")).isFile) {
 
-            val packageNames = functionsClass.readFileLine(".auto" + this@RecoveryGps.javaClass.simpleName.replace("Recovery", ""))
+            val packageNames = functionsClass.readFileLine(".auto" + this@RecoveryBluetooth.javaClass.simpleName.replace("Recovery", ""))
             if (packageNames.isNotEmpty()) {
                 for (aPackageName in packageNames) {
                     functionsClass.runUnlimitedBluetooth(aPackageName)
@@ -43,10 +43,10 @@ class RecoveryGps : Service() {
             }
         }
 
-        if (getFileStreamPath(".auto" + this@RecoveryGps.javaClass.simpleName.replace("Recovery", "") + "Category").exists()
-                && getFileStreamPath(".auto" + this@RecoveryGps.javaClass.simpleName.replace("Recovery", "") + "Category").isFile) {
+        if (getFileStreamPath(".auto" + this@RecoveryBluetooth.javaClass.simpleName.replace("Recovery", "") + "Category").exists()
+                && getFileStreamPath(".auto" + this@RecoveryBluetooth.javaClass.simpleName.replace("Recovery", "") + "Category").isFile) {
 
-            val folderNames = functionsClass.readFileLine(".auto" + this@RecoveryGps.javaClass.simpleName.replace("Recovery", "") + "Category")
+            val folderNames = functionsClass.readFileLine(".auto" + this@RecoveryBluetooth.javaClass.simpleName.replace("Recovery", "") + "Category")
             if (folderNames.isNotEmpty()) {
                 for (CategoryName in folderNames) {
                     functionsClass.runUnlimitedFolderBluetooth(CategoryName, functionsClass.readFileLine(CategoryName))

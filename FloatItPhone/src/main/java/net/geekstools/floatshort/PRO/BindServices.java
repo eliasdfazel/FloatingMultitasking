@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 3:07 AM
+ * Last modified 4/21/20 9:40 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -23,9 +23,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.TypedValue;
 
-import net.geekstools.floatshort.PRO.Automation.RecoveryGps;
-import net.geekstools.floatshort.PRO.Automation.RecoveryNfc;
-import net.geekstools.floatshort.PRO.Automation.RecoveryWifi;
+import net.geekstools.floatshort.PRO.Automation.RecoveryServices.RecoveryGps;
+import net.geekstools.floatshort.PRO.Automation.RecoveryServices.RecoveryNfc;
+import net.geekstools.floatshort.PRO.Automation.RecoveryServices.RecoveryWifi;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForGps;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForNfc;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForWifi;

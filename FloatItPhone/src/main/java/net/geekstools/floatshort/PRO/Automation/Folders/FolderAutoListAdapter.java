@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/17/20 11:24 PM
+ * Last modified 4/21/20 10:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -216,17 +216,17 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
             }
         });
 
-        RippleDrawable drawItem = (RippleDrawable) context.getDrawable(R.drawable.ripple_effect_category_logo);
-        drawItem.setDrawableByLayerId(R.id.category_logo_layer, functionsClass.shapesDrawablesCategory(viewHolderBinder.timeView));
+        RippleDrawable drawItem = (RippleDrawable) context.getDrawable(R.drawable.ripple_effect_folder_logo);
+        drawItem.setDrawableByLayerId(R.id.folder_logo_layer, functionsClass.shapesDrawablesCategory(viewHolderBinder.timeView));
         drawItem.setDrawableByLayerId(android.R.id.mask, functionsClass.shapesDrawablesCategory(viewHolderBinder.timeView));
-        Drawable categoryLogoLayer = (Drawable) drawItem.findDrawableByLayerId(R.id.category_logo_layer);
+        Drawable categoryLogoLayer = (Drawable) drawItem.findDrawableByLayerId(R.id.folder_logo_layer);
         Drawable categoryMask = (Drawable) drawItem.findDrawableByLayerId(android.R.id.mask);
         categoryLogoLayer.setTint(PublicVariable.primaryColorOpposite);
         categoryMask.setTint(PublicVariable.primaryColor);
         viewHolderBinder.timeView.setBackground(drawItem);
 
         RippleDrawable drawCategories = (RippleDrawable) context.getDrawable(R.drawable.auto_category);
-        Drawable backCategories = drawCategories.findDrawableByLayerId(R.id.category_item);
+        Drawable backCategories = drawCategories.findDrawableByLayerId(R.id.folder_item_background);
         Drawable backCategoriesRipple = drawCategories.findDrawableByLayerId(android.R.id.mask);
         backCategories.setTint(PublicVariable.colorLightDark);
         backCategoriesRipple.setTint(PublicVariable.colorLightDarkOpposite);
