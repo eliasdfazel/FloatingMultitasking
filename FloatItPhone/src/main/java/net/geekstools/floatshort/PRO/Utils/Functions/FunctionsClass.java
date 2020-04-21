@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 2:58 AM
+ * Last modified 4/21/20 5:12 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -491,18 +491,19 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedWifi(String packageName) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+            return;
         }
+
         PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForWifi.class);
         u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
+
         if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
@@ -513,18 +514,19 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedBluetooth(String packageName) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+            return;
         }
+
         PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForBluetooth.class);
         u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
+
         if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
@@ -535,18 +537,19 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedGps(String packageName) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+            return;
         }
+
         PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForGps.class);
         u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
+
         if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
@@ -557,18 +560,19 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedNfc(String packageName) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+            return;
         }
+
         PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForNfc.class);
         u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
+
         if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
@@ -579,18 +583,19 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedTime(String packageName) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+            return;
         }
+
         PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForTime.class);
         u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
+
         if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
@@ -601,12 +606,12 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedShortcutsServiceHIS(String packageName, String className) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+            return;
         }
+
         PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForHIS.class);
@@ -614,6 +619,7 @@ public class FunctionsClass {
         u.putExtra("ClassName", className);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
+
         if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
