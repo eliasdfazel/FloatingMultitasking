@@ -2,7 +2,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/21/20 10:29 AM
+  ~ Last modified 4/21/20 10:43 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -18,7 +18,7 @@
     android:paddingBottom="7dp">
 
     <CheckBox
-        android:id="@+id/autoChoice"
+        android:id="@+id/checkboxSelectItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -35,7 +35,7 @@
         android:layout_height="73dp"
         android:layout_marginStart="9dp"
         android:layout_marginTop="9dp"
-        android:layout_toEndOf="@id/autoChoice"
+        android:layout_toEndOf="@id/checkboxSelectItem"
         android:background="@drawable/ripple_effect_folder_logo"
         android:clickable="false"
         android:enabled="false"

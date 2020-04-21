@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright © 2019 By Geeks Empire.
+  ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 11/11/19 7:18 PM
-  ~ Last modified 11/11/19 7:16 PM
+  ~ Created by Elias Fazel
+  ~ Last modified 4/21/20 10:43 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -17,7 +17,7 @@
     android:clickable="true">
 
     <CheckBox
-        android:id="@+id/autoChoice"
+        android:id="@+id/checkboxSelectItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -32,7 +32,7 @@
         android:id="@+id/icon"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_toEndOf="@id/autoChoice"
+        android:layout_toEndOf="@id/checkboxSelectItem"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher"
         apps:shapeDrawable="@drawable/squircle_icon"/>

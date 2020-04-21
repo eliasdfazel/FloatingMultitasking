@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/17/20 11:24 PM
+ * Last modified 4/21/20 10:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -270,7 +270,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
         public ViewHolder(View view) {
             super(view);
             item = (RelativeLayout) view.findViewById(R.id.item);
-            autoChoice = (CheckBox) view.findViewById(R.id.autoChoice);
+            autoChoice = (CheckBox) view.findViewById(R.id.checkboxSelectItem);
             icon = (ShapesImage) view.findViewById(R.id.icon);
             desc = (TextView) view.findViewById(R.id.loadingDescription);
             time = (TextView) view.findViewById(R.id.time);

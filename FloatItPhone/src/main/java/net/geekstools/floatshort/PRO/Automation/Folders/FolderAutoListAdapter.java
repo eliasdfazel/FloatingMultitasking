@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 10:29 AM
+ * Last modified 4/21/20 10:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -254,7 +254,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
             selectedApp = (LinearLayout) view.findViewById(R.id.selectedApps);
             categoryName = (EditText) view.findViewById(R.id.categoryName);
             timeView = (TextView) view.findViewById(R.id.time);
-            autoChoice = (CheckBox) view.findViewById(R.id.autoChoice);
+            autoChoice = (CheckBox) view.findViewById(R.id.checkboxSelectItem);
         }
     }
 }
