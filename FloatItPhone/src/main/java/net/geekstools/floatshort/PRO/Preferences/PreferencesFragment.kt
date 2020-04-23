@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 9:28 AM
+ * Last modified 4/23/20 7:26 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -410,11 +410,15 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         notification.setOnPreferenceClickListener {
+
             if (functionsClass.NotificationAccess() && functionsClass.NotificationListenerRunning()) {
+
                 val notification = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
                 notification.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(notification)
+
             } else {
+
                 functionsClass.NotificationAccessService(activity, notification)
             }
 

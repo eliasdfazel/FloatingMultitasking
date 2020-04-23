@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 6:17 AM
+ * Last modified 4/23/20 7:14 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -78,8 +78,8 @@ class FloatingFoldersForGps : Service() {
     private val stickedToEdge: ArrayList<Boolean> = ArrayList<Boolean>()
     private val openPermit: ArrayList<Boolean> = ArrayList<Boolean>()
 
-    lateinit var notificationPackage: String
-    var showNotificationDot = false
+    lateinit var alreadyNotificationPackage: String
+    private var showNotificationDot: Boolean = false
 
     private val mapContentFolderName: HashMap<String, String> = HashMap<String, String>()
     private val mapFolderNameStartId: HashMap<String, Int> = HashMap<String, Int>()
@@ -262,7 +262,7 @@ class FloatingFoldersForGps : Service() {
 
                         if (getFileStreamPath(appsInFolder[i].toString() + "_" + "Notification" + "Package").exists()) {
                             showNotificationDot = true
-                            notificationPackage = appsInFolder[i]
+                            alreadyNotificationPackage = appsInFolder[i]
                         }
                     }
                 }
@@ -913,38 +913,43 @@ class FloatingFoldersForGps : Service() {
                                 }
                             }
                         } else if (intent.action == "Notification_Dot") {
-                            try {
-                                val notificationPackage = intent.getStringExtra("NotificationPackage")
-                                val folderNameNotification = mapContentFolderName[notificationPackage]
-                                val StartIdNotification = mapFolderNameStartId[folderNameNotification]!!
 
-                                if (floatingView[StartIdNotification].isShown) {
-                                    /*Add Dot*/
-                                    val dotDrawable = if (functionsClass.customIconsEnable()) {
-                                        loadCustomIcons.getDrawableIconForPackage(notificationPackage, functionsClass.shapedAppIcon(notificationPackage).mutate()).mutate()
-                                    } else {
-                                        functionsClass.shapedAppIcon(notificationPackage).mutate()
+                            intent.getStringExtra("NotificationPackage")?.let {
+
+                                val folderNameNotification = mapContentFolderName[it]
+                                val startIdNotification = mapFolderNameStartId[folderNameNotification]
+
+                                if (startIdNotification != null) {
+
+                                    if (floatingView[startIdNotification].isShown) {
+                                        /*Add Dot*/
+                                        val dotDrawable = if (functionsClass.customIconsEnable()) {
+                                            loadCustomIcons.getDrawableIconForPackage(it, functionsClass.shapedAppIcon(it).mutate()).mutate()
+                                        } else {
+                                            functionsClass.shapedAppIcon(it).mutate()
+                                        }
+
+                                        notificationDotView[startIdNotification].setImageDrawable(dotDrawable)
+                                        notificationDotView[startIdNotification].visibility = View.VISIBLE
+                                        notificationDotView[startIdNotification].tag = it
                                     }
-
-                                    notificationDotView[StartIdNotification].setImageDrawable(dotDrawable)
-                                    notificationDotView[StartIdNotification].visibility = View.VISIBLE
-                                    notificationDotView[StartIdNotification].tag = notificationPackage
                                 }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
                             }
-                        } else if (intent.action == "Notification_Dot_No") {
-                            try {
-                                val notificationPackage = intent.getStringExtra("NotificationPackage")
-                                val folderNameNotification = mapContentFolderName[notificationPackage]
-                                val StartIdNotification = mapFolderNameStartId[folderNameNotification]!!
 
-                                if (floatingView[StartIdNotification].isShown) {
-                                    /*Remove Dot*/
-                                    notificationDotView[StartIdNotification].visibility = View.INVISIBLE
+                        } else if (intent.action == "Notification_Dot_No") {
+
+                            intent.getStringExtra("NotificationPackage")?.let {
+
+                                val folderNameNotification = mapContentFolderName[it]
+                                val startIdNotification = mapFolderNameStartId[folderNameNotification]
+
+                                if (startIdNotification != null) {
+
+                                    if (floatingView[startIdNotification].isShown) {
+                                        /*Remove Dot*/
+                                        notificationDotView[startIdNotification].visibility = View.INVISIBLE
+                                    }
                                 }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
                             }
                         }
                     }
@@ -953,7 +958,9 @@ class FloatingFoldersForGps : Service() {
             }
 
             if (showNotificationDot) {
-                sendBroadcast(Intent("Notification_Dot").putExtra("NotificationPackage", notificationPackage))
+
+                sendBroadcast(Intent("Notification_Dot")
+                        .putExtra("NotificationPackage", alreadyNotificationPackage))
             }
         }
 

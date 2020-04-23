@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 5:56 AM
+ * Last modified 4/23/20 6:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -981,55 +981,60 @@ class FloatingShortcutsForApplications : Service() {
 
                         } else if (intent.action == "Notification_Dot") {
 
-                            val notificationPackage: String = intent.getStringExtra("NotificationPackage")
-                            val startIdNotification: Int = mapPackageNameStartId[notificationPackage]!!
+                            intent.getStringExtra("NotificationPackage")?.let {
 
-                            if (floatingShortcutsBinding.get(startIdNotification) != null) {
-                                if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
-                                    /*Add Dot*/
-                                    var dotDrawable: Drawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
-                                    if (functionsClass.customIconsEnable()) {
-                                        dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[startIdNotification]).mutate()
-                                    } else {
-                                        when (functionsClass.shapesImageId()) {
-                                            1 -> {
-                                                dotDrawable = getDrawable(R.drawable.dot_droplet_icon) as Drawable
-                                            }
-                                            2 -> {
-                                                dotDrawable = getDrawable(R.drawable.dot_circle_icon) as Drawable
-                                            }
-                                            3 -> {
-                                                dotDrawable = getDrawable(R.drawable.dot_square_icon) as Drawable
-                                            }
-                                            4 -> {
-                                                dotDrawable = getDrawable(R.drawable.dot_squircle_icon) as Drawable
-                                            }
-                                            0 -> {
-                                                dotDrawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
+                                val startIdNotification: Int? = mapPackageNameStartId[it]
+
+                                if (startIdNotification != null) {
+                                    if (floatingShortcutsBinding[startIdNotification].root.isShown) {
+                                        /*Add Dot*/
+                                        var dotDrawable: Drawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
+                                        if (functionsClass.customIconsEnable()) {
+                                            dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[startIdNotification]).mutate()
+                                        } else {
+                                            when (functionsClass.shapesImageId()) {
+                                                1 -> {
+                                                    dotDrawable = getDrawable(R.drawable.dot_droplet_icon) as Drawable
+                                                }
+                                                2 -> {
+                                                    dotDrawable = getDrawable(R.drawable.dot_circle_icon) as Drawable
+                                                }
+                                                3 -> {
+                                                    dotDrawable = getDrawable(R.drawable.dot_square_icon) as Drawable
+                                                }
+                                                4 -> {
+                                                    dotDrawable = getDrawable(R.drawable.dot_squircle_icon) as Drawable
+                                                }
+                                                0 -> {
+                                                    dotDrawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
+                                                }
                                             }
                                         }
-                                    }
 
-                                    if (PublicVariable.themeLightDark) {
-                                        dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 1.30f))
-                                    } else {
-                                        dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 0.50f))
-                                    }
+                                        if (PublicVariable.themeLightDark) {
+                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 1.30f))
+                                        } else {
+                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 0.50f))
+                                        }
 
-                                    notificationDots[startIdNotification].setImageDrawable(dotDrawable)
-                                    notificationDots[startIdNotification].visibility = View.VISIBLE
+                                        notificationDots[startIdNotification].setImageDrawable(dotDrawable)
+                                        notificationDots[startIdNotification].visibility = View.VISIBLE
+                                    }
                                 }
                             }
 
+
                         } else if (intent.action == "Notification_Dot_No") {
 
-                            val notificationPackage: String = intent.getStringExtra("NotificationPackage")
-                            val startIdNotification: Int = mapPackageNameStartId[notificationPackage]!!
+                            intent.getStringExtra("NotificationPackage")?.let {
 
-                            if (floatingShortcutsBinding.get(startIdNotification) != null) {
-                                if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
-                                    /*Remove Dot*/
-                                    notificationDots[startIdNotification].visibility = View.INVISIBLE
+                                val startIdNotification: Int? = mapPackageNameStartId[it]
+
+                                if (startIdNotification != null) {
+                                    if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
+                                        /*Remove Dot*/
+                                        notificationDots[startIdNotification].visibility = View.INVISIBLE
+                                    }
                                 }
                             }
                         }

@@ -1,3 +1,13 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel
+ * Last modified 4/23/20 6:36 AM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 package net.geekstools.floatshort.PRO.Shortcuts.FloatingServices
 
 import android.annotation.SuppressLint
@@ -950,13 +960,14 @@ class FloatingShortcutsForBluetooth : Service() {
                                 }
                             }
                         } else if (intent.action == "Notification_Dot") {
-                            try {
-                                val notificationPackage: String = intent.getStringExtra("NotificationPackage")
-                                val startIdNotification: Int = mapPackageNameStartId[notificationPackage]!!
 
-                                if (floatingShortcutsBinding.get(startIdNotification) != null) {
-                                    if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
-                                        /*add dot*/
+                            intent.getStringExtra("NotificationPackage")?.let {
+
+                                val startIdNotification: Int? = mapPackageNameStartId[it]
+
+                                if (startIdNotification != null) {
+                                    if (floatingShortcutsBinding[startIdNotification].root.isShown) {
+                                        /*Add Dot*/
                                         var dotDrawable: Drawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
                                         if (functionsClass.customIconsEnable()) {
                                             dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[startIdNotification]).mutate()
@@ -990,17 +1001,20 @@ class FloatingShortcutsForBluetooth : Service() {
                                         notificationDots[startIdNotification].visibility = View.VISIBLE
                                     }
                                 }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
                             }
-                        } else if (intent.action == "Notification_Dot_No") {
-                            val notificationPackage: String = intent.getStringExtra("NotificationPackage")
-                            val startIdNotification: Int = mapPackageNameStartId[notificationPackage]!!
 
-                            if (floatingShortcutsBinding.get(startIdNotification) != null) {
-                                if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
-                                    /*remove dot*/
-                                    notificationDots[startIdNotification].visibility = View.INVISIBLE
+
+                        } else if (intent.action == "Notification_Dot_No") {
+
+                            intent.getStringExtra("NotificationPackage")?.let {
+
+                                val startIdNotification: Int? = mapPackageNameStartId[it]
+
+                                if (startIdNotification != null) {
+                                    if (floatingShortcutsBinding.get(startIdNotification).root.isShown) {
+                                        /*Remove Dot*/
+                                        notificationDots[startIdNotification].visibility = View.INVISIBLE
+                                    }
                                 }
                             }
                         }

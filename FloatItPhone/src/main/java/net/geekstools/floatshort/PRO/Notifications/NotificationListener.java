@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/23/20 7:32 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,7 +36,13 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onCreate() {
         super.onCreate();
+
         functionsClass = new FunctionsClass(getApplicationContext());
+    }
+
+    @Override
+    public void onListenerConnected() {
+        FunctionsClassDebug.Companion.PrintDebug("Notification Listener Connected");
     }
 
     @Override
@@ -122,24 +128,23 @@ public class NotificationListener extends NotificationListenerService {
                 BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
-                        try {
-                            if (intent.getAction().equals("Remove_Notification_Key")) {
+                        if (intent.getAction().equals("Remove_Notification_Key")) {
 
-                                NotificationListener.this.cancelNotification(intent.getStringExtra("notification_key"));
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                            NotificationListener.this
+                                    .cancelNotification(intent.getStringExtra("notification_key"));
                         }
                     }
                 };
+
                 try {
                     registerReceiver(broadcastReceiver, intentFilter);
-                }catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException | AssertionError e) {
                     e.printStackTrace();
-                } catch (AssertionError assertionError) {
-                    assertionError.printStackTrace();
                 }
-                sendBroadcast(new Intent("Notification_Dot").putExtra("NotificationPackage", notificationPackage));
+
+                sendBroadcast(new Intent("Notification_Dot")
+                        .putExtra("NotificationPackage", notificationPackage));
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -148,6 +153,7 @@ public class NotificationListener extends NotificationListenerService {
 
     @Override
     public StatusBarNotification[] getActiveNotifications() {
+
         return super.getActiveNotifications();
     }
 
