@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/23/20 7:16 AM
+ * Last modified 4/23/20 9:32 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -871,7 +871,14 @@ class FloatingFoldersForWifi : Service() {
                                 }
                             }
                         } else if (intent.action == "Sticky_Edge") {
+
                             for (stickyCounter in 0 until floatingView.size) {
+
+                                if (floatingView[stickyCounter] == null) {
+
+                                    continue
+                                }
+
                                 if (floatingView[stickyCounter].isShown) {
                                     try {
 
@@ -887,15 +894,22 @@ class FloatingFoldersForWifi : Service() {
                                 }
                             }
                         } else if (intent.action == "Sticky_Edge_No") {
+
                             for (stickyCounter in 0 until floatingView.size) {
+
+                                if (floatingView[stickyCounter] == null) {
+
+                                    continue
+                                }
+
                                 try {
                                     if (floatingView[stickyCounter].isShown) {
                                         try {
                                             try {
-                                                val sharedPreferencesPositionSticky = getSharedPreferences(folderName[stickyCounter], Context.MODE_PRIVATE)
 
                                                 stickedToEdge[stickyCounter] = false
 
+                                                val sharedPreferencesPositionSticky = getSharedPreferences(folderName[stickyCounter], Context.MODE_PRIVATE)
                                                 XY.xPosition = sharedPreferencesPositionSticky.getInt("X", XY.xInitial)
                                                 XY.yPosition = sharedPreferencesPositionSticky.getInt("Y", XY.yInitial)
 

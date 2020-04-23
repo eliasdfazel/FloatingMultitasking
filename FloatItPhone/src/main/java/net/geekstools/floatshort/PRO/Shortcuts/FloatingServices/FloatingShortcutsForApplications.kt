@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/23/20 8:28 AM
+ * Last modified 4/23/20 9:21 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -951,6 +951,12 @@ class FloatingShortcutsForApplications : Service() {
                         } else if (intent.action == "Sticky_Edge") {
 
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
+
+                                if (floatingShortcutsBinding[stickyCounter] == null) {
+
+                                    continue
+                                }
+
                                 if (floatingShortcutsBinding[stickyCounter].root.isShown) {
                                     try {
                                         stickedToEdge[stickyCounter] = true
@@ -967,6 +973,12 @@ class FloatingShortcutsForApplications : Service() {
                         } else if (intent.action == "Sticky_Edge_No") {
 
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
+
+                                if (floatingShortcutsBinding[stickyCounter] == null) {
+
+                                    continue
+                                }
+
                                 if (floatingShortcutsBinding.get(stickyCounter).root.isShown) {
                                     try {
                                         stickedToEdge[stickyCounter] = false

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/23/20 8:26 AM
+ * Last modified 4/23/20 9:28 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -919,47 +919,52 @@ class FloatingShortcutsForWifi : Service() {
                                 }
                             }
                         } else if (intent.action == "Sticky_Edge") {
-                            for (removeCount in 0 until floatingShortcutsBinding.size) {
-                                try {
-                                    if (floatingShortcutsBinding.get(removeCount).root.isShown) {
-                                        try {
-                                            stickedToEdge[removeCount] = true
 
-                                            stickyEdgeParams.add(removeCount, functionsClass.moveToEdge(this@FloatingShortcutsForWifi.packageNames.get(removeCount), layoutParams[removeCount].height))
-
-                                            windowManager.updateViewLayout(floatingShortcutsBinding.get(removeCount).root, stickyEdgeParams[removeCount])
-                                        } catch (e: WindowManager.InvalidDisplayException) {
-                                            e.printStackTrace()
-                                        }
-                                    }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                }
-                            }
-                        } else if (intent.action == "Sticky_Edge_No") {
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
-                                try {
-                                    if (floatingShortcutsBinding.get(stickyCounter).root.isShown) {
-                                        try {
-                                            try {
-                                                stickedToEdge[stickyCounter] = false
 
-                                                val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForWifi.packageNames.get(stickyCounter), Context.MODE_PRIVATE)
-                                                XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
-                                                XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
+                                if (floatingShortcutsBinding[stickyCounter] == null) {
 
-                                                windowManager.updateViewLayout(floatingShortcutsBinding.get(stickyCounter).root, functionsClass.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
-                                            } catch (e: WindowManager.BadTokenException) {
-                                                e.printStackTrace()
-                                            }
-                                        } catch (e: Exception) {
-                                            e.printStackTrace()
-                                        }
+                                    continue
+                                }
+
+                                if (floatingShortcutsBinding[stickyCounter].root.isShown) {
+                                    try {
+                                        stickedToEdge[stickyCounter] = true
+
+                                        stickyEdgeParams.add(stickyCounter, functionsClass.moveToEdge(this@FloatingShortcutsForWifi.packageNames.get(stickyCounter), layoutParams[stickyCounter].height))
+
+                                        windowManager.updateViewLayout(floatingShortcutsBinding[stickyCounter].root, stickyEdgeParams[stickyCounter])
+                                    } catch (e: WindowManager.BadTokenException) {
+                                        e.printStackTrace()
                                     }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
                                 }
                             }
+
+                        } else if (intent.action == "Sticky_Edge_No") {
+
+                            for (stickyCounter in 0 until floatingShortcutsBinding.size) {
+
+                                if (floatingShortcutsBinding[stickyCounter] == null) {
+
+                                    continue
+                                }
+
+                                if (floatingShortcutsBinding.get(stickyCounter).root.isShown) {
+                                    try {
+                                        stickedToEdge[stickyCounter] = false
+
+                                        val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForWifi.packageNames[stickyCounter], Context.MODE_PRIVATE)
+                                        XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
+                                        XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
+
+                                        windowManager.updateViewLayout(floatingShortcutsBinding[stickyCounter].root, functionsClass.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
+
+                                    } catch (e: WindowManager.BadTokenException) {
+                                        e.printStackTrace()
+                                    }
+                                }
+                            }
+
                         } else if (intent.action == "Notification_Dot") {
 
                             intent.getStringExtra("NotificationPackage")?.let {

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/23/20 8:25 AM
+ * Last modified 4/23/20 9:27 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -919,47 +919,52 @@ class FloatingShortcutsForGps : Service() {
                                 }
                             }
                         } else if (intent.action == "Sticky_Edge") {
+
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
-                                try {
-                                    if (floatingShortcutsBinding[stickyCounter].root.isShown) {
-                                        try {
-                                            stickedToEdge[stickyCounter] = true
 
-                                            stickyEdgeParams.add(stickyCounter, functionsClass.moveToEdge(this@FloatingShortcutsForGps.packageNames.get(stickyCounter), layoutParams[stickyCounter].height))
+                                if (floatingShortcutsBinding[stickyCounter] == null) {
 
-                                            windowManager.updateViewLayout(floatingShortcutsBinding.get(stickyCounter).root, stickyEdgeParams[stickyCounter])
-                                        } catch (e: WindowManager.InvalidDisplayException) {
-                                            e.printStackTrace()
-                                        }
+                                    continue
+                                }
+
+                                if (floatingShortcutsBinding[stickyCounter].root.isShown) {
+                                    try {
+                                        stickedToEdge[stickyCounter] = true
+
+                                        stickyEdgeParams.add(stickyCounter, functionsClass.moveToEdge(this@FloatingShortcutsForGps.packageNames.get(stickyCounter), layoutParams[stickyCounter].height))
+
+                                        windowManager.updateViewLayout(floatingShortcutsBinding[stickyCounter].root, stickyEdgeParams[stickyCounter])
+                                    } catch (e: WindowManager.BadTokenException) {
+                                        e.printStackTrace()
                                     }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
                                 }
                             }
+
                         } else if (intent.action == "Sticky_Edge_No") {
+
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
-                                try {
-                                    if (floatingShortcutsBinding[stickyCounter].root.isShown) {
-                                        try {
-                                            try {
-                                                stickedToEdge[stickyCounter] = false
 
-                                                val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForGps.packageNames.get(stickyCounter), Context.MODE_PRIVATE)
-                                                XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
-                                                XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
+                                if (floatingShortcutsBinding[stickyCounter] == null) {
 
-                                                windowManager.updateViewLayout(floatingShortcutsBinding.get(stickyCounter).root, functionsClass.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
-                                            } catch (e: WindowManager.BadTokenException) {
-                                                e.printStackTrace()
-                                            }
-                                        } catch (e: Exception) {
-                                            e.printStackTrace()
-                                        }
+                                    continue
+                                }
+
+                                if (floatingShortcutsBinding.get(stickyCounter).root.isShown) {
+                                    try {
+                                        stickedToEdge[stickyCounter] = false
+
+                                        val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForGps.packageNames[stickyCounter], Context.MODE_PRIVATE)
+                                        XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
+                                        XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
+
+                                        windowManager.updateViewLayout(floatingShortcutsBinding[stickyCounter].root, functionsClass.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
+
+                                    } catch (e: WindowManager.BadTokenException) {
+                                        e.printStackTrace()
                                     }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
                                 }
                             }
+
                         } else if (intent.action == "Notification_Dot") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
