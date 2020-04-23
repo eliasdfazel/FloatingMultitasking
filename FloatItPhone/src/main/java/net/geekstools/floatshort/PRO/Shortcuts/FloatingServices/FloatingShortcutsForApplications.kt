@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/23/20 6:36 AM
+ * Last modified 4/23/20 8:28 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -554,40 +554,15 @@ class FloatingShortcutsForApplications : Service() {
                             }
                             moveDetection = layoutParamsOnTouch
                         }
-                        MotionEvent.ACTION_MOVE -> if (movePermit[startId]) {
+                        MotionEvent.ACTION_MOVE -> {
+                            if (movePermit[startId]) {
 
-                            layoutParamsOnTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt()
-                            layoutParamsOnTouch.y = initialY + (motionEvent.rawY - initialTouchY).toInt()
+                                layoutParamsOnTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt()
+                                layoutParamsOnTouch.y = initialY + (motionEvent.rawY - initialTouchY).toInt()
 
-                            windowManager.updateViewLayout(floatingShortcutsBinding[startId].root, layoutParamsOnTouch)
+                                windowManager.updateViewLayout(floatingShortcutsBinding[startId].root, layoutParamsOnTouch)
 
-                            moveDetection = layoutParamsOnTouch
-
-                            val difMoveX = (layoutParamsOnTouch.x - initialTouchX).toInt()
-                            val difMoveY = (layoutParamsOnTouch.y - initialTouchY).toInt()
-
-                            if (abs(difMoveX) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)
-                                    || abs(difMoveY) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)) {
-
-                                sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
-
-                                openPermit[startId] = false
-                                touchingDelay[startId] = false
-
-                                delayHandler.removeCallbacks(delayRunnable)
-                                handlerPressHold.removeCallbacks(runnablePressHold)
-                            }
-
-                            flingPositionX = layoutParamsOnTouch.x.toFloat()
-                            flingPositionY = layoutParamsOnTouch.y.toFloat()
-                        } else {
-
-                            if (!functionsClass.litePreferencesEnabled()) {
-
-                                layoutParamsOnTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt() // X movePoint
-                                layoutParamsOnTouch.y = initialY + (motionEvent.rawY - initialTouchY).toInt() // Y movePoint
-
-                                windowManager.updateViewLayout(floatingShortcutsBinding.get(startId).root, layoutParamsOnTouch)
+                                moveDetection = layoutParamsOnTouch
 
                                 val difMoveX = (layoutParamsOnTouch.x - initialTouchX).toInt()
                                 val difMoveY = (layoutParamsOnTouch.y - initialTouchY).toInt()
@@ -602,6 +577,33 @@ class FloatingShortcutsForApplications : Service() {
 
                                     delayHandler.removeCallbacks(delayRunnable)
                                     handlerPressHold.removeCallbacks(runnablePressHold)
+                                }
+
+                                flingPositionX = layoutParamsOnTouch.x.toFloat()
+                                flingPositionY = layoutParamsOnTouch.y.toFloat()
+                            } else {
+
+                                if (!functionsClass.litePreferencesEnabled()) {
+
+                                    layoutParamsOnTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt() // X movePoint
+                                    layoutParamsOnTouch.y = initialY + (motionEvent.rawY - initialTouchY).toInt() // Y movePoint
+
+                                    windowManager.updateViewLayout(floatingShortcutsBinding.get(startId).root, layoutParamsOnTouch)
+
+                                    val difMoveX = (layoutParamsOnTouch.x - initialTouchX).toInt()
+                                    val difMoveY = (layoutParamsOnTouch.y - initialTouchY).toInt()
+
+                                    if (abs(difMoveX) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)
+                                            || abs(difMoveY) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)) {
+
+                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
+
+                                        openPermit[startId] = false
+                                        touchingDelay[startId] = false
+
+                                        delayHandler.removeCallbacks(delayRunnable)
+                                        handlerPressHold.removeCallbacks(runnablePressHold)
+                                    }
                                 }
                             }
                         }
@@ -923,7 +925,9 @@ class FloatingShortcutsForApplications : Service() {
 
                             if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root.isShown) {
                                 try {
+
                                     windowManager.removeView(floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root)
+
                                 } catch (e: Exception) {
                                     e.printStackTrace()
 
