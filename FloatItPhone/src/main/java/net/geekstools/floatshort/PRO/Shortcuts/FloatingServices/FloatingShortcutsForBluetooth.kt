@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/23/20 9:25 AM
+ * Last modified 4/24/20 11:21 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -923,18 +923,19 @@ class FloatingShortcutsForBluetooth : Service() {
 
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
 
-                                if (floatingShortcutsBinding[stickyCounter] == null) {
+                                stickedToEdge[stickyCounter] = true
 
-                                    continue
-                                }
+                                stickyEdgeParams.add(stickyCounter, functionsClass.moveToEdge(this@FloatingShortcutsForBluetooth.packageNames.get(stickyCounter), layoutParams[stickyCounter].height))
 
-                                if (floatingShortcutsBinding[stickyCounter].root.isShown) {
+                                if (floatingShortcutsBinding[stickyCounter].root.isShown
+                                        && floatingShortcutsBinding[stickyCounter] != null) {
+
                                     try {
-                                        stickedToEdge[stickyCounter] = true
 
-                                        stickyEdgeParams.add(stickyCounter, functionsClass.moveToEdge(this@FloatingShortcutsForBluetooth.packageNames.get(stickyCounter), layoutParams[stickyCounter].height))
+                                        windowManager
+                                                .updateViewLayout(floatingShortcutsBinding[stickyCounter].root,
+                                                        stickyEdgeParams[stickyCounter])
 
-                                        windowManager.updateViewLayout(floatingShortcutsBinding[stickyCounter].root, stickyEdgeParams[stickyCounter])
                                     } catch (e: WindowManager.BadTokenException) {
                                         e.printStackTrace()
                                     }
@@ -945,20 +946,20 @@ class FloatingShortcutsForBluetooth : Service() {
 
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
 
-                                if (floatingShortcutsBinding[stickyCounter] == null) {
+                                stickedToEdge[stickyCounter] = false
 
-                                    continue
-                                }
+                                val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForBluetooth.packageNames[stickyCounter], Context.MODE_PRIVATE)
+                                XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
+                                XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
 
-                                if (floatingShortcutsBinding.get(stickyCounter).root.isShown) {
+                                if (floatingShortcutsBinding.get(stickyCounter).root.isShown
+                                        && floatingShortcutsBinding[stickyCounter] != null) {
+
                                     try {
-                                        stickedToEdge[stickyCounter] = false
 
-                                        val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForBluetooth.packageNames[stickyCounter], Context.MODE_PRIVATE)
-                                        XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
-                                        XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
-
-                                        windowManager.updateViewLayout(floatingShortcutsBinding[stickyCounter].root, functionsClass.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
+                                        windowManager
+                                                .updateViewLayout(floatingShortcutsBinding[stickyCounter].root,
+                                                        functionsClass.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
 
                                     } catch (e: WindowManager.BadTokenException) {
                                         e.printStackTrace()

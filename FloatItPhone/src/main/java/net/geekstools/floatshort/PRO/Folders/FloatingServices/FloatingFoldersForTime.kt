@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/23/20 9:32 AM
+ * Last modified 4/24/20 11:27 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -874,58 +874,50 @@ class FloatingFoldersForTime : Service() {
 
                             for (stickyCounter in 0 until floatingView.size) {
 
-                                if (floatingView[stickyCounter] == null) {
+                                stickedToEdge[stickyCounter] = true
 
-                                    continue
-                                }
+                                stickyEdgeParams.add(stickyCounter, functionsClass.moveToEdge(this@FloatingFoldersForTime.folderName.get(stickyCounter), layoutParams[stickyCounter].height))
 
-                                if (floatingView[stickyCounter].isShown) {
+                                if (floatingView[stickyCounter].isShown
+                                        && floatingView[stickyCounter] != null) {
+
                                     try {
 
-                                        stickedToEdge[stickyCounter] = true
-
-                                        stickyEdgeParams.add(stickyCounter, functionsClass.moveToEdge(folderName[stickyCounter], layoutParams[stickyCounter].height))
-
-                                        windowManager.updateViewLayout(floatingView[stickyCounter], stickyEdgeParams[stickyCounter])
+                                        windowManager
+                                                .updateViewLayout(floatingView[stickyCounter],
+                                                        stickyEdgeParams[stickyCounter])
 
                                     } catch (e: WindowManager.BadTokenException) {
                                         e.printStackTrace()
                                     }
                                 }
                             }
+
                         } else if (intent.action == "Sticky_Edge_No") {
 
                             for (stickyCounter in 0 until floatingView.size) {
 
-                                if (floatingView[stickyCounter] == null) {
+                                stickedToEdge[stickyCounter] = false
 
-                                    continue
-                                }
+                                val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingFoldersForTime.folderName[stickyCounter], Context.MODE_PRIVATE)
+                                XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
+                                XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
 
-                                try {
-                                    if (floatingView[stickyCounter].isShown) {
-                                        try {
-                                            try {
+                                if (floatingView.get(stickyCounter).isShown
+                                        && floatingView[stickyCounter] != null) {
 
-                                                stickedToEdge[stickyCounter] = false
+                                    try {
 
-                                                val sharedPreferencesPositionSticky = getSharedPreferences(folderName[stickyCounter], Context.MODE_PRIVATE)
-                                                XY.xPosition = sharedPreferencesPositionSticky.getInt("X", XY.xInitial)
-                                                XY.yPosition = sharedPreferencesPositionSticky.getInt("Y", XY.yInitial)
+                                        windowManager
+                                                .updateViewLayout(floatingView[stickyCounter],
+                                                        functionsClass.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
 
-                                                windowManager.updateViewLayout(floatingView[stickyCounter], functionsClass.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
-
-                                            } catch (e: Exception) {
-                                                e.printStackTrace()
-                                            }
-                                        } catch (e: java.lang.Exception) {
-                                            e.printStackTrace()
-                                        }
+                                    } catch (e: WindowManager.BadTokenException) {
+                                        e.printStackTrace()
                                     }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
                                 }
                             }
+
                         } else if (intent.action == "Notification_Dot") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
