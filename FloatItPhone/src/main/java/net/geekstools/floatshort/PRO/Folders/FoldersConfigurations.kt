@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 1:36 AM
+ * Last modified 4/24/20 12:33 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -44,6 +44,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.inappmessaging.FirebaseInAppMessagingClickListener
+import com.google.firebase.inappmessaging.model.Action
+import com.google.firebase.inappmessaging.model.InAppMessage
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.coroutines.CoroutineScope
@@ -69,6 +72,7 @@ import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchasesCheckpoint
 import net.geekstools.floatshort.PRO.Utils.InAppUpdate.InAppUpdateProcess
+import net.geekstools.floatshort.PRO.Utils.RemoteProcess.CloudMessageHandler
 import net.geekstools.floatshort.PRO.Utils.RemoteProcess.LicenseValidator
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
@@ -89,7 +93,8 @@ import kotlin.math.roundToInt
 
 class FoldersConfigurations : AppCompatActivity(),
         View.OnClickListener, View.OnLongClickListener,
-        GestureListenerInterface {
+        GestureListenerInterface,
+        FirebaseInAppMessagingClickListener {
 
     private val functionsClassDataActivity: FunctionsClassDataActivity by lazy {
         FunctionsClassDataActivity(this@FoldersConfigurations)
@@ -703,6 +708,12 @@ class FoldersConfigurations : AppCompatActivity(),
                 this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
             }
         }
+    }
+
+    override fun messageClicked(inAppMessage: InAppMessage, action: Action) {
+
+        CloudMessageHandler()
+                .extractData(inAppMessage, action)
     }
 
     fun loadFolders() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
