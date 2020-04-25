@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:17 PM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 5:45 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -52,6 +52,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants;
@@ -66,6 +67,7 @@ import java.util.ArrayList;
 public class FolderAutoFeatures extends AppCompatActivity implements View.OnClickListener, GestureListenerInterface {
 
     FunctionsClass functionsClass;
+    FunctionsClassIO functionsClassIO;
 
     RecyclerView categorylist;
     ListView actionElementsList;
@@ -112,6 +114,8 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         swipeGestureListener = new SwipeGestureListener(getApplicationContext(), FolderAutoFeatures.this);
 
         functionsClass = new FunctionsClass(getApplicationContext());
+        functionsClassIO = new FunctionsClassIO(getApplicationContext());
+
         functionsClass.loadSavedColor();
         functionsClass.checkLightDarkTheme();
 
@@ -522,7 +526,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
     public void onPause() {
         super.onPause();
 
-        if (functionsClass.automationFeatureEnable()) {
+        if (functionsClassIO.automationFeatureEnable()) {
             startService(new Intent(getApplicationContext(), BindServices.class));
         }
     }

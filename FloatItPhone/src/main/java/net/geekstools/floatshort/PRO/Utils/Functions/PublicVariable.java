@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 10:19 AM
+ * Last modified 4/25/20 5:19 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -79,7 +79,6 @@ public class PublicVariable {
     public static boolean receiverGPS = false;
     public static boolean receiverNFC = false;
     public static boolean splitScreen = true;
-    public static boolean triggerWifiBroadcast = false;
     public static boolean forceReload = false;
     public static boolean updateCancelByUser = false;
 

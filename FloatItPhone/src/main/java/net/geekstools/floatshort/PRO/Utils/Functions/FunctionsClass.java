@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/24/20 8:25 AM
+ * Last modified 4/25/20 5:49 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1868,26 +1868,6 @@ public class FunctionsClass {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("stable", true);
     }
 
-    public int bindServicePriority() {
-        int notificationPriority = Integer.MIN_VALUE;
-
-        if (automationFeatureEnable()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                notificationPriority = NotificationManager.IMPORTANCE_MIN;
-            } else {
-                notificationPriority = Notification.PRIORITY_MIN;
-            }
-        } else if (ControlPanel()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                notificationPriority = NotificationManager.IMPORTANCE_HIGH;
-            } else {
-                notificationPriority = Notification.PRIORITY_HIGH;
-            }
-        }
-
-        return notificationPriority;
-    }
-
     public void DownloadTask(final String fileURL, final String targetFile) {
         class DownloadTask extends AsyncTask<String, Integer, String> {
             @Override
@@ -2606,38 +2586,6 @@ public class FunctionsClass {
 
     public boolean readDefaultPreference(String KEY, boolean defaultVALUE) {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY, defaultVALUE);
-    }
-
-    public boolean automationFeatureEnable() {
-        boolean automationEnabled = false;
-        if (returnAPI() >= 26) {
-            List<String> autoFileName = new ArrayList<String>();
-            File[] files = context.getFileStreamPath("").listFiles();
-            for (File afile : files) {
-                FunctionsClassDebug.Companion.PrintDebug("*** Automation Enabled == " + afile.getAbsolutePath());
-                if (afile.getName().contains(".auto")) {
-                    FunctionsClassDebug.Companion.PrintDebug("*** Automation File Found == " + afile.getAbsolutePath());
-
-                    autoFileName.add(afile.getName());
-                }
-            }
-
-            int totalCount = 0;
-            for (String fileName : autoFileName) {
-                int countLine = countLineInnerFile(fileName);
-                totalCount += countLine;
-            }
-
-            if (totalCount > 0) {
-                automationEnabled = true;
-
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("stable", true);
-                editor.apply();
-            }
-        }
-        return automationEnabled;
     }
 
     /*Shaping Functions*/
@@ -5611,7 +5559,7 @@ public class FunctionsClass {
         notificationBuilder.setSmallIcon(R.drawable.ic_notification);
         notificationBuilder.setAutoCancel(false);
         notificationBuilder.setColor(PublicVariable.primaryColor);
-        notificationBuilder.setPriority(bindServicePriority());
+        notificationBuilder.setPriority(Notification.PRIORITY_MIN);
 
         Intent ListGrid = new Intent(context, Configurations.class);
         PendingIntent ListGridPendingIntent = PendingIntent.getActivity(context, 5, ListGrid, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -5619,7 +5567,7 @@ public class FunctionsClass {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             try {
-                NotificationChannel notificationChannel = new NotificationChannel(context.getPackageName(), context.getString(R.string.app_name), bindServicePriority());
+                NotificationChannel notificationChannel = new NotificationChannel(context.getPackageName(), context.getString(R.string.app_name), NotificationManager.IMPORTANCE_MIN);
                 notificationManager.createNotificationChannel(notificationChannel);
                 notificationBuilder.setChannelId(context.getPackageName());
             } catch (IllegalArgumentException e) {

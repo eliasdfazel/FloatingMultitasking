@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/23/20 7:26 AM
+ * Last modified 4/25/20 5:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -52,11 +52,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.PinPasswordConfigurations
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDataActivity
+import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDialogues
-import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
@@ -67,6 +64,10 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
     lateinit var functionsClass: FunctionsClass
     lateinit var functionsClassDialogues: FunctionsClassDialogues
+
+    private val functionsClassIO: FunctionsClassIO by lazy {
+        FunctionsClassIO(requireContext())
+    }
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -976,7 +977,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (functionsClass.automationFeatureEnable()) {
+        if (functionsClassIO.automationFeatureEnable()) {
             requireContext().startService(Intent(context, BindServices::class.java))
         }
     }

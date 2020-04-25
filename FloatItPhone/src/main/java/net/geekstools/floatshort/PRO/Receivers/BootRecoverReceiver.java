@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:39 AM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 5:48 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -22,6 +22,7 @@ import androidx.preference.PreferenceManager;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO;
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
@@ -29,15 +30,19 @@ import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 public class BootRecoverReceiver extends BroadcastReceiver {
 
     FunctionsClass functionsClass;
+    FunctionsClassIO functionsClassIO;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
+
         functionsClass = new FunctionsClass(context);
+        functionsClassIO = new FunctionsClassIO(context);
+
         functionsClass.savePreference("WidgetsInformation", "Reallocated", false);
 
         try {
             if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-                if (functionsClass.ControlPanel() || functionsClass.automationFeatureEnable()) {
+                if (functionsClass.ControlPanel() || functionsClassIO.automationFeatureEnable()) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         context.startForegroundService(new Intent(context, BindServices.class));
                     } else {
