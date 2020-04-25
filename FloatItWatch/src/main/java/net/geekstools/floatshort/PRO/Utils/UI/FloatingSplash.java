@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 6:53 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -148,7 +148,6 @@ public class FloatingSplash extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         try {
             layoutParams.windowAnimations = android.R.style.Animation_Dialog;
             windowManager.updateViewLayout(viewGroup, layoutParams);
