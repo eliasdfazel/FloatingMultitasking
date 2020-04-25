@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/24/20 12:31 PM
+  ~ Last modified 4/25/20 5:52 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -555,7 +555,7 @@
             android:name=".Utils.UI.PopupDialogue.PopupOptionsFloatingCategory"/>
 
         <receiver
-            android:name=".Receivers.ReceiverWifi">
+            android:name=".Automation.Receivers.ReceiverWifi">
             <intent-filter>
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
 
@@ -563,7 +563,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".Receivers.ReceiverBluetooth">
+            android:name=".Automation.Receivers.ReceiverBluetooth">
             <intent-filter>
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
 
@@ -571,7 +571,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".Receivers.ReceiverGPS">
+            android:name=".Automation.Receivers.ReceiverGPS">
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED"/>
 
@@ -579,7 +579,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".Receivers.ReceiverNFC">
+            android:name=".Automation.Receivers.ReceiverNFC">
             <intent-filter>
                 <action android:name="android.nfc.action.ADAPTER_STATE_CHANGED"/>
 
@@ -587,7 +587,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".Receivers.ColorReceiver">
+            android:name=".Automation.Receivers.ColorReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.WALLPAPER_CHANGED"/>
 
@@ -595,7 +595,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".Receivers.BootRecoverReceiver">
+            android:name=".Automation.Receivers.BootRecoverReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
@@ -606,7 +606,7 @@
         <receiver
             android:name=".Automation.Alarms.AlarmAlertBroadcastReceiver"/>
         <receiver
-            android:name=".Receivers.AppsReceiver">
+            android:name=".Automation.Receivers.AppsReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED"/>
 

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 5:43 AM
+ * Last modified 4/25/20 6:07 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -12,10 +12,8 @@ package net.geekstools.floatshort.PRO.Utils.Functions
 
 import android.content.Context
 import android.os.Build
-import androidx.preference.PreferenceManager
 import java.io.File
 import java.nio.charset.Charset
-import java.util.*
 
 class FunctionsClassIO (private val context: Context) {
 
@@ -30,41 +28,84 @@ class FunctionsClassIO (private val context: Context) {
         }
     }
 
+    fun fileLinesCounter(fileName: String) : Int {
+
+        return File(fileName).readLines(Charset.defaultCharset()).size
+    }
+
     fun automationFeatureEnable(): Boolean {
         var automationEnabled = false
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            val autoFileName: ArrayList<String> = ArrayList<String>()
-            val filesList = context.getFileStreamPath("").listFiles()
+            //.autoBluetooth
+            val autoBluetooth = context.getFileStreamPath(".autoBluetooth")
+            val autoBluetoothSize = if (autoBluetooth.exists()) {
+                fileLinesCounter(".autoBluetooth")
+            } else {
+                0
+            }
 
-            if (!filesList.isNullOrEmpty()) {
+            //.autoGps
+            val autoGps = context.getFileStreamPath(".autoGps")
+            val autoGpsSize = if (autoGps.exists()) {
+                fileLinesCounter(".autoGps")
+            } else {
+                0
+            }
 
-                for (aFile in filesList) {
-                    FunctionsClassDebug.PrintDebug("*** Automation Enabled == " + aFile.absolutePath)
+            //.autoNfc
+            val autoNfc = context.getFileStreamPath(".autoNfc")
+            val autoNfcSize = if (autoNfc.exists()) {
+                fileLinesCounter(".autoNfc")
+            } else {
+                0
+            }
 
-                    if (aFile.name.contains(".auto")) {
-                        FunctionsClassDebug.PrintDebug("*** Automation File Found == " + aFile.absolutePath)
+            //.autoWifi
+            val autoWifi = context.getFileStreamPath(".autoWifi")
+            val autoWifiSize = if (autoWifi.exists()) {
+                fileLinesCounter(".autoWifi")
+            } else {
+                0
+            }
 
-                        autoFileName.add(aFile.name)
-                    }
-                }
+            //.autoBluetoothCategory
+            val autoBluetoothCategory = context.getFileStreamPath(".autoBluetoothCategory")
+            val autoBluetoothCategorySize = if (autoBluetoothCategory.exists()) {
+                fileLinesCounter(".autoBluetoothCategory`")
+            } else {
+                0
+            }
 
-                var totalCount = 0
-                for (fileName in autoFileName) {
-                    val countLine: Int = File(fileName).readLines(Charset.defaultCharset()).size
-                    totalCount += countLine
-                }
+            //.autoGpsCategory
+            val autoGpsCategory = context.getFileStreamPath(".autoGpsCategory")
+            val autoGpsCategorySize = if (autoGpsCategory.exists()) {
+                fileLinesCounter(".autoGpsCategory`")
+            } else {
+                0
+            }
 
-                if (totalCount > 0) {
-                    automationEnabled = true
+            //.autoNfcCategory
+            val autoNfcCategory = context.getFileStreamPath(".autoNfcCategory")
+            val autoNfcCategorySize = if (autoNfcCategory.exists()) {
+                fileLinesCounter(".autoNfcCategory`")
+            } else {
+                0
+            }
 
-                    PreferenceManager.getDefaultSharedPreferences(context)
-                            .edit().apply {
-                                putBoolean("stable", true)
-                                apply()
-                            }
-                }
+            //.autoWifiCategory
+            val autoWifiCategory = context.getFileStreamPath(".autoWifiCategory")
+            val autoWifiCategorySize = if (autoWifiCategory.exists()) {
+                fileLinesCounter(".autoWifiCategory`")
+            } else {
+                0
+            }
+
+            val autoCounterSum = autoBluetoothSize + autoGpsSize + autoNfcSize + autoWifiSize + autoBluetoothCategorySize + autoGpsCategorySize + autoNfcCategorySize + autoWifiCategorySize
+            if (autoCounterSum > 0) {
+
+                automationEnabled = true
             }
         }
 
