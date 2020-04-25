@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 12:13 PM
+ * Last modified 4/25/20 12:25 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,7 +25,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -42,7 +41,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.util.TypedValue;
@@ -57,7 +55,6 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.palette.graphics.Palette;
 
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.Configurations;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Category_Unlimited_Category;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_HIS;
@@ -80,16 +77,10 @@ import java.util.ArrayList;
 
 public class FunctionsClass {
 
-    int API;
     Context context;
-
-    PackageManager packageManager;
-    BroadcastReceiver.PendingResult pendingResult;
 
     public FunctionsClass(Context context) {
         this.context = context;
-
-        API = Build.VERSION.SDK_INT;
 
         loadSavedColor();
     }
@@ -202,7 +193,7 @@ public class FunctionsClass {
     }
 
     public int returnAPI() {
-        return API;
+        return Build.VERSION.SDK_INT;
     }
 
     /*Unlimited Shortcuts*/
@@ -217,12 +208,6 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedShortcutsService(String packageName) {
-        if (API > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Configurations.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
-        }
         PublicVariable.floatingCounter++;
         PublicVariable.shortcutsCounter++;
         PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName);
@@ -259,12 +244,6 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedShortcutsServiceHIS(String packageName, String className) {
-        if (API > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Configurations.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
-        }
         PublicVariable.floatingCounter++;
 
         Intent u = new Intent(context, App_Unlimited_HIS.class);
@@ -272,11 +251,12 @@ public class FunctionsClass {
         u.putExtra("className", className);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
+
         if (PublicVariable.floatingCounter == 1) {
-            if (API < 26) {
-                context.startService(new Intent(context, BindServices.class));
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
             }
         }
     }
@@ -384,12 +364,6 @@ public class FunctionsClass {
 
     /*Unlimited Categories*/
     public void runUnlimitedCategoryService(String categoryName, String[] categoryNamePackages) {
-        if (API > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Configurations.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
-        }
         PublicVariable.floatingCounter++;
         PublicVariable.floatingCategoryCounter_category++;
         PublicVariable.categoriesCounter++;
@@ -509,24 +483,10 @@ public class FunctionsClass {
             e.printStackTrace();
         } finally {
             try {
-                if (API > 23) {
-                    context.deleteSharedPreferences(lineToRemove);
-                }
+                context.deleteSharedPreferences(lineToRemove);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public void saveFile(String fileName, String content) {
-        try {
-            FileOutputStream fOut = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            fOut.write((content).getBytes());
-
-            fOut.flush();
-            fOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -565,33 +525,6 @@ public class FunctionsClass {
             }
         }
         return contentLine;
-    }
-
-    public String readFile(String fileName) {
-        String temp = "0";
-
-        File G = context.getFileStreamPath(fileName);
-        if (!G.exists()) {
-            temp = "0";
-        } else {
-            try {
-                FileInputStream fileInputStream = context.openFileInput(fileName);
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"), 1024);
-
-                int c;
-                temp = "";
-                while ((c = bufferedReader.read()) != -1) {
-                    temp = temp + Character.toString((char) c);
-                }
-
-                fileInputStream.close();
-                bufferedReader.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return temp;
     }
 
     public int countLine(String fileName) {
@@ -637,10 +570,6 @@ public class FunctionsClass {
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
         editorSharedPreferences.putBoolean(KEY, VALUE);
         editorSharedPreferences.apply();
-    }
-
-    public String readPreference(String PreferenceName, String KEY, String defaultVALUE) {
-        return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getString(KEY, defaultVALUE);
     }
 
     public int readPreference(String PreferenceName, String KEY, int defaultVALUE) {
@@ -719,53 +648,11 @@ public class FunctionsClass {
         return app_installed;
     }
 
-    public void setSizeBack() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String s = sharedPrefs.getString("sizes", "NULL");
-        if (s.equals("1")) {
-            PublicVariable.size = 24;
-        } else if (s.equals("2")) {
-            PublicVariable.size = 36;
-        } else if (s.equals("3")) {
-            PublicVariable.size = 48;
-        }
-        PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
-    }
-
     public void uninstallApp(String pack) {
         Uri packageUri = Uri.parse("package:" + pack);
         Intent uninstallIntent = new Intent(Intent.ACTION_DELETE, packageUri);
         uninstallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(uninstallIntent);
-    }
-
-    public boolean ifSystem(String packageName) {
-        PackageManager packageManager = context.getPackageManager();
-        try {
-            // Get packageinfo for target application
-            PackageInfo targetPkgInfo = packageManager.getPackageInfo(
-                    packageName, PackageManager.GET_SIGNATURES);
-            // Get packageinfo for system package
-            PackageInfo sys = packageManager.getPackageInfo(
-                    "android", PackageManager.GET_SIGNATURES);
-            // Match both packageinfo for there signatures
-            return (targetPkgInfo != null && targetPkgInfo.signatures != null && sys.signatures[0]
-                    .equals(targetPkgInfo.signatures[0]));
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
-
-    public boolean ifDefaultLauncher(String packageName) {
-        PackageManager packageManager = context.getPackageManager();
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        ResolveInfo defaultLauncher = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        String defaultLauncherStr = defaultLauncher.activityInfo.packageName;
-        if (defaultLauncherStr.equals(packageName)) {
-            return true;
-        }
-        return false;
     }
 
     public void updateRecoverShortcuts() {
@@ -845,15 +732,6 @@ public class FunctionsClass {
         return countryISO;
     }
 
-    public void appInfoSetting(String packageName) {
-        Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        i.addCategory(Intent.CATEGORY_DEFAULT);
-        i.setData(Uri.parse("package:" + packageName));
-        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
-    }
-
     public boolean bootReceiverEnabled() {
         return readPreference("SmartFeature", "remoteRecovery", false);
     }
@@ -862,7 +740,7 @@ public class FunctionsClass {
     public WindowManager.LayoutParams normalLayoutParams(int HW, int X, int Y) {
         int marginClear = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, context.getResources().getDisplayMetrics());
         WindowManager.LayoutParams layoutParams = null;
-        if (API > 25) {
+        if (Build.VERSION.SDK_INT > 25) {
             layoutParams = new WindowManager.LayoutParams(
                     HW + marginClear,
                     HW + marginClear,
@@ -887,7 +765,7 @@ public class FunctionsClass {
 
     public WindowManager.LayoutParams splashRevealParams(int X, int Y) {
         WindowManager.LayoutParams layoutParams = null;
-        if (API > 25) {
+        if (Build.VERSION.SDK_INT > 25) {
             layoutParams = new WindowManager.LayoutParams(
                     displayX(),
                     displayY(),
@@ -906,30 +784,6 @@ public class FunctionsClass {
         layoutParams.gravity = Gravity.TOP | Gravity.START;
         layoutParams.x = X;
         layoutParams.y = Y;
-        return layoutParams;
-    }
-
-    public WindowManager.LayoutParams setLayoutParams(int HW, int X, int Y) {
-        WindowManager.LayoutParams layoutParams = null;
-        if (API > 25) {
-            layoutParams = new WindowManager.LayoutParams(
-                    HW,
-                    HW,
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    PixelFormat.TRANSLUCENT);
-        } else {
-            layoutParams = new WindowManager.LayoutParams(
-                    HW,
-                    HW,
-                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    PixelFormat.TRANSLUCENT);
-        }
-        layoutParams.gravity = Gravity.TOP | Gravity.START;
-        layoutParams.x = X;
-        layoutParams.y = Y;
-        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
         return layoutParams;
     }
 
@@ -1332,58 +1186,6 @@ public class FunctionsClass {
         return shapesImage;
     }
 
-    public ShapesImage initShapesImage(View view, int viewId) {
-        ShapesImage shapesImage = (ShapesImage) view.findViewById(viewId);
-        SharedPreferences sharedPreferences = context.getSharedPreferences("theme", Context.MODE_PRIVATE);
-        switch (sharedPreferences.getInt("iconShape", 0)) {
-            case 1:
-                shapesImage.setShapeDrawable(context.getDrawable(R.drawable.droplet_icon));
-                break;
-            case 2:
-                shapesImage.setShapeDrawable(ShapesImage.CIRCLE);
-                break;
-            case 3:
-                shapesImage.setShapeDrawable(context.getDrawable(R.drawable.square_icon));
-                break;
-            case 4:
-                shapesImage.setShapeDrawable(context.getDrawable(R.drawable.squircle_icon));
-                break;
-            case 5:
-                shapesImage.setShapeDrawable(context.getDrawable(R.drawable.cut_circle_icon));
-                break;
-            case 0:
-                shapesImage.setShapeDrawable(null);
-                break;
-        }
-        return shapesImage;
-    }
-
-    public ShapesImage initShapesImage(Activity activity, int viewId) {
-        ShapesImage shapesImage = (ShapesImage) activity.findViewById(viewId);
-        SharedPreferences sharedPreferences = context.getSharedPreferences("theme", Context.MODE_PRIVATE);
-        switch (sharedPreferences.getInt("iconShape", 0)) {
-            case 1:
-                shapesImage.setShapeDrawable(context.getDrawable(R.drawable.droplet_icon));
-                break;
-            case 2:
-                shapesImage.setShapeDrawable(ShapesImage.CIRCLE);
-                break;
-            case 3:
-                shapesImage.setShapeDrawable(context.getDrawable(R.drawable.square_icon));
-                break;
-            case 4:
-                shapesImage.setShapeDrawable(context.getDrawable(R.drawable.squircle_icon));
-                break;
-            case 5:
-                shapesImage.setShapeDrawable(context.getDrawable(R.drawable.cut_circle_icon));
-                break;
-            case 0:
-                shapesImage.setShapeDrawable(null);
-                break;
-        }
-        return shapesImage;
-    }
-
     public Drawable shapedAppIcon(String packageName) {
         Drawable appIconDrawable = null;
         SharedPreferences sharedPreferences = context.getSharedPreferences("theme", Context.MODE_PRIVATE);
@@ -1456,10 +1258,6 @@ public class FunctionsClass {
             drawable.draw(canvas);
         }
         return bitmap;
-    }
-
-    public Drawable bitmapToDrawable(Bitmap bitmap) {
-        return new BitmapDrawable(context.getResources(), bitmap);
     }
 
     public Drawable shapedAppIcon(ActivityInfo activityInfo) {
