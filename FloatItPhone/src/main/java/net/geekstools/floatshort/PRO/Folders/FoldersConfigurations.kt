@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/24/20 12:33 PM
+ * Last modified 4/25/20 7:14 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -65,7 +65,7 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
-import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
+import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
@@ -255,7 +255,7 @@ class FoldersConfigurations : AppCompatActivity(),
         }
         foldersConfigurationViewBinding.switchApps.setOnClickListener {
 
-            functionsClass.navigateToClass(this@FoldersConfigurations, ApplicationsView::class.java,
+            functionsClass.navigateToClass(this@FoldersConfigurations, ApplicationsViewPhone::class.java,
                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
         }
         foldersConfigurationViewBinding.switchWidgets.setOnClickListener {
@@ -627,7 +627,7 @@ class FoldersConfigurations : AppCompatActivity(),
                 when (gestureConstants.horizontalDirection) {
                     GestureListenerConstants.SWIPE_RIGHT -> {
 
-                        functionsClass.navigateToClass(this@FoldersConfigurations, ApplicationsView::class.java,
+                        functionsClass.navigateToClass(this@FoldersConfigurations, ApplicationsViewPhone::class.java,
                                 ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright © 2019 By Geeks Empire.
+  ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 11/11/19 7:18 PM
-  ~ Last modified 11/11/19 7:16 PM
+  ~ Created by Elias Fazel
+  ~ Last modified 4/25/20 11:25 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -11,7 +11,7 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/listWhole"
+    android:id="@+id/MainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/trans_black_high">
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list"
+                android:id="@+id/applicationsListView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@drawable/draw_divider"
@@ -63,14 +63,14 @@
         android:weightSum="2">
 
         <ImageView
-            android:id="@+id/recovery"
+            android:id="@+id/floatingShortcutsRecovery"
             android:layout_width="35dp"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:src="@drawable/draw_recovery"/>
 
         <ImageView
-            android:id="@+id/setting"
+            android:id="@+id/settingGUI"
             android:layout_width="35dp"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -89,8 +89,9 @@
             android:src="@drawable/ic_launcher"/>
 
         <ProgressBar
-            android:id="@+id/loadingProgressltr"
             style="?android:attr/progressBarStyleHorizontal"
+
+            android:id="@+id/loadingProgressBar"
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:layout_alignParentTop="true"

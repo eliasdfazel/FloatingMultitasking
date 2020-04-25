@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/25/20 5:52 AM
+  ~ Last modified 4/25/20 7:10 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -94,7 +94,7 @@
             android:supportsPictureInPicture="true"
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper.NoTitleBar"/>
         <activity
-            android:name=".Shortcuts.ApplicationsView"
+            android:name=".Shortcuts.ApplicationsViewPhone"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="true"
             android:label="@string/app_name"

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 12:13 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,9 +26,9 @@ import android.widget.RelativeLayout;
 
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.PopupCategoryOptionAdapter;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.NavDrawerItem;
 
 import java.util.ArrayList;
 
@@ -100,7 +100,7 @@ public class PopupOptionsFloatingCategory extends Service {
                 e.printStackTrace();
             }
 
-            ArrayList<NavDrawerItem> navDrawerItemsSaved = new ArrayList<NavDrawerItem>();
+            ArrayList<AdapterItems> navDrawerItemsSaved = new ArrayList<AdapterItems>();
             navDrawerItemsSaved.clear();
 
             if (MODE.equals("Options")) {
@@ -202,7 +202,7 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                 }
                 for (int i = 0; i < popupItems.length; i++) {
-                    navDrawerItemsSaved.add(new NavDrawerItem(
+                    navDrawerItemsSaved.add(new AdapterItems(
                             popupItems[i],
                             categoryName,
                             popupItemsIcon[i]));
@@ -229,12 +229,12 @@ public class PopupOptionsFloatingCategory extends Service {
                 switch (functionsClass.displaySection(xPosition, yPosition)) {
                     case FunctionsClass.DisplaySection.TopLeft:
                         for (String packageName : packagesNames) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
                                     functionsClass.shapedAppIcon(packageName)));
                         }
-                        navDrawerItemsSaved.add(new NavDrawerItem(
+                        navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_category) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
@@ -245,12 +245,12 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                     case FunctionsClass.DisplaySection.TopRight:
                         for (String packageName : packagesNames) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
                                     functionsClass.shapedAppIcon(packageName)));
                         }
-                        navDrawerItemsSaved.add(new NavDrawerItem(
+                        navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_category) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
@@ -260,12 +260,12 @@ public class PopupOptionsFloatingCategory extends Service {
 
                         break;
                     case FunctionsClass.DisplaySection.BottomLeft:
-                        navDrawerItemsSaved.add(new NavDrawerItem(
+                        navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_category) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
                         for (String packageName : packagesNames) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
                                     functionsClass.shapedAppIcon(packageName)));
@@ -276,12 +276,12 @@ public class PopupOptionsFloatingCategory extends Service {
 
                         break;
                     case FunctionsClass.DisplaySection.BottomRight:
-                        navDrawerItemsSaved.add(new NavDrawerItem(
+                        navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_category) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
                         for (String packageName : packagesNames) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
                                     functionsClass.shapedAppIcon(packageName)));
@@ -293,12 +293,12 @@ public class PopupOptionsFloatingCategory extends Service {
                         break;
                     default:
                         for (String packageName : packagesNames) {
-                            navDrawerItemsSaved.add(new NavDrawerItem(
+                            navDrawerItemsSaved.add(new AdapterItems(
                                     functionsClass.appName(packageName),
                                     packageName,
                                     functionsClass.shapedAppIcon(packageName)));
                         }
-                        navDrawerItemsSaved.add(new NavDrawerItem(
+                        navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_category) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));

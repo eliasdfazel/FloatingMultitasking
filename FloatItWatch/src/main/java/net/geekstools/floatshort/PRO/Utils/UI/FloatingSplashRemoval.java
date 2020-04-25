@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 12:13 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,12 +20,13 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 
-public class FloatingSplashRemoval extends ImageView {
+public class FloatingSplashRemoval extends AppCompatImageView {
 
     FunctionsClass functionsClass;
     Context context;

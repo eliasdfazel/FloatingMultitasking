@@ -1,14 +1,14 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:28 PM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 11:40 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Utils.GeneralAdapters;
+package net.geekstools.floatshort.PRO.Utils.AdapterDataItem;
 
 import android.app.Dialog;
 import android.content.Context;

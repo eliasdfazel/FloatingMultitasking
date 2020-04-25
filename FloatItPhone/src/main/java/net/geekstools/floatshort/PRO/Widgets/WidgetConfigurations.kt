@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 9:28 AM
+ * Last modified 4/25/20 12:13 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -61,13 +61,13 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fing
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.PinPasswordConfigurations
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
-import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
+import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone
+import net.geekstools.floatshort.PRO.Utils.AdapterDataItem.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
-import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryWidgets
@@ -401,7 +401,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         }
         widgetConfigurationsViewsBinding.switchApps.setOnClickListener {
 
-            startActivity(Intent(applicationContext, ApplicationsView::class.java),
+            startActivity(Intent(applicationContext, ApplicationsViewPhone::class.java),
                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left).toBundle())
         }
         widgetConfigurationsViewsBinding.automationAction.setOnClickListener {
@@ -883,7 +883,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
 
-                        functionsClass.navigateToClass(this@WidgetConfigurations, ApplicationsView::class.java,
+                        functionsClass.navigateToClass(this@WidgetConfigurations, ApplicationsViewPhone::class.java,
                                 ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
                     }
                 }

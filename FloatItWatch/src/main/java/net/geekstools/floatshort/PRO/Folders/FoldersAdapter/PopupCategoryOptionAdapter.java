@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 12:13 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -23,9 +23,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.NavDrawerItem;
 import net.geekstools.floatshort.PRO.Utils.UI.FloatingSplash;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -35,14 +35,14 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
 
     FunctionsClass functionsClass;
     Context context;
-    ArrayList<NavDrawerItem> navDrawerItems;
+    ArrayList<AdapterItems> adapterItems;
     String className;
     int startId, layoutInflater, xPosition, yPosition, HW;
 
 
-    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String className, int startId) {
+    public PopupCategoryOptionAdapter(Context context, ArrayList<AdapterItems> adapterItems, String className, int startId) {
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
         this.className = className;
         this.startId = startId;
 
@@ -70,10 +70,10 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         }
     }
 
-    public PopupCategoryOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, String className, int startId,
+    public PopupCategoryOptionAdapter(Context context, ArrayList<AdapterItems> adapterItems, String className, int startId,
                                       int xPosition, int yPosition, int HW) {
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
         this.className = className;
         this.startId = startId;
         this.xPosition = xPosition;
@@ -106,12 +106,12 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return navDrawerItems.get(position);
+        return adapterItems.get(position);
     }
 
     @Override
@@ -135,8 +135,8 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.imgIcon.setImageDrawable(navDrawerItems.get(position).getIcon());
-        viewHolder.textAppName.setText(navDrawerItems.get(position).getAppName());
+        viewHolder.imgIcon.setImageDrawable(adapterItems.get(position).getIcon());
+        viewHolder.textAppName.setText(adapterItems.get(position).getAppName());
 
         viewHolder.imgIcon.setImageAlpha(PublicVariable.hide ? 157 : 250);
         viewHolder.textAppName.setAlpha(PublicVariable.hide ? 0.77f : 1.0f);
@@ -157,22 +157,22 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         viewHolder.items.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.remove_category))) {
+                if (adapterItems.get(position).getAppName().contains(context.getString(R.string.remove_category))) {
                     context.sendBroadcast(new Intent("Remove_Category_" + className).putExtra("startId", startId));
-                } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.pin_category))) {
+                } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.pin_category))) {
                     context.sendBroadcast(new Intent("Pin_App_" + className).putExtra("startId", startId));
-                } else if (navDrawerItems.get(position).getAppName().contains(context.getString(R.string.unpin_category))) {
+                } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.unpin_category))) {
                     context.sendBroadcast(new Intent("Unpin_App_" + className).putExtra("startId", startId));
                 } else {
                     if (functionsClass.splashReveal()) {
                         Intent splashReveal = new Intent(context, FloatingSplash.class);
-                        splashReveal.putExtra("packageName", navDrawerItems.get(position).getPackageName());
+                        splashReveal.putExtra("packageName", adapterItems.get(position).getPackageName());
                         splashReveal.putExtra("X", xPosition);
                         splashReveal.putExtra("Y", yPosition);
                         splashReveal.putExtra("HW", HW);
                         context.startService(splashReveal);
                     } else {
-                        functionsClass.appsLaunchPad(navDrawerItems.get(position).getPackageName());
+                        functionsClass.appsLaunchPad(adapterItems.get(position).getPackageName());
                     }
                 }
                 context.sendBroadcast(new Intent("Hide_PopupListView_Category"));

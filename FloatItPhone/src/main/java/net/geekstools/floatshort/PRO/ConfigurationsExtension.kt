@@ -1,3 +1,13 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel
+ * Last modified 4/25/20 7:10 AM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 package net.geekstools.floatshort.PRO
 
 import android.R
@@ -7,7 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
-import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsView
+import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 fun Configurations.checkUserInformation() {
@@ -47,7 +57,7 @@ fun Configurations.initializeParameterUI() {
 
 fun Configurations.triggerOpenProcess() {
 
-    if (functionsClass.readPreference("OpenMode", "openClassName", ApplicationsView::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
+    if (functionsClass.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
 
         Intent(applicationContext, FoldersConfigurations::class.java).apply {
 
@@ -56,7 +66,7 @@ fun Configurations.triggerOpenProcess() {
 
     } else {//Floating Shortcuts
 
-        Intent(applicationContext, ApplicationsView::class.java).apply {
+        Intent(applicationContext, ApplicationsViewPhone::class.java).apply {
 
             startActivity(this)
         }
@@ -66,7 +76,7 @@ fun Configurations.triggerOpenProcess() {
 }
 
 fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<String>) {
-    if (functionsClass.readPreference("OpenMode", "openClassName", ApplicationsView::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
+    if (functionsClass.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
 
         if (getFileStreamPath("Frequently").exists()) {
             functionsClass.removeLine(".categoryInfo", "Frequently")
@@ -91,7 +101,7 @@ fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<S
         PublicVariable.frequentlyUsedApps = frequentAppsArray
         PublicVariable.freqLength = PublicVariable.frequentlyUsedApps.size
 
-        Intent(applicationContext, ApplicationsView::class.java).apply {
+        Intent(applicationContext, ApplicationsViewPhone::class.java).apply {
             putExtra("frequentApps", frequentAppsArray)
             putExtra("frequentAppsNumbers", frequentAppsArray.size)
             startActivity(this)

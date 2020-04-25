@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 6:25 AM
+ * Last modified 4/25/20 12:13 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -75,10 +75,10 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.ApplicationsViewItemsAdapter
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
+import net.geekstools.floatshort.PRO.Utils.AdapterDataItem.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
 import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchasesCheckpoint
@@ -102,7 +102,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.hypot
 
-class ApplicationsView : AppCompatActivity(),
+class ApplicationsViewPhone : AppCompatActivity(),
         View.OnClickListener, OnLongClickListener,
         OnTouchListener,
         GestureListenerInterface,
@@ -139,7 +139,7 @@ class ApplicationsView : AppCompatActivity(),
     var loadFrequentlyApps = false
 
     private val swipeGestureListener: SwipeGestureListener by lazy {
-        SwipeGestureListener(applicationContext, this@ApplicationsView)
+        SwipeGestureListener(applicationContext, this@ApplicationsViewPhone)
     }
 
     private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
@@ -163,7 +163,7 @@ class ApplicationsView : AppCompatActivity(),
         hybridApplicationViewBinding = HybridApplicationViewBinding.inflate(layoutInflater)
         setContentView(hybridApplicationViewBinding.root)
 
-        functionsClassDataActivity = FunctionsClassDataActivity(this@ApplicationsView)
+        functionsClassDataActivity = FunctionsClassDataActivity(this@ApplicationsViewPhone)
 
         functionsClass = FunctionsClass(applicationContext)
         functionsClassRunServices = FunctionsClassRunServices(applicationContext)
@@ -253,7 +253,7 @@ class ApplicationsView : AppCompatActivity(),
                     }
                 })
 
-                functionsClass.openActionMenuOption(this@ApplicationsView, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton, hybridApplicationViewBinding.fullActionViews.isShown)
+                functionsClass.openActionMenuOption(this@ApplicationsViewPhone, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton, hybridApplicationViewBinding.fullActionViews.isShown)
             } else {
                 hybridApplicationViewBinding.recoveryAction.visibility = View.VISIBLE
 
@@ -284,7 +284,7 @@ class ApplicationsView : AppCompatActivity(),
 
         hybridApplicationViewBinding.switchCategories.setOnClickListener {
             try {
-                functionsClass.navigateToClass(this@ApplicationsView, FoldersConfigurations::class.java,
+                functionsClass.navigateToClass(this@ApplicationsViewPhone, FoldersConfigurations::class.java,
                         ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -295,7 +295,7 @@ class ApplicationsView : AppCompatActivity(),
 
                 if (functionsClass.floatingWidgetsPurchased()) {
 
-                    functionsClass.navigateToClass(this@ApplicationsView, WidgetConfigurations::class.java,
+                    functionsClass.navigateToClass(this@ApplicationsViewPhone, WidgetConfigurations::class.java,
                             ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
 
                 } else {
@@ -381,10 +381,10 @@ class ApplicationsView : AppCompatActivity(),
 
         hybridApplicationViewBinding.actionButton.setOnLongClickListener {
             Handler().postDelayed({
-                val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@ApplicationsView, hybridApplicationViewBinding.actionButton, "transition")
+                val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@ApplicationsViewPhone, hybridApplicationViewBinding.actionButton, "transition")
                 Intent().let {
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    it.setClass(this@ApplicationsView, PreferencesActivity::class.java)
+                    it.setClass(this@ApplicationsViewPhone, PreferencesActivity::class.java)
                     startActivity(it, activityOptionsCompat.toBundle())
                 }
             }, 113)
@@ -467,7 +467,7 @@ class ApplicationsView : AppCompatActivity(),
         }
 
         //In-App Billing
-        PurchasesCheckpoint(this@ApplicationsView).trigger()
+        PurchasesCheckpoint(this@ApplicationsViewPhone).trigger()
 
         firebaseAuth = FirebaseAuth.getInstance()
 
@@ -491,7 +491,7 @@ class ApplicationsView : AppCompatActivity(),
             val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
                 override fun onReceive(context: Context, intent: Intent) {
                     if (intent.action == getString(R.string.license)) {
-                        functionsClass.dialogueLicense(this@ApplicationsView)
+                        functionsClass.dialogueLicense(this@ApplicationsViewPhone)
 
                         Handler().postDelayed({
                             stopService(Intent(applicationContext, LicenseValidator::class.java))
@@ -518,11 +518,11 @@ class ApplicationsView : AppCompatActivity(),
                 startActivityForResult(this, Google.SignInRequest)
             }
 
-            ViewModelProvider(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
+            ViewModelProvider(this@ApplicationsViewPhone).get(WaitingDialogueLiveData::class.java).run {
                 this.dialogueTitle.value = getString(R.string.signinTitle)
                 this.dialogueMessage.value = getString(R.string.signinMessage)
 
-                waitingDialogue = WaitingDialogue().initShow(this@ApplicationsView)
+                waitingDialogue = WaitingDialogue().initShow(this@ApplicationsViewPhone)
             }
         }
 
@@ -564,7 +564,7 @@ class ApplicationsView : AppCompatActivity(),
                             hybridApplicationViewBinding.newUpdate.visibility = View.VISIBLE
                             hybridApplicationViewBinding.newUpdate.setOnClickListener {
                                 functionsClass.upcomingChangeLog(
-                                        this@ApplicationsView,
+                                        this@ApplicationsViewPhone,
                                         firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
                             }
                             functionsClass.notificationCreator(
@@ -604,7 +604,7 @@ class ApplicationsView : AppCompatActivity(),
                             .requestEmail()
                             .build()
 
-                    val googleSignInClient = GoogleSignIn.getClient(this@ApplicationsView, googleSignInOptions)
+                    val googleSignInClient = GoogleSignIn.getClient(this@ApplicationsViewPhone, googleSignInOptions)
                     try {
                         googleSignInClient.signOut()
                         googleSignInClient.revokeAccess()
@@ -620,7 +620,7 @@ class ApplicationsView : AppCompatActivity(),
         functionsClass.addAppShortcuts()
         functionsClass.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition())
         if (PublicVariable.actionCenter) {
-            functionsClass.closeActionMenuOption(this@ApplicationsView, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton)
+            functionsClass.closeActionMenuOption(this@ApplicationsViewPhone, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton)
         }
 
         functionsClass.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
@@ -638,7 +638,7 @@ class ApplicationsView : AppCompatActivity(),
         }
         startActivity(homeScreen, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
-        functionsClass.CheckSystemRAM(this@ApplicationsView)
+        functionsClass.CheckSystemRAM(this@ApplicationsViewPhone)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -665,7 +665,7 @@ class ApplicationsView : AppCompatActivity(),
 
                     override fun authenticatedFloatIt(extraInformation: Bundle?) {
                         super.authenticatedFloatIt(extraInformation)
-                        Log.d(this@ApplicationsView.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+                        Log.d(this@ApplicationsViewPhone.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                         functionsClass
                                 .appsLaunchPad(frequentlyUsedAppsList[position])
@@ -673,13 +673,13 @@ class ApplicationsView : AppCompatActivity(),
 
                     override fun failedAuthenticated() {
                         super.failedAuthenticated()
-                        Log.d(this@ApplicationsView.javaClass.simpleName, "FailedAuthenticated")
+                        Log.d(this@ApplicationsViewPhone.javaClass.simpleName, "FailedAuthenticated")
 
                     }
 
                     override fun invokedPinPassword() {
                         super.invokedPinPassword()
-                        Log.d(this@ApplicationsView.javaClass.simpleName, "InvokedPinPassword")
+                        Log.d(this@ApplicationsViewPhone.javaClass.simpleName, "InvokedPinPassword")
 
                     }
                 }
@@ -709,7 +709,7 @@ class ApplicationsView : AppCompatActivity(),
 
                             if (functionsClass.floatingWidgetsPurchased()) {
 
-                                functionsClass.navigateToClass(this@ApplicationsView, WidgetConfigurations::class.java,
+                                functionsClass.navigateToClass(this@ApplicationsViewPhone, WidgetConfigurations::class.java,
                                         ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
 
                             } else {
@@ -731,7 +731,7 @@ class ApplicationsView : AppCompatActivity(),
                         }
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
-                        functionsClass.navigateToClass(this@ApplicationsView, FoldersConfigurations::class.java,
+                        functionsClass.navigateToClass(this@ApplicationsViewPhone, FoldersConfigurations::class.java,
                                 ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
                     }
                 }
@@ -771,7 +771,7 @@ class ApplicationsView : AppCompatActivity(),
                                 }
                             }.addOnFailureListener { exception ->
 
-                                ViewModelProvider(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
+                                ViewModelProvider(this@ApplicationsViewPhone).get(WaitingDialogueLiveData::class.java).run {
                                     this.dialogueTitle.value = getString(R.string.error)
                                     this.dialogueMessage.value = exception.message
                                 }
@@ -779,7 +779,7 @@ class ApplicationsView : AppCompatActivity(),
                 }
             }
         } else {
-            ViewModelProvider(this@ApplicationsView).get(WaitingDialogueLiveData::class.java).run {
+            ViewModelProvider(this@ApplicationsViewPhone).get(WaitingDialogueLiveData::class.java).run {
                 this.dialogueTitle.value = getString(R.string.error)
                 this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
             }
@@ -916,7 +916,7 @@ class ApplicationsView : AppCompatActivity(),
                     }
 
                     /*Search Engine*/
-                    SearchEngine(activity = this@ApplicationsView, context = applicationContext,
+                    SearchEngine(activity = this@ApplicationsViewPhone, context = applicationContext,
                             searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
                             functionsClass = functionsClass,
                             functionsClassRunServices = functionsClassRunServices,
@@ -1021,8 +1021,8 @@ class ApplicationsView : AppCompatActivity(),
             val freqLayout = layoutInflater.inflate(R.layout.freq_item, null) as RelativeLayout
             val shapesImage = functionsClass.initShapesImage(freqLayout, R.id.freqItems)
             shapesImage.id = i
-            shapesImage.setOnClickListener(this@ApplicationsView)
-            shapesImage.setOnLongClickListener(this@ApplicationsView)
+            shapesImage.setOnClickListener(this@ApplicationsViewPhone)
+            shapesImage.setOnLongClickListener(this@ApplicationsViewPhone)
             shapesImage.setImageDrawable(if (functionsClass.customIconsEnable()) {
                 loadCustomIcons.getDrawableIconForPackage(frequentlyUsedAppsList[i], functionsClass.shapedAppIcon(frequentlyUsedAppsList[i]))
             } else {

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 11:54 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,10 +32,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.ListApplicationsView;
+import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewWatch;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 
-public class SettingGUI extends WearableActivity {
+public class Preferences extends WearableActivity {
 
     FunctionsClass functionsClass;
     RelativeLayout mContainerView;
@@ -55,7 +55,7 @@ public class SettingGUI extends WearableActivity {
             setContentView(R.layout.activity_setting_gui_rect);
         }
         setAmbientEnabled();
-        functionsClass = new FunctionsClass(getApplicationContext(), this);
+        functionsClass = new FunctionsClass(getApplicationContext());
 
         mContainerView = (RelativeLayout) findViewById(R.id.container);
         theme = (TextView) findViewById(R.id.theme);
@@ -368,7 +368,7 @@ public class SettingGUI extends WearableActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ListApplicationsView.class));
+                startActivity(new Intent(getApplicationContext(), ApplicationsViewWatch.class));
                 overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
             }
         });
@@ -395,7 +395,7 @@ public class SettingGUI extends WearableActivity {
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
         firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener(SettingGUI.this, new OnCompleteListener<Void>() {
+                .addOnCompleteListener(Preferences.this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {

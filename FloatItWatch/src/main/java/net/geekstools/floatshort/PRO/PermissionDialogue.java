@@ -1,8 +1,8 @@
 /*
- * Copyright © 2019 By Geeks Empire.
+ * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 11/11/19 7:18 PM
- * Last modified 11/11/19 7:16 PM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 12:13 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -11,6 +11,7 @@
 package net.geekstools.floatshort.PRO;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,6 +30,18 @@ public class PermissionDialogue extends Activity {
         permissionsAlert();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 666) {
+            if (Settings.canDrawOverlays(getApplicationContext())) {
+
+                startActivity(new Intent(getApplicationContext(), Configurations.class),
+                        ActivityOptions.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+
+                PermissionDialogue.this.finish();
+            }
+        }
+    }
 
     public void permissionsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(PermissionDialogue.this);
@@ -45,35 +58,40 @@ public class PermissionDialogue extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:" + getPackageName()));
-                startActivity(intent);
+                startActivityForResult(intent, 666);
 
                 Toast.makeText(getApplicationContext(),
                         getResources().getString(R.string.overlayset).toUpperCase(), Toast.LENGTH_LONG).show();
 
-                finish();
                 dialog.dismiss();
             }
         });
+
         alertDialog.setNegativeButton(getString(R.string.later), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
+                PermissionDialogue.this.finish();
+
                 dialog.dismiss();
             }
         });
+
         alertDialog.setNeutralButton(getString(R.string.read), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
+                PermissionDialogue.this.finish();
+
                 dialog.dismiss();
             }
         });
+
         alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
 
             }
         });
+
         alertDialog.show();
     }
 }

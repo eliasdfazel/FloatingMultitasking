@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 12:13 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,7 +10,6 @@
 
 package net.geekstools.floatshort.PRO.Shortcuts;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,9 +26,6 @@ import android.support.wearable.activity.WearableActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,54 +44,46 @@ import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Configurations;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Category_Unlimited_Category;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardListAdapter;
+import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.ApplicationsViewAdapter;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.NavDrawerItem;
+import net.geekstools.floatshort.PRO.Utils.Preferences;
 import net.geekstools.floatshort.PRO.Utils.RemoteProcess.LicenseValidator;
-import net.geekstools.floatshort.PRO.Utils.SettingGUI;
+import net.geekstools.floatshort.PRO.databinding.ApplicationsViewWatchBinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ListApplicationsView extends WearableActivity implements View.OnClickListener {
+public class ApplicationsViewWatch extends WearableActivity implements View.OnClickListener {
 
-    Activity activity;
     FunctionsClass functionsClass;
-    RecyclerView loadView;
-    RelativeLayout listWhole, loadingSplash;
-    ProgressBar loadingBarLTR;
-    ImageView newUpdate;
 
     List<ApplicationInfo> applicationInfoList;
-    ArrayList<NavDrawerItem> navDrawerItems;
-    RecyclerView.Adapter cardListAdapter;
+    ArrayList<AdapterItemsApplications> adapterItemsApplications;
+    RecyclerView.Adapter ApplicationsViewAdapter;
     LinearLayoutManager recyclerViewLayoutManager;
 
-    String PackageName, AppName = "Application";
     int loadViewPosition = 0, limitedCountLine;
-    Drawable AppIcon;
 
     FirebaseRemoteConfig firebaseRemoteConfig;
+
+    ApplicationsViewWatchBinding applicationsViewWatchBinding;
 
     @Override
     protected void onCreate(Bundle Saved) {
         super.onCreate(Saved);
-        setContentView(R.layout.list_off);
+        applicationsViewWatchBinding = ApplicationsViewWatchBinding.inflate(getLayoutInflater());
+        setContentView(applicationsViewWatchBinding.getRoot());
         setAmbientEnabled();
 
-        loadView = (RecyclerView) findViewById(R.id.list);
-        listWhole = (RelativeLayout) findViewById(R.id.listWhole);
-        newUpdate = (ImageView) findViewById(R.id.newUpdate);
-
         functionsClass = new FunctionsClass(getApplicationContext());
-        activity = this;
 
         recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        loadView.setLayoutManager(recyclerViewLayoutManager);
+        applicationsViewWatchBinding.applicationsListView.setLayoutManager(recyclerViewLayoutManager);
 
-        navDrawerItems = new ArrayList<NavDrawerItem>();
+        adapterItemsApplications = new ArrayList<AdapterItemsApplications>();
 
         LoadApplicationsOffInit loadApplicationsOffInit = new LoadApplicationsOffInit();
         loadApplicationsOffInit.execute();
@@ -119,16 +107,16 @@ public class ListApplicationsView extends WearableActivity implements View.OnCli
     @Override
     public void onResume() {
         super.onResume();
-        if (functionsClass.checkThemeLightDark() == true) {
-            listWhole.setBackgroundColor(getColor(R.color.light_trans));
-        } else if (functionsClass.checkThemeLightDark() == false) {
-            listWhole.setBackgroundColor(getColor(R.color.trans_black));
+        if (functionsClass.checkThemeLightDark()) {
+            applicationsViewWatchBinding.MainView.setBackgroundColor(getColor(R.color.light_trans));
+        } else if (!functionsClass.checkThemeLightDark()) {
+            applicationsViewWatchBinding.MainView.setBackgroundColor(getColor(R.color.trans_black));
         }
 
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
         firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener(ListApplicationsView.this, new OnCompleteListener<Void>() {
+                .addOnCompleteListener(ApplicationsViewWatch.this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -139,8 +127,8 @@ public class ListApplicationsView extends WearableActivity implements View.OnCli
                                 LayerDrawable layerDrawableNewUpdate = (LayerDrawable) getDrawable(R.drawable.ic_update);
                                 BitmapDrawable gradientDrawableNewUpdate = (BitmapDrawable) layerDrawableNewUpdate.findDrawableByLayerId(R.id.ic_launcher_back_layer);
                                 gradientDrawableNewUpdate.setTint(PublicVariable.primaryColor);
-                                newUpdate.setImageDrawable(layerDrawableNewUpdate);
-                                newUpdate.setVisibility(View.VISIBLE);
+                                applicationsViewWatchBinding.newUpdate.setImageDrawable(layerDrawableNewUpdate);
+                                applicationsViewWatchBinding.newUpdate.setVisibility(View.VISIBLE);
                             } else {
                             }
                         } else {
@@ -158,7 +146,7 @@ public class ListApplicationsView extends WearableActivity implements View.OnCli
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(getString(R.string.license))) {
-                    functionsClass.dialogueLicense(ListApplicationsView.this);
+                    functionsClass.dialogueLicense(ApplicationsViewWatch.this);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -175,22 +163,20 @@ public class ListApplicationsView extends WearableActivity implements View.OnCli
             }
         }
 
-        ImageView settingGUI = (ImageView) findViewById(R.id.setting);
-        ImageView recovery = (ImageView) findViewById(R.id.recovery);
-        settingGUI.setOnClickListener(new View.OnClickListener() {
+        applicationsViewWatchBinding.settingGUI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), SettingGUI.class));
+                startActivity(new Intent(getApplicationContext(), Preferences.class));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
-        recovery.setOnClickListener(new View.OnClickListener() {
+        applicationsViewWatchBinding.floatingShortcutsRecovery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startService(new Intent(getApplicationContext(), RecoveryShortcuts.class));
             }
         });
-        recovery.setOnLongClickListener(new View.OnLongClickListener() {
+        applicationsViewWatchBinding.floatingShortcutsRecovery.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 try {
@@ -211,7 +197,7 @@ public class ListApplicationsView extends WearableActivity implements View.OnCli
             }
         });
 
-        loadView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        applicationsViewWatchBinding.applicationsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -251,11 +237,9 @@ public class ListApplicationsView extends WearableActivity implements View.OnCli
         protected void onPreExecute() {
             super.onPreExecute();
 
-            loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
-            loadingSplash.setBackgroundColor(getColor(R.color.light));
+            applicationsViewWatchBinding.loadingSplash.setBackgroundColor(getColor(R.color.light));
 
-            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgressltr);
-            loadingBarLTR.getIndeterminateDrawable().setColorFilter(getColor(R.color.dark), android.graphics.PorterDuff.Mode.MULTIPLY);
+            applicationsViewWatchBinding.loadingProgressBar.getIndeterminateDrawable().setColorFilter(getColor(R.color.dark), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
 
         @Override
@@ -268,18 +252,20 @@ public class ListApplicationsView extends WearableActivity implements View.OnCli
                 for (int appInfo = 0; appInfo < limitedCountLine; appInfo++) {
                     if (getApplicationContext().getPackageManager().getLaunchIntentForPackage(applicationInfoList.get(appInfo).packageName) != null) {
                         try {
-                            PackageName = applicationInfoList.get(appInfo).packageName;
-                            AppName = functionsClass.appName(PackageName);
-                            AppIcon = functionsClass.shapedAppIcon(PackageName);
+                            String packageName = applicationInfoList.get(appInfo).packageName;
+                            String appName = functionsClass.appName(packageName);
+                            Drawable appIcon = functionsClass.shapedAppIcon(packageName);
 
-                            navDrawerItems.add(new NavDrawerItem(AppName, PackageName, AppIcon));
+                            adapterItemsApplications.add(new AdapterItemsApplications(appName,
+                                    packageName,
+                                    appIcon,
+                                    functionsClass.extractDominantColor(appIcon)));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
-                cardListAdapter = new CardListAdapter(activity, getApplicationContext(), navDrawerItems);
-                cardListAdapter.notifyDataSetChanged();
+                ApplicationsViewAdapter = new ApplicationsViewAdapter(getApplicationContext(), adapterItemsApplications);
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
@@ -289,7 +275,7 @@ public class ListApplicationsView extends WearableActivity implements View.OnCli
                         startActivity(new Intent(getApplicationContext(), Configurations.class));
                     }
                 }, 113);
-                ListApplicationsView.this.finish();
+                ApplicationsViewWatch.this.finish();
             }
             return null;
         }
@@ -297,12 +283,11 @@ public class ListApplicationsView extends WearableActivity implements View.OnCli
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            loadView.setAdapter(cardListAdapter);
-            Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
-            loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
-            loadingSplash.setVisibility(View.INVISIBLE);
-            loadingSplash.startAnimation(anim);
-            anim.setAnimationListener(new Animation.AnimationListener() {
+            applicationsViewWatchBinding.applicationsListView.setAdapter(ApplicationsViewAdapter);
+            Animation fadeOutAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+            applicationsViewWatchBinding.loadingSplash.setVisibility(View.INVISIBLE);
+            applicationsViewWatchBinding.loadingSplash.startAnimation(fadeOutAnimation);
+            fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
 
@@ -334,30 +319,27 @@ public class ListApplicationsView extends WearableActivity implements View.OnCli
                 for (int appInfo = limitedCountLine; appInfo < applicationInfoList.size(); appInfo++) {
                     if (getApplicationContext().getPackageManager().getLaunchIntentForPackage(applicationInfoList.get(appInfo).packageName) != null) {
                         try {
-                            PackageName = applicationInfoList.get(appInfo).packageName;
-                            AppName = functionsClass.appName(PackageName);
-                            AppIcon = functionsClass.shapedAppIcon(PackageName);
+                            String packageName = applicationInfoList.get(appInfo).packageName;
+                            String appName = functionsClass.appName(packageName);
+                            Drawable appIcon = functionsClass.shapedAppIcon(packageName);
 
-                            navDrawerItems.add(new NavDrawerItem(AppName, PackageName, AppIcon));
+                            adapterItemsApplications.add(new AdapterItemsApplications(appName,
+                                    packageName,
+                                    appIcon,
+                                    functionsClass.extractDominantColor(appIcon)));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
-                cardListAdapter = new CardListAdapter(activity, getApplicationContext(), navDrawerItems);
-                cardListAdapter.notifyDataSetChanged();
+                ApplicationsViewAdapter = new ApplicationsViewAdapter(getApplicationContext(), adapterItemsApplications);
 
-                functionsClass.savePreference("InstalledApps", "countApps", navDrawerItems.size());
+                functionsClass.savePreference("InstalledApps", "countApps", adapterItemsApplications.size());
             } catch (Exception e) {
                 e.printStackTrace();
                 this.cancel(true);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(new Intent(getApplicationContext(), Configurations.class));
-                    }
-                }, 113);
-                ListApplicationsView.this.finish();
+
+                ApplicationsViewWatch.this.finish();
             }
             return null;
         }
@@ -365,7 +347,8 @@ public class ListApplicationsView extends WearableActivity implements View.OnCli
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            loadView.setAdapter(cardListAdapter);
+            applicationsViewWatchBinding.applicationsListView.setAdapter(ApplicationsViewAdapter);
+
             if (loadViewPosition == 0) {
                 recyclerViewLayoutManager.scrollToPosition(getSharedPreferences("LoadView", Context.MODE_PRIVATE).getInt("LoadViewPosition", 0));
             } else {

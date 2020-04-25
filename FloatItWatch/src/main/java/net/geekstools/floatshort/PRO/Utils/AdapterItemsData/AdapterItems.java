@@ -1,29 +1,29 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 11:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Utils.GeneralAdapters;
+package net.geekstools.floatshort.PRO.Utils.AdapterItemsData;
 
 import android.graphics.drawable.Drawable;
 
-public class NavDrawerItem {
+public class AdapterItems {
 
     String titleText, packageName, appName;
     Drawable appIcon;
 
-    public NavDrawerItem(String appName, String packageName, Drawable appIcon) {
+    public AdapterItems(String appName, String packageName, Drawable appIcon) {
         this.appName = appName;
         this.packageName = packageName;
         this.appIcon = appIcon;
     }
 
-    public NavDrawerItem(String titleText, Drawable appIcon) {
+    public AdapterItems(String titleText, Drawable appIcon) {
         this.titleText = titleText;
         this.appIcon = appIcon;
     }

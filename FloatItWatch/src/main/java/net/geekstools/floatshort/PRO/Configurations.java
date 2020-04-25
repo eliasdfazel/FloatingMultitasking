@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/25/20 3:04 PM
- * Last modified 3/25/20 2:50 PM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 12:13 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -11,48 +11,52 @@
 package net.geekstools.floatshort.PRO;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.wearable.activity.WearableActivity;
+import android.util.TypedValue;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
-import net.geekstools.floatshort.PRO.Shortcuts.ListApplicationsView;
+import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewWatch;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 
 public class Configurations extends WearableActivity {
-
-    FunctionsClass functionsClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAmbientEnabled();
-
         FirebaseApp.initializeApp(getApplicationContext());
 
-        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
-
-        functionsClass = new FunctionsClass(getApplicationContext(), Configurations.this);
+        FunctionsClass functionsClass = new FunctionsClass(getApplicationContext());
         functionsClass.loadSavedColor();
 
-        try {
-            if (!BuildConfig.DEBUG) {
-                functionsClass.savePreference(".UserInformation", "isBetaTester", functionsClass.appVersionName(getPackageName()).equals("[BETA]") ? true : false);
-                functionsClass.savePreference(".UserInformation", "installedVersionCode", functionsClass.appVersionCode(getPackageName()));
-                functionsClass.savePreference(".UserInformation", "installedVersionName", functionsClass.appVersionName(getPackageName()));
-                functionsClass.savePreference(".UserInformation", "deviceModel", functionsClass.getDeviceName());
-                functionsClass.savePreference(".UserInformation", "userRegion", functionsClass.getCountryIso());
+        if (!BuildConfig.DEBUG) {
+            functionsClass.savePreference(".UserInformation", "isBetaTester", functionsClass.appVersionName(getPackageName()).equals("[BETA]") ? true : false);
+            functionsClass.savePreference(".UserInformation", "installedVersionCode", functionsClass.appVersionCode(getPackageName()));
+            functionsClass.savePreference(".UserInformation", "installedVersionName", functionsClass.appVersionName(getPackageName()));
+            functionsClass.savePreference(".UserInformation", "deviceModel", functionsClass.getDeviceName());
+            functionsClass.savePreference(".UserInformation", "userRegion", functionsClass.getCountryIso());
 
-                if (functionsClass.appVersionName(getPackageName()).equals("[BETA]")) {
-                    functionsClass.saveDefaultPreference("JoinedBetaProgrammer", true);
-                }
+            if (functionsClass.appVersionName(getPackageName()).equals("[BETA]")) {
+                functionsClass.saveDefaultPreference("JoinedBetaProgrammer", true);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
+        SharedPreferences sharedPreferences = getSharedPreferences("theme", Context.MODE_PRIVATE);
+        PublicVariable.alpha = 133;
+        PublicVariable.opacity = 255;
+        if (!sharedPreferences.getBoolean("hide", false)) {
+            PublicVariable.hide = false;
+        } else if (sharedPreferences.getBoolean("hide", false)) {
+            PublicVariable.hide = true;
+        }
+        PublicVariable.size = 33;
+        PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, getResources().getDisplayMetrics());
 
         String[] Permissions = {
                 Manifest.permission.WAKE_LOCK,
@@ -60,38 +64,35 @@ public class Configurations extends WearableActivity {
                 Manifest.permission.VIBRATE
         };
         requestPermissions(Permissions, 666);
+
         if (!Settings.canDrawOverlays(getApplicationContext())) {
+
             startActivity(new Intent(getApplicationContext(), PermissionDialogue.class));
+
         } else {
-            Intent listViewOff = new Intent(getApplicationContext(), ListApplicationsView.class);
-            listViewOff.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(listViewOff);
+            functionsClass.updateRecoverShortcuts();
+
+            Intent applicationsViewWatch = new Intent(getApplicationContext(), ApplicationsViewWatch.class);
+            applicationsViewWatch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(applicationsViewWatch);
         }
-        functionsClass.updateRecoverShortcuts();
+
+
         finish();
     }
 
     @Override
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
-        updateDisplay();
     }
 
     @Override
     public void onUpdateAmbient() {
         super.onUpdateAmbient();
-        updateDisplay();
     }
 
     @Override
     public void onExitAmbient() {
-        updateDisplay();
         super.onExitAmbient();
-    }
-
-    private void updateDisplay() {
-        if (isAmbient()) {
-        } else {
-        }
     }
 }

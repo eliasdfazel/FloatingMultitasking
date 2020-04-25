@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 12:13 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,7 +14,6 @@ import android.animation.Animator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
-import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -44,10 +43,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.util.TypedValue;
@@ -84,23 +79,15 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class FunctionsClass {
+
     int API;
-    Activity activity;
     Context context;
+
     PackageManager packageManager;
     BroadcastReceiver.PendingResult pendingResult;
 
     public FunctionsClass(Context context) {
         this.context = context;
-
-        API = Build.VERSION.SDK_INT;
-
-        loadSavedColor();
-    }
-
-    public FunctionsClass(Context context, Activity activity) {
-        this.context = context;
-        this.activity = activity;
 
         API = Build.VERSION.SDK_INT;
 
@@ -218,10 +205,6 @@ public class FunctionsClass {
         return API;
     }
 
-    public void overrideBackPressToClass(Class returnClass) throws Exception {
-        activity.startActivity(new Intent(context, returnClass));
-    }
-
     /*Unlimited Shortcuts*/
     public int serviceMode() {
         int ReturnValue = Service.START_NOT_STICKY;
@@ -305,21 +288,23 @@ public class FunctionsClass {
                         appName(packageName), Toast.LENGTH_SHORT).show();
 
                 Intent launchIntentForPackage = context.getPackageManager().getLaunchIntentForPackage(packageName);
-                activity.startActivity(launchIntentForPackage);
+                launchIntentForPackage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(launchIntentForPackage);
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
                 Intent playStore = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(context.getString(R.string.play_store_link) + packageName));
                 playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                activity.startActivity(playStore);
+                playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(playStore);
             }
         } else {
             Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
             Intent playStore = new Intent(Intent.ACTION_VIEW,
                     Uri.parse(context.getString(R.string.play_store_link) + packageName));
             playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            activity.startActivity(playStore);
+            context.startActivity(playStore);
         }
     }
 
@@ -1059,71 +1044,16 @@ public class FunctionsClass {
         return Color.argb(alpha, red, green, blue);
     }
 
-    public int manipulateColor(int color, float aFactor) {
-        int a = Color.alpha(color);
-        int r = Math.round(Color.red(color) * aFactor);
-        int g = Math.round(Color.green(color) * aFactor);
-        int b = Math.round(Color.blue(color) * aFactor);
-        return Color.argb(a,
-                Math.min(r, 255),
-                Math.min(g, 255),
-                Math.min(b, 255));
-    }
-
-    public int mixColors(int color1, int color2, float ratio) {
-        final float inverseRation = 1f - ratio;
-        float r = (Color.red(color1) * ratio) + (Color.red(color2) * inverseRation);
-        float g = (Color.green(color1) * ratio) + (Color.green(color2) * inverseRation);
-        float b = (Color.blue(color1) * ratio) + (Color.blue(color2) * inverseRation);
-        return Color.rgb((int) r, (int) g, (int) b);
-    }
-
-    public boolean setAppThemeBlur() {
-        boolean blurEffect = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("blur", false);
-        if (blurEffect == true) {
-            try {
-                WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
-                BitmapDrawable wallpaper = (BitmapDrawable) wallpaperManager.getDrawable();
-
-                Bitmap bitmapWallpaper = wallpaper.getBitmap();
-                Bitmap inputBitmap = Bitmap.createBitmap(
-                        bitmapWallpaper,
-                        (bitmapWallpaper.getWidth() / 2) - (displayX() / 2),
-                        (bitmapWallpaper.getHeight() / 2) - (displayY() / 2),
-                        displayX(),
-                        displayY()
-                );
-                Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
-
-                RenderScript rs = RenderScript.create(context);
-                ScriptIntrinsicBlur intrinsicBlur = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-                Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
-                Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
-
-                intrinsicBlur.setRadius(25);
-                intrinsicBlur.setInput(tmpIn);
-                intrinsicBlur.forEach(tmpOut);
-                tmpOut.copyTo(outputBitmap);
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(context.getResources(), outputBitmap);
-                activity.getWindow().getDecorView().setBackground(new ColorDrawable(Color.RED));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (blurEffect == false) {
-        }
-        return blurEffect;
-    }
-
     public boolean checkThemeLightDark() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("theme", Context.MODE_PRIVATE);
-        setAppThemeBlur();
-        return sharedPreferences.getBoolean("themeColor", false);
+
+        return context.getSharedPreferences("theme", Context.MODE_PRIVATE)
+                .getBoolean("themeColor", false);
     }
 
     public boolean setAppTransparency() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("theme", Context.MODE_PRIVATE);
 
-        return sharedPreferences.getBoolean("hide", false);
+        return context.getSharedPreferences("theme", Context.MODE_PRIVATE)
+                .getBoolean("hide", false);
     }
 
     public int DpToInteger(int dp) {

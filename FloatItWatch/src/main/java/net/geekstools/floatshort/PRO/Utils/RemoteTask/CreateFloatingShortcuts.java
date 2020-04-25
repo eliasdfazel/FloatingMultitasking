@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 11:54 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,7 +24,7 @@ public class CreateFloatingShortcuts extends Activity {
     @Override
     protected void onCreate(Bundle Saved) {
         super.onCreate(Saved);
-        functionsClass = new FunctionsClass(getApplicationContext(), CreateFloatingShortcuts.this);
+        functionsClass = new FunctionsClass(getApplicationContext());
 
         packageName = getIntent().getStringExtra("PackageName");
         className = getIntent().getStringExtra("ClassName");

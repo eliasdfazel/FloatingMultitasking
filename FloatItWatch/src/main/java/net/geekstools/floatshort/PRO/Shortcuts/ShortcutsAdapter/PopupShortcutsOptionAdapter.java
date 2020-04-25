@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/25/20 12:13 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,9 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
-import net.geekstools.floatshort.PRO.Utils.GeneralAdapters.NavDrawerItem;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.util.ArrayList;
@@ -35,14 +35,14 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
 
     FunctionsClass functionsClass;
     private Context context;
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    private ArrayList<AdapterItems> adapterItems;
     private String packageName, className;
     private int startId;
 
-    public PopupShortcutsOptionAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems,
+    public PopupShortcutsOptionAdapter(Context context, ArrayList<AdapterItems> adapterItems,
                                        String className, String packageName, int startId) {
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.adapterItems = adapterItems;
         this.className = className;
         this.packageName = packageName;
         this.startId = startId;
@@ -52,12 +52,12 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return navDrawerItems.size();
+        return adapterItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return navDrawerItems.get(position);
+        return adapterItems.get(position);
     }
 
     @Override
@@ -81,8 +81,8 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.imgIcon.setImageDrawable(navDrawerItems.get(position).getIcon());
-        viewHolder.textAppName.setText(navDrawerItems.get(position).getTitleText());
+        viewHolder.imgIcon.setImageDrawable(adapterItems.get(position).getIcon());
+        viewHolder.textAppName.setText(adapterItems.get(position).getTitleText());
 
         int itemsListColor = 0;
         if (functionsClass.setAppTransparency() == true) {
@@ -100,11 +100,11 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (navDrawerItems.get(position).getTitleText().equals(context.getString(R.string.pin))) {
+                if (adapterItems.get(position).getTitleText().equals(context.getString(R.string.pin))) {
                     context.sendBroadcast(new Intent("Pin_App_" + className).putExtra("startId", startId));
-                } else if (navDrawerItems.get(position).getTitleText().equals(context.getString(R.string.unpin))) {
+                } else if (adapterItems.get(position).getTitleText().equals(context.getString(R.string.unpin))) {
                     context.sendBroadcast(new Intent("Unpin_App_" + className).putExtra("startId", startId));
-                } else if (navDrawerItems.get(position).getTitleText().equals(context.getString(R.string.remove))) {
+                } else if (adapterItems.get(position).getTitleText().equals(context.getString(R.string.remove))) {
                     context.sendBroadcast(new Intent("Remove_App_" + className).putExtra("startId", startId));
                 }
 
