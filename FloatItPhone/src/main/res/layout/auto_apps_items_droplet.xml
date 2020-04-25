@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/21/20 10:43 AM
+  ~ Last modified 4/25/20 6:21 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -11,7 +11,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:apps="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/item"
+                android:id="@+id/fullItemView"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@drawable/ripple_effect"
@@ -30,7 +30,7 @@
         android:enabled="false"/>
 
     <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/icon"
+        android:id="@+id/appIconView"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_toEndOf="@id/checkboxSelectItem"
@@ -39,11 +39,11 @@
         apps:shapeDrawable="@drawable/droplet_icon"/>
 
     <TextView
-        android:id="@+id/loadingDescription"
+        android:id="@+id/appNameView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/icon"
+        android:layout_toEndOf="@id/appIconView"
         android:gravity="center_vertical"
         android:paddingStart="17dp"
         android:paddingTop="2dp"
@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@id/icon"
+        android:layout_toEndOf="@id/appIconView"
         android:gravity="center_vertical"
         android:paddingStart="17dp"
         android:paddingTop="2dp"

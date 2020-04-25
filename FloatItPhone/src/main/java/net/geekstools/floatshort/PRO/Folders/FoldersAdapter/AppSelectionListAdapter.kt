@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 10:50 AM
+ * Last modified 4/25/20 6:21 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -193,9 +193,9 @@ class AppSelectionListAdapter(private val context: Context,
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var item: RelativeLayout = view.findViewById<View>(R.id.item) as RelativeLayout
-        var appIcon: ShapesImage = view.findViewById<View>(R.id.icon) as ShapesImage
-        var appName: TextView = view.findViewById<View>(R.id.loadingDescription) as TextView
+        var item: RelativeLayout = view.findViewById<View>(R.id.fullItemView) as RelativeLayout
+        var appIcon: ShapesImage = view.findViewById<View>(R.id.appIconView) as ShapesImage
+        var appName: TextView = view.findViewById<View>(R.id.appNameView) as TextView
         var checkboxSelectItem: CheckBox = view.findViewById<View>(R.id.checkboxSelectItem) as CheckBox
     }
 }

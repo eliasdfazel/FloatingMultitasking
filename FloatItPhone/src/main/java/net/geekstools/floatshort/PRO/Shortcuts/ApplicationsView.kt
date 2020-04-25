@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/24/20 12:33 PM
+ * Last modified 4/25/20 6:25 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -73,7 +73,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fing
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
-import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.CardHybridAdapter
+import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.ApplicationsViewItemsAdapter
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
 import net.geekstools.floatshort.PRO.Utils.Functions.*
@@ -123,7 +123,7 @@ class ApplicationsView : AppCompatActivity(),
 
     private lateinit var applicationsAdapterItems: ArrayList<AdapterItemsApplications>
     private lateinit var sections: ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>
-    private lateinit var recyclerViewAdapter: RecyclerView.Adapter<CardHybridAdapter.ViewHolder>
+    private lateinit var recyclerViewAdapter: RecyclerView.Adapter<ApplicationsViewItemsAdapter.ViewHolder>
     private lateinit var recyclerViewLayoutManager: GridLayoutManager
 
     private var installedPackageName: String? = null
@@ -883,7 +883,10 @@ class ApplicationsView : AppCompatActivity(),
                             functionsClass.shapedAppIcon(it.value.activityInfo)
                         }
 
-                        applicationsAdapterItems.add(AdapterItemsApplications(installedAppName!!, installedPackageName!!, installedClassName!!, installedAppIcon!!,
+                        applicationsAdapterItems.add(AdapterItemsApplications(installedAppName!!,
+                                installedPackageName!!, installedClassName!!,
+                                installedAppIcon!!,
+                                functionsClass.extractDominantColor(installedAppIcon),
                                 SearchResultType.SearchShortcuts))
                     } finally {
                         listOfNewCharOfItemsForIndex.add(newChar)
@@ -897,7 +900,7 @@ class ApplicationsView : AppCompatActivity(),
                 }
 
         withContext(Dispatchers.Main) {
-            recyclerViewAdapter = CardHybridAdapter(this@ApplicationsView, applicationContext, applicationsAdapterItems)
+            recyclerViewAdapter = ApplicationsViewItemsAdapter(applicationContext, applicationsAdapterItems)
 
             val splashAnimation = AnimationUtils.loadAnimation(applicationContext, android.R.anim.fade_out)
             hybridApplicationViewBinding.loadingSplash.startAnimation(splashAnimation)
