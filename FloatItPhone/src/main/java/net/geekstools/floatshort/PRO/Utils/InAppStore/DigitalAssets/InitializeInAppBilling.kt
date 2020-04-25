@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 2:53 AM
+ * Last modified 4/25/20 6:56 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -45,8 +45,8 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
         InAppBillingData()
     }
 
-    var oneTimePurchase: Fragment? = null
-    var subscriptionPurchase: Fragment? = null
+    private var oneTimePurchase: Fragment? = null
+    private var subscriptionPurchase: Fragment? = null
 
     object Entry {
         const val PurchaseType = "PurchaseType"
