@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/26/20 7:34 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -42,7 +42,7 @@ import net.geekstools.imageview.customshapes.ShapesImage;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class App_Unlimited_HIS extends Service {
+public class FloatingShortcutsForHIS extends Service {
 
     FunctionsClass functionsClass;
 
@@ -116,16 +116,16 @@ public class App_Unlimited_HIS extends Service {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             } finally {
-                                PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                                PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                                if (PublicVariable.floatingCounter == 0) {
+                                if (PublicVariable.allFloatingCounter == 0) {
                                     if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                             .getBoolean("stable", true) == false) {
                                         stopService(new Intent(getApplicationContext(), BindServices.class));
                                     }
                                 }
                             }
-                        } else if (PublicVariable.floatingCounter == 0) {
+                        } else if (PublicVariable.allFloatingCounter == 0) {
                             if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                     .getBoolean("stable", true) == false) {
                                 stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -165,10 +165,10 @@ public class App_Unlimited_HIS extends Service {
         yInit = yInit + 13;
         xPos = sharedPrefPosition.getInt("X", xInit);
         yPos = sharedPrefPosition.getInt("Y", yInit);
-        params[startId] = functionsClass.normalLayoutParams(PublicVariable.HW, xPos, yPos);
+        params[startId] = functionsClass.normalLayoutParams(PublicVariable.floatingViewsHW, xPos, yPos);
         windowManager.addView(floatingView[startId], params[startId]);
 
-        if (PublicVariable.hide == true) {
+        if (PublicVariable.transparencyEnabled == true) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -239,7 +239,7 @@ public class App_Unlimited_HIS extends Service {
                                     functionsClass.PopupShortcuts(
                                             floatingView[startId],
                                             packageName[startId],
-                                            App_Unlimited_HIS.class.getSimpleName(),
+                                            FloatingShortcutsForHIS.class.getSimpleName(),
                                             startId,
                                             initialX,
                                             initialY
@@ -289,8 +289,8 @@ public class App_Unlimited_HIS extends Service {
 
                             int difMoveX = (int) (paramsF.x - initialTouchX);
                             int difMoveY = (int) (paramsF.y - initialTouchY);
-                            if (Math.abs(difMoveX) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))
-                                    || Math.abs(difMoveY) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))) {
+                            if (Math.abs(difMoveX) > Math.abs(PublicVariable.floatingViewsHW + ((PublicVariable.floatingViewsHW * 70) / 100))
+                                    || Math.abs(difMoveY) > Math.abs(PublicVariable.floatingViewsHW + ((PublicVariable.floatingViewsHW * 70) / 100))) {
                                 sendBroadcast(new Intent("Hide_PopupListView_Shortcuts"));
 
                                 openIt[startId] = false;
@@ -318,9 +318,9 @@ public class App_Unlimited_HIS extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                            if (PublicVariable.floatingCounter == 0) {
+                            if (PublicVariable.allFloatingCounter == 0) {
                                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                         .getBoolean("stable", true) == false) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -355,7 +355,7 @@ public class App_Unlimited_HIS extends Service {
             }
         });
 
-        final String className = App_Unlimited_HIS.class.getSimpleName();
+        final String className = FloatingShortcutsForHIS.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Pin_App_" + className);
         intentFilter.addAction("Unpin_App_" + className);
@@ -411,9 +411,9 @@ public class App_Unlimited_HIS extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                            if (PublicVariable.floatingCounter == 0) {
+                            if (PublicVariable.allFloatingCounter == 0) {
                                 if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                                         .getBoolean("stable", true) == false) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -430,7 +430,7 @@ public class App_Unlimited_HIS extends Service {
         };
         registerReceiver(broadcastReceiver, intentFilter);
 
-        return functionsClass.serviceMode();
+        return Service.START_NOT_STICKY;
     }
 
     @Override

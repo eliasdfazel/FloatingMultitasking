@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 4/26/20 7:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -946,13 +946,13 @@ public class FunctionsClass {
         try {
             PublicVariable.allFloatingCounter++;
             PublicVariable.floatingWidgetsCounter++;
-            PublicVariable.FloatingWidgets.add(PublicVariable.floatingWidgetsCounter, WidgetId);
+            PublicVariable.floatingWidgetsIdList.add(PublicVariable.floatingWidgetsCounter, WidgetId);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
 
             PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter + 1;
             PublicVariable.floatingWidgetsCounter = PublicVariable.floatingWidgetsCounter + 1;
-            PublicVariable.FloatingWidgets.add(PublicVariable.floatingWidgetsCounter, WidgetId);
+            PublicVariable.floatingWidgetsIdList.add(PublicVariable.floatingWidgetsCounter, WidgetId);
         }
 
         Intent w = new Intent(context, WidgetUnlimitedFloating.class);
@@ -4152,7 +4152,7 @@ public class FunctionsClass {
     public void updateRecoverShortcuts() {
         try {
             if (context.getFileStreamPath(".uFile").exists()) {
-                PublicVariable.RecoveryShortcuts = new ArrayList<String>();
+                PublicVariable.recoveryFloatingShortcuts = new ArrayList<String>();
 
                 FileInputStream fileInputStream = new FileInputStream(context.getFileStreamPath(".uFile"));
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
@@ -4160,7 +4160,7 @@ public class FunctionsClass {
                 String line = "";
                 int u = 0;
                 while ((line = bufferedReader.readLine()) != null) {
-                    PublicVariable.RecoveryShortcuts.add(u, line);
+                    PublicVariable.recoveryFloatingShortcuts.add(u, line);
                     u++;
                 }
 
@@ -4175,8 +4175,8 @@ public class FunctionsClass {
     public boolean loadRecoveryIndicator(String packageName) {
         boolean inRecovery = false;
         try {
-            if (PublicVariable.RecoveryShortcuts != null) {
-                for (String anAppNameArrayRecovery : PublicVariable.RecoveryShortcuts) {
+            if (PublicVariable.recoveryFloatingShortcuts != null) {
+                for (String anAppNameArrayRecovery : PublicVariable.recoveryFloatingShortcuts) {
                     if (packageName.equals(anAppNameArrayRecovery)) {
                         inRecovery = true;
                         break;

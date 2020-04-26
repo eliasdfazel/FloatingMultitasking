@@ -2,11 +2,12 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 12:20 PM
+ * Last modified 4/26/20 7:34 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
+
 package net.geekstools.floatshort.PRO
 
 import android.Manifest
@@ -22,6 +23,11 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class Configurations : WearableActivity() {
+
+    private companion object {
+        const val RuntimePermissionRequestCode = 666
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(applicationContext)
@@ -41,15 +47,14 @@ class Configurations : WearableActivity() {
             }
         }
 
-
-        PublicVariable.size = 33
-        PublicVariable.HW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size.toFloat(), resources.displayMetrics).toInt()
+        PublicVariable.floatingSizeNumber = 33
+        PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), resources.displayMetrics).toInt()
 
         val sharedPreferences = getSharedPreferences("theme", Context.MODE_PRIVATE)
         if (!sharedPreferences.getBoolean("hide", false)) {
-            PublicVariable.hide = false
+            PublicVariable.transparencyEnabled = false
         } else if (sharedPreferences.getBoolean("hide", false)) {
-            PublicVariable.hide = true
+            PublicVariable.transparencyEnabled = true
         }
 
         val allPermissions = arrayOf(
@@ -57,7 +62,7 @@ class Configurations : WearableActivity() {
                 Manifest.permission.INTERNET,
                 Manifest.permission.VIBRATE
         )
-        requestPermissions(allPermissions, 666)
+        requestPermissions(allPermissions, Configurations.RuntimePermissionRequestCode)
 
         if (!Settings.canDrawOverlays(applicationContext)) {
 

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:57 AM
+ * Last modified 4/26/20 7:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -225,7 +225,7 @@ class FloatingShortcutsForApplications : Service() {
                         }
                     }
 
-                    PublicVariable.FloatingShortcutsList.clear()
+                    PublicVariable.floatingShortcutsList.clear()
                     PublicVariable.floatingShortcutsCounter = -1
 
                     stopSelf()
@@ -624,7 +624,7 @@ class FloatingShortcutsForApplications : Service() {
                         } finally {
                             PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
 
-                            PublicVariable.FloatingShortcutsList.remove(packageNames[startId])
+                            PublicVariable.floatingShortcutsList.remove(packageNames[startId])
                             PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter - 1
 
                             if (PublicVariable.allFloatingCounter == 0) {
@@ -930,7 +930,7 @@ class FloatingShortcutsForApplications : Service() {
                                 } finally {
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
 
-                                    PublicVariable.FloatingShortcutsList.remove(packageNames[intent.getIntExtra("startId", 1)])
+                                    PublicVariable.floatingShortcutsList.remove(packageNames[intent.getIntExtra("startId", 1)])
                                     PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter - 1
 
                                     if (PublicVariable.allFloatingCounter == 0) {

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/26/20 7:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -83,7 +83,7 @@ public class Category_Unlimited_Category extends Service {
         pin[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.pin);
 
         int categoryFloatingColor;
-        if (PublicVariable.hide == true) {
+        if (PublicVariable.transparencyEnabled == true) {
             categoryFloatingColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 50);
         } else {
             categoryFloatingColor = PublicVariable.primaryColor;
@@ -127,13 +127,13 @@ public class Category_Unlimited_Category extends Service {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             } finally {
-                                PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                                PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                                if (PublicVariable.floatingCounter == 0) {
+                                if (PublicVariable.allFloatingCounter == 0) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));
                                 }
                             }
-                        } else if (PublicVariable.floatingCounter == 0) {
+                        } else if (PublicVariable.allFloatingCounter == 0) {
                             stopService(new Intent(getApplicationContext(), BindServices.class));
                         }
                     }
@@ -141,8 +141,8 @@ public class Category_Unlimited_Category extends Service {
                     e.printStackTrace();
                 }
             }
-            PublicVariable.FloatingCategories.clear();
-            PublicVariable.categoriesCounter = -1;
+            PublicVariable.floatingFoldersList.clear();
+            PublicVariable.floatingFolderCounter = -1;
             if (broadcastReceiver != null) {
                 unregisterReceiver(broadcastReceiver);
             }
@@ -155,25 +155,25 @@ public class Category_Unlimited_Category extends Service {
         if (appsCategory != null) {
             try {
                 one.setImageDrawable(functionsClass.shapedAppIcon(appsCategory[0]));
-                one.setImageAlpha(PublicVariable.hide ? 157 : 250);
+                one.setImageAlpha(PublicVariable.transparencyEnabled ? 157 : 250);
             } catch (Exception e) {
                 one.setImageDrawable(null);
             }
             try {
                 two.setImageDrawable(functionsClass.shapedAppIcon(appsCategory[1]));
-                two.setImageAlpha(PublicVariable.hide ? 157 : 250);
+                two.setImageAlpha(PublicVariable.transparencyEnabled ? 157 : 250);
             } catch (Exception e) {
                 two.setImageDrawable(null);
             }
             try {
                 three.setImageDrawable(functionsClass.shapedAppIcon(appsCategory[2]));
-                three.setImageAlpha(PublicVariable.hide ? 157 : 250);
+                three.setImageAlpha(PublicVariable.transparencyEnabled ? 157 : 250);
             } catch (Exception e) {
                 three.setImageDrawable(null);
             }
             try {
                 four.setImageDrawable(functionsClass.shapedAppIcon(appsCategory[3]));
-                four.setImageAlpha(PublicVariable.hide ? 157 : 250);
+                four.setImageAlpha(PublicVariable.transparencyEnabled ? 157 : 250);
             } catch (Exception e) {
                 four.setImageDrawable(null);
             }
@@ -249,15 +249,15 @@ public class Category_Unlimited_Category extends Service {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 } finally {
-                                    PublicVariable.FloatingCategories.remove(categoryName[intent.getIntExtra("startId", 0)]);
-                                    PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
-                                    PublicVariable.floatingCategoryCounter_category = PublicVariable.floatingCategoryCounter_category - 1;
-                                    PublicVariable.categoriesCounter = PublicVariable.categoriesCounter - 1;
+                                    PublicVariable.floatingFoldersList.remove(categoryName[intent.getIntExtra("startId", 0)]);
+                                    PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
+                                    PublicVariable.floatingFolderCounter_Folder = PublicVariable.floatingFolderCounter_Folder - 1;
+                                    PublicVariable.floatingFolderCounter = PublicVariable.floatingFolderCounter - 1;
 
-                                    if (PublicVariable.floatingCounter == 0) {
+                                    if (PublicVariable.allFloatingCounter == 0) {
                                         stopService(new Intent(getApplicationContext(), BindServices.class));
                                     }
-                                    if (PublicVariable.floatingCategoryCounter_category == 0) {
+                                    if (PublicVariable.floatingFolderCounter_Folder == 0) {
                                         if (broadcastReceiver != null) {
                                             unregisterReceiver(broadcastReceiver);
                                         }
@@ -265,7 +265,7 @@ public class Category_Unlimited_Category extends Service {
                                         stopSelf();
                                     }
                                 }
-                            } else if (PublicVariable.floatingCounter == 0) {
+                            } else if (PublicVariable.allFloatingCounter == 0) {
                                 stopService(new Intent(getApplicationContext(), BindServices.class));
                             }
                         }
@@ -353,8 +353,8 @@ public class Category_Unlimited_Category extends Service {
 
                             int difMoveX = (int) (paramsF.x - initialTouchX);
                             int difMoveY = (int) (paramsF.y - initialTouchY);
-                            if (Math.abs(difMoveX) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))
-                                    || Math.abs(difMoveY) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))) {
+                            if (Math.abs(difMoveX) > Math.abs(PublicVariable.floatingViewsHW + ((PublicVariable.floatingViewsHW * 70) / 100))
+                                    || Math.abs(difMoveY) > Math.abs(PublicVariable.floatingViewsHW + ((PublicVariable.floatingViewsHW * 70) / 100))) {
                                 openIt[startId] = false;
                                 touchingDelay[startId] = false;
                                 handlerPressHold.removeCallbacks(runnablePressHold);
@@ -384,7 +384,7 @@ public class Category_Unlimited_Category extends Service {
             }
         });
 
-        return functionsClass.serviceMode();
+        return Service.START_NOT_STICKY;
     }
 
     @Override

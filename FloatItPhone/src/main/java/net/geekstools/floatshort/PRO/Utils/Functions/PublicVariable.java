@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 4/26/20 7:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -84,12 +84,12 @@ public class PublicVariable {
 
     public static String[] frequentlyUsedApps;
 
-    public static ArrayList<String> FloatingShortcutsList = new ArrayList<String>();
-    public static ArrayList<String> RecoveryShortcuts = new ArrayList<String>();
+    public static ArrayList<String> floatingShortcutsList = new ArrayList<String>();
+    public static ArrayList<String> recoveryFloatingShortcuts = new ArrayList<String>();
 
     public static ArrayList<String> floatingFoldersList = new ArrayList<String>();
 
-    public static ArrayList<Integer> FloatingWidgets = new ArrayList<Integer>();
+    public static ArrayList<Integer> floatingWidgetsIdList = new ArrayList<Integer>();
 
     public static List<String> customIconsPackages = new ArrayList<String>();
 

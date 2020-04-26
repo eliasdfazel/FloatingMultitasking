@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 12:13 PM
+ * Last modified 4/26/20 7:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,21 +24,21 @@ import android.util.AttributeSet;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 
 public class FloatingSplashRemoval extends AppCompatImageView {
 
     FunctionsClass functionsClass;
-    Context context;
 
     public FloatingSplashRemoval(Context context) {
         super(context);
+
+        functionsClass = new FunctionsClass(context);
     }
 
     public FloatingSplashRemoval(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        this.context = PublicVariable.contextStatic.getApplicationContext();
-        functionsClass = new FunctionsClass(this.context);
+
+        functionsClass = new FunctionsClass(context);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("FloatingSplashRemoval");
@@ -59,7 +59,7 @@ public class FloatingSplashRemoval extends AppCompatImageView {
                 }
             }
         };
-        this.context.registerReceiver(broadcastReceiver, intentFilter);
+        context.registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override

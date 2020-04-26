@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 4/26/20 7:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -161,11 +161,11 @@ class RecoveryShortcuts : Service() {
         for (applicationsData in applicationsDataLines) {
             permitOpenFloatingShortcuts = true
 
-            if (PublicVariable.FloatingShortcutsList != null) {
+            if (PublicVariable.floatingShortcutsList != null) {
 
-                for (check in PublicVariable.FloatingShortcutsList.indices) {
+                for (check in PublicVariable.floatingShortcutsList.indices) {
 
-                    if (applicationsData == PublicVariable.FloatingShortcutsList[check]) {
+                    if (applicationsData == PublicVariable.floatingShortcutsList[check]) {
                         permitOpenFloatingShortcuts = false
                     }
                 }

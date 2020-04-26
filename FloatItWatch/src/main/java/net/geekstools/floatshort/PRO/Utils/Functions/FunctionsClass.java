@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 12:25 PM
+ * Last modified 4/26/20 7:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,7 +13,6 @@ package net.geekstools.floatshort.PRO.Utils.Functions;
 import android.animation.Animator;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -57,8 +56,8 @@ import androidx.palette.graphics.Palette;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Category_Unlimited_Category;
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_HIS;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.App_Unlimited_Shortcuts;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForApplications;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForHIS;
 import net.geekstools.floatshort.PRO.Utils.OpenApplications;
 import net.geekstools.floatshort.PRO.Utils.UI.FloatingSplash;
 import net.geekstools.floatshort.PRO.Utils.UI.PopupOptionsFloatingCategory;
@@ -197,26 +196,16 @@ public class FunctionsClass {
     }
 
     /*Unlimited Shortcuts*/
-    public int serviceMode() {
-        int ReturnValue = Service.START_NOT_STICKY;
-        if (PublicVariable.Return == false) {
-            ReturnValue = Service.START_NOT_STICKY;
-        } else if (PublicVariable.Return == true) {
-            ReturnValue = Service.START_REDELIVER_INTENT;
-        }
-        return ReturnValue;
-    }
-
     public void runUnlimitedShortcutsService(String packageName) {
-        PublicVariable.floatingCounter++;
-        PublicVariable.shortcutsCounter++;
-        PublicVariable.FloatingShortcuts.add(PublicVariable.shortcutsCounter, packageName);
+        PublicVariable.allFloatingCounter++;
+        PublicVariable.floatingShortcutsCounter++;
+        PublicVariable.floatingShortcutsList.add(PublicVariable.floatingShortcutsCounter, packageName);
 
-        Intent u = new Intent(context, App_Unlimited_Shortcuts.class);
+        Intent u = new Intent(context, FloatingShortcutsForApplications.class);
         u.putExtra("pack", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             context.startService(new Intent(context, BindServices.class));
         }
     }
@@ -244,15 +233,15 @@ public class FunctionsClass {
     }
 
     public void runUnlimitedShortcutsServiceHIS(String packageName, String className) {
-        PublicVariable.floatingCounter++;
+        PublicVariable.allFloatingCounter++;
 
-        Intent u = new Intent(context, App_Unlimited_HIS.class);
+        Intent u = new Intent(context, FloatingShortcutsForHIS.class);
         u.putExtra("packageName", packageName);
         u.putExtra("className", className);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
 
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -364,16 +353,16 @@ public class FunctionsClass {
 
     /*Unlimited Categories*/
     public void runUnlimitedCategoryService(String categoryName, String[] categoryNamePackages) {
-        PublicVariable.floatingCounter++;
-        PublicVariable.floatingCategoryCounter_category++;
-        PublicVariable.categoriesCounter++;
-        PublicVariable.FloatingCategories.add(PublicVariable.categoriesCounter, categoryName);
+        PublicVariable.allFloatingCounter++;
+        PublicVariable.floatingFolderCounter_Folder++;
+        PublicVariable.floatingFolderCounter++;
+        PublicVariable.floatingFoldersList.add(PublicVariable.floatingFolderCounter, categoryName);
 
         Intent c = new Intent(context, Category_Unlimited_Category.class);
         c.putExtra("categoryName", categoryName);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
-        if (PublicVariable.floatingCounter == 1) {
+        if (PublicVariable.allFloatingCounter == 1) {
             context.startService(new Intent(context, BindServices.class));
         }
     }
@@ -658,7 +647,7 @@ public class FunctionsClass {
     public void updateRecoverShortcuts() {
         try {
             if (context.getFileStreamPath(".uFile").exists()) {
-                PublicVariable.RecoveryShortcuts = new ArrayList<String>();
+                PublicVariable.recoveryFloatingShortcuts = new ArrayList<String>();
 
                 FileInputStream fileInputStream = new FileInputStream(context.getFileStreamPath(".uFile"));
                 DataInputStream dataInputStream = new DataInputStream(fileInputStream);
@@ -666,7 +655,7 @@ public class FunctionsClass {
                 String line = "";
                 int u = 0;
                 while ((line = dataInputStream.readLine()) != null) {
-                    PublicVariable.RecoveryShortcuts.add(u, line);
+                    PublicVariable.recoveryFloatingShortcuts.add(u, line);
                     u++;
                 }
 
@@ -681,8 +670,8 @@ public class FunctionsClass {
     public boolean loadRecoveryIndicator(String packageName) {
         boolean inRecovery = false;
         try {
-            if (PublicVariable.RecoveryShortcuts != null) {
-                for (String anAppNameArrayRecovery : PublicVariable.RecoveryShortcuts) {
+            if (PublicVariable.recoveryFloatingShortcuts != null) {
+                for (String anAppNameArrayRecovery : PublicVariable.recoveryFloatingShortcuts) {
                     if (packageName.equals(anAppNameArrayRecovery)) {
                         inRecovery = true;
                         break;

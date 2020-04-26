@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 6:53 AM
+ * Last modified 4/26/20 7:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -137,7 +137,7 @@ public class FloatingSplash extends Service {
             }
         });
 
-        return functionsClass.serviceMode();
+        return Service.START_NOT_STICKY;
     }
 
     @Override

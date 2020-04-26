@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/26/20 7:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,7 +36,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.FloatingSplash;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
-public class App_Unlimited_Shortcuts extends Service {
+public class FloatingShortcutsForApplications extends Service {
 
     FunctionsClass functionsClass;
 
@@ -96,13 +96,13 @@ public class App_Unlimited_Shortcuts extends Service {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             } finally {
-                                PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
+                                PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
 
-                                if (PublicVariable.floatingCounter == 0) {
+                                if (PublicVariable.allFloatingCounter == 0) {
                                     stopService(new Intent(getApplicationContext(), BindServices.class));
                                 }
                             }
-                        } else if (PublicVariable.floatingCounter == 0) {
+                        } else if (PublicVariable.allFloatingCounter == 0) {
                             stopService(new Intent(getApplicationContext(), BindServices.class));
                         }
                     }
@@ -110,8 +110,8 @@ public class App_Unlimited_Shortcuts extends Service {
                     e.printStackTrace();
                 }
             }
-            PublicVariable.FloatingShortcuts.clear();
-            PublicVariable.shortcutsCounter = -1;
+            PublicVariable.floatingShortcutsList.clear();
+            PublicVariable.floatingShortcutsCounter = -1;
             if (broadcastReceiver != null) {
                 unregisterReceiver(broadcastReceiver);
             }
@@ -139,10 +139,10 @@ public class App_Unlimited_Shortcuts extends Service {
         yInit = yInit + 13;
         xPos = sharedPrefPosition.getInt("X", xInit);
         yPos = sharedPrefPosition.getInt("Y", yInit);
-        params[startId] = functionsClass.normalLayoutParams(PublicVariable.HW, xPos, yPos);
+        params[startId] = functionsClass.normalLayoutParams(PublicVariable.floatingViewsHW, xPos, yPos);
         windowManager.addView(floatingView[startId], params[startId]);
 
-        if (PublicVariable.hide == true) {
+        if (PublicVariable.transparencyEnabled == true) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -213,7 +213,7 @@ public class App_Unlimited_Shortcuts extends Service {
                                     functionsClass.PopupShortcuts(
                                             floatingView[startId],
                                             packages[startId],
-                                            App_Unlimited_Shortcuts.class.getSimpleName(),
+                                            FloatingShortcutsForApplications.class.getSimpleName(),
                                             startId,
                                             initialX,
                                             initialY
@@ -264,8 +264,8 @@ public class App_Unlimited_Shortcuts extends Service {
 
                             int difMoveX = (int) (paramsF.x - initialTouchX);
                             int difMoveY = (int) (paramsF.y - initialTouchY);
-                            if (Math.abs(difMoveX) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))
-                                    || Math.abs(difMoveY) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))) {
+                            if (Math.abs(difMoveX) > Math.abs(PublicVariable.floatingViewsHW + ((PublicVariable.floatingViewsHW * 70) / 100))
+                                    || Math.abs(difMoveY) > Math.abs(PublicVariable.floatingViewsHW + ((PublicVariable.floatingViewsHW * 70) / 100))) {
                                 sendBroadcast(new Intent("Hide_PopupListView_Shortcuts"));
 
                                 openIt[startId] = false;
@@ -293,11 +293,11 @@ public class App_Unlimited_Shortcuts extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.FloatingShortcuts.remove(packages[startId]);
-                            PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
-                            PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter - 1;
+                            PublicVariable.floatingShortcutsList.remove(packages[startId]);
+                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
+                            PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter - 1;
 
-                            if (PublicVariable.floatingCounter == 0) {
+                            if (PublicVariable.allFloatingCounter == 0) {
                                 stopService(new Intent(getApplicationContext(), BindServices.class));
                                 if (broadcastReceiver != null) {
                                     unregisterReceiver(broadcastReceiver);
@@ -329,7 +329,7 @@ public class App_Unlimited_Shortcuts extends Service {
             }
         });
 
-        final String className = App_Unlimited_Shortcuts.class.getSimpleName();
+        final String className = FloatingShortcutsForApplications.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Pin_App_" + className);
         intentFilter.addAction("Unpin_App_" + className);
@@ -382,11 +382,11 @@ public class App_Unlimited_Shortcuts extends Service {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            PublicVariable.FloatingShortcuts.remove(packages[intent.getIntExtra("startId", 0)]);
-                            PublicVariable.floatingCounter = PublicVariable.floatingCounter - 1;
-                            PublicVariable.shortcutsCounter = PublicVariable.shortcutsCounter - 1;
+                            PublicVariable.floatingShortcutsList.remove(packages[intent.getIntExtra("startId", 0)]);
+                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1;
+                            PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter - 1;
 
-                            if (PublicVariable.floatingCounter == 0) {
+                            if (PublicVariable.allFloatingCounter == 0) {
                                 stopService(new Intent(getApplicationContext(), BindServices.class));
                                 if (broadcastReceiver != null) {
                                     unregisterReceiver(broadcastReceiver);
@@ -400,7 +400,7 @@ public class App_Unlimited_Shortcuts extends Service {
         };
         registerReceiver(broadcastReceiver, intentFilter);
 
-        return functionsClass.serviceMode();
+        return Service.START_NOT_STICKY;
     }
 
     @Override

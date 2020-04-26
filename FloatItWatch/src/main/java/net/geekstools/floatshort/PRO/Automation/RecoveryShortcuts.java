@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/26/20 7:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -41,21 +41,21 @@ public class RecoveryShortcuts extends Service {
         PublicVariable.alpha = 133;
         PublicVariable.opacity = 255;
         if (sharedPrefs.getBoolean("hide", false) == false) {
-            PublicVariable.hide = false;
+            PublicVariable.transparencyEnabled = false;
         } else if (sharedPrefs.getBoolean("hide", false) == true) {
-            PublicVariable.hide = true;
+            PublicVariable.transparencyEnabled = true;
         }
-        PublicVariable.size = 33;
-        PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());
+        PublicVariable.floatingSizeNumber = 33;
+        PublicVariable.floatingViewsHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber, this.getResources().getDisplayMetrics());
 
         if (getApplicationContext().getFileStreamPath(".uFile").exists()) {
             try {
                 appData = functionsClass.readFileLine(".uFile");
                 for (int navItem = 0; navItem < appData.length; navItem++) {
                     runService = true;
-                    if (PublicVariable.FloatingShortcuts != null) {
-                        for (int check = 0; check < PublicVariable.FloatingShortcuts.size(); check++) {
-                            if (appData[navItem].equals(PublicVariable.FloatingShortcuts.get(check))) {
+                    if (PublicVariable.floatingShortcutsList != null) {
+                        for (int check = 0; check < PublicVariable.floatingShortcutsList.size(); check++) {
+                            if (appData[navItem].equals(PublicVariable.floatingShortcutsList.get(check))) {
                                 runService = false;
                             }
                         }
@@ -73,7 +73,7 @@ public class RecoveryShortcuts extends Service {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (PublicVariable.floatingCounter == 0) {
+                if (PublicVariable.allFloatingCounter == 0) {
                     if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                             .getBoolean("stable", true) == false) {
                         stopService(new Intent(getApplicationContext(), BindServices.class));
@@ -83,7 +83,7 @@ public class RecoveryShortcuts extends Service {
         } else {
             startActivity(new Intent(getApplicationContext(), Configurations.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         }
-        if (PublicVariable.floatingCounter == 0) {
+        if (PublicVariable.allFloatingCounter == 0) {
             if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                     .getBoolean("stable", true) == false) {
                 stopService(new Intent(getApplicationContext(), BindServices.class));

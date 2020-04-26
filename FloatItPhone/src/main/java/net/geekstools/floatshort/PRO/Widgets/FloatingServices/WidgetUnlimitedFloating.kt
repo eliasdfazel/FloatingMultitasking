@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 4:03 PM
- * Last modified 3/28/20 4:00 PM
+ * Created by Elias Fazel
+ * Last modified 4/26/20 7:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -150,7 +150,7 @@ class WidgetUnlimitedFloating : Service() {
                         }
                     }
 
-                    PublicVariable.FloatingWidgets.clear()
+                    PublicVariable.floatingWidgetsIdList.clear()
                     PublicVariable.floatingWidgetsCounter = -1
 
                     stopSelf()
@@ -358,7 +358,7 @@ class WidgetUnlimitedFloating : Service() {
                     try {
                         windowManager.removeView(floatingWidgetsBinding[startId].root)
                     } finally {
-                        PublicVariable.FloatingWidgets.remove(appWidgetId[startId] as Any)
+                        PublicVariable.floatingWidgetsIdList.remove(appWidgetId[startId] as Any)
                         PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
                         PublicVariable.floatingWidgetsCounter = PublicVariable.floatingWidgetsCounter - 1
 

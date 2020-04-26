@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 12:13 PM
+ * Last modified 4/26/20 7:34 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -138,8 +138,8 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         viewHolder.imgIcon.setImageDrawable(adapterItems.get(position).getIcon());
         viewHolder.textAppName.setText(adapterItems.get(position).getAppName());
 
-        viewHolder.imgIcon.setImageAlpha(PublicVariable.hide ? 157 : 250);
-        viewHolder.textAppName.setAlpha(PublicVariable.hide ? 0.77f : 1.0f);
+        viewHolder.imgIcon.setImageAlpha(PublicVariable.transparencyEnabled ? 157 : 250);
+        viewHolder.textAppName.setAlpha(PublicVariable.transparencyEnabled ? 0.77f : 1.0f);
 
         int itemsListColor;
         if (functionsClass.setAppTransparency() == true) {

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 4:56 PM
- * Last modified 3/28/20 4:53 PM
+ * Created by Elias Fazel
+ * Last modified 4/26/20 7:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -159,7 +159,7 @@ class RecoveryWidgets : Service() {
                     if (widgetDataModelRecovery) {
                         notAddedToRecovery = false
 
-                        FloatingWidgetCheck@ for (floatingWidgetCheck in PublicVariable.FloatingWidgets) {
+                        FloatingWidgetCheck@ for (floatingWidgetCheck in PublicVariable.floatingWidgetsIdList) {
 
                             if (widgetDataModel.WidgetId == floatingWidgetCheck) {
 
