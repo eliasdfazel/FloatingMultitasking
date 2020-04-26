@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 8:01 AM
+ * Last modified 4/26/20 8:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -35,10 +35,13 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.VectorDrawable;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.text.Html;
@@ -54,13 +57,13 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.palette.graphics.Palette;
 
 import net.geekstools.floatshort.PRO.BindServices;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.Category_Unlimited_Category;
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFolders;
 import net.geekstools.floatshort.PRO.Folders.PopupDialogue.PopupOptionsFloatingFolders;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForApplications;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForHIS;
 import net.geekstools.floatshort.PRO.Shortcuts.PopupDialogue.PopupOptionsFloatingShortcuts;
-import net.geekstools.floatshort.PRO.Utils.OpenApplications;
+import net.geekstools.floatshort.PRO.Utils.LaunchPad.OpenApplications;
 import net.geekstools.floatshort.PRO.Utils.UI.FloatingSplash;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -73,6 +76,8 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+
+import static android.content.Context.VIBRATOR_SERVICE;
 
 public class FunctionsClass {
 
@@ -185,10 +190,25 @@ public class FunctionsClass {
     }
 
     public boolean networkConnection() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        boolean networkAvailable = false;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            Network activeNetwork = connectivityManager.getActiveNetwork();
+            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork);
+
+            if (networkCapabilities != null) {
+                if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    networkAvailable = true;
+                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    networkAvailable = true;
+                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
+                    networkAvailable = true;
+                }
+            }
+        }
+
+        return networkAvailable;
     }
 
     public int returnAPI() {
@@ -358,7 +378,7 @@ public class FunctionsClass {
         PublicVariable.floatingFolderCounter++;
         PublicVariable.floatingFoldersList.add(PublicVariable.floatingFolderCounter, categoryName);
 
-        Intent c = new Intent(context, Category_Unlimited_Category.class);
+        Intent c = new Intent(context, FloatingFolders.class);
         c.putExtra("categoryName", categoryName);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
@@ -492,28 +512,8 @@ public class FunctionsClass {
     }
 
     public String[] readFileLine(String fileName) {
-        String[] contentLine = null;
-        if (context.getFileStreamPath(fileName).exists()) {
-            try {
-                FileInputStream fileInputStream = new FileInputStream(context.getFileStreamPath(fileName));
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
-                int count = countLine(fileName);
-                contentLine = new String[count];
-                String line = "";
-                int i = 0;
-                while ((line = bufferedReader.readLine()) != null) {
-                    contentLine[i] = line;
-                    i++;
-                }
-
-                fileInputStream.close();
-                bufferedReader.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return contentLine;
+        return new FunctionsClassIO(context).readFileLines(fileName);
     }
 
     public int countLine(String fileName) {
@@ -723,6 +723,19 @@ public class FunctionsClass {
 
     public boolean bootReceiverEnabled() {
         return readPreference("SmartFeature", "remoteRecovery", false);
+    }
+
+    public void doVibrate(long millisecondVibrate) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (vibrator != null) {
+                vibrator.vibrate(VibrationEffect.createOneShot(millisecondVibrate, VibrationEffect.DEFAULT_AMPLITUDE));
+            }
+        } else {
+            if (vibrator != null) {
+                vibrator.vibrate(millisecondVibrate);
+            }
+        }
     }
 
     /*GUI Functions*/

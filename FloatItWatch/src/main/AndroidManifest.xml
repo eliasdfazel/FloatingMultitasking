@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/26/20 8:00 AM
+  ~ Last modified 4/26/20 8:44 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -75,7 +75,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.DeviceDefault.Light"/>
         <activity
-            android:name=".Utils.Preferences"
+            android:name=".Preferences.PreferencesUI"
             android:label="@string/settingTitle"
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper"/>
         <activity
@@ -83,7 +83,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper"/>
         <activity
-            android:name=".Utils.OpenApplications"
+            android:name=".Utils.LaunchPad.OpenApplications"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:theme="@style/Transparent"/>
         <activity
@@ -118,7 +118,7 @@
         <service
             android:name=".Shortcuts.FloatingServices.FloatingShortcutsForHIS"/>
         <service
-            android:name=".Folders.FloatingServices.Category_Unlimited_Category"/>
+            android:name=".Folders.FloatingServices.FloatingFolders"/>
         <!-- Float It -->
         <service
             android:name=".Utils.RemoteProcess.CloudNotificationHandler"

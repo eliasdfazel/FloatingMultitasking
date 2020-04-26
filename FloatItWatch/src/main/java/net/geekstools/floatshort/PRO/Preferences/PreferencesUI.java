@@ -2,13 +2,13 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 8:09 AM
+ * Last modified 4/26/20 8:26 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Utils;
+package net.geekstools.floatshort.PRO.Preferences;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,7 +36,7 @@ import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewWatch;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 
-public class Preferences extends WearableActivity {
+public class PreferencesUI extends WearableActivity {
 
     FunctionsClass functionsClass;
     RelativeLayout mContainerView;
@@ -400,7 +400,7 @@ public class Preferences extends WearableActivity {
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
         firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener(Preferences.this, new OnCompleteListener<Void>() {
+                .addOnCompleteListener(PreferencesUI.this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -425,6 +425,6 @@ public class Preferences extends WearableActivity {
     public void onPause() {
         super.onPause();
 
-        Preferences.this.finish();
+        PreferencesUI.this.finish();
     }
 }

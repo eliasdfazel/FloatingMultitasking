@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:36 AM
+ * Last modified 4/26/20 8:44 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -33,7 +33,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
-public class Category_Unlimited_Category extends Service {
+public class FloatingFolders extends Service {
 
     public static boolean running = false;
     FunctionsClass functionsClass;
@@ -192,7 +192,7 @@ public class Category_Unlimited_Category extends Service {
         params[startId] = functionsClass.normalLayoutParams(HW, xPos, yPos);
         windowManager.addView(floatingView[startId], params[startId]);
 
-        final String className = Category_Unlimited_Category.class.getSimpleName();
+        final String className = FloatingFolders.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Split_Apps_Pair_" + className);
         intentFilter.addAction("Split_Apps_Single_" + className);
