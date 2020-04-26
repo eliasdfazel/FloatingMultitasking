@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:36 AM
+ * Last modified 4/26/20 8:01 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -140,6 +140,7 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersFor
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForTime;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForWifi;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
+import net.geekstools.floatshort.PRO.Folders.PopupDialogue.PopupOptionsFloatingFolders;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.Notifications.PopupAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
@@ -156,6 +157,7 @@ import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcut
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForNfc;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForTime;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi;
+import net.geekstools.floatshort.PRO.Shortcuts.PopupDialogue.PopupOptionsFloatingShortcuts;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData;
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling;
@@ -164,8 +166,6 @@ import net.geekstools.floatshort.PRO.Utils.LaunchPad.OpenApplicationsLaunchPad;
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.FloatingWidgetHomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.RemoteController;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
-import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.PopupOptionsFloatingCategory;
-import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.PopupOptionsFloatingShortcuts;
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash;
 import net.geekstools.floatshort.PRO.Widgets.FloatingServices.WidgetUnlimitedFloating;
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface;
@@ -857,7 +857,7 @@ public class FunctionsClass {
         }
 
         try {
-            Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingCategory.class);
+            Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingFolders.class);
             popupOptionsFloatingCategory.putExtra("MODE", "AppsList");
             popupOptionsFloatingCategory.putExtra("folderName", categoryName);
             popupOptionsFloatingCategory.putExtra("PackagesNames", packagesName);
@@ -874,7 +874,7 @@ public class FunctionsClass {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     if (intent.getAction().equals("Hide_PopupListView_Category")) {
-                        context.stopService(new Intent(context, PopupOptionsFloatingCategory.class));
+                        context.stopService(new Intent(context, PopupOptionsFloatingFolders.class));
                     }
                 }
             };
@@ -899,7 +899,7 @@ public class FunctionsClass {
             return;
         }
         try {
-            Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingCategory.class);
+            Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingFolders.class);
             popupOptionsFloatingCategory.putExtra("MODE", "Options");
             popupOptionsFloatingCategory.putExtra("folderName", categoryName);
             popupOptionsFloatingCategory.putExtra("classNameCommand", classNameCommand);
@@ -915,7 +915,7 @@ public class FunctionsClass {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     if (intent.getAction().equals("Hide_PopupListView_Category")) {
-                        context.stopService(new Intent(context, PopupOptionsFloatingCategory.class));
+                        context.stopService(new Intent(context, PopupOptionsFloatingFolders.class));
                     }
                 }
             };

@@ -2,13 +2,13 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 12:13 PM
+ * Last modified 4/26/20 8:00 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Utils.UI;
+package net.geekstools.floatshort.PRO.Shortcuts.PopupDialogue;
 
 import android.app.Service;
 import android.content.Intent;

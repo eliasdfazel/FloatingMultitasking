@@ -2,13 +2,13 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 3:07 AM
+ * Last modified 4/26/20 7:59 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue;
+package net.geekstools.floatshort.PRO.Folders.PopupDialogue;
 
 import android.app.Service;
 import android.content.Intent;
@@ -33,7 +33,7 @@ import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
 import java.util.ArrayList;
 
-public class PopupOptionsFloatingCategory extends Service {
+public class PopupOptionsFloatingFolders extends Service {
 
     FunctionsClass functionsClass;
     WindowManager windowManager;

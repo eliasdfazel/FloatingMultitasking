@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/25/20 7:10 AM
+  ~ Last modified 4/26/20 7:59 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -550,9 +550,9 @@
         <service
             android:name=".Utils.UI.Splash.FloatingSplash"/>
         <service
-            android:name=".Utils.UI.PopupDialogue.PopupOptionsFloatingShortcuts"/>
+            android:name=".Shortcuts.PopupDialogue.PopupOptionsFloatingShortcuts"/>
         <service
-            android:name=".Utils.UI.PopupDialogue.PopupOptionsFloatingCategory"/>
+            android:name=".Folders.PopupDialogue.PopupOptionsFloatingFolders"/>
 
         <receiver
             android:name=".Automation.Receivers.ReceiverWifi">

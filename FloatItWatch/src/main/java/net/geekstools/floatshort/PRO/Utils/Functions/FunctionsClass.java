@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:43 AM
+ * Last modified 4/26/20 8:01 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -55,13 +55,13 @@ import androidx.palette.graphics.Palette;
 
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Category_Unlimited_Category;
+import net.geekstools.floatshort.PRO.Folders.PopupDialogue.PopupOptionsFloatingFolders;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForApplications;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForHIS;
+import net.geekstools.floatshort.PRO.Shortcuts.PopupDialogue.PopupOptionsFloatingShortcuts;
 import net.geekstools.floatshort.PRO.Utils.OpenApplications;
 import net.geekstools.floatshort.PRO.Utils.UI.FloatingSplash;
-import net.geekstools.floatshort.PRO.Utils.UI.PopupOptionsFloatingCategory;
-import net.geekstools.floatshort.PRO.Utils.UI.PopupOptionsFloatingShortcuts;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.io.BufferedReader;
@@ -374,7 +374,7 @@ public class FunctionsClass {
         }
 
         try {
-            Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingCategory.class);
+            Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingFolders.class);
             popupOptionsFloatingCategory.putExtra("MODE", "AppsList");
             popupOptionsFloatingCategory.putExtra("categoryName", categoryName);
             popupOptionsFloatingCategory.putExtra("PackagesNames", packagesName);
@@ -391,7 +391,7 @@ public class FunctionsClass {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     if (intent.getAction().equals("Hide_PopupListView_Category")) {
-                        context.stopService(new Intent(context, PopupOptionsFloatingCategory.class));
+                        context.stopService(new Intent(context, PopupOptionsFloatingFolders.class));
                     }
                 }
             };
@@ -412,7 +412,7 @@ public class FunctionsClass {
             return;
         }
         try {
-            Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingCategory.class);
+            Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingFolders.class);
             popupOptionsFloatingCategory.putExtra("MODE", "Options");
             popupOptionsFloatingCategory.putExtra("categoryName", categoryName);
             popupOptionsFloatingCategory.putExtra("classNameCommand", classNameCommand);
@@ -428,7 +428,7 @@ public class FunctionsClass {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     if (intent.getAction().equals("Hide_PopupListView_Category")) {
-                        context.stopService(new Intent(context, PopupOptionsFloatingCategory.class));
+                        context.stopService(new Intent(context, PopupOptionsFloatingFolders.class));
                     }
                 }
             };
