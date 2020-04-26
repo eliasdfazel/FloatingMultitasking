@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 4:44 AM
+ * Last modified 4/26/20 5:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -80,7 +80,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
         functionsClass = FunctionsClass(context)
         securityFunctions = SecurityFunctions(context)
 
-        PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
         when (functionsClass.shapesImageId()) {
             1 -> layoutInflater = R.layout.item_popup_category_droplet
             2 -> layoutInflater = R.layout.item_popup_category_circle
@@ -107,7 +107,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
         functionsClass = FunctionsClass(context)
         securityFunctions = SecurityFunctions(context)
 
-        PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
 
         when (functionsClass.shapesImageId()) {
             1 -> layoutInflater = R.layout.item_popup_category_droplet

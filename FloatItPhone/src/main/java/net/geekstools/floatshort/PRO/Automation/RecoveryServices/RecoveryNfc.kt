@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 10:33 AM
+ * Last modified 4/26/20 5:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -29,8 +29,8 @@ class RecoveryNfc : Service() {
 
         val functionsClass: FunctionsClass = FunctionsClass(applicationContext)
 
-        PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
-        PublicVariable.HW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size.toFloat(), this.resources.displayMetrics).toInt()
+        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
 
         if (getFileStreamPath(".auto" + this@RecoveryNfc.javaClass.simpleName.replace("Recovery", "")).exists()
                 && getFileStreamPath(".auto" + this@RecoveryNfc.javaClass.simpleName.replace("Recovery", "")).isFile) {

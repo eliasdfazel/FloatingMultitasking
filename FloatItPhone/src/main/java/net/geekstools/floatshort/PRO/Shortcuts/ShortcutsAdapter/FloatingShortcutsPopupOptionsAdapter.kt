@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel
+ * Last modified 4/26/20 5:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -38,7 +38,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import java.util.*
 
-class PopupShortcutsOptionAdapter : BaseAdapter {
+class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
 
     private val context: Context
 
@@ -86,6 +86,7 @@ class PopupShortcutsOptionAdapter : BaseAdapter {
     }
 
     override fun getCount(): Int {
+
         return adapterItems.size
     }
 
@@ -94,6 +95,7 @@ class PopupShortcutsOptionAdapter : BaseAdapter {
     }
 
     override fun getItemId(position: Int): Long {
+
         return position.toLong()
     }
 
@@ -119,7 +121,7 @@ class PopupShortcutsOptionAdapter : BaseAdapter {
         viewHolder.iconViewItem!!.setImageDrawable(adapterItems[position].optionItemIcon)
         viewHolder.titleViewItem!!.text = adapterItems[position].optionItemTitle
 
-        val itemsListColor = if (functionsClass.appThemeTransparent() == true) {
+        val itemsListColor = if (functionsClass.appThemeTransparent()) {
             functionsClass.setColorAlpha(PublicVariable.colorLightDark, 50f)
         } else {
             PublicVariable.colorLightDark
@@ -142,7 +144,7 @@ class PopupShortcutsOptionAdapter : BaseAdapter {
 
                         override fun authenticatedFloatIt(extraInformation: Bundle?) {
                             super.authenticatedFloatIt(extraInformation)
-                            Log.d(this@PopupShortcutsOptionAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+                            Log.d(this@FloatingShortcutsPopupOptionsAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                             if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
                                 context.startActivity(Intent(context, Checkpoint::class.java)
@@ -167,14 +169,14 @@ class PopupShortcutsOptionAdapter : BaseAdapter {
 
                         override fun failedAuthenticated() {
                             super.failedAuthenticated()
-                            Log.d(this@PopupShortcutsOptionAdapter.javaClass.simpleName, "FailedAuthenticated")
+                            Log.d(this@FloatingShortcutsPopupOptionsAdapter.javaClass.simpleName, "FailedAuthenticated")
 
 
                         }
 
                         override fun invokedPinPassword() {
                             super.invokedPinPassword()
-                            Log.d(this@PopupShortcutsOptionAdapter.javaClass.simpleName, "InvokedPinPassword")
+                            Log.d(this@FloatingShortcutsPopupOptionsAdapter.javaClass.simpleName, "InvokedPinPassword")
 
                         }
                     }

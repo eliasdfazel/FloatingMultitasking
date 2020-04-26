@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 7:10 AM
+ * Last modified 4/26/20 5:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -3614,41 +3614,29 @@ public class FunctionsClass {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == 0) {
-                    PublicVariable.size = 26;
-                    PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
+                    PublicVariable.floatingSizeNumber = 26;
+                    PublicVariable.floatingViewsHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber, context.getResources().getDisplayMetrics());
 
                     functionsClassRunServices.runUnlimitedShortcutsService(PackageName, ClassName);
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            setSizeBack();
-                        }
-                    }, 50);
+                    revertFloatingSize();
+
                 } else if (item.getItemId() == 1) {
-                    PublicVariable.size = 39;
-                    PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
+                    PublicVariable.floatingSizeNumber = 39;
+                    PublicVariable.floatingViewsHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber, context.getResources().getDisplayMetrics());
 
                     functionsClassRunServices.runUnlimitedShortcutsService(PackageName, ClassName);
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            setSizeBack();
-                        }
-                    }, 50);
+                    revertFloatingSize();
+
                 } else if (item.getItemId() == 2) {
-                    PublicVariable.size = 52;
-                    PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
+                    PublicVariable.floatingSizeNumber = 52;
+                    PublicVariable.floatingViewsHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber, context.getResources().getDisplayMetrics());
 
                     functionsClassRunServices.runUnlimitedShortcutsService(PackageName, ClassName);
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            setSizeBack();
-                        }
-                    }, 50);
+                    revertFloatingSize();
+
                 } else if (item.getItemId() == 3) {
                     if (securityFunctions.isAppLocked(PackageName)) {
 
@@ -3762,33 +3750,33 @@ public class FunctionsClass {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == 0) {
-                    PublicVariable.size = 26;
+                    PublicVariable.floatingSizeNumber = 26;
                     runUnlimitedFolderService(folderName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setSizeBack();
+                            revertFloatingSize();
                         }
                     }, 100);
                 } else if (item.getItemId() == 1) {
-                    PublicVariable.size = 52;
+                    PublicVariable.floatingSizeNumber = 52;
                     runUnlimitedFolderService(folderName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setSizeBack();
+                            revertFloatingSize();
                         }
                     }, 100);
                 } else if (item.getItemId() == 2) {
-                    PublicVariable.size = 78;
+                    PublicVariable.floatingSizeNumber = 78;
                     runUnlimitedFolderService(folderName);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setSizeBack();
+                            revertFloatingSize();
                         }
                     }, 100);
                 } else if (item.getItemId() == 3) {
@@ -3885,9 +3873,9 @@ public class FunctionsClass {
                                   String packageName, final String providerClassName, int widgetId,
                                   String widgetLabel, Drawable widgetPreview, boolean addedWidgetRecovery) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
-        if (PublicVariable.themeLightDark == true) {
+        if (PublicVariable.themeLightDark) {
             popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Light);
-        } else if (PublicVariable.themeLightDark == false) {
+        } else if (!PublicVariable.themeLightDark) {
             popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Dark);
         }
         String[] menuItems;
@@ -4070,9 +4058,14 @@ public class FunctionsClass {
         popupMenu.show();
     }
 
-    public void setSizeBack() {
-        PublicVariable.size = readDefaultPreference("floatingSize", 39);
-        PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, context.getResources().getDisplayMetrics());
+    public void revertFloatingSize() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                PublicVariable.floatingSizeNumber = readDefaultPreference("floatingSize", 39);
+                PublicVariable.floatingViewsHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber, context.getResources().getDisplayMetrics());
+            }
+        }, 555);
     }
 
     public void openContextMenu(Activity activity, View view) {

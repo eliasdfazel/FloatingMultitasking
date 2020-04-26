@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 10:30 AM
+ * Last modified 4/26/20 5:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -31,23 +31,28 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
-import net.geekstools.imageview.customshapes.ShapesImage
 import java.util.*
 
-class FoldersListAdapter(var foldersConfigurations: FoldersConfigurations, var context: Context, var adapterItems: ArrayList<AdapterItems>) : RecyclerView.Adapter<FoldersListAdapter.ViewHolder>() {
+class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: FoldersConfigurations,
+                         private val context: Context,
+                         private val adapterItems: ArrayList<AdapterItems>) : RecyclerView.Adapter<FoldersListAdapter.ViewHolder>() {
 
     var functionsClass: FunctionsClass = FunctionsClass(context)
-
-    var imageView: ShapesImage? = null
-    var freqLayout: RelativeLayout? = null
 
     var endEdited = ""
 
     var loadCustomIcons: LoadCustomIcons? = null
 
+    private var cardFolderDrawable: LayerDrawable? = null
+
     init {
-        PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
-        PublicVariable.HW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size.toFloat(), context.resources.displayMetrics).toInt()
+        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), context.resources.displayMetrics).toInt()
+
+        cardFolderDrawable = context.getDrawable(R.drawable.card_folder_drawable) as LayerDrawable?
+        val folderItemBackground = cardFolderDrawable?.findDrawableByLayerId(R.id.folder_item_background)
+        folderItemBackground?.setTint(PublicVariable.colorLightDark)
+        cardFolderDrawable?.alpha = 7
 
         if (functionsClass.customIconsEnable()) {
             loadCustomIcons = LoadCustomIcons(context, functionsClass.customIconPackageName())
@@ -55,15 +60,12 @@ class FoldersListAdapter(var foldersConfigurations: FoldersConfigurations, var c
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_category, parent, false))
     }
 
     override fun onBindViewHolder(viewHolderBinder: ViewHolder, position: Int) {
 
-        val cardFolderDrawable = context.getDrawable(R.drawable.card_folder_drawable) as LayerDrawable?
-        val folderItemBackground = cardFolderDrawable!!.findDrawableByLayerId(R.id.folder_item_background)
-        folderItemBackground.setTint(PublicVariable.colorLightDark)
-        cardFolderDrawable.alpha = 7
         viewHolderBinder.categoryItem.background = cardFolderDrawable
         viewHolderBinder.categoryName.setTextColor(PublicVariable.colorLightDarkOpposite)
         viewHolderBinder.categoryName.setHintTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
@@ -72,12 +74,12 @@ class FoldersListAdapter(var foldersConfigurations: FoldersConfigurations, var c
         val includedPackagesInFolder = adapterItems[position].packageNames
 
         if (functionsClass.loadRecoveryIndicatorCategory(folderName)) {
-            viewHolderBinder.categoryName.setText(adapterItems[position].category + " " + "\uD83D\uDD04")
+            viewHolderBinder.categoryName.setText("${adapterItems[position].category} \uD83D\uDD04")
         } else {
             viewHolderBinder.categoryName.setText(adapterItems[position].category)
         }
 
-        viewHolderBinder.runCategory.text = folderName[0].toString().toUpperCase()
+        viewHolderBinder.runCategory.text = folderName[0].toString().toUpperCase(Locale.getDefault())
 
         if (folderName == context.packageName) {
 
@@ -100,16 +102,16 @@ class FoldersListAdapter(var foldersConfigurations: FoldersConfigurations, var c
                 }
 
                 for (i in 0 until previewItems) {
-                    freqLayout = foldersConfigurations.layoutInflater.inflate(R.layout.selected_apps_item, null) as RelativeLayout
+                    val selectedAppsPreview = instanceOfFoldersConfigurationsActivity.layoutInflater.inflate(R.layout.selected_apps_item, null) as RelativeLayout
 
-                    imageView = functionsClass.initShapesImage(freqLayout, R.id.appSelectedItem)
+                    val imageView = functionsClass.initShapesImage(selectedAppsPreview, R.id.appSelectedItem)
                     imageView?.setImageDrawable(if (functionsClass.customIconsEnable()) {
                         loadCustomIcons!!.getDrawableIconForPackage(includedPackagesInFolder[i], functionsClass.shapedAppIcon(includedPackagesInFolder[i]))
                     } else {
                         functionsClass.shapedAppIcon(includedPackagesInFolder[i])
                     })
 
-                    viewHolderBinder.selectedApp.addView(freqLayout)
+                    viewHolderBinder.selectedApp.addView(selectedAppsPreview)
                     viewHolderBinder.addApp.visibility = View.VISIBLE
 
                     val addAppsDrawable = context.getDrawable(R.drawable.ic_add_apps)
@@ -167,7 +169,7 @@ class FoldersListAdapter(var foldersConfigurations: FoldersConfigurations, var c
             if (adapterItems[position].category != context.packageName) {
                 PublicVariable.itemPosition = position
                 val categoryName = adapterItems[position].category
-                functionsClass.popupOptionFolders(foldersConfigurations, context,
+                functionsClass.popupOptionFolders(instanceOfFoldersConfigurationsActivity, context,
                         viewHolderBinder.itemView,
                         categoryName, position)
             }
@@ -185,7 +187,7 @@ class FoldersListAdapter(var foldersConfigurations: FoldersConfigurations, var c
             if (adapterItems[position].category != context.packageName) {
                 PublicVariable.itemPosition = position
                 val categoryName = adapterItems[position].category
-                functionsClass.popupOptionFolders(foldersConfigurations, context,
+                functionsClass.popupOptionFolders(instanceOfFoldersConfigurationsActivity, context,
                         viewHolderBinder.itemView,
                         categoryName, position)
             }

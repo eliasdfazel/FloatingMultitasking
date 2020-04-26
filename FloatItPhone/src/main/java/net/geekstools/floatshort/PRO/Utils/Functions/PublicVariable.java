@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 5:19 AM
+ * Last modified 4/26/20 5:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -33,8 +33,8 @@ public class PublicVariable {
 
     public static int floatingWidgetsCounter = -1;
 
-    public static int HW = 0;
-    public static int size;
+    public static int floatingViewsHW = 0;
+    public static int floatingSizeNumber;
 
     public static int actionBarHeight;
     public static int statusBarHeight;

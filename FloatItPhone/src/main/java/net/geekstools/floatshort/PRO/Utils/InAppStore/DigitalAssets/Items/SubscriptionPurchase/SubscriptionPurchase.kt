@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 3:04 AM
+ * Last modified 4/26/20 5:03 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -169,9 +169,9 @@ class SubscriptionPurchase (val purchaseFlowController: PurchaseFlowController,
                         }
                         BillingClient.BillingResponseCode.OK -> {
 
-                            purchaseFlowController.purchaseFlowSucceeded(skuDetails = skuDetailsListInApp[0])
-
                             if (skuDetailsListInApp.isNotEmpty()) {
+
+                                purchaseFlowController.purchaseFlowSucceeded(skuDetails = skuDetailsListInApp[0])
 
                                 subscriptionPurchaseFlow(skuDetailsListInApp[0])
 

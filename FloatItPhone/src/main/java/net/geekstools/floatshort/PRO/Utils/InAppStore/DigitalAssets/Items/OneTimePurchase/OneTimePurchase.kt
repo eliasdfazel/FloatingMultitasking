@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 2:20 AM
+ * Last modified 4/26/20 5:04 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -162,16 +162,16 @@ class OneTimePurchase (val purchaseFlowController: PurchaseFlowController,
                         }
                         BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
 
-                            if (skuDetailsListInApp.isNotEmpty()) {
+                            if (!skuDetailsListInApp.isNullOrEmpty()) {
 
                                 purchaseFlowController.purchaseFlowPaid(skuDetails = skuDetailsListInApp[0])
                             }
                         }
                         BillingClient.BillingResponseCode.OK -> {
 
-                            purchaseFlowController.purchaseFlowSucceeded(skuDetails = skuDetailsListInApp[0])
+                            if (!skuDetailsListInApp.isNullOrEmpty()) {
 
-                            if (skuDetailsListInApp.isNotEmpty()) {
+                                purchaseFlowController.purchaseFlowSucceeded(skuDetails = skuDetailsListInApp[0])
 
                                 oneTimePurchaseFlow(skuDetailsListInApp[0])
 

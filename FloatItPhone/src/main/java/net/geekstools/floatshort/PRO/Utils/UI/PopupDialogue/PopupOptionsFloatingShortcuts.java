@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 12:47 PM
+ * Created by Elias Fazel
+ * Last modified 4/26/20 5:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,7 +25,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.PopupShortcutsOptionAdapter;
+import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.FloatingShortcutsPopupOptionsAdapter;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsFloatingShortcutsPopuiOptions;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
@@ -47,7 +47,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
     int statusBarHeight, navBarHeight;
     String packageName, className, classNameCommand;
 
-    PopupShortcutsOptionAdapter popupShortcutsOptionAdapter;
+    FloatingShortcutsPopupOptionsAdapter floatingShortcutsPopupOptionsAdapter;
     LoadCustomIcons loadCustomIcons;
 
     @Override
@@ -237,16 +237,16 @@ public class PopupOptionsFloatingShortcuts extends Service {
 
 
             if (className != null) {
-                popupShortcutsOptionAdapter =
-                        new PopupShortcutsOptionAdapter(getApplicationContext(), navDrawerItemsSaved,
+                floatingShortcutsPopupOptionsAdapter =
+                        new FloatingShortcutsPopupOptionsAdapter(getApplicationContext(), navDrawerItemsSaved,
                                 classNameCommand, packageName, className, startIdCommand);
             } else {
-                popupShortcutsOptionAdapter =
-                        new PopupShortcutsOptionAdapter(getApplicationContext(), navDrawerItemsSaved,
+                floatingShortcutsPopupOptionsAdapter =
+                        new FloatingShortcutsPopupOptionsAdapter(getApplicationContext(), navDrawerItemsSaved,
                                 classNameCommand, packageName, startIdCommand);
             }
 
-            popupOptionsItems.setAdapter(popupShortcutsOptionAdapter);
+            popupOptionsItems.setAdapter(floatingShortcutsPopupOptionsAdapter);
 
 
         } catch (Exception e) {

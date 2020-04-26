@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:29 PM
+ * Created by Elias Fazel
+ * Last modified 4/26/20 5:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,8 +28,8 @@ public class RemoteRecoveryActivity extends Activity {
         FunctionsClass functionsClass = new FunctionsClass(getApplicationContext());
         FunctionsClassRunServices functionsClassRunServices = new FunctionsClassRunServices(getApplicationContext());
 
-        PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
-        PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, this.getResources().getDisplayMetrics());
+        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39);
+        PublicVariable.floatingViewsHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber, this.getResources().getDisplayMetrics());
 
         String packageName = getIntent().getStringExtra("packageName");
 

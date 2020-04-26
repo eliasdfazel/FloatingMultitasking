@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/24/20 11:22 AM
+ * Last modified 4/26/20 5:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,7 +26,6 @@ import android.os.Handler
 import android.os.IBinder
 import android.text.Html
 import android.util.Log
-import android.util.TypedValue
 import android.view.*
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
@@ -271,14 +270,11 @@ class FloatingShortcutsForTime : Service() {
 
             val sharedPreferencesPosition = getSharedPreferences(packageNames[startId], Context.MODE_PRIVATE)
 
-            PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
-            PublicVariable.HW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size.toFloat(), applicationContext.resources.displayMetrics).toInt()
-
             XY.xInitial = XY.xInitial + 13
             XY.yInitial = XY.yInitial + 13
             XY.xPosition = sharedPreferencesPosition.getInt("X", XY.xInitial)
             XY.yPosition = sharedPreferencesPosition.getInt("Y", XY.yInitial)
-            layoutParams.add(startId, functionsClass.normalLayoutParams(PublicVariable.HW, XY.xPosition, XY.yPosition))
+            layoutParams.add(startId, functionsClass.normalLayoutParams(PublicVariable.floatingViewsHW, XY.xPosition, XY.yPosition))
 
             try {
                 floatingShortcutsBinding.get(startId).root.setTag(startId)
@@ -296,12 +292,12 @@ class FloatingShortcutsForTime : Service() {
 
                 flingAnimationX.add(startId, FlingAnimation(FloatValueHolder())
                         .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
-                        .setMaxValue(functionsClass.displayX() - PublicVariable.HW.toFloat())
+                        .setMaxValue(functionsClass.displayX() - PublicVariable.floatingViewsHW.toFloat())
                         .setMinValue(0f))
 
                 flingAnimationY.add(startId, FlingAnimation(FloatValueHolder())
                         .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
-                        .setMaxValue(functionsClass.displayY() - PublicVariable.HW.toFloat())
+                        .setMaxValue(functionsClass.displayY() - PublicVariable.floatingViewsHW.toFloat())
                         .setMinValue(0f))
 
                 simpleOnGestureListener.add(startId, object : GestureDetector.SimpleOnGestureListener() {
@@ -557,8 +553,8 @@ class FloatingShortcutsForTime : Service() {
                                 val difMoveX = (layoutParamsOnTouch.x - initialTouchX).toInt()
                                 val difMoveY = (layoutParamsOnTouch.y - initialTouchY).toInt()
 
-                                if (abs(difMoveX) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)
-                                        || abs(difMoveY) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)) {
+                                if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
+                                        || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
                                     sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
 
@@ -583,8 +579,8 @@ class FloatingShortcutsForTime : Service() {
                                     val difMoveX = (layoutParamsOnTouch.x - initialTouchX).toInt()
                                     val difMoveY = (layoutParamsOnTouch.y - initialTouchY).toInt()
 
-                                    if (abs(difMoveX) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)
-                                            || abs(difMoveY) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)) {
+                                    if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
+                                            || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
                                         sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
 

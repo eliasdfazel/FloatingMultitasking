@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/15/20 3:14 AM
+ * Last modified 4/26/20 5:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,7 +25,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -248,14 +247,11 @@ public class FloatingShortcutsForHIS extends Service {
             e.printStackTrace();
         }
 
-        PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39);
-        PublicVariable.HW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size, getApplicationContext().getResources().getDisplayMetrics());
-
         xInit = xInit + 13;
         yInit = yInit + 13;
         xPos = sharedPrefPosition.getInt("X", xInit);
         yPos = sharedPrefPosition.getInt("Y", yInit);
-        layoutParams[startId] = functionsClass.normalLayoutParams(PublicVariable.HW, xPos, yPos);
+        layoutParams[startId] = functionsClass.normalLayoutParams(PublicVariable.floatingViewsHW, xPos, yPos);
         try {
             floatingView[startId].setTag(startId);
             windowManager.addView(floatingView[startId], layoutParams[startId]);
@@ -274,10 +270,10 @@ public class FloatingShortcutsForHIS extends Service {
             flingAnimationY[startId] = new FlingAnimation(new FloatValueHolder())
                     .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
 
-            flingAnimationX[startId].setMaxValue(functionsClass.displayX() - PublicVariable.HW);
+            flingAnimationX[startId].setMaxValue(functionsClass.displayX() - PublicVariable.floatingViewsHW);
             flingAnimationX[startId].setMinValue(0);
 
-            flingAnimationY[startId].setMaxValue(functionsClass.displayY() - PublicVariable.HW);
+            flingAnimationY[startId].setMaxValue(functionsClass.displayY() - PublicVariable.floatingViewsHW);
             flingAnimationY[startId].setMinValue(0);
 
             simpleOnGestureListener[startId] = new GestureDetector.SimpleOnGestureListener() {
@@ -568,8 +564,8 @@ public class FloatingShortcutsForHIS extends Service {
 
                             int difMoveX = (int) (layoutParamsOnTouch.x - initialTouchX);
                             int difMoveY = (int) (layoutParamsOnTouch.y - initialTouchY);
-                            if (Math.abs(difMoveX) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))
-                                    || Math.abs(difMoveY) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))) {
+                            if (Math.abs(difMoveX) > Math.abs(PublicVariable.floatingViewsHW + ((PublicVariable.floatingViewsHW * 70) / 100))
+                                    || Math.abs(difMoveY) > Math.abs(PublicVariable.floatingViewsHW + ((PublicVariable.floatingViewsHW * 70) / 100))) {
                                 sendBroadcast(new Intent("Hide_PopupListView_Shortcuts"));
 
                                 openIt[startId] = false;
@@ -588,8 +584,8 @@ public class FloatingShortcutsForHIS extends Service {
 
                                 int difMoveX = (int) (layoutParamsOnTouch.x - initialTouchX);
                                 int difMoveY = (int) (layoutParamsOnTouch.y - initialTouchY);
-                                if (Math.abs(difMoveX) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))
-                                        || Math.abs(difMoveY) > Math.abs(PublicVariable.HW + ((PublicVariable.HW * 70) / 100))) {
+                                if (Math.abs(difMoveX) > Math.abs(PublicVariable.floatingViewsHW + ((PublicVariable.floatingViewsHW * 70) / 100))
+                                        || Math.abs(difMoveY) > Math.abs(PublicVariable.floatingViewsHW + ((PublicVariable.floatingViewsHW * 70) / 100))) {
                                     sendBroadcast(new Intent("Hide_PopupListView_Shortcuts"));
 
                                     openIt[startId] = false;

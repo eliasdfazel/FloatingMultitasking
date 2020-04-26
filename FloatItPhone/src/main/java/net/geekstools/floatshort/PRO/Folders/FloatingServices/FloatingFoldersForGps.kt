@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/24/20 11:26 AM
+ * Last modified 4/26/20 5:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -207,15 +207,15 @@ class FloatingFoldersForGps : Service() {
 
             var folderSize: Int = 36
 
-            if (PublicVariable.size == 13 || PublicVariable.size == 26) {//Small
+            if (PublicVariable.floatingSizeNumber == 13 || PublicVariable.floatingSizeNumber == 26) {//Small
                 floatingView.add(startId, layoutInflater.inflate(R.layout.floating_folder_small, null, false) as ViewGroup)
 
                 folderSize = 24
-            } else if (PublicVariable.size == 39 || PublicVariable.size == 52) {//Medium
+            } else if (PublicVariable.floatingSizeNumber == 39 || PublicVariable.floatingSizeNumber == 52) {//Medium
                 floatingView.add(startId, layoutInflater.inflate(R.layout.floating_folder_medium, null, false) as ViewGroup)
 
                 folderSize = 36
-            } else if (PublicVariable.size == 65 || PublicVariable.size == 78) {//Large
+            } else if (PublicVariable.floatingSizeNumber == 65 || PublicVariable.floatingSizeNumber == 78) {//Large
                 floatingView.add(startId, layoutInflater.inflate(R.layout.floating_folder_large, null, false) as ViewGroup)
 
                 folderSize = 48
@@ -594,8 +594,8 @@ class FloatingFoldersForGps : Service() {
                                 val difMoveX = (layoutParamsOnTouch.x - initialTouchX).toInt()
                                 val difMoveY = (layoutParamsOnTouch.y - initialTouchY).toInt()
 
-                                if (abs(difMoveX) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)
-                                        || abs(difMoveY) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)) {
+                                if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
+                                        || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
                                     openPermit[startId] = false
                                     touchingDelay[startId] = false
@@ -617,8 +617,8 @@ class FloatingFoldersForGps : Service() {
                                     val difMoveX = (layoutParamsOnTouch.x - initialTouchX).toInt()
                                     val difMoveY = (layoutParamsOnTouch.y - initialTouchY).toInt()
 
-                                    if (abs(difMoveX) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)
-                                            || abs(difMoveY) > abs(PublicVariable.HW + PublicVariable.HW * 70 / 100)) {
+                                    if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
+                                            || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
                                         sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
 

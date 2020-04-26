@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:18 PM
+ * Created by Elias Fazel
+ * Last modified 4/26/20 5:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,8 +24,8 @@ class DeepLinkedFolders : AppCompatActivity() {
     override fun onCreate(Saved: Bundle?) {
         super.onCreate(Saved)
         val functionsClass = FunctionsClass(applicationContext)
-        PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
-        PublicVariable.HW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size.toFloat(), this.resources.displayMetrics).toInt()
+        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
 
         intent.dataString?.let { dataString ->
 

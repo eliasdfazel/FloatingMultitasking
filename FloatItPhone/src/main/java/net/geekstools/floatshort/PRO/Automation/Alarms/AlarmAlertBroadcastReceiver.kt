@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 5:55 AM
+ * Last modified 4/26/20 5:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -31,8 +31,8 @@ class AlarmAlertBroadcastReceiver : BroadcastReceiver() {
                 val setTime = intent.getStringExtra("time")
                 val alarmPosition = intent.getIntExtra("position", 0)
 
-                PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
-                PublicVariable.HW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size.toFloat(), context.resources.displayMetrics).toInt()
+                PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+                PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), context.resources.displayMetrics).toInt()
 
                 val alaramedPackageNames = functionsClass.readFileLine(setTime)
 

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 6:27 AM
+ * Last modified 4/26/20 5:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -43,8 +43,8 @@ class ApplicationsViewItemsAdapter(private val context: Context,
     private var recoveryIndicatorDrawable: LayerDrawable? = null
 
     init {
-        PublicVariable.size = functionsClass.readDefaultPreference("floatingSize", 39)
-        PublicVariable.HW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.size.toFloat(), context.resources.displayMetrics).toInt()
+        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), context.resources.displayMetrics).toInt()
 
         recoveryIndicatorDrawable = context.getDrawable(R.drawable.draw_recovery_indicator) as LayerDrawable?
         val backgroundTemporary: Drawable? = recoveryIndicatorDrawable?.findDrawableByLayerId(R.id.backgroundTemporary)
