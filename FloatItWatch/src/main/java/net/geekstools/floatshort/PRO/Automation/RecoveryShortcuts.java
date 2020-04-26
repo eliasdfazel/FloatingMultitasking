@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:36 AM
+ * Last modified 4/26/20 8:04 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,15 +34,15 @@ public class RecoveryShortcuts extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         FunctionsClass functionsClass = new FunctionsClass(getApplicationContext());
         functionsClass.loadSavedColor();
 
         PublicVariable.alpha = 133;
         PublicVariable.opacity = 255;
-        if (sharedPrefs.getBoolean("hide", false) == false) {
+        if (!sharedPreferences.getBoolean("hide", false)) {
             PublicVariable.transparencyEnabled = false;
-        } else if (sharedPrefs.getBoolean("hide", false) == true) {
+        } else if (sharedPreferences.getBoolean("hide", false)) {
             PublicVariable.transparencyEnabled = true;
         }
         PublicVariable.floatingSizeNumber = 33;

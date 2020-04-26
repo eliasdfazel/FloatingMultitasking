@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 11:54 AM
+ * Last modified 4/26/20 8:09 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,6 +28,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
@@ -49,12 +50,14 @@ public class Preferences extends WearableActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setAmbientEnabled();
+
         if (getResources().getConfiguration().isScreenRound()) {
             setContentView(R.layout.activity_setting_gui_round);
         } else {
             setContentView(R.layout.activity_setting_gui_rect);
         }
-        setAmbientEnabled();
+
         functionsClass = new FunctionsClass(getApplicationContext());
 
         mContainerView = (RelativeLayout) findViewById(R.id.container);
@@ -79,7 +82,7 @@ public class Preferences extends WearableActivity {
         final SharedPreferences sharedPreferences = getSharedPreferences("theme", MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        if (sharedPreferences.getBoolean("themeColor", false) == true) {
+        if (sharedPreferences.getBoolean("themeColor", false)) {
             light.setChecked(true);
             mContainerView.setBackgroundColor(getColor(R.color.light_trans));
             dark.setTextColor(getColor(R.color.dark));
@@ -95,7 +98,7 @@ public class Preferences extends WearableActivity {
             bootText.setTextColor(getColor(R.color.dark));
 
             dark.setChecked(false);
-        } else if (sharedPreferences.getBoolean("themeColor", false) == false) {
+        } else if (!sharedPreferences.getBoolean("themeColor", false)) {
             dark.setChecked(true);
             mContainerView.setBackgroundColor(getColor(R.color.trans_black));
             dark.setTextColor(getColor(R.color.light));
@@ -114,9 +117,9 @@ public class Preferences extends WearableActivity {
         }
 
         final Boolean trans = sharedPreferences.getBoolean("hide", false);
-        if (trans == true) {
+        if (trans) {
             hide.setChecked(true);
-        } else if (trans == false) {
+        } else if (!trans) {
             hide.setChecked(false);
         }
 
@@ -205,18 +208,6 @@ public class Preferences extends WearableActivity {
             }
         });
 
-     /*   bootReceiver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(functionsClass.bootReceiverEnabled()){
-                    functionsClass.savePreference("SmartFeature", "remoteRecovery", false);
-                }
-                else if(!functionsClass.bootReceiverEnabled()){
-                    functionsClass.savePreference("SmartFeature", "remoteRecovery", true);
-                }
-            }
-        });*/
-
         bootReceiver.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -234,6 +225,7 @@ public class Preferences extends WearableActivity {
                 squareIcon.setColorFilter(getColor(R.color.default_color_darker));
                 squircleIcon.setColorFilter(getColor(R.color.default_color_darker));
                 cutCircleIcon.setColorFilter(getColor(R.color.default_color_darker));
+
                 break;
             case 2:
                 noneIcon.setTextColor(getColor(R.color.default_color_darker));
@@ -242,6 +234,7 @@ public class Preferences extends WearableActivity {
                 squareIcon.setColorFilter(getColor(R.color.default_color_darker));
                 squircleIcon.setColorFilter(getColor(R.color.default_color_darker));
                 cutCircleIcon.setColorFilter(getColor(R.color.default_color_darker));
+
                 break;
             case 3:
                 noneIcon.setTextColor(getColor(R.color.default_color_darker));
@@ -250,6 +243,7 @@ public class Preferences extends WearableActivity {
                 squareIcon.setColorFilter(getColor(R.color.default_color_light));
                 squircleIcon.setColorFilter(getColor(R.color.default_color_darker));
                 cutCircleIcon.setColorFilter(getColor(R.color.default_color_darker));
+
                 break;
             case 4:
                 noneIcon.setTextColor(getColor(R.color.default_color_darker));
@@ -258,6 +252,7 @@ public class Preferences extends WearableActivity {
                 squareIcon.setColorFilter(getColor(R.color.default_color_darker));
                 squircleIcon.setColorFilter(getColor(R.color.default_color_light));
                 cutCircleIcon.setColorFilter(getColor(R.color.default_color_darker));
+
                 break;
             case 5:
                 noneIcon.setTextColor(getColor(R.color.default_color_darker));
@@ -266,6 +261,7 @@ public class Preferences extends WearableActivity {
                 squareIcon.setColorFilter(getColor(R.color.default_color_darker));
                 squircleIcon.setColorFilter(getColor(R.color.default_color_darker));
                 cutCircleIcon.setColorFilter(getColor(R.color.default_color_light));
+
                 break;
             case 0:
                 noneIcon.setTextColor(getColor(R.color.default_color_light));
@@ -274,6 +270,7 @@ public class Preferences extends WearableActivity {
                 squareIcon.setColorFilter(getColor(R.color.default_color_darker));
                 squircleIcon.setColorFilter(getColor(R.color.default_color_darker));
                 cutCircleIcon.setColorFilter(getColor(R.color.default_color_darker));
+
                 break;
         }
 
@@ -283,6 +280,7 @@ public class Preferences extends WearableActivity {
             public void onClick(View view) {
                 editor.putInt("iconShape", 0);
                 editor.apply();
+
                 noneIcon.setTextColor(getColor(R.color.default_color_light));
                 dropletIcon.setColorFilter(getColor(R.color.default_color_darker));
                 circleIcon.setColorFilter(getColor(R.color.default_color_darker));
@@ -296,6 +294,7 @@ public class Preferences extends WearableActivity {
             public void onClick(View view) {
                 editor.putInt("iconShape", 1);
                 editor.apply();
+
                 noneIcon.setTextColor(getColor(R.color.default_color_darker));
                 dropletIcon.setColorFilter(getColor(R.color.default_color_light));
                 circleIcon.setColorFilter(getColor(R.color.default_color_darker));
@@ -309,6 +308,7 @@ public class Preferences extends WearableActivity {
             public void onClick(View view) {
                 editor.putInt("iconShape", 2);
                 editor.apply();
+
                 noneIcon.setTextColor(getColor(R.color.default_color_darker));
                 dropletIcon.setColorFilter(getColor(R.color.default_color_darker));
                 circleIcon.setColorFilter(getColor(R.color.default_color_light));
@@ -322,6 +322,7 @@ public class Preferences extends WearableActivity {
             public void onClick(View view) {
                 editor.putInt("iconShape", 3);
                 editor.apply();
+
                 noneIcon.setTextColor(getColor(R.color.default_color_darker));
                 dropletIcon.setColorFilter(getColor(R.color.default_color_darker));
                 circleIcon.setColorFilter(getColor(R.color.default_color_darker));
@@ -335,6 +336,7 @@ public class Preferences extends WearableActivity {
             public void onClick(View view) {
                 editor.putInt("iconShape", 4);
                 editor.apply();
+
                 noneIcon.setTextColor(getColor(R.color.default_color_darker));
                 dropletIcon.setColorFilter(getColor(R.color.default_color_darker));
                 circleIcon.setColorFilter(getColor(R.color.default_color_darker));
@@ -348,6 +350,7 @@ public class Preferences extends WearableActivity {
             public void onClick(View view) {
                 editor.putInt("iconShape", 5);
                 editor.apply();
+
                 noneIcon.setTextColor(getColor(R.color.default_color_darker));
                 dropletIcon.setColorFilter(getColor(R.color.default_color_darker));
                 circleIcon.setColorFilter(getColor(R.color.default_color_darker));
@@ -375,13 +378,14 @@ public class Preferences extends WearableActivity {
         support.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String textMsg = "\n\n\n\n\n"
+                String textMessage = "\n\n\n\n\n"
                         + "[Essential Information]" + "\n"
                         + functionsClass.getDeviceName() + " | " + "API " + Build.VERSION.SDK_INT + " | " + functionsClass.getCountryIso().toUpperCase();
+
                 Intent email = new Intent(Intent.ACTION_SEND);
                 email.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.support)});
                 email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_tag) + " [" + functionsClass.appVersion(getPackageName()) + "] ");
-                email.putExtra(Intent.EXTRA_TEXT, textMsg);
+                email.putExtra(Intent.EXTRA_TEXT, textMessage);
                 //email.setType("text/*");
                 email.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(Intent.createChooser(email, getString(R.string.feedback_tag)));
@@ -392,6 +396,7 @@ public class Preferences extends WearableActivity {
     @Override
     public void onResume() {
         super.onResume();
+
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
         firebaseRemoteConfig.fetch(0)
@@ -399,12 +404,18 @@ public class Preferences extends WearableActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            firebaseRemoteConfig.activateFetched();
-                            if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(getPackageName())) {
-                                Toast.makeText(getApplicationContext(), getString(R.string.updateAvailable), Toast.LENGTH_LONG).show();
-                            } else {
-                            }
-                        } else {
+                            firebaseRemoteConfig.activate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
+                                @Override
+                                public void onSuccess(Boolean aBoolean) {
+
+                                    if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(getPackageName())) {
+
+                                        Toast.makeText(getApplicationContext(),
+                                                getString(R.string.updateAvailable),
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
                         }
                     }
                 });
@@ -413,30 +424,7 @@ public class Preferences extends WearableActivity {
     @Override
     public void onPause() {
         super.onPause();
-        this.finish();
-    }
 
-    @Override
-    public void onEnterAmbient(Bundle ambientDetails) {
-        super.onEnterAmbient(ambientDetails);
-        updateDisplay();
-    }
-
-    @Override
-    public void onUpdateAmbient() {
-        super.onUpdateAmbient();
-        updateDisplay();
-    }
-
-    @Override
-    public void onExitAmbient() {
-        updateDisplay();
-        super.onExitAmbient();
-    }
-
-    private void updateDisplay() {
-        if (isAmbient()) {
-        } else {
-        }
+        Preferences.this.finish();
     }
 }
