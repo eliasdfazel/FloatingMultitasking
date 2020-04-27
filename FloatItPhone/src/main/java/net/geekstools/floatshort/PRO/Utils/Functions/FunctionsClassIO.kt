@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 6:07 AM
+ * Last modified 4/28/20 4:12 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -30,7 +30,11 @@ class FunctionsClassIO (private val context: Context) {
 
     fun fileLinesCounter(fileName: String) : Int {
 
-        return File(fileName).readLines(Charset.defaultCharset()).size
+        return if (context.getFileStreamPath(fileName).exists()) {
+            File(fileName).readLines(Charset.defaultCharset()).size
+        } else {
+            0
+        }
     }
 
     fun automationFeatureEnable(): Boolean {
@@ -73,7 +77,7 @@ class FunctionsClassIO (private val context: Context) {
             //.autoBluetoothCategory
             val autoBluetoothCategory = context.getFileStreamPath(".autoBluetoothCategory")
             val autoBluetoothCategorySize = if (autoBluetoothCategory.exists()) {
-                fileLinesCounter(".autoBluetoothCategory`")
+                fileLinesCounter(".autoBluetoothCategory")
             } else {
                 0
             }
@@ -81,7 +85,7 @@ class FunctionsClassIO (private val context: Context) {
             //.autoGpsCategory
             val autoGpsCategory = context.getFileStreamPath(".autoGpsCategory")
             val autoGpsCategorySize = if (autoGpsCategory.exists()) {
-                fileLinesCounter(".autoGpsCategory`")
+                fileLinesCounter(".autoGpsCategory")
             } else {
                 0
             }
@@ -89,7 +93,7 @@ class FunctionsClassIO (private val context: Context) {
             //.autoNfcCategory
             val autoNfcCategory = context.getFileStreamPath(".autoNfcCategory")
             val autoNfcCategorySize = if (autoNfcCategory.exists()) {
-                fileLinesCounter(".autoNfcCategory`")
+                fileLinesCounter(".autoNfcCategory")
             } else {
                 0
             }
@@ -97,7 +101,7 @@ class FunctionsClassIO (private val context: Context) {
             //.autoWifiCategory
             val autoWifiCategory = context.getFileStreamPath(".autoWifiCategory")
             val autoWifiCategorySize = if (autoWifiCategory.exists()) {
-                fileLinesCounter(".autoWifiCategory`")
+                fileLinesCounter(".autoWifiCategory")
             } else {
                 0
             }
