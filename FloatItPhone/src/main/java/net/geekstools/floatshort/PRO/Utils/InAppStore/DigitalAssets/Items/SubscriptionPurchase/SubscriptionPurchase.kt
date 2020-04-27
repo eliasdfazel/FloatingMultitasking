@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 3:36 AM
+ * Last modified 4/27/20 4:03 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -74,23 +74,25 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
     /**
      * Callback After Purchase Dialogue Flow Get Closed
      **/
-    override fun onPurchasesUpdated(billingResult: BillingResult, purchasesList: List<Purchase>?) {
+    override fun onPurchasesUpdated(billingResult: BillingResult?, purchasesList: List<Purchase>?) {
         Log.d(this@SubscriptionPurchase.javaClass.simpleName, "Purchases Updated: ${billingResult?.debugMessage}")
 
-        if (!purchasesList.isNullOrEmpty()) {
+        billingResult?.let {
+            if (!purchasesList.isNullOrEmpty()) {
 
-            when (billingResult.responseCode) {
-                BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
+                when (billingResult.responseCode) {
+                    BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
 
-                    purchaseFlowController.purchaseFlowPaid(billingClient, purchasesList[0])
-                }
-                BillingClient.BillingResponseCode.OK -> {
+                        purchaseFlowController.purchaseFlowPaid(billingClient, purchasesList[0])
+                    }
+                    BillingClient.BillingResponseCode.OK -> {
 
-                    purchaseFlowController.purchaseFlowPaid(billingClient, purchasesList[0])
-                }
-                else -> {
+                        purchaseFlowController.purchaseFlowPaid(billingClient, purchasesList[0])
+                    }
+                    else -> {
 
-                    purchaseFlowController.purchaseFlowDisrupted(billingResult.debugMessage)
+                        purchaseFlowController.purchaseFlowDisrupted(billingResult.debugMessage)
+                    }
                 }
             }
         }
