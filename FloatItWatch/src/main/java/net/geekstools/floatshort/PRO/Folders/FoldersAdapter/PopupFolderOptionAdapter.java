@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 10:32 AM
+ * Last modified 4/27/20 11:21 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -23,7 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.geekstools.floatshort.PRO.R;
-import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsPopupOptionsFloatingFolders;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.FloatingSplash;
@@ -31,21 +31,21 @@ import net.geekstools.imageview.customshapes.ShapesImage;
 
 import java.util.ArrayList;
 
-public class PopupCategoryOptionAdapter extends BaseAdapter {
+public class PopupFolderOptionAdapter extends BaseAdapter {
 
     Context context;
 
     FunctionsClass functionsClass;
 
-    ArrayList<AdapterItems> adapterItems;
+    ArrayList<AdapterItemsPopupOptionsFloatingFolders> adapterItemPopupOptionsFloatingFolders;
     String className;
 
     int startId, layoutInflater, xPosition, yPosition, HW;
 
 
-    public PopupCategoryOptionAdapter(Context context, ArrayList<AdapterItems> adapterItems, String className, int startId) {
+    public PopupFolderOptionAdapter(Context context, ArrayList<AdapterItemsPopupOptionsFloatingFolders> adapterItemPopupOptionsFloatingFolders, String className, int startId) {
         this.context = context;
-        this.adapterItems = adapterItems;
+        this.adapterItemPopupOptionsFloatingFolders = adapterItemPopupOptionsFloatingFolders;
         this.className = className;
         this.startId = startId;
 
@@ -73,10 +73,10 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         }
     }
 
-    public PopupCategoryOptionAdapter(Context context, ArrayList<AdapterItems> adapterItems, String className, int startId,
-                                      int xPosition, int yPosition, int HW) {
+    public PopupFolderOptionAdapter(Context context, ArrayList<AdapterItemsPopupOptionsFloatingFolders> adapterItemPopupOptionsFloatingFolders, String className, int startId,
+                                    int xPosition, int yPosition, int HW) {
         this.context = context;
-        this.adapterItems = adapterItems;
+        this.adapterItemPopupOptionsFloatingFolders = adapterItemPopupOptionsFloatingFolders;
         this.className = className;
         this.startId = startId;
         this.xPosition = xPosition;
@@ -109,12 +109,12 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return adapterItems.size();
+        return adapterItemPopupOptionsFloatingFolders.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return adapterItems.get(position);
+        return adapterItemPopupOptionsFloatingFolders.get(position);
     }
 
     @Override
@@ -138,8 +138,8 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.imgIcon.setImageDrawable(adapterItems.get(position).getIcon());
-        viewHolder.textAppName.setText(adapterItems.get(position).getAppName());
+        viewHolder.imgIcon.setImageDrawable(adapterItemPopupOptionsFloatingFolders.get(position).getItemIcon());
+        viewHolder.textAppName.setText(adapterItemPopupOptionsFloatingFolders.get(position).getItemTitle());
 
         viewHolder.imgIcon.setImageAlpha(PublicVariable.transparencyEnabled ? 157 : 250);
         viewHolder.textAppName.setAlpha(PublicVariable.transparencyEnabled ? 0.77f : 1.0f);
@@ -160,22 +160,22 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         viewHolder.items.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (adapterItems.get(position).getAppName().contains(context.getString(R.string.remove_category))) {
+                if (adapterItemPopupOptionsFloatingFolders.get(position).getItemTitle().contains(context.getString(R.string.remove_category))) {
                     context.sendBroadcast(new Intent("Remove_Category_" + className).putExtra("startId", startId));
-                } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.pin_category))) {
+                } else if (adapterItemPopupOptionsFloatingFolders.get(position).getItemTitle().contains(context.getString(R.string.pin_category))) {
                     context.sendBroadcast(new Intent("Pin_App_" + className).putExtra("startId", startId));
-                } else if (adapterItems.get(position).getAppName().contains(context.getString(R.string.unpin_category))) {
+                } else if (adapterItemPopupOptionsFloatingFolders.get(position).getItemTitle().contains(context.getString(R.string.unpin_category))) {
                     context.sendBroadcast(new Intent("Unpin_App_" + className).putExtra("startId", startId));
                 } else {
                     if (functionsClass.splashReveal()) {
                         Intent splashReveal = new Intent(context, FloatingSplash.class);
-                        splashReveal.putExtra("packageName", adapterItems.get(position).getPackageName());
+                        splashReveal.putExtra("packageName", adapterItemPopupOptionsFloatingFolders.get(position).getItemAppPackageName());
                         splashReveal.putExtra("X", xPosition);
                         splashReveal.putExtra("Y", yPosition);
                         splashReveal.putExtra("HW", HW);
                         context.startService(splashReveal);
                     } else {
-                        functionsClass.appsLaunchPad(adapterItems.get(position).getPackageName());
+                        functionsClass.appsLaunchPad(adapterItemPopupOptionsFloatingFolders.get(position).getItemAppPackageName());
                     }
                 }
                 context.sendBroadcast(new Intent("Hide_PopupListView_Category"));

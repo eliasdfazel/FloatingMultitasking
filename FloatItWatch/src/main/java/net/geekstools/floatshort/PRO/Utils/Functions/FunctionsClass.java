@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 10:23 AM
+ * Last modified 4/27/20 11:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -417,17 +417,17 @@ public class FunctionsClass {
         }
     }
 
-    public void PopupListCategory(View anchorView,
-                                  String categoryName, String[] packagesName, String classNameCommand, int startIdCommand, int X, int Y, int HW) {
-        if (!context.getFileStreamPath(categoryName).exists() && !context.getFileStreamPath(categoryName).isFile()) {
+    public void popupAppListFolder(View anchorView,
+                                   String folderName, String[] packagesNames, String classNameCommand, int startIdCommand, int X, int Y, int HW) {
+        if (!context.getFileStreamPath(folderName).exists() && !context.getFileStreamPath(folderName).isFile()) {
             return;
         }
 
         try {
             Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingFolders.class);
             popupOptionsFloatingCategory.putExtra("MODE", "AppsList");
-            popupOptionsFloatingCategory.putExtra("FolderName", categoryName);
-            popupOptionsFloatingCategory.putExtra("PackagesNames", packagesName);
+            popupOptionsFloatingCategory.putExtra("FolderName", folderName);
+            popupOptionsFloatingCategory.putExtra("PackagesNames", packagesNames);
             popupOptionsFloatingCategory.putExtra("classNameCommand", classNameCommand);
             popupOptionsFloatingCategory.putExtra("startIdCommand", startIdCommand);
             popupOptionsFloatingCategory.putExtra("X", X);
@@ -456,15 +456,15 @@ public class FunctionsClass {
         }
     }
 
-    public void PopupOptionCategory(View anchorView,
-                                    String categoryName, String classNameCommand, int startIdCommand, int X, int Y) {
-        if (!context.getFileStreamPath(categoryName).exists() && !context.getFileStreamPath(categoryName).isFile()) {
+    public void popupOptionsFolder(View anchorView,
+                                   String folderName, String classNameCommand, int startIdCommand, int X, int Y) {
+        if (!context.getFileStreamPath(folderName).exists() && !context.getFileStreamPath(folderName).isFile()) {
             return;
         }
         try {
             Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingFolders.class);
             popupOptionsFloatingCategory.putExtra("MODE", "Options");
-            popupOptionsFloatingCategory.putExtra("FolderName", categoryName);
+            popupOptionsFloatingCategory.putExtra("FolderName", folderName);
             popupOptionsFloatingCategory.putExtra("classNameCommand", classNameCommand);
             popupOptionsFloatingCategory.putExtra("startIdCommand", startIdCommand);
             popupOptionsFloatingCategory.putExtra("X", X);

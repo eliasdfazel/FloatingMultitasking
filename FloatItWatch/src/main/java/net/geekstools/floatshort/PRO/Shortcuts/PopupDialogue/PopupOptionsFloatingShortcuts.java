@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 6:41 AM
+ * Last modified 4/27/20 11:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,7 +26,7 @@ import android.widget.RelativeLayout;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.PopupShortcutsOptionAdapter;
-import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsPopupOptionsFloatingShortcuts;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 
 import java.util.ArrayList;
@@ -89,8 +89,8 @@ public class PopupOptionsFloatingShortcuts extends Service {
         }
 
         try {
-            ArrayList<AdapterItems> navDrawerItemsSaved = new ArrayList<AdapterItems>();
-            navDrawerItemsSaved.clear();
+            ArrayList<AdapterItemsPopupOptionsFloatingShortcuts> adapterItemsPopupOptionsFloatingShortcuts = new ArrayList<AdapterItemsPopupOptionsFloatingShortcuts>();
+            adapterItemsPopupOptionsFloatingShortcuts.clear();
 
             List<String> popupItems = new ArrayList<String>();
             popupItems.clear();
@@ -148,13 +148,13 @@ public class PopupOptionsFloatingShortcuts extends Service {
             }
 
             for (int i = 0; i < popupItems.size(); i++) {
-                navDrawerItemsSaved.add(new AdapterItems(
+                adapterItemsPopupOptionsFloatingShortcuts.add(new AdapterItemsPopupOptionsFloatingShortcuts(
                         popupItems.get(i),
                         popupItemsIcon));
             }
 
             popupShortcutsOptionAdapter =
-                    new PopupShortcutsOptionAdapter(getApplicationContext(), navDrawerItemsSaved,
+                    new PopupShortcutsOptionAdapter(getApplicationContext(), adapterItemsPopupOptionsFloatingShortcuts,
                             classNameCommand, packageName, startIdCommand);
 
             popupOptionsItems.setAdapter(popupShortcutsOptionAdapter);

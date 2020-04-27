@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 10:39 AM
+ * Last modified 4/27/20 11:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -278,7 +278,7 @@ public class FloatingFolders extends Service {
                             @Override
                             public void run() {
                                 if (touchingDelay == true) {
-                                    functionsClass.PopupOptionCategory(
+                                    functionsClass.popupOptionsFolder(
                                             view,
                                             ".uFile",
                                             className,
@@ -345,7 +345,7 @@ public class FloatingFolders extends Service {
             public void onClick(View view) {
 
                 if (openIt) {
-                    functionsClass.PopupListCategory(
+                    functionsClass.popupAppListFolder(
                             view,
                             ".uFile",
                             functionsClass.readFileLine(".uFile"),

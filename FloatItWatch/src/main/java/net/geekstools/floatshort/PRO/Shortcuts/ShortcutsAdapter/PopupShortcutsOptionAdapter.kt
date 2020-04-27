@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 6:41 AM
+ * Last modified 4/27/20 11:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,14 +21,14 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
+import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsPopupOptionsFloatingShortcuts
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.imageview.customshapes.ShapesImage
 import java.util.*
 
 class PopupShortcutsOptionAdapter(private val context: Context,
-                                  private val adapterItems: ArrayList<AdapterItems>,
+                                  private val adapterItems: ArrayList<AdapterItemsPopupOptionsFloatingShortcuts>,
                                   private val className: String, private val packageName: String,
                                   private val startId: Int) : BaseAdapter() {
 
@@ -55,8 +55,8 @@ class PopupShortcutsOptionAdapter(private val context: Context,
             viewHolder = convertView.tag as ViewHolder
         }
 
-        viewHolder.imgIcon!!.setImageDrawable(adapterItems[position].icon)
-        viewHolder.textAppName!!.text = adapterItems[position].titleText
+        viewHolder.imgIcon!!.setImageDrawable(adapterItems[position].itemIcon)
+        viewHolder.textAppName!!.text = adapterItems[position].itemTitle
 
         val itemsListColor = if (functionsClass.appThemeTransparent()) {
             functionsClass.setColorAlpha(PublicVariable.colorLightDark, 50f)
@@ -73,15 +73,15 @@ class PopupShortcutsOptionAdapter(private val context: Context,
 
         convertView?.setOnClickListener {
 
-            if (adapterItems[position].titleText == context.getString(R.string.pin)) {
+            if (adapterItems[position].itemTitle == context.getString(R.string.pin)) {
 
                 context.sendBroadcast(Intent("Pin_App_$className").putExtra("startId", startId))
 
-            } else if (adapterItems[position].titleText == context.getString(R.string.unpin)) {
+            } else if (adapterItems[position].itemTitle == context.getString(R.string.unpin)) {
 
                 context.sendBroadcast(Intent("Unpin_App_$className").putExtra("startId", startId))
 
-            } else if (adapterItems[position].titleText == context.getString(R.string.remove)) {
+            } else if (adapterItems[position].itemTitle == context.getString(R.string.remove)) {
 
                 context.sendBroadcast(Intent("Remove_App_$className").putExtra("startId", startId))
 
@@ -98,7 +98,7 @@ class PopupShortcutsOptionAdapter(private val context: Context,
         return adapterItems.size
     }
 
-    override fun getItem(position: Int): AdapterItems? {
+    override fun getItem(position: Int): AdapterItemsPopupOptionsFloatingShortcuts? {
 
         return adapterItems[position]
     }
