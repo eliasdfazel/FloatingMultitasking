@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 5:47 AM
+ * Last modified 4/27/20 6:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -117,7 +117,7 @@ public class FloatingFolders extends Service {
         }
         wholeCategoryFloating.setBackground(drawableBack);
 
-        if (categoryName[startId].equals(getString(R.string.remove_all_shortcuts))) {
+        if (categoryName[startId].equals(getString(R.string.remove_all_floatings))) {
             for (int r = 1; r < startId; r++) {
                 try {
                     if (floatingView != null) {

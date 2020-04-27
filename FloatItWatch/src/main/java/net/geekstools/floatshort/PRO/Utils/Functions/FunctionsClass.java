@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 5:46 AM
+ * Last modified 4/27/20 7:14 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -61,6 +61,7 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFolders;
 import net.geekstools.floatshort.PRO.Folders.PopupDialogue.PopupOptionsFloatingFolders;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForApplications;
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForApplicationsPackage;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForHIS;
 import net.geekstools.floatshort.PRO.Shortcuts.PopupDialogue.PopupOptionsFloatingShortcuts;
 import net.geekstools.floatshort.PRO.Utils.LaunchPad.OpenApplications;
@@ -216,15 +217,32 @@ public class FunctionsClass {
     }
 
     /*Unlimited Shortcuts*/
-    public void runUnlimitedShortcutsService(String packageName) {
+    public void runUnlimitedShortcutsService(String packageName, String className) {
         PublicVariable.allFloatingCounter++;
         PublicVariable.floatingShortcutsCounter++;
         PublicVariable.floatingShortcutsList.add(PublicVariable.floatingShortcutsCounter, packageName);
 
         Intent u = new Intent(context, FloatingShortcutsForApplications.class);
-        u.putExtra("pack", packageName);
+        u.putExtra("PackageName", packageName);
+        u.putExtra("ClassName", className);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
+
+        if (PublicVariable.allFloatingCounter == 1) {
+            context.startService(new Intent(context, BindServices.class));
+        }
+    }
+
+    public void runUnlimitedShortcutsServiceRecovery(String packageName) {
+        PublicVariable.allFloatingCounter++;
+        PublicVariable.floatingShortcutsCounter++;
+        PublicVariable.floatingShortcutsList.add(PublicVariable.floatingShortcutsCounter, packageName);
+
+        Intent u = new Intent(context, FloatingShortcutsForApplicationsPackage.class);
+        u.putExtra("PackageName", packageName);
+        u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startService(u);
+
         if (PublicVariable.allFloatingCounter == 1) {
             context.startService(new Intent(context, BindServices.class));
         }
@@ -271,7 +289,7 @@ public class FunctionsClass {
     }
 
     public void openApplication(String packageName) {
-        if (appInstalledOrNot(packageName) == true) {
+        if (appIsInstalled(packageName) == true) {
             try {
                 Toast.makeText(context,
                         appName(packageName), Toast.LENGTH_SHORT).show();
@@ -298,7 +316,7 @@ public class FunctionsClass {
     }
 
     public void openApplication(String packageName, String className) {
-        if (appInstalledOrNot(packageName) == true) {
+        if (appIsInstalled(packageName) == true) {
             try {
                 Toast.makeText(context,
                         context.getPackageManager().getActivityInfo(new ComponentName(packageName, className), 0).loadLabel(context.getPackageManager()),
@@ -588,6 +606,19 @@ public class FunctionsClass {
         return Name;
     }
 
+    public String appName(ActivityInfo activityInfo) {
+        String nameOfApp = null;
+
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            nameOfApp = activityInfo.loadLabel(packageManager).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return nameOfApp;
+    }
+
     public String appVersion(String packageName) {
         String Version = "0";
 
@@ -625,7 +656,7 @@ public class FunctionsClass {
         return VersionCode;
     }
 
-    public boolean appInstalledOrNot(String packName) {
+    public boolean appIsInstalled(String packName) {
         PackageManager pm = context.getPackageManager();
         boolean app_installed = false;
         try {
@@ -1186,6 +1217,28 @@ public class FunctionsClass {
                 break;
         }
         return shapesImage;
+    }
+
+    public ShapesImage initShapesImage(ShapesImage shapesImageView) {
+        SharedPreferences sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context);
+        switch (sharedPreferences.getInt("iconShape", 0)) {
+            case 1:
+                shapesImageView.setShapeDrawable(context.getDrawable(R.drawable.droplet_icon));
+                break;
+            case 2:
+                shapesImageView.setShapeDrawable(context.getDrawable(R.drawable.circle_icon));
+                break;
+            case 3:
+                shapesImageView.setShapeDrawable(context.getDrawable(R.drawable.square_icon));
+                break;
+            case 4:
+                shapesImageView.setShapeDrawable(context.getDrawable(R.drawable.squircle_icon));
+                break;
+            case 0:
+                shapesImageView.setShapeDrawable(null);
+                break;
+        }
+        return shapesImageView;
     }
 
     public Drawable shapedAppIcon(String packageName) {

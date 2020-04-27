@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 5:59 AM
+ * Last modified 4/27/20 7:14 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,7 +15,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.BitmapDrawable
@@ -59,7 +60,7 @@ class ApplicationsViewWatch : WearableActivity() {
     }
 
 
-    private lateinit var applicationsInformationList: List<ApplicationInfo>
+    private lateinit var applicationsInformationList: List<ResolveInfo>
     private val adapterItemsApplications: ArrayList<AdapterItemsApplications> = ArrayList<AdapterItemsApplications>()
 
     lateinit var applicationsViewAdapter: RecyclerView.Adapter<ApplicationsViewAdapter.ViewHolder>
@@ -217,8 +218,11 @@ class ApplicationsViewWatch : WearableActivity() {
 
     private fun loadApplicationsData() = CoroutineScope(Dispatchers.Default).launch {
 
-        applicationsInformationList = applicationContext.packageManager.getInstalledApplications(0)
-        val applicationInfoListSorted = applicationsInformationList.sortedWith(ApplicationInfo.DisplayNameComparator(packageManager))
+        applicationsInformationList = packageManager.queryIntentActivities(Intent().apply {
+            this.action = Intent.ACTION_MAIN
+            this.addCategory(Intent.CATEGORY_LAUNCHER)
+        }, PackageManager.GET_RESOLVED_FILTER)
+        val applicationInfoListSorted = applicationsInformationList.sortedWith(ResolveInfo.DisplayNameComparator(packageManager))
 
         applicationInfoListSorted.asFlow()
                 .onEach {
@@ -226,7 +230,7 @@ class ApplicationsViewWatch : WearableActivity() {
                 }
                 .filter {
 
-                    (packageManager.getLaunchIntentForPackage(it.packageName) != null)
+                    (packageManager.getLaunchIntentForPackage(it.activityInfo.packageName) != null)
                 }
                 .map {
 
@@ -258,13 +262,15 @@ class ApplicationsViewWatch : WearableActivity() {
                     }
                 }
                 .withIndex().collect {
-                    val packageName: String = it.value.packageName
-                    val appName = functionsClass.appName(packageName)
-                    val appIcon = functionsClass.shapedAppIcon(packageName)
+                    val packageName: String = it.value.activityInfo.packageName
+                    val className: String = it.value.activityInfo.name
+                    val appName = functionsClass.appName(it.value.activityInfo)
+                    val appIcon = functionsClass.shapedAppIcon(it.value.activityInfo)
 
                     adapterItemsApplications.add(
                             AdapterItemsApplications(appName,
                                     packageName,
+                                    className,
                                     appIcon,
                                     functionsClass.extractDominantColor(appIcon))
                     )

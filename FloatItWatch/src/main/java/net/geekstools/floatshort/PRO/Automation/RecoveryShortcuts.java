@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 8:04 AM
+ * Last modified 4/27/20 7:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -64,7 +64,7 @@ public class RecoveryShortcuts extends Service {
                     if (runService == true) {
                         try {
                             PackageName = appData[navItem];
-                            functionsClass.runUnlimitedShortcutsService(PackageName);
+                            functionsClass.runUnlimitedShortcutsServiceRecovery(PackageName);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

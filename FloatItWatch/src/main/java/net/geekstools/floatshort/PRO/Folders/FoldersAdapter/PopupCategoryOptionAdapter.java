@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 5:47 AM
+ * Last modified 4/27/20 6:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -149,7 +149,7 @@ public class PopupCategoryOptionAdapter extends BaseAdapter {
         }
 
         LayerDrawable drawPopupShortcut = (LayerDrawable) context.getDrawable(R.drawable.popup_shortcut_whole);
-        Drawable backPopupShortcut = drawPopupShortcut.findDrawableByLayerId(R.id.backtemp);
+        Drawable backPopupShortcut = drawPopupShortcut.findDrawableByLayerId(R.id.backgroundTemporary);
         backPopupShortcut.setTint(itemsListColor);
         viewHolder.items.setBackground(drawPopupShortcut);
         viewHolder.textAppName.setTextColor(PublicVariable.colorLightDarkOpposite);

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 11:56 AM
+ * Last modified 4/27/20 6:52 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -66,7 +66,9 @@ class ApplicationsViewAdapter(private val context: Context,
         viewHolderBinder.fullItemView.setOnClickListener {
 
             val packageName = adapterItemsApplications[position].PackageName
-            functionsClass.runUnlimitedShortcutsService(packageName)
+            val className = adapterItemsApplications[position].ClassName
+
+            functionsClass.runUnlimitedShortcutsService(packageName, className)
 
             Handler().postDelayed({
                 viewHolderBinder.recoveryIndicator.visibility = View.VISIBLE

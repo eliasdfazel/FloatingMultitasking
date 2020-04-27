@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 5:47 AM
+ * Last modified 4/27/20 7:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,7 +36,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.FloatingSplash;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
-public class FloatingShortcutsForApplications extends Service {
+public class FloatingShortcutsForApplicationsPackage extends Service {
 
     FunctionsClass functionsClass;
 
@@ -72,7 +72,7 @@ public class FloatingShortcutsForApplications extends Service {
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         try {
-            packages[startId] = intent.getStringExtra("pack");
+            packages[startId] = intent.getStringExtra("PackageName");
 
             floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_shortcuts, null, false);
             controlIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.controlIcon);
@@ -86,7 +86,7 @@ public class FloatingShortcutsForApplications extends Service {
             return Service.START_NOT_STICKY;
         }
 
-        if (packages[startId].equals(getString(R.string.remove_all_shortcuts))) {
+        if (packages[startId].equals(getString(R.string.remove_all_floatings))) {
             for (int r = 1; r < startId; r++) {
                 try {
                     if (floatingView != null) {
@@ -119,7 +119,7 @@ public class FloatingShortcutsForApplications extends Service {
             return START_NOT_STICKY;
         }
 
-        if (functionsClass.appInstalledOrNot(packages[startId]) == false) {
+        if (functionsClass.appIsInstalled(packages[startId]) == false) {
             return START_NOT_STICKY;
         }
         functionsClass.saveUnlimitedShortcutsService(packages[startId]);
@@ -142,7 +142,7 @@ public class FloatingShortcutsForApplications extends Service {
         params[startId] = functionsClass.normalLayoutParams(PublicVariable.floatingViewsHW, xPos, yPos);
         windowManager.addView(floatingView[startId], params[startId]);
 
-        if (PublicVariable.transparencyEnabled == true) {
+        if (PublicVariable.transparencyEnabled) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -183,7 +183,7 @@ public class FloatingShortcutsForApplications extends Service {
                                 if (touchingDelay[startId] == true) {
                                     remove[startId] = true;
                                     LayerDrawable drawClose = (LayerDrawable) getDrawable(R.drawable.draw_close_service);
-                                    Drawable backPref = drawClose.findDrawableByLayerId(R.id.backtemp);
+                                    Drawable backPref = drawClose.findDrawableByLayerId(R.id.backgroundTemporary);
                                     backPref.setTint(iconColor[startId]);
                                     controlIcon[startId].setImageDrawable(drawClose);
 
@@ -210,10 +210,11 @@ public class FloatingShortcutsForApplications extends Service {
                             @Override
                             public void run() {
                                 if (touchingDelay[startId] == true) {
+
                                     functionsClass.PopupShortcuts(
                                             floatingView[startId],
                                             packages[startId],
-                                            FloatingShortcutsForApplications.class.getSimpleName(),
+                                            FloatingShortcutsForApplicationsPackage.class.getSimpleName(),
                                             startId,
                                             initialX,
                                             initialY
@@ -329,7 +330,7 @@ public class FloatingShortcutsForApplications extends Service {
             }
         });
 
-        final String className = FloatingShortcutsForApplications.class.getSimpleName();
+        final String className = FloatingShortcutsForApplicationsPackage.class.getSimpleName();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Pin_App_" + className);
         intentFilter.addAction("Unpin_App_" + className);
@@ -338,7 +339,7 @@ public class FloatingShortcutsForApplications extends Service {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("Pin_App_" + className)) {
-                    System.out.println(functionsClass.appName(packages[intent.getIntExtra("startId", 0)]));
+
                     allowMove[intent.getIntExtra("startId", 0)] = false;
 
                     Drawable pinDrawable = null;
@@ -368,14 +369,18 @@ public class FloatingShortcutsForApplications extends Service {
                         controlIcon[intent.getIntExtra("startId", 1)].setAlpha(0.50f);
                     }
                     controlIcon[intent.getIntExtra("startId", 0)].setImageDrawable(pinDrawable);
+
                 } else if (intent.getAction().equals("Unpin_App_" + className)) {
-                    System.out.println(functionsClass.appName(packages[intent.getIntExtra("startId", 0)]));
+
                     allowMove[intent.getIntExtra("startId", 0)] = true;
                     controlIcon[intent.getIntExtra("startId", 0)].setImageDrawable(null);
+
                 } else if (intent.getAction().equals("Remove_App_" + className)) {
+
                     if (floatingView[intent.getIntExtra("startId", 0)] == null) {
                         return;
                     }
+
                     if (floatingView[intent.getIntExtra("startId", 0)].isShown()) {
                         try {
                             windowManager.removeView(floatingView[intent.getIntExtra("startId", 0)]);
@@ -395,6 +400,7 @@ public class FloatingShortcutsForApplications extends Service {
                             }
                         }
                     }
+
                 }
             }
         };

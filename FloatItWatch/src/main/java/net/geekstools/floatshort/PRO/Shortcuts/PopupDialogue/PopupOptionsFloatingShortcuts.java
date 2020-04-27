@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 8:00 AM
+ * Last modified 4/27/20 6:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -96,7 +96,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
             popupItems.clear();
 
             LayerDrawable popupItemsIcon = (LayerDrawable) getDrawable(R.drawable.draw_popup_shortcuts);
-            Drawable popupItemsIconBack = popupItemsIcon.findDrawableByLayerId(R.id.backtemp);
+            Drawable popupItemsIconBack = popupItemsIcon.findDrawableByLayerId(R.id.backgroundTemporary);
             popupItemsIconBack.setTint(functionsClass.extractVibrantColor(functionsClass.appIcon(packageName)));
 
             switch (functionsClass.displaySection(xPosition, yPosition)) {

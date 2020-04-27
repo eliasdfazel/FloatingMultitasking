@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 5:47 AM
+ * Last modified 4/27/20 6:59 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -106,7 +106,7 @@ public class FloatingShortcutsForHIS extends Service {
             return Service.START_NOT_STICKY;
         }
 
-        if (packageName[startId].equals(getString(R.string.remove_all_shortcuts))) {
+        if (packageName[startId].equals(getString(R.string.remove_all_floatings))) {
             for (int r = 1; r < startId; r++) {
                 try {
                     if (floatingView != null) {
@@ -147,7 +147,7 @@ public class FloatingShortcutsForHIS extends Service {
             return START_NOT_STICKY;
         }
         mapPackageNameStartId.put(className[startId], startId);
-        if (functionsClass.appInstalledOrNot(packageName[startId]) == false) {
+        if (functionsClass.appIsInstalled(packageName[startId]) == false) {
             return START_NOT_STICKY;
         }
 
@@ -209,7 +209,7 @@ public class FloatingShortcutsForHIS extends Service {
                                 if (touchingDelay[startId] == true) {
                                     remove[startId] = true;
                                     LayerDrawable drawClose = (LayerDrawable) getDrawable(R.drawable.draw_close_service);
-                                    Drawable backPref = drawClose.findDrawableByLayerId(R.id.backtemp);
+                                    Drawable backPref = drawClose.findDrawableByLayerId(R.id.backgroundTemporary);
                                     backPref.setTint(iconColor[startId]);
                                     controlIcon[startId].setImageDrawable(drawClose);
 
@@ -364,7 +364,6 @@ public class FloatingShortcutsForHIS extends Service {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("Pin_App_" + className)) {
-                    System.out.println(functionsClass.appName(packageName[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = false;
 
                     Drawable pinDrawable = null;
@@ -398,7 +397,6 @@ public class FloatingShortcutsForHIS extends Service {
                     }
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable);
                 } else if (intent.getAction().equals("Unpin_App_" + className)) {
-                    System.out.println(functionsClass.appName(packageName[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = true;
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(null);
                 } else if (intent.getAction().equals("Remove_App_" + className)) {
