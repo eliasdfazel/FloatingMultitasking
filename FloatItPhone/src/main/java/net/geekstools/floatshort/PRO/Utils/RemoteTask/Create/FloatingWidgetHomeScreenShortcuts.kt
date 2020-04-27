@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 3:43 PM
- * Last modified 3/26/20 3:03 PM
+ * Created by Elias Fazel
+ * Last modified 4/27/20 4:40 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -33,17 +33,19 @@ import net.geekstools.floatshort.PRO.Widgets.WidgetsReallocationProcess
 
 class FloatingWidgetHomeScreenShortcuts : Activity() {
 
-    lateinit var functionsClass: FunctionsClass
-    lateinit var securityFunctions: SecurityFunctions
+    private val functionsClass: FunctionsClass by lazy {
+        FunctionsClass(applicationContext)
+    }
+    private val securityFunctions: SecurityFunctions by lazy {
+        SecurityFunctions(applicationContext)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        functionsClass = FunctionsClass(applicationContext)
-        securityFunctions = SecurityFunctions(applicationContext)
-
         if (!functionsClass.readPreference("WidgetsInformation", "Reallocated", true)
                 && getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
+
             startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                     ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
@@ -51,29 +53,32 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
             return
         }
 
-        val packageName = intent.getStringExtra("PackageName")
-        val providerClassName = intent.getStringExtra("ProviderClassName")
-        val widgetLabel = intent.getStringExtra("ShortcutLabel")
+        if (intent.hasExtra("PackageName")
+                && intent.hasExtra("ProviderClassName")
+                && intent.hasExtra("ShortcutLabel")) {
 
-        CoroutineScope(Dispatchers.Main).launch {
-            val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
-                    .fallbackToDestructiveMigration()
-                    .addCallback(object : RoomDatabase.Callback() {
-                        override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                            super.onCreate(supportSQLiteDatabase)
-                        }
+            val packageName = intent.getStringExtra("PackageName")
+            val providerClassName = intent.getStringExtra("ProviderClassName")
+            val widgetLabel = intent.getStringExtra("ShortcutLabel")
 
-                        override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                            super.onOpen(supportSQLiteDatabase)
+            CoroutineScope(Dispatchers.Main).launch {
+                val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                        .fallbackToDestructiveMigration()
+                        .addCallback(object : RoomDatabase.Callback() {
+                            override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                super.onCreate(supportSQLiteDatabase)
+                            }
 
-                        }
-                    })
-                    .build()
+                            override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                super.onOpen(supportSQLiteDatabase)
 
-            val widgetDataModelsReallocation = widgetDataInterface.initDataAccessObject().loadWidgetByClassNameProviderWidgetSuspend(packageName, providerClassName)
-            val appWidgetId = widgetDataModelsReallocation.WidgetId
+                            }
+                        })
+                        .build()
 
-            runOnUiThread {
+                val widgetDataModelsReallocation = widgetDataInterface.initDataAccessObject().loadWidgetByClassNameProviderWidgetSuspend(packageName, providerClassName)
+                val appWidgetId = widgetDataModelsReallocation.WidgetId
+
                 if (securityFunctions.isAppLocked(packageName + providerClassName)) {
 
                     SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
@@ -110,11 +115,12 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
                     }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
                 } else {
+
                     functionsClass.runUnlimitedWidgetService(appWidgetId, widgetLabel)
                 }
-            }
 
-            widgetDataInterface.close()
+                widgetDataInterface.close()
+            }
         }
     }
 }

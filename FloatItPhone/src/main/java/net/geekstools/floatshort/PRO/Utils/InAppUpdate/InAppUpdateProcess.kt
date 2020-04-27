@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/27/20 4:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -31,42 +31,47 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.tasks.Task
-import kotlinx.android.synthetic.main.in_app_update_view.*
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.databinding.InAppUpdateViewBinding
 import java.util.*
 
 class InAppUpdateProcess : AppCompatActivity() {
 
-    lateinit var functionsClass: FunctionsClass
+    private val functionsClass: FunctionsClass by lazy {
+        FunctionsClass(applicationContext)
+    }
 
     private lateinit var appUpdateManager: AppUpdateManager
     private lateinit var installStateUpdatedListener: InstallStateUpdatedListener
 
-    private val IN_APP_UPDATE_REQUEST = 333
+    companion object {
+        private const val IN_APP_UPDATE_REQUEST = 333
+    }
+
+    private lateinit var inAppUpdateViewBinding: InAppUpdateViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.in_app_update_view)
-
-        functionsClass = FunctionsClass(applicationContext)
+        inAppUpdateViewBinding = InAppUpdateViewBinding.inflate(layoutInflater)
+        setContentView(inAppUpdateViewBinding.root)
 
         window.statusBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f)
         window.navigationBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f)
 
-        fullEmptyView.setBackgroundColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f))
-        inAppUpdateWaiting.setColor(PublicVariable.primaryColorOpposite)
+        inAppUpdateViewBinding.fullEmptyView.setBackgroundColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f))
+        inAppUpdateViewBinding.inAppUpdateWaiting.setColor(PublicVariable.primaryColorOpposite)
 
-        textInputChangeLog.boxBackgroundColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f)
-        textInputChangeLog.hintTextColor = ColorStateList.valueOf(getColor(R.color.lighter))
-        textInputChangeLog.hint = "${getString(R.string.inAppUpdateAvailable)} ${intent.getStringExtra("UPDATE_VERSION")}"
+        inAppUpdateViewBinding.textInputChangeLog.boxBackgroundColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f)
+        inAppUpdateViewBinding.textInputChangeLog.hintTextColor = ColorStateList.valueOf(getColor(R.color.lighter))
+        inAppUpdateViewBinding.textInputChangeLog.hint = "${getString(R.string.inAppUpdateAvailable)} ${intent.getStringExtra("UPDATE_VERSION")}"
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            changeLog.setText(Html.fromHtml(intent.getStringExtra("UPDATE_CHANGE_LOG"), Html.FROM_HTML_MODE_LEGACY))
+            inAppUpdateViewBinding.changeLog.setText(Html.fromHtml(intent.getStringExtra("UPDATE_CHANGE_LOG"), Html.FROM_HTML_MODE_LEGACY))
         } else {
-            changeLog.setText(Html.fromHtml(intent.getStringExtra("UPDATE_CHANGE_LOG")))
+            inAppUpdateViewBinding.changeLog.setText(Html.fromHtml(intent.getStringExtra("UPDATE_CHANGE_LOG")))
         }
 
         installStateUpdatedListener = InstallStateUpdatedListener {
@@ -113,6 +118,7 @@ class InAppUpdateProcess : AppCompatActivity() {
 
             if (updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     && updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+
                 appUpdateManager.startUpdateFlowForResult(
                         updateInfo,
                         AppUpdateType.FLEXIBLE,
@@ -143,12 +149,14 @@ class InAppUpdateProcess : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        rateFloatIt.setOnClickListener {
+        inAppUpdateViewBinding.rateFloatIt.setOnClickListener {
+
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_store_link) + packageName)),
                     ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
         }
 
-        pageFloatIt.setOnClickListener {
+        inAppUpdateViewBinding.pageFloatIt.setOnClickListener {
+
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_facebook_app))),
                     ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
         }
@@ -160,6 +168,7 @@ class InAppUpdateProcess : AppCompatActivity() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability()
                     == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+
                 appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
                         AppUpdateType.FLEXIBLE,
@@ -175,6 +184,7 @@ class InAppUpdateProcess : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
@@ -183,24 +193,28 @@ class InAppUpdateProcess : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
         if (requestCode == IN_APP_UPDATE_REQUEST) {
-            if (resultCode == RESULT_CANCELED) {
-                FunctionsClassDebug.PrintDebug("*** RESULT CANCELED ***")
+            when (resultCode) {
+                RESULT_CANCELED -> {
+                    FunctionsClassDebug.PrintDebug("*** RESULT CANCELED ***")
 
-                val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
-                functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+                    val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
+                    functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
 
-                appUpdateManager.unregisterListener(installStateUpdatedListener)
-                this@InAppUpdateProcess.finish()
+                    appUpdateManager.unregisterListener(installStateUpdatedListener)
+                    this@InAppUpdateProcess.finish()
 
-                PublicVariable.updateCancelByUser = true
-            } else if (resultCode == RESULT_OK) {
-                FunctionsClassDebug.PrintDebug("*** RESULT OK ***")
+                    PublicVariable.updateCancelByUser = true
+                }
+                RESULT_OK -> {
+                    FunctionsClassDebug.PrintDebug("*** RESULT OK ***")
 
-            }
+                }
+                ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
+                    FunctionsClassDebug.PrintDebug("*** RESULT IN APP UPDATE FAILED ***")
 
-            if (resultCode == ActivityResult.RESULT_IN_APP_UPDATE_FAILED) {
-                FunctionsClassDebug.PrintDebug("*** RESULT IN APP UPDATE FAILED ***")
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)

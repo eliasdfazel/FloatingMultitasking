@@ -1,3 +1,13 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel
+ * Last modified 4/27/20 4:41 AM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 package net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller
 
 import android.annotation.SuppressLint
@@ -45,6 +55,7 @@ class IndexedFastScroller(private val context: Context,
      * Enable Popup View Of Index Text
      **/
     var popupEnable: Boolean = true
+
     /**
      * Set Integer Number Of Offset For Popup View Of Index Text.
      * It Will Automatically Convert It To DP.
@@ -55,6 +66,7 @@ class IndexedFastScroller(private val context: Context,
     private val finalPopupOffset: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
             popupOffset,
             context.resources.displayMetrics).toInt()
+
     /**
      * Set A Drawable As Background Of Popup View Of Index Text
      **/

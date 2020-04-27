@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 3:36 AM
+ * Last modified 4/27/20 4:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1977,19 +1977,27 @@ public class FunctionsClass {
         return Build.VERSION.SDK_INT;
     }
 
-    public boolean appIsInstalled(String packName) {
-        PackageManager pm = context.getPackageManager();
-        boolean app_installed = false;
+    public boolean appIsInstalled(String packageName) {
+        PackageManager packageManager = context.getPackageManager();
+
+        boolean appInstalled = false;
         try {
-            pm.getPackageInfo(packName, 0);
-            app_installed = true;
+            packageManager.getPackageInfo(packageName, 0);
+
+            appInstalled = true;
+
         } catch (PackageManager.NameNotFoundException e) {
-            app_installed = false;
+            e.printStackTrace();
+
+            appInstalled = false;
+
         } catch (Exception e) {
             e.printStackTrace();
-            app_installed = false;
+
+            appInstalled = false;
         }
-        return app_installed;
+
+        return appInstalled;
     }
 
     public void uninstallApp(String packageName) {
@@ -5758,7 +5766,7 @@ public class FunctionsClass {
 
     public boolean floatingWidgetsPurchased() {
 
-        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
+        return //(BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
                 readPreference(".PurchasedItem", InAppBillingData.SKU.InAppItemFloatingWidgets, false);
     }
 

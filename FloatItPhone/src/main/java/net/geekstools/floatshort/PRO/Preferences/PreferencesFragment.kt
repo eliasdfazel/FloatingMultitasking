@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 3:36 AM
+ * Last modified 4/27/20 4:24 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -796,48 +796,60 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
         firebaseRemoteConfig.fetch(0).addOnSuccessListener {
+
             firebaseRemoteConfig.activate().addOnSuccessListener {
+                if (it) {
 
-                if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(requireContext().packageName)) {
-                    functionsClass.upcomingChangeLog(
-                            requireActivity(),
-                            firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
-                }
-                if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClass.appVersionCode(requireContext().packageName)) {
-                    whatsnew.summary = getString(R.string.betaUpdateAvailable)
-                    betaChangeLog = firebaseRemoteConfig.getString(getString(R.string.BETAstringUpcomingChangeLogPhone))
-                    betaVersionCode = firebaseRemoteConfig.getString(getString(R.string.BETAintegerVersionCodeNewUpdatePhone))
-                }
-                if (firebaseRemoteConfig.getBoolean(getString(R.string.adAppForceLoad))) {
-                    Glide.with(requireContext())
-                            .load(firebaseRemoteConfig.getString(getString(R.string.adAppIconLink)))
-                            .addListener(object : RequestListener<Drawable?> {
-                                override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
-                                    return false
-                                }
+                    if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(requireContext().packageName)) {
+                        functionsClass.upcomingChangeLog(
+                                requireActivity(),
+                                firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
+                    }
 
-                                override fun onResourceReady(resource: Drawable?, model: Any, target: Target<Drawable?>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
-                                    requireActivity().runOnUiThread {
-                                        adApp.setIcon(resource)
+                    if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClass.appVersionCode(requireContext().packageName)) {
+                        whatsnew.summary = getString(R.string.betaUpdateAvailable)
+                        betaChangeLog = firebaseRemoteConfig.getString(getString(R.string.BETAstringUpcomingChangeLogPhone))
+                        betaVersionCode = firebaseRemoteConfig.getString(getString(R.string.BETAintegerVersionCodeNewUpdatePhone))
+                    }
+
+                    if (firebaseRemoteConfig.getBoolean(getString(R.string.adAppForceLoad))) {
+
+                        Glide.with(requireContext())
+                                .load(firebaseRemoteConfig.getString(getString(R.string.adAppIconLink)))
+                                .addListener(object : RequestListener<Drawable?> {
+                                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
+
+                                        return false
                                     }
-                                    return false
-                                }
-                            }).submit()
-                    adApp.title = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle)))
-                    adApp.summary = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries)))
 
-                    adApp.setOnPreferenceClickListener {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(firebaseRemoteConfig.getString(getString(R.string.adAppLink)))))
+                                    override fun onResourceReady(resource: Drawable?, model: Any, target: Target<Drawable?>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
 
-                        true
+                                        requireActivity().runOnUiThread {
+                                            adApp.icon = resource
+                                        }
+
+                                        return false
+                                    }
+                                }).submit()
+                        adApp.title = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle)))
+                        adApp.summary = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries)))
+
+                        adApp.setOnPreferenceClickListener {
+
+                            startActivity(Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(firebaseRemoteConfig.getString(getString(R.string.adAppLink)))))
+
+                            true
+                        }
+
+                        PrintDebug("*** " + firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) + " ***")
+                        if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > functionsClass.readPreference(".AdApp", "FetchTime", java.lang.Long.valueOf(0))) {
+                            this@PreferencesFragment.scrollToPreference("app")
+
+                            functionsClass.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)))
+                        }
                     }
 
-                    PrintDebug("*** " + firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) + " ***")
-                    if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > functionsClass.readPreference(".AdApp", "FetchTime", java.lang.Long.valueOf(0))) {
-                        this@PreferencesFragment.scrollToPreference("app")
-
-                        functionsClass.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)))
-                    }
                 }
             }
         }
