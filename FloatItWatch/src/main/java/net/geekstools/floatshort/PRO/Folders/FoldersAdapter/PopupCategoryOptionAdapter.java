@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 6:41 AM
+ * Last modified 4/27/20 10:32 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -33,10 +33,13 @@ import java.util.ArrayList;
 
 public class PopupCategoryOptionAdapter extends BaseAdapter {
 
-    FunctionsClass functionsClass;
     Context context;
+
+    FunctionsClass functionsClass;
+
     ArrayList<AdapterItems> adapterItems;
     String className;
+
     int startId, layoutInflater, xPosition, yPosition, HW;
 
 

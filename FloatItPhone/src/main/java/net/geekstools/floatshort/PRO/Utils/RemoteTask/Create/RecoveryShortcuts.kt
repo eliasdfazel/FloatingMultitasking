@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:36 AM
+ * Last modified 4/27/20 10:12 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -40,9 +40,10 @@ class RecoveryShortcuts : Service() {
         FunctionsClassRunServices(applicationContext)
     }
     
-    var permitOpenFloatingShortcuts = true
+    private var permitOpenFloatingShortcuts = true
 
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent?): IBinder? {
+
         return null
     }
 

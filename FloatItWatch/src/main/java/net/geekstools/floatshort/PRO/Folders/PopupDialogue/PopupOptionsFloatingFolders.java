@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 8:00 AM
+ * Last modified 4/27/20 10:22 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -74,7 +74,7 @@ public class PopupOptionsFloatingFolders extends Service {
         startIdCommand = intent.getIntExtra("startIdCommand", 0);
         MODE = intent.getStringExtra("MODE");
         classNameCommand = intent.getStringExtra("classNameCommand");
-        categoryName = intent.getStringExtra("categoryName");
+        categoryName = intent.getStringExtra("FolderName");
 
         HW = intent.getIntExtra("HW", 0);
         xPosition = intent.getIntExtra("X", 0);

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:43 AM
+ * Last modified 4/27/20 10:24 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,7 +36,7 @@ class BindServices : Service() {
         return Service.START_STICKY
     }
 
-    protected fun bindServiceLow(): Notification {
+    private fun bindServiceLow(): Notification {
         val notificationBuilder = Notification.Builder(this)
 
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_launcher)
@@ -58,7 +58,7 @@ class BindServices : Service() {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    protected fun bindServiceHigh(): Notification {
+    private fun bindServiceHigh(): Notification {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
 

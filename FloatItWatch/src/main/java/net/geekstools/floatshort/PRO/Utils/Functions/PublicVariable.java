@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:43 AM
+ * Last modified 4/27/20 7:22 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -22,7 +22,7 @@ public class PublicVariable {
     public static int floatingFolderCounter = -1;
 
     public static int floatingViewsHW = 0;
-    public static int floatingSizeNumber;
+    public static int floatingSizeNumber = 31;
 
     public static int alpha = 133;
     public static int opacity = 255;

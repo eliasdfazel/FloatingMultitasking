@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 7:14 AM
+ * Last modified 4/27/20 10:23 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -229,7 +229,12 @@ public class FunctionsClass {
         context.startService(u);
 
         if (PublicVariable.allFloatingCounter == 1) {
-            context.startService(new Intent(context, BindServices.class));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
+            }
         }
     }
 
@@ -244,7 +249,12 @@ public class FunctionsClass {
         context.startService(u);
 
         if (PublicVariable.allFloatingCounter == 1) {
-            context.startService(new Intent(context, BindServices.class));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(new Intent(context, BindServices.class));
+            } else {
+                context.startService(new Intent(context, BindServices.class));
+            }
         }
     }
 
@@ -280,6 +290,7 @@ public class FunctionsClass {
         context.startService(u);
 
         if (PublicVariable.allFloatingCounter == 1) {
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(new Intent(context, BindServices.class));
             } else {
@@ -390,18 +401,19 @@ public class FunctionsClass {
     }
 
     /*Unlimited Categories*/
-    public void runUnlimitedCategoryService(String categoryName, String[] categoryNamePackages) {
+    public void runUnlimitedFolderService(String folderName) {
         PublicVariable.allFloatingCounter++;
         PublicVariable.floatingFolderCounter_Folder++;
         PublicVariable.floatingFolderCounter++;
-        PublicVariable.floatingFoldersList.add(PublicVariable.floatingFolderCounter, categoryName);
+        PublicVariable.floatingFoldersList.add(PublicVariable.floatingFolderCounter, folderName);
 
         Intent c = new Intent(context, FloatingFolders.class);
-        c.putExtra("categoryName", categoryName);
+        c.putExtra("FolderName", folderName);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
         if (PublicVariable.allFloatingCounter == 1) {
-            context.startService(new Intent(context, BindServices.class));
+
+
         }
     }
 
@@ -414,7 +426,7 @@ public class FunctionsClass {
         try {
             Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingFolders.class);
             popupOptionsFloatingCategory.putExtra("MODE", "AppsList");
-            popupOptionsFloatingCategory.putExtra("categoryName", categoryName);
+            popupOptionsFloatingCategory.putExtra("FolderName", categoryName);
             popupOptionsFloatingCategory.putExtra("PackagesNames", packagesName);
             popupOptionsFloatingCategory.putExtra("classNameCommand", classNameCommand);
             popupOptionsFloatingCategory.putExtra("startIdCommand", startIdCommand);
@@ -452,7 +464,7 @@ public class FunctionsClass {
         try {
             Intent popupOptionsFloatingCategory = new Intent(context, PopupOptionsFloatingFolders.class);
             popupOptionsFloatingCategory.putExtra("MODE", "Options");
-            popupOptionsFloatingCategory.putExtra("categoryName", categoryName);
+            popupOptionsFloatingCategory.putExtra("FolderName", categoryName);
             popupOptionsFloatingCategory.putExtra("classNameCommand", classNameCommand);
             popupOptionsFloatingCategory.putExtra("startIdCommand", startIdCommand);
             popupOptionsFloatingCategory.putExtra("X", X);
