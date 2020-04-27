@@ -2,13 +2,13 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 1:32 AM
+ * Last modified 4/27/20 3:04 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets
+package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items
 
 import com.android.billingclient.api.BillingClient
 
@@ -36,8 +36,8 @@ class InAppBillingData {
     }
 
     init {
-        InAppBillingData.SKU.SKUS[BillingClient.SkuType.INAPP] = arrayListOf(SKU.InAppItemDonation, SKU.InAppItemFloatingWidgets)
-        InAppBillingData.SKU.SKUS[BillingClient.SkuType.SUBS] = arrayListOf(SKU.InAppItemSecurityServices, SKU.InAppItemSearchEngines)
+        SKU.SKUS[BillingClient.SkuType.INAPP] = arrayListOf(SKU.InAppItemDonation, SKU.InAppItemFloatingWidgets)
+        SKU.SKUS[BillingClient.SkuType.SUBS] = arrayListOf(SKU.InAppItemSecurityServices, SKU.InAppItemSearchEngines)
     }
 
     /**
@@ -47,6 +47,6 @@ class InAppBillingData {
      **/
     fun getAllSkusByType(@BillingClient.SkuType skuType: String) : ArrayList<String>? {
 
-        return InAppBillingData.SKU.SKUS[skuType]
+        return SKU.SKUS[skuType]
     }
 }

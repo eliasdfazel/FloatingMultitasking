@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 12:13 PM
+ * Last modified 4/27/20 3:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1201,10 +1201,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     }
 
     fun loadInstalledWidgets() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
-        widgetConfigurationsViewsBinding.loadingInstalledWidgets.setColor(PublicVariable.primaryColor)
-        widgetConfigurationsViewsBinding.installedNestedScrollView.setBackgroundColor(if (PublicVariable.themeLightDark) getColor(R.color.transparent_light_high_twice) else getColor(R.color.transparent_dark_high_twice))
 
+        widgetConfigurationsViewsBinding.loadingInstalledWidgets.setColor(PublicVariable.primaryColor)
         widgetConfigurationsViewsBinding.loadingInstalledWidgets.visibility = View.VISIBLE
+
+        widgetConfigurationsViewsBinding.installedNestedScrollView.setBackgroundColor(if (PublicVariable.themeLightDark) getColor(R.color.transparent_light_high_twice) else getColor(R.color.transparent_dark_high_twice))
 
         installedWidgetsAdapterItems.clear()
         installedWidgetsSections.clear()

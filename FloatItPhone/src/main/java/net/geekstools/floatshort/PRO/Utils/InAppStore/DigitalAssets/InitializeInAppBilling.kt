@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 6:56 AM
+ * Last modified 4/27/20 3:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,7 +18,6 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.Purchase
@@ -29,6 +28,7 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.setupInAppBillingUI
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase.OneTimePurchase
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.SubscriptionPurchase.SubscriptionPurchase
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchaseFlowController
@@ -45,8 +45,8 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
         InAppBillingData()
     }
 
-    private var oneTimePurchase: Fragment? = null
-    private var subscriptionPurchase: Fragment? = null
+    private var oneTimePurchase: OneTimePurchase? = null
+    private var subscriptionPurchase: SubscriptionPurchase? = null
 
     object Entry {
         const val PurchaseType = "PurchaseType"
@@ -70,7 +70,10 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
 
             when(intent.getStringExtra(Entry.PurchaseType)) {
                 Entry.OneTimePurchase -> {
-                    oneTimePurchase = OneTimePurchase(this@InitializeInAppBilling, inAppBillingData)
+                    oneTimePurchase = OneTimePurchase().apply {
+                        purchaseFlowController = this@InitializeInAppBilling
+                        inAppBillingData = this@InitializeInAppBilling.inAppBillingData
+                    }
                     oneTimePurchase!!.arguments = Bundle().apply {
                         putString(Entry.ItemToPurchase, intent.getStringExtra(Entry.ItemToPurchase))
                     }
@@ -82,7 +85,10 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
                             .commit()
                 }
                 Entry.SubscriptionPurchase -> {
-                    subscriptionPurchase = SubscriptionPurchase(this@InitializeInAppBilling, inAppBillingData)
+                    subscriptionPurchase = SubscriptionPurchase().apply {
+                        purchaseFlowController = this@InitializeInAppBilling
+                        inAppBillingData = this@InitializeInAppBilling.inAppBillingData
+                    }
                     subscriptionPurchase!!.arguments = Bundle().apply {
                         putString(Entry.ItemToPurchase, intent.getStringExtra(Entry.ItemToPurchase))
                     }

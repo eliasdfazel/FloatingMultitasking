@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:04 AM
+ * Last modified 4/27/20 3:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,8 +36,8 @@ import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.*
-import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase.Extensions.oneTimePurchaseFlow
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase.Extensions.setScreenshots
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase.Extensions.setupOneTimePurchaseUI
@@ -46,14 +46,16 @@ import net.geekstools.floatshort.PRO.databinding.InAppBillingOneTimePurchaseView
 import java.util.*
 import kotlin.collections.ArrayList
 
-class OneTimePurchase (val purchaseFlowController: PurchaseFlowController,
-                       val inAppBillingData: InAppBillingData) : Fragment(), View.OnClickListener, PurchasesUpdatedListener {
+class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListener {
 
     lateinit var billingClient: BillingClient
 
     private val billingClientBuilder: BillingClient.Builder by lazy {
         BillingClient.newBuilder(requireActivity())//.build()
     }
+
+    lateinit var purchaseFlowController: PurchaseFlowController
+    lateinit var inAppBillingData: InAppBillingData
 
     private val requestManager: RequestManager by lazy {
         Glide.with(requireContext())
