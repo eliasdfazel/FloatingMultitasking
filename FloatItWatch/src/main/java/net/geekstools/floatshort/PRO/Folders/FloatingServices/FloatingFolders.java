@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 8:44 AM
+ * Last modified 4/27/20 5:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -210,27 +210,27 @@ public class FloatingFolders extends Service {
                     switch (functionsClass.shapesImageId()) {
                         case 1:
                             drawableBack = getDrawable(R.drawable.pin_droplet_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_trans));
+                            drawableBack.setTint(context.getColor(R.color.red_trans));
                             break;
                         case 2:
                             drawableBack = getDrawable(R.drawable.pin_circle_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_trans));
+                            drawableBack.setTint(context.getColor(R.color.red_trans));
                             break;
                         case 3:
                             drawableBack = getDrawable(R.drawable.pin_square_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_trans));
+                            drawableBack.setTint(context.getColor(R.color.red_trans));
                             break;
                         case 4:
                             drawableBack = getDrawable(R.drawable.pin_squircle_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_trans));
+                            drawableBack.setTint(context.getColor(R.color.red_trans));
                             break;
                         case 5:
                             drawableBack = getDrawable(R.drawable.pin_cut_circle_icon);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_trans));
+                            drawableBack.setTint(context.getColor(R.color.red_trans));
                             break;
                         case 0:
                             drawableBack = getDrawable(R.drawable.pin_noshap);
-                            drawableBack.setTint(context.getResources().getColor(R.color.red_trans));
+                            drawableBack.setTint(context.getColor(R.color.red_trans));
                             break;
                     }
                     pin[intent.getIntExtra("startId", 0)].setImageDrawable(drawableBack);

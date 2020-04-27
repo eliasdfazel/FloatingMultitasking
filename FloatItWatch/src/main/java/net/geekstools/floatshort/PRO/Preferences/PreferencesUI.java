@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 8:26 AM
+ * Last modified 4/27/20 5:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -39,7 +39,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 public class PreferencesUI extends WearableActivity {
 
     FunctionsClass functionsClass;
-    RelativeLayout mContainerView;
+    RelativeLayout containerView;
     TextView theme, hideText, noneIcon, shape, splashTitle, remoteRecovery, bootText;
     ImageView dropletIcon, circleIcon, squareIcon, squircleIcon, cutCircleIcon;
     RadioButton dark, light;
@@ -60,7 +60,7 @@ public class PreferencesUI extends WearableActivity {
 
         functionsClass = new FunctionsClass(getApplicationContext());
 
-        mContainerView = (RelativeLayout) findViewById(R.id.container);
+        containerView = (RelativeLayout) findViewById(R.id.container);
         theme = (TextView) findViewById(R.id.theme);
         hideText = (TextView) findViewById(R.id.hideText);
         splashTitle = (TextView) findViewById(R.id.floatingSplashText);
@@ -84,7 +84,7 @@ public class PreferencesUI extends WearableActivity {
 
         if (sharedPreferences.getBoolean("themeColor", false)) {
             light.setChecked(true);
-            mContainerView.setBackgroundColor(getColor(R.color.light_trans));
+            containerView.setBackgroundColor(getColor(R.color.light_trans));
             dark.setTextColor(getColor(R.color.dark));
             light.setTextColor(getColor(R.color.dark));
             theme.setTextColor(getColor(R.color.dark));
@@ -100,7 +100,7 @@ public class PreferencesUI extends WearableActivity {
             dark.setChecked(false);
         } else if (!sharedPreferences.getBoolean("themeColor", false)) {
             dark.setChecked(true);
-            mContainerView.setBackgroundColor(getColor(R.color.trans_black));
+            containerView.setBackgroundColor(getColor(R.color.trans_black));
             dark.setTextColor(getColor(R.color.light));
             light.setTextColor(getColor(R.color.light));
             theme.setTextColor(getColor(R.color.light));
@@ -144,7 +144,7 @@ public class PreferencesUI extends WearableActivity {
                 dark.setChecked(true);
                 light.setChecked(false);
 
-                mContainerView.setBackgroundColor(getColor(R.color.trans_black));
+                containerView.setBackgroundColor(getColor(R.color.trans_black));
                 dark.setTextColor(getColor(R.color.light));
                 light.setTextColor(getColor(R.color.light));
                 theme.setTextColor(getColor(R.color.light));
@@ -167,7 +167,7 @@ public class PreferencesUI extends WearableActivity {
                 light.setChecked(true);
                 dark.setChecked(false);
 
-                mContainerView.setBackgroundColor(getColor(R.color.light_trans));
+                containerView.setBackgroundColor(getColor(R.color.light_trans));
                 dark.setTextColor(getColor(R.color.dark));
                 light.setTextColor(getColor(R.color.dark));
                 theme.setTextColor(getColor(R.color.dark));

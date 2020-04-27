@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 12:13 PM
+ * Last modified 4/27/20 5:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -85,13 +85,13 @@ public class PopupShortcutsOptionAdapter extends BaseAdapter {
         viewHolder.textAppName.setText(adapterItems.get(position).getTitleText());
 
         int itemsListColor = 0;
-        if (functionsClass.setAppTransparency() == true) {
+        if (functionsClass.appThemeTransparent() == true) {
             itemsListColor = functionsClass.setColorAlpha(PublicVariable.colorLightDark, 50);
         } else {
             itemsListColor = PublicVariable.colorLightDark;
         }
 
-        LayerDrawable drawPopupShortcut = (LayerDrawable) context.getResources().getDrawable(R.drawable.popup_shortcut_whole);
+        LayerDrawable drawPopupShortcut = (LayerDrawable) context.getDrawable(R.drawable.popup_shortcut_whole);
         Drawable backPopupShortcut = drawPopupShortcut.findDrawableByLayerId(R.id.backtemp);
         backPopupShortcut.setTint(itemsListColor);
         viewHolder.items.setBackground(drawPopupShortcut);

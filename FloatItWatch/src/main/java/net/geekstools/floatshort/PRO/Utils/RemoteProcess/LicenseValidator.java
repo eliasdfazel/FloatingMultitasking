@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 4/27/20 5:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -102,8 +102,8 @@ public class LicenseValidator extends Service {
         mBuilder.setColor(getResources().getColor(R.color.default_color));
         mBuilder.setContentTitle(getString(R.string.license_info));
         mBuilder.setContentText(getString(R.string.license_info_desc));
-        mBuilder.setContentTitle(Html.fromHtml("<b><font color='" + getResources().getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info) + "</font></b>"));
-        mBuilder.setContentText(Html.fromHtml("<font color='" + getResources().getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info_desc) + "</font>"));
+        mBuilder.setContentTitle(Html.fromHtml("<b><font color='" + getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info) + "</font></b>"));
+        mBuilder.setContentText(Html.fromHtml("<font color='" + getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info_desc) + "</font>"));
         mBuilder.setTicker(getResources().getString(R.string.updating_info));
         mBuilder.setSmallIcon(R.drawable.ic_notification);
         mBuilder.setAutoCancel(false);
@@ -115,11 +115,11 @@ public class LicenseValidator extends Service {
 
     protected Notification bindServiceLOW() {
         Notification.Builder mBuilder = new Notification.Builder(getApplicationContext());
-        mBuilder.setColor(getResources().getColor(R.color.default_color));
+        mBuilder.setColor(getColor(R.color.default_color));
         mBuilder.setContentTitle(getString(R.string.license_info));
         mBuilder.setContentText(getString(R.string.license_info_desc));
-        mBuilder.setContentTitle(Html.fromHtml("<b><font color='" + getResources().getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info) + "</font></b>"));
-        mBuilder.setContentText(Html.fromHtml("<font color='" + getResources().getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info_desc) + "</font>"));
+        mBuilder.setContentTitle(Html.fromHtml("<b><font color='" + getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info) + "</font></b>"));
+        mBuilder.setContentText(Html.fromHtml("<font color='" + getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info_desc) + "</font>"));
         mBuilder.setTicker(getResources().getString(R.string.updating_info));
         mBuilder.setSmallIcon(R.drawable.ic_notification);
         mBuilder.setAutoCancel(false);

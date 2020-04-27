@@ -3,17 +3,16 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/26/20 8:30 AM
+  ~ Last modified 4/27/20 5:57 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
   -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/MainView"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
     android:background="@color/trans_black_high">
 
     <ScrollView
@@ -48,34 +47,37 @@
         android:id="@+id/newUpdate"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="5dp"
-        android:visibility="gone"/>
+        android:layout_marginStart="7dp"
+        android:src="@drawable/ic_update"
+        android:visibility="gone"
 
-    <LinearLayout
-        android:layout_width="45dp"
-        android:layout_height="77dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:weightSum="2">
+        apps:layout_constraintStart_toStartOf="parent"
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"/>
 
-        <ImageView
-            android:id="@+id/floatingShortcutsRecovery"
-            android:layout_width="35dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:src="@drawable/draw_recovery"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/floatingShortcutsRecovery"
+        android:layout_width="35dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="7dp"
+        android:paddingTop="50dp"
+        android:src="@drawable/draw_recovery"
 
-        <ImageView
-            android:id="@+id/settingGUI"
-            android:layout_width="35dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:src="@drawable/draw_pref"/>
-    </LinearLayout>
+        apps:layout_constraintEnd_toEndOf="parent"
+        apps:layout_constraintTop_toTopOf="parent"
+        apps:layout_constraintHeight_percent="0.5" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/settingGUI"
+        android:layout_width="35dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="7dp"
+        android:paddingBottom="50dp"
+        android:src="@drawable/draw_pref"
+
+        apps:layout_constraintEnd_toEndOf="parent"
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintHeight_percent="0.5"/>
 
     <RelativeLayout
         android:id="@+id/loadingSplash"
@@ -91,7 +93,7 @@
         <ProgressBar
             style="?android:attr/progressBarStyleHorizontal"
 
-            android:id="@+id/loadingProgressBar"
+            android:id="@+id/loadingProgress"
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:layout_alignParentTop="true"
@@ -100,4 +102,4 @@
             android:indeterminateBehavior="cycle"/>
     </RelativeLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

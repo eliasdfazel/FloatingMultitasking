@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 8:50 AM
+ * Last modified 4/27/20 5:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -93,8 +93,8 @@ public class FunctionsClass {
     public void dialogueLicense(final Activity activity) {
         context = activity.getApplicationContext();
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
-        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.license_title)));
-        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.license_msg)));
+        alertDialog.setTitle(Html.fromHtml(context.getString(R.string.license_title)));
+        alertDialog.setMessage(Html.fromHtml(context.getString(R.string.license_msg)));
         alertDialog.setIcon(R.drawable.ic_launcher);
         alertDialog.setCancelable(false);
 
@@ -790,7 +790,7 @@ public class FunctionsClass {
     }
 
     public int extractDominantColor(Drawable drawable) {
-        int VibrantColor = context.getResources().getColor(R.color.default_color);
+        int VibrantColor = context.getColor(R.color.default_color);
         Bitmap bitmap = null;
         if (returnAPI() >= 26) {
             if (drawable instanceof VectorDrawable) {
@@ -812,7 +812,7 @@ public class FunctionsClass {
             if (bitmap != null && !bitmap.isRecycled()) {
                 currentColor = Palette.from(bitmap).generate();
 
-                int defaultColor = context.getResources().getColor(R.color.default_color);
+                int defaultColor = context.getColor(R.color.default_color);
                 VibrantColor = currentColor.getDominantColor(defaultColor);
             }
         } catch (Exception e) {
@@ -821,7 +821,7 @@ public class FunctionsClass {
                 if (bitmap != null && !bitmap.isRecycled()) {
                     currentColor = Palette.from(bitmap).generate();
 
-                    int defaultColor = context.getResources().getColor(R.color.default_color);
+                    int defaultColor = context.getColor(R.color.default_color);
                     VibrantColor = currentColor.getMutedColor(defaultColor);
                 }
             } catch (Exception e1) {
@@ -832,7 +832,7 @@ public class FunctionsClass {
     }
 
     public int extractVibrantColor(Drawable drawable) {
-        int VibrantColor = context.getResources().getColor(R.color.default_color);
+        int VibrantColor = context.getColor(R.color.default_color);
         Bitmap bitmap;
         if (returnAPI() >= 26) {
             if (drawable instanceof VectorDrawable) {
@@ -858,7 +858,7 @@ public class FunctionsClass {
             if (bitmap != null && !bitmap.isRecycled()) {
                 currentColor = Palette.from(bitmap).generate();
 
-                int defaultColor = context.getResources().getColor(R.color.default_color);
+                int defaultColor = context.getColor(R.color.default_color);
                 VibrantColor = currentColor.getVibrantColor(defaultColor);
             }
         } catch (Exception e) {
@@ -867,7 +867,7 @@ public class FunctionsClass {
                 if (bitmap != null && !bitmap.isRecycled()) {
                     currentColor = Palette.from(bitmap).generate();
 
-                    int defaultColor = context.getResources().getColor(R.color.default_color);
+                    int defaultColor = context.getColor(R.color.default_color);
                     VibrantColor = currentColor.getMutedColor(defaultColor);
                 }
             } catch (Exception e1) {
@@ -882,13 +882,13 @@ public class FunctionsClass {
         if (sharedPreferences.getBoolean("themeColor", false) == true) {
             PublicVariable.primaryColor = context.getColor(R.color.default_color);
             PublicVariable.primaryColorOpposite = context.getColor(R.color.default_color_darker);
-            PublicVariable.colorLightDark = context.getResources().getColor(R.color.light);
-            PublicVariable.colorLightDarkOpposite = context.getResources().getColor(R.color.dark);
+            PublicVariable.colorLightDark = context.getColor(R.color.light);
+            PublicVariable.colorLightDarkOpposite = context.getColor(R.color.dark);
         } else if (sharedPreferences.getBoolean("themeColor", false) == false) {
             PublicVariable.primaryColor = context.getColor(R.color.default_color_darker);
             PublicVariable.primaryColorOpposite = context.getColor(R.color.default_color);
-            PublicVariable.colorLightDark = context.getResources().getColor(R.color.dark);
-            PublicVariable.colorLightDarkOpposite = context.getResources().getColor(R.color.light);
+            PublicVariable.colorLightDark = context.getColor(R.color.dark);
+            PublicVariable.colorLightDarkOpposite = context.getColor(R.color.light);
         }
     }
 
@@ -906,7 +906,7 @@ public class FunctionsClass {
                 .getBoolean("themeColor", false);
     }
 
-    public boolean setAppTransparency() {
+    public boolean appThemeTransparent() {
 
         return context.getSharedPreferences("theme", Context.MODE_PRIVATE)
                 .getBoolean("hide", false);
