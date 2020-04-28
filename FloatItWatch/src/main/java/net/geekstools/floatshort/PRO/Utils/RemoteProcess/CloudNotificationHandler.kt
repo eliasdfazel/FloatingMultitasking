@@ -7,7 +7,6 @@
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
-
 package net.geekstools.floatshort.PRO.Utils.RemoteProcess
 
 import com.google.firebase.messaging.FirebaseMessagingService
