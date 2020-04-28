@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 4:03 AM
+ * Last modified 4/28/20 11:22 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -84,6 +84,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
                     billingResult?.let {
                         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                             functionsClass.savePreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSecurityServices, false)
+                            functionsClass.savePreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSearchEngines, false)
 
                             val purchases = billingClient.queryPurchases(BillingClient.SkuType.SUBS).purchasesList
                             for (purchase in purchases) {
