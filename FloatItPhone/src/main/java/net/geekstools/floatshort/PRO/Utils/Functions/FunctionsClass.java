@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 4:15 AM
+ * Last modified 4/29/20 6:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -255,43 +255,6 @@ public class FunctionsClass {
     public void IndexAppInfoShortcuts(final String contentAppIndex){
         Uri BASE_URL =
                 Uri.parse("https://www.geeksempire.net/createshortcuts.html/");
-        Indexable articleToIndex = new Indexable.Builder()
-                .setName(contentAppIndex)
-                .setUrl(String.valueOf(BASE_URL.buildUpon().appendPath(contentAppIndex).build()))
-                .build();
-
-        Task<Void> updateTask = FirebaseAppIndex.getInstance().update(articleToIndex);
-        updateTask.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-            }
-        });
-        updateTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        Task<Void> startTask = FirebaseUserActions.getInstance()
-                .start(getAction(contentAppIndex,
-                        String.valueOf(BASE_URL.buildUpon().appendPath(contentAppIndex).build())));
-        startTask.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-            }
-        });
-        startTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public void IndexAppInfoCategory(final String contentAppIndex) throws Exception {
-        Uri BASE_URL =
-                Uri.parse("https://www.geeksempire.net/createcategory.html/");
         Indexable articleToIndex = new Indexable.Builder()
                 .setName(contentAppIndex)
                 .setUrl(String.valueOf(BASE_URL.buildUpon().appendPath(contentAppIndex).build()))
@@ -5754,25 +5717,25 @@ public class FunctionsClass {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
+        return (BuildConfig.DEBUG) ? false :
                 readPreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSecurityServices, false);
     }
 
     public boolean searchEngineSubscribed() {
 
-        return (BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
+        return (BuildConfig.DEBUG) ? false :
                 readPreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSearchEngines, false);
     }
 
     public boolean floatingWidgetsPurchased() {
 
-        return //(BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
+        return (BuildConfig.DEBUG) ? false :
                 readPreference(".PurchasedItem", InAppBillingData.SKU.InAppItemFloatingWidgets, false);
     }
 
     public boolean alreadyDonated() {
 
-        return //(BuildConfig.VERSION_NAME.contains("[BETA]") && BuildConfig.DEBUG) ? false :
+        return //(BuildConfig.DEBUG) ? false :
                 readPreference(".PurchasedItem", InAppBillingData.SKU.InAppItemDonation, false);
     }
 }

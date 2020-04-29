@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:33 PM
+ * Created by Elias Fazel
+ * Last modified 4/29/20 6:37 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,16 +19,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.appindexing.FirebaseAppIndex;
-import com.google.firebase.appindexing.FirebaseUserActions;
-import com.google.firebase.appindexing.Indexable;
-import com.google.firebase.appindexing.builders.Actions;
 
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
@@ -95,67 +85,5 @@ public class RecoveryShortcutsActivity extends Activity {
             }
         }
         finish();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        endIndexAppInfo();
-    }
-
-    public void IndexAppInfo(final String setAppIndex, String setAppIndexUrl) throws Exception {
-        Indexable articleToIndex = new Indexable.Builder()
-                .setName(setAppIndex)
-                .setUrl(setAppIndexUrl)
-                .build();
-
-        Task<Void> updateTask = FirebaseAppIndex.getInstance().update(articleToIndex);
-        updateTask.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-            }
-        });
-        updateTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        Task<Void> startTask = FirebaseUserActions.getInstance().start(getAction(setAppIndex, setAppIndexUrl));
-        startTask.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-            }
-        });
-        startTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public void endIndexAppInfo() {
-        try {
-            FirebaseUserActions.getInstance().end(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private com.google.firebase.appindexing.Action getAction(String titleForAction, String urlForAction) {
-        return
-                Actions.newView(titleForAction, urlForAction);
     }
 }
