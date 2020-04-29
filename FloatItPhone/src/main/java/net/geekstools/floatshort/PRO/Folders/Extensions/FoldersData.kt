@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 10:52 AM
+ * Last modified 4/29/20 1:40 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,6 +19,7 @@ import net.geekstools.floatshort.PRO.Folders.AppSelectionList
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSelectionListAdapter
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.IndexedFastScrollerFactory
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFastScroller
 import java.util.*
 import kotlin.collections.ArrayList
@@ -99,14 +100,13 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
             rootView = advanceAppSelectionListBinding.MainView,
             nestedScrollView = advanceAppSelectionListBinding.nestedScrollView,
             recyclerView = advanceAppSelectionListBinding.recyclerListView,
-            fastScrollerIndexViewBinding = advanceAppSelectionListBinding.fastScrollerIndexInclude
+            fastScrollerIndexViewBinding = advanceAppSelectionListBinding.fastScrollerIndexInclude,
+            indexedFastScrollerFactory = IndexedFastScrollerFactory(
+                    popupEnable = !functionsClass.litePreferencesEnabled(),
+                    popupTextColor = PublicVariable.colorLightDarkOpposite,
+                    indexItemTextColor = PublicVariable.colorLightDarkOpposite)
     )
-    indexedFastScroller.popupEnable = !functionsClass.litePreferencesEnabled()
-    indexedFastScroller.initializeIndexView(0,
-            0,
-            0,
-            0
-    ).await()
+    indexedFastScroller.initializeIndexView().await()
             .loadIndexData(listOfNewCharOfItemsForIndex = listOfNewCharOfItemsForIndex).await()
     /*Indexed Popup Fast Scroller*/
 }

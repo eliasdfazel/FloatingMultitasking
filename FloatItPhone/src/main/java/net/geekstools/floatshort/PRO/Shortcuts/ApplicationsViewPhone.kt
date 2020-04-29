@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 3:36 AM
+ * Last modified 4/29/20 1:40 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -95,6 +95,7 @@ import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SwipeGestureListener
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogue
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveData
+import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.IndexedFastScrollerFactory
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFastScroller
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.HybridApplicationViewBinding
@@ -982,14 +983,13 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 rootView = hybridApplicationViewBinding.MainView,
                 nestedScrollView = hybridApplicationViewBinding.nestedScrollView,
                 recyclerView = hybridApplicationViewBinding.applicationsListView,
-                fastScrollerIndexViewBinding = hybridApplicationViewBinding.fastScrollerIndexInclude
+                fastScrollerIndexViewBinding = hybridApplicationViewBinding.fastScrollerIndexInclude,
+                indexedFastScrollerFactory = IndexedFastScrollerFactory(
+                        popupEnable = !functionsClass.litePreferencesEnabled(),
+                        popupTextColor = PublicVariable.colorLightDarkOpposite,
+                        indexItemTextColor = PublicVariable.colorLightDarkOpposite)
         )
-        indexedFastScroller.popupEnable = !functionsClass.litePreferencesEnabled()
-        indexedFastScroller.initializeIndexView(0,
-                0,
-                0,
-                0
-        ).await()
+        indexedFastScroller.initializeIndexView().await()
                 .loadIndexData(listOfNewCharOfItemsForIndex = listOfNewCharOfItemsForIndex).await()
         /*Indexed Popup Fast Scroller*/
 

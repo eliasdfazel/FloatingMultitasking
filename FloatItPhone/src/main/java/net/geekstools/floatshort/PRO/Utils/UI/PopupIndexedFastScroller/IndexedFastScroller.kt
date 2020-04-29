@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 4:41 AM
+ * Last modified 4/29/20 1:40 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,6 +27,8 @@ import kotlinx.coroutines.*
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.IndexedFastScrollerFactory
+import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.convertToDp
 import net.geekstools.floatshort.PRO.databinding.FastScrollerIndexViewBinding
 import java.util.*
 
@@ -43,52 +45,52 @@ import java.util.*
  *
  * Add Index Layout As <include /> In Your Layout. Be Careful With Layers. That's Why I Let You To Put It Manually In Layout.
  * @param fastScrollerIndexViewBinding Pass ViewBinding Instance Of Fast Scroller Layout That Added Using <include />
+ *
+ * @param indexedFastScrollerFactory Change Default Value Or Just Pass IndexedFastScrollerFactory()
  **/
 class IndexedFastScroller(private val context: Context,
                           private val layoutInflater: LayoutInflater,
                           private val rootView: ViewGroup,
                           private val nestedScrollView: ScrollView,
                           private val recyclerView: RecyclerView,
-                          private val fastScrollerIndexViewBinding: FastScrollerIndexViewBinding) {
+                          private val fastScrollerIndexViewBinding: FastScrollerIndexViewBinding,
+                          private val indexedFastScrollerFactory: IndexedFastScrollerFactory) {
 
-    /**
-     * Enable Popup View Of Index Text
-     **/
-    var popupEnable: Boolean = true
+    private val finalPopupVerticalOffset: Int = indexedFastScrollerFactory.popupVerticalOffset.convertToDp(context)
 
-    /**
-     * Set Integer Number Of Offset For Popup View Of Index Text.
-     * It Will Automatically Convert It To DP.
-     *
-     * Default Value Is 7dp.
-     **/
-    var popupOffset: Float = 7F
-    private val finalPopupOffset: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-            popupOffset,
-            context.resources.displayMetrics).toInt()
-
-    /**
-     * Set A Drawable As Background Of Popup View Of Index Text
-     **/
-    var popupBackgroundShape: Drawable? = null
+    private val finalPopupHorizontalOffset: Int = indexedFastScrollerFactory.popupHorizontalOffset.convertToDp(context)
 
     init {
         FunctionsClassDebug.PrintDebug("*** Indexed Fast Scroller Initialized ***")
     }
 
-    fun initializeIndexView(paddingTop: Int, paddingBottom: Int,
-                            paddingStart: Int, paddingEnd: Int) : Deferred<IndexedFastScroller> = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
+    fun initializeIndexView() : Deferred<IndexedFastScroller> = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
 
         fastScrollerIndexViewBinding.indexView.removeAllViews()
 
-        val layoutParams = fastScrollerIndexViewBinding.root.layoutParams as RelativeLayout.LayoutParams
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END, rootView.id)
+        //Root View
+        val rootLayoutParams = fastScrollerIndexViewBinding.root.layoutParams as RelativeLayout.LayoutParams
+        rootLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_END, rootView.id)
 
-        fastScrollerIndexViewBinding.root.layoutParams = layoutParams
+        fastScrollerIndexViewBinding.root.layoutParams = rootLayoutParams
 
         fastScrollerIndexViewBinding.root
-                .setPadding(paddingStart, paddingTop,
-                        paddingEnd, paddingBottom)
+                .setPadding(indexedFastScrollerFactory.rootPaddingStart, indexedFastScrollerFactory.rootPaddingTop,
+                        indexedFastScrollerFactory.rootPaddingEnd, indexedFastScrollerFactory.rootPaddingBottom)
+
+
+        //Popup Text
+        val popupIndexLayoutParams = fastScrollerIndexViewBinding.popupIndex.layoutParams as RelativeLayout.LayoutParams
+        popupIndexLayoutParams.marginEnd = finalPopupHorizontalOffset
+
+        fastScrollerIndexViewBinding.popupIndex.layoutParams = popupIndexLayoutParams
+
+        val popupIndexBackground: Drawable? = indexedFastScrollerFactory.popupBackgroundShape?:context.getDrawable(R.drawable.ic_launcher_balloon)?.mutate()
+        popupIndexBackground?.setTint(PublicVariable.primaryColorOpposite)
+        fastScrollerIndexViewBinding.popupIndex.background = popupIndexBackground
+        fastScrollerIndexViewBinding.popupIndex.setTextColor(indexedFastScrollerFactory.popupTextColor)
+        fastScrollerIndexViewBinding.popupIndex.typeface = indexedFastScrollerFactory.popupTextFont
+        fastScrollerIndexViewBinding.popupIndex.setTextSize(TypedValue.COMPLEX_UNIT_SP, indexedFastScrollerFactory.popupTextSize)
 
         this@IndexedFastScroller
     }
@@ -97,6 +99,7 @@ class IndexedFastScroller(private val context: Context,
      * When Populating Your List Get First Char Of Each Item Title By itemTextTitle.substring(0, 1).toUpperCase(Locale.getDefault()).
      * & Add It To A ArrayList<String>.
      * Then Pass It As...
+     *
      * @param listOfNewCharOfItemsForIndex ArrayList<String>
      **/
     fun loadIndexData(listOfNewCharOfItemsForIndex: ArrayList<String>) = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
@@ -125,7 +128,9 @@ class IndexedFastScroller(private val context: Context,
         mapIndexFirstItem.keys.forEach { indexText ->
             sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
             sideIndexItem.text = indexText.toUpperCase(Locale.getDefault())
-            sideIndexItem.setTextColor(PublicVariable.colorLightDarkOpposite)
+            sideIndexItem.setTextColor(indexedFastScrollerFactory.indexItemTextColor)
+            sideIndexItem.typeface = indexedFastScrollerFactory.indexItemFont
+            sideIndexItem.setTextSize(TypedValue.COMPLEX_UNIT_SP, indexedFastScrollerFactory.indexItemSize)
 
             fastScrollerIndexViewBinding.indexView.addView(sideIndexItem)
         }
@@ -161,24 +166,20 @@ class IndexedFastScroller(private val context: Context,
     private fun setupFastScrollingIndexing(mapIndexFirstItem: LinkedHashMap<String, Int>,
                                            mapRangeIndex: LinkedHashMap<Int, String>) {
 
-        val popupIndexBackground: Drawable? = popupBackgroundShape?:context.getDrawable(R.drawable.ic_launcher_balloon)?.mutate()
-        popupIndexBackground?.setTint(PublicVariable.primaryColorOpposite)
-        fastScrollerIndexViewBinding.popupIndex.background = popupIndexBackground
-
         fastScrollerIndexViewBinding.nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
         fastScrollerIndexViewBinding.nestedIndexScrollView.visibility = View.VISIBLE
 
         val popupIndexOffsetY = (
                 PublicVariable.statusBarHeight
                         + PublicVariable.actionBarHeight
-                        + finalPopupOffset
+                        + finalPopupVerticalOffset
                 ).toFloat()
 
         fastScrollerIndexViewBinding.nestedIndexScrollView.setOnTouchListener { view, motionEvent ->
 
             when(motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    if (popupEnable) {
+                    if (indexedFastScrollerFactory.popupEnable) {
                         val indexText = mapRangeIndex[motionEvent.y.toInt()]
 
                         if (indexText != null) {
@@ -190,7 +191,7 @@ class IndexedFastScroller(private val context: Context,
                     }
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    if (popupEnable) {
+                    if (indexedFastScrollerFactory.popupEnable) {
                         val indexText = mapRangeIndex[motionEvent.y.toInt()]
 
                         if (indexText != null) {
@@ -215,7 +216,7 @@ class IndexedFastScroller(private val context: Context,
                     }
                 }
                 MotionEvent.ACTION_UP -> {
-                    if (popupEnable) {
+                    if (indexedFastScrollerFactory.popupEnable) {
                         if (fastScrollerIndexViewBinding.popupIndex.isShown) {
 
                             nestedScrollView.smoothScrollTo(
@@ -234,7 +235,7 @@ class IndexedFastScroller(private val context: Context,
                     }
                 }
                 MotionEvent.ACTION_CANCEL -> {
-                    if (popupEnable) {
+                    if (indexedFastScrollerFactory.popupEnable) {
                         if (fastScrollerIndexViewBinding.popupIndex.isShown) {
 
                             nestedScrollView.smoothScrollTo(

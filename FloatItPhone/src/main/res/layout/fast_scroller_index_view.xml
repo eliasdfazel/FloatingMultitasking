@@ -2,8 +2,8 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 3/24/20 1:15 PM
-  ~ Last modified 3/24/20 12:41 PM
+  ~ Created by Elias Fazel
+  ~ Last modified 4/29/20 1:27 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -14,7 +14,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedIndexScrollView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -23,7 +23,7 @@
         android:background="@android:color/transparent"
         android:visibility="invisible">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/indexView"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
@@ -33,9 +33,9 @@
             android:paddingBottom="7dp"
             android:background="@android:color/transparent"
             android:orientation="vertical"/>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/popupIndex"
         android:layout_width="77dp"
         android:layout_height="77dp"
@@ -43,7 +43,7 @@
         android:gravity="center"
         android:textColor="@color/light"
         android:textSize="29sp"
-        android:typeface="monospace"
+        android:fontFamily="monospace"
         android:background="@drawable/ic_launcher_balloon"
         android:visibility="invisible" />
 

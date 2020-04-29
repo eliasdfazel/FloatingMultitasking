@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 3:29 AM
+ * Last modified 4/29/20 1:40 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -76,6 +76,7 @@ import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SwipeGestureListener
+import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.IndexedFastScrollerFactory
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFastScroller
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataModel
@@ -1438,14 +1439,13 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 rootView = widgetConfigurationsViewsBinding.MainView,
                 nestedScrollView = widgetConfigurationsViewsBinding.configuredWidgetNestedScrollView,
                 recyclerView = widgetConfigurationsViewsBinding.configuredWidgetList,
-                fastScrollerIndexViewBinding = widgetConfigurationsViewsBinding.fastScrollerIndexIncludeConfigured
+                fastScrollerIndexViewBinding = widgetConfigurationsViewsBinding.fastScrollerIndexIncludeConfigured,
+                indexedFastScrollerFactory = IndexedFastScrollerFactory(
+                        popupEnable = !functionsClass.litePreferencesEnabled(),
+                        popupTextColor = PublicVariable.colorLightDarkOpposite,
+                        indexItemTextColor = PublicVariable.colorLightDarkOpposite)
         )
-        indexedFastScroller.popupEnable = !functionsClass.litePreferencesEnabled()
-        indexedFastScroller.initializeIndexView(0,
-                0,
-                0,
-                0
-        ).await()
+        indexedFastScroller.initializeIndexView().await()
                 .loadIndexData(listOfNewCharOfItemsForIndex = indexListConfigured).await()
         /*Indexed Popup Fast Scroller*/
     }
@@ -1458,14 +1458,13 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 rootView = widgetConfigurationsViewsBinding.MainView,
                 nestedScrollView = widgetConfigurationsViewsBinding.installedNestedScrollView,
                 recyclerView = widgetConfigurationsViewsBinding.installedWidgetList,
-                fastScrollerIndexViewBinding = widgetConfigurationsViewsBinding.fastScrollerIndexIncludeInstalled
+                fastScrollerIndexViewBinding = widgetConfigurationsViewsBinding.fastScrollerIndexIncludeInstalled,
+                indexedFastScrollerFactory = IndexedFastScrollerFactory(
+                        popupEnable = !functionsClass.litePreferencesEnabled(),
+                        popupTextColor = PublicVariable.colorLightDarkOpposite,
+                        indexItemTextColor = PublicVariable.colorLightDarkOpposite)
         )
-        indexedFastScroller.popupEnable = !functionsClass.litePreferencesEnabled()
-        indexedFastScroller.initializeIndexView(0,
-                0,
-                0,
-                0
-        ).await()
+        indexedFastScroller.initializeIndexView().await()
                 .loadIndexData(listOfNewCharOfItemsForIndex = indexListInstalled).await()
         /*Indexed Popup Fast Scroller*/
     }
