@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/29/20 1:40 PM
+ * Last modified 4/29/20 1:57 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,6 +13,7 @@ package net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -25,9 +26,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.IndexedFastScrollerFactory
+import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.calculateNavigationBarHeight
+import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.calculateStatusBarHeight
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.convertToDp
 import net.geekstools.floatshort.PRO.databinding.FastScrollerIndexViewBinding
 import java.util.*
@@ -56,12 +57,15 @@ class IndexedFastScroller(private val context: Context,
                           private val fastScrollerIndexViewBinding: FastScrollerIndexViewBinding,
                           private val indexedFastScrollerFactory: IndexedFastScrollerFactory) {
 
+    private val statusBarHeight = calculateStatusBarHeight(context.resources)
+    private val navigationBarBarHeight = calculateNavigationBarHeight(context.resources)
+
     private val finalPopupVerticalOffset: Int = indexedFastScrollerFactory.popupVerticalOffset.convertToDp(context)
 
     private val finalPopupHorizontalOffset: Int = indexedFastScrollerFactory.popupHorizontalOffset.convertToDp(context)
 
     init {
-        FunctionsClassDebug.PrintDebug("*** Indexed Fast Scroller Initialized ***")
+        Log.d(this@IndexedFastScroller.javaClass.simpleName, "*** Indexed Fast Scroller Initialized ***")
     }
 
     fun initializeIndexView() : Deferred<IndexedFastScroller> = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
@@ -86,7 +90,7 @@ class IndexedFastScroller(private val context: Context,
         fastScrollerIndexViewBinding.popupIndex.layoutParams = popupIndexLayoutParams
 
         val popupIndexBackground: Drawable? = indexedFastScrollerFactory.popupBackgroundShape?:context.getDrawable(R.drawable.ic_launcher_balloon)?.mutate()
-        popupIndexBackground?.setTint(PublicVariable.primaryColorOpposite)
+        popupIndexBackground?.setTint(indexedFastScrollerFactory.popupBackgroundTint)
         fastScrollerIndexViewBinding.popupIndex.background = popupIndexBackground
         fastScrollerIndexViewBinding.popupIndex.setTextColor(indexedFastScrollerFactory.popupTextColor)
         fastScrollerIndexViewBinding.popupIndex.typeface = indexedFastScrollerFactory.popupTextFont
@@ -123,10 +127,10 @@ class IndexedFastScroller(private val context: Context,
             }
         }
 
-        var sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
+        var sideIndexItem = layoutInflater.inflate(R.layout.fast_scroller_side_index_item, null) as TextView
 
         mapIndexFirstItem.keys.forEach { indexText ->
-            sideIndexItem = layoutInflater.inflate(R.layout.side_index_item, null) as TextView
+            sideIndexItem = layoutInflater.inflate(R.layout.fast_scroller_side_index_item, null) as TextView
             sideIndexItem.text = indexText.toUpperCase(Locale.getDefault())
             sideIndexItem.setTextColor(indexedFastScrollerFactory.indexItemTextColor)
             sideIndexItem.typeface = indexedFastScrollerFactory.indexItemFont
@@ -170,10 +174,9 @@ class IndexedFastScroller(private val context: Context,
         fastScrollerIndexViewBinding.nestedIndexScrollView.visibility = View.VISIBLE
 
         val popupIndexOffsetY = (
-                PublicVariable.statusBarHeight
-                        + PublicVariable.actionBarHeight
-                        + finalPopupVerticalOffset
-                ).toFloat()
+                statusBarHeight
+                        + navigationBarBarHeight
+                        + finalPopupVerticalOffset).toFloat()
 
         fastScrollerIndexViewBinding.nestedIndexScrollView.setOnTouchListener { view, motionEvent ->
 

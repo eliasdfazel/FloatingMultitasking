@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright © 2019 By Geeks Empire.
+  ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 11/11/19 7:18 PM
-  ~ Last modified 11/11/19 7:16 PM
+  ~ Created by Elias Fazel
+  ~ Last modified 4/29/20 1:57 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -16,7 +16,7 @@
     android:background="@android:color/transparent"
     android:fontFamily="monospace"
     android:gravity="center"
-    android:text="@string/index_item"
+    android:text="S"
     android:textColor="@color/dark"
     android:textSize="13sp"
     android:textStyle="bold"/>

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/29/20 1:37 PM
+ * Last modified 4/29/20 1:50 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -93,6 +93,10 @@ data class IndexedFastScrollerFactory(
          * Set A Drawable As Background Of Popup View Of Index Text.
          **/
         var popupBackgroundShape: Drawable? = null,
+        /**
+         * Set Tint Of Background Of Popup View Of Index Text.
+         **/
+        var popupBackgroundTint: Int = Color.BLACK,
 
 
 

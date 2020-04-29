@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 5:44 AM
+ * Last modified 4/29/20 1:57 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -798,11 +798,11 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             TextView textView = (TextView) getLayoutInflater()
-                    .inflate(R.layout.side_index_item, null);
+                    .inflate(R.layout.fast_scroller_side_index_item, null);
             List<String> indexList = new ArrayList<String>(mapIndexFirstItem.keySet());
             for (String index : indexList) {
                 textView = (TextView) getLayoutInflater()
-                        .inflate(R.layout.side_index_item, null);
+                        .inflate(R.layout.fast_scroller_side_index_item, null);
                 textView.setText(index.toUpperCase());
                 textView.setTextColor(PublicVariable.colorLightDarkOpposite);
                 indexView.addView(textView);
