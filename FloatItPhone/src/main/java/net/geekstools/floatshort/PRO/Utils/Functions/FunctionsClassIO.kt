@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/28/20 4:12 AM
+ * Last modified 4/30/20 1:38 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -12,7 +12,6 @@ package net.geekstools.floatshort.PRO.Utils.Functions
 
 import android.content.Context
 import android.os.Build
-import java.io.File
 import java.nio.charset.Charset
 
 class FunctionsClassIO (private val context: Context) {
@@ -29,9 +28,10 @@ class FunctionsClassIO (private val context: Context) {
     }
 
     fun fileLinesCounter(fileName: String) : Int {
+        val file = context.getFileStreamPath(fileName)
 
-        return if (context.getFileStreamPath(fileName).exists()) {
-            File(fileName).readLines(Charset.defaultCharset()).size
+        return if (file.exists()) {
+            file.readLines(Charset.defaultCharset()).size
         } else {
             0
         }

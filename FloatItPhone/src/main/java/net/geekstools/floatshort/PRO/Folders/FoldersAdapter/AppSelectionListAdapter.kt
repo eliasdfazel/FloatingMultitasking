@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 6:21 AM
+ * Last modified 4/30/20 12:30 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -179,6 +179,7 @@ class AppSelectionListAdapter(private val context: Context,
 
                             override fun onAnimationEnd(animation: Animation) {
                                 temporaryFallingIcon.visibility = View.INVISIBLE
+                                
                                 appsConfirmButton.startCustomAnimation(null)
                                 confirmButtonProcessInterface.savedShortcutCounter()
                             }
