@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:36 AM
+ * Last modified 5/1/20 8:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -80,7 +80,6 @@ public class PublicVariable {
     public static boolean receiverNFC = false;
     public static boolean splitScreen = true;
     public static boolean forceReload = false;
-    public static boolean updateCancelByUser = false;
 
     public static String[] frequentlyUsedApps;
 
