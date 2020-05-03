@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/29/20 1:40 PM
+ * Last modified 5/3/20 5:51 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -143,7 +143,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
         SwipeGestureListener(applicationContext, this@ApplicationsViewPhone)
     }
 
-    private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
+    private val firebaseRemoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+
 
     private lateinit var firebaseAuth: FirebaseAuth
 
@@ -551,41 +552,45 @@ class ApplicationsViewPhone : AppCompatActivity(),
         super.onResume()
         PublicVariable.inMemory = true
 
-        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
         firebaseRemoteConfig.fetch(0)
                 .addOnSuccessListener {
+
                     firebaseRemoteConfig.activate().addOnSuccessListener {
                         if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(packageName)) {
+
                             val layerDrawableNewUpdate = getDrawable(R.drawable.ic_update) as LayerDrawable?
-                            val gradientDrawableNewUpdate = layerDrawableNewUpdate!!.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
-                            gradientDrawableNewUpdate.setTint(PublicVariable.primaryColor)
+                            val gradientDrawableNewUpdate = layerDrawableNewUpdate?.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable?
+                            gradientDrawableNewUpdate?.setTint(PublicVariable.primaryColor)
 
                             hybridApplicationViewBinding.newUpdate.setImageDrawable(layerDrawableNewUpdate)
                             hybridApplicationViewBinding.newUpdate.visibility = View.VISIBLE
+
                             hybridApplicationViewBinding.newUpdate.setOnClickListener {
                                 functionsClass.upcomingChangeLog(
                                         this@ApplicationsViewPhone,
                                         firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
                             }
+
                             functionsClass.notificationCreator(
                                     getString(R.string.updateAvailable),
                                     firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogSummaryConfigKey()),
                                     firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toInt()
                             )
+
                             val inAppUpdateTriggeredTime =
                                     (Calendar.getInstance()[Calendar.YEAR].toString() + Calendar.getInstance()[Calendar.MONTH].toString() + Calendar.getInstance()[Calendar.DATE].toString())
                                             .toInt()
+
                             if (firebaseAuth.currentUser != null
                                     && functionsClass.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
+
                                 startActivity(Intent(applicationContext, InAppUpdateProcess::class.java)
                                         .putExtra("UPDATE_CHANGE_LOG", firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()))
                                         .putExtra("UPDATE_VERSION", firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
                                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                         ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
                             }
-                        } else {
-
                         }
                     }
                 }

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 3:36 AM
+ * Last modified 5/3/20 5:52 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,7 +32,6 @@ import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
@@ -524,36 +523,41 @@ class FoldersConfigurations : AppCompatActivity(),
         firebaseRemoteConfig.fetch(0)
                 .addOnSuccessListener {
                     firebaseRemoteConfig.activate().addOnSuccessListener {
+
                         if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(packageName)) {
+
                             val layerDrawableNewUpdate = getDrawable(R.drawable.ic_update) as LayerDrawable?
-                            val gradientDrawableNewUpdate = layerDrawableNewUpdate!!.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
-                            gradientDrawableNewUpdate.setTint(PublicVariable.primaryColor)
-                            val newUpdate = findViewById<View>(R.id.newUpdate) as ImageView
-                            newUpdate.setImageDrawable(layerDrawableNewUpdate)
-                            newUpdate.visibility = View.VISIBLE
-                            newUpdate.setOnClickListener {
+                            val gradientDrawableNewUpdate = layerDrawableNewUpdate?.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable?
+                            gradientDrawableNewUpdate?.setTint(PublicVariable.primaryColor)
+
+                            foldersConfigurationViewBinding.newUpdate.setImageDrawable(layerDrawableNewUpdate)
+                            foldersConfigurationViewBinding.newUpdate.visibility = View.VISIBLE
+
+                            foldersConfigurationViewBinding.newUpdate.setOnClickListener {
                                 functionsClass.upcomingChangeLog(
                                         this@FoldersConfigurations,
                                         firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
                             }
+
                             functionsClass.notificationCreator(
                                     getString(R.string.updateAvailable),
                                     firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogSummaryConfigKey()),
                                     firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toInt()
                             )
+
                             val inAppUpdateTriggeredTime =
                                     (Calendar.getInstance()[Calendar.YEAR].toString() + Calendar.getInstance()[Calendar.MONTH].toString() + Calendar.getInstance()[Calendar.DATE].toString())
                                             .toInt()
+
                             if (firebaseAuth.currentUser != null
                                     && functionsClass.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
+
                                 startActivity(Intent(applicationContext, InAppUpdateProcess::class.java)
                                         .putExtra("UPDATE_CHANGE_LOG", firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()))
                                         .putExtra("UPDATE_VERSION", firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
                                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                         ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
                             }
-                        } else {
-
                         }
                     }
                 }

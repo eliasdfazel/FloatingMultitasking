@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/1/20 8:29 AM
+ * Last modified 5/3/20 5:35 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -99,6 +99,9 @@ class InAppUpdateProcess : AppCompatActivity() {
                 InstallStatus.CANCELED -> {
                     FunctionsClassDebug.PrintDebug("*** UPDATE Canceled ***")
 
+                    val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
+                    functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+
                     this@InAppUpdateProcess.finish()
                 }
                 InstallStatus.FAILED -> {
@@ -106,6 +109,8 @@ class InAppUpdateProcess : AppCompatActivity() {
 
                     val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
                     functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+
+                    this@InAppUpdateProcess.finish()
                 }
             }
         }
@@ -160,6 +165,16 @@ class InAppUpdateProcess : AppCompatActivity() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_facebook_app))),
                     ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
         }
+
+        inAppUpdateViewBinding.cancelInAppUpdateNow.setOnLongClickListener {
+
+            val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
+            functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+
+            this@InAppUpdateProcess.finish()
+
+            false
+        }
     }
 
     override fun onResume() {
@@ -184,6 +199,15 @@ class InAppUpdateProcess : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+
+        try {
+
+            appUpdateManager
+                    .unregisterListener(installStateUpdatedListener)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
