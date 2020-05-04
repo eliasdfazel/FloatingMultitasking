@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/26/20 7:59 AM
+  ~ Last modified 5/4/20 10:25 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -122,7 +122,7 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/GeeksEmpire.Material" />
         <activity
-            android:name=".Folders.AppSelectionList"
+            android:name=".Folders.FoldersApplicationsSelectionProcess.AppSelectionList"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:resizeableActivity="true"
             android:screenOrientation="sensorPortrait"

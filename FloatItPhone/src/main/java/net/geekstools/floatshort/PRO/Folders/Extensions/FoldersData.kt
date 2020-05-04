@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/29/20 1:40 PM
+ * Last modified 5/4/20 10:38 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,8 +15,8 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import kotlinx.coroutines.*
-import net.geekstools.floatshort.PRO.Folders.AppSelectionList
-import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSelectionListAdapter
+import net.geekstools.floatshort.PRO.Folders.FoldersApplicationsSelectionProcess.Adapter.AppSelectionListAdapter
+import net.geekstools.floatshort.PRO.Folders.FoldersApplicationsSelectionProcess.AppSelectionList
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.IndexedFastScrollerFactory
@@ -44,8 +44,12 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
                 functionsClass.shapedAppIcon(packageName)
             }
 
+            installedAppsListItem.add(
+                    AdapterItems(appName,
+                            packageName,
+                            appIcon))
+
             listOfNewCharOfItemsForIndex.add(appName.substring(0, 1).toUpperCase(Locale.getDefault()))
-            installedAppsListItem.add(AdapterItems(appName, packageName, appIcon))
         }
     }
 

@@ -2,13 +2,13 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 6:29 AM
+ * Last modified 5/4/20 10:25 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
-package net.geekstools.floatshort.PRO.Folders
+package net.geekstools.floatshort.PRO.Folders.FoldersApplicationsSelectionProcess
 
 import android.content.pm.ApplicationInfo
 import android.content.res.ColorStateList
@@ -27,8 +27,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.geekstools.floatshort.PRO.Folders.Extensions.loadInstalledAppsData
 import net.geekstools.floatshort.PRO.Folders.Extensions.setupConfirmButtonUI
-import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.AppSelectionListAdapter
-import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.SavedAppsListPopupAdapter
+import net.geekstools.floatshort.PRO.Folders.FoldersApplicationsSelectionProcess.Adapter.AppSelectionListAdapter
+import net.geekstools.floatshort.PRO.Folders.FoldersApplicationsSelectionProcess.Adapter.SavedAppsListPopupAdapter
+import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
 import net.geekstools.floatshort.PRO.R
