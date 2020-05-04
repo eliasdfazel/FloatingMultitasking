@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/1/20 8:19 AM
+ * Last modified 5/4/20 7:35 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -79,11 +79,15 @@ class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDat
 
         if (!functionsClassDataActivity.activity.getFileStreamPath(".Updated").exists()) {
 
-            dialog.show()
+            if (!functionsClassDataActivity.activity.isFinishing) {
+                dialog.show()
+            }
 
         } else if (functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName) > functionsClass.readFile(".Updated").toInt()) {
 
-            dialog.show()
+            if (!functionsClassDataActivity.activity.isFinishing) {
+                dialog.show()
+            }
 
         }
     }
@@ -148,6 +152,8 @@ class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDat
             functionsClass.saveFile(".Updated", functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName).toString())
         }
 
-        dialog.show()
+        if (!functionsClassDataActivity.activity.isFinishing) {
+            dialog.show()
+        }
     }
 }

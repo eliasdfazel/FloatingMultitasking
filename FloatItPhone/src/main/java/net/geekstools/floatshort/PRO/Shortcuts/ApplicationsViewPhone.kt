@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/3/20 5:51 AM
+ * Last modified 5/4/20 7:42 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -11,7 +11,6 @@
 package net.geekstools.floatshort.PRO.Shortcuts
 
 import android.animation.Animator
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.app.Dialog
@@ -34,8 +33,6 @@ import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnLongClickListener
-import android.view.View.OnTouchListener
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
@@ -104,36 +101,41 @@ import kotlin.collections.ArrayList
 import kotlin.math.hypot
 
 class ApplicationsViewPhone : AppCompatActivity(),
-        View.OnClickListener, OnLongClickListener,
-        OnTouchListener,
+        View.OnClickListener, View.OnLongClickListener,
         GestureListenerInterface,
         FirebaseInAppMessagingClickListener {
 
-    private lateinit var functionsClassDataActivity: FunctionsClassDataActivity
+    private val functionsClassDataActivity: FunctionsClassDataActivity by lazy {
+        FunctionsClassDataActivity(this@ApplicationsViewPhone)
+    }
 
-    private lateinit var functionsClass: FunctionsClass
-    private lateinit var functionsClassRunServices: FunctionsClassRunServices
-    private lateinit var functionsClassDialogues: FunctionsClassDialogues
+    private val functionsClass: FunctionsClass by lazy {
+        FunctionsClass(applicationContext)
+    }
+    private val functionsClassRunServices: FunctionsClassRunServices by lazy {
+        FunctionsClassRunServices(applicationContext)
+    }
+    private val functionsClassDialogues: FunctionsClassDialogues by lazy {
+        FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
+    }
 
-    private lateinit var securityFunctions: SecurityFunctions
+    private val securityFunctions: SecurityFunctions by lazy {
+        SecurityFunctions(applicationContext)
+    }
 
-    private lateinit var applicationInfoList: List<ResolveInfo>
+    private val listOfNewCharOfItemsForIndex: ArrayList<String> = ArrayList<String>()
 
-    private var listOfNewCharOfItemsForIndex: ArrayList<String> = ArrayList<String>()
-    private lateinit var indexItems: NavigableMap<String, Int>
+    private val applicationsAdapterItems: ArrayList<AdapterItemsApplications> = ArrayList<AdapterItemsApplications>()
 
-    private lateinit var applicationsAdapterItems: ArrayList<AdapterItemsApplications>
-    private lateinit var sections: ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>
+    private val indexSections: ArrayList<HybridSectionedGridRecyclerViewAdapter.Section> = ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>()
+
     private lateinit var recyclerViewAdapter: RecyclerView.Adapter<ApplicationsViewItemsAdapter.ViewHolder>
     private lateinit var recyclerViewLayoutManager: GridLayoutManager
 
-    private var installedPackageName: String? = null
-    private var installedClassName: String? = null
     private var installedAppName: String? = null
-    private var installedAppIcon: Drawable? = null
 
-    var hybridItem: Int = 0
-    var lastIntentItem: Int = 0
+    private var hybridItem: Int = 0
+    private var lastIntentItem: Int = 0
 
     private lateinit var frequentlyUsedAppsList: Array<String>
     private lateinit var frequentlyUsedAppsCounter: IntArray
@@ -165,14 +167,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
         hybridApplicationViewBinding = HybridApplicationViewBinding.inflate(layoutInflater)
         setContentView(hybridApplicationViewBinding.root)
 
-        functionsClassDataActivity = FunctionsClassDataActivity(this@ApplicationsViewPhone)
-
-        functionsClass = FunctionsClass(applicationContext)
-        functionsClassRunServices = FunctionsClassRunServices(applicationContext)
-        functionsClassDialogues = FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
-
-        securityFunctions = SecurityFunctions(applicationContext)
-
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()
 
@@ -181,12 +175,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(105), OrientationHelper.VERTICAL, false)
         hybridApplicationViewBinding.applicationsListView.layoutManager = recyclerViewLayoutManager
-
-        sections = ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>()
-        indexItems = TreeMap<String, Int>()
-
-        applicationInfoList = ArrayList<ResolveInfo>()
-        applicationsAdapterItems = ArrayList<AdapterItemsApplications>()
 
         /*All Loading Process*/
         initiateLoadingProcessAll()
@@ -647,12 +635,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
         functionsClass.CheckSystemRAM(this@ApplicationsViewPhone)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onTouch(view: View?, event: MotionEvent?): Boolean {
-
-        return false
-    }
-
     override fun onClick(view: View?) {
         if (view is ImageView) {
             val position = view.id
@@ -825,7 +807,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
             loadCustomIcons.load()
         }
 
-        applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
+        val applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
             this.action = Intent.ACTION_MAIN
             this.addCategory(Intent.CATEGORY_LAUNCHER)
         }, PackageManager.GET_RESOLVED_FILTER)
@@ -865,25 +847,25 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 }
                 .withIndex().collect {
                     try {
-                        installedPackageName = it.value.activityInfo.packageName
-                        installedClassName = it.value.activityInfo.name
+                        val installedPackageName = it.value.activityInfo.packageName
+                        val installedClassName = it.value.activityInfo.name
                         installedAppName = functionsClass.activityLabel(it.value.activityInfo)
 
                         newChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
 
                         if (it.index == 0) {
-                            sections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
+                            indexSections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
                         } else {
 
                             if (oldChar != newChar) {
-                                sections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
+                                indexSections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
 
                                 listOfNewCharOfItemsForIndex.add(newChar)
                                 itemOfIndex = 1
                             }
                         }
 
-                        installedAppIcon = if (functionsClass.customIconsEnable()) {
+                        val installedAppIcon = if (functionsClass.customIconsEnable()) {
                             loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(it.value.activityInfo))
                         } else {
                             functionsClass.shapedAppIcon(it.value.activityInfo)
@@ -896,7 +878,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                 SearchResultType.SearchShortcuts))
                     } finally {
                         listOfNewCharOfItemsForIndex.add(newChar)
-                        indexItems[newChar] = itemOfIndex++
 
                         hybridItem += 1
 
@@ -965,7 +946,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
             }
 
             recyclerViewAdapter.notifyDataSetChanged()
-            val sectionsData = arrayOfNulls<HybridSectionedGridRecyclerViewAdapter.Section>(sections.size)
+            val sectionsData = arrayOfNulls<HybridSectionedGridRecyclerViewAdapter.Section>(indexSections.size)
             val hybridSectionedGridRecyclerViewAdapter = HybridSectionedGridRecyclerViewAdapter(
                     applicationContext,
                     R.layout.hybrid_sections,
@@ -974,7 +955,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     recyclerViewAdapter
             )
 
-            hybridSectionedGridRecyclerViewAdapter.setSections(sections.toArray(sectionsData))
+            hybridSectionedGridRecyclerViewAdapter.setSections(indexSections.toArray(sectionsData))
             hybridApplicationViewBinding.applicationsListView.adapter = hybridSectionedGridRecyclerViewAdapter
 
             recyclerViewLayoutManager.scrollToPosition(0)

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/30/20 6:42 AM
+ * Last modified 5/4/20 7:37 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -76,10 +76,13 @@ class WaitingDialogue {
                 })
 
         dialog.setOnDismissListener {
+
             dialog.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         }
 
-        dialog.show()
+        if (!initActivity.isFinishing) {
+            dialog.show()
+        }
 
         return dialog
     }
