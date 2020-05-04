@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/4/20 7:42 AM
+ * Last modified 5/4/20 7:53 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -127,15 +127,12 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
     private val applicationsAdapterItems: ArrayList<AdapterItemsApplications> = ArrayList<AdapterItemsApplications>()
 
-    private val indexSections: ArrayList<HybridSectionedGridRecyclerViewAdapter.Section> = ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>()
-
     private lateinit var recyclerViewAdapter: RecyclerView.Adapter<ApplicationsViewItemsAdapter.ViewHolder>
     private lateinit var recyclerViewLayoutManager: GridLayoutManager
 
-    private var installedAppName: String? = null
+    private val indexSections: ArrayList<HybridSectionedGridRecyclerViewAdapter.Section> = ArrayList<HybridSectionedGridRecyclerViewAdapter.Section>()
 
-    private var hybridItem: Int = 0
-    private var lastIntentItem: Int = 0
+    private var indexSectionsPosition: Int = 0
 
     private lateinit var frequentlyUsedAppsList: Array<String>
     private lateinit var frequentlyUsedAppsCounter: IntArray
@@ -846,44 +843,42 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     }
                 }
                 .withIndex().collect {
-                    try {
-                        val installedPackageName = it.value.activityInfo.packageName
-                        val installedClassName = it.value.activityInfo.name
-                        installedAppName = functionsClass.activityLabel(it.value.activityInfo)
 
-                        newChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
+                    val installedPackageName = it.value.activityInfo.packageName
+                    val installedClassName = it.value.activityInfo.name
+                    val installedAppName = functionsClass.activityLabel(it.value.activityInfo)
 
-                        if (it.index == 0) {
-                            indexSections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
-                        } else {
+                    newChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
 
-                            if (oldChar != newChar) {
-                                indexSections.add(HybridSectionedGridRecyclerViewAdapter.Section(hybridItem, newChar))
+                    if (it.index == 0) {
+                        indexSections.add(HybridSectionedGridRecyclerViewAdapter.Section(indexSectionsPosition, newChar))
+                    } else {
 
-                                listOfNewCharOfItemsForIndex.add(newChar)
-                                itemOfIndex = 1
-                            }
+                        if (oldChar != newChar) {
+                            indexSections.add(HybridSectionedGridRecyclerViewAdapter.Section(indexSectionsPosition, newChar))
+
+                            listOfNewCharOfItemsForIndex.add(newChar)
+                            itemOfIndex = 1
                         }
-
-                        val installedAppIcon = if (functionsClass.customIconsEnable()) {
-                            loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(it.value.activityInfo))
-                        } else {
-                            functionsClass.shapedAppIcon(it.value.activityInfo)
-                        }
-
-                        applicationsAdapterItems.add(AdapterItemsApplications(installedAppName!!,
-                                installedPackageName!!, installedClassName!!,
-                                installedAppIcon!!,
-                                functionsClass.extractDominantColor(installedAppIcon),
-                                SearchResultType.SearchShortcuts))
-                    } finally {
-                        listOfNewCharOfItemsForIndex.add(newChar)
-
-                        hybridItem += 1
-
-                        lastIntentItem = it.index
-                        oldChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
                     }
+
+                    val installedAppIcon = if (functionsClass.customIconsEnable()) {
+                        loadCustomIcons.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(it.value.activityInfo))
+                    } else {
+                        functionsClass.shapedAppIcon(it.value.activityInfo)
+                    }
+
+                    applicationsAdapterItems.add(AdapterItemsApplications(installedAppName,
+                            installedPackageName!!, installedClassName!!,
+                            installedAppIcon!!,
+                            functionsClass.extractDominantColor(installedAppIcon),
+                            SearchResultType.SearchShortcuts))
+
+                    listOfNewCharOfItemsForIndex.add(newChar)
+
+                    indexSectionsPosition += 1
+
+                    oldChar = installedAppName.substring(0, 1).toUpperCase(Locale.getDefault())
                 }
 
         withContext(Dispatchers.Main) {
