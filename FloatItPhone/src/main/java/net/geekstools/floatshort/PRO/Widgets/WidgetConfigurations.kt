@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/29/20 1:40 PM
+ * Last modified 5/5/20 1:38 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1242,45 +1242,88 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     val className: String = appWidgetProviderInfo.value.provider.className
                     val componentNameConfiguration: ComponentName? = appWidgetProviderInfo.value.configure
 
-                    if (componentNameConfiguration != null) {
-                        if (packageManager.getActivityInfo(componentNameConfiguration, PackageManager.GET_META_DATA).exported) {
-                            if (packageName.isNotEmpty() && className.isNotEmpty()) {
+                    if (componentNameConfiguration != null) {//Configurable Widget
 
-                                val newAppName = functionsClass.appName(packageName)
-                                val newAppIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+                        try {
+                            if (packageManager.getActivityInfo(componentNameConfiguration, PackageManager.GET_META_DATA).exported) {
 
-                                if (widgetIndex == 0) {
-                                    installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
-                                    indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
-                                } else {
-                                    if (oldAppName != newAppName) {
+                                if (packageName.isNotEmpty() && className.isNotEmpty()) {
+
+                                    val newAppName = functionsClass.appName(packageName)
+                                    val newAppIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+
+                                    if (widgetIndex == 0) {
                                         installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
                                         indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                    } else {
+                                        if (oldAppName != newAppName) {
+                                            installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
+                                            indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                        }
                                     }
+
+                                    oldAppName = functionsClass.appName(appWidgetProviderInfo.value.provider.packageName)
+
+                                    val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
+                                    val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
+
+                                    indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                    installedWidgetsAdapterItems.add(AdapterItems(functionsClass.appName(appWidgetProviderInfo.value.provider.packageName),
+                                            appWidgetProviderInfo.value.provider.packageName,
+                                            appWidgetProviderInfo.value.provider.className,
+                                            componentNameConfiguration.className,
+                                            widgetLabel ?: newAppName,
+                                            newAppIcon,
+                                            widgetPreviewDrawable
+                                                    ?: appWidgetProviderInfo.value.loadIcon(applicationContext, DisplayMetrics.DENSITY_HIGH),
+                                            appWidgetProviderInfo.value
+                                    ))
+
                                 }
-
-                                oldAppName = functionsClass.appName(appWidgetProviderInfo.value.provider.packageName)
-
-                                val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
-                                val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
-
-                                indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
-                                installedWidgetsAdapterItems.add(AdapterItems(functionsClass.appName(appWidgetProviderInfo.value.provider.packageName),
-                                        appWidgetProviderInfo.value.provider.packageName,
-                                        appWidgetProviderInfo.value.provider.className,
-                                        componentNameConfiguration.className,
-                                        widgetLabel ?: newAppName,
-                                        newAppIcon,
-                                        widgetPreviewDrawable
-                                                ?: appWidgetProviderInfo.value.loadIcon(applicationContext, DisplayMetrics.DENSITY_HIGH),
-                                        appWidgetProviderInfo.value
-                                ))
-
                             }
+                        } catch (e: PackageManager.NameNotFoundException) {
+                            e.printStackTrace()
+
+                            //Other Idiot Developers Could Not Even Create A Simple Widget - Idiot Developers Forgot To Setup Configuration Activity Or Remove It.
+                            val newAppName = functionsClass.appName(packageName)
+                            val newAppIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
+
+                            if (widgetIndex == 0) {
+                                installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
+                                indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                            } else {
+                                if (oldAppName != newAppName) {
+                                    installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
+                                    indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                }
+                            }
+
+                            oldAppName = functionsClass.appName(appWidgetProviderInfo.value.provider.packageName)
+                            val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
+                            val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
+
+                            indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                            installedWidgetsAdapterItems.add(AdapterItems(functionsClass.appName(appWidgetProviderInfo.value.provider.packageName),
+                                    appWidgetProviderInfo.value.provider.packageName,
+                                    appWidgetProviderInfo.value.provider.className,
+                                    null,
+                                    if (widgetLabel != null) {
+                                        "$widgetLabel ⚠"
+                                    } else {
+                                        "$newAppName ⚠"
+                                    },
+                                    newAppIcon,
+                                    widgetPreviewDrawable
+                                            ?: appWidgetProviderInfo.value.loadIcon(applicationContext, DisplayMetrics.DENSITY_HIGH),
+                                    appWidgetProviderInfo.value
+                            ))
+
                         }
-                    } else {
+
+                    } else {//Normal - Not Configurable Widget
 
                         if (packageName.isNotEmpty() && className.isNotEmpty()) {
+
                             val newAppName = functionsClass.appName(packageName)
                             val newAppIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
 
@@ -1310,6 +1353,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                     appWidgetProviderInfo.value
                             ))
                         }
+
                     }
 
                     widgetIndex++

@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 5/5/20 1:29 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,6 +13,8 @@ package net.geekstools.floatshort.PRO.Utils.AdapterItemsData;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetProviderInfo;
 import android.graphics.drawable.Drawable;
+
+import androidx.annotation.Nullable;
 
 public class AdapterItems {
 
@@ -80,7 +82,7 @@ public class AdapterItems {
         this.times = times;
     }
 
-    public AdapterItems(String AppName, String PackageName, String classNameProviderWidget, String configClassNameWidget, String widgetLabel, Drawable AppIcon, Drawable widgetPreview, AppWidgetProviderInfo appWidgetProviderInfo) {
+    public AdapterItems(String AppName, String PackageName, String classNameProviderWidget, @Nullable String configClassNameWidget, String widgetLabel, Drawable AppIcon, Drawable widgetPreview, AppWidgetProviderInfo appWidgetProviderInfo) {
         this.appName = AppName;
         this.packageName = PackageName;
         this.classNameProviderWidget = classNameProviderWidget;
@@ -169,7 +171,7 @@ public class AdapterItems {
         return this.classNameProviderWidget;
     }
 
-    public String getConfigClassNameWidget() {
+    public @Nullable String getConfigClassNameWidget() {
         return this.ConfigClassNameWidget;
     }
 

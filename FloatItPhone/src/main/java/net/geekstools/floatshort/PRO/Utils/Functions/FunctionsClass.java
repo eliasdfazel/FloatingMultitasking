@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/29/20 6:11 AM
+ * Last modified 5/5/20 1:14 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -5729,7 +5729,7 @@ public class FunctionsClass {
 
     public boolean floatingWidgetsPurchased() {
 
-        return (BuildConfig.DEBUG) ? false :
+        return //(BuildConfig.DEBUG) ? false :
                 readPreference(".PurchasedItem", InAppBillingData.SKU.InAppItemFloatingWidgets, false);
     }
 
