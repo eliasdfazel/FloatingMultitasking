@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/4/20 7:53 AM
+ * Last modified 5/5/20 1:56 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -810,7 +810,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }, PackageManager.GET_RESOLVED_FILTER)
         val applicationInfoListSorted = applicationInfoList.sortedWith(ResolveInfo.DisplayNameComparator(packageManager))
 
-        var itemOfIndex = 1
         var newChar: String = "A"
         var oldChar: String? = null
 
@@ -858,7 +857,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
                             indexSections.add(HybridSectionedGridRecyclerViewAdapter.Section(indexSectionsPosition, newChar))
 
                             listOfNewCharOfItemsForIndex.add(newChar)
-                            itemOfIndex = 1
                         }
                     }
 
