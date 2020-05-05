@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/5/20 1:38 PM
+ * Last modified 5/5/20 1:51 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -905,66 +905,22 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             when (requestCode) {
                 InstalledWidgetsAdapter.WIDGET_CONFIGURATION_REQUEST -> {
 
-                    CoroutineScope(Dispatchers.IO).launch {
+                    if (InstalledWidgetsAdapter.pickedWidgetPackageName != null
+                            && InstalledWidgetsAdapter.pickedWidgetClassNameProvider != null) {
 
-                        val dataExtras = data!!.extras
-                        val appWidgetId = dataExtras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
-
-                        val widgetDataModel = WidgetDataModel(
-                                System.currentTimeMillis(),
-                                appWidgetId,
-                                InstalledWidgetsAdapter.pickedWidgetPackageName,
-                                InstalledWidgetsAdapter.pickedWidgetClassNameProvider,
-                                InstalledWidgetsAdapter.pickedWidgetConfigClassName,
-                                functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName),
-                                InstalledWidgetsAdapter.pickedWidgetLabel,
-                                false
-                        )
-
-                        val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
-                                .fallbackToDestructiveMigration()
-                                .addCallback(object : RoomDatabase.Callback() {
-
-                                    override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                                        super.onCreate(supportSQLiteDatabase)
-                                    }
-
-                                    override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                                        super.onOpen(supportSQLiteDatabase)
-
-                                        loadConfiguredWidgets()
-                                    }
-                                })
-                                .build()
-
-                        widgetDataInterface.initDataAccessObject().insertNewWidgetDataSuspend(widgetDataModel)
-                        widgetDataInterface.close()
-                    }
-                }
-                InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER -> {
-                    val extras = data!!.extras
-                    val appWidgetId = extras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
-                    val appWidgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
-
-                    if (appWidgetInfo.configure != null) {
-
-                        Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE).apply {
-                            this.component = appWidgetInfo.configure
-                            this.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                            startActivityForResult(this, InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER_CONFIGURATION)
-                        }
-
-                    } else {
                         CoroutineScope(Dispatchers.IO).launch {
+
+                            val dataExtras = data!!.extras
+                            val appWidgetId = dataExtras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
 
                             val widgetDataModel = WidgetDataModel(
                                     System.currentTimeMillis(),
                                     appWidgetId,
-                                    appWidgetInfo.provider.packageName,
-                                    InstalledWidgetsAdapter.pickedWidgetClassNameProvider,
+                                    InstalledWidgetsAdapter.pickedWidgetPackageName!!,
+                                    InstalledWidgetsAdapter.pickedWidgetClassNameProvider!!,
                                     InstalledWidgetsAdapter.pickedWidgetConfigClassName,
-                                    functionsClass.appName(appWidgetInfo.provider.packageName),
-                                    appWidgetInfo.loadLabel(packageManager),
+                                    functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName),
+                                    InstalledWidgetsAdapter.pickedWidgetLabel,
                                     false
                             )
 
@@ -989,41 +945,96 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         }
                     }
                 }
+                InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER -> {
+                    val extras = data!!.extras
+                    val appWidgetId = extras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
+                    val appWidgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
+
+                    if (appWidgetInfo.configure != null) {
+
+                        Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE).apply {
+                            this.component = appWidgetInfo.configure
+                            this.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                            startActivityForResult(this, InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER_CONFIGURATION)
+                        }
+
+                    } else {
+
+                        if (InstalledWidgetsAdapter.pickedWidgetClassNameProvider != null) {
+
+                            CoroutineScope(Dispatchers.IO).launch {
+
+                                val widgetDataModel = WidgetDataModel(
+                                        System.currentTimeMillis(),
+                                        appWidgetId,
+                                        appWidgetInfo.provider.packageName,
+                                        InstalledWidgetsAdapter.pickedWidgetClassNameProvider!!,
+                                        InstalledWidgetsAdapter.pickedWidgetConfigClassName,
+                                        functionsClass.appName(appWidgetInfo.provider.packageName),
+                                        appWidgetInfo.loadLabel(packageManager),
+                                        false
+                                )
+
+                                val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                        .fallbackToDestructiveMigration()
+                                        .addCallback(object : RoomDatabase.Callback() {
+
+                                            override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                                super.onCreate(supportSQLiteDatabase)
+                                            }
+
+                                            override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                                super.onOpen(supportSQLiteDatabase)
+
+                                                loadConfiguredWidgets()
+                                            }
+                                        })
+                                        .build()
+
+                                widgetDataInterface.initDataAccessObject().insertNewWidgetDataSuspend(widgetDataModel)
+                                widgetDataInterface.close()
+                            }
+                        }
+                    }
+                }
                 InstalledWidgetsAdapter.SYSTEM_WIDGET_PICKER_CONFIGURATION -> {
 
-                    CoroutineScope(Dispatchers.IO).launch {
+                    if (InstalledWidgetsAdapter.pickedWidgetClassNameProvider != null) {
 
-                        val extras = data!!.extras
-                        val appWidgetId = extras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
-                        val appWidgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
+                        CoroutineScope(Dispatchers.IO).launch {
 
-                        val widgetDataModel = WidgetDataModel(
-                                System.currentTimeMillis(),
-                                appWidgetId,
-                                appWidgetInfo.provider.packageName,
-                                InstalledWidgetsAdapter.pickedWidgetClassNameProvider,
-                                InstalledWidgetsAdapter.pickedWidgetConfigClassName,
-                                functionsClass.appName(appWidgetInfo.provider.packageName),
-                                appWidgetInfo.loadLabel(packageManager),
-                                false
-                        )
-                        val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
-                                .fallbackToDestructiveMigration()
-                                .addCallback(object : RoomDatabase.Callback() {
+                            val extras = data!!.extras
+                            val appWidgetId = extras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
+                            val appWidgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
 
-                                    override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                                        super.onCreate(supportSQLiteDatabase)
-                                    }
+                            val widgetDataModel = WidgetDataModel(
+                                    System.currentTimeMillis(),
+                                    appWidgetId,
+                                    appWidgetInfo.provider.packageName,
+                                    InstalledWidgetsAdapter.pickedWidgetClassNameProvider!!,
+                                    InstalledWidgetsAdapter.pickedWidgetConfigClassName,
+                                    functionsClass.appName(appWidgetInfo.provider.packageName),
+                                    appWidgetInfo.loadLabel(packageManager),
+                                    false
+                            )
+                            val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                    .fallbackToDestructiveMigration()
+                                    .addCallback(object : RoomDatabase.Callback() {
 
-                                    override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                                        super.onOpen(supportSQLiteDatabase)
+                                        override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                            super.onCreate(supportSQLiteDatabase)
+                                        }
 
-                                        loadConfiguredWidgets()
-                                    }
-                                })
-                                .build()
-                        widgetDataInterface.initDataAccessObject().insertNewWidgetDataSuspend(widgetDataModel)
-                        widgetDataInterface.close()
+                                        override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                            super.onOpen(supportSQLiteDatabase)
+
+                                            loadConfiguredWidgets()
+                                        }
+                                    })
+                                    .build()
+                            widgetDataInterface.initDataAccessObject().insertNewWidgetDataSuspend(widgetDataModel)
+                            widgetDataInterface.close()
+                        }
                     }
                 }
             }

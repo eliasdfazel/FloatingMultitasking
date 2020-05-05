@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 5:49 PM
- * Last modified 3/28/20 5:08 PM
+ * Created by Elias Fazel
+ * Last modified 5/5/20 1:49 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -40,8 +40,8 @@ class InstalledWidgetsAdapter(private val widgetConfigurationsActivity: WidgetCo
         const val SYSTEM_WIDGET_PICKER = 333
         const val SYSTEM_WIDGET_PICKER_CONFIGURATION = 111
 
-        lateinit var pickedWidgetPackageName: String
-        lateinit var pickedWidgetClassNameProvider: String
+        var pickedWidgetPackageName: String? = null
+        var pickedWidgetClassNameProvider: String? = null
         var pickedWidgetConfigClassName: String? = null
         lateinit var pickedAppWidgetProviderInfo: AppWidgetProviderInfo
 
@@ -67,49 +67,58 @@ class InstalledWidgetsAdapter(private val widgetConfigurationsActivity: WidgetCo
         viewHolder.widgetitem.setOnLongClickListener {
             functionsClass.doVibrate(77)
 
-            pickedWidgetPackageName = adapterItems[position].packageName
-            pickedWidgetClassNameProvider = adapterItems[position].classNameProviderWidget
-            pickedWidgetConfigClassName = adapterItems[position].configClassNameWidget
-            pickedAppWidgetProviderInfo = adapterItems[position].appWidgetProviderInfo
+            InstalledWidgetsAdapter.pickedWidgetPackageName = adapterItems[position].packageName
+            InstalledWidgetsAdapter.pickedWidgetClassNameProvider = adapterItems[position].classNameProviderWidget
+            InstalledWidgetsAdapter.pickedWidgetConfigClassName = adapterItems[position].configClassNameWidget
+            InstalledWidgetsAdapter.pickedAppWidgetProviderInfo = adapterItems[position].appWidgetProviderInfo
 
-            pickedWidgetId = appWidgetHost.allocateAppWidgetId()
-            pickedWidgetLabel = adapterItems[position].widgetLabel
-            val widgetProvider = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetClassNameProvider)
+            InstalledWidgetsAdapter.pickedWidgetId = appWidgetHost.allocateAppWidgetId()
+            InstalledWidgetsAdapter.pickedWidgetLabel = adapterItems[position].widgetLabel
 
-            if (pickedAppWidgetProviderInfo.configure != null
-                    && pickedWidgetConfigClassName != null) {
-                val configure = ComponentName.createRelative(pickedWidgetPackageName, pickedWidgetConfigClassName!!)
 
-                try {
-                    if (context.packageManager.getActivityInfo(configure, PackageManager.GET_META_DATA).exported) {
+            if (InstalledWidgetsAdapter.pickedWidgetPackageName != null &&
+                    InstalledWidgetsAdapter.pickedWidgetClassNameProvider != null) {
 
-                        val intentWidgetBind = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND).apply {
-                            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId)
-                            putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, widgetProvider)
+                val widgetProvider = ComponentName.createRelative(InstalledWidgetsAdapter.pickedWidgetPackageName!!, InstalledWidgetsAdapter.pickedWidgetClassNameProvider!!)
+
+                if (InstalledWidgetsAdapter.pickedAppWidgetProviderInfo.configure != null
+                        && InstalledWidgetsAdapter.pickedWidgetConfigClassName != null) {
+
+
+                    try {
+                        val widgetConfigurationActivity = ComponentName.createRelative(InstalledWidgetsAdapter.pickedWidgetPackageName!!, InstalledWidgetsAdapter.pickedWidgetConfigClassName!!)
+
+                        if (context.packageManager.getActivityInfo(widgetConfigurationActivity, PackageManager.GET_META_DATA).exported) {
+
+                            val intentWidgetBind = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND).apply {
+                                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId)
+                                putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, widgetProvider)
+                            }
+                            widgetConfigurationsActivity.startActivityForResult(intentWidgetBind, InstalledWidgetsAdapter.WIDGET_CONFIGURATION_REQUEST)
+
+                            val intentWidgetConfiguration = Intent().apply {
+                                action = AppWidgetManager.ACTION_APPWIDGET_CONFIGURE
+                                component = widgetConfigurationActivity
+                                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId)
+                                putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER,  /*pickedAppWidgetProviderInfo.*/widgetProvider)
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                            }
+                            widgetConfigurationsActivity.startActivityForResult(intentWidgetConfiguration, InstalledWidgetsAdapter.WIDGET_CONFIGURATION_REQUEST)
+
+                        } else {
+
                         }
-                        widgetConfigurationsActivity.startActivityForResult(intentWidgetBind, WIDGET_CONFIGURATION_REQUEST)
-
-                        val intentWidgetConfiguration = Intent().apply {
-                            action = AppWidgetManager.ACTION_APPWIDGET_CONFIGURE
-                            component = configure
-                            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId)
-                            putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER,  /*pickedAppWidgetProviderInfo.*/widgetProvider)
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-                        }
-                        widgetConfigurationsActivity.startActivityForResult(intentWidgetConfiguration, WIDGET_CONFIGURATION_REQUEST)
-
-                    } else {
-
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        e.printStackTrace()
                     }
-                } catch (e: PackageManager.NameNotFoundException) {
-                    e.printStackTrace()
-                }
-            } else {
 
-                val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND)
-                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId)
-                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, widgetProvider)
-                widgetConfigurationsActivity.startActivityForResult(intent, WIDGET_CONFIGURATION_REQUEST)
+                } else {
+
+                    val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND)
+                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, pickedWidgetId)
+                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, widgetProvider)
+                    widgetConfigurationsActivity.startActivityForResult(intent, InstalledWidgetsAdapter.WIDGET_CONFIGURATION_REQUEST)
+                }
             }
 
             false
