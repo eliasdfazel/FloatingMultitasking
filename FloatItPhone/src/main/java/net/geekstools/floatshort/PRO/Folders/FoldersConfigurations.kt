@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/3/20 5:52 AM
+ * Last modified 5/6/20 11:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -128,6 +128,8 @@ class FoldersConfigurations : AppCompatActivity(),
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     private lateinit var waitingDialogue: Dialog
+
+    private lateinit var waitingDialogueLiveData: WaitingDialogueLiveData
 
     private lateinit var foldersConfigurationViewBinding: FoldersConfigurationViewBinding
 
@@ -487,7 +489,8 @@ class FoldersConfigurations : AppCompatActivity(),
                 startActivityForResult(this, Google.SignInRequest)
             }
 
-            ViewModelProvider(this@FoldersConfigurations).get(WaitingDialogueLiveData::class.java).run {
+            waitingDialogueLiveData = ViewModelProvider(this@FoldersConfigurations).get(WaitingDialogueLiveData::class.java)
+            waitingDialogueLiveData.run {
                 this.dialogueTitle.value = getString(R.string.signinTitle)
                 this.dialogueMessage.value = getString(R.string.signinMessage)
 
@@ -699,7 +702,7 @@ class FoldersConfigurations : AppCompatActivity(),
                                 }
                             }.addOnFailureListener { exception ->
 
-                                ViewModelProvider(this@FoldersConfigurations).get(WaitingDialogueLiveData::class.java).run {
+                                waitingDialogueLiveData.run {
                                     this.dialogueTitle.value = getString(R.string.error)
                                     this.dialogueMessage.value = exception.message
                                 }
@@ -707,7 +710,7 @@ class FoldersConfigurations : AppCompatActivity(),
                 }
             }
         } else {
-            ViewModelProvider(this@FoldersConfigurations).get(WaitingDialogueLiveData::class.java).run {
+            waitingDialogueLiveData.run {
                 this.dialogueTitle.value = getString(R.string.error)
                 this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
             }

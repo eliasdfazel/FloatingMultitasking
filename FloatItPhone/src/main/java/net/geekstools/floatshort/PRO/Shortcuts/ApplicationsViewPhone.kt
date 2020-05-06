@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/5/20 1:56 PM
+ * Last modified 5/6/20 11:19 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -148,6 +148,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
     private lateinit var firebaseAuth: FirebaseAuth
 
     private lateinit var waitingDialogue: Dialog
+
+    private lateinit var waitingDialogueLiveData: WaitingDialogueLiveData
 
     private val loadCustomIcons: LoadCustomIcons by lazy {
         LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
@@ -505,7 +507,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 startActivityForResult(this, Google.SignInRequest)
             }
 
-            ViewModelProvider(this@ApplicationsViewPhone).get(WaitingDialogueLiveData::class.java).run {
+            waitingDialogueLiveData = ViewModelProvider(this@ApplicationsViewPhone).get(WaitingDialogueLiveData::class.java)
+            waitingDialogueLiveData.run {
                 this.dialogueTitle.value = getString(R.string.signinTitle)
                 this.dialogueMessage.value = getString(R.string.signinMessage)
 
@@ -756,7 +759,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                 }
                             }.addOnFailureListener { exception ->
 
-                                ViewModelProvider(this@ApplicationsViewPhone).get(WaitingDialogueLiveData::class.java).run {
+                                waitingDialogueLiveData.run {
                                     this.dialogueTitle.value = getString(R.string.error)
                                     this.dialogueMessage.value = exception.message
                                 }
@@ -764,7 +767,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 }
             }
         } else {
-            ViewModelProvider(this@ApplicationsViewPhone).get(WaitingDialogueLiveData::class.java).run {
+            waitingDialogueLiveData.run {
                 this.dialogueTitle.value = getString(R.string.error)
                 this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
             }
