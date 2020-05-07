@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel
+  ~ Last modified 4/8/20 8:14 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarSize="0dp"
+    android:id="@+id/pinFullViewScrollView">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="7dp"
+        android:id="@+id/pinFullView">
+
+        <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/textInputPasswordCurrent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="29dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:gravity="center_vertical"
+            android:imeOptions="actionNext"
+            android:hint="@string/enterCurrentPassword"
+            android:textColorHint="@color/default_color_light"
+            apps:boxBackgroundMode="outline"
+            apps:boxBackgroundColor="@color/darker"
+            apps:boxCornerRadiusTopStart="7dp"
+            apps:boxCornerRadiusTopEnd="7dp"
+            apps:boxCornerRadiusBottomStart="7dp"
+            apps:boxCornerRadiusBottomEnd="7dp"
+            apps:boxStrokeColor="@color/default_color_game"
+            apps:boxStrokeWidth="2dp"
+            apps:hintEnabled="true"
+            apps:hintAnimationEnabled="true"
+            apps:hintTextColor="@color/default_color_light"
+            apps:errorEnabled="true"
+            apps:errorTextColor="@color/red"
+            android:visibility="invisible">
+
+            <com.google.android.material.textfield.TextInputEditText xmlns:apps="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/passwordCurrent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:gravity="center_vertical"
+                android:imeOptions="actionNext"
+                android:lines="1"
+                android:inputType="numberPassword"
+                android:maxLines="1"
+                android:textSize="27sp"
+                android:textColor="@color/light"
+                android:textColorHint="@color/light"
+                android:cursorVisible="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/textInputPinPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textInputPasswordCurrent"
+            android:layout_marginTop="9dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:gravity="center_vertical"
+            android:imeOptions="actionNext"
+            android:hint="@string/passwordHint"
+            android:textColorHint="@color/default_color_light"
+            apps:boxBackgroundMode="outline"
+            apps:boxBackgroundColor="@color/darker"
+            apps:boxCornerRadiusTopStart="7dp"
+            apps:boxCornerRadiusTopEnd="7dp"
+            apps:boxCornerRadiusBottomStart="7dp"
+            apps:boxCornerRadiusBottomEnd="7dp"
+            apps:boxStrokeColor="@color/default_color_game"
+            apps:boxStrokeWidth="2dp"
+            apps:hintEnabled="true"
+            apps:hintAnimationEnabled="true"
+            apps:hintTextColor="@color/default_color_light"
+            apps:errorEnabled="true"
+            apps:errorTextColor="@color/red">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pinPasswordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:gravity="center_vertical"
+                android:imeOptions="actionNext"
+                android:lines="1"
+                android:inputType="numberPassword"
+                android:maxLines="1"
+                android:textSize="27sp"
+                android:textColor="@color/light"
+                android:textColorHint="@color/light"
+                android:cursorVisible="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout xmlns:apps="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/textInputPasswordRepeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textInputPinPassword"
+            android:layout_marginTop="9dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:hint="@string/passwordHintRepeat"
+            android:textColorHint="@color/default_color_light"
+            apps:boxBackgroundMode="outline"
+            apps:boxBackgroundColor="@color/darker"
+            apps:boxCornerRadiusTopStart="7dp"
+            apps:boxCornerRadiusTopEnd="7dp"
+            apps:boxCornerRadiusBottomStart="7dp"
+            apps:boxCornerRadiusBottomEnd="7dp"
+            apps:boxStrokeColor="@color/default_color_game"
+            apps:boxStrokeWidth="2dp"
+            apps:hintEnabled="true"
+            apps:hintAnimationEnabled="true"
+            apps:hintTextColor="@color/default_color_light"
+            apps:errorEnabled="true"
+            apps:errorTextColor="@color/red">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordRepeat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:gravity="center_vertical"
+                android:imeOptions="actionDone"
+                android:lines="1"
+                android:inputType="numberPassword"
+                android:maxLines="1"
+                android:textSize="27sp"
+                android:textColor="@color/light"
+                android:textColorHint="@color/light"
+                android:cursorVisible="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/donePassword"
+            android:layout_width="match_parent"
+            android:layout_height="71dp"
+            android:layout_below="@id/textInputPasswordRepeat"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:layout_marginBottom="9dp"
+            android:layout_marginTop="49dp"
+            android:textAllCaps="false"
+            android:text="@string/grantFreeForm"
+            android:textColor="@color/light"
+            android:textSize="23sp"
+            android:typeface="sans"
+            apps:elevation="13dp"
+            apps:cornerRadius="7dp"
+            apps:backgroundTint="@color/default_color"
+            apps:rippleColor="@color/default_color_game"
+            apps:iconGravity="start"
+            apps:iconTint="@color/light"
+            apps:iconSize="49dp"
+            apps:icon="@drawable/app_locked_icon" />
+
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="51dp"
+            android:layout_below="@id/donePassword"
+            android:padding="5dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="@color/red"
+            android:text="@string/forgetPassword"
+            android:typeface="monospace"
+            android:visibility="invisible" />
+
+        <net.geeksempire.loadingspin.SpinKitView xmlns:apps="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spinKitView"
+            android:layout_width="51dp"
+            android:layout_height="51dp"
+            android:layout_below="@id/donePassword"
+            android:layout_toEndOf="@id/forgotPassword"
+            android:padding="13dp"
+            android:visibility="invisible"
+            apps:SpinKit_Style="CubeGrid"
+            apps:SpinKit_Color="@color/default_color_game_light" />
+
+        <ImageView
+            android:id="@+id/securityWarningIcon"
+            android:layout_width="match_parent"
+            android:layout_height="79dp"
+            android:layout_below="@id/forgotPassword"
+            android:layout_marginTop="53dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:src="@drawable/w_finger_print_error"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/securityWarningText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/securityWarningIcon"
+            android:layout_marginTop="9dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:gravity="center"
+            android:padding="7dp"
+            android:textSize="19sp"
+            android:textColor="@android:color/holo_red_light"
+            android:text="@string/securityWarningFingerprint"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+</ScrollView>

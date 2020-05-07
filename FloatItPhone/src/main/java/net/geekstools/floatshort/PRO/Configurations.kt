@@ -1,3 +1,13 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel
+ * Last modified 5/7/20 1:55 PM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 package net.geekstools.floatshort.PRO
 
 import android.app.usage.UsageStats
@@ -148,8 +158,10 @@ class Configurations : AppCompatActivity() {
             if (getFileStreamPath("Frequently").exists()) {
                 val freqDelete = functionsClass.readFileLine("Frequently")
 
-                for (deleteFreq in freqDelete) {
-                    deleteFile(deleteFreq + "Frequently")
+                freqDelete?.let {
+                    for (deleteFreq in freqDelete) {
+                        deleteFile(deleteFreq + "Frequently")
+                    }
                 }
 
                 functionsClass.removeLine(".categoryInfo", "Frequently")

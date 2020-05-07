@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 5/7/20 1:46 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,22 +34,22 @@ class AlarmAlertBroadcastReceiver : BroadcastReceiver() {
                 PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
                 PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), context.resources.displayMetrics).toInt()
 
-                val alaramedPackageNames = functionsClass.readFileLine(setTime)
+                val alarmedPackageNames = functionsClass.readFileLine(setTime)
 
-                if (alaramedPackageNames.isNotEmpty()) {
+                if (!alarmedPackageNames.isNullOrEmpty()) {
 
-                    alaramedPackageNames.forEach {  aAlaramedPackageName ->
+                    alarmedPackageNames.forEach { aAlarmedPackageNames ->
 
-                        if (aAlaramedPackageName.contains("APP")) {
-
-                            functionsClass
-                                    .runUnlimitedTime(aAlaramedPackageName.replace("APP", ""))
-
-                        } else if (aAlaramedPackageName.contains("CATEGORY")) {
+                        if (aAlarmedPackageNames.contains("APP")) {
 
                             functionsClass
-                                    .runUnlimitedFolderTime(aAlaramedPackageName.replace("CATEGORY", ""),
-                                            functionsClass.readFileLine(aAlaramedPackageName.replace("CATEGORY", "")))
+                                    .runUnlimitedTime(aAlarmedPackageNames.replace("APP", ""))
+
+                        } else if (aAlarmedPackageNames.contains("CATEGORY")) {
+
+                            functionsClass
+                                    .runUnlimitedFolderTime(aAlarmedPackageNames.replace("CATEGORY", ""),
+                                            functionsClass.readFileLine(aAlarmedPackageNames.replace("CATEGORY", "")))
                         }
                     }
 

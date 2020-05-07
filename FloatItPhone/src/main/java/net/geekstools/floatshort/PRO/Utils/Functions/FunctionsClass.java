@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/5/20 1:14 PM
+ * Last modified 5/7/20 12:49 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -105,6 +105,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -171,8 +172,6 @@ import net.geekstools.floatshort.PRO.Widgets.FloatingServices.WidgetUnlimitedFlo
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -1759,14 +1758,18 @@ public class FunctionsClass {
     }
 
     public String activityLabel(ActivityInfo activityInfo) {
-        String Name = context.getString(R.string.app_name);
+
+        String appName = context.getString(R.string.app_name);
+
         try {
-            Name = activityInfo.loadLabel(context.getPackageManager()).toString();
+            appName = activityInfo.loadLabel(context.getPackageManager()).toString();
         } catch (Exception e) {
             e.printStackTrace();
-            Name = appName(activityInfo.packageName);
+
+            appName = appName(activityInfo.packageName);
         }
-        return Name;
+
+        return appName;
     }
 
     public String appVersionName(String packageName) {
@@ -2393,7 +2396,7 @@ public class FunctionsClass {
         }
     }
 
-    public String[] readFileLine(String fileName) {
+    public @Nullable String[] readFileLine(String fileName) {
         FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
 
         return functionsClassIO.readFileLines(fileName);

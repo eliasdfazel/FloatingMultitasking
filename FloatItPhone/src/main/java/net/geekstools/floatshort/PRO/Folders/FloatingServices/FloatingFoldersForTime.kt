@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 5/7/20 2:08 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -721,8 +721,8 @@ class FloatingFoldersForTime : Service() {
                         if (intent.action == "Split_Apps_Pair_$floatingFolderClassInCommand" && PublicVariable.splitScreen) {
                             PublicVariable.splitScreen = false
 
-                            val packageNameSplitOne: String
-                            val packageNameSplitTwo: String
+                            var packageNameSplitOne: String = "null"
+                            var packageNameSplitTwo: String = "null"
 
                             if (getFileStreamPath(PublicVariable.splitPairPackage.toString() + ".SplitOne").exists()
                                     && getFileStreamPath(PublicVariable.splitPairPackage.toString() + ".SplitTwo").exists()) {
@@ -732,8 +732,12 @@ class FloatingFoldersForTime : Service() {
 
                             } else {
 
-                                packageNameSplitOne = functionsClass.readFileLine(PublicVariable.splitPairPackage)[0]
-                                packageNameSplitTwo = functionsClass.readFileLine(PublicVariable.splitPairPackage)[1]
+                                functionsClass.readFileLine(PublicVariable.splitPairPackage)?.get(0)?.let {
+                                    packageNameSplitOne = it
+                                }
+                                functionsClass.readFileLine(PublicVariable.splitPairPackage)?.get(1)?.let {
+                                    packageNameSplitTwo = it
+                                }
 
                             }
 

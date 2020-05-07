@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/4/20 10:25 AM
+ * Last modified 5/7/20 2:11 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -221,21 +221,25 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
             } else { //Edit Folder Name
                 SearchEngine.clearSearchDataToForceReload()
 
-                val appsContent = functionsClass.readFileLine(adapterItems[position].category)
 
                 if (PublicVariable.folderName.isEmpty()) {
                     PublicVariable.folderName = PublicVariable.folderName + "_" + System.currentTimeMillis()
                 }
 
-                for (appContent in appsContent) {
-                    context.deleteFile(appContent + adapterItems[position].category)
-                    functionsClass.saveFileAppendLine(PublicVariable.folderName, appContent)
-                    functionsClass.saveFile(appContent + PublicVariable.folderName, appContent)
+                functionsClass.readFileLine(adapterItems[position].category)?.let {
+
+                    for (appContent in it) {
+                        context.deleteFile(appContent + adapterItems[position].category)
+                        functionsClass.saveFileAppendLine(PublicVariable.folderName, appContent)
+                        functionsClass.saveFile(appContent + PublicVariable.folderName, appContent)
+                    }
                 }
+
                 if (functionsClass.loadRecoveryIndicatorCategory(adapterItems[position].category)) {
                     functionsClass.removeLine(".uCategory", adapterItems[position].category)
                     functionsClass.saveFileAppendLine(".uCategory", PublicVariable.folderName)
                 }
+
                 functionsClass.removeLine(".categoryInfo", adapterItems[position].category)
                 functionsClass.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
                 context.deleteFile(adapterItems[position].category)

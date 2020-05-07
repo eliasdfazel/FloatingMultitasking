@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/4/20 10:25 AM
+ * Last modified 5/7/20 2:15 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -176,13 +176,16 @@ class AppSelectionList : AppCompatActivity(),
                 if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
                     selectedAppsListItem.clear()
 
-                    val savedLine = functionsClass.readFileLine(PublicVariable.folderName)
-                    for (aSavedLine in savedLine) {
-                        selectedAppsListItem.add(AdapterItems(
-                                functionsClass.appName(aSavedLine),
-                                aSavedLine,
-                                if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
+                    functionsClass.readFileLine(PublicVariable.folderName)?.let {
+
+                        for (aSavedLine in it) {
+                            selectedAppsListItem.add(AdapterItems(
+                                    functionsClass.appName(aSavedLine),
+                                    aSavedLine,
+                                    if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
+                        }
                     }
+
                     val savedAppsListPopupAdapter = appsConfirmButton?.let { it1 ->
                         SavedAppsListPopupAdapter(applicationContext, functionsClass,
                                 selectedAppsListItem, 1,
@@ -208,13 +211,16 @@ class AppSelectionList : AppCompatActivity(),
                 if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
                     selectedAppsListItem.clear()
 
-                    val savedLine = functionsClass.readFileLine(PublicVariable.folderName)
-                    for (aSavedLine in savedLine) {
-                        selectedAppsListItem.add(AdapterItems(
-                                functionsClass.appName(aSavedLine),
-                                aSavedLine,
-                                if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
+                    functionsClass.readFileLine(PublicVariable.folderName)?.let {
+
+                        for (aSavedLine in it) {
+                            selectedAppsListItem.add(AdapterItems(
+                                    functionsClass.appName(aSavedLine),
+                                    aSavedLine,
+                                    if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
+                        }
                     }
+
                     val savedAppsListPopupAdapter = appsConfirmButton?.let { it1 ->
                         SavedAppsListPopupAdapter(applicationContext, functionsClass,
                                 selectedAppsListItem, 2,
@@ -263,13 +269,16 @@ class AppSelectionList : AppCompatActivity(),
 
             selectedAppsListItem.clear()
 
-            val savedLine = functionsClass.readFileLine(PublicVariable.folderName)
-            for (aSavedLine in savedLine) {
-                selectedAppsListItem.add(AdapterItems(
-                        functionsClass.appName(aSavedLine),
-                        aSavedLine,
-                        if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
+            functionsClass.readFileLine(PublicVariable.folderName)?.let {
+
+                for (aSavedLine in it) {
+                    selectedAppsListItem.add(AdapterItems(
+                            functionsClass.appName(aSavedLine),
+                            aSavedLine,
+                            if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
+                }
             }
+
             val savedAppsListPopupAdapter = appsConfirmButton?.let {
                 SavedAppsListPopupAdapter(applicationContext, functionsClass,
                         selectedAppsListItem, 1,

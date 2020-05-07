@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 10:12 AM
+ * Last modified 5/7/20 2:18 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -67,41 +67,44 @@ class RecoveryShortcuts : Service() {
 
                 val applicationsDataLines = functionsClass.readFileLine(".uFile")
 
-                val authenticatedFloatIt = intent.getBooleanExtra("AuthenticatedFloatIt", false)
+                if (!applicationsDataLines.isNullOrEmpty()) {
 
-                if (functionsClass.securityServicesSubscribed()
-                        && !authenticatedFloatIt) {
+                    val authenticatedFloatIt = intent.getBooleanExtra("AuthenticatedFloatIt", false)
 
-                    SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+                    if (functionsClass.securityServicesSubscribed()
+                            && !authenticatedFloatIt) {
 
-                        override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                            super.authenticatedFloatIt(extraInformation)
-                            Log.d(this@RecoveryShortcuts.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+                        SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                            floatingShortcutsRecoveryProcess(applicationsDataLines)
+                            override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                                super.authenticatedFloatIt(extraInformation)
+                                Log.d(this@RecoveryShortcuts.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+
+                                floatingShortcutsRecoveryProcess(applicationsDataLines)
+                            }
+
+                            override fun failedAuthenticated() {
+                                super.failedAuthenticated()
+                                Log.d(this@RecoveryShortcuts.javaClass.simpleName, "FailedAuthenticated")
+
+                                this@RecoveryShortcuts.stopSelf()
+                            }
+
+                            override fun invokedPinPassword() {
+                                super.invokedPinPassword()
+                                Log.d(this@RecoveryShortcuts.javaClass.simpleName, "InvokedPinPassword")
+                            }
                         }
 
-                        override fun failedAuthenticated() {
-                            super.failedAuthenticated()
-                            Log.d(this@RecoveryShortcuts.javaClass.simpleName, "FailedAuthenticated")
+                        startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
+                            putExtra(UserInterfaceExtraData.OtherTitle, getString(R.string.floatingFolders))
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
-                            this@RecoveryShortcuts.stopSelf()
-                        }
+                    } else {
 
-                        override fun invokedPinPassword() {
-                            super.invokedPinPassword()
-                            Log.d(this@RecoveryShortcuts.javaClass.simpleName, "InvokedPinPassword")
-                        }
+                        floatingShortcutsRecoveryProcess(applicationsDataLines)
                     }
-
-                    startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
-                        putExtra(UserInterfaceExtraData.OtherTitle, getString(R.string.floatingFolders))
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
-
-                } else {
-
-                    floatingShortcutsRecoveryProcess(applicationsDataLines)
                 }
 
                 if (PublicVariable.allFloatingCounter == 0) {

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/6/20 11:19 AM
+ * Last modified 5/7/20 12:52 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -814,7 +814,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         val applicationInfoListSorted = applicationInfoList.sortedWith(ResolveInfo.DisplayNameComparator(packageManager))
 
         var newChar: String = "A"
-        var oldChar: String? = null
+        var oldChar: String = "Z"
 
         listOfNewCharOfItemsForIndex.clear()
 
@@ -848,9 +848,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
                     val installedPackageName = it.value.activityInfo.packageName
                     val installedClassName = it.value.activityInfo.name
-                    val installedAppName = functionsClass.activityLabel(it.value.activityInfo)
+                    val installedAppName: String? = functionsClass.activityLabel(it.value.activityInfo)
 
-                    newChar = installedAppName!!.substring(0, 1).toUpperCase(Locale.getDefault())
+                    newChar = installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
 
                     if (it.index == 0) {
                         indexSections.add(HybridSectionedGridRecyclerViewAdapter.Section(indexSectionsPosition, newChar))
@@ -869,7 +869,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                         functionsClass.shapedAppIcon(it.value.activityInfo)
                     }
 
-                    applicationsAdapterItems.add(AdapterItemsApplications(installedAppName,
+                    applicationsAdapterItems.add(AdapterItemsApplications(installedAppName?:"Unknown",
                             installedPackageName!!, installedClassName!!,
                             installedAppIcon!!,
                             functionsClass.extractDominantColor(installedAppIcon),
@@ -879,7 +879,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
                     indexSectionsPosition += 1
 
-                    oldChar = installedAppName.substring(0, 1).toUpperCase(Locale.getDefault())
+                    oldChar = installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
                 }
 
         withContext(Dispatchers.Main) {

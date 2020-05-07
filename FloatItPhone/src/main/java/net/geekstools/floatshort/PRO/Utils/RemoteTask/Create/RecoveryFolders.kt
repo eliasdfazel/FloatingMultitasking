@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 5/7/20 2:18 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -61,41 +61,44 @@ class RecoveryFolders : Service() {
 
                 val foldersDataLines = functionsClass.readFileLine(".uCategory")
 
-                val authenticatedFloatIt = intent.getBooleanExtra("AuthenticatedFloatIt", false)
+                if (!foldersDataLines.isNullOrEmpty()) {
 
-                if (functionsClass.securityServicesSubscribed()
-                        && !authenticatedFloatIt) {
+                    val authenticatedFloatIt = intent.getBooleanExtra("AuthenticatedFloatIt", false)
 
-                    SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+                    if (functionsClass.securityServicesSubscribed()
+                            && !authenticatedFloatIt) {
 
-                        override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                            super.authenticatedFloatIt(extraInformation)
-                            Log.d(this@RecoveryFolders.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+                        SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                            floatingFoldersRecoveryProcess(foldersDataLines)
+                            override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                                super.authenticatedFloatIt(extraInformation)
+                                Log.d(this@RecoveryFolders.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+
+                                floatingFoldersRecoveryProcess(foldersDataLines)
+                            }
+
+                            override fun failedAuthenticated() {
+                                super.failedAuthenticated()
+                                Log.d(this@RecoveryFolders.javaClass.simpleName, "FailedAuthenticated")
+
+                                this@RecoveryFolders.stopSelf()
+                            }
+
+                            override fun invokedPinPassword() {
+                                super.invokedPinPassword()
+                                Log.d(this@RecoveryFolders.javaClass.simpleName, "InvokedPinPassword")
+                            }
                         }
 
-                        override fun failedAuthenticated() {
-                            super.failedAuthenticated()
-                            Log.d(this@RecoveryFolders.javaClass.simpleName, "FailedAuthenticated")
+                        startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
+                            putExtra(UserInterfaceExtraData.OtherTitle, getString(R.string.floatingFolders))
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
-                            this@RecoveryFolders.stopSelf()
-                        }
+                    } else {
 
-                        override fun invokedPinPassword() {
-                            super.invokedPinPassword()
-                            Log.d(this@RecoveryFolders.javaClass.simpleName, "InvokedPinPassword")
-                        }
+                        floatingFoldersRecoveryProcess(foldersDataLines)
                     }
-
-                    startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
-                        putExtra(UserInterfaceExtraData.OtherTitle, getString(R.string.floatingFolders))
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
-
-                } else {
-
-                    floatingFoldersRecoveryProcess(foldersDataLines)
                 }
             }
         }

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 5/7/20 2:12 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -177,9 +177,26 @@ class PopupFolderOptionAdapter : BaseAdapter {
                 viewHolder.split_two!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
 
             } else if (adapterItems[position].appName == context.getString(R.string.splitIt)) {
-                splitOne = if (functionsClass.customIconsEnable()) loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems[position].packageName)[0], functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)[0])) else functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)[0])
-                splitTwo = if (functionsClass.customIconsEnable()) loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems[position].packageName)[1], functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)[1])) else functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)[1])
-                viewHolder!!.split_one!!.setImageDrawable(splitOne)
+
+                splitOne = if (functionsClass.customIconsEnable()) {
+                    loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems[position].packageName)?.get(0)
+                            ?:"null", functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)?.get(0)
+                            ?:"null"))
+                } else {
+                    functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)?.get(0)
+                            ?:"null")
+                }
+
+                splitTwo = if (functionsClass.customIconsEnable()) {
+                    loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems[position].packageName)?.get(1)
+                            ?:"null", functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)?.get(1)
+                            ?:"null"))
+                } else {
+                    functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)?.get(1)
+                            ?:"null")
+                }
+
+                viewHolder.split_one!!.setImageDrawable(splitOne)
                 viewHolder.split_two!!.setImageDrawable(splitTwo)
                 viewHolder.split_one!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
                 viewHolder.split_two!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)

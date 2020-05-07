@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 5/7/20 1:54 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,7 +36,7 @@ class RecoveryWifi : Service() {
                 && getFileStreamPath(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", "")).isFile) {
 
             val packageNames = functionsClass.readFileLine(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", ""))
-            if (packageNames.isNotEmpty()) {
+            if (!packageNames.isNullOrEmpty()) {
                 for (aPackageName in packageNames) {
                     functionsClass.runUnlimitedBluetooth(aPackageName)
                 }
@@ -47,7 +47,7 @@ class RecoveryWifi : Service() {
                 && getFileStreamPath(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", "") + "Category").isFile) {
 
             val folderNames = functionsClass.readFileLine(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", "") + "Category")
-            if (folderNames.isNotEmpty()) {
+            if (!folderNames.isNullOrEmpty()) {
                 for (CategoryName in folderNames) {
                     functionsClass.runUnlimitedFolderBluetooth(CategoryName, functionsClass.readFileLine(CategoryName))
                 }
