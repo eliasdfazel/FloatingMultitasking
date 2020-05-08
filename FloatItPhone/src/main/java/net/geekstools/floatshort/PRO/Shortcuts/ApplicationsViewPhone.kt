@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 12:52 PM
+ * Last modified 5/8/20 9:18 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -850,7 +850,13 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     val installedClassName = it.value.activityInfo.name
                     val installedAppName: String? = functionsClass.activityLabel(it.value.activityInfo)
 
-                    newChar = installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
+                    try {
+                        newChar = installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
+                    } catch (e: StringIndexOutOfBoundsException) {
+                        e.printStackTrace()
+
+                        newChar = "Z"
+                    }
 
                     if (it.index == 0) {
                         indexSections.add(HybridSectionedGridRecyclerViewAdapter.Section(indexSectionsPosition, newChar))
@@ -879,7 +885,13 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
                     indexSectionsPosition += 1
 
-                    oldChar = installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
+                    try {
+                        oldChar = installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
+                    } catch (e: StringIndexOutOfBoundsException) {
+                        e.printStackTrace()
+
+                        oldChar = "Z"
+                    }
                 }
 
         withContext(Dispatchers.Main) {
