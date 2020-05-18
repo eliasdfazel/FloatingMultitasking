@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 5:49 PM
- * Last modified 3/28/20 5:07 PM
+ * Created by Elias Fazel
+ * Last modified 5/18/20 2:10 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -35,13 +35,15 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
+import net.geekstools.floatshort.PRO.Widgets.Utils.FunctionsClassWidgets
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import java.util.*
 
 class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetConfigurations,
                                private val adapterItems: ArrayList<AdapterItems>, private val appWidgetManager: AppWidgetManager, private val appWidgetHost: AppWidgetHost) : RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder>() {
 
-    var functionsClass: FunctionsClass = FunctionsClass(widgetConfigurationsActivity)
+    private val functionsClass: FunctionsClass = FunctionsClass(widgetConfigurationsActivity)
+    private val functionsClassWidgets: FunctionsClassWidgets = FunctionsClassWidgets(widgetConfigurationsActivity)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -73,7 +75,7 @@ class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetC
         viewHolder.floatTheWidget.setOnLongClickListener { view ->
             val appWidgetProviderInfoLongClick = adapterItems[position].appWidgetProviderInfo
 
-            functionsClass.popupOptionWidget(widgetConfigurationsActivity, widgetConfigurationsActivity, view,
+            functionsClassWidgets.popupOptionWidget(widgetConfigurationsActivity, widgetConfigurationsActivity, view,
                     adapterItems[position].packageName,
                     adapterItems[position].classNameProviderWidget,
                     adapterItems[position].appWidgetId,

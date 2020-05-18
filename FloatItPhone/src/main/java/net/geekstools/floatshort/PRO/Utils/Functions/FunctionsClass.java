@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 12:49 PM
+ * Last modified 5/18/20 2:45 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -114,9 +114,6 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.palette.graphics.Palette;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -164,12 +161,10 @@ import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeIn
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData;
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Utils.LaunchPad.OpenApplicationsLaunchPad;
-import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.FloatingWidgetHomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.RemoteController;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash;
 import net.geekstools.floatshort.PRO.Widgets.FloatingServices.WidgetUnlimitedFloating;
-import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface;
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -3004,7 +2999,7 @@ public class FunctionsClass {
         return drawableToBitmap(icon);
     }
 
-    private Drawable resizeDrawable(Drawable drawable, int dstWidth, int dstHeight) {
+    public Drawable resizeDrawable(Drawable drawable, int dstWidth, int dstHeight) {
         Drawable resizedDrawable = null;
         try {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -3491,37 +3486,6 @@ public class FunctionsClass {
         return layoutParams;
     }
 
-    public WindowManager.LayoutParams moveWidgetsToEdge(String packageName, int widgetId, int widgetMinimizeWH) {
-        WindowManager.LayoutParams layoutParams = null;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            layoutParams = new WindowManager.LayoutParams(
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    PixelFormat.TRANSLUCENT);
-        } else {
-            layoutParams = new WindowManager.LayoutParams(
-                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    PixelFormat.TRANSLUCENT);
-        }
-
-        SharedPreferences sharedPreferences = context.getSharedPreferences(widgetId + packageName, Context.MODE_PRIVATE);
-
-        layoutParams.gravity = Gravity.TOP | Gravity.START;
-        layoutParams.width = widgetMinimizeWH;
-        layoutParams.height = widgetMinimizeWH;
-        if (PreferenceManager.getDefaultSharedPreferences(context).getString("stick", "1").equals("1")) {//Left
-            layoutParams.x = -(widgetMinimizeWH / 2);
-        } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("stick", "1").equals("2")) {//Right
-            layoutParams.x = displayX() - (widgetMinimizeWH / 2);
-        }
-        layoutParams.y = sharedPreferences.getInt("Y", 19);
-        layoutParams.windowAnimations = android.R.style.Animation_Dialog;
-
-        return layoutParams;
-    }
-
     public void popupOptionShortcuts(FunctionsClassRunServices functionsClassRunServices, final Context context, View anchorView, final String PackageName, String ClassName) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
@@ -3843,195 +3807,6 @@ public class FunctionsClass {
         popupMenu.show();
     }
 
-    public void popupOptionWidget(WidgetConfigurations widgetConfigurations, final Context context, View anchorView,
-                                  String packageName, final String providerClassName, int widgetId,
-                                  String widgetLabel, Drawable widgetPreview, boolean addedWidgetRecovery) {
-        PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
-        if (PublicVariable.themeLightDark) {
-            popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Light);
-        } else if (!PublicVariable.themeLightDark) {
-            popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Dark);
-        }
-        String[] menuItems;
-        if (addedWidgetRecovery) {
-            menuItems = context.getResources().getStringArray(R.array.ContextMenuWidgetRemove);
-        } else {
-            menuItems = context.getResources().getStringArray(R.array.ContextMenuWidget);
-        }
-
-        Drawable popupItemIcon = returnAPI() >= 28 ? resizeDrawable(context.getDrawable(R.drawable.w_pref_popup), 100, 100) : context.getDrawable(R.drawable.w_pref_popup);
-        popupItemIcon.setTint(extractVibrantColor(appIcon(packageName)));
-
-        for (int itemId = 0; itemId < menuItems.length; itemId++) {
-            popupMenu.getMenu()
-                    .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>"))
-                    .setIcon(popupItemIcon);
-        }
-
-        SecurityFunctions securityFunctions = new SecurityFunctions(context);
-        if (securityFunctions.isAppLocked(packageName + providerClassName)) {
-            popupMenu.getMenu()
-                    .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.unLockIt) + "</font>"))
-                    .setIcon(popupItemIcon);
-        } else {
-            popupMenu.getMenu()
-                    .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.lockIt) + "</font>"))
-                    .setIcon(popupItemIcon);
-        }
-
-        try {
-            Field[] fields = popupMenu.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                if ("mPopup".equals(field.getName())) {
-                    field.setAccessible(true);
-                    Object menuPopupHelper = field.get(popupMenu);
-                    Class<?> classPopupHelper = Class.forName(menuPopupHelper
-                            .getClass().getName());
-                    Method setForceIcons = classPopupHelper.getMethod(
-                            "setForceShowIcon", boolean.class);
-                    setForceIcons.invoke(menuPopupHelper, true);
-                    break;
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case 0: {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                WidgetDataInterface widgetDataInterface = Room.databaseBuilder(context, WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
-                                        .fallbackToDestructiveMigration()
-                                        .addCallback(new RoomDatabase.Callback() {
-                                            @Override
-                                            public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
-                                                super.onCreate(supportSQLiteDatabase);
-                                            }
-
-                                            @Override
-                                            public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
-                                                super.onOpen(supportSQLiteDatabase);
-
-                                                widgetConfigurations.runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        widgetConfigurations.forceLoadConfiguredWidgets();
-
-                                                        try {
-                                                            removeWidgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, providerClassName);
-                                                        } catch (Exception e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    }
-                                                });
-                                            }
-                                        })
-                                        .build();
-                                widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidget(packageName, providerClassName);
-                                widgetDataInterface.close();
-                            }
-                        }).start();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            context.deleteSharedPreferences(providerClassName + packageName);
-                            context.deleteSharedPreferences(widgetId + packageName);
-                        }
-
-                        break;
-                    }
-                    case 1: {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                WidgetDataInterface widgetDataInterface = Room.databaseBuilder(context, WidgetDataInterface.class, PublicVariable.WIDGET_DATA_DATABASE_NAME)
-                                        .fallbackToDestructiveMigration()
-                                        .addCallback(new RoomDatabase.Callback() {
-                                            @Override
-                                            public void onCreate(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
-                                                super.onCreate(supportSQLiteDatabase);
-                                            }
-
-                                            @Override
-                                            public void onOpen(@NonNull SupportSQLiteDatabase supportSQLiteDatabase) {
-                                                super.onOpen(supportSQLiteDatabase);
-
-                                            }
-                                        })
-                                        .build();
-                                widgetDataInterface.initDataAccessObject().updateRecoveryByClassNameProviderWidget(packageName, providerClassName, !addedWidgetRecovery);
-                                widgetDataInterface.close();
-                            }
-                        }).start();
-                        widgetConfigurations.forceLoadConfiguredWidgets();
-
-                        break;
-                    }
-                    case 2: {
-                        try {
-                            widgetToHomeScreen(FloatingWidgetHomeScreenShortcuts.class, packageName, widgetLabel, widgetPreview, providerClassName);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        break;
-                    }
-                    case 3: {
-                        if (securityFunctions.isAppLocked(packageName + providerClassName)) {
-
-                            SecurityInterfaceHolder.authenticationCallback = new AuthenticationCallback() {
-
-                                @Override
-                                public void invokedPinPassword() {
-
-                                }
-
-                                @Override
-                                public void failedAuthenticated() {
-
-                                }
-
-                                @Override
-                                public void authenticatedFloatIt(@Nullable Bundle extraInformation) {
-
-                                    securityFunctions.doUnlockApps(packageName + providerClassName);
-                                }
-                            };
-
-                            context.startActivity(new Intent(context, AuthenticationFingerprint.class)
-                                            .putExtra(UserInterfaceExtraData.OtherTitle, widgetLabel)
-                                            .putExtra(UserInterfaceExtraData.DoLockUnlock, true)
-                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                    ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle());
-
-                        } else {
-                            if (securityServicesSubscribed()) {
-                                securityFunctions.doLockApps(packageName + providerClassName);
-
-                                securityFunctions.uploadLockedAppsData();
-                            } else {
-
-                                context.startActivity(new Intent(context, InitializeInAppBilling.class)
-                                                .putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.SubscriptionPurchase)
-                                                .putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemSecurityServices)
-                                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                        ActivityOptions.makeCustomAnimation(context, R.anim.down_up, android.R.anim.fade_out).toBundle());
-
-                            }
-                        }
-
-                        break;
-                    }
-                }
-                return true;
-            }
-        });
-        popupMenu.show();
-    }
-
     public void revertFloatingSize() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -4244,75 +4019,6 @@ public class FunctionsClass {
             addIntent.putExtra("duplicate", true);
             addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
             context.sendBroadcast(addIntent);
-        }
-    }
-
-    public void widgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, String providerClassName) throws Exception {
-        Intent differentIntent = new Intent(context, className);
-        differentIntent.setAction("CREATE_FLOATING_WIDGET_HOME_SCREEN_SHORTCUTS");
-        differentIntent.addCategory(Intent.CATEGORY_DEFAULT);
-        differentIntent.putExtra("PackageName", packageName);
-        differentIntent.putExtra("ProviderClassName", providerClassName);
-        differentIntent.putExtra("ShortcutLabel", shortcutName);
-
-        Drawable forNull = context.getDrawable(R.drawable.ic_launcher);
-        forNull.setAlpha(0);
-        LayerDrawable widgetShortcutIcon = (LayerDrawable) context.getDrawable(R.drawable.widget_home_screen_shortcuts);
-        try {
-            widgetShortcutIcon.setDrawableByLayerId(R.id.widgetPreviewHomeShortcut, widgetPreviewDrawable);
-        } catch (Exception e) {
-            widgetShortcutIcon.setDrawableByLayerId(R.id.widgetPreviewHomeShortcut, forNull);
-        }
-
-        try {
-            if (widgetPreviewDrawable.getIntrinsicHeight() < DpToInteger(77)) {
-
-            } else {
-                widgetShortcutIcon.setDrawableByLayerId(R.id.appIconHomeShortcut, getAppIconDrawableCustomIcon(packageName));
-            }
-
-        } catch (Exception e) {
-            widgetShortcutIcon.setDrawableByLayerId(R.id.appIconHomeShortcut, forNull);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, (packageName + providerClassName))
-                    .setShortLabel(shortcutName)
-                    .setLongLabel(shortcutName)
-                    .setIcon(Icon.createWithBitmap(layerDrawableToBitmap(widgetShortcutIcon)))
-                    .setIntent(differentIntent)
-                    .build();
-            context.getSystemService(ShortcutManager.class).requestPinShortcut(shortcutInfo, null);
-        } else {
-            Intent addIntent = new Intent();
-            addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent);
-            addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName);
-            addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, layerDrawableToBitmap(widgetShortcutIcon));
-            addIntent.putExtra("duplicate", true);
-            addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-            context.sendBroadcast(addIntent);
-        }
-    }
-
-    public void removeWidgetToHomeScreen(Class className, String packageName, String shortcutName, Drawable widgetPreviewDrawable, String providerClassName) throws Exception {
-        Intent differentIntent = new Intent(context, className);
-        differentIntent.setAction(Intent.ACTION_MAIN);
-        differentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        differentIntent.putExtra("ShortcutsId", providerClassName);
-        differentIntent.putExtra("ShortcutLabel", shortcutName);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            List<String> shortcutToDelete = new ArrayList<String>();
-            shortcutToDelete.add((packageName + providerClassName));
-
-            context.getSystemService(ShortcutManager.class).disableShortcuts(shortcutToDelete);
-        } else {
-            Intent removeIntent = new Intent();
-            removeIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent);
-            removeIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName);
-            removeIntent.putExtra("duplicate", true);
-            removeIntent.setAction("com.android.launcher.action.UNINSTALL_SHORTCUT");
-            context.sendBroadcast(removeIntent);
         }
     }
 

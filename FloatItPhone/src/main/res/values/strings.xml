@@ -2,7 +2,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/17/20 11:34 PM
+  ~ Last modified 5/18/20 2:34 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -220,7 +220,7 @@
     <string name="remove_folder">Remove</string>
     <string name="floatIt">Float It</string>
     <string name="splitIt">Split It</string>
-    <string name="deleteCategory">Delete</string>
+    <string name="deleteText">Delete</string>
     <string name="edit_folder">Edit: </string>
     <string name="autorecovs">Always Ready</string>
     <string name="syscache">Load &amp; Open Apps Faster</string>
@@ -338,23 +338,23 @@
         <item name="2">@string/medium</item>
         <item name="3">@string/large</item>
         <item name="4">@string/addRecovery</item>
-        <item name="5">@string/deleteCategory</item>
+        <item name="5">@string/deleteText</item>
     </string-array>
     <string-array name="ContextMenuCategoryRemove">
         <item name="1">@string/small</item>
         <item name="2">@string/medium</item>
         <item name="3">@string/large</item>
         <item name="4">@string/removeRecovery</item>
-        <item name="5">@string/deleteCategory</item>
+        <item name="5">@string/deleteText</item>
     </string-array>
 
     <string-array name="ContextMenuWidget">
-        <item name="1">@string/deleteCategory</item>
+        <item name="1">@string/deleteText</item>
         <item name="2">@string/addRecovery</item>
         <item name="3">@string/createShortcut</item>
     </string-array>
     <string-array name="ContextMenuWidgetRemove">
-        <item name="1">@string/deleteCategory</item>
+        <item name="1">@string/deleteText</item>
         <item name="2">@string/removeRecovery</item>
         <item name="3">@string/createShortcut</item>
     </string-array>

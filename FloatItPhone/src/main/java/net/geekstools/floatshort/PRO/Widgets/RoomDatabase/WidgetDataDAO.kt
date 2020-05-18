@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 4:56 PM
- * Last modified 3/28/20 4:54 PM
+ * Created by Elias Fazel
+ * Last modified 5/18/20 2:39 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,18 +14,6 @@ import androidx.room.*
 
 @Dao
 interface WidgetDataDAO {
-
-    @Query("UPDATE WidgetData SET Recovery = :AddedWidgetRecovery WHERE PackageName= :PackageName AND ClassNameProvider = :ClassNameWidgetProvider")
-    fun updateRecoveryByClassNameProviderWidget(PackageName: String, ClassNameWidgetProvider: String, AddedWidgetRecovery: Boolean): Int
-
-
-    @Query("DELETE FROM WidgetData WHERE PackageName = :PackageName AND ClassNameProvider = :ClassNameWidgetProvider")
-    fun deleteByWidgetClassNameProviderWidget(PackageName: String, ClassNameWidgetProvider: String)
-
-    /*
-    *
-    *
-    * */
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNewWidgetDataSuspend(vararg arrayOfWidgetDataModels: WidgetDataModel)
