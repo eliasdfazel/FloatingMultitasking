@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/18/20 2:10 PM
+ * Last modified 5/22/20 9:35 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -85,7 +85,8 @@ class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetC
                     } else {
                         appWidgetProviderInfoLongClick.loadIcon(widgetConfigurationsActivity, DisplayMetrics.DENSITY_HIGH)
                     },
-                    adapterItems[position].addedWidgetRecovery)
+                    adapterItems[position].addedWidgetRecovery,
+                    functionsClass)
 
             functionsClass.doVibrate(77)
 
