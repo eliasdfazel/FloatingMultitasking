@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 3:16 PM
+ * Last modified 5/24/20 3:19 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -17,7 +17,7 @@ import android.os.Build
 class FunctionsClassSystemInformation (private val context: Context) {
 
     object Requirements {
-        const val RequiredMemory: Long = 3000000000
+        const val RequiredMemory: Long = 4000000000
     }
     object CPU_MODELS {
         const val Qualcomm: String = "qcom"
