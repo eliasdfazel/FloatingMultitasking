@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/23/20 9:30 PM
+ * Last modified 5/24/20 3:10 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1920,6 +1920,7 @@ public class FunctionsClass {
             ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
             if (activityManager != null) {
                 activityManager.getMemoryInfo(memoryInfo);
+
                 if (memoryInfo.lowMemory) {
                     activityToHandle.finish();
                 }

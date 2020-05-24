@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 1:55 PM
+ * Last modified 5/24/20 3:17 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSystemInformation
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.BootRecovery
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryAll
@@ -40,6 +41,10 @@ class Configurations : AppCompatActivity() {
         FunctionsClass(applicationContext)
     }
 
+    val functionsClassSystemInformation: FunctionsClassSystemInformation by lazy {
+        FunctionsClassSystemInformation(applicationContext)
+    }
+
     private val firebaseAnalytics: FirebaseAnalytics by lazy {
         FirebaseAnalytics.getInstance(applicationContext)
     }
@@ -51,6 +56,8 @@ class Configurations : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(applicationContext)
+
+        functionsClassSystemInformation.checkDevieInformation()
 
         checkUserInformation()
         initializeParameterUI()

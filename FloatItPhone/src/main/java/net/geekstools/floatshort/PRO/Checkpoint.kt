@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 2:39 PM
+ * Last modified 5/24/20 2:51 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -11,6 +11,7 @@
 package net.geekstools.floatshort.PRO
 
 import android.Manifest
+import android.app.Activity
 import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Intent
@@ -23,13 +24,12 @@ import android.provider.Settings
 import android.text.Html
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.CheckPointBinding
 
-class Checkpoint : AppCompatActivity() {
+class Checkpoint : Activity() {
 
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
