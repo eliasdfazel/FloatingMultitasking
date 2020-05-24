@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/23/20 9:19 PM
+ * Last modified 5/23/20 9:52 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -66,7 +66,10 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     lateinit var functionsClassDialogues: FunctionsClassDialogues
 
     private val functionsClassTheme: FunctionsClassTheme by lazy {
-        FunctionsClassTheme(applicationContext)
+        FunctionsClassTheme(requireContext())
+    }
+    private val functionsClassThemeUtils: FunctionsClassTheme.Utils by lazy {
+        functionsClassTheme.Utils()
     }
 
     private val functionsClassIO: FunctionsClassIO by lazy {
@@ -218,7 +221,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         blur.setOnPreferenceChangeListener { preference, newValue ->
             if (sharedPreferences.getBoolean("transparent", true)) {
                 blur.isEnabled = true
-                if (!functionsClass.wallpaperStaticLive()) {
+                if (!functionsClassThemeUtils.wallpaperStaticLive()) {
                     blur.isChecked = false
                     blur.isEnabled = false
                 }
@@ -971,7 +974,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         notification.isChecked = functionsClass.NotificationAccess() && functionsClass.NotificationListenerRunning()
 
-        if (!functionsClass.wallpaperStaticLive()) {
+        if (!functionsClassThemeUtils.wallpaperStaticLive()) {
             blur.isEnabled = false
         }
 
