@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/29/20 1:57 PM
+ * Last modified 5/23/20 9:07 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -55,6 +55,7 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassTheme;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants;
@@ -74,6 +75,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
     FunctionsClass functionsClass;
     FunctionsClassIO functionsClassIO;
+    FunctionsClassTheme functionsClassTheme;
 
     ListView actionElementsList;
     RelativeLayout fullActionButton, MainView;
@@ -139,6 +141,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
         functionsClass = new FunctionsClass(getApplicationContext());
         functionsClassIO = new FunctionsClassIO(getApplicationContext());
+        functionsClassTheme = new FunctionsClassTheme(getApplicationContext());
 
         functionsClass.loadSavedColor();
         functionsClass.checkLightDarkTheme();
@@ -177,11 +180,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             }
         }
 
-        if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColorAutomationFeature(AppAutoFeatures.this, MainView, true);
-        } else {
-            functionsClass.setThemeColorAutomationFeature(AppAutoFeatures.this, MainView, false);
-        }
+        functionsClassTheme.setThemeColorAutomationFeature(AppAutoFeatures.this, MainView, functionsClass.appThemeTransparent());
 
         if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());

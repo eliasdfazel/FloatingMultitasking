@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/23/20 8:45 PM
+ * Last modified 5/23/20 9:30 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -72,10 +72,6 @@ import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.TextUtils;
@@ -106,7 +102,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.ColorUtils;
@@ -3014,164 +3009,6 @@ public class FunctionsClass {
     }
 
     /*App GUI Functions*/
-    public void setThemeColorAutomationFeature(Activity instanceOfActivity, View rootView, boolean applyTransparency) {
-        if (applyTransparency == true) {
-            if (wallpaperStaticLive()) {
-                setBackgroundTheme(instanceOfActivity);
-            }
-            rootView.setBackgroundColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
-
-            Window window = instanceOfActivity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (PublicVariable.themeLightDark) {
-                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (Build.VERSION.SDK_INT > 25) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                }
-            }
-            window.setStatusBarColor(
-                    setColorAlpha(
-                            mixColors(
-                                    PublicVariable.primaryColor, PublicVariable.colorLightDark,
-                                    0.75f), wallpaperStaticLive() ? 245 : 113)
-            );
-
-            window.setNavigationBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
-        } else if (applyTransparency == false) {
-            rootView.setBackgroundColor(PublicVariable.colorLightDark);
-
-            Window window = instanceOfActivity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (PublicVariable.themeLightDark) {
-                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (Build.VERSION.SDK_INT > 25) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                }
-            }
-            window.setStatusBarColor(PublicVariable.primaryColor);
-            window.setNavigationBarColor(PublicVariable.colorLightDark);
-        }
-    }
-
-    public void setThemeColorPreferences(Activity instanceOfActivity, View rootView, Toolbar preferencesToolbar, boolean applyTransparency, String title, String subTitle) {
-        if (applyTransparency) {
-            try {
-                if (wallpaperStaticLive()) {
-                    setBackgroundTheme(instanceOfActivity);
-                }
-                rootView.setBackgroundColor(setColorAlpha(PublicVariable.colorLightDark, wallpaperStaticLive() ? 180 : 80));
-
-                preferencesToolbar.setBackgroundColor(PublicVariable.primaryColor);
-                if (PublicVariable.themeLightDark) {
-                    ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setTextColor(context.getColor(R.color.dark));
-                    ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setTextColor(context.getColor(R.color.dark));
-                } else {
-                    ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setTextColor(context.getColor(R.color.light));
-                    ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setTextColor(context.getColor(R.color.light));
-                }
-                ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setText(title);
-                ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setText(subTitle);
-
-
-                Window window = instanceOfActivity.getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                if (PublicVariable.themeLightDark) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    if (Build.VERSION.SDK_INT > 25) {
-                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                    }
-                }
-                window.setStatusBarColor(PublicVariable.primaryColor);
-                window.setNavigationBarColor(setColorAlpha(PublicVariable.colorLightDark, wallpaperStaticLive() ? 180 : 80));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                rootView.setBackgroundColor(PublicVariable.colorLightDark);
-
-                preferencesToolbar.setBackgroundColor(PublicVariable.primaryColor);
-                ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setText(Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>"));
-                ((TextView) preferencesToolbar.findViewById(R.id.summaryPreferences)).setText(Html.fromHtml("<small><font color='" + context.getColor(R.color.light) + "'>" + subTitle + "</font></small>"));
-
-                Window window = instanceOfActivity.getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                if (PublicVariable.themeLightDark) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    if (Build.VERSION.SDK_INT > 25) {
-                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                    }
-                }
-                window.setStatusBarColor(PublicVariable.primaryColor);
-                window.setNavigationBarColor(PublicVariable.colorLightDark);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void setAppThemeBlur(Activity instanceOfActivity) {
-        if (appThemeBlurry()) {
-            try {
-                WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
-                BitmapDrawable wallpaper = (BitmapDrawable) wallpaperManager.getDrawable();
-
-                Bitmap bitmapWallpaper = wallpaper.getBitmap();
-                Bitmap inputBitmap;
-                if (bitmapWallpaper.getWidth() < displayX() || bitmapWallpaper.getHeight() < displayY()) {
-                    inputBitmap = Bitmap.createScaledBitmap(bitmapWallpaper, displayX(), displayY(), false);
-                } else {
-                    inputBitmap = Bitmap.createBitmap(
-                            bitmapWallpaper,
-                            (bitmapWallpaper.getWidth() / 2) - (displayX() / 2),
-                            (bitmapWallpaper.getHeight() / 2) - (displayY() / 2),
-                            displayX(),
-                            displayY()
-                    );
-                }
-                Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
-
-                RenderScript renderScript = RenderScript.create(context);
-                ScriptIntrinsicBlur intrinsicBlur = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-                Allocation allocationIn = Allocation.createFromBitmap(renderScript, inputBitmap);
-                Allocation allocationOut = Allocation.createFromBitmap(renderScript, outputBitmap);
-
-                intrinsicBlur.setRadius(25);
-                intrinsicBlur.setInput(allocationIn);
-                intrinsicBlur.forEach(allocationOut);
-                allocationOut.copyTo(outputBitmap);
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(context.getResources(), outputBitmap);
-                instanceOfActivity.getWindow().getDecorView().setBackground(bitmapDrawable);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void setWallpaperToBackground(Activity instanceOfActivity) {
-        try {
-            WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
-            BitmapDrawable wallpaperManagerDrawable = (BitmapDrawable) wallpaperManager.getDrawable();
-            instanceOfActivity.getWindow().getDecorView().setBackground(wallpaperManagerDrawable);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setBackgroundTheme(Activity instanceOfActivity) {
-        if (appThemeBlurry()) {
-            setAppThemeBlur(instanceOfActivity);
-        } else {
-            setWallpaperToBackground(instanceOfActivity);
-        }
-    }
-
-
-
     public boolean appThemeTransparent() {
 
         return PreferenceManager.
@@ -3210,18 +3047,6 @@ public class FunctionsClass {
                 PublicVariable.themeLightDark = false;
             }
         }
-    }
-
-    public boolean wallpaperStaticLive() {
-        boolean wallpaperMode = false;
-        if (WallpaperManager.getInstance(context).getWallpaperInfo() == null) {//static
-            wallpaperMode = true;
-        } else if (WallpaperManager.getInstance(context).getWallpaperInfo() != null) {//live
-            wallpaperMode = false;
-            PreferenceManager.
-                    getDefaultSharedPreferences(context).edit().putBoolean("blur", false).apply();
-        }
-        return wallpaperMode;
     }
 
     private void takeScreenshot(View view) {

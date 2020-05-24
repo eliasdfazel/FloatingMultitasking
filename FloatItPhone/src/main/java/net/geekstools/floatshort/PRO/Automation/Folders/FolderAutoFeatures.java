@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 5:45 AM
+ * Last modified 5/23/20 9:30 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -53,6 +53,7 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassTheme;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants;
@@ -68,6 +69,9 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
     FunctionsClass functionsClass;
     FunctionsClassIO functionsClassIO;
+
+    FunctionsClassTheme functionsClassTheme;
+    FunctionsClassTheme.Utils functionsClassThemeUtils;
 
     RecyclerView categorylist;
     ListView actionElementsList;
@@ -116,6 +120,9 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         functionsClass = new FunctionsClass(getApplicationContext());
         functionsClassIO = new FunctionsClassIO(getApplicationContext());
 
+        functionsClassTheme = new FunctionsClassTheme(getApplicationContext());
+        functionsClassThemeUtils = functionsClassTheme.new Utils();
+
         functionsClass.loadSavedColor();
         functionsClass.checkLightDarkTheme();
 
@@ -160,11 +167,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             }
         }
 
-        if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setThemeColorAutomationFeature(FolderAutoFeatures.this, MainView, true);
-        } else {
-            functionsClass.setThemeColorAutomationFeature(FolderAutoFeatures.this, MainView, false);
-        }
+        functionsClassTheme.setThemeColorAutomationFeature(FolderAutoFeatures.this, MainView, functionsClass.appThemeTransparent());
 
         if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
@@ -215,9 +218,9 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
                     functionsClass.setColorAlpha(
                             functionsClass.mixColors(
                                     PublicVariable.primaryColor, PublicVariable.colorLightDark,
-                                    0.75f), functionsClass.wallpaperStaticLive() ? 245 : 113)
+                                    0.75f), functionsClassThemeUtils.wallpaperStaticLive() ? 245 : 113)
             );
-            gradientDrawableCategoriesBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, functionsClass.wallpaperStaticLive() ? 150 : 155));
+            gradientDrawableCategoriesBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, functionsClassThemeUtils.wallpaperStaticLive() ? 150 : 155));
             gradientDrawableMaskCategories.setTint(PublicVariable.primaryColorOpposite);
         } else {
             rippleDrawableCategories.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));

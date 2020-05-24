@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 4:24 AM
+ * Last modified 5/23/20 9:19 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -64,6 +64,10 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
     lateinit var functionsClass: FunctionsClass
     lateinit var functionsClassDialogues: FunctionsClassDialogues
+
+    private val functionsClassTheme: FunctionsClassTheme by lazy {
+        FunctionsClassTheme(applicationContext)
+    }
 
     private val functionsClassIO: FunctionsClassIO by lazy {
         FunctionsClassIO(requireContext())
@@ -195,11 +199,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         themeTrans.setOnPreferenceClickListener {
-            if (functionsClass.appThemeTransparent()) {
-                functionsClass.setThemeColorPreferences(activity, activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), true, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
-            } else {
-                functionsClass.setThemeColorPreferences(activity, activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), false, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
-            }
+
+            functionsClassTheme.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
 
             functionsClass.saveDefaultPreference("LitePreferences", false)
 
@@ -207,11 +208,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         blur.setOnPreferenceClickListener {
-            if (functionsClass.appThemeTransparent()) {
-                functionsClass.setThemeColorPreferences(activity, activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), true, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
-            } else {
-                functionsClass.setThemeColorPreferences(activity, activity?.findViewById(R.id.fullPreferencesActivity), activity?.findViewById(R.id.preferencesToolbar), false, getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
-            }
+
+            functionsClassTheme.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
 
             functionsClass.saveDefaultPreference("LitePreferences", false)
 

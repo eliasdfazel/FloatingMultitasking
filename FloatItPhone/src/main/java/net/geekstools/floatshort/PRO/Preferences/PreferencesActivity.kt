@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 3:36 AM
+ * Last modified 5/23/20 9:16 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.preferences_activity_view.*
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassTheme
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
@@ -37,6 +38,10 @@ import kotlin.math.hypot
 class PreferencesActivity : AppCompatActivity() {
 
     lateinit var functionsClass: FunctionsClass
+
+    private val functionsClassTheme: FunctionsClassTheme by lazy {
+        FunctionsClassTheme(applicationContext)
+    }
 
     private var fromWidgetsConfigurations: Boolean = false
 
@@ -61,11 +66,7 @@ class PreferencesActivity : AppCompatActivity() {
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()
 
-        if (functionsClass.appThemeTransparent()) {
-            functionsClass.setThemeColorPreferences(this, fullPreferencesActivity, preferencesToolbar, true, getString(R.string.settingTitle), "${BuildConfig.VERSION_NAME}")
-        } else {
-            functionsClass.setThemeColorPreferences(this, fullPreferencesActivity, preferencesToolbar, false, getString(R.string.settingTitle), "${BuildConfig.VERSION_NAME}")
-        }
+        functionsClassTheme.setThemeColorPreferences(this, fullPreferencesActivity, preferencesToolbar, functionsClass.appThemeTransparent(), getString(R.string.settingTitle), "${BuildConfig.VERSION_NAME}")
 
         rootLayout = this.window.decorView
         rootLayout.visibility = View.INVISIBLE
