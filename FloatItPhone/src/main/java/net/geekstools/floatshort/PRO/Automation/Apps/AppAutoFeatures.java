@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/23/20 9:07 PM
+ * Last modified 5/23/20 9:55 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -75,7 +75,9 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
     FunctionsClass functionsClass;
     FunctionsClassIO functionsClassIO;
+
     FunctionsClassTheme functionsClassTheme;
+    FunctionsClassTheme.Utils functionsClassThemeUtils;
 
     ListView actionElementsList;
     RelativeLayout fullActionButton, MainView;
@@ -141,7 +143,9 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
         functionsClass = new FunctionsClass(getApplicationContext());
         functionsClassIO = new FunctionsClassIO(getApplicationContext());
+
         functionsClassTheme = new FunctionsClassTheme(getApplicationContext());
+        functionsClassThemeUtils = functionsClassTheme.new Utils();
 
         functionsClass.loadSavedColor();
         functionsClass.checkLightDarkTheme();
@@ -209,9 +213,9 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                     functionsClass.setColorAlpha(
                             functionsClass.mixColors(
                                     PublicVariable.primaryColor, PublicVariable.colorLightDark,
-                                    0.75f), functionsClass.wallpaperStaticLive() ? 245 : 113)
+                                    0.75f), functionsClassThemeUtils.wallpaperStaticLive() ? 245 : 113)
             );
-            gradientDrawableShortcutsBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, functionsClass.wallpaperStaticLive() ? 150 : 155));
+            gradientDrawableShortcutsBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, functionsClassThemeUtils.wallpaperStaticLive() ? 150 : 155));
             gradientDrawableMaskShortcuts.setTint(PublicVariable.primaryColorOpposite);
         } else {
             rippleDrawableShortcuts.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));

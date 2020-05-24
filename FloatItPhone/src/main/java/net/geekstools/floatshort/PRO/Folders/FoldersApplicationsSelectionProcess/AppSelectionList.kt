@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/23/20 8:44 PM
+ * Last modified 5/23/20 9:57 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -44,7 +44,7 @@ import java.util.*
 class AppSelectionList : AppCompatActivity(),
         ConfirmButtonProcessInterface {
 
-    private val functionsClass: FunctionsClass by lazy {
+    val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
     private val functionsClassTheme: FunctionsClassTheme by lazy {
