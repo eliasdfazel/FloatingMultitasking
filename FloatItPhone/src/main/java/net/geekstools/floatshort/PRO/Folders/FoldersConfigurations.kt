@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/6/20 11:20 AM
+ * Last modified 5/23/20 8:45 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -102,6 +102,9 @@ class FoldersConfigurations : AppCompatActivity(),
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
+    private val functionsClassTheme: FunctionsClassTheme by lazy {
+        FunctionsClassTheme(applicationContext)
+    }
     private val securityFunctions: SecurityFunctions by lazy {
         SecurityFunctions(applicationContext)
     }
@@ -145,7 +148,7 @@ class FoldersConfigurations : AppCompatActivity(),
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()
 
-        functionsClass.setThemeColorFloating(this@FoldersConfigurations, foldersConfigurationViewBinding.wholeCategory, functionsClass.appThemeTransparent())
+        functionsClassTheme.setThemeColorFloating(this@FoldersConfigurations, foldersConfigurationViewBinding.wholeCategory, functionsClass.appThemeTransparent())
         functionsClassDialogues.changeLog()
 
         val recyclerViewLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)

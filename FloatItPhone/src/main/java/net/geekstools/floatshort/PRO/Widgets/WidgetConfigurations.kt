@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/5/20 1:51 PM
+ * Last modified 5/23/20 8:45 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -64,10 +64,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone
 import net.geekstools.floatshort.PRO.Utils.AdapterDataItem.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
-import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryWidgets
@@ -96,7 +93,9 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
-
+    private val functionsClassTheme: FunctionsClassTheme by lazy {
+        FunctionsClassTheme(applicationContext)
+    }
     private val functionsClassRunServices: FunctionsClassRunServices by lazy {
         FunctionsClassRunServices(applicationContext)
     }
@@ -169,11 +168,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         configuredWidgetsRecyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(190), OrientationHelper.VERTICAL, false)
         widgetConfigurationsViewsBinding.configuredWidgetList.layoutManager = configuredWidgetsRecyclerViewLayoutManager
 
-        if (functionsClass.appThemeTransparent()) {
-            functionsClass.setThemeColorFloating(this, widgetConfigurationsViewsBinding.MainView, true)
-        } else {
-            functionsClass.setThemeColorFloating(this, widgetConfigurationsViewsBinding.MainView, false)
-        }
+        functionsClassTheme.setThemeColorFloating(this, widgetConfigurationsViewsBinding.MainView, functionsClass.appThemeTransparent())
 
         appWidgetManager = AppWidgetManager.getInstance(applicationContext)
         appWidgetHost = AppWidgetHost(applicationContext, System.currentTimeMillis().toInt())

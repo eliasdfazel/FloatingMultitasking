@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/22/20 9:46 PM
+ * Last modified 5/23/20 8:40 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -112,6 +112,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
+    private val functionsClassTheme: FunctionsClassTheme by lazy {
+        FunctionsClassTheme(applicationContext)
+    }
     private val functionsClassRunServices: FunctionsClassRunServices by lazy {
         FunctionsClassRunServices(applicationContext)
     }
@@ -169,7 +172,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()
 
-        functionsClass.setThemeColorFloating(this, hybridApplicationViewBinding.MainView, functionsClass.appThemeTransparent())
+        functionsClassTheme.setThemeColorFloating(this, hybridApplicationViewBinding.MainView, functionsClass.appThemeTransparent())
         functionsClassDialogues.changeLog()
 
         recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(105), OrientationHelper.VERTICAL, false)

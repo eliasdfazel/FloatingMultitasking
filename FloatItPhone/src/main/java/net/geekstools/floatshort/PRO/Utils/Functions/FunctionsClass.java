@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/18/20 2:45 PM
+ * Last modified 5/23/20 8:45 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -2807,7 +2807,7 @@ public class FunctionsClass {
             Drawable drawableBack = null;
             Drawable drawableFront = null;
             LayerDrawable layerDrawable = null;
-            if (returnAPI() >= 26) {
+            if (Build.VERSION.SDK_INT >= 26) {
                 AdaptiveIconDrawable adaptiveIconDrawable = null;
                 try {
                     Drawable tempAppIcon = appIcon(packageName);
@@ -2854,7 +2854,7 @@ public class FunctionsClass {
             Drawable drawableBack = null;
             Drawable drawableFront = null;
             LayerDrawable layerDrawable = null;
-            if (returnAPI() >= 26) {
+            if (Build.VERSION.SDK_INT >= 26) {
                 AdaptiveIconDrawable adaptiveIconDrawable = null;
                 try {
                     Drawable tempAppIcon = appIcon(activityInfo);
@@ -3014,47 +3014,12 @@ public class FunctionsClass {
     }
 
     /*App GUI Functions*/
-    public void setThemeColorFloating(Activity instanceOfActivity, View view, boolean transparent) {
-        if (transparent) {
+    public void setThemeColorAutomationFeature(Activity instanceOfActivity, View rootView, boolean applyTransparency) {
+        if (applyTransparency == true) {
             if (wallpaperStaticLive()) {
                 setBackgroundTheme(instanceOfActivity);
             }
-            view.setBackgroundColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
-
-            Window window = instanceOfActivity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (PublicVariable.themeLightDark) {
-                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (Build.VERSION.SDK_INT > 25) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                }
-            }
-            window.setStatusBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
-            window.setNavigationBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
-        } else if (transparent == false) {
-            view.setBackgroundColor(PublicVariable.colorLightDark);
-
-            Window window = instanceOfActivity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (PublicVariable.themeLightDark) {
-                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (Build.VERSION.SDK_INT > 25) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                }
-            }
-            window.setStatusBarColor(PublicVariable.colorLightDark);
-            window.setNavigationBarColor(PublicVariable.colorLightDark);
-        }
-    }
-
-    public void setThemeColorAutomationFeature(Activity instanceOfActivity, View view, boolean transparent) {
-        if (transparent == true) {
-            if (wallpaperStaticLive()) {
-                setBackgroundTheme(instanceOfActivity);
-            }
-            view.setBackgroundColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
+            rootView.setBackgroundColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
 
             Window window = instanceOfActivity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -3073,8 +3038,8 @@ public class FunctionsClass {
             );
 
             window.setNavigationBarColor(setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), wallpaperStaticLive() ? 180 : 80));
-        } else if (transparent == false) {
-            view.setBackgroundColor(PublicVariable.colorLightDark);
+        } else if (applyTransparency == false) {
+            rootView.setBackgroundColor(PublicVariable.colorLightDark);
 
             Window window = instanceOfActivity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -3090,13 +3055,13 @@ public class FunctionsClass {
         }
     }
 
-    public void setThemeColorPreferences(Activity instanceOfActivity, View backgroundView, Toolbar preferencesToolbar, boolean transparent, String title, String subTitle) {
-        if (transparent) {
+    public void setThemeColorPreferences(Activity instanceOfActivity, View rootView, Toolbar preferencesToolbar, boolean applyTransparency, String title, String subTitle) {
+        if (applyTransparency) {
             try {
                 if (wallpaperStaticLive()) {
                     setBackgroundTheme(instanceOfActivity);
                 }
-                backgroundView.setBackgroundColor(setColorAlpha(PublicVariable.colorLightDark, wallpaperStaticLive() ? 180 : 80));
+                rootView.setBackgroundColor(setColorAlpha(PublicVariable.colorLightDark, wallpaperStaticLive() ? 180 : 80));
 
                 preferencesToolbar.setBackgroundColor(PublicVariable.primaryColor);
                 if (PublicVariable.themeLightDark) {
@@ -3126,7 +3091,7 @@ public class FunctionsClass {
             }
         } else {
             try {
-                backgroundView.setBackgroundColor(PublicVariable.colorLightDark);
+                rootView.setBackgroundColor(PublicVariable.colorLightDark);
 
                 preferencesToolbar.setBackgroundColor(PublicVariable.primaryColor);
                 ((TextView) preferencesToolbar.findViewById(R.id.titlePreferences)).setText(Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>"));
@@ -3204,6 +3169,8 @@ public class FunctionsClass {
             setWallpaperToBackground(instanceOfActivity);
         }
     }
+
+
 
     public boolean appThemeTransparent() {
 

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 2:15 PM
+ * Last modified 5/23/20 8:44 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -35,6 +35,7 @@ import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassTheme
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.databinding.AdvanceAppSelectionListBinding
@@ -43,8 +44,11 @@ import java.util.*
 class AppSelectionList : AppCompatActivity(),
         ConfirmButtonProcessInterface {
 
-    val functionsClass: FunctionsClass by lazy {
+    private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
+    }
+    private val functionsClassTheme: FunctionsClassTheme by lazy {
+        FunctionsClassTheme(applicationContext)
     }
 
     private val listPopupWindow: ListPopupWindow by lazy {
@@ -80,11 +84,7 @@ class AppSelectionList : AppCompatActivity(),
         functionsClass.initShapesImage(advanceAppSelectionListBinding.firstSplitIcon)
         functionsClass.initShapesImage(advanceAppSelectionListBinding.secondSplitIcon)
 
-        if (functionsClass.appThemeTransparent()) {
-            functionsClass.setThemeColorFloating(this@AppSelectionList, advanceAppSelectionListBinding.root, true)
-        } else {
-            functionsClass.setThemeColorFloating(this@AppSelectionList, advanceAppSelectionListBinding.root, false)
-        }
+        functionsClassTheme.setThemeColorFloating(this@AppSelectionList, advanceAppSelectionListBinding.root, functionsClass.appThemeTransparent())
 
         recyclerViewLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
         advanceAppSelectionListBinding.recyclerListView.layoutManager = recyclerViewLayoutManager
