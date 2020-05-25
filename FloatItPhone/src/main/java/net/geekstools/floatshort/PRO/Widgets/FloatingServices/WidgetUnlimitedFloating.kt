@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:36 AM
+ * Last modified 5/24/20 8:58 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -63,6 +63,8 @@ class WidgetUnlimitedFloating : Service() {
     private val appWidgetId: ArrayList<Int> = ArrayList<Int>()
     private val widgetColor: ArrayList<Int> = ArrayList<Int>()
 
+    private val startIdCounter: ArrayList<Int> = ArrayList<Int>()
+
     private val layoutInflater: LayoutInflater by lazy {
         getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     }
@@ -115,13 +117,11 @@ class WidgetUnlimitedFloating : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
         super.onStartCommand(intent, flags, serviceStartId)
 
-        val startId = (serviceStartId - 1)
-
         intent?.run {
 
             if (this@run.hasExtra(getString(R.string.remove_all_floatings))) {
                 if (this@run.getStringExtra(getString(R.string.remove_all_floatings)) == getString(R.string.remove_all_floatings)) {
-                    for (removeCount in 0 until startId) {
+                    for (removeCount in 0 until floatingWidgetsBinding.size) {
                         try {
                             if (floatingWidgetsBinding[removeCount].root.isShown) {
                                 try {
@@ -158,6 +158,9 @@ class WidgetUnlimitedFloating : Service() {
                     return START_NOT_STICKY
                 }
             }
+
+            val startId = startIdCounter.size
+            startIdCounter.add(startId)
 
             floatingWidgetsBinding.add(startId, FloatingWidgetsBinding.inflate(layoutInflater))
 

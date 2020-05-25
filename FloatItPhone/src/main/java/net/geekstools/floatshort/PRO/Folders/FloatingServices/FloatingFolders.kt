@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 2:06 PM
+ * Last modified 5/24/20 8:55 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -100,6 +100,8 @@ class FloatingFolders : Service() {
     var flingPositionX: Float = 0f
     var flingPositionY: Float = 0f
 
+    private val startIdCounter: ArrayList<Int> = ArrayList<Int>()
+
     private val layoutInflater: LayoutInflater by lazy {
         getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     }
@@ -152,8 +154,6 @@ class FloatingFolders : Service() {
         super.onStartCommand(intent, flags, serviceStartId)
         FunctionsClassDebug.PrintDebug(this@FloatingFolders.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
-        val startId = (serviceStartId - 1)
-
         intent?.run {
 
             if (this@run.hasExtra(getString(R.string.remove_all_floatings))) {
@@ -196,6 +196,9 @@ class FloatingFolders : Service() {
 
                 return Service.START_NOT_STICKY
             }
+
+            val startId = startIdCounter.size
+            startIdCounter.add(startId)
 
             folderName.add(startId, intent.getStringExtra("folderName"))
 

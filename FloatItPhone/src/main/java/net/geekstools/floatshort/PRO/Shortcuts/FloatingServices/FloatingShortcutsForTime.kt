@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:57 AM
+ * Last modified 5/24/20 8:52 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -133,6 +133,7 @@ class FloatingShortcutsForTime : Service() {
     var flingPositionX: Float = 0f
     var flingPositionY: Float = 0f
 
+    private val startIdCounter: ArrayList<Int> = ArrayList<Int>()
 
     private val layoutInflater: LayoutInflater by lazy {
         getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -186,8 +187,6 @@ class FloatingShortcutsForTime : Service() {
         super.onStartCommand(intent, flags, serviceStartId)
         FunctionsClassDebug.PrintDebug(this@FloatingShortcutsForTime.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
-        val startId = (serviceStartId - 1)
-
         intent?.run {
 
             if (this@run.hasExtra(getString(R.string.remove_all_floatings))) {
@@ -227,6 +226,9 @@ class FloatingShortcutsForTime : Service() {
 
                 return Service.START_NOT_STICKY
             }
+
+            val startId = startIdCounter.size
+            startIdCounter.add(startId)
 
             packageNames.add(startId, this@run.getStringExtra("PackageName"))
 

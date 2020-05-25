@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:36 AM
+ * Last modified 5/24/20 8:43 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -137,6 +137,7 @@ class FloatingShortcutsForApplications : Service() {
     var flingPositionX: Float = 0f
     var flingPositionY: Float = 0f
 
+    private val startIdCounter: ArrayList<Int> = ArrayList<Int>()
 
     private val layoutInflater: LayoutInflater by lazy {
         getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -189,7 +190,6 @@ class FloatingShortcutsForApplications : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
         FunctionsClassDebug.PrintDebug(this@FloatingShortcutsForApplications.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
-        val startId = (serviceStartId - 1)
 
         intent?.run {
 
@@ -233,6 +233,9 @@ class FloatingShortcutsForApplications : Service() {
 
                 return START_NOT_STICKY
             }
+
+            val startId = startIdCounter.size
+            startIdCounter.add(startId)
 
             packageNames.add(startId, this@run.getStringExtra("PackageName"))
 

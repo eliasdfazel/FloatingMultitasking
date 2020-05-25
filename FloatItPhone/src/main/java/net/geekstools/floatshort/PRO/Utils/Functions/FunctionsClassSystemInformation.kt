@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 7:44 PM
+ * Last modified 5/24/20 8:41 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,7 +34,8 @@ class FunctionsClassSystemInformation (private val context: Context) {
             }
             else -> {
 
-                if (!checkRequiredMemory() && !context.getFileStreamPath(".LitePreferenceCheckpoint").exists()) {
+                if (!checkRequiredMemory()
+                        && !context.getFileStreamPath(".LitePreferenceCheckpoint").exists()) {
 
                     FunctionsClassPreferences(context)
                             .switchLitePreference(true).let { success ->
