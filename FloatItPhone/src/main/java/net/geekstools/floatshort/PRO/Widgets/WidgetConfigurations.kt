@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/23/20 8:45 PM
+ * Last modified 5/24/20 7:59 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -887,8 +887,10 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         }
     }
 
-    override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
-        swipeGestureListener.onTouchEvent(motionEvent)
+    override fun dispatchTouchEvent(motionEvent: MotionEvent?): Boolean {
+        motionEvent?.let {
+            swipeGestureListener.onTouchEvent(it)
+        }
 
         return super.dispatchTouchEvent(motionEvent)
     }
@@ -945,7 +947,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     val appWidgetId = extras!!.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
                     val appWidgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
 
-                    if (appWidgetInfo.configure != null) {
+                    if (appWidgetInfo.configure != null
+                            && packageManager.getActivityInfo(appWidgetInfo.configure, PackageManager.GET_META_DATA).exported) {
 
                         Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE).apply {
                             this.component = appWidgetInfo.configure

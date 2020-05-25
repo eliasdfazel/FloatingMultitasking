@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/23/20 9:30 PM
+ * Last modified 5/24/20 7:35 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -581,7 +581,6 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
     @Override
     public boolean dispatchTouchEvent(MotionEvent motionEvent) {
         swipeGestureListener.onTouchEvent(motionEvent);
-
 
         return super.dispatchTouchEvent(motionEvent);
     }

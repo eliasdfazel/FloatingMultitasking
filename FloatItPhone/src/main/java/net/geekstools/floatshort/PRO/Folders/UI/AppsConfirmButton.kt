@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 10:19 AM
+ * Last modified 5/24/20 7:35 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -83,8 +83,10 @@ class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
         super.onDetachedFromWindow()
     }
 
-    override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
-        swipeGestureListener.onTouchEvent(motionEvent)
+    override fun dispatchTouchEvent(motionEvent: MotionEvent?): Boolean {
+        motionEvent?.let {
+            swipeGestureListener.onTouchEvent(it)
+        }
 
         return super.dispatchTouchEvent(motionEvent)
     }

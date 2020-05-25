@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 3:19 PM
+ * Last modified 5/24/20 7:44 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -31,18 +31,10 @@ class FunctionsClassSystemInformation (private val context: Context) {
         when (getCpuModel()) {
             CPU_MODELS.Qualcomm -> {
 
-                if (!checkRequiredMemory()) {
-
-                    FunctionsClassPreferences(context)
-                            .switchLitePreference(true).let { success ->
-
-                            }
-                }
-
             }
             else -> {
 
-                if (!checkRequiredMemory()) {
+                if (!checkRequiredMemory() && !context.getFileStreamPath(".LitePreferenceCheckpoint").exists()) {
 
                     FunctionsClassPreferences(context)
                             .switchLitePreference(true).let { success ->

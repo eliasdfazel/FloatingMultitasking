@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 1:55 PM
+ * Created by Elias Fazel
+ * Last modified 5/24/20 7:03 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,38 +19,48 @@ import android.os.Handler
 import android.view.WindowManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-import kotlinx.android.synthetic.main.auth_verification_waiting.*
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
+import net.geekstools.floatshort.PRO.databinding.AuthVerificationWaitingBinding
 
 class PinPasswordVerification : Activity() {
 
-    private lateinit var functionsClass: FunctionsClass
+    private val functionsClass: FunctionsClass by lazy {
+        FunctionsClass(applicationContext)
+    }
+
+    private lateinit var authVerificationWaitingBinding: AuthVerificationWaitingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.auth_verification_waiting)
-
-        functionsClass = FunctionsClass(applicationContext)
+        authVerificationWaitingBinding = AuthVerificationWaitingBinding.inflate(layoutInflater)
+        setContentView(authVerificationWaitingBinding.root)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = getColor(R.color.default_color_light)
         window.navigationBarColor = getColor(R.color.default_color_light)
 
-        fullView.setBackgroundColor(getColor(R.color.default_color_light))
+        authVerificationWaitingBinding.fullView.setBackgroundColor(getColor(R.color.default_color_light))
 
         if (intent.hasExtra("RESET_PASSWORD_BY_FINGER_PRINT")) {
+
             functionsClass.savePreference(".Password", "Pin", "0")
+
             Handler().postDelayed({
-                startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                        ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
+                startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
             }, 2333)
+
         } else {
+
             FirebaseDynamicLinks.getInstance()
                     .getDynamicLink(intent)
                     .addOnSuccessListener(this@PinPasswordVerification) { pendingDynamicLinkData ->
+
                         // Get deep link from result (may be null if no link is found)
                         var deepLink: Uri? = null
                         if (pendingDynamicLinkData != null) {
@@ -65,8 +75,10 @@ class PinPasswordVerification : Activity() {
 
                         functionsClass.savePreference(".Password", "Pin", "0")
                         Handler().postDelayed({
-                            startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                    ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
+                            startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
                         }, 2333)
                     }
                     .addOnFailureListener(this) {
@@ -76,6 +88,7 @@ class PinPasswordVerification : Activity() {
     }
 
     override fun onBackPressed() {
+
         this@PinPasswordVerification.finish()
     }
 }

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 11:20 AM
+ * Last modified 5/24/20 7:43 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -835,14 +835,14 @@ public class FunctionsClass {
     public int extractDominantColor(Drawable drawable) {
         int VibrantColor = context.getColor(R.color.default_color);
         Bitmap bitmap = null;
-        if (returnAPI() >= 26) {
+        if (Build.VERSION.SDK_INT >= 26) {
             if (drawable instanceof VectorDrawable) {
                 bitmap = drawableToBitmap(drawable);
             } else if (drawable instanceof AdaptiveIconDrawable) {
                 try {
                     bitmap = ((BitmapDrawable) ((AdaptiveIconDrawable) drawable).getBackground()).getBitmap();
                 } catch (Exception e) {
-                    bitmap = ((BitmapDrawable) ((AdaptiveIconDrawable) drawable).getForeground()).getBitmap();
+                    bitmap = null;
                 }
             } else {
                 bitmap = drawableToBitmap(drawable);
@@ -877,7 +877,7 @@ public class FunctionsClass {
     public int extractVibrantColor(Drawable drawable) {
         int VibrantColor = context.getColor(R.color.default_color);
         Bitmap bitmap;
-        if (returnAPI() >= 26) {
+        if (Build.VERSION.SDK_INT >= 26) {
             if (drawable instanceof VectorDrawable) {
                 bitmap = drawableToBitmap(drawable);
             } else if (drawable instanceof AdaptiveIconDrawable) {
