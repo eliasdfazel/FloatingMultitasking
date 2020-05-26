@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 3:10 PM
+ * Last modified 5/25/20 6:51 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -4933,40 +4933,39 @@ public class FunctionsClass {
         PublicVariable.actionCenter = false;
     }
 
-    public void notificationCreator(String titleText, String contentText, int notificationId) {
-        try {
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification.Builder notificationBuilder = new Notification.Builder(context);
-            notificationBuilder.setContentTitle(Html.fromHtml("<b><font color='" + PublicVariable.primaryColorOpposite + "'>" + titleText + "</font></b>"));
-            notificationBuilder.setContentText(Html.fromHtml("<font color='" + PublicVariable.primaryColor + "'>" + contentText + "</font>"));
-            notificationBuilder.setTicker(context.getResources().getString(R.string.app_name));
-            notificationBuilder.setSmallIcon(R.drawable.ic_notification);
-            notificationBuilder.setAutoCancel(true);
-            notificationBuilder.setColor(context.getColor(R.color.default_color));
-            notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
+    public Notification notificationCreator(String titleText, String contentText, int notificationId) {
 
-            Intent newUpdate = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()));
-            PendingIntent newUpdatePendingIntent = PendingIntent.getActivity(context, 5, newUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification.Builder notificationBuilder = new Notification.Builder(context);
+        notificationBuilder.setContentTitle(Html.fromHtml("<b><font color='" + PublicVariable.primaryColorOpposite + "'>" + titleText + "</font></b>"));
+        notificationBuilder.setContentText(Html.fromHtml("<font color='" + PublicVariable.primaryColor + "'>" + contentText + "</font>"));
+        notificationBuilder.setTicker(context.getResources().getString(R.string.app_name));
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+        notificationBuilder.setAutoCancel(true);
+        notificationBuilder.setColor(context.getColor(R.color.default_color));
+        notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel = new NotificationChannel(context.getPackageName(), context.getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
-                notificationManager.createNotificationChannel(notificationChannel);
-                notificationBuilder.setChannelId(context.getPackageName());
-            }
+        Intent newUpdate = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()));
+        PendingIntent newUpdatePendingIntent = PendingIntent.getActivity(context, 5, newUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                Notification.Action.Builder builderActionNotification = new Notification.Action.Builder(
-                        Icon.createWithResource(context, R.drawable.draw_share_menu),
-                        context.getString(R.string.rateReview),
-                        newUpdatePendingIntent
-                );
-                notificationBuilder.addAction(builderActionNotification.build());
-            }
-            notificationBuilder.setContentIntent(newUpdatePendingIntent);
-            notificationManager.notify(notificationId, notificationBuilder.build());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(context.getPackageName(), context.getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(notificationChannel);
+            notificationBuilder.setChannelId(context.getPackageName());
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Notification.Action.Builder builderActionNotification = new Notification.Action.Builder(
+                    Icon.createWithResource(context, R.drawable.draw_share_menu),
+                    context.getString(R.string.rateReview),
+                    newUpdatePendingIntent
+            );
+            notificationBuilder.addAction(builderActionNotification.build());
+        }
+        notificationBuilder.setContentIntent(newUpdatePendingIntent);
+        notificationManager.notify(notificationId, notificationBuilder.build());
+
+        return notificationBuilder.build();
     }
 
     public Notification bindServiceNotification() {
