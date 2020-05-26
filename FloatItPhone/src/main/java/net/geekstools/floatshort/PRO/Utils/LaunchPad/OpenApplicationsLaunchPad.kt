@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 7:03 PM
+ * Last modified 5/25/20 7:04 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,30 +19,33 @@ class OpenApplicationsLaunchPad : Activity() {
 
         val functionsClass = FunctionsClass(applicationContext)
 
-        val packageName = intent.getStringExtra("packageName")
+        val appPackageName: String? = intent.getStringExtra("packageName")
 
-        try {
-            if (intent.hasExtra("className")) {
+        appPackageName?.let {
 
-                val className = intent.getStringExtra("className")
+            try {
+                if (intent.hasExtra("className")) {
 
-                functionsClass.openApplicationFromActivity(this@OpenApplicationsLaunchPad,
-                        packageName,
-                        className)
+                    val appClassName = intent.getStringExtra("className")
 
-            } else {
+                    functionsClass.openApplicationFromActivity(this@OpenApplicationsLaunchPad,
+                            appPackageName,
+                            appClassName)
+
+                } else {
+
+                    functionsClass
+                            .openApplicationFromActivity(this@OpenApplicationsLaunchPad,
+                                    appPackageName)
+
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
 
                 functionsClass
                         .openApplicationFromActivity(this@OpenApplicationsLaunchPad,
-                                packageName)
-
+                                appPackageName)
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-
-            functionsClass
-                    .openApplicationFromActivity(this@OpenApplicationsLaunchPad,
-                            packageName)
         }
 
         this@OpenApplicationsLaunchPad.finish()
