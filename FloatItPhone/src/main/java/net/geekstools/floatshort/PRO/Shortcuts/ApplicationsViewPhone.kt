@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 7:33 PM
+ * Last modified 5/26/20 1:38 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -741,9 +741,10 @@ class ApplicationsViewPhone : AppCompatActivity(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                Google.SignInRequest -> {
+        when (requestCode) {
+            Google.SignInRequest -> {
+                if (resultCode == Activity.RESULT_OK) {
+
                     val googleSignInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
                     val googleSignInAccount = googleSignInAccountTask.getResult(ApiException::class.java)
 
@@ -769,12 +770,15 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                     this.dialogueMessage.value = exception.message
                                 }
                             }
+
+                } else {
+
+                    waitingDialogueLiveData.run {
+                        this.dialogueTitle.value = getString(R.string.error)
+                        this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
+                    }
+
                 }
-            }
-        } else {
-            waitingDialogueLiveData.run {
-                this.dialogueTitle.value = getString(R.string.error)
-                this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
             }
         }
     }
