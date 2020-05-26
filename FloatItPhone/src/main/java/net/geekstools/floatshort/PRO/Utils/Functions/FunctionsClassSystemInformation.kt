@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 8:41 PM
+ * Last modified 5/25/20 4:43 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,7 +26,7 @@ class FunctionsClassSystemInformation (private val context: Context) {
     /**
      * Check Device Information & Apply Lite Preferences For Specific Device Model
      **/
-    fun checkDevieInformation() {
+    fun checkDeviceInformation() {
 
         when (getCpuModel()) {
             CPU_MODELS.Qualcomm -> {

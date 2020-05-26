@@ -2,15 +2,15 @@
 <!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 3/24/20 1:15 PM
-  ~ Last modified 3/24/20 10:35 AM
+  ~ Created by Elias Fazel
+  ~ Last modified 5/25/20 4:18 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
   -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
@@ -21,10 +21,10 @@
         android:layout_height="match_parent"
         android:background="@android:color/transparent"/>
 
-    <net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplashRemoval
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"/>
+<!--    <net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplashRemoval-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:visibility="invisible"/>-->
 
     <net.geekstools.imageview.customshapes.ShapesImage
         android:id="@+id/shapedIcon"
@@ -33,4 +33,5 @@
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         android:visibility="visible" />
+
 </RelativeLayout>

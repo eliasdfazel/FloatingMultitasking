@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 3:17 PM
+ * Last modified 5/25/20 4:47 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -57,7 +57,7 @@ class Configurations : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(applicationContext)
 
-        functionsClassSystemInformation.checkDevieInformation()
+        functionsClassSystemInformation.checkDeviceInformation()
 
         checkUserInformation()
         initializeParameterUI()

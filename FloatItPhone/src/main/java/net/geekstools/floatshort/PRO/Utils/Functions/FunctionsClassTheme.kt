@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/23/20 9:27 PM
+ * Last modified 5/25/20 6:34 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -37,6 +37,10 @@ class FunctionsClassTheme (private val context: Context) {
     fun setThemeColorFloating(instanceOfActivity: AppCompatActivity, rootView: View, applyTransparency: Boolean) {
 
         if (applyTransparency) {
+
+            if (Utils().wallpaperStaticLive()) {
+                Utils().setBackgroundTheme(instanceOfActivity)
+            }
 
             rootView.setBackgroundColor(functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
 
