@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 4:47 PM
+ * Last modified 5/28/20 2:26 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -41,7 +41,7 @@ class Configurations : AppCompatActivity() {
         FunctionsClass(applicationContext)
     }
 
-    val functionsClassSystemInformation: FunctionsClassSystemInformation by lazy {
+    private val functionsClassSystemInformation: FunctionsClassSystemInformation by lazy {
         FunctionsClassSystemInformation(applicationContext)
     }
 
