@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 6:51 PM
+ * Last modified 5/28/20 3:11 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -16,7 +16,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityOptions;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.AppOpsManager;
 import android.app.Notification;
@@ -118,8 +117,6 @@ import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Actions;
 
-import net.geekstools.floatshort.PRO.Automation.Alarms.AlarmAlertBroadcastReceiver;
-import net.geekstools.floatshort.PRO.Automation.Alarms.SetupAlarms;
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Automation.Folders.FolderAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
@@ -180,7 +177,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
@@ -2390,7 +2386,7 @@ public class FunctionsClass {
     public @Nullable String[] readFileLine(String fileName) {
         FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
 
-        return functionsClassIO.readFileLines(fileName);
+        return functionsClassIO.readFileLinesAsArray(fileName);
     }
 
     public String readFile(String fileName) {
@@ -5103,25 +5099,6 @@ public class FunctionsClass {
 
     public boolean litePreferencesEnabled() {
         return readDefaultPreference("LitePreferences", false);
-    }
-
-    /*Time Functions*/
-    public void initialAlarm(Calendar newAlarmTime, String setTime, int position) {
-        Intent alarmIntent = new Intent(context, AlarmAlertBroadcastReceiver.class);
-        alarmIntent.putExtra("time", setTime);
-        alarmIntent.putExtra("position", position);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        newAlarmTime.add(Calendar.DAY_OF_MONTH, 1);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                newAlarmTime.getTimeInMillis(),
-                /*AlarmManager.INTERVAL_DAY*/86400000,
-                pendingIntent);
-
-        FunctionsClassDebug.Companion.PrintDebug("*** " + newAlarmTime.getTime() + " ***");
-
-        context.stopService(new Intent(context, SetupAlarms.class));
     }
 
     /*Let Me Know*/

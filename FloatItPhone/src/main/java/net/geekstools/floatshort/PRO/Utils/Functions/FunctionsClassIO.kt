@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 10:08 AM
+ * Last modified 5/28/20 3:11 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -17,7 +17,7 @@ import java.nio.charset.Charset
 
 class FunctionsClassIO (private val context: Context) {
 
-    fun readFileLines(fileName: String) : Array<String>? {
+    fun readFileLinesAsArray(fileName: String) : Array<String>? {
         val file: File? = context.getFileStreamPath(fileName)
 
         return if (file != null) {
@@ -29,6 +29,20 @@ class FunctionsClassIO (private val context: Context) {
         } else {
             null
         }
+    }
+
+    fun readFileLinesAsList(fileName: String) : ArrayList<String>? {
+        val file: File? = context.getFileStreamPath(fileName)
+
+        return (if (file != null) {
+            if (file.exists()) {
+                file.readLines(Charset.defaultCharset())
+            } else {
+                null
+            }
+        } else {
+            null
+        }) as ArrayList<String>?
     }
 
     fun fileLinesCounter(fileName: String) : Int {
