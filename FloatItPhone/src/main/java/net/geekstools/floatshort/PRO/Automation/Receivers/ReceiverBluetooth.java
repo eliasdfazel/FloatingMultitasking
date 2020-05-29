@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 5:52 AM
+ * Last modified 5/28/20 4:04 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,12 +25,10 @@ import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
 public class ReceiverBluetooth extends BroadcastReceiver {
 
-    FunctionsClass functionsClass;
-
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            functionsClass = new FunctionsClass(context);
+            FunctionsClass functionsClass = new FunctionsClass(context);
 
             if (functionsClass.customIconsEnable()) {
                 LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
