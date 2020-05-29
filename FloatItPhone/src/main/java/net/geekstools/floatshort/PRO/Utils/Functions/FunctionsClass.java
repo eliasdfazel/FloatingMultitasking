@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 9:16 PM
+ * Last modified 5/28/20 9:28 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -2106,7 +2106,7 @@ public class FunctionsClass {
     }
 
     @Deprecated
-    public @Nullable String[] readFileLine(String fileName) {
+    private  @Nullable String[] readFileLine(String fileName) {
 
 
         //Move It To FunctionsClassIO
