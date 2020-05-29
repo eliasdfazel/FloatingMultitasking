@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 9:40 PM
+ * Last modified 5/28/20 11:00 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -55,7 +55,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
     }
 

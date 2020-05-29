@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/29/20 1:00 PM
- * Last modified 3/29/20 11:16 AM
+ * Created by Elias Fazel
+ * Last modified 5/28/20 10:45 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -23,7 +23,10 @@ android {
         versionName "1.0"
     }
 
-    lintOptions {
-        abortOnError false
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 }
