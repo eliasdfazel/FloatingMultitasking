@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/23/20 9:57 PM
+ * Last modified 5/28/20 9:26 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -35,6 +35,7 @@ import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassTheme
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
@@ -47,6 +48,11 @@ class AppSelectionList : AppCompatActivity(),
     val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
+
+    val functionsClassIO: FunctionsClassIO by lazy {
+        FunctionsClassIO(applicationContext)
+    }
+
     private val functionsClassTheme: FunctionsClassTheme by lazy {
         FunctionsClassTheme(applicationContext)
     }
@@ -176,7 +182,7 @@ class AppSelectionList : AppCompatActivity(),
                 if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
                     selectedAppsListItem.clear()
 
-                    functionsClass.readFileLine(PublicVariable.folderName)?.let {
+                    functionsClassIO.readFileLinesAsArray(PublicVariable.folderName)?.let {
 
                         for (aSavedLine in it) {
                             selectedAppsListItem.add(AdapterItems(
@@ -211,7 +217,7 @@ class AppSelectionList : AppCompatActivity(),
                 if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
                     selectedAppsListItem.clear()
 
-                    functionsClass.readFileLine(PublicVariable.folderName)?.let {
+                    functionsClassIO.readFileLinesAsArray(PublicVariable.folderName)?.let {
 
                         for (aSavedLine in it) {
                             selectedAppsListItem.add(AdapterItems(
@@ -269,7 +275,7 @@ class AppSelectionList : AppCompatActivity(),
 
             selectedAppsListItem.clear()
 
-            functionsClass.readFileLine(PublicVariable.folderName)?.let {
+            functionsClassIO.readFileLinesAsArray(PublicVariable.folderName)?.let {
 
                 for (aSavedLine in it) {
                     selectedAppsListItem.add(AdapterItems(

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 2:11 PM
+ * Last modified 5/28/20 9:21 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -29,6 +29,7 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import java.util.*
@@ -38,6 +39,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
                          private val adapterItems: ArrayList<AdapterItems>) : RecyclerView.Adapter<FoldersListAdapter.ViewHolder>() {
 
     var functionsClass: FunctionsClass = FunctionsClass(context)
+    var functionsClassIO: FunctionsClassIO = FunctionsClassIO(context)
 
     var endEdited = ""
 
@@ -226,7 +228,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
                     PublicVariable.folderName = PublicVariable.folderName + "_" + System.currentTimeMillis()
                 }
 
-                functionsClass.readFileLine(adapterItems[position].category)?.let {
+                functionsClassIO.readFileLinesAsArray(adapterItems[position].category)?.let {
 
                     for (appContent in it) {
                         context.deleteFile(appContent + adapterItems[position].category)

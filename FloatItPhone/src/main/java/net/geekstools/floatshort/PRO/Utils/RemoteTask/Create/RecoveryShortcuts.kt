@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 2:18 PM
+ * Last modified 5/28/20 9:27 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,6 +26,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fing
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
@@ -34,6 +35,10 @@ class RecoveryShortcuts : Service() {
     
     private val functionsClass: FunctionsClass by lazy { 
         FunctionsClass(applicationContext)
+    }
+
+    private val functionsClassIO: FunctionsClassIO by lazy {
+        FunctionsClassIO(applicationContext)
     }
     
     private val functionsClassRunServices: FunctionsClassRunServices by lazy { 
@@ -65,7 +70,7 @@ class RecoveryShortcuts : Service() {
 
             intent?.let {
 
-                val applicationsDataLines = functionsClass.readFileLine(".uFile")
+                val applicationsDataLines = functionsClassIO.readFileLinesAsArray(".uFile")
 
                 if (!applicationsDataLines.isNullOrEmpty()) {
 

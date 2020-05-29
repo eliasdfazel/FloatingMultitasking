@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 9:12 PM
+ * Last modified 5/28/20 9:16 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -2028,6 +2028,7 @@ public class FunctionsClass {
     }
 
     /*File Functions*/
+    @Deprecated
     public void saveBitmapIcon(String fileName, Bitmap bitmapToSave) {
         FileOutputStream fileOutputStream = null;
         try {
@@ -2046,6 +2047,7 @@ public class FunctionsClass {
         }
     }
 
+    @Deprecated
     public void saveBitmapIcon(String fileName, Drawable drawableToSave) {
         FileOutputStream fileOutputStream = null;
         try {
@@ -2065,6 +2067,7 @@ public class FunctionsClass {
         }
     }
 
+    @Deprecated
     public void saveFileEmpty(String fileName) {
         try {
             FileOutputStream fOut = context.openFileOutput(fileName, Context.MODE_PRIVATE);
@@ -2076,6 +2079,7 @@ public class FunctionsClass {
         }
     }
 
+    @Deprecated
     public void saveFile(String fileName, String content) {
         try {
             FileOutputStream fOut = context.openFileOutput(fileName, Context.MODE_PRIVATE);
@@ -2088,6 +2092,7 @@ public class FunctionsClass {
         }
     }
 
+    @Deprecated
     public void saveFileAppendLine(String fileName, String content) {
         try {
             FileOutputStream fOut = context.openFileOutput(fileName, Context.MODE_APPEND);
@@ -2112,18 +2117,21 @@ public class FunctionsClass {
         return functionsClassIO.readFileLinesAsArray(fileName);
     }
 
+    @Deprecated
     public String readFile(String fileName) {
         FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
 
         return functionsClassIO.readFile(fileName);
     }
 
+    @Deprecated
     public int countLineInnerFile(String fileName) {
         FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
 
         return functionsClassIO.fileLinesCounter(fileName);
     }
 
+    @Deprecated
     public void removeLine(String fileName, String lineToRemove) {
         try {
             FileInputStream fileInputStream = context.openFileInput(fileName);
@@ -2155,6 +2163,7 @@ public class FunctionsClass {
     }
 
     /*Preferences Functions*/
+    @Deprecated
     public void savePreference(String PreferenceName, String KEY, String VALUE) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
@@ -2162,6 +2171,7 @@ public class FunctionsClass {
         editorSharedPreferences.apply();
     }
 
+    @Deprecated
     public void savePreference(String PreferenceName, String KEY, int VALUE) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
@@ -2169,6 +2179,7 @@ public class FunctionsClass {
         editorSharedPreferences.apply();
     }
 
+    @Deprecated
     public void savePreference(String PreferenceName, String KEY, long VALUE) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
@@ -2176,6 +2187,7 @@ public class FunctionsClass {
         editorSharedPreferences.apply();
     }
 
+    @Deprecated
     public void savePreference(String PreferenceName, String KEY, float VALUE) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
@@ -2183,6 +2195,7 @@ public class FunctionsClass {
         editorSharedPreferences.apply();
     }
 
+    @Deprecated
     public void savePreference(String PreferenceName, String KEY, boolean VALUE) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
@@ -2190,6 +2203,7 @@ public class FunctionsClass {
         editorSharedPreferences.apply();
     }
 
+    @Deprecated
     public void saveDefaultPreference(String KEY, String VALUE) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
@@ -2197,6 +2211,7 @@ public class FunctionsClass {
         editorSharedPreferences.apply();
     }
 
+    @Deprecated
     public void saveDefaultPreference(String KEY, int VALUE) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
@@ -2204,6 +2219,7 @@ public class FunctionsClass {
         editorSharedPreferences.apply();
     }
 
+    @Deprecated
     public void saveDefaultPreference(String KEY, boolean VALUE) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
@@ -2211,34 +2227,42 @@ public class FunctionsClass {
         editorSharedPreferences.apply();
     }
 
+    @Deprecated
     public String readPreference(String PreferenceName, String KEY, String defaultVALUE) {
         return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getString(KEY, defaultVALUE);
     }
 
+    @Deprecated
     public int readPreference(String PreferenceName, String KEY, int defaultVALUE) {
         return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getInt(KEY, defaultVALUE);
     }
 
+    @Deprecated
     public long readPreference(String PreferenceName, String KEY, long defaultVALUE) {
         return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getLong(KEY, defaultVALUE);
     }
 
+    @Deprecated
     public float readPreference(String PreferenceName, String KEY, float defaultVALUE) {
         return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getFloat(KEY, defaultVALUE);
     }
 
+    @Deprecated
     public boolean readPreference(String PreferenceName, String KEY, boolean defaultVALUE) {
         return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getBoolean(KEY, defaultVALUE);
     }
 
+    @Deprecated
     public int readDefaultPreference(String KEY, int defaultVALUE) {
         return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY, defaultVALUE);
     }
 
+    @Deprecated
     public String readDefaultPreference(String KEY, String defaultVALUE) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(KEY, defaultVALUE);
     }
 
+    @Deprecated
     public boolean readDefaultPreference(String KEY, boolean defaultVALUE) {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY, defaultVALUE);
     }

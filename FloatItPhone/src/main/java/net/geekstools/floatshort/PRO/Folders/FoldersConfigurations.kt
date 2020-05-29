@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 7:46 PM
+ * Last modified 5/28/20 9:26 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -785,7 +785,7 @@ class FoldersConfigurations : AppCompatActivity(),
                     .withIndex().collect { folderInformation ->
 
                         folderAdapterItems.add(AdapterItems(folderInformation.value,
-                                functionsClass.readFileLine(folderInformation.value), SearchResultType.SearchFolders))
+                                functionsClassIO.readFileLinesAsArray(folderInformation.value), SearchResultType.SearchFolders))
                     }
 
             folderAdapterItems.add(AdapterItems(packageName, arrayOf(packageName), SearchResultType.SearchFolders))

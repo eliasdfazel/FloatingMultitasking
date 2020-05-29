@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 2:12 PM
+ * Last modified 5/28/20 9:24 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,6 +34,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
@@ -46,6 +47,8 @@ class PopupFolderOptionAdapter : BaseAdapter {
     private var context: Context
 
     private var functionsClass: FunctionsClass
+    private var functionsClassIO: FunctionsClassIO
+
     private var securityFunctions: SecurityFunctions
 
     private var splitOne: Drawable? = null
@@ -78,6 +81,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
         this.startId = startId
 
         functionsClass = FunctionsClass(context)
+        functionsClassIO = FunctionsClassIO(context)
         securityFunctions = SecurityFunctions(context)
 
         PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
@@ -105,6 +109,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
         this.HW = HW
 
         functionsClass = FunctionsClass(context)
+        functionsClassIO = FunctionsClassIO(context)
         securityFunctions = SecurityFunctions(context)
 
         PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
@@ -179,20 +184,20 @@ class PopupFolderOptionAdapter : BaseAdapter {
             } else if (adapterItems[position].appName == context.getString(R.string.splitIt)) {
 
                 splitOne = if (functionsClass.customIconsEnable()) {
-                    loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems[position].packageName)?.get(0)
-                            ?:"null", functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)?.get(0)
+                    loadCustomIcons!!.getDrawableIconForPackage(functionsClassIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(0)
+                            ?:"null", functionsClass.shapedAppIcon(functionsClassIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(0)
                             ?:"null"))
                 } else {
-                    functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)?.get(0)
+                    functionsClass.shapedAppIcon(functionsClassIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(0)
                             ?:"null")
                 }
 
                 splitTwo = if (functionsClass.customIconsEnable()) {
-                    loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFileLine(adapterItems[position].packageName)?.get(1)
-                            ?:"null", functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)?.get(1)
+                    loadCustomIcons!!.getDrawableIconForPackage(functionsClassIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(1)
+                            ?:"null", functionsClass.shapedAppIcon(functionsClassIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(1)
                             ?:"null"))
                 } else {
-                    functionsClass.shapedAppIcon(functionsClass.readFileLine(adapterItems[position].packageName)?.get(1)
+                    functionsClass.shapedAppIcon(functionsClassIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(1)
                             ?:"null")
                 }
 
