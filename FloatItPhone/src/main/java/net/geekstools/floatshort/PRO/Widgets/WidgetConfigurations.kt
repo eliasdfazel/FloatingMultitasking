@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 7:59 PM
+ * Last modified 5/28/20 7:50 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -92,6 +92,9 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
+    }
+    private val functionsClassIO: FunctionsClassIO by lazy {
+        FunctionsClassIO(applicationContext)
     }
     private val functionsClassTheme: FunctionsClassTheme by lazy {
         FunctionsClassTheme(applicationContext)
@@ -1112,6 +1115,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         SearchEngine(activity = this@WidgetConfigurations, context = applicationContext,
                                 searchEngineViewBinding = widgetConfigurationsViewsBinding.searchEngineViewInclude,
                                 functionsClass = functionsClass,
+                                functionsClassIO = functionsClassIO,
                                 functionsClassRunServices = functionsClassRunServices,
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {

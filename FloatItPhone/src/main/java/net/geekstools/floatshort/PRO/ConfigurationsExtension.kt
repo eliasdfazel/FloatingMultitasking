@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 1:56 PM
+ * Last modified 5/28/20 9:06 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -115,7 +115,7 @@ fun Configurations.indexFloatingShortcuts() = CoroutineScope(Dispatchers.IO).asy
 
     if (getFileStreamPath(".uFile").exists()) {
 
-        functionsClass.readFileLine(".uFile")?.let {
+        functionsClassIO.readFileLinesAsArray(".uFile")?.let {
 
             it.forEach { lineContent ->
 

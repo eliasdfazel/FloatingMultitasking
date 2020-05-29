@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 7:35 PM
+ * Last modified 5/28/20 8:14 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -78,8 +78,8 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
     RelativeLayout fullActionButton, MainView;
     LinearLayout autoIdentifier;
     RelativeLayout loadingSplash;
-    ProgressBar loadingBarLTR;
-    TextView desc;
+    ProgressBar loadingProgress;
+    TextView loadingDescription;
     Button wifi, bluetooth, gps, nfc, time, autoApps, autoCategories;
 
     String AppTime;
@@ -243,17 +243,17 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
         }
 
-        loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
-        desc = (TextView) findViewById(R.id.loadingDescription);
+        loadingProgress = (ProgressBar) findViewById(R.id.loadingProgress);
+        loadingDescription = (TextView) findViewById(R.id.loadingDescription);
         Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
-        desc.setTypeface(face);
+        loadingDescription.setTypeface(face);
 
         if (PublicVariable.themeLightDark) {
-            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-            desc.setTextColor(getColor(R.color.dark));
+            loadingProgress.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+            loadingDescription.setTextColor(getColor(R.color.dark));
         } else if (!PublicVariable.themeLightDark) {
-            loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-            desc.setTextColor(getColor(R.color.light));
+            loadingProgress.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+            loadingDescription.setTextColor(getColor(R.color.light));
         }
 
         autoApps.setOnClickListener(new View.OnClickListener() {
@@ -676,22 +676,22 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
                 loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
             }
 
-            loadingBarLTR = (ProgressBar) findViewById(R.id.loadingProgress);
-            desc = (TextView) findViewById(R.id.loadingDescription);
+            loadingProgress = (ProgressBar) findViewById(R.id.loadingProgress);
+            loadingDescription = (TextView) findViewById(R.id.loadingDescription);
             Typeface face = Typeface.createFromAsset(getAssets(), "upcil.ttf");
-            desc.setTypeface(face);
+            loadingDescription.setTypeface(face);
 
             if (PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
-            } else if (!PublicVariable.themeLightDark) {
-                loadingBarLTR.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+                loadingProgress.getIndeterminateDrawable().setColorFilter(PublicVariable.darkMutedColor, android.graphics.PorterDuff.Mode.MULTIPLY);
+            } else {
+                loadingProgress.getIndeterminateDrawable().setColorFilter(PublicVariable.vibrantColor, android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                String[] appData = functionsClass.readFileLine(".categoryInfo");
+                String[] appData = functionsClassIO.readFileLinesAsArray(".categoryInfo");
 
                 if (functionsClass.customIconsEnable()) {
                     loadCustomIcons.load();
@@ -712,7 +712,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
                         adapterItems.add(new AdapterItems(
                                 appData[navItem],
-                                functionsClass.readFileLine(appData[navItem]),
+                                functionsClassIO.readFileLinesAsArray(appData[navItem]),
                                 AppTime));
                     } catch (Exception e) {
                         e.printStackTrace();

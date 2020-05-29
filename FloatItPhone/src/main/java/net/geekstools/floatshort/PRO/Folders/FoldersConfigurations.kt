@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 7:34 PM
+ * Last modified 5/28/20 7:46 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -101,6 +101,9 @@ class FoldersConfigurations : AppCompatActivity(),
 
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
+    }
+    private val functionsClassIO: FunctionsClassIO by lazy {
+        FunctionsClassIO(applicationContext)
     }
     private val functionsClassTheme: FunctionsClassTheme by lazy {
         FunctionsClassTheme(applicationContext)
@@ -770,6 +773,7 @@ class FoldersConfigurations : AppCompatActivity(),
                         SearchEngine(activity = this@FoldersConfigurations, context = applicationContext,
                                 searchEngineViewBinding = foldersConfigurationViewBinding.searchEngineViewInclude,
                                 functionsClass = functionsClass,
+                                functionsClassIO = functionsClassIO,
                                 functionsClassRunServices = functionsClassRunServices,
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {

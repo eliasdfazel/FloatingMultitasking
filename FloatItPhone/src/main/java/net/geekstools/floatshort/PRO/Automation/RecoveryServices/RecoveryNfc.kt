@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 1:54 PM
+ * Last modified 5/28/20 8:41 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,6 +15,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.TypedValue
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class RecoveryNfc : Service() {
@@ -28,6 +29,7 @@ class RecoveryNfc : Service() {
         super.onStartCommand(intent, flags, startId)
 
         val functionsClass: FunctionsClass = FunctionsClass(applicationContext)
+        val functionsClassIO: FunctionsClassIO = FunctionsClassIO(applicationContext)
 
         PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
@@ -35,7 +37,7 @@ class RecoveryNfc : Service() {
         if (getFileStreamPath(".auto" + this@RecoveryNfc.javaClass.simpleName.replace("Recovery", "")).exists()
                 && getFileStreamPath(".auto" + this@RecoveryNfc.javaClass.simpleName.replace("Recovery", "")).isFile) {
 
-            val packageNames = functionsClass.readFileLine(".auto" + this@RecoveryNfc.javaClass.simpleName.replace("Recovery", ""))
+            val packageNames = functionsClassIO.readFileLinesAsArray(".auto" + this@RecoveryNfc.javaClass.simpleName.replace("Recovery", ""))
             if (!packageNames.isNullOrEmpty()) {
                 for (aPackageName in packageNames) {
                     functionsClass.runUnlimitedBluetooth(aPackageName)
@@ -46,10 +48,10 @@ class RecoveryNfc : Service() {
         if (getFileStreamPath(".auto" + this@RecoveryNfc.javaClass.simpleName.replace("Recovery", "") + "Category").exists()
                 && getFileStreamPath(".auto" + this@RecoveryNfc.javaClass.simpleName.replace("Recovery", "") + "Category").isFile) {
 
-            val folderNames = functionsClass.readFileLine(".auto" + this@RecoveryNfc.javaClass.simpleName.replace("Recovery", "") + "Category")
+            val folderNames = functionsClassIO.readFileLinesAsArray(".auto" + this@RecoveryNfc.javaClass.simpleName.replace("Recovery", "") + "Category")
             if (!folderNames.isNullOrEmpty()) {
                 for (CategoryName in folderNames) {
-                    functionsClass.runUnlimitedFolderBluetooth(CategoryName, functionsClass.readFileLine(CategoryName))
+                    functionsClass.runUnlimitedFolderBluetooth(CategoryName, functionsClassIO.readFileLinesAsArray(CategoryName))
                 }
             }
         }

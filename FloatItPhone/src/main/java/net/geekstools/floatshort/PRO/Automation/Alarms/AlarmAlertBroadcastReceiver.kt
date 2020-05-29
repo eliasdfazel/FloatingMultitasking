@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/7/20 1:46 PM
+ * Last modified 5/28/20 9:12 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,7 +15,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.TypedValue
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassPreferences
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class AlarmAlertBroadcastReceiver : BroadcastReceiver() {
@@ -26,15 +28,17 @@ class AlarmAlertBroadcastReceiver : BroadcastReceiver() {
             if (context != null) {
                 invokeSystem(context)
 
-                val functionsClass = FunctionsClass(context)
+                val functionsClassIO = FunctionsClassIO(context)
+                val functionsClassRunServices = FunctionsClassRunServices(context)
+                val functionsClassPreferences = FunctionsClassPreferences(context)
 
                 val setTime = intent.getStringExtra("time")
                 val alarmPosition = intent.getIntExtra("position", 0)
 
-                PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+                PublicVariable.floatingSizeNumber = functionsClassPreferences.readDefaultPreference("floatingSize", 39)
                 PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), context.resources.displayMetrics).toInt()
 
-                val alarmedPackageNames = functionsClass.readFileLine(setTime)
+                val alarmedPackageNames = functionsClassIO.readFileLinesAsArray(setTime)
 
                 if (!alarmedPackageNames.isNullOrEmpty()) {
 
@@ -42,14 +46,17 @@ class AlarmAlertBroadcastReceiver : BroadcastReceiver() {
 
                         if (aAlarmedPackageNames.contains("APP")) {
 
-                            functionsClass
-                                    .runUnlimitedTime(aAlarmedPackageNames.replace("APP", ""))
+                            functionsClassRunServices
+                                    .runUnlimitedShortcutsForTime(aAlarmedPackageNames.replace("APP", ""))
 
                         } else if (aAlarmedPackageNames.contains("CATEGORY")) {
 
-                            functionsClass
-                                    .runUnlimitedFolderTime(aAlarmedPackageNames.replace("CATEGORY", ""),
-                                            functionsClass.readFileLine(aAlarmedPackageNames.replace("CATEGORY", "")))
+                            functionsClassIO.readFileLinesAsArray(aAlarmedPackageNames.replace("CATEGORY", ""))?.let {
+
+                                functionsClassRunServices
+                                        .runUnlimitedFoldersForTime(aAlarmedPackageNames.replace("CATEGORY", ""),
+                                                it)
+                            }
                         }
                     }
 

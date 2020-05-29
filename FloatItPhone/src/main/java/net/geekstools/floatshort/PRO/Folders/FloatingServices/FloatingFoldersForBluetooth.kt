@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 8:55 PM
+ * Last modified 5/28/20 9:09 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,6 +36,7 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.Utils.FloatingFold
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
@@ -46,6 +47,9 @@ class FloatingFoldersForBluetooth : Service() {
 
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
+    }
+    private val functionsClassIO: FunctionsClassIO by lazy {
+        FunctionsClassIO(applicationContext)
     }
 
     private val floatingFoldersUtils: FloatingFoldersUtils by lazy {
@@ -256,7 +260,7 @@ class FloatingFoldersForBluetooth : Service() {
 
             mapFolderNameStartId[folderName[startId]] = startId
 
-            val appsInFolder = functionsClass.readFileLine(folderName[startId])
+            val appsInFolder = functionsClassIO.readFileLinesAsArray(folderName[startId])
             if (appsInFolder != null) {
 
                 if (appsInFolder.isNotEmpty()) {
@@ -647,7 +651,7 @@ class FloatingFoldersForBluetooth : Service() {
                     functionsClass.PopupAppListFolder(
                             view,
                             folderName[startId],
-                            functionsClass.readFileLine(folderName[startId]),
+                            functionsClassIO.readFileLinesAsArray(folderName[startId]),
                             this@FloatingFoldersForBluetooth.javaClass.simpleName,
                             startId,
                             XY.xMove,
@@ -735,10 +739,10 @@ class FloatingFoldersForBluetooth : Service() {
 
                             } else {
 
-                                functionsClass.readFileLine(PublicVariable.splitPairPackage)?.get(0)?.let {
+                                functionsClassIO.readFileLinesAsArray(PublicVariable.splitPairPackage)?.get(0)?.let {
                                     packageNameSplitOne = it
                                 }
-                                functionsClass.readFileLine(PublicVariable.splitPairPackage)?.get(1)?.let {
+                                functionsClassIO.readFileLinesAsArray(PublicVariable.splitPairPackage)?.get(1)?.let {
                                     packageNameSplitTwo = it
                                 }
 

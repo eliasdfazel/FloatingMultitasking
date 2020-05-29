@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 2:26 PM
+ * Last modified 5/28/20 9:03 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,10 +25,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassSystemInformation
-import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.BootRecovery
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryAll
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
@@ -40,7 +37,9 @@ class Configurations : AppCompatActivity() {
     val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
-
+    val functionsClassIO: FunctionsClassIO by lazy {
+        FunctionsClassIO(applicationContext)
+    }
     private val functionsClassSystemInformation: FunctionsClassSystemInformation by lazy {
         FunctionsClassSystemInformation(applicationContext)
     }
@@ -163,7 +162,7 @@ class Configurations : AppCompatActivity() {
             triggerOpenProcess()
 
             if (getFileStreamPath("Frequently").exists()) {
-                val freqDelete = functionsClass.readFileLine("Frequently")
+                val freqDelete = functionsClassIO.readFileLinesAsArray("Frequently")
 
                 freqDelete?.let {
                     for (deleteFreq in freqDelete) {

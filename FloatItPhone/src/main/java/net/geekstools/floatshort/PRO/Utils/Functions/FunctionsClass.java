@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 3:11 PM
+ * Last modified 5/28/20 9:12 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -125,10 +125,6 @@ import net.geekstools.floatshort.PRO.Checkpoint;
 import net.geekstools.floatshort.PRO.Configurations;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFolders;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForBluetooth;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForGps;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForNfc;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForTime;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForWifi;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.Folders.PopupDialogue.PopupOptionsFloatingFolders;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
@@ -142,11 +138,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForBluetooth;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForGps;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForHIS;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForNfc;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForTime;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi;
 import net.geekstools.floatshort.PRO.Shortcuts.PopupDialogue.PopupOptionsFloatingShortcuts;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling;
@@ -164,7 +156,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -174,7 +165,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -407,14 +397,6 @@ public class FunctionsClass {
         }
     }
 
-    public void clearDynamicShortcuts() {
-        ShortcutManager shortcutManager = null;
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            shortcutManager = context.getSystemService(ShortcutManager.class);
-            shortcutManager.removeAllDynamicShortcuts();
-        }
-    }
-
     /*Unlimited Shortcuts Function*/
     public void saveUnlimitedShortcutsService(String packageName) {
         boolean duplicated = false;
@@ -438,29 +420,6 @@ public class FunctionsClass {
         }
     }
 
-    public void runUnlimitedWifi(String packageName) {
-        if (!Settings.canDrawOverlays(context)) {
-            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-
-            return;
-        }
-
-        PublicVariable.allFloatingCounter++;
-
-        Intent u = new Intent(context, FloatingShortcutsForWifi.class);
-        u.putExtra("PackageName", packageName);
-        u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(u);
-
-        if (PublicVariable.allFloatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
-    }
-
     public void runUnlimitedBluetooth(String packageName) {
         if (!Settings.canDrawOverlays(context)) {
             context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -471,75 +430,6 @@ public class FunctionsClass {
         PublicVariable.allFloatingCounter++;
 
         Intent u = new Intent(context, FloatingShortcutsForBluetooth.class);
-        u.putExtra("PackageName", packageName);
-        u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(u);
-
-        if (PublicVariable.allFloatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
-    }
-
-    public void runUnlimitedGps(String packageName) {
-        if (!Settings.canDrawOverlays(context)) {
-            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-
-            return;
-        }
-
-        PublicVariable.allFloatingCounter++;
-
-        Intent u = new Intent(context, FloatingShortcutsForGps.class);
-        u.putExtra("PackageName", packageName);
-        u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(u);
-
-        if (PublicVariable.allFloatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
-    }
-
-    public void runUnlimitedNfc(String packageName) {
-        if (!Settings.canDrawOverlays(context)) {
-            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-
-            return;
-        }
-
-        PublicVariable.allFloatingCounter++;
-
-        Intent u = new Intent(context, FloatingShortcutsForNfc.class);
-        u.putExtra("PackageName", packageName);
-        u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(u);
-
-        if (PublicVariable.allFloatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
-    }
-
-    public void runUnlimitedTime(String packageName) {
-        if (!Settings.canDrawOverlays(context)) {
-            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-
-            return;
-        }
-
-        PublicVariable.allFloatingCounter++;
-
-        Intent u = new Intent(context, FloatingShortcutsForTime.class);
         u.putExtra("PackageName", packageName);
         u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(u);
@@ -678,30 +568,6 @@ public class FunctionsClass {
         }
     }
 
-    public void runUnlimitedFolderWifi(String categoryName, String[] categoryNamePackages) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
-        }
-        PublicVariable.allFloatingCounter++;
-        PublicVariable.floatingFolderCounter_Wifi++;
-
-        Intent c = new Intent(context, FloatingFoldersForWifi.class);
-        c.putExtra("folderName", categoryName);
-        c.putExtra("categoryNamePackages", categoryNamePackages);
-        c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(c);
-        if (PublicVariable.allFloatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
-    }
-
     public void runUnlimitedFolderBluetooth(String categoryName, String[] categoryNamePackages) {
         if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
@@ -713,78 +579,6 @@ public class FunctionsClass {
         PublicVariable.floatingFolderCounter_Bluetooth++;
 
         Intent c = new Intent(context, FloatingFoldersForBluetooth.class);
-        c.putExtra("folderName", categoryName);
-        c.putExtra("categoryNamePackages", categoryNamePackages);
-        c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(c);
-        if (PublicVariable.allFloatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
-    }
-
-    public void runUnlimitedFolderGps(String categoryName, String[] categoryNamePackages) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
-        }
-        PublicVariable.allFloatingCounter++;
-        PublicVariable.floatingFolderCounter_Gps++;
-
-        Intent c = new Intent(context, FloatingFoldersForGps.class);
-        c.putExtra("folderName", categoryName);
-        c.putExtra("categoryNamePackages", categoryNamePackages);
-        c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(c);
-        if (PublicVariable.allFloatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
-    }
-
-    public void runUnlimitedFolderNfc(String categoryName, String[] categoryNamePackages) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
-        }
-        PublicVariable.allFloatingCounter++;
-        PublicVariable.floatingFolderCounter_Nfc++;
-
-        Intent c = new Intent(context, FloatingFoldersForNfc.class);
-        c.putExtra("folderName", categoryName);
-        c.putExtra("categoryNamePackages", categoryNamePackages);
-        c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(c);
-        if (PublicVariable.allFloatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
-    }
-
-    public void runUnlimitedFolderTime(String categoryName, String[] categoryNamePackages) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
-        }
-        PublicVariable.allFloatingCounter++;
-        PublicVariable.floatingFolderCounter_Time++;
-
-        Intent c = new Intent(context, FloatingFoldersForTime.class);
         c.putExtra("folderName", categoryName);
         c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1058,46 +852,6 @@ public class FunctionsClass {
         alertDialog.show();
     }
 
-    public void NotificationAccessService(Activity activity) {
-        context = activity.getApplicationContext();
-        if (returnAPI() < 23) {
-            //"android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"
-            Intent notification = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
-            notification.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(notification);
-
-            return;
-        }
-
-        AlertDialog.Builder alertDialog = null;
-        if (PublicVariable.themeLightDark == true) {
-            alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
-        } else if (PublicVariable.themeLightDark == false) {
-            alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
-        }
-        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.notificationTitle)));
-        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.notificationDesc)));
-        alertDialog.setIcon(context.getDrawable(R.drawable.ic_launcher));
-        alertDialog.setCancelable(true);
-        alertDialog.setPositiveButton(context.getString(R.string.grant), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent notification = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
-                notification.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(notification);
-
-                dialog.dismiss();
-            }
-        });
-        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-
-            }
-        });
-        alertDialog.show();
-    }
-
     public void AccessibilityServiceDialogue(Activity activity, final SwitchPreference switchPreference) {
         context = activity.getApplicationContext();
         if (returnAPI() < 23) {
@@ -1205,43 +959,6 @@ public class FunctionsClass {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 switchPreference.setChecked(false);
-            }
-        });
-        alertDialog.show();
-    }
-
-    public void UsageAccess(Activity activity) {
-        context = activity.getApplicationContext();
-        if (returnAPI() < 23) {
-            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-
-            return;
-        }
-        AlertDialog.Builder alertDialog = null;
-        if (PublicVariable.themeLightDark == true) {
-            alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
-        } else if (PublicVariable.themeLightDark == false) {
-            alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
-        }
-        alertDialog.setTitle(context.getString(R.string.smartTitle));
-        alertDialog.setMessage(Html.fromHtml(context.getString(R.string.smartPermission)));
-        alertDialog.setIcon(context.getDrawable(R.drawable.ic_launcher));
-        alertDialog.setCancelable(true);
-        alertDialog.setPositiveButton(context.getString(R.string.grant), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-
-                dialog.dismiss();
-            }
-        });
-        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
             }
         });
         alertDialog.show();
@@ -2383,52 +2100,28 @@ public class FunctionsClass {
         }
     }
 
+    @Deprecated
     public @Nullable String[] readFileLine(String fileName) {
+
+
+        //Move It To FunctionsClassIO
+
+
         FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
 
         return functionsClassIO.readFileLinesAsArray(fileName);
     }
 
     public String readFile(String fileName) {
-        String temp = "0";
+        FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
 
-        File G = context.getFileStreamPath(fileName);
-        if (!G.exists()) {
-            temp = "0";
-        } else {
-            try {
-                FileInputStream fileInputStream = context.openFileInput(fileName);
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream, StandardCharsets.UTF_8), 1024);
-
-                int c;
-                temp = "";
-                while ((c = bufferedReader.read()) != -1) {
-                    temp = temp + Character.toString((char) c);
-                }
-
-                fileInputStream.close();
-                bufferedReader.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return temp;
+        return functionsClassIO.readFile(fileName);
     }
 
     public int countLineInnerFile(String fileName) {
-        int nLines = 0;
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(context.getFileStreamPath(fileName)));
-            while (bufferedReader.readLine() != null) {
-                nLines++;
-            }
-            bufferedReader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            nLines = 0;
-        }
-        return nLines;
+        FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
+
+        return functionsClassIO.fileLinesCounter(fileName);
     }
 
     public void removeLine(String fileName, String lineToRemove) {
@@ -2461,6 +2154,7 @@ public class FunctionsClass {
         }
     }
 
+    /*Preferences Functions*/
     public void savePreference(String PreferenceName, String KEY, String VALUE) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();

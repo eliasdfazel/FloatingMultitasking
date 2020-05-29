@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 3:36 AM
+ * Last modified 5/28/20 7:45 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -58,6 +58,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
@@ -69,6 +70,7 @@ import net.geekstools.floatshort.PRO.databinding.SearchEngineViewBinding
 class SearchEngine(private val activity: AppCompatActivity, private val context: Context,
                    private val searchEngineViewBinding: SearchEngineViewBinding,
                    private val functionsClass: FunctionsClass,
+                   private val functionsClassIO: FunctionsClassIO,
                    private val functionsClassRunServices: FunctionsClassRunServices,
                    private val customIcons: LoadCustomIcons?,
                    private val firebaseAuth: FirebaseAuth) {
@@ -110,7 +112,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
         }
     }
 
-    fun loadSearchEngineData(searchEngineViewModel: SearchEngineViewModel) = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
+    private fun loadSearchEngineData(searchEngineViewModel: SearchEngineViewModel) = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
         var searchAdapterItems: ArrayList<AdapterItemsSearchEngine> = ArrayList<AdapterItemsSearchEngine>()
 
         if (SearchEngine.allSearchData.isEmpty()) {
@@ -152,7 +154,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                 categoryInformationFile.readLines().forEach {
 
                     searchAdapterItems.add(
-                            AdapterItemsSearchEngine(it, functionsClass.readFileLine(it),
+                            AdapterItemsSearchEngine(it, functionsClassIO.readFileLinesAsArray(it),
                                     SearchResultType.SearchFolders)
                     )
                 }
