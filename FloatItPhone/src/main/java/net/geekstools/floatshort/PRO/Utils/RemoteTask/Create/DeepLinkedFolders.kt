@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 5/29/20 7:26 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,6 +13,8 @@ import android.os.Bundle
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassPreferences
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 
@@ -23,8 +25,12 @@ class DeepLinkedFolders : AppCompatActivity() {
 
     override fun onCreate(Saved: Bundle?) {
         super.onCreate(Saved)
+
         val functionsClass = FunctionsClass(applicationContext)
-        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+        val functionsClassPreferences = FunctionsClassPreferences(applicationContext)
+        val functionsClassRunServices = FunctionsClassRunServices(applicationContext)
+
+        PublicVariable.floatingSizeNumber = functionsClassPreferences.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
 
         intent.dataString?.let { dataString ->
@@ -39,9 +45,9 @@ class DeepLinkedFolders : AppCompatActivity() {
                 loadCustomIcons.load()
             }
 
-            functionsClass.runUnlimitedFolderService(categoryName)
+            functionsClassRunServices.runUnlimitedFoldersService(categoryName)
         }
 
-        finish()
+        this@DeepLinkedFolders.finish()
     }
 }

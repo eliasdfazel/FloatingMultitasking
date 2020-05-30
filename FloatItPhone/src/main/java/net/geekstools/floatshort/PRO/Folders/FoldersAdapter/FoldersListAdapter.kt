@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 9:21 PM
+ * Last modified 5/29/20 7:38 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -30,6 +30,7 @@ import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import java.util.*
@@ -40,6 +41,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
 
     var functionsClass: FunctionsClass = FunctionsClass(context)
     var functionsClassIO: FunctionsClassIO = FunctionsClassIO(context)
+    var functionsClassRunServices: FunctionsClassRunServices = FunctionsClassRunServices(context)
 
     var endEdited = ""
 
@@ -162,8 +164,8 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
 
         viewHolderBinder.selectedApp.setOnClickListener {
             if (adapterItems[position].category != context.packageName) {
-                functionsClass
-                        .runUnlimitedFolderService(adapterItems[position].category)
+                functionsClassRunServices
+                        .runUnlimitedFoldersService(adapterItems[position].category)
             }
         }
 
@@ -180,8 +182,8 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
 
         viewHolderBinder.runCategory.setOnClickListener {
             if (adapterItems[position].category != context.packageName) {
-                functionsClass
-                        .runUnlimitedFolderService(adapterItems[position].category)
+                functionsClassRunServices
+                        .runUnlimitedFoldersService(adapterItems[position].category)
             }
         }
 

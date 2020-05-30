@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 5/29/20 7:37 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -210,8 +210,8 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                         break;
                     }
                     case SearchResultType.SearchFolders: {
-                        functionsClass
-                                .runUnlimitedFolderService(SearchEngine.Companion.getAllSearchResults().get(position).getFolderName());
+                        functionsClassRunServices
+                                .runUnlimitedFoldersService(SearchEngine.Companion.getAllSearchResults().get(position).getFolderName());
 
                         bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", SearchEngine.Companion.getAllSearchResults().get(position).getFolderName());
 

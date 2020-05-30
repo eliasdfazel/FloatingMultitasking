@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 7:45 PM
+ * Last modified 5/29/20 7:38 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -396,7 +396,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                                 functionsClassRunServices.runUnlimitedShortcutsService(searchResultItem.PackageName!!, searchResultItem.ClassName!!)
                             }
                             SearchResultType.SearchFolders -> {
-                                functionsClass.runUnlimitedFolderService(searchResultItem.folderName)
+                                functionsClassRunServices.runUnlimitedFoldersService(searchResultItem.folderName)
                             }
                             SearchResultType.SearchWidgets -> {
                                 functionsClass
@@ -430,7 +430,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                                 functionsClassRunServices.runUnlimitedShortcutsService(SearchEngine.allSearchResults[0].PackageName!!, SearchEngine.allSearchResults[0].ClassName!!)
                             }
                             SearchResultType.SearchFolders -> {
-                                functionsClass.runUnlimitedFolderService(SearchEngine.allSearchResults[0].folderName)
+                                functionsClassRunServices.runUnlimitedFoldersService(SearchEngine.allSearchResults[0].folderName)
                             }
                             SearchResultType.SearchWidgets -> {
                                 functionsClass

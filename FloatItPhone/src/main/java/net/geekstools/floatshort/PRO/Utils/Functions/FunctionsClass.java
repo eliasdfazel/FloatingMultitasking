@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/29/20 7:07 PM
+ * Last modified 5/29/20 7:23 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -509,6 +509,7 @@ public class FunctionsClass {
     }
 
     /*Category Function*/
+    @Deprecated
     public void runUnlimitedFolderService(String categoryName) {
         if (Build.VERSION.SDK_INT > 22) {
             if (!Settings.canDrawOverlays(context)) {
