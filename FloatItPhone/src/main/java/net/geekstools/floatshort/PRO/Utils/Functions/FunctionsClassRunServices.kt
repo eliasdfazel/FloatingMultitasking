@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/29/20 7:04 PM
+ * Last modified 5/29/20 7:17 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -16,12 +16,8 @@ import android.os.Build
 import android.provider.Settings
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.Checkpoint
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForBluetooth
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForTime
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForApplications
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForBluetooth
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForFrequentlyApplications
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForTime
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.*
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.*
 
 
 class FunctionsClassRunServices(private val context: Context) {
@@ -129,6 +125,57 @@ class FunctionsClassRunServices(private val context: Context) {
         }
     }
 
+    //Wifi
+    fun runUnlimitedShortcutsForWifi(packageName: String) {
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            return
+        }
+
+        PublicVariable.allFloatingCounter++
+
+        Intent(context, FloatingShortcutsForWifi::class.java).apply {
+            putExtra("PackageName", packageName)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startService(this@apply)
+        }
+
+        if (PublicVariable.allFloatingCounter == 1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(Intent(context, BindServices::class.java))
+            } else {
+                context.startService(Intent(context, BindServices::class.java))
+            }
+        }
+
+    }
+
+    fun runUnlimitedFoldersForWifi(folderName: String, categoryNamePackages: Array<String>) {
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            return
+        }
+
+        PublicVariable.allFloatingCounter++
+        PublicVariable.floatingFolderCounter_Bluetooth++
+
+        Intent(context, FloatingFoldersForWifi::class.java).apply {
+            putExtra("folderName", folderName)
+            putExtra("categoryNamePackages", categoryNamePackages)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startService(this@apply)
+        }
+
+        if (PublicVariable.allFloatingCounter == 1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(Intent(context, BindServices::class.java))
+            } else {
+                context.startService(Intent(context, BindServices::class.java))
+            }
+        }
+    }
+
+    //Bluetooth
     fun runUnlimitedShortcutsForBluetooth(packageName: String) {
         if (!Settings.canDrawOverlays(context)) {
             context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
@@ -178,6 +225,107 @@ class FunctionsClassRunServices(private val context: Context) {
         }
     }
 
+    //GPS
+    fun runUnlimitedShortcutsForGps(packageName: String) {
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            return
+        }
+
+        PublicVariable.allFloatingCounter++
+
+        Intent(context, FloatingShortcutsForGps::class.java).apply {
+            putExtra("PackageName", packageName)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startService(this@apply)
+        }
+
+        if (PublicVariable.allFloatingCounter == 1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(Intent(context, BindServices::class.java))
+            } else {
+                context.startService(Intent(context, BindServices::class.java))
+            }
+        }
+
+    }
+
+    fun runUnlimitedFoldersForGps(folderName: String, categoryNamePackages: Array<String>) {
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            return
+        }
+
+        PublicVariable.allFloatingCounter++
+        PublicVariable.floatingFolderCounter_Bluetooth++
+
+        Intent(context, FloatingFoldersForGps::class.java).apply {
+            putExtra("folderName", folderName)
+            putExtra("categoryNamePackages", categoryNamePackages)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startService(this@apply)
+        }
+
+        if (PublicVariable.allFloatingCounter == 1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(Intent(context, BindServices::class.java))
+            } else {
+                context.startService(Intent(context, BindServices::class.java))
+            }
+        }
+    }
+
+    //NFC
+    fun runUnlimitedShortcutsForNfc(packageName: String) {
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            return
+        }
+
+        PublicVariable.allFloatingCounter++
+
+        Intent(context, FloatingShortcutsForNfc::class.java).apply {
+            putExtra("PackageName", packageName)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startService(this@apply)
+        }
+
+        if (PublicVariable.allFloatingCounter == 1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(Intent(context, BindServices::class.java))
+            } else {
+                context.startService(Intent(context, BindServices::class.java))
+            }
+        }
+
+    }
+
+    fun runUnlimitedFoldersForNfc(folderName: String, categoryNamePackages: Array<String>) {
+        if (!Settings.canDrawOverlays(context)) {
+            context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            return
+        }
+
+        PublicVariable.allFloatingCounter++
+        PublicVariable.floatingFolderCounter_Bluetooth++
+
+        Intent(context, FloatingFoldersForNfc::class.java).apply {
+            putExtra("folderName", folderName)
+            putExtra("categoryNamePackages", categoryNamePackages)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startService(this@apply)
+        }
+
+        if (PublicVariable.allFloatingCounter == 1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(Intent(context, BindServices::class.java))
+            } else {
+                context.startService(Intent(context, BindServices::class.java))
+            }
+        }
+    }
+
+    //Time
     fun runUnlimitedShortcutsForTime(packageName: String) {
         if (!Settings.canDrawOverlays(context)) {
             context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
