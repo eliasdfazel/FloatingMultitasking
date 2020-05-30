@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 9:28 PM
+ * Last modified 5/29/20 7:07 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -124,7 +124,6 @@ import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Checkpoint;
 import net.geekstools.floatshort.PRO.Configurations;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFolders;
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForBluetooth;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.Folders.PopupDialogue.PopupOptionsFloatingFolders;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
@@ -137,7 +136,6 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions;
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForBluetooth;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForHIS;
 import net.geekstools.floatshort.PRO.Shortcuts.PopupDialogue.PopupOptionsFloatingShortcuts;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
@@ -420,29 +418,6 @@ public class FunctionsClass {
         }
     }
 
-    public void runUnlimitedBluetooth(String packageName) {
-        if (!Settings.canDrawOverlays(context)) {
-            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-
-            return;
-        }
-
-        PublicVariable.allFloatingCounter++;
-
-        Intent u = new Intent(context, FloatingShortcutsForBluetooth.class);
-        u.putExtra("PackageName", packageName);
-        u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(u);
-
-        if (PublicVariable.allFloatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
-    }
-
     public void runUnlimitedShortcutsServiceHIS(String packageName, String className) {
         if (!Settings.canDrawOverlays(context)) {
             context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -557,30 +532,6 @@ public class FunctionsClass {
 
         Intent c = new Intent(context, FloatingFolders.class);
         c.putExtra("folderName", categoryName);
-        c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(c);
-        if (PublicVariable.allFloatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
-    }
-
-    public void runUnlimitedFolderBluetooth(String categoryName, String[] categoryNamePackages) {
-        if (Build.VERSION.SDK_INT > 22) {
-            if (!Settings.canDrawOverlays(context)) {
-                context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            }
-        }
-        PublicVariable.allFloatingCounter++;
-        PublicVariable.floatingFolderCounter_Bluetooth++;
-
-        Intent c = new Intent(context, FloatingFoldersForBluetooth.class);
-        c.putExtra("folderName", categoryName);
-        c.putExtra("categoryNamePackages", categoryNamePackages);
         c.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(c);
         if (PublicVariable.allFloatingCounter == 1) {
@@ -2691,24 +2642,6 @@ public class FunctionsClass {
         return bitmap;
     }
 
-    public Bitmap activityIconBitmap(ActivityInfo activityInfo) {
-        Drawable icon = null;
-        try {
-            icon = activityInfo.loadIcon(context.getPackageManager());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (icon == null) {
-                try {
-                    icon = context.getPackageManager().getDefaultActivityIcon();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return drawableToBitmap(icon);
-    }
-
     public Drawable resizeDrawable(Drawable drawable, int dstWidth, int dstHeight) {
         Drawable resizedDrawable = null;
         try {
@@ -2730,24 +2663,6 @@ public class FunctionsClass {
                 getDefaultSharedPreferences(context).getBoolean("transparent", true);
     }
 
-    public boolean appThemeBlurry() {
-
-        return PreferenceManager.
-                getDefaultSharedPreferences(context).getBoolean("blur", true);
-    }
-
-    public int optionMenuColor() {
-        int color = 1;
-        if (PublicVariable.themeLightDark) {
-            color = appThemeTransparent() == true ?
-                    PublicVariable.primaryColor : manipulateColor(PublicVariable.primaryColor, 1.30f);
-        } else if (!PublicVariable.themeLightDark) {
-            color = appThemeTransparent() == true ?
-                    PublicVariable.primaryColor : manipulateColor(PublicVariable.primaryColor, 0.50f);
-        }
-        return color;
-    }
-
     public void checkLightDarkTheme() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String LightDark = sharedPreferences.getString("themeColor", "2");
@@ -2761,17 +2676,6 @@ public class FunctionsClass {
             } else if (!colorLightDarkWallpaper()) {//dark
                 PublicVariable.themeLightDark = false;
             }
-        }
-    }
-
-    private void takeScreenshot(View view) {
-        try {
-            view.setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
-            view.setDrawingCacheEnabled(false);
-            saveBitmapIcon("SnapShot", bitmap);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -3322,10 +3226,6 @@ public class FunctionsClass {
                 PublicVariable.floatingViewsHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber, context.getResources().getDisplayMetrics());
             }
         }, 555);
-    }
-
-    public void openContextMenu(Activity activity, View view) {
-        activity.openContextMenu(view);
     }
 
     public void Toast(String toastContent, int toastGravity/*, int toastColor*/) {
