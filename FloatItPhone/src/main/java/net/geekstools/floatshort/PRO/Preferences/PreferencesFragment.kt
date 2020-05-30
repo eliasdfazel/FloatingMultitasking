@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/23/20 9:52 PM
+ * Last modified 5/29/20 7:45 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -65,6 +65,9 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     lateinit var functionsClass: FunctionsClass
     lateinit var functionsClassDialogues: FunctionsClassDialogues
 
+    private val functionsClassPreferences: FunctionsClassPreferences by lazy {
+        FunctionsClassPreferences(requireContext())
+    }
     private val functionsClassTheme: FunctionsClassTheme by lazy {
         FunctionsClassTheme(requireContext())
     }
@@ -847,7 +850,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                         if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > functionsClass.readPreference(".AdApp", "FetchTime", java.lang.Long.valueOf(0))) {
                             this@PreferencesFragment.scrollToPreference("app")
 
-                            functionsClass.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)))
+                            functionsClassPreferences.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)))
                         }
                     }
 

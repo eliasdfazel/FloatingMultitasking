@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/29/20 7:23 PM
+ * Last modified 5/29/20 7:46 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -2132,14 +2132,6 @@ public class FunctionsClass {
     }
 
     @Deprecated
-    public void savePreference(String PreferenceName, String KEY, long VALUE) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
-        editorSharedPreferences.putLong(KEY, VALUE);
-        editorSharedPreferences.apply();
-    }
-
-    @Deprecated
     public void savePreference(String PreferenceName, String KEY, float VALUE) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorSharedPreferences = sharedPreferences.edit();
@@ -4136,7 +4128,7 @@ public class FunctionsClass {
 
     /**
      * 255 is Transparent.
-     */
+     **/
     public int setColorAlpha(int color, float alphaValue /*1 -- 255*/) {
         int alpha = Math.round(Color.alpha(color) * alphaValue);
         int red = Color.red(color);
