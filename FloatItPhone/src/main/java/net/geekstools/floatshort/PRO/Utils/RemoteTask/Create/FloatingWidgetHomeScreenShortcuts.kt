@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 4:40 AM
+ * Last modified 6/1/20 10:12 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -54,72 +54,82 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
         }
 
         if (intent.hasExtra("PackageName")
-                && intent.hasExtra("ProviderClassName")
-                && intent.hasExtra("ShortcutLabel")) {
+                && intent.hasExtra("ProviderClassName")) {
 
             val packageName = intent.getStringExtra("PackageName")
             val providerClassName = intent.getStringExtra("ProviderClassName")
             val widgetLabel = intent.getStringExtra("ShortcutLabel")
 
-            CoroutineScope(Dispatchers.Main).launch {
-                val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
-                        .fallbackToDestructiveMigration()
-                        .addCallback(object : RoomDatabase.Callback() {
-                            override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                                super.onCreate(supportSQLiteDatabase)
+            if (packageName != null
+                    && providerClassName != null
+                    && widgetLabel != null) {
+
+                if (functionsClass.appIsInstalled(packageName)) {
+
+                    CoroutineScope(Dispatchers.Main).launch {
+
+                        val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
+                                .fallbackToDestructiveMigration()
+                                .addCallback(object : RoomDatabase.Callback() {
+                                    override fun onCreate(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                        super.onCreate(supportSQLiteDatabase)
+                                    }
+
+                                    override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
+                                        super.onOpen(supportSQLiteDatabase)
+
+                                    }
+                                })
+                                .build()
+
+                        val widgetDataModelsReallocation = widgetDataInterface.initDataAccessObject().loadWidgetByClassNameProviderWidgetSuspend(packageName, providerClassName)
+                        val appWidgetId = widgetDataModelsReallocation.WidgetId
+
+                        if (securityFunctions.isAppLocked(packageName + providerClassName)) {
+
+                            SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+
+                                override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                                    super.authenticatedFloatIt(extraInformation)
+                                    Log.d(this@FloatingWidgetHomeScreenShortcuts.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+
+                                    functionsClass
+                                            .runUnlimitedWidgetService(appWidgetId, widgetLabel)
+
+
+                                    this@FloatingWidgetHomeScreenShortcuts.finish()
+                                }
+
+                                override fun failedAuthenticated() {
+                                    super.failedAuthenticated()
+                                    Log.d(this@FloatingWidgetHomeScreenShortcuts.javaClass.simpleName, "FailedAuthenticated")
+
+                                    this@FloatingWidgetHomeScreenShortcuts.finish()
+                                }
+
+                                override fun invokedPinPassword() {
+                                    super.invokedPinPassword()
+                                    Log.d(this@FloatingWidgetHomeScreenShortcuts.javaClass.simpleName, "InvokedPinPassword")
+
+                                }
                             }
 
-                            override fun onOpen(supportSQLiteDatabase: SupportSQLiteDatabase) {
-                                super.onOpen(supportSQLiteDatabase)
+                            startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
+                                putExtra(UserInterfaceExtraData.OtherTitle, widgetLabel)
+                                putExtra(UserInterfaceExtraData.PrimaryColor, functionsClass.extractVibrantColor(functionsClass.appIcon(packageName)))
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
-                            }
-                        })
-                        .build()
+                        } else {
 
-                val widgetDataModelsReallocation = widgetDataInterface.initDataAccessObject().loadWidgetByClassNameProviderWidgetSuspend(packageName, providerClassName)
-                val appWidgetId = widgetDataModelsReallocation.WidgetId
-
-                if (securityFunctions.isAppLocked(packageName + providerClassName)) {
-
-                    SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
-
-                        override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                            super.authenticatedFloatIt(extraInformation)
-                            Log.d(this@FloatingWidgetHomeScreenShortcuts.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
-
-                            functionsClass
-                                    .runUnlimitedWidgetService(appWidgetId, widgetLabel)
-
-
-                            this@FloatingWidgetHomeScreenShortcuts.finish()
+                            functionsClass.runUnlimitedWidgetService(appWidgetId, widgetLabel)
                         }
 
-                        override fun failedAuthenticated() {
-                            super.failedAuthenticated()
-                            Log.d(this@FloatingWidgetHomeScreenShortcuts.javaClass.simpleName, "FailedAuthenticated")
-
-                            this@FloatingWidgetHomeScreenShortcuts.finish()
-                        }
-
-                        override fun invokedPinPassword() {
-                            super.invokedPinPassword()
-                            Log.d(this@FloatingWidgetHomeScreenShortcuts.javaClass.simpleName, "InvokedPinPassword")
-
-                        }
+                        widgetDataInterface.close()
                     }
 
-                    startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
-                        putExtra(UserInterfaceExtraData.OtherTitle, widgetLabel)
-                        putExtra(UserInterfaceExtraData.PrimaryColor, functionsClass.extractVibrantColor(functionsClass.appIcon(packageName)))
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
-
-                } else {
-
-                    functionsClass.runUnlimitedWidgetService(appWidgetId, widgetLabel)
                 }
 
-                widgetDataInterface.close()
             }
         }
     }
