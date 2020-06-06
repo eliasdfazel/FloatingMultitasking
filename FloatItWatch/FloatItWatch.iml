@@ -185,11 +185,11 @@
           <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigurationReleaseUnitTest" />
           <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigurationDebugAndroidTest" />
           <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigurationDebugUnitTest" />
-          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/productionConfigurationDebugUnitTest" />
-          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/productionConfigurationDebug" />
-          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/productionConfigurationReleaseUnitTest" />
-          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigurationRelease" />
           <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/productionConfigurationRelease" />
+          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/betaConfigurationRelease" />
+          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/productionConfigurationReleaseUnitTest" />
+          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/productionConfigurationDebug" />
+          <root url="file://$MODULE_DIR$/build/tmp/kapt3/classes/productionConfigurationDebugUnitTest" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

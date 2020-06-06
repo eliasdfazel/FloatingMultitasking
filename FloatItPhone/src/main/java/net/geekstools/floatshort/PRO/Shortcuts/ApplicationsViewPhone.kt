@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 7:49 PM
+ * Last modified 6/6/20 8:48 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -478,7 +478,10 @@ class ApplicationsViewPhone : AppCompatActivity(),
     override fun onStart() {
         super.onStart()
 
-        if (!getFileStreamPath(".License").exists() && functionsClass.networkConnection()) {
+        if (!getFileStreamPath(".License").exists()
+                && functionsClass.networkConnection()
+                && !BuildConfig.DEBUG) {
+
             startService(Intent(applicationContext, LicenseValidator::class.java))
 
             val intentFilter = IntentFilter()
