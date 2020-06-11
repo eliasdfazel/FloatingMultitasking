@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 6/11/20 8:15 AM
+ * Last modified 6/11/20 8:18 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -182,6 +182,10 @@ class InAppUpdateProcess : AppCompatActivity() {
 
             val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
             functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+
+            appUpdateManager.unregisterListener {
+
+            }
 
             this@InAppUpdateProcess.finish()
 
