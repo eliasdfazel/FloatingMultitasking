@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/4/20 7:35 AM
+ * Last modified 8/7/20 6:48 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -22,10 +22,14 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.RelativeLayout
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.dialogue_message.*
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Utils.InAppReview.InAppReviewProcess
 
 class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDataActivity, var functionsClass: FunctionsClass) {
+
+    private val functionsClassIO: FunctionsClassIO = FunctionsClassIO(functionsClassDataActivity.activity)
 
     fun changeLog() {
         val layoutParams = WindowManager.LayoutParams()
@@ -74,7 +78,18 @@ class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDat
         }
 
         dialog.setOnDismissListener {
-            functionsClass.saveFile(".Updated", functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName).toString())
+
+            if (functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName) > functionsClassIO.readFile(".Updated")?.toInt()?:0) {
+
+                if (!functionsClassDataActivity.activity.isFinishing) {
+
+                    InAppReviewProcess(functionsClassDataActivity.activity as AppCompatActivity).start()
+
+                }
+
+            }
+
+            functionsClassIO.saveFile(".Updated", functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName).toString())
         }
 
         if (!functionsClassDataActivity.activity.getFileStreamPath(".Updated").exists()) {
@@ -83,7 +98,7 @@ class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDat
                 dialog.show()
             }
 
-        } else if (functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName) > functionsClass.readFile(".Updated").toInt()) {
+        } else if (functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName) > functionsClassIO.readFile(".Updated")?.toInt()?:0) {
 
             if (!functionsClassDataActivity.activity.isFinishing) {
                 dialog.show()

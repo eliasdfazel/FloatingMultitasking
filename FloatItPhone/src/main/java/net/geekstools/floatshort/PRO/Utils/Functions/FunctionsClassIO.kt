@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 6/11/20 11:16 AM
+ * Last modified 8/7/20 6:40 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -151,4 +151,19 @@ class FunctionsClassIO (private val context: Context) {
 
         return automationEnabled
     }
+
+    fun saveFile(fileName: String, content: String) {
+        try {
+
+            val fileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
+            fileOutputStream.write(content.toByteArray())
+
+            fileOutputStream.flush()
+            fileOutputStream.close()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 }
