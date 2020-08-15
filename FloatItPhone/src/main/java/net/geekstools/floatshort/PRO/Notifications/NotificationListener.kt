@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 7:22 PM
+ * Last modified 8/15/20 5:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -31,6 +31,8 @@ class NotificationListener : NotificationListenerService() {
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
+
+    lateinit var broadcastReceiver: BroadcastReceiver
 
     lateinit var notificationTitle: String
     private var notificationText: String? = null
@@ -152,7 +154,7 @@ class NotificationListener : NotificationListenerService() {
 
                 val intentFilter = IntentFilter()
                 intentFilter.addAction("Remove_Notification_Key")
-                val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+                broadcastReceiver = object : BroadcastReceiver() {
 
                     override fun onReceive(context: Context, intent: Intent?) {
 
@@ -167,7 +169,11 @@ class NotificationListener : NotificationListenerService() {
                     }
                 }
 
-                registerReceiver(broadcastReceiver, intentFilter)
+                try {
+                    registerReceiver(broadcastReceiver, intentFilter)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
 
                 sendBroadcast(Intent("Notification_Dot")
                         .putExtra("NotificationPackage", notificationPackage))
@@ -186,6 +192,12 @@ class NotificationListener : NotificationListenerService() {
 
     override fun onNotificationRemoved(statusBarNotification: StatusBarNotification?) {
         super.onNotificationRemoved(statusBarNotification)
+
+        try {
+            unregisterReceiver(broadcastReceiver)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
         statusBarNotification?.let {
 
