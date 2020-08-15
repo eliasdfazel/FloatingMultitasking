@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 6:36 PM
+ * Last modified 8/15/20 5:22 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -137,11 +137,15 @@ class FloatingSplash : Service() {
 
             windowManager.addView(revealSplashBinding.root, layoutParams)
 
-            val confirmButtonLayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
-            floatingSplashRemoval.layoutParams = confirmButtonLayoutParams
+            try {
+                val confirmButtonLayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+                floatingSplashRemoval.layoutParams = confirmButtonLayoutParams
 
-            floatingSplashRemoval.visibility = View.INVISIBLE
-            revealSplashBinding.rootView.addView(floatingSplashRemoval)
+                floatingSplashRemoval.visibility = View.INVISIBLE
+                revealSplashBinding.rootView.addView(floatingSplashRemoval)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
             Handler().postDelayed({
 

@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 5/25/20 2:59 PM
+  ~ Last modified 8/15/20 4:55 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -548,7 +548,8 @@
             </intent-filter>
         </service>
         <service
-            android:name=".Utils.UI.Splash.FloatingSplash"/>
+            android:name=".Utils.UI.Splash.FloatingSplash"
+            android:theme="@style/GeeksEmpire.AppCompat"/>
         <service
             android:name=".Shortcuts.PopupDialogue.PopupOptionsFloatingShortcuts"/>
         <service
