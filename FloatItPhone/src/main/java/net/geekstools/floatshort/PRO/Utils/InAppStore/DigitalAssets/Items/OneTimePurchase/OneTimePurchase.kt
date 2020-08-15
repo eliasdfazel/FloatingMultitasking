@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/7/20 6:45 AM
+ * Last modified 8/15/20 5:38 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -54,7 +54,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
         BillingClient.newBuilder(requireActivity())//.build()
     }
 
-    lateinit var purchaseFlowController: PurchaseFlowController
+    var purchaseFlowController: PurchaseFlowController? = null
     lateinit var inAppBillingData: InAppBillingData
 
     private val requestManager: RequestManager by lazy {
@@ -83,15 +83,15 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                 when (billingResult.responseCode) {
                     BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
 
-                        purchaseFlowController.purchaseFlowPaid(billingClient, purchasesList[0])
+                        purchaseFlowController?.purchaseFlowPaid(billingClient, purchasesList[0])
                     }
                     BillingClient.BillingResponseCode.OK -> {
 
-                        purchaseFlowController.purchaseFlowPaid(billingClient, purchasesList[0])
+                        purchaseFlowController?.purchaseFlowPaid(billingClient, purchasesList[0])
                     }
                     else -> {
 
-                        purchaseFlowController.purchaseFlowDisrupted(billingResult.debugMessage)
+                        purchaseFlowController?.purchaseFlowDisrupted(billingResult.debugMessage)
                     }
                 }
             }
@@ -122,7 +122,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
             override fun onBillingServiceDisconnected() {
 
-                purchaseFlowController.purchaseFlowDisrupted(null)
+                purchaseFlowController?.purchaseFlowDisrupted(null)
             }
 
             override fun onBillingSetupFinished(billingResult: BillingResult) {
@@ -138,44 +138,44 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                     when (queryBillingResult.responseCode) {
                         BillingClient.BillingResponseCode.ERROR -> {
 
-                            purchaseFlowController.purchaseFlowDisrupted(queryBillingResult.debugMessage)
+                            purchaseFlowController?.purchaseFlowDisrupted(queryBillingResult.debugMessage)
                         }
                         BillingClient.BillingResponseCode.USER_CANCELED -> {
 
-                            purchaseFlowController.purchaseFlowDisrupted(queryBillingResult.debugMessage)
+                            purchaseFlowController?.purchaseFlowDisrupted(queryBillingResult.debugMessage)
                         }
                         BillingClient.BillingResponseCode.BILLING_UNAVAILABLE -> {
 
-                            purchaseFlowController.purchaseFlowDisrupted(queryBillingResult.debugMessage)
+                            purchaseFlowController?.purchaseFlowDisrupted(queryBillingResult.debugMessage)
                         }
                         BillingClient.BillingResponseCode.SERVICE_TIMEOUT -> {
 
-                            purchaseFlowController.purchaseFlowDisrupted(queryBillingResult.debugMessage)
+                            purchaseFlowController?.purchaseFlowDisrupted(queryBillingResult.debugMessage)
                         }
                         BillingClient.BillingResponseCode.SERVICE_DISCONNECTED -> {
 
-                            purchaseFlowController.purchaseFlowDisrupted(queryBillingResult.debugMessage)
+                            purchaseFlowController?.purchaseFlowDisrupted(queryBillingResult.debugMessage)
                         }
                         BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE -> {
 
-                            purchaseFlowController.purchaseFlowDisrupted(queryBillingResult.debugMessage)
+                            purchaseFlowController?.purchaseFlowDisrupted(queryBillingResult.debugMessage)
                         }
                         BillingClient.BillingResponseCode.ITEM_UNAVAILABLE -> {
 
-                            purchaseFlowController.purchaseFlowDisrupted(queryBillingResult.debugMessage)
+                            purchaseFlowController?.purchaseFlowDisrupted(queryBillingResult.debugMessage)
                         }
                         BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
 
                             if (!skuDetailsListInApp.isNullOrEmpty()) {
 
-                                purchaseFlowController.purchaseFlowPaid(skuDetails = skuDetailsListInApp[0])
+                                purchaseFlowController?.purchaseFlowPaid(skuDetails = skuDetailsListInApp[0])
                             }
                         }
                         BillingClient.BillingResponseCode.OK -> {
 
                             if (!skuDetailsListInApp.isNullOrEmpty()) {
 
-                                purchaseFlowController.purchaseFlowSucceeded(skuDetails = skuDetailsListInApp[0])
+                                purchaseFlowController?.purchaseFlowSucceeded(skuDetails = skuDetailsListInApp[0])
 
                                 oneTimePurchaseFlow(skuDetailsListInApp[0])
 

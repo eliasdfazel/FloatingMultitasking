@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 2:20 AM
+ * Last modified 8/15/20 5:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,5 +34,5 @@ private fun OneTimePurchase.purchaseFlowCommand(skuDetails: SkuDetails) {
             .build()
 
     val billingResult = billingClient.launchBillingFlow(requireActivity() as InitializeInAppBilling, billingFlowParams)
-    purchaseFlowController.purchaseFlowInitial(billingResult)
+    purchaseFlowController?.purchaseFlowInitial(billingResult)
 }
