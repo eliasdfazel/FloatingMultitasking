@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:05 AM
+ * Last modified 8/20/20 5:52 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -175,7 +175,6 @@ class FunctionsClassIO(private val context: Context) {
 
     }
 
-
     fun saveFileAppendLine(fileName: String, content: String) {
 
         val fileOutputStream = context.openFileOutput(fileName, Context.MODE_APPEND)
@@ -186,7 +185,6 @@ class FunctionsClassIO(private val context: Context) {
         fileOutputStream.close()
 
     }
-
 
     fun removeLine(fileName: String, lineToRemove: String) {
 
