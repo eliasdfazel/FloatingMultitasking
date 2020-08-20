@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/29/20 7:46 PM
+ * Last modified 8/20/20 5:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -158,7 +158,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
@@ -2083,37 +2082,6 @@ public class FunctionsClass {
         return functionsClassIO.fileLinesCounter(fileName);
     }
 
-    @Deprecated
-    public void removeLine(String fileName, String lineToRemove) {
-        try {
-            FileInputStream fileInputStream = context.openFileInput(fileName);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName + ".tmp", Context.MODE_APPEND));
-
-            String tmp = "";
-            while ((tmp = bufferedReader.readLine()) != null) {
-                if (!tmp.trim().equals(lineToRemove)) {
-                    outputStreamWriter.write(tmp);
-                    outputStreamWriter.write("\n");
-                }
-            }
-
-            outputStreamWriter.close();
-            bufferedReader.close();
-            fileInputStream.close();
-
-            File tmpD = context.getFileStreamPath(fileName + ".tmp");
-            File New = context.getFileStreamPath(fileName);
-
-            if (tmpD.isFile()) {
-            }
-            context.deleteFile(fileName);
-            tmpD.renameTo(New);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     /*Preferences Functions*/
     @Deprecated
     public void savePreference(String PreferenceName, String KEY, String VALUE) {
@@ -3033,6 +3001,9 @@ public class FunctionsClass {
     }
 
     public void popupOptionFolders(FoldersConfigurations foldersConfigurations, final Context context, View anchorView, final String folderName, final int indicatorPosition) {
+
+        FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
+
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -3125,19 +3096,25 @@ public class FunctionsClass {
                     if (!loadRecoveryIndicatorCategory(folderName)) {
                         saveFileAppendLine(".uCategory", folderName);
                     } else {
-                        removeLine(".uCategory", folderName);
+
+                        functionsClassIO.removeLine(".uCategory", folderName);
+
                     }
 
                     foldersConfigurations.loadFolders();
                 } else if (item.getItemId() == 4) {
                     try {
                         String[] categoryContent = readFileLine(folderName);
+
                         for (String packageName : categoryContent) {
                             context.deleteFile(packageName + folderName);
                         }
-                        removeLine(".categoryInfo", folderName);
-                        removeLine(".uCategory", folderName);
+
+                        functionsClassIO.removeLine(".categoryInfo", folderName);
+                        functionsClassIO.removeLine(".uCategory", folderName);
+
                         context.deleteFile(folderName);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
