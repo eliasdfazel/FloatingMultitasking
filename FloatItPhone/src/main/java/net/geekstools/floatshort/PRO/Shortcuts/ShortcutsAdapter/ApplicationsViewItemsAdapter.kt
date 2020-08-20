@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 8/20/20 5:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.imageview.customshapes.ShapesImage
@@ -35,6 +36,7 @@ class ApplicationsViewItemsAdapter(private val context: Context,
                                    private val adapterItemsApplications: ArrayList<AdapterItemsApplications>) : RecyclerView.Adapter<ApplicationsViewItemsAdapter.ViewHolder>() {
 
     private val functionsClass: FunctionsClass = FunctionsClass(context)
+    private val functionsClassIO: FunctionsClassIO = FunctionsClassIO(context)
     private val functionsClassRunServices: FunctionsClassRunServices = FunctionsClassRunServices(context)
 
     private var layoutInflater = 0
@@ -128,7 +130,7 @@ class ApplicationsViewItemsAdapter(private val context: Context,
         }
 
         viewHolderBinder.recoveryIndicator.setOnClickListener {
-            functionsClass.removeLine(".uFile", adapterItemsApplications[position].PackageName)
+            functionsClassIO.removeLine(".uFile", adapterItemsApplications[position].PackageName)
 
             viewHolderBinder.recoveryIndicator.visibility = View.INVISIBLE
 

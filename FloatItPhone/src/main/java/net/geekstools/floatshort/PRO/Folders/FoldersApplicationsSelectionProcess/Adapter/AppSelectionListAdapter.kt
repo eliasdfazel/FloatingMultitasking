@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/4/20 10:25 AM
+ * Last modified 8/20/20 5:07 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -29,6 +29,7 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.databinding.AdvanceAppSelectionListBinding
@@ -44,6 +45,8 @@ class AppSelectionListAdapter(private val context: Context,
                               private val confirmButtonProcessInterface: ConfirmButtonProcessInterface) : RecyclerView.Adapter<AppSelectionListAdapter.ViewHolder>() {
 
     private val securityFunctions: SecurityFunctions = SecurityFunctions(context)
+
+    private val functionsClassIO: FunctionsClassIO = FunctionsClassIO(context)
 
     var temporaryFallingIcon: ImageView = functionsClass.initShapesImage(advanceAppSelectionListBinding.temporaryFallingIcon)
 
@@ -135,7 +138,7 @@ class AppSelectionListAdapter(private val context: Context,
 
                     if (pickedPackageNameFile.exists()) {
                         context.deleteFile(pickedPackageName + PublicVariable.folderName)
-                        functionsClass.removeLine(PublicVariable.folderName, adapterItems[position].packageName)
+                        functionsClassIO.removeLine(PublicVariable.folderName, adapterItems[position].packageName)
 
                         viewHolderBinder.checkboxSelectItem.isChecked = false
 
@@ -148,8 +151,8 @@ class AppSelectionListAdapter(private val context: Context,
                         }
 
                     } else {
-                        functionsClass.saveFile(pickedPackageName + PublicVariable.folderName, pickedPackageName)
-                        functionsClass.saveFileAppendLine(PublicVariable.folderName, pickedPackageName)
+                        functionsClassIO.saveFile(pickedPackageName + PublicVariable.folderName, pickedPackageName)
+                        functionsClassIO.saveFileAppendLine(PublicVariable.folderName, pickedPackageName)
 
                         viewHolderBinder.checkboxSelectItem.isChecked = true
                         if (securityFunctions.isAppLocked(PublicVariable.folderName)) {

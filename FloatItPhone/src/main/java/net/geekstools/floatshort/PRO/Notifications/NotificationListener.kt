@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/15/20 5:47 AM
+ * Last modified 8/20/20 5:10 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,12 +24,17 @@ import android.service.notification.StatusBarNotification
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class NotificationListener : NotificationListenerService() {
 
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
+    }
+
+    private val functionsClassIO: FunctionsClassIO by lazy {
+        FunctionsClassIO(applicationContext)
     }
 
     lateinit var broadcastReceiver: BroadcastReceiver
@@ -144,10 +149,10 @@ class NotificationListener : NotificationListenerService() {
                 FunctionsClassDebug.PrintDebug("::: Time ::: $notificationTime")
 
                 /*Save Temp Notification Files*/
-                functionsClass.saveFileAppendLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
-                functionsClass.saveFile(notificationTime + "_" + "Notification" + "Key", notificationId)
-                functionsClass.saveFile(notificationTime + "_" + "Notification" + "Title", notificationTitle)
-                functionsClass.saveFile(notificationTime + "_" + "Notification" + "Text", notificationText)
+                functionsClassIO.saveFileAppendLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
+                functionsClassIO.saveFile(notificationTime + "_" + "Notification" + "Key", notificationId)
+                functionsClassIO.saveFile(notificationTime + "_" + "Notification" + "Title", notificationTitle)
+                functionsClassIO.saveFile(notificationTime + "_" + "Notification" + "Text", notificationText.toString())
                 functionsClass.saveBitmapIcon(notificationTime + "_" + "Notification" + "Icon", notificationIcon)
                 PublicVariable.notificationIntent[notificationTime] = statusBarNotification.notification.contentIntent
 
@@ -215,9 +220,9 @@ class NotificationListener : NotificationListenerService() {
                 deleteFile(notificationTime + "_" + "Notification" + "Text")
                 deleteFile(notificationTime + "_" + "Notification" + "Icon")
 
-                functionsClass.removeLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
+                functionsClassIO.removeLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
 
-                if (functionsClass.countLineInnerFile(notificationPackage + "_" + "Notification" + "Package") == 0) {
+                if (functionsClassIO.fileLinesCounter(notificationPackage + "_" + "Notification" + "Package") == 0) {
 
                     deleteFile(notificationPackage + "_" + "Notification" + "Package")
 

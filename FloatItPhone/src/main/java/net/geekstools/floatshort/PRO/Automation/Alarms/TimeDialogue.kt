@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 2:45 PM
+ * Last modified 8/20/20 5:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,11 +14,15 @@ import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
 import net.geekstools.floatshort.PRO.Automation.Alarms.Utils.FunctionsClassAlarms
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import java.util.*
 
 class TimeDialogue : Activity() {
+
+    private val functionsClassIO: FunctionsClassIO by lazy {
+        FunctionsClassIO(applicationContext)
+    }
 
     private lateinit var timePickerDialog: TimePickerDialog
 
@@ -31,7 +35,6 @@ class TimeDialogue : Activity() {
         if (content != null
                 && type != null) {
 
-            val functionsClass = FunctionsClass(applicationContext)
             val functionsClassAlarm = FunctionsClassAlarms(applicationContext)
 
             val newAlarmTime = Calendar.getInstance()
@@ -45,16 +48,16 @@ class TimeDialogue : Activity() {
                 val setTime = "$hours:$minutes"
                 PrintDebug("*** $setTime")
 
-                functionsClass.saveFile(
+                functionsClassIO.saveFile(
                         "$content.Time",
                         setTime)
 
-                functionsClass.removeLine(".times.clocks", setTime)
-                functionsClass.saveFileAppendLine(
+                functionsClassIO.removeLine(".times.clocks", setTime)
+                functionsClassIO.saveFileAppendLine(
                         ".times.clocks",
                         setTime)
 
-                functionsClass.saveFileAppendLine(
+                functionsClassIO.saveFileAppendLine(
                         setTime,
                         content + type)
 

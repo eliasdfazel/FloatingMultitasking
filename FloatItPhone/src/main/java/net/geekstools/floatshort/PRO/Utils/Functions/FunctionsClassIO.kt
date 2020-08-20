@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/7/20 6:40 AM
+ * Last modified 8/20/20 5:05 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,7 +15,7 @@ import android.os.Build
 import java.io.File
 import java.nio.charset.Charset
 
-class FunctionsClassIO (private val context: Context) {
+class FunctionsClassIO(private val context: Context) {
 
     fun readFileLinesAsArray(fileName: String) : Array<String>? {
         val file: File? = context.getFileStreamPath(fileName)
@@ -164,6 +164,47 @@ class FunctionsClassIO (private val context: Context) {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun saveFileEmpty(fileName: String?) {
+
+        val fileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
+
+        fileOutputStream.flush()
+        fileOutputStream.close()
+
+    }
+
+
+    fun saveFileAppendLine(fileName: String, content: String) {
+
+        val fileOutputStream = context.openFileOutput(fileName, Context.MODE_APPEND)
+
+        fileOutputStream.write("${content}\n".toByteArray())
+
+        fileOutputStream.flush()
+        fileOutputStream.close()
+
+    }
+
+
+    fun removeLine(fileName: String, lineToRemove: String) {
+
+        val temporaryFileName = "${fileName}.Temporary"
+
+        readFileLinesAsList(fileName)?.forEach {
+
+            if (it != lineToRemove) {
+
+                saveFileAppendLine(temporaryFileName, it)
+
+            }
+
+        }
+
+        context.deleteFile(fileName)
+        context.getFileStreamPath(temporaryFileName).renameTo(context.getFileStreamPath(fileName))
+
     }
 
 }

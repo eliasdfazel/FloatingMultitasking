@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 6:21 AM
+ * Last modified 8/20/20 5:01 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -30,6 +30,7 @@ import net.geekstools.floatshort.PRO.Automation.Alarms.TimeDialogue;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -42,6 +43,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
     private Activity activity;
 
     FunctionsClass functionsClass;
+    FunctionsClassIO functionsClassIO;
 
     View view;
     ViewHolder viewHolder;
@@ -57,6 +59,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
         this.adapterItems = adapterItems;
 
         functionsClass = new FunctionsClass(context);
+        functionsClassIO = new FunctionsClassIO(context);
 
         switch (functionsClass.shapesImageId()) {
             case 1:
@@ -152,7 +155,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getPackageName() + ".Wifi");
-                            functionsClass.removeLine(".autoWifi", adapterItems.get(position).getPackageName());
+                            functionsClassIO.removeLine(".autoWifi", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
@@ -169,7 +172,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getPackageName() + ".Bluetooth");
-                            functionsClass.removeLine(".autoBluetooth", adapterItems.get(position).getPackageName());
+                            functionsClassIO.removeLine(".autoBluetooth", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
@@ -186,7 +189,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getPackageName() + ".Gps");
-                            functionsClass.removeLine(".autoGps", adapterItems.get(position).getPackageName());
+                            functionsClassIO.removeLine(".autoGps", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
@@ -203,7 +206,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getPackageName() + ".Nfc");
-                            functionsClass.removeLine(".autoNfc", adapterItems.get(position).getPackageName());
+                            functionsClassIO.removeLine(".autoNfc", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(
@@ -221,14 +224,14 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getPackageName() + ".Time");
-                            functionsClass.removeLine(
+                            functionsClassIO.removeLine(
                                     adapterItems.get(position).getTimes(),
                                     adapterItems.get(position).getPackageName());
                             if (functionsClass.countLineInnerFile(adapterItems.get(position).getPackageName()) == 0) {
                                 context.deleteFile(adapterItems.get(position).getTimes());
                             }
 
-                            functionsClass.removeLine(".times.clocks", adapterItems.get(position).getTimes());
+                            functionsClassIO.removeLine(".times.clocks", adapterItems.get(position).getTimes());
                             viewHolderBinder.autoChoice.setChecked(false);
                             viewHolderBinder.time.setText("");
                             viewHolderBinder.time.setVisibility(View.INVISIBLE);

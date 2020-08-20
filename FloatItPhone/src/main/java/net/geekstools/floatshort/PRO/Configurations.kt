@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 9:03 PM
+ * Last modified 8/20/20 5:04 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -170,7 +170,7 @@ class Configurations : AppCompatActivity() {
                     }
                 }
 
-                functionsClass.removeLine(".categoryInfo", "Frequently")
+                functionsClassIO.removeLine(".categoryInfo", "Frequently")
                 deleteFile("Frequently")
             }
         }

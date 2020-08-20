@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 9:26 PM
+ * Last modified 8/20/20 5:08 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -193,7 +193,7 @@ class AppSelectionList : AppCompatActivity(),
                     }
 
                     val savedAppsListPopupAdapter = appsConfirmButton?.let { it1 ->
-                        SavedAppsListPopupAdapter(applicationContext, functionsClass,
+                        SavedAppsListPopupAdapter(applicationContext, functionsClass, functionsClassIO,
                                 selectedAppsListItem, 1,
                                 it1, this@AppSelectionList)
                     }
@@ -228,7 +228,7 @@ class AppSelectionList : AppCompatActivity(),
                     }
 
                     val savedAppsListPopupAdapter = appsConfirmButton?.let { it1 ->
-                        SavedAppsListPopupAdapter(applicationContext, functionsClass,
+                        SavedAppsListPopupAdapter(applicationContext, functionsClass, functionsClassIO,
                                 selectedAppsListItem, 2,
                                 it1, this@AppSelectionList)
                     }
@@ -286,7 +286,7 @@ class AppSelectionList : AppCompatActivity(),
             }
 
             val savedAppsListPopupAdapter = appsConfirmButton?.let {
-                SavedAppsListPopupAdapter(applicationContext, functionsClass,
+                SavedAppsListPopupAdapter(applicationContext, functionsClass, functionsClassIO,
                         selectedAppsListItem, 1,
                         it,
                         this@AppSelectionList)

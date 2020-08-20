@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/21/20 10:43 AM
+ * Last modified 8/20/20 5:03 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -33,6 +33,7 @@ import net.geekstools.floatshort.PRO.Automation.Alarms.TimeDialogue;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
@@ -45,6 +46,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
     private Activity activity;
 
     FunctionsClass functionsClass;
+    FunctionsClassIO functionsClassIO;
 
     ImageView imageView;
     RelativeLayout freqLayout;
@@ -64,6 +66,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
         this.adapterItems = adapterItems;
 
         functionsClass = new FunctionsClass(context);
+        functionsClassIO = new FunctionsClassIO(context);
 
         if (PublicVariable.autoID != null) {
             if (PublicVariable.autoID.equals(context.getString(R.string.wifi_folder))) {
@@ -175,14 +178,14 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getCategory() + "." + autoIdAppend);
-                            functionsClass.removeLine(
+                            functionsClassIO.removeLine(
                                     adapterItems.get(position).getTimes(),
                                     adapterItems.get(position).getCategory());
                             if (functionsClass.countLineInnerFile(adapterItems.get(position).getCategory()) == 0) {
                                 context.deleteFile(adapterItems.get(position).getTimes());
                             }
 
-                            functionsClass.removeLine(".times.clocks", adapterItems.get(position).getTimes());
+                            functionsClassIO.removeLine(".times.clocks", adapterItems.get(position).getTimes());
                             viewHolderBinder.autoChoice.setChecked(false);
                             viewHolderBinder.timeView.setTextSize(50);
                             viewHolderBinder.timeView.setText(String.valueOf(adapterItems.get(position).getCategory().charAt(0)).toUpperCase());
@@ -200,7 +203,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getCategory() + "." + autoIdAppend);
-                            functionsClass.removeLine(".auto" + autoIdAppend + "Category", adapterItems.get(position).getCategory());
+                            functionsClassIO.removeLine(".auto" + autoIdAppend + "Category", adapterItems.get(position).getCategory());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
                             functionsClass.saveFile(

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/29/20 7:38 PM
+ * Last modified 8/20/20 5:05 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -234,18 +234,18 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
 
                     for (appContent in it) {
                         context.deleteFile(appContent + adapterItems[position].category)
-                        functionsClass.saveFileAppendLine(PublicVariable.folderName, appContent)
-                        functionsClass.saveFile(appContent + PublicVariable.folderName, appContent)
+                        functionsClassIO.saveFileAppendLine(PublicVariable.folderName, appContent)
+                        functionsClassIO.saveFile(appContent + PublicVariable.folderName, appContent)
                     }
                 }
 
                 if (functionsClass.loadRecoveryIndicatorCategory(adapterItems[position].category)) {
-                    functionsClass.removeLine(".uCategory", adapterItems[position].category)
-                    functionsClass.saveFileAppendLine(".uCategory", PublicVariable.folderName)
+                    functionsClassIO.removeLine(".uCategory", adapterItems[position].category)
+                    functionsClassIO.saveFileAppendLine(".uCategory", PublicVariable.folderName)
                 }
 
-                functionsClass.removeLine(".categoryInfo", adapterItems[position].category)
-                functionsClass.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
+                functionsClassIO.removeLine(".categoryInfo", adapterItems[position].category)
+                functionsClassIO.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
                 context.deleteFile(adapterItems[position].category)
                 context.startActivity(Intent(context, AppSelectionList::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
@@ -256,8 +256,8 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
                 PublicVariable.folderName = PublicVariable.folderName + "_" + System.currentTimeMillis()
             }
 
-            functionsClass.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
-            functionsClass.saveFileEmpty(PublicVariable.folderName)
+            functionsClassIO.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
+            functionsClassIO.saveFileEmpty(PublicVariable.folderName)
             context.startActivity(Intent(context, AppSelectionList::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
     }

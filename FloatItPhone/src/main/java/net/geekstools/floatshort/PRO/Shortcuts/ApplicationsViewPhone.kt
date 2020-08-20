@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/7/20 7:15 AM
+ * Last modified 8/20/20 5:12 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1023,10 +1023,10 @@ class ApplicationsViewPhone : AppCompatActivity(),
         frequentlyUsedAppsList = intent.getStringArrayExtra("frequentApps")
         val freqLength = intent.getIntExtra("frequentAppsNumbers", -1)
         if (getFileStreamPath("Frequently").exists()) {
-            functionsClass.removeLine(".categoryInfo", "Frequently")
+            functionsClassIO.removeLine(".categoryInfo", "Frequently")
             deleteFile("Frequently")
         }
-        functionsClass.saveFileAppendLine(".categoryInfo", "Frequently")
+        functionsClassIO.saveFileAppendLine(".categoryInfo", "Frequently")
 
         for (i in 0 until freqLength) {
             val freqLayout = layoutInflater.inflate(R.layout.freq_item, null) as RelativeLayout
@@ -1041,8 +1041,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
             })
             hybridApplicationViewBinding.freqItem.addView(freqLayout)
 
-            functionsClass.saveFileAppendLine("Frequently", frequentlyUsedAppsList[i])
-            functionsClass.saveFile(frequentlyUsedAppsList[i] + "Frequently", frequentlyUsedAppsList[i])
+            functionsClassIO.saveFileAppendLine("Frequently", frequentlyUsedAppsList[i])
+            functionsClassIO.saveFile(frequentlyUsedAppsList[i] + "Frequently", frequentlyUsedAppsList[i])
         }
 
         functionsClass.addAppShortcuts()
