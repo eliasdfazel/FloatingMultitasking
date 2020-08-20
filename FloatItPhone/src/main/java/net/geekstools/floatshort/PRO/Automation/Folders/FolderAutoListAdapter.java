@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:03 AM
+ * Last modified 8/20/20 5:24 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -181,7 +181,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
                             functionsClassIO.removeLine(
                                     adapterItems.get(position).getTimes(),
                                     adapterItems.get(position).getCategory());
-                            if (functionsClass.countLineInnerFile(adapterItems.get(position).getCategory()) == 0) {
+                            if (functionsClassIO.fileLinesCounter(adapterItems.get(position).getCategory()) == 0) {
                                 context.deleteFile(adapterItems.get(position).getTimes());
                             }
 
@@ -206,10 +206,10 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
                             functionsClassIO.removeLine(".auto" + autoIdAppend + "Category", adapterItems.get(position).getCategory());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
-                            functionsClass.saveFile(
+                            functionsClassIO.saveFile(
                                     adapterItems.get(position).getCategory() + "." + autoIdAppend,
                                     adapterItems.get(position).getCategory());
-                            functionsClass.saveFileAppendLine(
+                            functionsClassIO.saveFileAppendLine(
                                     ".auto" + autoIdAppend + "Category",
                                     adapterItems.get(position).getCategory());
                             viewHolderBinder.autoChoice.setChecked(true);

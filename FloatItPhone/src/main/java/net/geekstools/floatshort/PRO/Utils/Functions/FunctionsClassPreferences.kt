@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 4:41 PM
+ * Last modified 8/20/20 5:22 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -17,7 +17,7 @@ import net.geekstools.floatshort.PRO.BindServices
 
 class FunctionsClassPreferences (private val context: Context) {
 
-    private val functionsClass: FunctionsClass = FunctionsClass(context)
+    private val functionsClassIO: FunctionsClassIO = FunctionsClassIO(context)
 
     fun savePreference(PreferenceName: String?, KEY: String?, VALUE: String?) {
         val sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE)
@@ -118,7 +118,7 @@ class FunctionsClassPreferences (private val context: Context) {
 
         if (switch) {
 
-            functionsClass.saveFileEmpty(".LitePreferenceCheckpoint")
+            functionsClassIO.saveFileEmpty(".LitePreferenceCheckpoint")
 
             /*OFF Control Panel*/
             defaultSharedPreferencesEditor.putBoolean("stable", false)

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 6/6/20 8:49 AM
+ * Last modified 8/20/20 5:22 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -785,7 +785,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                         Handler().postDelayed({
                             functionsClass.litePreferenceConfirm(activity)
 
-                            functionsClass.saveFileEmpty(".LitePreferenceCheckpoint")
+                            functionsClassIO.saveFileEmpty(".LitePreferenceCheckpoint")
                         }, 555)
                     }, 333)
                 }

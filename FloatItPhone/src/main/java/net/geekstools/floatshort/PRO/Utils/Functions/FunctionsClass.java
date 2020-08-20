@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:16 AM
+ * Last modified 8/20/20 5:36 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -396,15 +396,20 @@ public class FunctionsClass {
 
     /*Unlimited Shortcuts Function*/
     public void saveUnlimitedShortcutsService(String packageName) {
+
+        FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
+
         boolean duplicated = false;
+
         String fileName = ".uFile";
         File uFile = context.getFileStreamPath(".uFile");
+
         if (!uFile.exists()) {
-            saveFileAppendLine(fileName, packageName);
+            functionsClassIO.saveFileAppendLine(fileName, packageName);
         } else if (uFile.exists()) {
-            int countLine = countLineInnerFile(fileName);
+            int countLine = functionsClassIO.fileLinesCounter(fileName);
             String[] contentLine = new String[countLine];
-            contentLine = readFileLine(fileName);
+            contentLine = functionsClassIO.readFileLinesAsArray(fileName);
             for (String aContentLine : contentLine) {
                 if (aContentLine.equals(packageName)) {
                     duplicated = true;
@@ -412,9 +417,10 @@ public class FunctionsClass {
                 }
             }
             if (duplicated == false) {
-                saveFileAppendLine(fileName, packageName);
+                functionsClassIO.saveFileAppendLine(fileName, packageName);
             }
         }
+
     }
 
     public void runUnlimitedShortcutsServiceHIS(String packageName, String className) {
@@ -2019,35 +2025,10 @@ public class FunctionsClass {
     }
 
     @Deprecated
-    public void saveFileEmpty(String fileName) {
-        try {
-            FileOutputStream fOut = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-
-            fOut.flush();
-            fOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Deprecated
     public void saveFile(String fileName, String content) {
         try {
             FileOutputStream fOut = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             fOut.write((content).getBytes());
-
-            fOut.flush();
-            fOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Deprecated
-    public void saveFileAppendLine(String fileName, String content) {
-        try {
-            FileOutputStream fOut = context.openFileOutput(fileName, Context.MODE_APPEND);
-            fOut.write((content + "\n").getBytes());
 
             fOut.flush();
             fOut.close();
@@ -3094,7 +3075,7 @@ public class FunctionsClass {
                     }, 100);
                 } else if (item.getItemId() == 3) {
                     if (!loadRecoveryIndicatorCategory(folderName)) {
-                        saveFileAppendLine(".uCategory", folderName);
+                        functionsClassIO.saveFileAppendLine(".uCategory", folderName);
                     } else {
 
                         functionsClassIO.removeLine(".uCategory", folderName);
