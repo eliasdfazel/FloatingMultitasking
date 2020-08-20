@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 8:14 PM
+ * Last modified 8/20/20 5:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -127,7 +127,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         functionsClass.checkLightDarkTheme();
 
         if (!getFileStreamPath(".categoryInfo").exists()
-                || !(functionsClass.countLineInnerFile(".categoryInfo") > 0)) {
+                || !(functionsClassIO.fileLinesCounter(".categoryInfo") > 0)) {
             startActivity(new Intent(getApplicationContext(), FoldersConfigurations.class)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 

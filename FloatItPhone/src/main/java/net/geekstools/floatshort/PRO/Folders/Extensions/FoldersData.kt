@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/4/20 10:38 AM
+ * Last modified 8/20/20 5:44 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -81,7 +81,7 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
 
             override fun onAnimationStart(animation: Animation) {
 
-                advanceAppSelectionListBinding.appSelectedCounterView.text = functionsClass.countLineInnerFile(PublicVariable.folderName).toString()
+                advanceAppSelectionListBinding.appSelectedCounterView.text = functionsClassIO.fileLinesCounter(PublicVariable.folderName).toString()
             }
 
             override fun onAnimationEnd(animation: Animation) {

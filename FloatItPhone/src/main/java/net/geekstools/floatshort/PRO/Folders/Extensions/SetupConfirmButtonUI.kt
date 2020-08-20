@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/4/20 10:25 AM
+ * Last modified 8/20/20 5:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,6 +21,7 @@ fun AppSelectionList.setupConfirmButtonUI(confirmButtonProcessInterface: Confirm
 
     val appsConfirmButton = AppsConfirmButton(this@setupConfirmButtonUI, applicationContext,
             functionsClass,
+            functionsClassIO,
             confirmButtonProcessInterface)
 
     appsConfirmButton.layoutParams = confirmButtonLayoutParams

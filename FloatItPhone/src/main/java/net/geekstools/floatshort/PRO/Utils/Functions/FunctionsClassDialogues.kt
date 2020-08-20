@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/7/20 6:48 AM
+ * Last modified 8/20/20 5:37 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -164,7 +164,7 @@ class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDat
         }
 
         dialog.setOnDismissListener {
-            functionsClass.saveFile(".Updated", functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName).toString())
+            functionsClassIO.saveFile(".Updated", functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName).toString())
         }
 
         if (!functionsClassDataActivity.activity.isFinishing) {

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:08 AM
+ * Last modified 8/20/20 5:45 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -179,7 +179,7 @@ class AppSelectionList : AppCompatActivity(),
             }
 
             advanceAppSelectionListBinding.firstSplitIcon.setOnClickListener {
-                if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
+                if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClassIO.fileLinesCounter(PublicVariable.folderName) > 0) {
                     selectedAppsListItem.clear()
 
                     functionsClassIO.readFileLinesAsArray(PublicVariable.folderName)?.let {
@@ -214,7 +214,7 @@ class AppSelectionList : AppCompatActivity(),
             }
 
             advanceAppSelectionListBinding.secondSplitIcon.setOnClickListener {
-                if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
+                if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClassIO.fileLinesCounter(PublicVariable.folderName) > 0) {
                     selectedAppsListItem.clear()
 
                     functionsClassIO.readFileLinesAsArray(PublicVariable.folderName)?.let {
@@ -265,13 +265,13 @@ class AppSelectionList : AppCompatActivity(),
     /*ConfirmButtonProcess*/
     override fun savedShortcutCounter() {
 
-        advanceAppSelectionListBinding.appSelectedCounterView.text = functionsClass.countLineInnerFile(PublicVariable.folderName).toString()
+        advanceAppSelectionListBinding.appSelectedCounterView.text = functionsClassIO.fileLinesCounter(PublicVariable.folderName).toString()
     }
 
     override fun showSavedShortcutList() {
 
         if (getFileStreamPath(PublicVariable.folderName).exists()
-                && functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
+                && functionsClassIO.fileLinesCounter(PublicVariable.folderName) > 0) {
 
             selectedAppsListItem.clear()
 

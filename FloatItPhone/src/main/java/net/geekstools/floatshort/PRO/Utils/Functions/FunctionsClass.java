@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:36 AM
+ * Last modified 8/20/20 5:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -278,6 +278,9 @@ public class FunctionsClass {
     public void addAppShortcuts() {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             try {
+
+                FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
+
                 final ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
                 shortcutManager.removeAllDynamicShortcuts();
                 List<ShortcutInfo> shortcutInfos = new ArrayList<ShortcutInfo>();
@@ -307,11 +310,11 @@ public class FunctionsClass {
                         }
                     }
                 } else if (context.getFileStreamPath(".uFile").exists()) {
-                    if (countLineInnerFile(".uFile") > 0) {
+                    if (functionsClassIO.fileLinesCounter(".uFile") > 0) {
                         List<String> appShortcuts = Arrays.asList(readFileLine(".uFile"));
                         int countAppShortcut = 4;
-                        if (countLineInnerFile(".uFile") < 4) {
-                            countAppShortcut = countLineInnerFile(".uFile");
+                        if (functionsClassIO.fileLinesCounter(".uFile") < 4) {
+                            countAppShortcut = functionsClassIO.fileLinesCounter(".uFile");
                         }
                         for (int i = 0; i < countAppShortcut; i++) {
                             try {
@@ -2025,19 +2028,6 @@ public class FunctionsClass {
     }
 
     @Deprecated
-    public void saveFile(String fileName, String content) {
-        try {
-            FileOutputStream fOut = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            fOut.write((content).getBytes());
-
-            fOut.flush();
-            fOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Deprecated
     private  @Nullable String[] readFileLine(String fileName) {
 
 
@@ -2054,13 +2044,6 @@ public class FunctionsClass {
         FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
 
         return functionsClassIO.readFile(fileName);
-    }
-
-    @Deprecated
-    public int countLineInnerFile(String fileName) {
-        FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
-
-        return functionsClassIO.fileLinesCounter(fileName);
     }
 
     /*Preferences Functions*/

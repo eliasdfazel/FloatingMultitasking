@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 7:35 PM
+ * Last modified 8/20/20 5:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,6 +24,7 @@ import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonViewInterface
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
@@ -36,6 +37,7 @@ class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
     private lateinit var activity: Activity
 
     lateinit var functionsClass: FunctionsClass
+    lateinit var functionsClassIO: FunctionsClassIO
 
     private lateinit var confirmButtonProcessInterface: ConfirmButtonProcessInterface
 
@@ -47,12 +49,15 @@ class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
 
     constructor(activity: Activity, context: Context,
                 functionsClass: FunctionsClass,
+                functionsClassIO: FunctionsClassIO,
                 confirmButtonProcessInterface: ConfirmButtonProcessInterface) : super(context) {
 
         this.activity = activity
 
 
         this.functionsClass = functionsClass
+        this.functionsClassIO = functionsClassIO
+
         this.confirmButtonProcessInterface = confirmButtonProcessInterface
 
         initializeConfirmButton()
@@ -100,14 +105,14 @@ class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
                     GestureListenerConstants.SWIPE_RIGHT -> {
                         confirmButtonProcessInterface.showSavedShortcutList()
 
-                        if (functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
+                        if (functionsClassIO.fileLinesCounter(PublicVariable.folderName) > 0) {
                             this@AppsConfirmButton.background = dismissDrawable
                         }
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
                         confirmButtonProcessInterface.showSavedShortcutList()
 
-                        if (functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
+                        if (functionsClassIO.fileLinesCounter(PublicVariable.folderName) > 0) {
                             this@AppsConfirmButton.background = dismissDrawable
                         }
                     }
@@ -118,7 +123,7 @@ class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
                     GestureListenerConstants.SWIPE_UP -> {
                         confirmButtonProcessInterface.showSavedShortcutList()
 
-                        if (functionsClass.countLineInnerFile(PublicVariable.folderName) > 0) {
+                        if (functionsClassIO.fileLinesCounter(PublicVariable.folderName) > 0) {
                             this@AppsConfirmButton.background = dismissDrawable
                         }
                     }
