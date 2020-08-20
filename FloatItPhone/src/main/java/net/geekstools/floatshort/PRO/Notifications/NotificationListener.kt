@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:10 AM
+ * Last modified 8/20/20 8:37 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -65,6 +65,10 @@ class NotificationListener : NotificationListenerService() {
             if (statusBarNotification.packageName != null
                     && !statusBarNotification.isClearable) {
 
+                notificationPackage = statusBarNotification.packageName
+                notificationId = statusBarNotification.key
+                notificationTime = statusBarNotification.postTime.toString()
+
                 if (PublicVariable.previousDuplicated == null) {
 
                     PublicVariable.previousDuplicated = statusBarNotification.packageName
@@ -82,10 +86,6 @@ class NotificationListener : NotificationListenerService() {
                         return
                     }
                 }
-
-                notificationPackage = statusBarNotification.packageName
-                notificationId = statusBarNotification.key
-                notificationTime = statusBarNotification.postTime.toString()
 
                 val extras: Bundle = statusBarNotification.notification.extras
 
