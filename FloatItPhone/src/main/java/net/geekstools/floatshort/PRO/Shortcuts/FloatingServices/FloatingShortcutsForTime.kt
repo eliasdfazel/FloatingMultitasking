@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 8:52 PM
+ * Last modified 8/22/20 6:32 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -901,7 +901,7 @@ class FloatingShortcutsForTime : Service() {
                             if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root.isShown()) {
                                 try {
                                     windowManager.removeView(floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root)
-                                } catch (e: java.lang.Exception) {
+                                } catch (e: Exception) {
                                     e.printStackTrace()
                                 } finally {
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1

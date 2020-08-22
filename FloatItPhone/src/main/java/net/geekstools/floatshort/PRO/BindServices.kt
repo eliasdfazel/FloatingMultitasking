@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 8/22/20 6:23 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -40,8 +40,19 @@ class BindServices : Service() {
     lateinit var functionsClass: FunctionsClass
     lateinit var functionsClassIO: FunctionsClassIO
 
+    var broadcastReceiverAction: BroadcastReceiver? = null
+
     private companion object {
         var triggerWifiBroadcast = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        broadcastReceiverAction?.let {
+            unregisterReceiver(it)
+        }
+
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -61,7 +72,7 @@ class BindServices : Service() {
                 intentFilter.addAction("android.location.PROVIDERS_CHANGED")
                 intentFilter.addAction("android.nfc.action.ADAPTER_STATE_CHANGED")
                 intentFilter.addAction("REMOVE_SELF")
-                val broadcastReceiverAction: BroadcastReceiver = object : BroadcastReceiver() {
+                broadcastReceiverAction = object : BroadcastReceiver() {
 
                     override fun onReceive(context: Context?, intent: Intent?) {
                         intent?.let {

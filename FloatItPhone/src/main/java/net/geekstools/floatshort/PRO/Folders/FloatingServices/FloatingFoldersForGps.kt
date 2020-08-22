@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 9:19 PM
+ * Last modified 8/22/20 6:32 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -169,7 +169,7 @@ class FloatingFoldersForGps : Service() {
                             if (floatingView[removeCount].isShown) {
                                 try {
                                     windowManager.removeView(floatingView[removeCount])
-                                } catch (e: java.lang.Exception) {
+                                } catch (e: Exception) {
                                     e.printStackTrace()
                                 } finally {
                                     PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
