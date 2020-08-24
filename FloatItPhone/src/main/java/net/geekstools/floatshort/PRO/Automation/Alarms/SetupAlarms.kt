@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 3:22 PM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -16,9 +16,9 @@ import android.os.Build
 import android.os.IBinder
 import net.geekstools.floatshort.PRO.Automation.Alarms.Utils.FunctionsClassAlarms
 import net.geekstools.floatshort.PRO.BindServices
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -32,8 +32,8 @@ class SetupAlarms : Service() {
         FunctionsClassAlarms(applicationContext)
     }
 
-    private val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(applicationContext)
+    private val fileIO: FileIO by lazy {
+        FileIO(applicationContext)
     }
 
     private val newAlarmTime = Calendar.getInstance()
@@ -58,7 +58,7 @@ class SetupAlarms : Service() {
             val setTime = intent.getStringExtra("time")
             val packagePosition = intent.getIntExtra("position", -1)
 
-            timesClocks = functionsClassIO.readFileLinesAsList(".times.clocks")
+            timesClocks = fileIO.readFileLinesAsList(".times.clocks")
 
             timesClocks?.let { timesClocks ->
 
@@ -109,7 +109,7 @@ class SetupAlarms : Service() {
 
                 functionsClassAlarms.initialAlarm(newAlarmTime, nextSetTime, nextPosition)
 
-                FunctionsClassDebug.PrintDebug("*** Setting Up New/Next Alarm ***")
+                Debug.PrintDebug("*** Setting Up New/Next Alarm ***")
 
             }
 

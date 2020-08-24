@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/29/20 7:24 PM
+ * Last modified 8/24/20 6:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,7 +20,7 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.*
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.*
 
 
-class FunctionsClassRunServices(private val context: Context) {
+class FloatingServices(private val context: Context) {
 
     //Shortcut
     fun runUnlimitedShortcutsService(packageName: String, className: String) {

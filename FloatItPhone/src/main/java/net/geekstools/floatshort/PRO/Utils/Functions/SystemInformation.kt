@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 4:43 PM
+ * Last modified 8/24/20 6:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,7 +14,7 @@ import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
 
-class FunctionsClassSystemInformation (private val context: Context) {
+class SystemInformation (private val context: Context) {
 
     object Requirements {
         const val RequiredMemory: Long = 4000000000
@@ -37,7 +37,7 @@ class FunctionsClassSystemInformation (private val context: Context) {
                 if (!checkRequiredMemory()
                         && !context.getFileStreamPath(".LitePreferenceCheckpoint").exists()) {
 
-                    FunctionsClassPreferences(context)
+                    PreferencesIO(context)
                             .switchLitePreference(true).let { success ->
 
                             }
@@ -47,13 +47,13 @@ class FunctionsClassSystemInformation (private val context: Context) {
     }
 
     fun getCpuModel() : String {
-        FunctionsClassDebug.PrintDebug("*** ${Build.HARDWARE} ***")
+        Debug.PrintDebug("*** ${Build.HARDWARE} ***")
 
         return Build.HARDWARE
     }
 
     fun getDeviceManufacturer() : String {
-        FunctionsClassDebug.PrintDebug("*** ${Build.MANUFACTURER} ***")
+        Debug.PrintDebug("*** ${Build.MANUFACTURER} ***")
 
         return Build.MANUFACTURER
     }

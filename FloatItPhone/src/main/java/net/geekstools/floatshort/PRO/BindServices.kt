@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/22/20 6:23 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -30,15 +30,15 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersFor
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForGps
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForNfc
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class BindServices : Service() {
 
     lateinit var functionsClass: FunctionsClass
-    lateinit var functionsClassIO: FunctionsClassIO
+    lateinit var fileIO: FileIO
 
     var broadcastReceiverAction: BroadcastReceiver? = null
 
@@ -56,7 +56,7 @@ class BindServices : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        FunctionsClassDebug.PrintDebug("*** Bind Service StartId $startId ***")
+        Debug.PrintDebug("*** Bind Service StartId $startId ***")
 
         if (startId == 1) {
             startForeground(333, functionsClass.bindServiceNotification())
@@ -65,7 +65,7 @@ class BindServices : Service() {
             PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), applicationContext.resources.displayMetrics).toInt()
 
             if (functionsClass.returnAPI() >= Build.VERSION_CODES.O
-                    && functionsClassIO.automationFeatureEnable()) {
+                    && fileIO.automationFeatureEnable()) {
 
                 val intentFilter = IntentFilter()
                 intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED")
@@ -184,7 +184,7 @@ class BindServices : Service() {
         super.onCreate()
 
         functionsClass = FunctionsClass(applicationContext)
-        functionsClassIO = FunctionsClassIO(applicationContext)
+        fileIO = FileIO(applicationContext)
 
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()

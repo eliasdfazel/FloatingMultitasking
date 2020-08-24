@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:22 AM
+ * Last modified 8/24/20 6:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -53,7 +53,7 @@ import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.PinPasswordConfigurations
 import net.geekstools.floatshort.PRO.Utils.Functions.*
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
@@ -63,20 +63,20 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     lateinit var functionsClassDataActivity: FunctionsClassDataActivity
 
     lateinit var functionsClass: FunctionsClass
-    lateinit var functionsClassDialogues: FunctionsClassDialogues
+    lateinit var dialogues: Dialogues
 
-    private val functionsClassPreferences: FunctionsClassPreferences by lazy {
-        FunctionsClassPreferences(requireContext())
+    private val preferencesIO: PreferencesIO by lazy {
+        PreferencesIO(requireContext())
     }
-    private val functionsClassTheme: FunctionsClassTheme by lazy {
-        FunctionsClassTheme(requireContext())
+    private val applicationThemeController: ApplicationThemeController by lazy {
+        ApplicationThemeController(requireContext())
     }
-    private val functionsClassThemeUtils: FunctionsClassTheme.Utils by lazy {
-        functionsClassTheme.Utils()
+    private val applicationThemeControllerUtils: ApplicationThemeController.Utils by lazy {
+        applicationThemeController.Utils()
     }
 
-    private val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(requireContext())
+    private val fileIO: FileIO by lazy {
+        FileIO(requireContext())
     }
 
     lateinit var sharedPreferences: SharedPreferences
@@ -122,7 +122,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         functionsClassDataActivity = FunctionsClassDataActivity(requireActivity())
 
         functionsClass = FunctionsClass(requireContext())
-        functionsClassDialogues = FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
+        dialogues = Dialogues(functionsClassDataActivity, functionsClass)
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -206,7 +206,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         themeTrans.setOnPreferenceClickListener {
 
-            functionsClassTheme.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
+            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
 
             functionsClass.saveDefaultPreference("LitePreferences", false)
 
@@ -215,7 +215,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         blur.setOnPreferenceClickListener {
 
-            functionsClassTheme.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
+            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
 
             functionsClass.saveDefaultPreference("LitePreferences", false)
 
@@ -224,7 +224,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         blur.setOnPreferenceChangeListener { preference, newValue ->
             if (sharedPreferences.getBoolean("transparent", true)) {
                 blur.isEnabled = true
-                if (!functionsClassThemeUtils.wallpaperStaticLive()) {
+                if (!applicationThemeControllerUtils.wallpaperStaticLive()) {
                     blur.isChecked = false
                     blur.isEnabled = false
                 }
@@ -312,7 +312,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         gradientDrawableLoadLogo.setTint(PublicVariable.primaryColorOpposite)
         whatsnew.icon = layerDrawableLoadLogo
         whatsnew.setOnPreferenceClickListener {
-            functionsClassDialogues.changeLogPreference(betaChangeLog, betaVersionCode)
+            dialogues.changeLogPreference(betaChangeLog, betaVersionCode)
 
             true
         }
@@ -785,7 +785,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                         Handler().postDelayed({
                             functionsClass.litePreferenceConfirm(activity)
 
-                            functionsClassIO.saveFileEmpty(".LitePreferenceCheckpoint")
+                            fileIO.saveFileEmpty(".LitePreferenceCheckpoint")
                         }, 555)
                     }, 333)
                 }
@@ -849,7 +849,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                     if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > functionsClass.readPreference(".AdApp", "FetchTime", java.lang.Long.valueOf(0))) {
                         this@PreferencesFragment.scrollToPreference("app")
 
-                        functionsClassPreferences.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)))
+                        preferencesIO.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)))
                     }
                 }
 
@@ -975,7 +975,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         notification.isChecked = functionsClass.NotificationAccess() && functionsClass.NotificationListenerRunning()
 
-        if (!functionsClassThemeUtils.wallpaperStaticLive()) {
+        if (!applicationThemeControllerUtils.wallpaperStaticLive()) {
             blur.isEnabled = false
         }
 
@@ -991,7 +991,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (functionsClassIO.automationFeatureEnable()) {
+        if (fileIO.automationFeatureEnable()) {
             requireContext().startService(Intent(context, BindServices::class.java))
         }
     }

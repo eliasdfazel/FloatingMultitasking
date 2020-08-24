@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 3:43 PM
- * Last modified 3/26/20 3:03 PM
+ * Created by Elias Fazel
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,8 +36,8 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fing
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.AuthHandlerViewsBinding
 import java.util.*
@@ -105,7 +105,7 @@ class PinPasswordConfigurations : Activity() {
 
         authHandlerViewsBinding.pinPasswordEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
-                FunctionsClassDebug.PrintDebug("*** Pin Password == ${editable.toString()} ***")
+                Debug.PrintDebug("*** Pin Password == ${editable.toString()} ***")
             }
 
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
@@ -119,7 +119,7 @@ class PinPasswordConfigurations : Activity() {
 
         authHandlerViewsBinding.passwordRepeat.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
-                FunctionsClassDebug.PrintDebug("*** Pin Password == ${editable.toString()} ***")
+                Debug.PrintDebug("*** Pin Password == ${editable.toString()} ***")
             }
 
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
@@ -209,7 +209,7 @@ class PinPasswordConfigurations : Activity() {
                 firebaseAuth.setLanguageCode(Locale.getDefault().language)
 
                 firebaseAuth.sendSignInLinkToEmail(firebaseUser.email.toString(), actionCodeSettings).addOnSuccessListener {
-                    FunctionsClassDebug.PrintDebug("*** Password Verification Email Sent To ${firebaseUser.email} ***")
+                    Debug.PrintDebug("*** Password Verification Email Sent To ${firebaseUser.email} ***")
                     functionClass.Toast(getString(R.string.passwordResetSent), Gravity.BOTTOM, getColor(R.color.red_transparent))
 
                     Handler().postDelayed({

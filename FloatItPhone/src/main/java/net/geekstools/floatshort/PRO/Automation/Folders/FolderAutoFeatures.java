@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:43 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -50,10 +50,10 @@ import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.Functions.ApplicationThemeController;
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug;
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassTheme;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants;
@@ -68,10 +68,10 @@ import java.util.ArrayList;
 public class FolderAutoFeatures extends AppCompatActivity implements View.OnClickListener, GestureListenerInterface {
 
     FunctionsClass functionsClass;
-    FunctionsClassIO functionsClassIO;
+    FileIO fileIO;
 
-    FunctionsClassTheme functionsClassTheme;
-    FunctionsClassTheme.Utils functionsClassThemeUtils;
+    ApplicationThemeController applicationThemeController;
+    ApplicationThemeController.Utils functionsClassThemeUtils;
 
     RecyclerView categorylist;
     ListView actionElementsList;
@@ -118,16 +118,16 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         swipeGestureListener = new SwipeGestureListener(getApplicationContext(), FolderAutoFeatures.this);
 
         functionsClass = new FunctionsClass(getApplicationContext());
-        functionsClassIO = new FunctionsClassIO(getApplicationContext());
+        fileIO = new FileIO(getApplicationContext());
 
-        functionsClassTheme = new FunctionsClassTheme(getApplicationContext());
-        functionsClassThemeUtils = functionsClassTheme.new Utils();
+        applicationThemeController = new ApplicationThemeController(getApplicationContext());
+        functionsClassThemeUtils = applicationThemeController.new Utils();
 
         functionsClass.loadSavedColor();
         functionsClass.checkLightDarkTheme();
 
         if (!getFileStreamPath(".categoryInfo").exists()
-                || !(functionsClassIO.fileLinesCounter(".categoryInfo") > 0)) {
+                || !(fileIO.fileLinesCounter(".categoryInfo") > 0)) {
             startActivity(new Intent(getApplicationContext(), FoldersConfigurations.class)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
@@ -167,7 +167,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             }
         }
 
-        functionsClassTheme.setThemeColorAutomationFeature(FolderAutoFeatures.this, MainView, functionsClass.appThemeTransparent());
+        applicationThemeController.setThemeColorAutomationFeature(FolderAutoFeatures.this, MainView, functionsClass.appThemeTransparent());
 
         if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
@@ -529,7 +529,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
     public void onPause() {
         super.onPause();
 
-        if (functionsClassIO.automationFeatureEnable()) {
+        if (fileIO.automationFeatureEnable()) {
             startService(new Intent(getApplicationContext(), BindServices.class));
         }
     }
@@ -691,11 +691,11 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                String[] appData = functionsClassIO.readFileLinesAsArray(".categoryInfo");
+                String[] appData = fileIO.readFileLinesAsArray(".categoryInfo");
 
                 if (functionsClass.customIconsEnable()) {
                     loadCustomIcons.load();
-                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
+                    Debug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }
 
                 adapterItems = new ArrayList<AdapterItems>();
@@ -712,7 +712,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
                         adapterItems.add(new AdapterItems(
                                 appData[navItem],
-                                functionsClassIO.readFileLinesAsArray(appData[navItem]),
+                                fileIO.readFileLinesAsArray(appData[navItem]),
                                 AppTime));
                     } catch (Exception e) {
                         e.printStackTrace();

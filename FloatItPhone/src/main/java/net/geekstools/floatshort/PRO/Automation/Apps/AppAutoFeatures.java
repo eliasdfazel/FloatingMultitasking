@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/23/20 9:55 PM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -52,10 +52,10 @@ import net.geekstools.floatshort.PRO.Automation.Folders.FolderAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.Functions.ApplicationThemeController;
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug;
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassTheme;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants;
@@ -74,10 +74,10 @@ import java.util.Map;
 public class AppAutoFeatures extends AppCompatActivity implements View.OnClickListener, GestureListenerInterface {
 
     FunctionsClass functionsClass;
-    FunctionsClassIO functionsClassIO;
+    FileIO fileIO;
 
-    FunctionsClassTheme functionsClassTheme;
-    FunctionsClassTheme.Utils functionsClassThemeUtils;
+    ApplicationThemeController applicationThemeController;
+    ApplicationThemeController.Utils functionsClassThemeUtils;
 
     ListView actionElementsList;
     RelativeLayout fullActionButton, MainView;
@@ -142,10 +142,10 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         swipeGestureListener = new SwipeGestureListener(getApplicationContext(), AppAutoFeatures.this);
 
         functionsClass = new FunctionsClass(getApplicationContext());
-        functionsClassIO = new FunctionsClassIO(getApplicationContext());
+        fileIO = new FileIO(getApplicationContext());
 
-        functionsClassTheme = new FunctionsClassTheme(getApplicationContext());
-        functionsClassThemeUtils = functionsClassTheme.new Utils();
+        applicationThemeController = new ApplicationThemeController(getApplicationContext());
+        functionsClassThemeUtils = applicationThemeController.new Utils();
 
         functionsClass.loadSavedColor();
         functionsClass.checkLightDarkTheme();
@@ -184,7 +184,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             }
         }
 
-        functionsClassTheme.setThemeColorAutomationFeature(AppAutoFeatures.this, MainView, functionsClass.appThemeTransparent());
+        applicationThemeController.setThemeColorAutomationFeature(AppAutoFeatures.this, MainView, functionsClass.appThemeTransparent());
 
         if (functionsClass.customIconsEnable()) {
             loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
@@ -546,7 +546,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
     public void onPause() {
         super.onPause();
 
-        if (functionsClassIO.automationFeatureEnable()) {
+        if (fileIO.automationFeatureEnable()) {
             startService(new Intent(getApplicationContext(), BindServices.class));
         }
     }
@@ -720,7 +720,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
                 if (functionsClass.customIconsEnable()) {
                     loadCustomIcons.load();
-                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
+                    Debug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }
 
                 for (int appInfo = 0; appInfo < applicationInfoList.size(); appInfo++) {

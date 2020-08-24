@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 9:26 PM
+ * Last modified 8/24/20 6:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -102,20 +102,20 @@ class FoldersConfigurations : AppCompatActivity(),
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
-    private val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(applicationContext)
+    private val fileIO: FileIO by lazy {
+        FileIO(applicationContext)
     }
-    private val functionsClassTheme: FunctionsClassTheme by lazy {
-        FunctionsClassTheme(applicationContext)
+    private val applicationThemeController: ApplicationThemeController by lazy {
+        ApplicationThemeController(applicationContext)
     }
     private val securityFunctions: SecurityFunctions by lazy {
         SecurityFunctions(applicationContext)
     }
-    private val functionsClassDialogues: FunctionsClassDialogues by lazy {
-        FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
+    private val dialogues: Dialogues by lazy {
+        Dialogues(functionsClassDataActivity, functionsClass)
     }
-    private val functionsClassRunServices: FunctionsClassRunServices by lazy {
-        FunctionsClassRunServices(applicationContext)
+    private val floatingServices: FloatingServices by lazy {
+        FloatingServices(applicationContext)
     }
 
     private lateinit var foldersListAdapter: RecyclerView.Adapter<FoldersListAdapter.ViewHolder>
@@ -151,8 +151,8 @@ class FoldersConfigurations : AppCompatActivity(),
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()
 
-        functionsClassTheme.setThemeColorFloating(this@FoldersConfigurations, foldersConfigurationViewBinding.wholeCategory, functionsClass.appThemeTransparent())
-        functionsClassDialogues.changeLog()
+        applicationThemeController.setThemeColorFloating(this@FoldersConfigurations, foldersConfigurationViewBinding.wholeCategory, functionsClass.appThemeTransparent())
+        dialogues.changeLog()
 
         val recyclerViewLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
         foldersConfigurationViewBinding.foldersList.layoutManager = recyclerViewLayoutManager
@@ -698,7 +698,7 @@ class FoldersConfigurations : AppCompatActivity(),
                             .addOnSuccessListener {
                                 val firebaseUser = firebaseAuth.currentUser
                                 if (firebaseUser != null) {
-                                    FunctionsClassDebug.PrintDebug("Firebase Activities Done Successfully")
+                                    Debug.PrintDebug("Firebase Activities Done Successfully")
 
                                     functionsClass.savePreference(".UserInformation", "userEmail", firebaseUser.email)
 
@@ -757,7 +757,7 @@ class FoldersConfigurations : AppCompatActivity(),
 
         if (functionsClass.customIconsEnable()) {
             loadCustomIcons.load()
-            FunctionsClassDebug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
+            Debug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }
 
         if (getFileStreamPath(".categoryInfo").exists()) {
@@ -773,8 +773,8 @@ class FoldersConfigurations : AppCompatActivity(),
                         SearchEngine(activity = this@FoldersConfigurations, context = applicationContext,
                                 searchEngineViewBinding = foldersConfigurationViewBinding.searchEngineViewInclude,
                                 functionsClass = functionsClass,
-                                functionsClassIO = functionsClassIO,
-                                functionsClassRunServices = functionsClassRunServices,
+                                functionsClassIO = fileIO,
+                                functionsClassRunServices = floatingServices,
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {
 
@@ -785,7 +785,7 @@ class FoldersConfigurations : AppCompatActivity(),
                     .withIndex().collect { folderInformation ->
 
                         folderAdapterItems.add(AdapterItems(folderInformation.value,
-                                functionsClassIO.readFileLinesAsArray(folderInformation.value), SearchResultType.SearchFolders))
+                                fileIO.readFileLinesAsArray(folderInformation.value), SearchResultType.SearchFolders))
                     }
 
             folderAdapterItems.add(AdapterItems(packageName, arrayOf(packageName), SearchResultType.SearchFolders))
@@ -832,7 +832,7 @@ class FoldersConfigurations : AppCompatActivity(),
 
         PublicVariable.customIconsPackages.clear()
         for (resolveInfo in resolveInfos) {
-            FunctionsClassDebug.PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
+            Debug.PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
             PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
         }
     }

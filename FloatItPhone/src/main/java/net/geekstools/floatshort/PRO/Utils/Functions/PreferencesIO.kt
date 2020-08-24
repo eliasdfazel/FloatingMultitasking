@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:22 AM
+ * Last modified 8/24/20 6:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,9 +15,9 @@ import android.content.Intent
 import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.BindServices
 
-class FunctionsClassPreferences (private val context: Context) {
+class PreferencesIO (private val context: Context) {
 
-    private val functionsClassIO: FunctionsClassIO = FunctionsClassIO(context)
+    private val fileIO: FileIO = FileIO(context)
 
     fun savePreference(PreferenceName: String?, KEY: String?, VALUE: String?) {
         val sharedPreferences = context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE)
@@ -118,7 +118,7 @@ class FunctionsClassPreferences (private val context: Context) {
 
         if (switch) {
 
-            functionsClassIO.saveFileEmpty(".LitePreferenceCheckpoint")
+            fileIO.saveFileEmpty(".LitePreferenceCheckpoint")
 
             /*OFF Control Panel*/
             defaultSharedPreferencesEditor.putBoolean("stable", false)

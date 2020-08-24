@@ -1,3 +1,13 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel
+ * Last modified 8/24/20 6:17 AM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint
 
 import android.os.Bundle
@@ -10,8 +20,8 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Exte
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions.setupAuthenticationUIWindow
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.AuthenticationPinPassword
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 
 class AuthenticationFingerprint : FragmentActivity() {
 
@@ -41,11 +51,11 @@ class AuthenticationFingerprint : FragmentActivity() {
 
                 override fun onAuthenticationError(errorCode: Int, errorString: CharSequence) {
                     super.onAuthenticationError(errorCode, errorString)
-                    FunctionsClassDebug.PrintDebug("*** ${errorCode}. ${errorString} ***")
+                    Debug.PrintDebug("*** ${errorCode}. ${errorString} ***")
 
                     when (errorCode) {
                         BiometricPrompt.ERROR_USER_CANCELED -> {
-                            FunctionsClassDebug.PrintDebug("*** ERROR USER CANCELED ***")
+                            Debug.PrintDebug("*** ERROR USER CANCELED ***")
 
                             SecurityInterfaceHolder.authenticationCallback
                                     .failedAuthenticated()
@@ -53,7 +63,7 @@ class AuthenticationFingerprint : FragmentActivity() {
                             this@AuthenticationFingerprint.finish()
                         }
                         BiometricPrompt.ERROR_CANCELED -> {
-                            FunctionsClassDebug.PrintDebug("*** ERROR CANCELED ***")
+                            Debug.PrintDebug("*** ERROR CANCELED ***")
 
                             SecurityInterfaceHolder.authenticationCallback
                                     .failedAuthenticated()
@@ -61,7 +71,7 @@ class AuthenticationFingerprint : FragmentActivity() {
                             this@AuthenticationFingerprint.finish()
                         }
                         BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> {
-                            FunctionsClassDebug.PrintDebug("*** ERROR LOCKOUT PERMANENT ***")
+                            Debug.PrintDebug("*** ERROR LOCKOUT PERMANENT ***")
 
                             SecurityInterfaceHolder.authenticationCallback
                                     .failedAuthenticated()
@@ -69,27 +79,27 @@ class AuthenticationFingerprint : FragmentActivity() {
                             this@AuthenticationFingerprint.finish()
                         }
                         BiometricPrompt.ERROR_HW_NOT_PRESENT -> {
-                            FunctionsClassDebug.PrintDebug("*** ERROR HW NOT PRESENT ***")
+                            Debug.PrintDebug("*** ERROR HW NOT PRESENT ***")
 
                             triggerPinPasswordFragment(dialogueTitle)
                         }
                         BiometricPrompt.ERROR_HW_UNAVAILABLE -> {
-                            FunctionsClassDebug.PrintDebug("*** ERROR HW UNAVAILABLE ***")
+                            Debug.PrintDebug("*** ERROR HW UNAVAILABLE ***")
 
                             triggerPinPasswordFragment(dialogueTitle)
                         }
                         BiometricPrompt.ERROR_LOCKOUT -> {
-                            FunctionsClassDebug.PrintDebug("*** ERROR LOCKOUT ***")
+                            Debug.PrintDebug("*** ERROR LOCKOUT ***")
 
                             triggerPinPasswordFragment(dialogueTitle)
                         }
                         BiometricPrompt.ERROR_TIMEOUT -> {
-                            FunctionsClassDebug.PrintDebug("*** ERROR TIMEOUT ***")
+                            Debug.PrintDebug("*** ERROR TIMEOUT ***")
 
                             triggerPinPasswordFragment(dialogueTitle)
                         }
                         else -> {
-                            FunctionsClassDebug.PrintDebug("*** ERROR UNKNOWN ***")
+                            Debug.PrintDebug("*** ERROR UNKNOWN ***")
 
                             triggerPinPasswordFragment(dialogueTitle)
                         }
@@ -98,7 +108,7 @@ class AuthenticationFingerprint : FragmentActivity() {
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    FunctionsClassDebug.PrintDebug("*** Authentication Failed ***")
+                    Debug.PrintDebug("*** Authentication Failed ***")
 
                     SecurityInterfaceHolder.authenticationCallback
                             .failedAuthenticated()
@@ -112,7 +122,7 @@ class AuthenticationFingerprint : FragmentActivity() {
 
                 override fun onAuthenticationSucceeded(authenticationResult: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(authenticationResult)
-                    FunctionsClassDebug.PrintDebug("*** Authentication Succeeded ***")
+                    Debug.PrintDebug("*** Authentication Succeeded ***")
 
                     SecurityInterfaceHolder.authenticationCallback
                             .authenticatedFloatIt(null)

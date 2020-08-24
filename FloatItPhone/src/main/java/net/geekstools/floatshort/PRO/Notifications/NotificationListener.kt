@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/22/20 6:32 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,10 +21,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class NotificationListener : NotificationListenerService() {
@@ -33,8 +33,8 @@ class NotificationListener : NotificationListenerService() {
         FunctionsClass(applicationContext)
     }
 
-    private val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(applicationContext)
+    private val fileIO: FileIO by lazy {
+        FileIO(applicationContext)
     }
 
     lateinit var broadcastReceiver: BroadcastReceiver
@@ -142,17 +142,17 @@ class NotificationListener : NotificationListenerService() {
 
                 }
 
-                FunctionsClassDebug.PrintDebug("::: Package ::: $notificationPackage")
-                FunctionsClassDebug.PrintDebug("::: Key ::: $notificationId")
-                FunctionsClassDebug.PrintDebug("::: Title ::: $notificationTitle")
-                FunctionsClassDebug.PrintDebug("::: Text ::: $notificationText")
-                FunctionsClassDebug.PrintDebug("::: Time ::: $notificationTime")
+                Debug.PrintDebug("::: Package ::: $notificationPackage")
+                Debug.PrintDebug("::: Key ::: $notificationId")
+                Debug.PrintDebug("::: Title ::: $notificationTitle")
+                Debug.PrintDebug("::: Text ::: $notificationText")
+                Debug.PrintDebug("::: Time ::: $notificationTime")
 
                 /*Save Temp Notification Files*/
-                functionsClassIO.saveFileAppendLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
-                functionsClassIO.saveFile(notificationTime + "_" + "Notification" + "Key", notificationId)
-                functionsClassIO.saveFile(notificationTime + "_" + "Notification" + "Title", notificationTitle)
-                functionsClassIO.saveFile(notificationTime + "_" + "Notification" + "Text", notificationText.toString())
+                fileIO.saveFileAppendLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
+                fileIO.saveFile(notificationTime + "_" + "Notification" + "Key", notificationId)
+                fileIO.saveFile(notificationTime + "_" + "Notification" + "Title", notificationTitle)
+                fileIO.saveFile(notificationTime + "_" + "Notification" + "Text", notificationText.toString())
                 functionsClass.saveBitmapIcon(notificationTime + "_" + "Notification" + "Icon", notificationIcon)
                 PublicVariable.notificationIntent[notificationTime] = statusBarNotification.notification.contentIntent
 
@@ -212,17 +212,17 @@ class NotificationListener : NotificationListenerService() {
                 val notificationPackage = statusBarNotification.packageName
                 val notificationTime = statusBarNotification.postTime.toString()
 
-                FunctionsClassDebug.PrintDebug("::: Remove Package ::: $notificationPackage")
-                FunctionsClassDebug.PrintDebug("::: Remove Time ::: $notificationTime")
+                Debug.PrintDebug("::: Remove Package ::: $notificationPackage")
+                Debug.PrintDebug("::: Remove Time ::: $notificationTime")
 
                 deleteFile(notificationTime + "_" + "Notification" + "Key")
                 deleteFile(notificationTime + "_" + "Notification" + "Title")
                 deleteFile(notificationTime + "_" + "Notification" + "Text")
                 deleteFile(notificationTime + "_" + "Notification" + "Icon")
 
-                functionsClassIO.removeLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
+                fileIO.removeLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
 
-                if (functionsClassIO.fileLinesCounter(notificationPackage + "_" + "Notification" + "Package") == 0) {
+                if (fileIO.fileLinesCounter(notificationPackage + "_" + "Notification" + "Package") == 0) {
 
                     deleteFile(notificationPackage + "_" + "Notification" + "Package")
 

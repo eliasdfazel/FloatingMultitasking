@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:24 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,8 +32,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.geekstools.floatshort.PRO.Automation.Alarms.TimeDialogue;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
@@ -46,7 +46,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
     private Activity activity;
 
     FunctionsClass functionsClass;
-    FunctionsClassIO functionsClassIO;
+    FileIO fileIO;
 
     ImageView imageView;
     RelativeLayout freqLayout;
@@ -66,7 +66,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
         this.adapterItems = adapterItems;
 
         functionsClass = new FunctionsClass(context);
-        functionsClassIO = new FunctionsClassIO(context);
+        fileIO = new FileIO(context);
 
         if (PublicVariable.autoID != null) {
             if (PublicVariable.autoID.equals(context.getString(R.string.wifi_folder))) {
@@ -178,14 +178,14 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getCategory() + "." + autoIdAppend);
-                            functionsClassIO.removeLine(
+                            fileIO.removeLine(
                                     adapterItems.get(position).getTimes(),
                                     adapterItems.get(position).getCategory());
-                            if (functionsClassIO.fileLinesCounter(adapterItems.get(position).getCategory()) == 0) {
+                            if (fileIO.fileLinesCounter(adapterItems.get(position).getCategory()) == 0) {
                                 context.deleteFile(adapterItems.get(position).getTimes());
                             }
 
-                            functionsClassIO.removeLine(".times.clocks", adapterItems.get(position).getTimes());
+                            fileIO.removeLine(".times.clocks", adapterItems.get(position).getTimes());
                             viewHolderBinder.autoChoice.setChecked(false);
                             viewHolderBinder.timeView.setTextSize(50);
                             viewHolderBinder.timeView.setText(String.valueOf(adapterItems.get(position).getCategory().charAt(0)).toUpperCase());
@@ -203,13 +203,13 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getCategory() + "." + autoIdAppend);
-                            functionsClassIO.removeLine(".auto" + autoIdAppend + "Category", adapterItems.get(position).getCategory());
+                            fileIO.removeLine(".auto" + autoIdAppend + "Category", adapterItems.get(position).getCategory());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
-                            functionsClassIO.saveFile(
+                            fileIO.saveFile(
                                     adapterItems.get(position).getCategory() + "." + autoIdAppend,
                                     adapterItems.get(position).getCategory());
-                            functionsClassIO.saveFileAppendLine(
+                            fileIO.saveFileAppendLine(
                                     ".auto" + autoIdAppend + "Category",
                                     adapterItems.get(position).getCategory());
                             viewHolderBinder.autoChoice.setChecked(true);

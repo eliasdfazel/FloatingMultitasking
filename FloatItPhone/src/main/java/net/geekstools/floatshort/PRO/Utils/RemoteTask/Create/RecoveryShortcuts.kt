@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 9:27 PM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,9 +25,9 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Exte
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint.AuthenticationFingerprint
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
+import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 
@@ -37,12 +37,12 @@ class RecoveryShortcuts : Service() {
         FunctionsClass(applicationContext)
     }
 
-    private val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(applicationContext)
+    private val fileIO: FileIO by lazy {
+        FileIO(applicationContext)
     }
     
-    private val functionsClassRunServices: FunctionsClassRunServices by lazy { 
-        FunctionsClassRunServices(applicationContext)
+    private val floatingServices: FloatingServices by lazy {
+        FloatingServices(applicationContext)
     }
     
     private var permitOpenFloatingShortcuts = true
@@ -70,7 +70,7 @@ class RecoveryShortcuts : Service() {
 
             intent?.let {
 
-                val applicationsDataLines = functionsClassIO.readFileLinesAsArray(".uFile")
+                val applicationsDataLines = fileIO.readFileLinesAsArray(".uFile")
 
                 if (!applicationsDataLines.isNullOrEmpty()) {
 
@@ -181,7 +181,7 @@ class RecoveryShortcuts : Service() {
             }
 
             if (permitOpenFloatingShortcuts) {
-                functionsClassRunServices.runUnlimitedShortcutsServicePackage(applicationsData)
+                floatingServices.runUnlimitedShortcutsServicePackage(applicationsData)
             }
         }
 

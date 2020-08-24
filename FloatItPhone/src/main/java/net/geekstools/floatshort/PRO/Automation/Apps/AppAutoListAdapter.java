@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:25 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -29,8 +29,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.geekstools.floatshort.PRO.Automation.Alarms.TimeDialogue;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -43,7 +43,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
     private Activity activity;
 
     FunctionsClass functionsClass;
-    FunctionsClassIO functionsClassIO;
+    FileIO fileIO;
 
     View view;
     ViewHolder viewHolder;
@@ -59,7 +59,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
         this.adapterItems = adapterItems;
 
         functionsClass = new FunctionsClass(context);
-        functionsClassIO = new FunctionsClassIO(context);
+        fileIO = new FileIO(context);
 
         switch (functionsClass.shapesImageId()) {
             case 1:
@@ -155,13 +155,13 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getPackageName() + ".Wifi");
-                            functionsClassIO.removeLine(".autoWifi", adapterItems.get(position).getPackageName());
+                            fileIO.removeLine(".autoWifi", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
-                            functionsClassIO.saveFile(
+                            fileIO.saveFile(
                                     adapterItems.get(position).getPackageName() + ".Wifi",
                                     adapterItems.get(position).getPackageName());
-                            functionsClassIO.saveFileAppendLine(
+                            fileIO.saveFileAppendLine(
                                     ".autoWifi",
                                     adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(true);
@@ -172,13 +172,13 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getPackageName() + ".Bluetooth");
-                            functionsClassIO.removeLine(".autoBluetooth", adapterItems.get(position).getPackageName());
+                            fileIO.removeLine(".autoBluetooth", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
-                            functionsClassIO.saveFile(
+                            fileIO.saveFile(
                                     adapterItems.get(position).getPackageName() + ".Bluetooth",
                                     adapterItems.get(position).getPackageName());
-                            functionsClassIO.saveFileAppendLine(
+                            fileIO.saveFileAppendLine(
                                     ".autoBluetooth",
                                     adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(true);
@@ -189,13 +189,13 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getPackageName() + ".Gps");
-                            functionsClassIO.removeLine(".autoGps", adapterItems.get(position).getPackageName());
+                            fileIO.removeLine(".autoGps", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
-                            functionsClassIO.saveFile(
+                            fileIO.saveFile(
                                     adapterItems.get(position).getPackageName() + ".Gps",
                                     adapterItems.get(position).getPackageName());
-                            functionsClassIO.saveFileAppendLine(
+                            fileIO.saveFileAppendLine(
                                     ".autoGps",
                                     adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(true);
@@ -206,13 +206,13 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getPackageName() + ".Nfc");
-                            functionsClassIO.removeLine(".autoNfc", adapterItems.get(position).getPackageName());
+                            fileIO.removeLine(".autoNfc", adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(false);
                         } else {
-                            functionsClassIO.saveFile(
+                            fileIO.saveFile(
                                     adapterItems.get(position).getPackageName() + ".Nfc",
                                     adapterItems.get(position).getPackageName());
-                            functionsClassIO.saveFileAppendLine(
+                            fileIO.saveFileAppendLine(
                                     ".autoNfc",
                                     adapterItems.get(position).getPackageName());
                             viewHolderBinder.autoChoice.setChecked(true);
@@ -224,14 +224,14 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
                         if (autoFile.exists()) {
                             context.deleteFile(
                                     adapterItems.get(position).getPackageName() + ".Time");
-                            functionsClassIO.removeLine(
+                            fileIO.removeLine(
                                     adapterItems.get(position).getTimes(),
                                     adapterItems.get(position).getPackageName());
-                            if (functionsClassIO.fileLinesCounter(adapterItems.get(position).getPackageName()) == 0) {
+                            if (fileIO.fileLinesCounter(adapterItems.get(position).getPackageName()) == 0) {
                                 context.deleteFile(adapterItems.get(position).getTimes());
                             }
 
-                            functionsClassIO.removeLine(".times.clocks", adapterItems.get(position).getTimes());
+                            fileIO.removeLine(".times.clocks", adapterItems.get(position).getTimes());
                             viewHolderBinder.autoChoice.setChecked(false);
                             viewHolderBinder.time.setText("");
                             viewHolderBinder.time.setVisibility(View.INVISIBLE);

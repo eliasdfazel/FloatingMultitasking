@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/29/20 7:19 PM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,9 +14,9 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.TypedValue
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassPreferences
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
+import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
+import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class RecoveryWifi : Service() {
@@ -29,22 +29,22 @@ class RecoveryWifi : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
 
-        val functionsClassRunServices: FunctionsClassRunServices = FunctionsClassRunServices(applicationContext)
+        val floatingServices: FloatingServices = FloatingServices(applicationContext)
 
-        val functionsClassIO: FunctionsClassIO = FunctionsClassIO(applicationContext)
+        val fileIO: FileIO = FileIO(applicationContext)
 
-        val functionsClassPreferences: FunctionsClassPreferences = FunctionsClassPreferences(applicationContext)
+        val preferencesIO: PreferencesIO = PreferencesIO(applicationContext)
 
-        PublicVariable.floatingSizeNumber = functionsClassPreferences.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
 
         if (getFileStreamPath(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", "")).exists()
                 && getFileStreamPath(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", "")).isFile) {
 
-            val packageNames = functionsClassIO.readFileLinesAsArray(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", ""))
+            val packageNames = fileIO.readFileLinesAsArray(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", ""))
             if (!packageNames.isNullOrEmpty()) {
                 for (aPackageName in packageNames) {
-                    functionsClassRunServices.runUnlimitedShortcutsForWifi(aPackageName)
+                    floatingServices.runUnlimitedShortcutsForWifi(aPackageName)
                 }
             }
         }
@@ -52,13 +52,13 @@ class RecoveryWifi : Service() {
         if (getFileStreamPath(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", "") + "Category").exists()
                 && getFileStreamPath(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", "") + "Category").isFile) {
 
-            val folderNames = functionsClassIO.readFileLinesAsArray(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", "") + "Category")
+            val folderNames = fileIO.readFileLinesAsArray(".auto" + this@RecoveryWifi.javaClass.simpleName.replace("Recovery", "") + "Category")
             if (!folderNames.isNullOrEmpty()) {
                 for (folderName in folderNames) {
 
-                    functionsClassIO.readFileLinesAsArray(folderName)?.let {
+                    fileIO.readFileLinesAsArray(folderName)?.let {
 
-                        functionsClassRunServices.runUnlimitedFoldersForWifi(folderName, it)
+                        floatingServices.runUnlimitedFoldersForWifi(folderName, it)
                     }
                 }
             }

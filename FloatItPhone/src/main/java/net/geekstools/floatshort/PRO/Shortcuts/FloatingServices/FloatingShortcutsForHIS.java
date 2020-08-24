@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:57 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -43,8 +43,8 @@ import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.R;
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
@@ -146,7 +146,7 @@ public class FloatingShortcutsForHIS extends Service {
 
     @Override
     public int onStartCommand(Intent intent, final int flags, final int startId) {
-        FunctionsClassDebug.Companion.PrintDebug(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
+        Debug.Companion.PrintDebug(this.getClass().getSimpleName() + " ::: StartId ::: " + startId);
 
         startIdCounter = startId;
 
@@ -444,7 +444,7 @@ public class FloatingShortcutsForHIS extends Service {
                         if (allowMove[startId] == true) {
                             layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);
                             layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);
-                            FunctionsClassDebug.Companion.PrintDebug("X :: " + layoutParamsOnTouch.x + "\n" + " Y :: " + layoutParamsOnTouch.y);
+                            Debug.Companion.PrintDebug("X :: " + layoutParamsOnTouch.x + "\n" + " Y :: " + layoutParamsOnTouch.y);
 
                             xMove = Math.round(layoutParamsOnTouch.x);
                             yMove = Math.round(layoutParamsOnTouch.y);
@@ -723,7 +723,7 @@ public class FloatingShortcutsForHIS extends Service {
             @Override
             public void onReceive(Context context, final Intent intent) {
                 if (intent.getAction().equals("Split_Apps_Single_" + className) && PublicVariable.splitScreen == true) {
-                    FunctionsClassDebug.Companion.PrintDebug("Split Apps Single");
+                    Debug.Companion.PrintDebug("Split Apps Single");
                     PublicVariable.splitScreen = false;
 
                     new Handler().postDelayed(new Runnable() {
@@ -750,7 +750,7 @@ public class FloatingShortcutsForHIS extends Service {
                         }
                     }, 200);
                 } else if (intent.getAction().equals("Pin_App_" + className)) {
-                    FunctionsClassDebug.Companion.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]));
+                    Debug.Companion.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = false;
 
                     Drawable pinDrawable = null;
@@ -785,7 +785,7 @@ public class FloatingShortcutsForHIS extends Service {
                     }
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable);
                 } else if (intent.getAction().equals("Unpin_App_" + className)) {
-                    FunctionsClassDebug.Companion.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]));
+                    Debug.Companion.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = true;
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(null);
                 } else if (intent.getAction().equals("Float_It_" + className)) {

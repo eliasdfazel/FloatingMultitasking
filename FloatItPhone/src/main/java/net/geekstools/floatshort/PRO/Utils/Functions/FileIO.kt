@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:52 AM
+ * Last modified 8/24/20 6:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,7 +15,7 @@ import android.os.Build
 import java.io.File
 import java.nio.charset.Charset
 
-class FunctionsClassIO(private val context: Context) {
+class FileIO(private val context: Context) {
 
     fun readFileLinesAsArray(fileName: String) : Array<String>? {
         val file: File? = context.getFileStreamPath(fileName)

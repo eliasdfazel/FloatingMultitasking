@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/22/20 6:32 AM
+ * Last modified 8/24/20 6:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,7 +13,7 @@ package net.geekstools.floatshort.PRO.Utils.Functions
 import android.content.Intent
 import android.content.pm.PackageManager
 
-class FunctionsClassApplicationsData(var functionsClassDataContext: FunctionsClassDataContext) {
+class ApplicationsData(var functionsClassDataContext: FunctionsClassDataContext) {
 
     fun appIsInstalled(packageName: String): Boolean {
         val packageManager: PackageManager = functionsClassDataContext.context.packageManager

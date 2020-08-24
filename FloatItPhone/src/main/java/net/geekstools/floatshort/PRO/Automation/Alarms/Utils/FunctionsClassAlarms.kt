@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 3:53 PM
+ * Last modified 8/24/20 6:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -17,7 +17,7 @@ import android.content.Intent
 import net.geekstools.floatshort.PRO.Automation.Alarms.AlarmAlertBroadcastReceiver
 import net.geekstools.floatshort.PRO.Automation.Alarms.SetupAlarms
 import net.geekstools.floatshort.PRO.BindServices
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import java.util.*
 
 class FunctionsClassAlarms (private val context: Context) {
@@ -45,6 +45,6 @@ class FunctionsClassAlarms (private val context: Context) {
         context.stopService(Intent(context, SetupAlarms::class.java))
         context.stopService(Intent(context, BindServices::class.java))
 
-        FunctionsClassDebug.PrintDebug("*** " + newAlarmTime.time + " ***")
+        Debug.PrintDebug("*** " + newAlarmTime.time + " ***")
     }
 }

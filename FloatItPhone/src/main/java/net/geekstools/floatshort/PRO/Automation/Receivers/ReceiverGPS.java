@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 4:05 PM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,8 +19,8 @@ import net.geekstools.floatshort.PRO.Automation.RecoveryServices.RecoveryGps;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForGps;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForGps;
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
@@ -34,7 +34,7 @@ public class ReceiverGPS extends BroadcastReceiver {
             if (functionsClass.customIconsEnable()) {
                 LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
                 loadCustomIcons.load();
-                FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
+                Debug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
             }
 
             final LocationManager locManager = (LocationManager) context.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);

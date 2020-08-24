@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:37 AM
+ * Last modified 8/24/20 6:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,9 +27,9 @@ import kotlinx.android.synthetic.main.dialogue_message.*
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.InAppReview.InAppReviewProcess
 
-class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDataActivity, var functionsClass: FunctionsClass) {
+class Dialogues (var functionsClassDataActivity: FunctionsClassDataActivity, var functionsClass: FunctionsClass) {
 
-    private val functionsClassIO: FunctionsClassIO = FunctionsClassIO(functionsClassDataActivity.activity)
+    private val fileIO: FileIO = FileIO(functionsClassDataActivity.activity)
 
     fun changeLog() {
         val layoutParams = WindowManager.LayoutParams()
@@ -79,7 +79,7 @@ class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDat
 
         dialog.setOnDismissListener {
 
-            if (functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName) > functionsClassIO.readFile(".Updated")?.toInt()?:0) {
+            if (functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName) > fileIO.readFile(".Updated")?.toInt()?:0) {
 
                 if (!functionsClassDataActivity.activity.isFinishing) {
 
@@ -89,7 +89,7 @@ class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDat
 
             }
 
-            functionsClassIO.saveFile(".Updated", functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName).toString())
+            fileIO.saveFile(".Updated", functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName).toString())
         }
 
         if (!functionsClassDataActivity.activity.getFileStreamPath(".Updated").exists()) {
@@ -98,7 +98,7 @@ class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDat
                 dialog.show()
             }
 
-        } else if (functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName) > functionsClassIO.readFile(".Updated")?.toInt()?:0) {
+        } else if (functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName) > fileIO.readFile(".Updated")?.toInt()?:0) {
 
             if (!functionsClassDataActivity.activity.isFinishing) {
                 dialog.show()
@@ -164,7 +164,7 @@ class FunctionsClassDialogues (var functionsClassDataActivity: FunctionsClassDat
         }
 
         dialog.setOnDismissListener {
-            functionsClassIO.saveFile(".Updated", functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName).toString())
+            fileIO.saveFile(".Updated", functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName).toString())
         }
 
         if (!functionsClassDataActivity.activity.isFinishing) {

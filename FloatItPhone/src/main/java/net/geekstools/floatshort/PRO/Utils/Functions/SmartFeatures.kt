@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 8/24/20 6:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import java.util.*
 
-class FunctionsClassSmartFeatures() {
+class SmartFeatures() {
 
     fun letMeKnow(context: Context, maxValue: Int, startTime: Long /*‪86400000‬ = 1 days*/, endTime: Long /*System.currentTimeMillis()*/) : Deferred<List<String>> = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
         /*‪86400000 = 24h --- 82800000 = 23h‬*/
@@ -34,7 +34,7 @@ class FunctionsClassSmartFeatures() {
             left, right -> right.totalTimeInForeground.compareTo(left.totalTimeInForeground)
         })
 
-        val functionsClassApplicationsData = FunctionsClassApplicationsData(FunctionsClassDataContext(context))
+        val functionsClassApplicationsData = ApplicationsData(FunctionsClassDataContext(context))
 
         queryUsageStats.asFlow()
                 .map {

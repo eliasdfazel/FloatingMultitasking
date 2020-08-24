@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:46 AM
+ * Last modified 8/24/20 6:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -261,17 +261,8 @@ public class FunctionsClass {
         });
     }
 
-    public void endIndexAppInfo() {
-        try {
-            FirebaseUserActions.getInstance().end(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private com.google.firebase.appindexing.Action getAction(String titleForAction, String urlForAction) {
-        return
-                Actions.newView(titleForAction, urlForAction);
+        return Actions.newView(titleForAction, urlForAction);
     }
 
     /*SuperShortcuts*/
@@ -279,7 +270,7 @@ public class FunctionsClass {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             try {
 
-                FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
+                FileIO fileIO = new FileIO(context);
 
                 final ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
                 shortcutManager.removeAllDynamicShortcuts();
@@ -310,11 +301,11 @@ public class FunctionsClass {
                         }
                     }
                 } else if (context.getFileStreamPath(".uFile").exists()) {
-                    if (functionsClassIO.fileLinesCounter(".uFile") > 0) {
+                    if (fileIO.fileLinesCounter(".uFile") > 0) {
                         List<String> appShortcuts = Arrays.asList(readFileLine(".uFile"));
                         int countAppShortcut = 4;
-                        if (functionsClassIO.fileLinesCounter(".uFile") < 4) {
-                            countAppShortcut = functionsClassIO.fileLinesCounter(".uFile");
+                        if (fileIO.fileLinesCounter(".uFile") < 4) {
+                            countAppShortcut = fileIO.fileLinesCounter(".uFile");
                         }
                         for (int i = 0; i < countAppShortcut; i++) {
                             try {
@@ -400,7 +391,7 @@ public class FunctionsClass {
     /*Unlimited Shortcuts Function*/
     public void saveUnlimitedShortcutsService(String packageName) {
 
-        FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
+        FileIO fileIO = new FileIO(context);
 
         boolean duplicated = false;
 
@@ -408,11 +399,11 @@ public class FunctionsClass {
         File uFile = context.getFileStreamPath(".uFile");
 
         if (!uFile.exists()) {
-            functionsClassIO.saveFileAppendLine(fileName, packageName);
+            fileIO.saveFileAppendLine(fileName, packageName);
         } else if (uFile.exists()) {
-            int countLine = functionsClassIO.fileLinesCounter(fileName);
+            int countLine = fileIO.fileLinesCounter(fileName);
             String[] contentLine = new String[countLine];
-            contentLine = functionsClassIO.readFileLinesAsArray(fileName);
+            contentLine = fileIO.readFileLinesAsArray(fileName);
             for (String aContentLine : contentLine) {
                 if (aContentLine.equals(packageName)) {
                     duplicated = true;
@@ -420,7 +411,7 @@ public class FunctionsClass {
                 }
             }
             if (duplicated == false) {
-                functionsClassIO.saveFileAppendLine(fileName, packageName);
+                fileIO.saveFileAppendLine(fileName, packageName);
             }
         }
 
@@ -1814,7 +1805,7 @@ public class FunctionsClass {
                     }
                     switch (displaySection(leftPositionX, topPositionY)) {
                         case DisplaySection.TopLeft: {
-                            FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.TopLeft");
+                            Debug.Companion.PrintDebug("***** DisplaySection.TopLeft");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX,
@@ -1825,7 +1816,7 @@ public class FunctionsClass {
                             break;
                         }
                         case DisplaySection.TopRight: {
-                            FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.TopRight");
+                            Debug.Companion.PrintDebug("***** DisplaySection.TopRight");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX - (displayX() / 2),
@@ -1836,7 +1827,7 @@ public class FunctionsClass {
                             break;
                         }
                         case DisplaySection.BottomRight: {
-                            FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.BottomRight");
+                            Debug.Companion.PrintDebug("***** DisplaySection.BottomRight");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX - (displayX() / 2),
@@ -1847,7 +1838,7 @@ public class FunctionsClass {
                             break;
                         }
                         case DisplaySection.BottomLeft: {
-                            FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.BottomLeft");
+                            Debug.Companion.PrintDebug("***** DisplaySection.BottomLeft");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             leftPositionX,
@@ -1858,7 +1849,7 @@ public class FunctionsClass {
                             break;
                         }
                         default: {
-                            FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.Not.Supported");
+                            Debug.Companion.PrintDebug("***** DisplaySection.Not.Supported");
                             activityOptions.setLaunchBounds(
                                     new Rect(
                                             displayX() / 4,
@@ -1897,7 +1888,7 @@ public class FunctionsClass {
             }
             switch (displaySection(leftPositionX, topPositionY)) {
                 case DisplaySection.TopLeft: {
-                    FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.TopLeft");
+                    Debug.Companion.PrintDebug("***** DisplaySection.TopLeft");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX,
@@ -1908,7 +1899,7 @@ public class FunctionsClass {
                     break;
                 }
                 case DisplaySection.TopRight: {
-                    FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.TopRight");
+                    Debug.Companion.PrintDebug("***** DisplaySection.TopRight");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX - (displayX() / 2),
@@ -1919,7 +1910,7 @@ public class FunctionsClass {
                     break;
                 }
                 case DisplaySection.BottomRight: {
-                    FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.BottomRight");
+                    Debug.Companion.PrintDebug("***** DisplaySection.BottomRight");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX - (displayX() / 2),
@@ -1930,7 +1921,7 @@ public class FunctionsClass {
                     break;
                 }
                 case DisplaySection.BottomLeft: {
-                    FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.BottomLeft");
+                    Debug.Companion.PrintDebug("***** DisplaySection.BottomLeft");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     leftPositionX,
@@ -1941,7 +1932,7 @@ public class FunctionsClass {
                     break;
                 }
                 default: {
-                    FunctionsClassDebug.Companion.PrintDebug("***** DisplaySection.Not.Supported");
+                    Debug.Companion.PrintDebug("***** DisplaySection.Not.Supported");
                     activityOptions.setLaunchBounds(
                             new Rect(
                                     displayX() / 4,
@@ -2034,16 +2025,16 @@ public class FunctionsClass {
         //Move It To FunctionsClassIO
 
 
-        FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
+        FileIO fileIO = new FileIO(context);
 
-        return functionsClassIO.readFileLinesAsArray(fileName);
+        return fileIO.readFileLinesAsArray(fileName);
     }
 
     @Deprecated
     public String readFile(String fileName) {
-        FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
+        FileIO fileIO = new FileIO(context);
 
-        return functionsClassIO.readFile(fileName);
+        return fileIO.readFile(fileName);
     }
 
     /*Preferences Functions*/
@@ -2744,7 +2735,7 @@ public class FunctionsClass {
                     PixelFormat.TRANSLUCENT);
         }
 
-        FunctionsClassDebug.Companion.PrintDebug(packageName);
+        Debug.Companion.PrintDebug(packageName);
 
         SharedPreferences sharedPrefPosition = context.getSharedPreferences(packageName, Context.MODE_PRIVATE);
 
@@ -2779,7 +2770,7 @@ public class FunctionsClass {
                     PixelFormat.TRANSLUCENT);
         }
 
-        FunctionsClassDebug.Companion.PrintDebug(packageName);
+        Debug.Companion.PrintDebug(packageName);
 
         SharedPreferences sharedPrefPosition = context.getSharedPreferences(packageName, Context.MODE_PRIVATE);
 
@@ -2822,7 +2813,7 @@ public class FunctionsClass {
         return layoutParams;
     }
 
-    public void popupOptionShortcuts(FunctionsClassRunServices functionsClassRunServices, final Context context, View anchorView, final String PackageName, String ClassName) {
+    public void popupOptionShortcuts(FloatingServices floatingServices, final Context context, View anchorView, final String PackageName, String ClassName) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -2891,7 +2882,7 @@ public class FunctionsClass {
                     PublicVariable.floatingSizeNumber = 26;
                     PublicVariable.floatingViewsHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber, context.getResources().getDisplayMetrics());
 
-                    functionsClassRunServices.runUnlimitedShortcutsService(PackageName, ClassName);
+                    floatingServices.runUnlimitedShortcutsService(PackageName, ClassName);
 
                     revertFloatingSize();
 
@@ -2899,7 +2890,7 @@ public class FunctionsClass {
                     PublicVariable.floatingSizeNumber = 39;
                     PublicVariable.floatingViewsHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber, context.getResources().getDisplayMetrics());
 
-                    functionsClassRunServices.runUnlimitedShortcutsService(PackageName, ClassName);
+                    floatingServices.runUnlimitedShortcutsService(PackageName, ClassName);
 
                     revertFloatingSize();
 
@@ -2907,7 +2898,7 @@ public class FunctionsClass {
                     PublicVariable.floatingSizeNumber = 52;
                     PublicVariable.floatingViewsHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber, context.getResources().getDisplayMetrics());
 
-                    functionsClassRunServices.runUnlimitedShortcutsService(PackageName, ClassName);
+                    floatingServices.runUnlimitedShortcutsService(PackageName, ClassName);
 
                     revertFloatingSize();
 
@@ -2966,7 +2957,7 @@ public class FunctionsClass {
 
     public void popupOptionFolders(FoldersConfigurations foldersConfigurations, final Context context, View anchorView, final String folderName, final int indicatorPosition) {
 
-        FunctionsClassIO functionsClassIO = new FunctionsClassIO(context);
+        FileIO fileIO = new FileIO(context);
 
         PopupMenu popupMenu = new PopupMenu(context, anchorView, Gravity.CENTER);
         if (PublicVariable.themeLightDark == true) {
@@ -3058,10 +3049,10 @@ public class FunctionsClass {
                     }, 100);
                 } else if (item.getItemId() == 3) {
                     if (!loadRecoveryIndicatorCategory(folderName)) {
-                        functionsClassIO.saveFileAppendLine(".uCategory", folderName);
+                        fileIO.saveFileAppendLine(".uCategory", folderName);
                     } else {
 
-                        functionsClassIO.removeLine(".uCategory", folderName);
+                        fileIO.removeLine(".uCategory", folderName);
 
                     }
 
@@ -3074,8 +3065,8 @@ public class FunctionsClass {
                             context.deleteFile(packageName + folderName);
                         }
 
-                        functionsClassIO.removeLine(".categoryInfo", folderName);
-                        functionsClassIO.removeLine(".uCategory", folderName);
+                        fileIO.removeLine(".categoryInfo", folderName);
+                        fileIO.removeLine(".uCategory", folderName);
 
                         context.deleteFile(folderName);
 
@@ -4089,12 +4080,12 @@ public class FunctionsClass {
             int initMix = mixColors(vibrantColor, darkMutedColor, 0.50f);
             int finalMix = mixColors(dominantColor, initMix, 0.50f);
 
-            FunctionsClassDebug.Companion.PrintDebug("*** Vibrant ::: " + vibrantColor + " >>> " + ColorUtils.calculateLuminance(vibrantColor));
-            FunctionsClassDebug.Companion.PrintDebug("*** Dark ::: " + darkMutedColor + " >>> " + ColorUtils.calculateLuminance(darkMutedColor));
-            FunctionsClassDebug.Companion.PrintDebug("*** Dominant ::: " + dominantColor + " >>> " + ColorUtils.calculateLuminance(dominantColor));
+            Debug.Companion.PrintDebug("*** Vibrant ::: " + vibrantColor + " >>> " + ColorUtils.calculateLuminance(vibrantColor));
+            Debug.Companion.PrintDebug("*** Dark ::: " + darkMutedColor + " >>> " + ColorUtils.calculateLuminance(darkMutedColor));
+            Debug.Companion.PrintDebug("*** Dominant ::: " + dominantColor + " >>> " + ColorUtils.calculateLuminance(dominantColor));
 
-            FunctionsClassDebug.Companion.PrintDebug("*** initMix ::: " + initMix + " >>> " + ColorUtils.calculateLuminance(initMix));
-            FunctionsClassDebug.Companion.PrintDebug("*** finalMix ::: " + finalMix + " >>> " + ColorUtils.calculateLuminance(finalMix));
+            Debug.Companion.PrintDebug("*** initMix ::: " + initMix + " >>> " + ColorUtils.calculateLuminance(initMix));
+            Debug.Companion.PrintDebug("*** finalMix ::: " + finalMix + " >>> " + ColorUtils.calculateLuminance(finalMix));
 
             double calculateLuminance = ColorUtils.calculateLuminance(dominantColor);
             if (calculateLuminance > 0.50) {//light

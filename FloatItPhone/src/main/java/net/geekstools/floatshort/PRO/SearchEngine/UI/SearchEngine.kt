@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 6/6/20 8:41 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -57,9 +57,9 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinP
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
+import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
@@ -70,8 +70,8 @@ import net.geekstools.floatshort.PRO.databinding.SearchEngineViewBinding
 class SearchEngine(private val activity: AppCompatActivity, private val context: Context,
                    private val searchEngineViewBinding: SearchEngineViewBinding,
                    private val functionsClass: FunctionsClass,
-                   private val functionsClassIO: FunctionsClassIO,
-                   private val functionsClassRunServices: FunctionsClassRunServices,
+                   private val fileIO: FileIO,
+                   private val floatingServices: FloatingServices,
                    private val customIcons: LoadCustomIcons?,
                    private val firebaseAuth: FirebaseAuth) {
 
@@ -154,7 +154,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                 categoryInformationFile.readLines().forEach {
 
                     searchAdapterItems.add(
-                            AdapterItemsSearchEngine(it, functionsClassIO.readFileLinesAsArray(it),
+                            AdapterItemsSearchEngine(it, fileIO.readFileLinesAsArray(it),
                                     SearchResultType.SearchFolders)
                     )
                 }
@@ -393,10 +393,10 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                     SearchEngine.allSearchResults.forEach { searchResultItem ->
                         when (searchResultItem.searchResultType) {
                             SearchResultType.SearchShortcuts -> {
-                                functionsClassRunServices.runUnlimitedShortcutsService(searchResultItem.PackageName!!, searchResultItem.ClassName!!)
+                                floatingServices.runUnlimitedShortcutsService(searchResultItem.PackageName!!, searchResultItem.ClassName!!)
                             }
                             SearchResultType.SearchFolders -> {
-                                searchResultItem.folderName?.let { it -> functionsClassRunServices.runUnlimitedFoldersService(it) }
+                                searchResultItem.folderName?.let { it -> floatingServices.runUnlimitedFoldersService(it) }
                             }
                             SearchResultType.SearchWidgets -> {
                                 functionsClass
@@ -427,10 +427,10 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                     if (SearchEngine.allSearchResults.size == 1 && searchEngineViewBinding.searchView.text.toString().isNotEmpty() && searchEngineViewBinding.searchView.text.toString().length >= 2) {
                         when (SearchEngine.allSearchResults[0].searchResultType) {
                             SearchResultType.SearchShortcuts -> {
-                                functionsClassRunServices.runUnlimitedShortcutsService(SearchEngine.allSearchResults[0].PackageName!!, SearchEngine.allSearchResults[0].ClassName!!)
+                                floatingServices.runUnlimitedShortcutsService(SearchEngine.allSearchResults[0].PackageName!!, SearchEngine.allSearchResults[0].ClassName!!)
                             }
                             SearchResultType.SearchFolders -> {
-                                SearchEngine.allSearchResults[0].folderName?.let { functionsClassRunServices.runUnlimitedFoldersService(it) }
+                                SearchEngine.allSearchResults[0].folderName?.let { floatingServices.runUnlimitedFoldersService(it) }
                             }
                             SearchResultType.SearchWidgets -> {
                                 functionsClass

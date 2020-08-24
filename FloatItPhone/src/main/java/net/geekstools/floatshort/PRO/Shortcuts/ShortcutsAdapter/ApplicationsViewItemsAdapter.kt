@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:11 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,9 +25,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
+import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.imageview.customshapes.ShapesImage
 import java.util.*
@@ -36,8 +36,8 @@ class ApplicationsViewItemsAdapter(private val context: Context,
                                    private val adapterItemsApplications: ArrayList<AdapterItemsApplications>) : RecyclerView.Adapter<ApplicationsViewItemsAdapter.ViewHolder>() {
 
     private val functionsClass: FunctionsClass = FunctionsClass(context)
-    private val functionsClassIO: FunctionsClassIO = FunctionsClassIO(context)
-    private val functionsClassRunServices: FunctionsClassRunServices = FunctionsClassRunServices(context)
+    private val fileIO: FileIO = FileIO(context)
+    private val floatingServices: FloatingServices = FloatingServices(context)
 
     private var layoutInflater = 0
     private var idRippleShape = 0
@@ -107,7 +107,7 @@ class ApplicationsViewItemsAdapter(private val context: Context,
             val packageName = adapterItemsApplications[position].PackageName
             val className = adapterItemsApplications[position].ClassName
 
-            functionsClassRunServices
+            floatingServices
                     .runUnlimitedShortcutsService(packageName, className)
 
             Handler().postDelayed({
@@ -121,7 +121,7 @@ class ApplicationsViewItemsAdapter(private val context: Context,
             val packageName = adapterItemsApplications[position].PackageName
             val className = adapterItemsApplications[position].ClassName
 
-            functionsClass.popupOptionShortcuts(functionsClassRunServices,
+            functionsClass.popupOptionShortcuts(floatingServices,
                     context,
                     view,
                     packageName, className)
@@ -130,7 +130,7 @@ class ApplicationsViewItemsAdapter(private val context: Context,
         }
 
         viewHolderBinder.recoveryIndicator.setOnClickListener {
-            functionsClassIO.removeLine(".uFile", adapterItemsApplications[position].PackageName)
+            fileIO.removeLine(".uFile", adapterItemsApplications[position].PackageName)
 
             viewHolderBinder.recoveryIndicator.visibility = View.INVISIBLE
 

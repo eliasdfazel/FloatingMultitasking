@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 4:13 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -31,8 +31,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataModel
@@ -119,7 +119,7 @@ class WidgetsReallocationProcess : Activity() {
 
             when (requestCode) {
                 WIDGETS_REALLOCATION_REQUEST -> {
-                    FunctionsClassDebug.PrintDebug("*** WIDGETS_REALLOCATION_REQUEST | ${REALLOCATION_COUNTER} ***")
+                    Debug.PrintDebug("*** WIDGETS_REALLOCATION_REQUEST | ${REALLOCATION_COUNTER} ***")
 
                     if (REALLOCATION_COUNTER < widgetDataModelsReallocation.size) {
 
@@ -223,7 +223,7 @@ class WidgetsReallocationProcess : Activity() {
             })
 
             val provider = ComponentName.createRelative(widgetDataModel.PackageName, widgetDataModel.ClassNameProvider)
-            FunctionsClassDebug.PrintDebug("*** ${widgetId}. Provider Widget = ${provider} ***")
+            Debug.PrintDebug("*** ${widgetId}. Provider Widget = ${provider} ***")
 
             val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND)
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
@@ -232,7 +232,7 @@ class WidgetsReallocationProcess : Activity() {
 
             if (widgetDataModel.ConfigClassName != null) {
                 val configure = ComponentName.createRelative(widgetDataModel.PackageName, widgetDataModel.ConfigClassName!!)
-                FunctionsClassDebug.PrintDebug("*** Configure Widget = $configure")
+                Debug.PrintDebug("*** Configure Widget = $configure")
 
                 val intentWidgetConfiguration = Intent()
                 intentWidgetConfiguration.action = AppWidgetManager.ACTION_APPWIDGET_CONFIGURE

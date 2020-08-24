@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:04 AM
+ * Last modified 8/24/20 6:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -37,11 +37,11 @@ class Configurations : AppCompatActivity() {
     val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
-    val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(applicationContext)
+    val fileIO: FileIO by lazy {
+        FileIO(applicationContext)
     }
-    private val functionsClassSystemInformation: FunctionsClassSystemInformation by lazy {
-        FunctionsClassSystemInformation(applicationContext)
+    private val systemInformation: SystemInformation by lazy {
+        SystemInformation(applicationContext)
     }
 
     private val firebaseAnalytics: FirebaseAnalytics by lazy {
@@ -56,7 +56,7 @@ class Configurations : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(applicationContext)
 
-        functionsClassSystemInformation.checkDeviceInformation()
+        systemInformation.checkDeviceInformation()
 
         checkUserInformation()
         initializeParameterUI()
@@ -111,7 +111,7 @@ class Configurations : AppCompatActivity() {
 
                 val bundleFirebaseAnalytics = Bundle()
                 bundleFirebaseAnalytics.putString("COUNTRY", functionsClass.countryIso)
-                firebaseAnalytics.logEvent(FunctionsClassDebug.REMOTE_TASK_OK_GOOGLE, bundleFirebaseAnalytics)
+                firebaseAnalytics.logEvent(Debug.REMOTE_TASK_OK_GOOGLE, bundleFirebaseAnalytics)
 
                 when (sharedPreferences.getString("boot", "1")) {
                     BootRecovery.Mode.NONE -> {
@@ -162,7 +162,7 @@ class Configurations : AppCompatActivity() {
             triggerOpenProcess()
 
             if (getFileStreamPath("Frequently").exists()) {
-                val freqDelete = functionsClassIO.readFileLinesAsArray("Frequently")
+                val freqDelete = fileIO.readFileLinesAsArray("Frequently")
 
                 freqDelete?.let {
                     for (deleteFreq in freqDelete) {
@@ -170,7 +170,7 @@ class Configurations : AppCompatActivity() {
                     }
                 }
 
-                functionsClassIO.removeLine(".categoryInfo", "Frequently")
+                fileIO.removeLine(".categoryInfo", "Frequently")
                 deleteFile("Frequently")
             }
         }
@@ -185,7 +185,6 @@ class Configurations : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        functionsClass.endIndexAppInfo()
     }
 
     @Throws(Exception::class)

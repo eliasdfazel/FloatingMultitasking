@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:13 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -31,9 +31,9 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash
 import net.geekstools.imageview.customshapes.ShapesImage
@@ -48,7 +48,7 @@ class PopupShortcutsNotification(private val context: Context,
                                  private val xPosition: Int, private val yPosition: Int, private val HW: Int) : BaseAdapter() {
 
     private val functionsClass: FunctionsClass = FunctionsClass(context)
-    private val functionsClassIO: FunctionsClassIO = FunctionsClassIO(context)
+    private val fileIO: FileIO = FileIO(context)
     private val securityFunctions: SecurityFunctions = SecurityFunctions(context)
 
     private var layoutInflator = 0
@@ -236,8 +236,8 @@ class PopupShortcutsNotification(private val context: Context,
                                     context.deleteFile(notificationTime + "_" + "Notification" + "Text")
                                     context.deleteFile(notificationTime + "_" + "Notification" + "Icon")
 
-                                    functionsClassIO.removeLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
-                                    if (functionsClassIO.fileLinesCounter(notificationPackage + "_" + "Notification" + "Package") == 0) {
+                                    fileIO.removeLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
+                                    if (fileIO.fileLinesCounter(notificationPackage + "_" + "Notification" + "Package") == 0) {
                                         context.deleteFile(notificationPackage + "_" + "Notification" + "Package")
 
                                         context.sendBroadcast(Intent("Notification_Dot_No").putExtra("NotificationPackage", notificationPackage))
@@ -273,8 +273,8 @@ class PopupShortcutsNotification(private val context: Context,
                                     context.deleteFile(notificationTime + "_" + "Notification" + "Text")
                                     context.deleteFile(notificationTime + "_" + "Notification" + "Icon")
 
-                                    functionsClassIO.removeLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
-                                    if (functionsClassIO.fileLinesCounter(notificationPackage + "_" + "Notification" + "Package") == 0) {
+                                    fileIO.removeLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
+                                    if (fileIO.fileLinesCounter(notificationPackage + "_" + "Notification" + "Package") == 0) {
                                         context.deleteFile(notificationPackage + "_" + "Notification" + "Package")
 
                                         context.sendBroadcast(Intent("Notification_Dot_No").putExtra("NotificationPackage", notificationPackage))

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:24 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,8 +20,8 @@ import com.google.android.vending.licensing.LicenseChecker
 import com.google.android.vending.licensing.LicenseCheckerCallback
 import com.google.android.vending.licensing.ServerManagedPolicy
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 
 class LicenseValidator : Service() {
 
@@ -40,8 +40,8 @@ class LicenseValidator : Service() {
         FunctionsClass(applicationContext)
     }
 
-    private val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(applicationContext)
+    private val fileIO: FileIO by lazy {
+        FileIO(applicationContext)
     }
 
     lateinit var licenseChecker: LicenseChecker
@@ -71,7 +71,7 @@ class LicenseValidator : Service() {
 
             override fun allow(reason: Int) {
 
-                functionsClassIO.saveFileAppendLine(".License", reason.toString())
+                fileIO.saveFileAppendLine(".License", reason.toString())
 
                 this@LicenseValidator.stopSelf()
             }

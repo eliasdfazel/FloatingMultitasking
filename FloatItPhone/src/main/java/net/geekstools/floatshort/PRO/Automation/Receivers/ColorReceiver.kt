@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 4:03 PM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,8 +15,8 @@ import android.content.Intent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 
 class ColorReceiver : BroadcastReceiver() {
 
@@ -24,7 +24,7 @@ class ColorReceiver : BroadcastReceiver() {
 
         extractColor(context)
 
-        FunctionsClassDebug.PrintDebug("Wallpaper Changed")
+        Debug.PrintDebug("Wallpaper Changed")
     }
 
     private fun extractColor(context: Context) = CoroutineScope(Dispatchers.IO).launch {

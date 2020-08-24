@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/22/20 6:32 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,9 +34,9 @@ import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Utils.FloatingFoldersUtils
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Utils.FloatingFoldersUtils.FloatingFoldersCounterType.floatingFoldersCounterType
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
@@ -48,8 +48,8 @@ class FloatingFolders : Service() {
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
-    private val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(applicationContext)
+    private val fileIO: FileIO by lazy {
+        FileIO(applicationContext)
     }
     private val floatingFoldersUtils: FloatingFoldersUtils by lazy {
         FloatingFoldersUtils()
@@ -155,7 +155,7 @@ class FloatingFolders : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
         super.onStartCommand(intent, flags, serviceStartId)
-        FunctionsClassDebug.PrintDebug(this@FloatingFolders.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
+        Debug.PrintDebug(this@FloatingFolders.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
         intent?.run {
 
@@ -259,7 +259,7 @@ class FloatingFolders : Service() {
 
             mapFolderNameStartId[folderName[startId]] = startId
 
-            val appsInFolder = functionsClassIO.readFileLinesAsArray(folderName[startId])
+            val appsInFolder = fileIO.readFileLinesAsArray(folderName[startId])
             if (appsInFolder != null) {
 
                 if (appsInFolder.isNotEmpty()) {
@@ -650,7 +650,7 @@ class FloatingFolders : Service() {
                     functionsClass.PopupAppListFolder(
                             view,
                             folderName[startId],
-                            functionsClassIO.readFileLinesAsArray(folderName[startId]),
+                            fileIO.readFileLinesAsArray(folderName[startId]),
                             this@FloatingFolders.javaClass.simpleName,
                             startId,
                             XY.xMove,
@@ -738,10 +738,10 @@ class FloatingFolders : Service() {
 
                             } else {
 
-                                functionsClassIO.readFileLinesAsArray(PublicVariable.splitPairPackage)?.get(0)?.let {
+                                fileIO.readFileLinesAsArray(PublicVariable.splitPairPackage)?.get(0)?.let {
                                     packageNameSplitOne = it
                                 }
-                                functionsClassIO.readFileLinesAsArray(PublicVariable.splitPairPackage)?.get(1)?.let {
+                                fileIO.readFileLinesAsArray(PublicVariable.splitPairPackage)?.get(1)?.let {
                                     packageNameSplitTwo = it
                                 }
 

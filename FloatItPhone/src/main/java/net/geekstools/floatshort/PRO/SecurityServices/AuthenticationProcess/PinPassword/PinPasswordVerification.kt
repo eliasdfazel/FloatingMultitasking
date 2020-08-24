@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 7:03 PM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,8 +20,8 @@ import android.view.WindowManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.databinding.AuthVerificationWaitingBinding
 
 class PinPasswordVerification : Activity() {
@@ -71,7 +71,7 @@ class PinPasswordVerification : Activity() {
                         val intent = intent
                         val emailLink = intent.data!!.toString()
 
-                        FunctionsClassDebug.PrintDebug("*** Email Verified ***")
+                        Debug.PrintDebug("*** Email Verified ***")
 
                         functionsClass.savePreference(".Password", "Pin", "0")
                         Handler().postDelayed({

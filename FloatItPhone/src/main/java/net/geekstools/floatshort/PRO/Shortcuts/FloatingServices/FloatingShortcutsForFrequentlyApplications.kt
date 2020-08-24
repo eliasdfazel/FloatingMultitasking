@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/22/20 6:32 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -41,8 +41,8 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.Utils.OpenActions
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
@@ -185,7 +185,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
         super.onStartCommand(intent, flags, serviceStartId)
-        FunctionsClassDebug.PrintDebug(this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
+        Debug.PrintDebug(this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
         intent?.run {
 
@@ -762,7 +762,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
                     override fun onReceive(context: Context, intent: Intent) {
                         if (intent.action == "Split_Apps_Single_$floatingShortcutClassInCommand" && PublicVariable.splitScreen) {
-                            FunctionsClassDebug.PrintDebug("Split Apps Single")
+                            Debug.PrintDebug("Split Apps Single")
 
                             PublicVariable.splitScreen = false
                             Handler().postDelayed({
@@ -787,7 +787,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                 }
                             }, 200)
                         } else if (intent.action == "Pin_App_$floatingShortcutClassInCommand") {
-                            FunctionsClassDebug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]))
+                            Debug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]))
 
                             movePermit[intent.getIntExtra("startId", 1)] = false
                             var pinDrawable: Drawable = functionsClass.appIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
@@ -825,7 +825,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
                             controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable)
                         } else if (intent.action == "Unpin_App_$floatingShortcutClassInCommand") {
-                            FunctionsClassDebug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]))
+                            Debug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]))
 
                             movePermit[intent.getIntExtra("startId", 1)] = true
                             controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(null)

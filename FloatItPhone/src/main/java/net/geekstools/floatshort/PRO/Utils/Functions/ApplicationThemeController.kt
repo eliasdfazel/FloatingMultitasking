@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 6:34 PM
+ * Last modified 8/24/20 6:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -30,7 +30,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.R
 
-class FunctionsClassTheme (private val context: Context) {
+class ApplicationThemeController (private val context: Context) {
 
     private val functionsClass: FunctionsClass = FunctionsClass(context)
 

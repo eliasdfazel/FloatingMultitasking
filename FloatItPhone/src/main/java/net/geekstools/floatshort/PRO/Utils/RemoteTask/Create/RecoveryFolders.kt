@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/29/20 7:39 PM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,9 +24,9 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Exte
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint.AuthenticationFingerprint
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
+import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 
@@ -35,11 +35,11 @@ class RecoveryFolders : Service() {
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
-    private val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(applicationContext)
+    private val fileIO: FileIO by lazy {
+        FileIO(applicationContext)
     }
-    private val functionsClassRunServices: FunctionsClassRunServices by lazy {
-        FunctionsClassRunServices(applicationContext)
+    private val floatingServices: FloatingServices by lazy {
+        FloatingServices(applicationContext)
     }
 
     var permitOpenFloatingFolder: Boolean = true
@@ -67,7 +67,7 @@ class RecoveryFolders : Service() {
 
             intent?.let {
 
-                val foldersDataLines = functionsClassIO.readFileLinesAsArray(".uCategory")
+                val foldersDataLines = fileIO.readFileLinesAsArray(".uCategory")
 
                 if (!foldersDataLines.isNullOrEmpty()) {
 
@@ -170,7 +170,7 @@ class RecoveryFolders : Service() {
             }
 
             if (permitOpenFloatingFolder) {
-                functionsClassRunServices.runUnlimitedFoldersService(aFolderLine)
+                floatingServices.runUnlimitedFoldersService(aFolderLine)
             }
         }
 

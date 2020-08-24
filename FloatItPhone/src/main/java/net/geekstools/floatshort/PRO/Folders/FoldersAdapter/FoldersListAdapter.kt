@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:05 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,9 +28,9 @@ import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
+import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import java.util.*
@@ -40,8 +40,8 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
                          private val adapterItems: ArrayList<AdapterItems>) : RecyclerView.Adapter<FoldersListAdapter.ViewHolder>() {
 
     var functionsClass: FunctionsClass = FunctionsClass(context)
-    var functionsClassIO: FunctionsClassIO = FunctionsClassIO(context)
-    var functionsClassRunServices: FunctionsClassRunServices = FunctionsClassRunServices(context)
+    var fileIO: FileIO = FileIO(context)
+    var floatingServices: FloatingServices = FloatingServices(context)
 
     var endEdited = ""
 
@@ -164,7 +164,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
 
         viewHolderBinder.selectedApp.setOnClickListener {
             if (adapterItems[position].category != context.packageName) {
-                functionsClassRunServices
+                floatingServices
                         .runUnlimitedFoldersService(adapterItems[position].category)
             }
         }
@@ -182,7 +182,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
 
         viewHolderBinder.runCategory.setOnClickListener {
             if (adapterItems[position].category != context.packageName) {
-                functionsClassRunServices
+                floatingServices
                         .runUnlimitedFoldersService(adapterItems[position].category)
             }
         }
@@ -230,22 +230,22 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
                     PublicVariable.folderName = PublicVariable.folderName + "_" + System.currentTimeMillis()
                 }
 
-                functionsClassIO.readFileLinesAsArray(adapterItems[position].category)?.let {
+                fileIO.readFileLinesAsArray(adapterItems[position].category)?.let {
 
                     for (appContent in it) {
                         context.deleteFile(appContent + adapterItems[position].category)
-                        functionsClassIO.saveFileAppendLine(PublicVariable.folderName, appContent)
-                        functionsClassIO.saveFile(appContent + PublicVariable.folderName, appContent)
+                        fileIO.saveFileAppendLine(PublicVariable.folderName, appContent)
+                        fileIO.saveFile(appContent + PublicVariable.folderName, appContent)
                     }
                 }
 
                 if (functionsClass.loadRecoveryIndicatorCategory(adapterItems[position].category)) {
-                    functionsClassIO.removeLine(".uCategory", adapterItems[position].category)
-                    functionsClassIO.saveFileAppendLine(".uCategory", PublicVariable.folderName)
+                    fileIO.removeLine(".uCategory", adapterItems[position].category)
+                    fileIO.saveFileAppendLine(".uCategory", PublicVariable.folderName)
                 }
 
-                functionsClassIO.removeLine(".categoryInfo", adapterItems[position].category)
-                functionsClassIO.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
+                fileIO.removeLine(".categoryInfo", adapterItems[position].category)
+                fileIO.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
                 context.deleteFile(adapterItems[position].category)
                 context.startActivity(Intent(context, AppSelectionList::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
@@ -256,8 +256,8 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
                 PublicVariable.folderName = PublicVariable.folderName + "_" + System.currentTimeMillis()
             }
 
-            functionsClassIO.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
-            functionsClassIO.saveFileEmpty(PublicVariable.folderName)
+            fileIO.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
+            fileIO.saveFileEmpty(PublicVariable.folderName)
             context.startActivity(Intent(context, AppSelectionList::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
     }

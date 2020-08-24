@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:50 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,8 +13,8 @@ package net.geekstools.floatshort.PRO.Utils.RemoteTask.Create
 import android.os.Bundle
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
+import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 
@@ -27,7 +27,7 @@ class DeepLinkedShortcuts : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val functionsClass: FunctionsClass = FunctionsClass(applicationContext)
-        val functionsClassRunServices: FunctionsClassRunServices = FunctionsClassRunServices(applicationContext)
+        val floatingServices: FloatingServices = FloatingServices(applicationContext)
 
         PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
@@ -43,7 +43,7 @@ class DeepLinkedShortcuts : AppCompatActivity() {
                 loadCustomIcons.load()
             }
 
-            functionsClassRunServices.runUnlimitedShortcutsServicePackage(packageName)
+            floatingServices.runUnlimitedShortcutsServicePackage(packageName)
         }
 
         finish()

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:09 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -23,14 +23,14 @@ import net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import java.util.*
 
 class SavedAppsListPopupAdapter(private val context: Context,
                                 private val functionsClass: FunctionsClass,
-                                private val functionsClassIO: FunctionsClassIO,
+                                private val fileIO: FileIO,
                                 private val selectedAppsListItem: ArrayList<AdapterItems>, private val splitNumber: Int,
                                 private val appsConfirmButton: AppsConfirmButton,
                                 private val confirmButtonProcessInterface: ConfirmButtonProcessInterface) : BaseAdapter() {
@@ -115,7 +115,7 @@ class SavedAppsListPopupAdapter(private val context: Context,
             context.deleteFile(selectedAppsListItem[position].packageName
                     + PublicVariable.folderName)
 
-            functionsClassIO.removeLine(PublicVariable.folderName,
+            fileIO.removeLine(PublicVariable.folderName,
                     selectedAppsListItem[position].packageName)
 
             confirmButtonProcessInterface.shortcutDeleted()
@@ -127,12 +127,12 @@ class SavedAppsListPopupAdapter(private val context: Context,
 
             if (splitNumber == 1) {
 
-                functionsClassIO
+                fileIO
                         .saveFile(PublicVariable.folderName.toString()
                                 + ".SplitOne", selectedAppsListItem[position].packageName)
             } else if (splitNumber == 2) {
 
-                functionsClassIO
+                fileIO
                         .saveFile(PublicVariable.folderName.toString()
                                 + ".SplitTwo", selectedAppsListItem[position].packageName)
             }

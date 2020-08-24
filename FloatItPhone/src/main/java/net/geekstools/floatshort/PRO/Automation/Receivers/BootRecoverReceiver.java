@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 5:52 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,9 +20,9 @@ import android.os.Handler;
 import androidx.preference.PreferenceManager;
 
 import net.geekstools.floatshort.PRO.BindServices;
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug;
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO;
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
@@ -30,19 +30,19 @@ import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 public class BootRecoverReceiver extends BroadcastReceiver {
 
     FunctionsClass functionsClass;
-    FunctionsClassIO functionsClassIO;
+    FileIO fileIO;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
 
         functionsClass = new FunctionsClass(context);
-        functionsClassIO = new FunctionsClassIO(context);
+        fileIO = new FileIO(context);
 
         functionsClass.savePreference("WidgetsInformation", "Reallocated", false);
 
         try {
             if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-                if (functionsClass.ControlPanel() || functionsClassIO.automationFeatureEnable()) {
+                if (functionsClass.ControlPanel() || fileIO.automationFeatureEnable()) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         context.startForegroundService(new Intent(context, BindServices.class));
                     } else {
@@ -53,7 +53,7 @@ public class BootRecoverReceiver extends BroadcastReceiver {
                 if (functionsClass.customIconsEnable()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
                     loadCustomIcons.load();
-                    FunctionsClassDebug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
+                    Debug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }
 
                 SharedPreferences sharedPrefBoot = PreferenceManager.getDefaultSharedPreferences(context);

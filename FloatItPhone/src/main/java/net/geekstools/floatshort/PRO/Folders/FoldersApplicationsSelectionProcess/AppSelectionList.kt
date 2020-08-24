@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:45 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,9 +34,9 @@ import net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
+import net.geekstools.floatshort.PRO.Utils.Functions.ApplicationThemeController
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassTheme
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.databinding.AdvanceAppSelectionListBinding
@@ -49,12 +49,12 @@ class AppSelectionList : AppCompatActivity(),
         FunctionsClass(applicationContext)
     }
 
-    val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(applicationContext)
+    val fileIO: FileIO by lazy {
+        FileIO(applicationContext)
     }
 
-    private val functionsClassTheme: FunctionsClassTheme by lazy {
-        FunctionsClassTheme(applicationContext)
+    private val applicationThemeController: ApplicationThemeController by lazy {
+        ApplicationThemeController(applicationContext)
     }
 
     private val listPopupWindow: ListPopupWindow by lazy {
@@ -90,7 +90,7 @@ class AppSelectionList : AppCompatActivity(),
         functionsClass.initShapesImage(advanceAppSelectionListBinding.firstSplitIcon)
         functionsClass.initShapesImage(advanceAppSelectionListBinding.secondSplitIcon)
 
-        functionsClassTheme.setThemeColorFloating(this@AppSelectionList, advanceAppSelectionListBinding.root, functionsClass.appThemeTransparent())
+        applicationThemeController.setThemeColorFloating(this@AppSelectionList, advanceAppSelectionListBinding.root, functionsClass.appThemeTransparent())
 
         recyclerViewLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
         advanceAppSelectionListBinding.recyclerListView.layoutManager = recyclerViewLayoutManager
@@ -179,10 +179,10 @@ class AppSelectionList : AppCompatActivity(),
             }
 
             advanceAppSelectionListBinding.firstSplitIcon.setOnClickListener {
-                if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClassIO.fileLinesCounter(PublicVariable.folderName) > 0) {
+                if (getFileStreamPath(PublicVariable.folderName).exists() && fileIO.fileLinesCounter(PublicVariable.folderName) > 0) {
                     selectedAppsListItem.clear()
 
-                    functionsClassIO.readFileLinesAsArray(PublicVariable.folderName)?.let {
+                    fileIO.readFileLinesAsArray(PublicVariable.folderName)?.let {
 
                         for (aSavedLine in it) {
                             selectedAppsListItem.add(AdapterItems(
@@ -193,7 +193,7 @@ class AppSelectionList : AppCompatActivity(),
                     }
 
                     val savedAppsListPopupAdapter = appsConfirmButton?.let { it1 ->
-                        SavedAppsListPopupAdapter(applicationContext, functionsClass, functionsClassIO,
+                        SavedAppsListPopupAdapter(applicationContext, functionsClass, fileIO,
                                 selectedAppsListItem, 1,
                                 it1, this@AppSelectionList)
                     }
@@ -214,10 +214,10 @@ class AppSelectionList : AppCompatActivity(),
             }
 
             advanceAppSelectionListBinding.secondSplitIcon.setOnClickListener {
-                if (getFileStreamPath(PublicVariable.folderName).exists() && functionsClassIO.fileLinesCounter(PublicVariable.folderName) > 0) {
+                if (getFileStreamPath(PublicVariable.folderName).exists() && fileIO.fileLinesCounter(PublicVariable.folderName) > 0) {
                     selectedAppsListItem.clear()
 
-                    functionsClassIO.readFileLinesAsArray(PublicVariable.folderName)?.let {
+                    fileIO.readFileLinesAsArray(PublicVariable.folderName)?.let {
 
                         for (aSavedLine in it) {
                             selectedAppsListItem.add(AdapterItems(
@@ -228,7 +228,7 @@ class AppSelectionList : AppCompatActivity(),
                     }
 
                     val savedAppsListPopupAdapter = appsConfirmButton?.let { it1 ->
-                        SavedAppsListPopupAdapter(applicationContext, functionsClass, functionsClassIO,
+                        SavedAppsListPopupAdapter(applicationContext, functionsClass, fileIO,
                                 selectedAppsListItem, 2,
                                 it1, this@AppSelectionList)
                     }
@@ -265,17 +265,17 @@ class AppSelectionList : AppCompatActivity(),
     /*ConfirmButtonProcess*/
     override fun savedShortcutCounter() {
 
-        advanceAppSelectionListBinding.appSelectedCounterView.text = functionsClassIO.fileLinesCounter(PublicVariable.folderName).toString()
+        advanceAppSelectionListBinding.appSelectedCounterView.text = fileIO.fileLinesCounter(PublicVariable.folderName).toString()
     }
 
     override fun showSavedShortcutList() {
 
         if (getFileStreamPath(PublicVariable.folderName).exists()
-                && functionsClassIO.fileLinesCounter(PublicVariable.folderName) > 0) {
+                && fileIO.fileLinesCounter(PublicVariable.folderName) > 0) {
 
             selectedAppsListItem.clear()
 
-            functionsClassIO.readFileLinesAsArray(PublicVariable.folderName)?.let {
+            fileIO.readFileLinesAsArray(PublicVariable.folderName)?.let {
 
                 for (aSavedLine in it) {
                     selectedAppsListItem.add(AdapterItems(
@@ -286,7 +286,7 @@ class AppSelectionList : AppCompatActivity(),
             }
 
             val savedAppsListPopupAdapter = appsConfirmButton?.let {
-                SavedAppsListPopupAdapter(applicationContext, functionsClass, functionsClassIO,
+                SavedAppsListPopupAdapter(applicationContext, functionsClass, fileIO,
                         selectedAppsListItem, 1,
                         it,
                         this@AppSelectionList)

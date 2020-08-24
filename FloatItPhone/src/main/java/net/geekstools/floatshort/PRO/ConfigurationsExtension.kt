@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:04 AM
+ * Last modified 8/24/20 6:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -79,7 +79,7 @@ fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<S
     if (functionsClass.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
 
         if (getFileStreamPath("Frequently").exists()) {
-            functionsClassIO.removeLine(".categoryInfo", "Frequently")
+            fileIO.removeLine(".categoryInfo", "Frequently")
             deleteFile("Frequently")
         }
 
@@ -87,11 +87,11 @@ fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<S
         PublicVariable.freqLength = frequentAppsArray.size
 
         for (frequentApp in frequentAppsArray) {
-            functionsClassIO.saveFileAppendLine("Frequently", frequentApp)
-            functionsClassIO.saveFile(frequentApp + "Frequently", frequentApp)
+            fileIO.saveFileAppendLine("Frequently", frequentApp)
+            fileIO.saveFile(frequentApp + "Frequently", frequentApp)
         }
 
-        functionsClassIO.saveFileAppendLine(".categoryInfo", "Frequently")
+        fileIO.saveFileAppendLine(".categoryInfo", "Frequently")
 
         functionsClass.addAppShortcuts()
 
@@ -115,7 +115,7 @@ fun Configurations.indexFloatingShortcuts() = CoroutineScope(Dispatchers.IO).asy
 
     if (getFileStreamPath(".uFile").exists()) {
 
-        functionsClassIO.readFileLinesAsArray(".uFile")?.let {
+        fileIO.readFileLinesAsArray(".uFile")?.let {
 
             it.forEach { lineContent ->
 

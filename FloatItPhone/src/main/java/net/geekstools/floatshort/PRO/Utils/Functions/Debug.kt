@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 8/24/20 6:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,7 +14,7 @@ import android.app.Activity
 import android.content.Context
 import net.geekstools.floatshort.PRO.BuildConfig
 
-class FunctionsClassDebug {
+class Debug {
 
     lateinit var activity: Activity
     lateinit var context: Context

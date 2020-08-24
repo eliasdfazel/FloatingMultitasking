@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 6/11/20 8:18 AM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,8 +32,8 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.tasks.Task
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.InAppUpdateViewBinding
 import java.util.*
@@ -77,27 +77,27 @@ class InAppUpdateProcess : AppCompatActivity() {
         installStateUpdatedListener = InstallStateUpdatedListener {
             when (it.installStatus()) {
                 InstallStatus.REQUIRES_UI_INTENT -> {
-                    FunctionsClassDebug.PrintDebug("*** UPDATE Requires UI Intent ***")
+                    Debug.PrintDebug("*** UPDATE Requires UI Intent ***")
                 }
                 InstallStatus.DOWNLOADING -> {
-                    FunctionsClassDebug.PrintDebug("*** UPDATE Downloading ***")
+                    Debug.PrintDebug("*** UPDATE Downloading ***")
                 }
                 InstallStatus.DOWNLOADED -> {
-                    FunctionsClassDebug.PrintDebug("*** UPDATE Downloaded ***")
+                    Debug.PrintDebug("*** UPDATE Downloaded ***")
 
                     showCompleteConfirmation()
                 }
                 InstallStatus.INSTALLING -> {
-                    FunctionsClassDebug.PrintDebug("*** UPDATE Installing ***")
+                    Debug.PrintDebug("*** UPDATE Installing ***")
 
                 }
                 InstallStatus.INSTALLED -> {
-                    FunctionsClassDebug.PrintDebug("*** UPDATE Installed ***")
+                    Debug.PrintDebug("*** UPDATE Installed ***")
 
                     appUpdateManager.unregisterListener(installStateUpdatedListener)
                 }
                 InstallStatus.CANCELED -> {
-                    FunctionsClassDebug.PrintDebug("*** UPDATE Canceled ***")
+                    Debug.PrintDebug("*** UPDATE Canceled ***")
 
                     val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
                     functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
@@ -105,7 +105,7 @@ class InAppUpdateProcess : AppCompatActivity() {
                     this@InAppUpdateProcess.finish()
                 }
                 InstallStatus.FAILED -> {
-                    FunctionsClassDebug.PrintDebug("*** UPDATE Failed ***")
+                    Debug.PrintDebug("*** UPDATE Failed ***")
 
                     val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
                     functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
@@ -113,11 +113,11 @@ class InAppUpdateProcess : AppCompatActivity() {
                     this@InAppUpdateProcess.finish()
                 }
                 InstallStatus.PENDING -> {
-                    FunctionsClassDebug.PrintDebug("*** UPDATE Pending ***")
+                    Debug.PrintDebug("*** UPDATE Pending ***")
 
                 }
                 InstallStatus.UNKNOWN -> {
-                    FunctionsClassDebug.PrintDebug("*** UPDATE Unknown Stage ***")
+                    Debug.PrintDebug("*** UPDATE Unknown Stage ***")
 
                 }
             }
@@ -127,7 +127,7 @@ class InAppUpdateProcess : AppCompatActivity() {
 
         val appUpdateInfo: Task<AppUpdateInfo> = appUpdateManager.appUpdateInfo
         appUpdateInfo.addOnSuccessListener { updateInfo ->
-            FunctionsClassDebug.PrintDebug("*** Update Availability == ${updateInfo.updateAvailability()} ||| Available Version Code == ${updateInfo.availableVersionCode()} ***")
+            Debug.PrintDebug("*** Update Availability == ${updateInfo.updateAvailability()} ||| Available Version Code == ${updateInfo.availableVersionCode()} ***")
 
             if (updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     && updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
@@ -150,14 +150,14 @@ class InAppUpdateProcess : AppCompatActivity() {
             }
 
         }.addOnFailureListener {
-            FunctionsClassDebug.PrintDebug("*** Exception Error ${it} ***")
+            Debug.PrintDebug("*** Exception Error ${it} ***")
 
             val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
             functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
         }
 
         appUpdateManager.unregisterListener {
-            FunctionsClassDebug.PrintDebug("*** Unregister Listener ${it} ***")
+            Debug.PrintDebug("*** Unregister Listener ${it} ***")
 
             this@InAppUpdateProcess.finish()
         }
@@ -242,7 +242,7 @@ class InAppUpdateProcess : AppCompatActivity() {
         if (requestCode == IN_APP_UPDATE_REQUEST) {
             when (resultCode) {
                 RESULT_CANCELED -> {
-                    FunctionsClassDebug.PrintDebug("*** RESULT CANCELED ***")
+                    Debug.PrintDebug("*** RESULT CANCELED ***")
 
                     val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
                     functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
@@ -252,11 +252,11 @@ class InAppUpdateProcess : AppCompatActivity() {
 
                 }
                 RESULT_OK -> {
-                    FunctionsClassDebug.PrintDebug("*** RESULT OK ***")
+                    Debug.PrintDebug("*** RESULT OK ***")
 
                 }
                 ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
-                    FunctionsClassDebug.PrintDebug("*** RESULT IN APP UPDATE FAILED ***")
+                    Debug.PrintDebug("*** RESULT IN APP UPDATE FAILED ***")
 
                 }
             }
@@ -266,7 +266,7 @@ class InAppUpdateProcess : AppCompatActivity() {
     }
 
     private fun showCompleteConfirmation() {
-        FunctionsClassDebug.PrintDebug("*** Complete Confirmation ***")
+        Debug.PrintDebug("*** Complete Confirmation ***")
 
         val snackbar = Snackbar.make(findViewById<RelativeLayout>(R.id.fullEmptyView),
                 getString(R.string.inAppUpdateDescription),
@@ -276,10 +276,10 @@ class InAppUpdateProcess : AppCompatActivity() {
         snackbar.setActionTextColor(PublicVariable.primaryColor)
         snackbar.setAction(Html.fromHtml(getString(R.string.inAppUpdateAction))) { view ->
             appUpdateManager.completeUpdate().addOnSuccessListener {
-                FunctionsClassDebug.PrintDebug("*** Complete Update Success Listener ***")
+                Debug.PrintDebug("*** Complete Update Success Listener ***")
 
             }.addOnFailureListener {
-                FunctionsClassDebug.PrintDebug("*** Complete Update Failure Listener | ${it} ***")
+                Debug.PrintDebug("*** Complete Update Failure Listener | ${it} ***")
 
                 val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
                 functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)

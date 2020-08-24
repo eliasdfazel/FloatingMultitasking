@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/29/20 7:26 PM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -12,9 +12,9 @@ package net.geekstools.floatshort.PRO.Utils.RemoteTask.Create
 import android.os.Bundle
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
+import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassPreferences
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices
+import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 
@@ -27,8 +27,8 @@ class DeepLinkedFolders : AppCompatActivity() {
         super.onCreate(Saved)
 
         val functionsClass = FunctionsClass(applicationContext)
-        val functionsClassPreferences = FunctionsClassPreferences(applicationContext)
-        val functionsClassRunServices = FunctionsClassRunServices(applicationContext)
+        val functionsClassPreferences = PreferencesIO(applicationContext)
+        val functionsClassRunServices = FloatingServices(applicationContext)
 
         PublicVariable.floatingSizeNumber = functionsClassPreferences.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/29/20 7:37 PM
+ * Last modified 8/24/20 6:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,8 +34,8 @@ import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchListFilter;
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType;
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine;
+import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassRunServices;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -46,7 +46,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
     private Context context;
 
     private FunctionsClass functionsClass;
-    private FunctionsClassRunServices functionsClassRunServices;
+    private FloatingServices floatingServices;
 
     private int searchLayoutId;
 
@@ -61,7 +61,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
         SearchEngine.Companion.setAllSearchData(allSearchData);
 
         functionsClass = new FunctionsClass(context);
-        functionsClassRunServices = new FunctionsClassRunServices(context);
+        floatingServices = new FloatingServices(context);
 
         switch (functionsClass.shapesImageId()) {
             case 1:
@@ -202,7 +202,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
                 switch (SearchEngine.Companion.getAllSearchResults().get(position).getSearchResultType()) {
                     case SearchResultType.SearchShortcuts: {
-                        functionsClassRunServices
+                        floatingServices
                                 .runUnlimitedShortcutsService(SearchEngine.Companion.getAllSearchResults().get(position).getPackageName(), SearchEngine.Companion.getAllSearchResults().get(position).getClassName());
 
                         bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", SearchEngine.Companion.getAllSearchResults().get(position).getPackageName());
@@ -210,7 +210,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                         break;
                     }
                     case SearchResultType.SearchFolders: {
-                        functionsClassRunServices
+                        floatingServices
                                 .runUnlimitedFoldersService(SearchEngine.Companion.getAllSearchResults().get(position).getFolderName());
 
                         bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", SearchEngine.Companion.getAllSearchResults().get(position).getFolderName());

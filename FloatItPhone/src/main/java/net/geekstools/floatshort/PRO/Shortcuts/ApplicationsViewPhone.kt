@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/20/20 5:12 AM
+ * Last modified 8/24/20 6:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -75,7 +75,7 @@ import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedG
 import net.geekstools.floatshort.PRO.Utils.AdapterDataItem.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
 import net.geekstools.floatshort.PRO.Utils.Functions.*
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassDebug.Companion.PrintDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchasesCheckpoint
@@ -112,17 +112,17 @@ class ApplicationsViewPhone : AppCompatActivity(),
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
-    private val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(applicationContext)
+    private val fileIO: FileIO by lazy {
+        FileIO(applicationContext)
     }
-    private val functionsClassTheme: FunctionsClassTheme by lazy {
-        FunctionsClassTheme(applicationContext)
+    private val applicationThemeController: ApplicationThemeController by lazy {
+        ApplicationThemeController(applicationContext)
     }
-    private val functionsClassRunServices: FunctionsClassRunServices by lazy {
-        FunctionsClassRunServices(applicationContext)
+    private val floatingServices: FloatingServices by lazy {
+        FloatingServices(applicationContext)
     }
-    private val functionsClassDialogues: FunctionsClassDialogues by lazy {
-        FunctionsClassDialogues(functionsClassDataActivity, functionsClass)
+    private val dialogues: Dialogues by lazy {
+        Dialogues(functionsClassDataActivity, functionsClass)
     }
 
     private val securityFunctions: SecurityFunctions by lazy {
@@ -175,8 +175,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
         functionsClass.loadSavedColor()
         functionsClass.checkLightDarkTheme()
 
-        functionsClassTheme.setThemeColorFloating(this, hybridApplicationViewBinding.MainView, functionsClass.appThemeTransparent())
-        functionsClassDialogues.changeLog()
+        applicationThemeController.setThemeColorFloating(this, hybridApplicationViewBinding.MainView, functionsClass.appThemeTransparent())
+        dialogues.changeLog()
 
         recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(105), OrientationHelper.VERTICAL, false)
         hybridApplicationViewBinding.applicationsListView.layoutManager = recyclerViewLayoutManager
@@ -649,7 +649,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         if (view is ImageView) {
             val position = view.id
 
-            functionsClassRunServices
+            floatingServices
                     .runUnlimitedShortcutsServiceFrequently(frequentlyUsedAppsList[position])
         }
     }
@@ -930,8 +930,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     SearchEngine(activity = this@ApplicationsViewPhone, context = applicationContext,
                             searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
                             functionsClass = functionsClass,
-                            functionsClassIO = functionsClassIO,
-                            functionsClassRunServices = functionsClassRunServices,
+                            functionsClassIO = fileIO,
+                            functionsClassRunServices = floatingServices,
                             customIcons = loadCustomIcons,
                             firebaseAuth = firebaseAuth).apply {
 
@@ -1023,10 +1023,10 @@ class ApplicationsViewPhone : AppCompatActivity(),
         frequentlyUsedAppsList = intent.getStringArrayExtra("frequentApps")
         val freqLength = intent.getIntExtra("frequentAppsNumbers", -1)
         if (getFileStreamPath("Frequently").exists()) {
-            functionsClassIO.removeLine(".categoryInfo", "Frequently")
+            fileIO.removeLine(".categoryInfo", "Frequently")
             deleteFile("Frequently")
         }
-        functionsClassIO.saveFileAppendLine(".categoryInfo", "Frequently")
+        fileIO.saveFileAppendLine(".categoryInfo", "Frequently")
 
         for (i in 0 until freqLength) {
             val freqLayout = layoutInflater.inflate(R.layout.freq_item, null) as RelativeLayout
@@ -1041,8 +1041,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
             })
             hybridApplicationViewBinding.freqItem.addView(freqLayout)
 
-            functionsClassIO.saveFileAppendLine("Frequently", frequentlyUsedAppsList[i])
-            functionsClassIO.saveFile(frequentlyUsedAppsList[i] + "Frequently", frequentlyUsedAppsList[i])
+            fileIO.saveFileAppendLine("Frequently", frequentlyUsedAppsList[i])
+            fileIO.saveFile(frequentlyUsedAppsList[i] + "Frequently", frequentlyUsedAppsList[i])
         }
 
         functionsClass.addAppShortcuts()

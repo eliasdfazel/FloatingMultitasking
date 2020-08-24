@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/28/20 7:50 PM
+ * Last modified 8/24/20 6:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -93,14 +93,14 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
-    private val functionsClassIO: FunctionsClassIO by lazy {
-        FunctionsClassIO(applicationContext)
+    private val fileIO: FileIO by lazy {
+        FileIO(applicationContext)
     }
-    private val functionsClassTheme: FunctionsClassTheme by lazy {
-        FunctionsClassTheme(applicationContext)
+    private val applicationThemeController: ApplicationThemeController by lazy {
+        ApplicationThemeController(applicationContext)
     }
-    private val functionsClassRunServices: FunctionsClassRunServices by lazy {
-        FunctionsClassRunServices(applicationContext)
+    private val floatingServices: FloatingServices by lazy {
+        FloatingServices(applicationContext)
     }
 
     private val indexListConfigured: ArrayList<String> = ArrayList<String>()
@@ -171,7 +171,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         configuredWidgetsRecyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClass.columnCount(190), OrientationHelper.VERTICAL, false)
         widgetConfigurationsViewsBinding.configuredWidgetList.layoutManager = configuredWidgetsRecyclerViewLayoutManager
 
-        functionsClassTheme.setThemeColorFloating(this, widgetConfigurationsViewsBinding.MainView, functionsClass.appThemeTransparent())
+        applicationThemeController.setThemeColorFloating(this, widgetConfigurationsViewsBinding.MainView, functionsClass.appThemeTransparent())
 
         appWidgetManager = AppWidgetManager.getInstance(applicationContext)
         appWidgetHost = AppWidgetHost(applicationContext, System.currentTimeMillis().toInt())
@@ -1085,7 +1085,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         if (functionsClass.customIconsEnable()) {
             loadCustomIcons.load()
-            FunctionsClassDebug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
+            Debug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }
 
         val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
@@ -1115,8 +1115,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         SearchEngine(activity = this@WidgetConfigurations, context = applicationContext,
                                 searchEngineViewBinding = widgetConfigurationsViewsBinding.searchEngineViewInclude,
                                 functionsClass = functionsClass,
-                                functionsClassIO = functionsClassIO,
-                                functionsClassRunServices = functionsClassRunServices,
+                                functionsClassIO = fileIO,
+                                functionsClassRunServices = floatingServices,
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {
 
@@ -1134,7 +1134,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         val className: String = widgetDataModel.value.ClassNameProvider
                         val configClassName: String? = widgetDataModel.value.ConfigClassName
 
-                        FunctionsClassDebug.PrintDebug("*** $appWidgetId *** PackageName: $packageName - ClassName: $className - Configure: $configClassName ***")
+                        Debug.PrintDebug("*** $appWidgetId *** PackageName: $packageName - ClassName: $className - Configure: $configClassName ***")
 
                         if (functionsClass.appIsInstalled(packageName)) {
                             val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
@@ -1236,7 +1236,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         if (functionsClass.customIconsEnable()) {
             loadCustomIcons.load()
-            FunctionsClassDebug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
+            Debug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }
 
         var oldAppName = ""
@@ -1244,7 +1244,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         widgetProviderInfoList.asFlow()
                 .onEach {
-                    FunctionsClassDebug.PrintDebug("*** Provider = " + it.provider + " | Config = " + it.configure + " ***")
+                    Debug.PrintDebug("*** Provider = " + it.provider + " | Config = " + it.configure + " ***")
                 }
                 .onCompletion {
 
@@ -1537,7 +1537,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         PublicVariable.customIconsPackages.clear()
         for (resolveInfo in resolveInfos) {
-            FunctionsClassDebug.PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
+            Debug.PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
             PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
         }
     }
