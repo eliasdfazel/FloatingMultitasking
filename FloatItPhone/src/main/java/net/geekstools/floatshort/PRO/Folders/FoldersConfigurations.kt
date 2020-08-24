@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:25 AM
+ * Last modified 8/24/20 8:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -116,6 +116,10 @@ class FoldersConfigurations : AppCompatActivity(),
     }
     private val floatingServices: FloatingServices by lazy {
         FloatingServices(applicationContext)
+    }
+
+    private val networkCheckpoint: NetworkCheckpoint by lazy {
+        NetworkCheckpoint(applicationContext)
     }
 
     private lateinit var foldersListAdapter: RecyclerView.Adapter<FoldersListAdapter.ViewHolder>
@@ -266,7 +270,7 @@ class FoldersConfigurations : AppCompatActivity(),
                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
         }
         foldersConfigurationViewBinding.switchWidgets.setOnClickListener {
-            if (functionsClass.networkConnection() && firebaseAuth.currentUser != null) {
+            if (networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
                 if (functionsClass.floatingWidgetsPurchased()) {
                     functionsClass.navigateToClass(this@FoldersConfigurations, WidgetConfigurations::class.java,
                             ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
@@ -280,7 +284,7 @@ class FoldersConfigurations : AppCompatActivity(),
 
                 }
             } else {
-                if (functionsClass.networkConnection()) {
+                if (networkCheckpoint.networkConnection()) {
                     Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
                 }
                 if (firebaseAuth.currentUser == null) {
@@ -460,7 +464,7 @@ class FoldersConfigurations : AppCompatActivity(),
     override fun onStart() {
         super.onStart()
 
-        if (!getFileStreamPath(".License").exists() && functionsClass.networkConnection()) {
+        if (!getFileStreamPath(".License").exists() && networkCheckpoint.networkConnection()) {
             startService(Intent(applicationContext, LicenseValidator::class.java))
 
             val intentFilter = IntentFilter()
@@ -481,7 +485,7 @@ class FoldersConfigurations : AppCompatActivity(),
             registerReceiver(broadcastReceiver, intentFilter)
         }
 
-        if (functionsClass.networkConnection()
+        if (networkCheckpoint.networkConnection()
                 && functionsClass.readPreference(".UserInformation", "userEmail", null) == null
                 && firebaseAuth.currentUser == null) {
 
@@ -645,7 +649,7 @@ class FoldersConfigurations : AppCompatActivity(),
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
 
-                        if (functionsClass.networkConnection() && firebaseAuth.currentUser != null) {
+                        if (networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
 
                             if (functionsClass.floatingWidgetsPurchased()) {
 
@@ -662,7 +666,7 @@ class FoldersConfigurations : AppCompatActivity(),
 
                             }
                         } else {
-                            if (functionsClass.networkConnection()) {
+                            if (networkCheckpoint.networkConnection()) {
                                 Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
                             }
 

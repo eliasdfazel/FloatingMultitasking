@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/29/20 6:29 AM
+ * Last modified 8/24/20 8:38 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,6 +26,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.NetworkCheckpoint
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.setupInAppBillingUI
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
@@ -43,6 +44,10 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
 
     private val inAppBillingData: InAppBillingData by lazy {
         InAppBillingData()
+    }
+
+    private val networkCheckpoint: NetworkCheckpoint by lazy {
+        NetworkCheckpoint(applicationContext)
     }
 
     private var oneTimePurchase: OneTimePurchase? = null
@@ -65,7 +70,7 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
 
         setupInAppBillingUI()
 
-        if (functionsClass.networkConnection()
+        if (networkCheckpoint.networkConnection()
                 && intent.hasExtra(Entry.PurchaseType) && intent.hasExtra(Entry.ItemToPurchase)) {
 
             when(intent.getStringExtra(Entry.PurchaseType)) {

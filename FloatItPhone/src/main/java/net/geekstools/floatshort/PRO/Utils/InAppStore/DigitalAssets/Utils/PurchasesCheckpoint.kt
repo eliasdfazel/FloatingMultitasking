@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/24/20 8:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,11 +18,16 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.NetworkCheckpoint
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 
 class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesUpdatedListener {
 
     val functionsClass: FunctionsClass = FunctionsClass(appCompatActivity)
+
+    val networkCheckpoint: NetworkCheckpoint by lazy {
+        NetworkCheckpoint(appCompatActivity)
+    }
 
     fun trigger() : BillingClient {
 
@@ -31,7 +36,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
                 .enablePendingPurchases().build()
 
         //In-App Billing
-        if (functionsClass.networkConnection()) {
+        if (networkCheckpoint.networkConnection()) {
 
             //Restore Purchased Item
             billingClient.startConnection(object : BillingClientStateListener {

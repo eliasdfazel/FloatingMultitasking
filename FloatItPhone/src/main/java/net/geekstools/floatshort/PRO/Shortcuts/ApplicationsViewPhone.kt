@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:26 AM
+ * Last modified 8/24/20 8:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -127,6 +127,10 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
     private val securityFunctions: SecurityFunctions by lazy {
         SecurityFunctions(applicationContext)
+    }
+
+    private val networkCheckpoint: NetworkCheckpoint by lazy {
+        NetworkCheckpoint(applicationContext)
     }
 
     private val listOfNewCharOfItemsForIndex: ArrayList<String> = ArrayList<String>()
@@ -286,7 +290,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
             }
         }
         hybridApplicationViewBinding.switchWidgets.setOnClickListener {
-            if (functionsClass.networkConnection() && firebaseAuth.currentUser != null) {
+            if (networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
 
                 if (functionsClass.floatingWidgetsPurchased()) {
 
@@ -303,7 +307,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
                 }
             } else {
-                if (functionsClass.networkConnection()) {
+                if (networkCheckpoint.networkConnection()) {
                     Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
                 }
 
@@ -479,7 +483,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         super.onStart()
 
         if (!getFileStreamPath(".License").exists()
-                && functionsClass.networkConnection()
+                && networkCheckpoint.networkConnection()
                 && !BuildConfig.DEBUG) {
 
             startService(Intent(applicationContext, LicenseValidator::class.java))
@@ -502,7 +506,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
             registerReceiver(broadcastReceiver, intentFilter)
         }
 
-        if (functionsClass.networkConnection()
+        if (networkCheckpoint.networkConnection()
                 && functionsClass.readPreference(".UserInformation", "userEmail", null) == null
                 && firebaseAuth.currentUser == null) {
 
@@ -703,7 +707,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
             is GestureConstants.SwipeHorizontal -> {
                 when (gestureConstants.horizontalDirection) {
                     GestureListenerConstants.SWIPE_RIGHT -> {
-                        if (functionsClass.networkConnection() && firebaseAuth.currentUser != null) {
+                        if (networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
 
                             if (functionsClass.floatingWidgetsPurchased()) {
 
@@ -719,7 +723,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                 }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
                             }
                         } else {
-                            if (functionsClass.networkConnection()) {
+                            if (networkCheckpoint.networkConnection()) {
                                 Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
                             }
 

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 7:15 AM
+ * Last modified 8/24/20 8:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -58,13 +58,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.VectorDrawable;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -146,14 +140,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1272,28 +1261,6 @@ public class FunctionsClass {
         return false;
     }
 
-    public boolean networkConnection() {
-        boolean networkAvailable = false;
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager != null) {
-            Network activeNetwork = connectivityManager.getActiveNetwork();
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork);
-
-            if (networkCapabilities != null) {
-                if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                    networkAvailable = true;
-                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                    networkAvailable = true;
-                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
-                    networkAvailable = true;
-                }
-            }
-        }
-
-        return networkAvailable;
-    }
-
     public void navigateToClass(Class returnClass, final Activity activityToFinish) {
         context.startActivity(new Intent(context, returnClass)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -1436,95 +1403,6 @@ public class FunctionsClass {
 
     public boolean ControlPanel() {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("stable", true);
-    }
-
-    public void DownloadTask(final String fileURL, final String targetFile) {
-        class DownloadTask extends AsyncTask<String, Integer, String> {
-            @Override
-            public void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected String doInBackground(String... sUrl) {
-                InputStream input = null;
-                OutputStream output = null;
-                HttpURLConnection connection = null;
-                try {
-                    URL url = new URL(fileURL);
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.connect();
-
-                    if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                        return "Server HTTP Response ::"
-                                + connection.getResponseCode() + " :: " + connection.getResponseMessage();
-                    }
-
-                    int fileLength = connection.getContentLength();
-
-                    input = connection.getInputStream();
-                    output = context.openFileOutput(targetFile, Context.MODE_PRIVATE);
-
-                    byte data[] = new byte[4096];
-                    long total = 0;
-                    int count;
-                    while ((count = input.read(data)) != -1) {
-                        total += count;
-                        output.write(data, 0, count);
-                    }
-                } catch (Exception e) {
-                    return e.toString();
-                } finally {
-                    try {
-                        if (output != null)
-                            output.close();
-                        if (input != null)
-                            input.close();
-                    } catch (IOException ignored) {
-                        ignored.printStackTrace();
-                    }
-
-                    if (connection != null) {
-                        connection.disconnect();
-                    }
-                }
-                return "New FAQ Downloaded";
-            }
-
-            @Override
-            public void onPostExecute(String result) {
-                super.onPostExecute(result);
-            }
-        }
-        new DownloadTask().execute();
-    }
-
-    public boolean getNetworkState() {
-        boolean netState = false;
-        try {
-            WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-            ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-            if (wifiManager.isWifiEnabled() && activeNetworkInfo.isConnected()) {
-                netState = true;
-            } else if (wifiManager.isWifiEnabled() && !activeNetworkInfo.isConnected()) {
-                netState = false;
-            } else {
-                netState = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return netState;
-    }
-
-    public void appInfoSetting(String packageName) {
-        Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        i.addCategory(Intent.CATEGORY_DEFAULT);
-        i.setData(Uri.parse("package:" + packageName));
-        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
     }
 
     /*System Checkpoint Functions*/
