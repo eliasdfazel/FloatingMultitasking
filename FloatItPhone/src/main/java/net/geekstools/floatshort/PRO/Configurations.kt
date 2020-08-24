@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:16 AM
+ * Last modified 8/24/20 7:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -22,9 +22,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.BootRecovery
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryAll
@@ -175,9 +172,7 @@ class Configurations : AppCompatActivity() {
             }
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            indexFloatingShortcuts().await()
-        }
+        indexFloatingShortcuts()
 
         finish()
     }

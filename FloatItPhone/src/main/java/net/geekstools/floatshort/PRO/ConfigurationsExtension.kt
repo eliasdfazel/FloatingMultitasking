@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:13 AM
+ * Last modified 8/24/20 7:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,11 +13,9 @@ package net.geekstools.floatshort.PRO
 import android.R
 import android.content.Intent
 import android.util.TypedValue
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone
+import net.geekstools.floatshort.PRO.Utils.Functions.IndexingProcess
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 fun Configurations.checkUserInformation() {
@@ -111,15 +109,17 @@ fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<S
     }
 }
 
-fun Configurations.indexFloatingShortcuts() = CoroutineScope(Dispatchers.IO).async {
+fun Configurations.indexFloatingShortcuts() {
 
     if (getFileStreamPath(".uFile").exists()) {
 
         fileIO.readFileLinesAsArray(".uFile")?.let {
 
+            val indexingProcess = IndexingProcess()
+
             it.forEach { lineContent ->
 
-                functionsClass.IndexAppInfoShortcuts(
+                indexingProcess.indexAppInfoShortcuts(
                         functionsClass.appName(lineContent) + " | " + lineContent
                 )
             }

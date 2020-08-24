@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:15 AM
+ * Last modified 8/24/20 6:25 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -773,8 +773,8 @@ class FoldersConfigurations : AppCompatActivity(),
                         SearchEngine(activity = this@FoldersConfigurations, context = applicationContext,
                                 searchEngineViewBinding = foldersConfigurationViewBinding.searchEngineViewInclude,
                                 functionsClass = functionsClass,
-                                functionsClassIO = fileIO,
-                                functionsClassRunServices = floatingServices,
+                                fileIO = fileIO,
+                                floatingServices = floatingServices,
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {
 

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:15 AM
+ * Last modified 8/24/20 7:15 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -109,14 +109,6 @@ import androidx.palette.graphics.Palette;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.appindexing.FirebaseAppIndex;
-import com.google.firebase.appindexing.FirebaseUserActions;
-import com.google.firebase.appindexing.Indexable;
-import com.google.firebase.appindexing.builders.Actions;
-
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Automation.Folders.FolderAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
@@ -221,48 +213,6 @@ public class FunctionsClass {
                     return false;
                 }
         }
-    }
-
-    /*Database & Indexing*/
-    public void IndexAppInfoShortcuts(final String contentAppIndex){
-        Uri BASE_URL =
-                Uri.parse("https://www.geeksempire.net/createshortcuts.html/");
-        Indexable articleToIndex = new Indexable.Builder()
-                .setName(contentAppIndex)
-                .setUrl(String.valueOf(BASE_URL.buildUpon().appendPath(contentAppIndex).build()))
-                .build();
-
-        Task<Void> updateTask = FirebaseAppIndex.getInstance().update(articleToIndex);
-        updateTask.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-            }
-        });
-        updateTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        Task<Void> startTask = FirebaseUserActions.getInstance()
-                .start(getAction(contentAppIndex,
-                        String.valueOf(BASE_URL.buildUpon().appendPath(contentAppIndex).build())));
-        startTask.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-            }
-        });
-        startTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    private com.google.firebase.appindexing.Action getAction(String titleForAction, String urlForAction) {
-        return Actions.newView(titleForAction, urlForAction);
     }
 
     /*SuperShortcuts*/

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:15 AM
+ * Last modified 8/24/20 6:26 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1115,8 +1115,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         SearchEngine(activity = this@WidgetConfigurations, context = applicationContext,
                                 searchEngineViewBinding = widgetConfigurationsViewsBinding.searchEngineViewInclude,
                                 functionsClass = functionsClass,
-                                functionsClassIO = fileIO,
-                                functionsClassRunServices = floatingServices,
+                                fileIO = fileIO,
+                                floatingServices = floatingServices,
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {
 
