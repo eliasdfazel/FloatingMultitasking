@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/25/20 5:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -13,7 +13,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.PopupApplicationShortcuts
 
 class AppsReceiver : BroadcastReceiver() {
 
@@ -21,15 +21,15 @@ class AppsReceiver : BroadcastReceiver() {
 
         intent?.let {
 
-            val functionsClass = FunctionsClass(context)
-            val functionsClassIO = FileIO(context)
+            val popupApplicationShortcuts: PopupApplicationShortcuts = PopupApplicationShortcuts(context)
+            val fileIO = FileIO(context)
 
             if (intent.action == Intent.ACTION_PACKAGE_FULLY_REMOVED) {
 
                 val packageName = intent.data!!.encodedSchemeSpecificPart
-                functionsClassIO.removeLine(".uFile", packageName)
+                fileIO.removeLine(".uFile", packageName)
 
-                functionsClass.addAppShortcuts()
+                popupApplicationShortcuts.addPopupApplicationShortcuts()
 
             }
 

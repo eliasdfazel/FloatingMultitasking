@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 7:15 AM
+ * Last modified 8/25/20 5:23 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -39,6 +39,10 @@ class Configurations : AppCompatActivity() {
     }
     private val systemInformation: SystemInformation by lazy {
         SystemInformation(applicationContext)
+    }
+
+    val popupApplicationShortcuts: PopupApplicationShortcuts by lazy {
+        PopupApplicationShortcuts(applicationContext)
     }
 
     private val firebaseAnalytics: FirebaseAnalytics by lazy {

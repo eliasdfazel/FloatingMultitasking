@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:41 AM
+ * Last modified 8/25/20 5:31 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -144,7 +144,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
@@ -201,129 +200,6 @@ public class FunctionsClass {
                     // the package isn't installed on the device
                     return false;
                 }
-        }
-    }
-
-    /*SuperShortcuts*/
-    public void addAppShortcuts() {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            try {
-
-                FileIO fileIO = new FileIO(context);
-
-                final ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
-                shortcutManager.removeAllDynamicShortcuts();
-                List<ShortcutInfo> shortcutInfos = new ArrayList<ShortcutInfo>();
-                shortcutInfos.clear();
-                Intent intent = new Intent();
-                if (context.getFileStreamPath("Frequently").exists()) {
-                    List<String> appShortcuts = Arrays.asList(readFileLine("Frequently"));
-                    for (int i = 0; i < 4; i++) {
-                        try {
-                            intent.setAction("Remote_Single_Floating_Shortcuts");
-                            intent.addCategory(Intent.CATEGORY_DEFAULT);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.putExtra("packageName", appShortcuts.get(i));
-
-                            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, (appShortcuts.get(i)))
-                                    .setShortLabel(applicationName(appShortcuts.get(i)))
-                                    .setLongLabel(applicationName(appShortcuts.get(i)))
-                                    //.setIcon(Icon.createWithBitmap(appIconBitmap(appShortcuts.get(i))))
-                                    .setIcon(Icon.createWithBitmap(getAppIconBitmapCustomIcon(appShortcuts.get(i))))
-                                    .setIntent(intent)
-                                    .setRank(i)
-                                    .build();
-
-                            shortcutInfos.add(shortcutInfo);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else if (context.getFileStreamPath(".uFile").exists()) {
-                    if (fileIO.fileLinesCounter(".uFile") > 0) {
-                        List<String> appShortcuts = Arrays.asList(readFileLine(".uFile"));
-                        int countAppShortcut = 4;
-                        if (fileIO.fileLinesCounter(".uFile") < 4) {
-                            countAppShortcut = fileIO.fileLinesCounter(".uFile");
-                        }
-                        for (int i = 0; i < countAppShortcut; i++) {
-                            try {
-                                intent.setAction("Remote_Single_Floating_Shortcuts");
-                                intent.addCategory(Intent.CATEGORY_DEFAULT);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("packageName", appShortcuts.get(i));
-
-                                ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, (appShortcuts.get(i)))
-                                        .setShortLabel(applicationName(appShortcuts.get(i)))
-                                        .setLongLabel(applicationName(appShortcuts.get(i)))
-                                        //.setIcon(Icon.createWithBitmap(appIconBitmap(appShortcuts.get(i))))
-                                        .setIcon(Icon.createWithBitmap(getAppIconBitmapCustomIcon(appShortcuts.get(i))))
-                                        .setIntent(intent)
-                                        .setRank(i)
-                                        .build();
-
-                                shortcutInfos.add(shortcutInfo);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                try {
-                    String dynamicLabel = null;
-                    if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1").equals("0")) {
-                        shortcutManager.addDynamicShortcuts(shortcutInfos);
-                        return;
-                    } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1").equals("1")) {
-                        intent.setAction("Remote_Recover_Shortcuts");
-                        dynamicLabel = context.getString(R.string.shortcuts);
-                    } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1").equals("2")) {
-                        intent.setAction("Remote_Recover_Categories");
-                        dynamicLabel = context.getString(R.string.floatingFolders);
-                    } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1").equals("3")) {
-                        intent.setAction("Remote_Recover_All");
-                        dynamicLabel = context.getString(R.string.recover_all);
-                    }
-                    intent.addCategory(Intent.CATEGORY_DEFAULT);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    LayerDrawable drawCategory = (LayerDrawable) context.getDrawable(R.drawable.draw_recovery_popup);
-                    Drawable shapeTempDrawable = shapesDrawables();
-                    if (shapeTempDrawable != null) {
-                        Drawable frontDrawable = context.getDrawable(R.drawable.w_recovery_popup).mutate();
-                        frontDrawable.setTint(Color.WHITE);
-                        shapeTempDrawable.setTint(PublicVariable.primaryColor);
-                        drawCategory.setDrawableByLayerId(R.id.backgroundTemporary, shapeTempDrawable);
-                        drawCategory.setDrawableByLayerId(R.id.fronttemp, frontDrawable);
-                    } else {
-                        shapeTempDrawable = new ColorDrawable(Color.TRANSPARENT);
-                        Drawable frontDrawable = context.getDrawable(R.drawable.w_recovery_popup).mutate();
-                        frontDrawable.setTint(context.getColor(R.color.default_color));
-                        shapeTempDrawable.setTint(PublicVariable.primaryColor);
-                        drawCategory.setDrawableByLayerId(R.id.backgroundTemporary, shapeTempDrawable);
-                        drawCategory.setDrawableByLayerId(R.id.fronttemp, frontDrawable);
-                    }
-                    Bitmap recoveryBitmap = Bitmap
-                            .createBitmap(drawCategory.getIntrinsicWidth(), drawCategory.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                    drawCategory.setBounds(0, 0, drawCategory.getIntrinsicWidth(), drawCategory.getIntrinsicHeight());
-                    drawCategory.draw(new Canvas(recoveryBitmap));
-
-                    ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, dynamicLabel)
-                            .setShortLabel(dynamicLabel)
-                            .setLongLabel(dynamicLabel)
-                            .setIcon(Icon.createWithBitmap(recoveryBitmap))
-                            .setIntent(intent)
-                            .setRank(5)
-                            .build();
-
-                    shortcutInfos.add(shortcutInfo);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                shortcutManager.addDynamicShortcuts(shortcutInfos);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 

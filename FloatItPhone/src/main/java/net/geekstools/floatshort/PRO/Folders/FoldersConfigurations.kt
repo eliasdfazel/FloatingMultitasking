@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:29 AM
+ * Last modified 8/25/20 5:30 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -102,18 +102,27 @@ class FoldersConfigurations : AppCompatActivity(),
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
+
     private val fileIO: FileIO by lazy {
         FileIO(applicationContext)
     }
+
+    private val popupApplicationShortcuts: PopupApplicationShortcuts by lazy {
+        PopupApplicationShortcuts(applicationContext)
+    }
+
     private val applicationThemeController: ApplicationThemeController by lazy {
         ApplicationThemeController(applicationContext)
     }
+
     private val securityFunctions: SecurityFunctions by lazy {
         SecurityFunctions(applicationContext)
     }
+
     private val dialogues: Dialogues by lazy {
         Dialogues(functionsClassDataActivity, functionsClass)
     }
+
     private val floatingServices: FloatingServices by lazy {
         FloatingServices(applicationContext)
     }
@@ -575,7 +584,7 @@ class FoldersConfigurations : AppCompatActivity(),
                     }
                 }
 
-        functionsClass.addAppShortcuts()
+        popupApplicationShortcuts.addPopupApplicationShortcuts()
     }
 
     override fun onPause() {

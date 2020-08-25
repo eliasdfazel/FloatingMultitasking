@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:29 AM
+ * Last modified 8/25/20 5:23 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -69,7 +69,7 @@ fun Configurations.triggerOpenProcess() {
             startActivity(this)
         }
 
-        functionsClass.addAppShortcuts()
+        popupApplicationShortcuts.addPopupApplicationShortcuts()
     }
 }
 
@@ -91,7 +91,7 @@ fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<S
 
         fileIO.saveFileAppendLine(".categoryInfo", "Frequently")
 
-        functionsClass.addAppShortcuts()
+        popupApplicationShortcuts.addPopupApplicationShortcuts()
 
         val categoryIntent = Intent(applicationContext, FoldersConfigurations::class.java)
         startActivity(categoryIntent)
@@ -105,7 +105,7 @@ fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<S
             startActivity(this)
         }
 
-        functionsClass.addAppShortcuts()
+        popupApplicationShortcuts.addPopupApplicationShortcuts()
     }
 }
 

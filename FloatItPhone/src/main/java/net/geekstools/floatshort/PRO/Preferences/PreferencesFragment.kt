@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:42 AM
+ * Last modified 8/25/20 5:31 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -65,12 +65,18 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     lateinit var functionsClass: FunctionsClass
     lateinit var dialogues: Dialogues
 
+    private val popupApplicationShortcuts: PopupApplicationShortcuts by lazy {
+        PopupApplicationShortcuts(requireContext())
+    }
+
     private val preferencesIO: PreferencesIO by lazy {
         PreferencesIO(requireContext())
     }
+
     private val applicationThemeController: ApplicationThemeController by lazy {
         ApplicationThemeController(requireContext())
     }
+
     private val applicationThemeControllerUtils: ApplicationThemeController.Utils by lazy {
         applicationThemeController.Utils()
     }
@@ -402,7 +408,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 } else if (bootUpPreferences == "3") {
                     boot.summary = getString(R.string.boot_warning)
                 }
-                functionsClass.addAppShortcuts()
+                popupApplicationShortcuts.addPopupApplicationShortcuts()
             }
             if (functionsClass.returnAPI() > 22) {
                 alertDialogBuilder.setNeutralButton(getString(R.string.read)) { dialog, which ->

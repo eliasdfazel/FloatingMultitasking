@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:42 AM
+ * Last modified 8/25/20 5:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -40,6 +40,7 @@ import net.geekstools.floatshort.PRO.Utils.AdapterDataItem.CustomIconsThemeAdapt
 import net.geekstools.floatshort.PRO.Utils.AdapterDataItem.RecycleViewSmoothLayoutList
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.PopupApplicationShortcuts
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class PreferencesUtil : ViewModel() {
@@ -205,7 +206,8 @@ fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
     }
 
     dialog.setOnDismissListener {
-        preferencesDataUtilShape.functionsClass.addAppShortcuts()
+        PopupApplicationShortcuts(preferencesDataUtilShape.activity).addPopupApplicationShortcuts()
+
         if (currentShape != preferencesDataUtilShape.sharedPreferences.getInt("iconShape", 0)) {
             PublicVariable.forceReload = true
 
@@ -299,7 +301,7 @@ fun listCustomIconsPackage(preferencesDataUtilShape: PreferencesDataUtilShape) {
                     preferencesDataUtilShape.shapes.icon = preferencesDataUtilShape.functionsClass.applicationIcon(preferencesDataUtilShape.functionsClass.customIconPackageName())
                     preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.functionsClass.applicationName(preferencesDataUtilShape.functionsClass.customIconPackageName())
 
-                    preferencesDataUtilShape.functionsClass.addAppShortcuts()
+                    PopupApplicationShortcuts(preferencesDataUtilShape.activity).addPopupApplicationShortcuts()
 
                     val editor = preferencesDataUtilShape.sharedPreferences.edit()
                     editor.putInt("iconShape", 0)

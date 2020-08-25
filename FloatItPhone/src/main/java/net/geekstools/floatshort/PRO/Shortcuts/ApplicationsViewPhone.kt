@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:29 AM
+ * Last modified 8/25/20 5:28 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -112,15 +112,23 @@ class ApplicationsViewPhone : AppCompatActivity(),
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
+
     private val fileIO: FileIO by lazy {
         FileIO(applicationContext)
     }
+
     private val applicationThemeController: ApplicationThemeController by lazy {
         ApplicationThemeController(applicationContext)
     }
+
+    private val popupApplicationShortcuts: PopupApplicationShortcuts by lazy {
+        PopupApplicationShortcuts(applicationContext)
+    }
+
     private val floatingServices: FloatingServices by lazy {
         FloatingServices(applicationContext)
     }
+
     private val dialogues: Dialogues by lazy {
         Dialogues(functionsClassDataActivity, functionsClass)
     }
@@ -625,7 +633,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
             }
         }
 
-        functionsClass.addAppShortcuts()
+        popupApplicationShortcuts.addPopupApplicationShortcuts()
+
         functionsClass.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition())
         if (PublicVariable.actionCenter) {
             functionsClass.closeActionMenuOption(this@ApplicationsViewPhone, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton)
@@ -1049,7 +1058,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
             fileIO.saveFile(frequentlyUsedAppsList[i] + "Frequently", frequentlyUsedAppsList[i])
         }
 
-        functionsClass.addAppShortcuts()
+        popupApplicationShortcuts.addPopupApplicationShortcuts()
+
     }
 
     private fun loadInstalledCustomIconPackages() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
