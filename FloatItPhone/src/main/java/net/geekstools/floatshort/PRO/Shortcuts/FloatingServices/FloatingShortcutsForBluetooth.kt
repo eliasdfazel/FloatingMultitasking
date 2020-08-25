@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/25/20 4:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -262,7 +262,7 @@ class FloatingShortcutsForBluetooth : Service() {
             /*Update Floating Shortcuts Database*/
 
             appIcons.add(startId, functionsClass.shapedAppIcon(packageNames[startId]))
-            iconColors.add(startId, functionsClass.extractDominantColor(functionsClass.appIcon(packageNames[startId])))
+            iconColors.add(startId, functionsClass.extractDominantColor(functionsClass.applicationIcon(packageNames[startId])))
 
             shapedIcons[startId].setImageDrawable(if (functionsClass.customIconsEnable()) {
                 loadCustomIcons.getDrawableIconForPackage(packageNames[startId], functionsClass.shapedAppIcon(packageNames[startId]))
@@ -634,7 +634,7 @@ class FloatingShortcutsForBluetooth : Service() {
                             if (!AuthenticationProcess.authenticationProcessInvoked) {
 
                                 AuthenticationProcess.authenticationProcessInvoked = true
-                                AuthenticationProcess.authenticationProcessInvokedName = functionsClass.appName(packageNames[startId])
+                                AuthenticationProcess.authenticationProcessInvokedName = functionsClass.applicationName(packageNames[startId])
 
                                 SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
@@ -670,7 +670,7 @@ class FloatingShortcutsForBluetooth : Service() {
                                 }
 
                                 startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
-                                    putExtra("OtherTitle", functionsClass.appName(packageNames[startId]))
+                                    putExtra("OtherTitle", functionsClass.applicationName(packageNames[startId]))
                                     putExtra("PrimaryColor", iconColors[startId])
                                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                 }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
@@ -780,17 +780,17 @@ class FloatingShortcutsForBluetooth : Service() {
 
                                     PublicVariable.splitScreen = true
 
-                                    functionsClass.Toast(functionsClass.appName(PublicVariable.splitSinglePackage), Gravity.TOP)
+                                    functionsClass.Toast(functionsClass.applicationName(PublicVariable.splitSinglePackage), Gravity.TOP)
 
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()
                                 }
                             }, 200)
                         } else if (intent.action == "Pin_App_$floatingShortcutClassInCommand") {
-                            Debug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]))
+                            Debug.PrintDebug(functionsClass.applicationName(packageNames[intent.getIntExtra("startId", 1)]))
 
                             movePermit[intent.getIntExtra("startId", 1)] = false
-                            var pinDrawable: Drawable = functionsClass.appIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
+                            var pinDrawable: Drawable = functionsClass.applicationIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
 
                             if (functionsClass.customIconsEnable()) {
                                 pinDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
@@ -810,7 +810,7 @@ class FloatingShortcutsForBluetooth : Service() {
                                         pinDrawable = getDrawable(R.drawable.pin_squircle_icon) as Drawable
                                     }
                                     0 -> {
-                                        pinDrawable = functionsClass.appIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
+                                        pinDrawable = functionsClass.applicationIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
                                     }
                                 }
                             }
@@ -825,7 +825,7 @@ class FloatingShortcutsForBluetooth : Service() {
 
                             controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable)
                         } else if (intent.action == "Unpin_App_$floatingShortcutClassInCommand") {
-                            Debug.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]))
+                            Debug.PrintDebug(functionsClass.applicationName(packageNames[intent.getIntExtra("startId", 1)]))
 
                             movePermit[intent.getIntExtra("startId", 1)] = true
                             controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(null)
@@ -835,7 +835,7 @@ class FloatingShortcutsForBluetooth : Service() {
                                 if (!AuthenticationProcess.authenticationProcessInvoked) {
 
                                     AuthenticationProcess.authenticationProcessInvoked = true
-                                    AuthenticationProcess.authenticationProcessInvokedName = functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)])
+                                    AuthenticationProcess.authenticationProcessInvokedName = functionsClass.applicationName(packageNames[intent.getIntExtra("startId", 1)])
 
                                     SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
@@ -871,7 +871,7 @@ class FloatingShortcutsForBluetooth : Service() {
                                     }
 
                                     startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
-                                        putExtra("OtherTitle", functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]))
+                                        putExtra("OtherTitle", functionsClass.applicationName(packageNames[intent.getIntExtra("startId", 1)]))
                                         putExtra("PrimaryColor", iconColors[intent.getIntExtra("startId", 1)])
                                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                     }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
@@ -974,7 +974,7 @@ class FloatingShortcutsForBluetooth : Service() {
                                 if (startIdNotification != null) {
                                     if (floatingShortcutsBinding[startIdNotification].root.isShown) {
                                         /*Add Dot*/
-                                        var dotDrawable: Drawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
+                                        var dotDrawable: Drawable = functionsClass.applicationIcon(packageNames[startIdNotification]).mutate()
                                         if (functionsClass.customIconsEnable()) {
                                             dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[startIdNotification]).mutate()
                                         } else {
@@ -992,15 +992,15 @@ class FloatingShortcutsForBluetooth : Service() {
                                                     dotDrawable = getDrawable(R.drawable.dot_squircle_icon) as Drawable
                                                 }
                                                 0 -> {
-                                                    dotDrawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
+                                                    dotDrawable = functionsClass.applicationIcon(packageNames[startIdNotification]).mutate()
                                                 }
                                             }
                                         }
 
                                         if (PublicVariable.themeLightDark) {
-                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 1.30f))
+                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageNames[startIdNotification])), 1.30f))
                                         } else {
-                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 0.50f))
+                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageNames[startIdNotification])), 0.50f))
                                         }
 
                                         notificationDots[startIdNotification].setImageDrawable(dotDrawable)

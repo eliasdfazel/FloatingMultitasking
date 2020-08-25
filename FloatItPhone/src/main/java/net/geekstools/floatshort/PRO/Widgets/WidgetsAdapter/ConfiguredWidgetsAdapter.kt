@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/22/20 9:35 PM
+ * Last modified 8/25/20 4:42 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -64,7 +64,7 @@ class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetC
 
         val drawFloatTheWidget = widgetConfigurationsActivity.getDrawable(R.drawable.draw_open) as LayerDrawable?
         val backFloatTheWidget = drawFloatTheWidget?.findDrawableByLayerId(R.id.backgroundTemporary)
-        backFloatTheWidget?.setTint(functionsClass.extractDominantColor(functionsClass.appIcon(adapterItems[position].packageName)))
+        backFloatTheWidget?.setTint(functionsClass.extractDominantColor(functionsClass.applicationIcon(adapterItems[position].packageName)))
 
         viewHolder.floatTheWidget.setImageDrawable(drawFloatTheWidget)
         viewHolder.floatTheWidget.setOnClickListener {

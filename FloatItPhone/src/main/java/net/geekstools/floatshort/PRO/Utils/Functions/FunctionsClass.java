@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 8:41 AM
+ * Last modified 8/25/20 4:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -226,8 +226,8 @@ public class FunctionsClass {
                             intent.putExtra("packageName", appShortcuts.get(i));
 
                             ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, (appShortcuts.get(i)))
-                                    .setShortLabel(appName(appShortcuts.get(i)))
-                                    .setLongLabel(appName(appShortcuts.get(i)))
+                                    .setShortLabel(applicationName(appShortcuts.get(i)))
+                                    .setLongLabel(applicationName(appShortcuts.get(i)))
                                     //.setIcon(Icon.createWithBitmap(appIconBitmap(appShortcuts.get(i))))
                                     .setIcon(Icon.createWithBitmap(getAppIconBitmapCustomIcon(appShortcuts.get(i))))
                                     .setIntent(intent)
@@ -254,8 +254,8 @@ public class FunctionsClass {
                                 intent.putExtra("packageName", appShortcuts.get(i));
 
                                 ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, (appShortcuts.get(i)))
-                                        .setShortLabel(appName(appShortcuts.get(i)))
-                                        .setLongLabel(appName(appShortcuts.get(i)))
+                                        .setShortLabel(applicationName(appShortcuts.get(i)))
+                                        .setLongLabel(applicationName(appShortcuts.get(i)))
                                         //.setIcon(Icon.createWithBitmap(appIconBitmap(appShortcuts.get(i))))
                                         .setIcon(Icon.createWithBitmap(getAppIconBitmapCustomIcon(appShortcuts.get(i))))
                                         .setIntent(intent)
@@ -626,7 +626,7 @@ public class FunctionsClass {
                         new AdapterItems(
                                 notificationTime,
                                 notificationPackage,
-                                appName(notificationPackage),
+                                applicationName(notificationPackage),
                                 readFile(notificationTime + "_" + "Notification" + "Title"),
                                 readFile(notificationTime + "_" + "Notification" + "Text"),
                                 customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(notificationPackage, shapedAppIcon(notificationPackage)) : shapedAppIcon(notificationPackage),
@@ -1007,7 +1007,7 @@ public class FunctionsClass {
                                     + getDeviceName() + " | " + "API " + Build.VERSION.SDK_INT + " | " + getCountryIso().toUpperCase();
                             Intent email = new Intent(Intent.ACTION_SEND);
                             email.putExtra(Intent.EXTRA_EMAIL, new String[]{context.getString(R.string.supportEmail)});
-                            email.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.feedback_tag) + " [" + appVersionName(context.getPackageName()) + "] ");
+                            email.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.feedback_tag) + " [" + applicationVersionName(context.getPackageName()) + "] ");
                             email.putExtra(Intent.EXTRA_TEXT, textMsg);
                             email.setType("text/*");
                             email.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1123,7 +1123,7 @@ public class FunctionsClass {
                             + getDeviceName() + " | " + "API " + Build.VERSION.SDK_INT + " | " + getCountryIso().toUpperCase();
                     Intent email = new Intent(Intent.ACTION_SEND);
                     email.putExtra(Intent.EXTRA_EMAIL, new String[]{context.getString(R.string.supportEmail)});
-                    email.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.feedback_tag) + " [" + appVersionName(context.getPackageName()) + "] ");
+                    email.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.feedback_tag) + " [" + applicationVersionName(context.getPackageName()) + "] ");
                     email.putExtra(Intent.EXTRA_TEXT, textMsg);
                     email.setType("text/*");
                     email.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1315,7 +1315,9 @@ public class FunctionsClass {
         }, 313);
     }
 
-    public String appName(String packageName) {
+
+
+    public String applicationName(String packageName) {
         String Name = "null";
         try {
             PackageManager packageManager = context.getPackageManager();
@@ -1337,13 +1339,13 @@ public class FunctionsClass {
         } catch (Exception e) {
             e.printStackTrace();
 
-            appName = appName(activityInfo.packageName);
+            appName = applicationName(activityInfo.packageName);
         }
 
         return appName;
     }
 
-    public String appVersionName(String packageName) {
+    public String applicationVersionName(String packageName) {
         String Version = "0";
         try {
             PackageInfo packInfo = context.getPackageManager().getPackageInfo(packageName, 0);
@@ -1354,7 +1356,7 @@ public class FunctionsClass {
         return Version;
     }
 
-    public int appVersionCode(String packageName) {
+    public int applicationVersionCode(String packageName) {
         int VersionCode = 0;
         try {
             PackageInfo packInfo = context.getPackageManager().getPackageInfo(packageName, 0);
@@ -1364,6 +1366,8 @@ public class FunctionsClass {
         }
         return VersionCode;
     }
+
+
 
     public boolean SettingServiceRunning(Class aClass) {
         try {
@@ -1562,7 +1566,7 @@ public class FunctionsClass {
     public void openApplicationFromActivity(Activity instanceOfActivity, String packageName) {
         if (appIsInstalled(packageName) == true) {
             try {
-                Toast(appName(packageName), Gravity.BOTTOM);
+                Toast(applicationName(packageName), Gravity.BOTTOM);
 
                 Intent launchIntentForPackage = context.getPackageManager().getLaunchIntentForPackage(packageName);
                 launchIntentForPackage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1963,7 +1967,7 @@ public class FunctionsClass {
     }
 
     /*Shaping Functions*/
-    public Drawable appIcon(String packageName) {
+    public Drawable applicationIcon(String packageName) {
         Drawable icon = null;
         try {
             PackageManager packManager = context.getPackageManager();
@@ -1984,7 +1988,7 @@ public class FunctionsClass {
         return icon;
     }
 
-    public Drawable appIcon(ActivityInfo activityInfo) {
+    public Drawable applicationIcon(ActivityInfo activityInfo) {
         Drawable icon = null;
         try {
             icon = activityInfo.loadIcon(context.getPackageManager());
@@ -2215,7 +2219,7 @@ public class FunctionsClass {
             if (Build.VERSION.SDK_INT >= 26) {
                 AdaptiveIconDrawable adaptiveIconDrawable = null;
                 try {
-                    Drawable tempAppIcon = appIcon(packageName);
+                    Drawable tempAppIcon = applicationIcon(packageName);
                     if (tempAppIcon instanceof AdaptiveIconDrawable) {
                         adaptiveIconDrawable = (AdaptiveIconDrawable) tempAppIcon;
                         drawableBack = adaptiveIconDrawable.getBackground();
@@ -2234,7 +2238,7 @@ public class FunctionsClass {
                     e.printStackTrace();
                 }
             } else {
-                Drawable tempAppIcon = appIcon(packageName);
+                Drawable tempAppIcon = applicationIcon(packageName);
                 drawableBack = new ColorDrawable(extractDominantColor(tempAppIcon));
                 drawableFront = tempAppIcon;
                 layerDrawable = new LayerDrawable(new Drawable[]{drawableBack, drawableFront});
@@ -2243,7 +2247,7 @@ public class FunctionsClass {
                 appIconDrawable = layerDrawable;
             }
         } else if (sharedPreferences.getInt("iconShape", 0) == 0) {
-            appIconDrawable = appIcon(packageName);
+            appIconDrawable = applicationIcon(packageName);
         }
         return appIconDrawable;
     }
@@ -2262,7 +2266,7 @@ public class FunctionsClass {
             if (Build.VERSION.SDK_INT >= 26) {
                 AdaptiveIconDrawable adaptiveIconDrawable = null;
                 try {
-                    Drawable tempAppIcon = appIcon(activityInfo);
+                    Drawable tempAppIcon = applicationIcon(activityInfo);
                     if (tempAppIcon instanceof AdaptiveIconDrawable) {
                         adaptiveIconDrawable = (AdaptiveIconDrawable) tempAppIcon;
                         drawableBack = adaptiveIconDrawable.getBackground();
@@ -2281,7 +2285,7 @@ public class FunctionsClass {
                     e.printStackTrace();
                 }
             } else {
-                Drawable tempAppIcon = appIcon(activityInfo);
+                Drawable tempAppIcon = applicationIcon(activityInfo);
                 drawableBack = new ColorDrawable(extractDominantColor(tempAppIcon));
                 drawableFront = tempAppIcon;
                 layerDrawable = new LayerDrawable(new Drawable[]{drawableBack, drawableFront});
@@ -2290,11 +2294,12 @@ public class FunctionsClass {
                 appIconDrawable = layerDrawable;
             }
         } else if (sharedPreferences.getInt("iconShape", 0) == 0) {
-            appIconDrawable = appIcon(activityInfo);
+            appIconDrawable = applicationIcon(activityInfo);
         }
         return appIconDrawable;
     }
 
+    /**/
     public Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap = null;
         if (drawable instanceof VectorDrawable) {
@@ -2360,7 +2365,7 @@ public class FunctionsClass {
         Bitmap bitmap = null;
         try {
             LayerDrawable drawAppShortcuts;
-            Drawable drawableIcon = appIcon(packageName);
+            Drawable drawableIcon = applicationIcon(packageName);
             Drawable shapeTempDrawable = shapesDrawables();
             if (shapeTempDrawable != null) {
                 shapeTempDrawable.setTint(extractDominantColor(drawableIcon));
@@ -2662,19 +2667,19 @@ public class FunctionsClass {
             backgroundDrawable = returnAPI() >= 28 ? resizeDrawable(context.getDrawable(R.drawable.ic_launcher).mutate(), 100, 100) : context.getDrawable(R.drawable.ic_launcher).mutate();
             backgroundDrawable.setAlpha(0);
             if (!customIconsEnable()) {
-                foregroundDrawable.setTint(extractVibrantColor(appIcon(PackageName)));
+                foregroundDrawable.setTint(extractVibrantColor(applicationIcon(PackageName)));
             }
         } else {
             try {
                 backgroundDrawable = returnAPI() >= 28 ? resizeDrawable(shapesDrawables().mutate(), 100, 100) : shapesDrawables().mutate();
-                backgroundDrawable.setTint(extractVibrantColor(appIcon(PackageName)));
+                backgroundDrawable.setTint(extractVibrantColor(applicationIcon(PackageName)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         if (customIconsEnable()) {
-            backgroundDrawable = returnAPI() >= 28 ? resizeDrawable(appIcon(customIconPackageName()).mutate(), 100, 100) : appIcon(customIconPackageName()).mutate();
-            backgroundDrawable.setTint(extractVibrantColor(appIcon(PackageName)));
+            backgroundDrawable = returnAPI() >= 28 ? resizeDrawable(applicationIcon(customIconPackageName()).mutate(), 100, 100) : applicationIcon(customIconPackageName()).mutate();
+            backgroundDrawable.setTint(extractVibrantColor(applicationIcon(PackageName)));
         }
         LayerDrawable popupItemIcon = new LayerDrawable(
                 new Drawable[]{
@@ -2755,7 +2760,7 @@ public class FunctionsClass {
                         };
 
                         context.startActivity(new Intent(context, AuthenticationFingerprint.class)
-                                        .putExtra(UserInterfaceExtraData.OtherTitle, appName(PackageName))
+                                        .putExtra(UserInterfaceExtraData.OtherTitle, applicationName(PackageName))
                                         .putExtra(UserInterfaceExtraData.DoLockUnlock, true)
                                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                 ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle());
@@ -4005,7 +4010,7 @@ public class FunctionsClass {
             loadCustomIcons = new LoadCustomIcons(context, customIconPackageName());
             loadCustomIcons.load();
         }
-        return customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(packageName, (appIcon(packageName))) : (appIcon(packageName));
+        return customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(packageName, (applicationIcon(packageName))) : (applicationIcon(packageName));
     }
 
     /*Action Center*/

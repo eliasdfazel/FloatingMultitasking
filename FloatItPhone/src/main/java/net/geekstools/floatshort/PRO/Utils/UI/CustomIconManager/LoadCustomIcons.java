@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:39 AM
+ * Created by Elias Fazel
+ * Last modified 8/25/20 4:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -179,7 +179,7 @@ public class LoadCustomIcons {
         } else {
             try {
                 Drawable iconback = functionsClass.bitmapToDrawable(backIconMask);
-                Drawable appIcon = functionsClass.appIcon(appPackageName);
+                Drawable appIcon = functionsClass.applicationIcon(appPackageName);
                 LayerDrawable layerDrawableIcon = new LayerDrawable(new Drawable[]{
                         iconback,
                         appIcon
@@ -203,7 +203,7 @@ public class LoadCustomIcons {
         } else {
             try {
                 Drawable iconback = functionsClass.bitmapToDrawable(backIconMask);
-                Drawable appIcon = functionsClass.appIcon(appPackageName);
+                Drawable appIcon = functionsClass.applicationIcon(appPackageName);
                 LayerDrawable layerDrawableIcon = new LayerDrawable(new Drawable[]{
                         iconback,
                         appIcon
@@ -227,7 +227,7 @@ public class LoadCustomIcons {
         } else {
             try {
                 Drawable iconback = functionsClass.bitmapToDrawable(backIconMask);
-                Drawable appIcon = functionsClass.appIcon(activityInfo);
+                Drawable appIcon = functionsClass.applicationIcon(activityInfo);
                 LayerDrawable layerDrawableIcon = new LayerDrawable(new Drawable[]{
                         iconback,
                         appIcon

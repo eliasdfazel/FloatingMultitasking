@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:13 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -79,7 +79,7 @@ class Dialogues (var functionsClassDataActivity: FunctionsClassDataActivity, var
 
         dialog.setOnDismissListener {
 
-            if (functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName) > fileIO.readFile(".Updated")?.toInt()?:0) {
+            if (functionsClass.applicationVersionCode(functionsClassDataActivity.activity.packageName) > fileIO.readFile(".Updated")?.toInt()?:0) {
 
                 if (!functionsClassDataActivity.activity.isFinishing) {
 
@@ -89,7 +89,7 @@ class Dialogues (var functionsClassDataActivity: FunctionsClassDataActivity, var
 
             }
 
-            fileIO.saveFile(".Updated", functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName).toString())
+            fileIO.saveFile(".Updated", functionsClass.applicationVersionCode(functionsClassDataActivity.activity.packageName).toString())
         }
 
         if (!functionsClassDataActivity.activity.getFileStreamPath(".Updated").exists()) {
@@ -98,7 +98,7 @@ class Dialogues (var functionsClassDataActivity: FunctionsClassDataActivity, var
                 dialog.show()
             }
 
-        } else if (functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName) > fileIO.readFile(".Updated")?.toInt()?:0) {
+        } else if (functionsClass.applicationVersionCode(functionsClassDataActivity.activity.packageName) > fileIO.readFile(".Updated")?.toInt()?:0) {
 
             if (!functionsClassDataActivity.activity.isFinishing) {
                 dialog.show()
@@ -164,7 +164,7 @@ class Dialogues (var functionsClassDataActivity: FunctionsClassDataActivity, var
         }
 
         dialog.setOnDismissListener {
-            fileIO.saveFile(".Updated", functionsClass.appVersionCode(functionsClassDataActivity.activity.packageName).toString())
+            fileIO.saveFile(".Updated", functionsClass.applicationVersionCode(functionsClassDataActivity.activity.packageName).toString())
         }
 
         if (!functionsClassDataActivity.activity.isFinishing) {

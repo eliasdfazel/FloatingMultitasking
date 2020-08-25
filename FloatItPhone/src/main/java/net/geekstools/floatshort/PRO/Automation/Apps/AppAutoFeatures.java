@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -727,7 +727,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                     if (getApplicationContext().getPackageManager().getLaunchIntentForPackage(applicationInfoList.get(appInfo).packageName) != null) {
                         try {
                             PackageName = applicationInfoList.get(appInfo).packageName;
-                            AppName = functionsClass.appName(PackageName);
+                            AppName = functionsClass.applicationName(PackageName);
                             AppIcon = functionsClass.customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
 
                             if (getFileStreamPath(PackageName + ".Time").exists()) {

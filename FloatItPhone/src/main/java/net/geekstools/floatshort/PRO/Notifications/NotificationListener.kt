@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/25/20 4:42 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -96,7 +96,7 @@ class NotificationListener : NotificationListenerService() {
                     notificationTitle = try {
                         extras.getString(Notification.EXTRA_TITLE)!!
                     } catch (e: Exception) {
-                        functionsClass.appName(notificationPackage)
+                        functionsClass.applicationName(notificationPackage)
                     }
 
                     /*LOAD TEXT CONTENT*/
@@ -124,7 +124,7 @@ class NotificationListener : NotificationListenerService() {
 
                             } catch (e: Exception) {
 
-                                functionsClass.appIcon(notificationPackage)
+                                functionsClass.applicationIcon(notificationPackage)
 
                             }
                         }
@@ -136,7 +136,7 @@ class NotificationListener : NotificationListenerService() {
                             functionsClass.bitmapToDrawable(statusBarNotification.notification.largeIcon)
 
                         } catch (e: Exception) {
-                            functionsClass.appIcon(notificationPackage)
+                            functionsClass.applicationIcon(notificationPackage)
                         }
                     }
 

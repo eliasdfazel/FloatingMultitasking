@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:16 AM
+ * Last modified 8/25/20 4:42 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -206,7 +206,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         themeTrans.setOnPreferenceClickListener {
 
-            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
+            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.applicationVersionName(context?.packageName))
 
             functionsClass.saveDefaultPreference("LitePreferences", false)
 
@@ -215,7 +215,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         blur.setOnPreferenceClickListener {
 
-            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.appVersionName(context?.packageName))
+            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.applicationVersionName(context?.packageName))
 
             functionsClass.saveDefaultPreference("LitePreferences", false)
 
@@ -803,13 +803,13 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
             firebaseRemoteConfig.activate().addOnSuccessListener {
 
-                if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(requireContext().packageName)) {
+                if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.applicationVersionCode(requireContext().packageName)) {
                     functionsClass.upcomingChangeLog(
                             requireActivity(),
                             firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
                 }
 
-                if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClass.appVersionCode(requireContext().packageName)) {
+                if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClass.applicationVersionCode(requireContext().packageName)) {
                     whatsnew.summary = getString(R.string.betaUpdateAvailable)
                     betaChangeLog = firebaseRemoteConfig.getString(getString(R.string.BETAstringUpcomingChangeLogPhone))
                     betaVersionCode = firebaseRemoteConfig.getString(getString(R.string.BETAintegerVersionCodeNewUpdatePhone))
@@ -952,8 +952,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         if (functionsClass.customIconsEnable()) {
-            shapes.icon = functionsClass.appIcon(functionsClass.customIconPackageName())
-            shapes.summary = functionsClass.appName(functionsClass.customIconPackageName())
+            shapes.icon = functionsClass.applicationIcon(functionsClass.customIconPackageName())
+            shapes.summary = functionsClass.applicationName(functionsClass.customIconPackageName())
         }
 
         if (functionsClass.UsageStatsEnabled()) {

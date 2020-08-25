@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -188,7 +188,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                             if (functionsClass.appIsInstalled(packageName)) {
 
                                 val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
-                                val newAppName = functionsClass.appName(packageName)
+                                val newAppName = functionsClass.applicationName(packageName)
                                 val appIcon = if (functionsClass.customIconsEnable()) {
                                     customIcons?.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
                                 } else {

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/25/20 4:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -235,7 +235,7 @@ public class FloatingShortcutsForHIS extends Service {
         }
 
         appIcon[startId] = functionsClass.shapedAppIcon(activityInfo[startId]);
-        iconColor[startId] = functionsClass.extractDominantColor(functionsClass.appIcon(activityInfo[startId]));
+        iconColor[startId] = functionsClass.extractDominantColor(functionsClass.applicationIcon(activityInfo[startId]));
         shapedIcon[startId].setImageDrawable(functionsClass.customIconsEnable() ?
                 loadCustomIcons.getDrawableIconForPackage(packageNames[startId], functionsClass.shapedAppIcon(activityInfo[startId]))
                 :
@@ -743,14 +743,14 @@ public class FloatingShortcutsForHIS extends Service {
                                 startActivity(splitSingle);
                                 PublicVariable.splitScreen = true;
 
-                                functionsClass.Toast(functionsClass.appName(PublicVariable.splitSinglePackage), Gravity.TOP);
+                                functionsClass.Toast(functionsClass.applicationName(PublicVariable.splitSinglePackage), Gravity.TOP);
                             } catch (NullPointerException e) {
                                 e.printStackTrace();
                             }
                         }
                     }, 200);
                 } else if (intent.getAction().equals("Pin_App_" + className)) {
-                    Debug.Companion.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]));
+                    Debug.Companion.PrintDebug(functionsClass.applicationName(packageNames[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = false;
 
                     Drawable pinDrawable = null;
@@ -772,7 +772,7 @@ public class FloatingShortcutsForHIS extends Service {
                                 pinDrawable = getDrawable(R.drawable.pin_squircle_icon);
                                 break;
                             case 0:
-                                pinDrawable = functionsClass.appIcon(activityInfo[intent.getIntExtra("startId", 1)]).mutate();
+                                pinDrawable = functionsClass.applicationIcon(activityInfo[intent.getIntExtra("startId", 1)]).mutate();
                                 break;
                         }
                     }
@@ -785,7 +785,7 @@ public class FloatingShortcutsForHIS extends Service {
                     }
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable);
                 } else if (intent.getAction().equals("Unpin_App_" + className)) {
-                    Debug.Companion.PrintDebug(functionsClass.appName(packageNames[intent.getIntExtra("startId", 1)]));
+                    Debug.Companion.PrintDebug(functionsClass.applicationName(packageNames[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = true;
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(null);
                 } else if (intent.getAction().equals("Float_It_" + className)) {
@@ -919,14 +919,14 @@ public class FloatingShortcutsForHIS extends Service {
                                             dotDrawable = getDrawable(R.drawable.dot_squircle_icon);
                                             break;
                                         case 0:
-                                            dotDrawable = functionsClass.appIcon(packageNames[StartIdNotification]).mutate();
+                                            dotDrawable = functionsClass.applicationIcon(packageNames[StartIdNotification]).mutate();
                                             break;
                                     }
                                 }
                                 if (PublicVariable.themeLightDark) {
-                                    dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[StartIdNotification])), 1.30f));
+                                    dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageNames[StartIdNotification])), 1.30f));
                                 } else {
-                                    dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[StartIdNotification])), 0.50f));
+                                    dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageNames[StartIdNotification])), 0.50f));
                                 }
                                 notificationDot[StartIdNotification].setImageDrawable(dotDrawable);
                                 notificationDot[StartIdNotification].setVisibility(View.VISIBLE);

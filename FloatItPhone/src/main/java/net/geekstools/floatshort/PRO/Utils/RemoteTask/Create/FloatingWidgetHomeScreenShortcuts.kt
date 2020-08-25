@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 6/1/20 10:12 PM
+ * Last modified 8/25/20 4:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -116,7 +116,7 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
 
                             startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
                                 putExtra(UserInterfaceExtraData.OtherTitle, widgetLabel)
-                                putExtra(UserInterfaceExtraData.PrimaryColor, functionsClass.extractVibrantColor(functionsClass.appIcon(packageName)))
+                                putExtra(UserInterfaceExtraData.PrimaryColor, functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageName)))
                                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 

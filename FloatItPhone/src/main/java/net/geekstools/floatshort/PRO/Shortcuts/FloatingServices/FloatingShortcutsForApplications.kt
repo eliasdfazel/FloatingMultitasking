@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/25/20 4:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -272,7 +272,7 @@ class FloatingShortcutsForApplications : Service() {
             /*Update Floating Shortcuts Database*/
 
             appIcons.add(startId, functionsClass.shapedAppIcon(activityInformation[startId]))
-            iconColors.add(startId, functionsClass.extractDominantColor(functionsClass.appIcon(activityInformation[startId])))
+            iconColors.add(startId, functionsClass.extractDominantColor(functionsClass.applicationIcon(activityInformation[startId])))
 
             shapedIcons[startId].setImageDrawable(if (functionsClass.customIconsEnable()) {
                 loadCustomIcons.getDrawableIconForPackage(packageNames[startId], functionsClass.shapedAppIcon(activityInformation[startId]))
@@ -798,14 +798,14 @@ class FloatingShortcutsForApplications : Service() {
 
                                 PublicVariable.splitScreen = true
 
-                                functionsClass.Toast(functionsClass.appName(PublicVariable.splitSinglePackage), Gravity.TOP)
+                                functionsClass.Toast(functionsClass.applicationName(PublicVariable.splitSinglePackage), Gravity.TOP)
 
                             }, 200)
 
                         } else if (intent.action == "Pin_App_$floatingShortcutClassInCommand") {
 
                             movePermit[intent.getIntExtra("startId", 1)] = false
-                            var pinDrawable: Drawable = functionsClass.appIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
+                            var pinDrawable: Drawable = functionsClass.applicationIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
 
                             if (functionsClass.customIconsEnable()) {
 
@@ -827,7 +827,7 @@ class FloatingShortcutsForApplications : Service() {
                                         pinDrawable = getDrawable(R.drawable.pin_squircle_icon) as Drawable
                                     }
                                     0 -> {
-                                        pinDrawable = functionsClass.appIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
+                                        pinDrawable = functionsClass.applicationIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
                                     }
                                 }
                             }
@@ -1004,7 +1004,7 @@ class FloatingShortcutsForApplications : Service() {
                                 if (startIdNotification != null) {
                                     if (floatingShortcutsBinding[startIdNotification].root.isShown) {
                                         /*Add Dot*/
-                                        var dotDrawable: Drawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
+                                        var dotDrawable: Drawable = functionsClass.applicationIcon(packageNames[startIdNotification]).mutate()
                                         if (functionsClass.customIconsEnable()) {
                                             dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[startIdNotification]).mutate()
                                         } else {
@@ -1022,15 +1022,15 @@ class FloatingShortcutsForApplications : Service() {
                                                     dotDrawable = getDrawable(R.drawable.dot_squircle_icon) as Drawable
                                                 }
                                                 0 -> {
-                                                    dotDrawable = functionsClass.appIcon(packageNames[startIdNotification]).mutate()
+                                                    dotDrawable = functionsClass.applicationIcon(packageNames[startIdNotification]).mutate()
                                                 }
                                             }
                                         }
 
                                         if (PublicVariable.themeLightDark) {
-                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 1.30f))
+                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageNames[startIdNotification])), 1.30f))
                                         } else {
-                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.appIcon(packageNames[startIdNotification])), 0.50f))
+                                            dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageNames[startIdNotification])), 0.50f))
                                         }
 
                                         notificationDots[startIdNotification].setImageDrawable(dotDrawable)

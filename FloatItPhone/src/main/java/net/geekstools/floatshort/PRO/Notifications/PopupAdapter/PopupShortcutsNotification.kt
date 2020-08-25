@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -173,7 +173,7 @@ class PopupShortcutsNotification(private val context: Context,
                 }
 
                 context.startActivity(Intent(context, AuthenticationFingerprint::class.java).apply {
-                    putExtra(UserInterfaceExtraData.OtherTitle, functionsClass.appName(packageName))
+                    putExtra(UserInterfaceExtraData.OtherTitle, functionsClass.applicationName(packageName))
                     putExtra(UserInterfaceExtraData.PrimaryColor, (iconColor))
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }, ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle())

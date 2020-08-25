@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -780,8 +780,8 @@ class FloatingFoldersForTime : Service() {
 
                                     }, 200)
 
-                                    functionsClass.Toast(functionsClass.appName(packageNameSplitOne), Gravity.TOP)
-                                    functionsClass.Toast(functionsClass.appName(packageNameSplitTwo), Gravity.BOTTOM)
+                                    functionsClass.Toast(functionsClass.applicationName(packageNameSplitOne), Gravity.TOP)
+                                    functionsClass.Toast(functionsClass.applicationName(packageNameSplitTwo), Gravity.BOTTOM)
 
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/18/20 2:44 PM
+ * Last modified 8/25/20 4:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -148,7 +148,7 @@ class FunctionsClassWidgets (private val context: Context) {
         } else {
             context.getDrawable(R.drawable.w_pref_popup)
         })
-        popupItemIcon?.setTint(functionsClass.extractVibrantColor(functionsClass.appIcon(packageName)))
+        popupItemIcon?.setTint(functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageName)))
 
         for (itemId in menuItems.indices) {
 

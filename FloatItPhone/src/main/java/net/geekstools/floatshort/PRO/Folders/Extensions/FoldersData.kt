@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:13 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -37,7 +37,7 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
         if (applicationContext.packageManager.getLaunchIntentForPackage((applicationInfo).packageName) != null) {
 
             val packageName = applicationInfo.packageName
-            val appName = functionsClass.appName(packageName)
+            val appName = functionsClass.applicationName(packageName)
             val appIcon = if (functionsClass.customIconsEnable()) {
                 loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
             } else {

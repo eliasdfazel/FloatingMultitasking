@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:26 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -714,7 +714,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         firebaseRemoteConfig.activate().addOnSuccessListener {
-                            if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(packageName)) {
+                            if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.applicationVersionCode(packageName)) {
                                 functionsClass.notificationCreator(
                                         getString(R.string.updateAvailable),
                                         firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogSummaryConfigKey()),
@@ -919,7 +919,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                     InstalledWidgetsAdapter.pickedWidgetPackageName!!,
                                     InstalledWidgetsAdapter.pickedWidgetClassNameProvider!!,
                                     InstalledWidgetsAdapter.pickedWidgetConfigClassName,
-                                    functionsClass.appName(InstalledWidgetsAdapter.pickedWidgetPackageName),
+                                    functionsClass.applicationName(InstalledWidgetsAdapter.pickedWidgetPackageName),
                                     InstalledWidgetsAdapter.pickedWidgetLabel,
                                     false
                             )
@@ -971,7 +971,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                         appWidgetInfo.provider.packageName,
                                         InstalledWidgetsAdapter.pickedWidgetClassNameProvider!!,
                                         InstalledWidgetsAdapter.pickedWidgetConfigClassName,
-                                        functionsClass.appName(appWidgetInfo.provider.packageName),
+                                        functionsClass.applicationName(appWidgetInfo.provider.packageName),
                                         appWidgetInfo.loadLabel(packageManager),
                                         false
                                 )
@@ -1014,7 +1014,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                     appWidgetInfo.provider.packageName,
                                     InstalledWidgetsAdapter.pickedWidgetClassNameProvider!!,
                                     InstalledWidgetsAdapter.pickedWidgetConfigClassName,
-                                    functionsClass.appName(appWidgetInfo.provider.packageName),
+                                    functionsClass.applicationName(appWidgetInfo.provider.packageName),
                                     appWidgetInfo.loadLabel(packageManager),
                                     false
                             )
@@ -1138,7 +1138,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                         if (functionsClass.appIsInstalled(packageName)) {
                             val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
-                            val newAppName = functionsClass.appName(packageName)
+                            val newAppName = functionsClass.applicationName(packageName)
                             val appIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
                             if (widgetIndex == 0) {
                                 configuredWidgetsSections.add(WidgetSectionedConfiguredAdapter.Section(widgetIndex, newAppName, appIcon))
@@ -1149,7 +1149,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                     indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
                                 }
                             }
-                            oldAppName = functionsClass.appName(packageName)
+                            oldAppName = functionsClass.applicationName(packageName)
                             indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
                             configuredWidgetsAdapterItems.add(AdapterItems(
                                     newAppName,
@@ -1229,8 +1229,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
             widgetProviderInfoList.sortWith(Comparator { appWidgetProviderInfoLeft, appWidgetProviderInfoRight ->
 
-                functionsClass.appName(appWidgetProviderInfoLeft.provider.packageName)
-                        .compareTo(functionsClass.appName(appWidgetProviderInfoRight.provider.packageName))
+                functionsClass.applicationName(appWidgetProviderInfoLeft.provider.packageName)
+                        .compareTo(functionsClass.applicationName(appWidgetProviderInfoRight.provider.packageName))
             })
         }
 
@@ -1262,7 +1262,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                                 if (packageName.isNotEmpty() && className.isNotEmpty()) {
 
-                                    val newAppName = functionsClass.appName(packageName)
+                                    val newAppName = functionsClass.applicationName(packageName)
                                     val newAppIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
 
                                     if (widgetIndex == 0) {
@@ -1275,13 +1275,13 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                         }
                                     }
 
-                                    oldAppName = functionsClass.appName(appWidgetProviderInfo.value.provider.packageName)
+                                    oldAppName = functionsClass.applicationName(appWidgetProviderInfo.value.provider.packageName)
 
                                     val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
                                     val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
 
                                     indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
-                                    installedWidgetsAdapterItems.add(AdapterItems(functionsClass.appName(appWidgetProviderInfo.value.provider.packageName),
+                                    installedWidgetsAdapterItems.add(AdapterItems(functionsClass.applicationName(appWidgetProviderInfo.value.provider.packageName),
                                             appWidgetProviderInfo.value.provider.packageName,
                                             appWidgetProviderInfo.value.provider.className,
                                             componentNameConfiguration.className,
@@ -1298,7 +1298,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             e.printStackTrace()
 
                             //Other Idiot Developers Could Not Even Create A Simple Widget - Idiot Developers Forgot To Setup Configuration Activity Or Remove It.
-                            val newAppName = functionsClass.appName(packageName)
+                            val newAppName = functionsClass.applicationName(packageName)
                             val newAppIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
 
                             if (widgetIndex == 0) {
@@ -1311,12 +1311,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 }
                             }
 
-                            oldAppName = functionsClass.appName(appWidgetProviderInfo.value.provider.packageName)
+                            oldAppName = functionsClass.applicationName(appWidgetProviderInfo.value.provider.packageName)
                             val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
                             val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
 
                             indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
-                            installedWidgetsAdapterItems.add(AdapterItems(functionsClass.appName(appWidgetProviderInfo.value.provider.packageName),
+                            installedWidgetsAdapterItems.add(AdapterItems(functionsClass.applicationName(appWidgetProviderInfo.value.provider.packageName),
                                     appWidgetProviderInfo.value.provider.packageName,
                                     appWidgetProviderInfo.value.provider.className,
                                     null,
@@ -1337,7 +1337,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                         if (packageName.isNotEmpty() && className.isNotEmpty()) {
 
-                            val newAppName = functionsClass.appName(packageName)
+                            val newAppName = functionsClass.applicationName(packageName)
                             val newAppIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName)) else functionsClass.shapedAppIcon(packageName)
 
                             if (widgetIndex == 0) {
@@ -1350,12 +1350,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 }
                             }
 
-                            oldAppName = functionsClass.appName(appWidgetProviderInfo.value.provider.packageName)
+                            oldAppName = functionsClass.applicationName(appWidgetProviderInfo.value.provider.packageName)
                             val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
                             val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
 
                             indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
-                            installedWidgetsAdapterItems.add(AdapterItems(functionsClass.appName(appWidgetProviderInfo.value.provider.packageName),
+                            installedWidgetsAdapterItems.add(AdapterItems(functionsClass.applicationName(appWidgetProviderInfo.value.provider.packageName),
                                     appWidgetProviderInfo.value.provider.packageName,
                                     appWidgetProviderInfo.value.provider.className,
                                     null,

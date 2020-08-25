@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:59 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -303,7 +303,7 @@ public class PopupOptionsFloatingFolders extends Service {
                     case FunctionsClass.DisplaySection.TopLeft:
                         for (String packageName : packagesNames) {
                             navDrawerItemsSaved.add(new AdapterItems(
-                                    functionsClass.appName(packageName),
+                                    functionsClass.applicationName(packageName),
                                     packageName,
                                     functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
@@ -321,7 +321,7 @@ public class PopupOptionsFloatingFolders extends Service {
                     case FunctionsClass.DisplaySection.TopRight:
                         for (String packageName : packagesNames) {
                             navDrawerItemsSaved.add(new AdapterItems(
-                                    functionsClass.appName(packageName),
+                                    functionsClass.applicationName(packageName),
                                     packageName,
                                     functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
@@ -343,7 +343,7 @@ public class PopupOptionsFloatingFolders extends Service {
                                 popupItemsIcon));
                         for (String packageName : packagesNames) {
                             navDrawerItemsSaved.add(new AdapterItems(
-                                    functionsClass.appName(packageName),
+                                    functionsClass.applicationName(packageName),
                                     packageName,
                                     functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
@@ -361,7 +361,7 @@ public class PopupOptionsFloatingFolders extends Service {
                                 popupItemsIcon));
                         for (String packageName : packagesNames) {
                             navDrawerItemsSaved.add(new AdapterItems(
-                                    functionsClass.appName(packageName),
+                                    functionsClass.applicationName(packageName),
                                     packageName,
                                     functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
@@ -375,7 +375,7 @@ public class PopupOptionsFloatingFolders extends Service {
                     default:
                         for (String packageName : packagesNames) {
                             navDrawerItemsSaved.add(new AdapterItems(
-                                    functionsClass.appName(packageName),
+                                    functionsClass.applicationName(packageName),
                                     packageName,
                                     functionsClass.customIconsEnable() ?
                                             loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))

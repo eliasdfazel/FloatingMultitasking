@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -186,7 +186,7 @@ class AppSelectionList : AppCompatActivity(),
 
                         for (aSavedLine in it) {
                             selectedAppsListItem.add(AdapterItems(
-                                    functionsClass.appName(aSavedLine),
+                                    functionsClass.applicationName(aSavedLine),
                                     aSavedLine,
                                     if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
                         }
@@ -221,7 +221,7 @@ class AppSelectionList : AppCompatActivity(),
 
                         for (aSavedLine in it) {
                             selectedAppsListItem.add(AdapterItems(
-                                    functionsClass.appName(aSavedLine),
+                                    functionsClass.applicationName(aSavedLine),
                                     aSavedLine,
                                     if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
                         }
@@ -279,7 +279,7 @@ class AppSelectionList : AppCompatActivity(),
 
                 for (aSavedLine in it) {
                     selectedAppsListItem.add(AdapterItems(
-                            functionsClass.appName(aSavedLine),
+                            functionsClass.applicationName(aSavedLine),
                             aSavedLine,
                             if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
                 }

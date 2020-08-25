@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 8:41 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -559,7 +559,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 .addOnSuccessListener {
 
                     firebaseRemoteConfig.activate().addOnSuccessListener {
-                        if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(packageName)) {
+                        if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.applicationVersionCode(packageName)) {
 
                             val layerDrawableNewUpdate = getDrawable(R.drawable.ic_update) as LayerDrawable?
                             val gradientDrawableNewUpdate = layerDrawableNewUpdate?.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable?
@@ -687,7 +687,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 }
 
                 startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
-                    putExtra(UserInterfaceExtraData.OtherTitle, functionsClass.appName(frequentlyUsedAppsList[position]))
+                    putExtra(UserInterfaceExtraData.OtherTitle, functionsClass.applicationName(frequentlyUsedAppsList[position]))
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 

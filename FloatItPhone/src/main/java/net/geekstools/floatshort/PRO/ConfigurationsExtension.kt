@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 7:15 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,13 +20,13 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 fun Configurations.checkUserInformation() {
 
-    functionsClass.savePreference(".UserInformation", "isBetaTester", functionsClass.appVersionName(packageName).contains("[BETA]"))
-    functionsClass.savePreference(".UserInformation", "installedVersionCode", functionsClass.appVersionCode(packageName))
-    functionsClass.savePreference(".UserInformation", "installedVersionName", functionsClass.appVersionName(packageName))
+    functionsClass.savePreference(".UserInformation", "isBetaTester", functionsClass.applicationVersionName(packageName).contains("[BETA]"))
+    functionsClass.savePreference(".UserInformation", "installedVersionCode", functionsClass.applicationVersionCode(packageName))
+    functionsClass.savePreference(".UserInformation", "installedVersionName", functionsClass.applicationVersionName(packageName))
     functionsClass.savePreference(".UserInformation", "deviceModel", functionsClass.deviceName)
     functionsClass.savePreference(".UserInformation", "userRegion", functionsClass.countryIso)
 
-    if (functionsClass.appVersionName(packageName).contains("[BETA]")) {
+    if (functionsClass.applicationVersionName(packageName).contains("[BETA]")) {
         functionsClass.saveDefaultPreference("JoinedBetaProgrammer", true)
     }
 }
@@ -120,7 +120,7 @@ fun Configurations.indexFloatingShortcuts() {
             it.forEach { lineContent ->
 
                 indexingProcess.indexAppInfoShortcuts(
-                        functionsClass.appName(lineContent) + " | " + lineContent
+                        functionsClass.applicationName(lineContent) + " | " + lineContent
                 )
             }
         }

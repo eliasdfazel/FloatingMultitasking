@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 12:13 PM
+ * Last modified 8/25/20 4:42 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -256,9 +256,9 @@ fun listCustomIconsPackage(preferencesDataUtilShape: PreferencesDataUtilShape) {
     adapterItems.clear()
     for (packageName in PublicVariable.customIconsPackages) {
         adapterItems.add(AdapterItems(
-                preferencesDataUtilShape.functionsClass.appName(packageName),
+                preferencesDataUtilShape.functionsClass.applicationName(packageName),
                 packageName,
-                preferencesDataUtilShape.functionsClass.appIcon(packageName)
+                preferencesDataUtilShape.functionsClass.applicationIcon(packageName)
         ))
     }
     val customIconsThemeAdapter = CustomIconsThemeAdapter(preferencesUtil, preferencesDataUtilShape.activity, adapterItems, dialog)
@@ -296,8 +296,8 @@ fun listCustomIconsPackage(preferencesDataUtilShape: PreferencesDataUtilShape) {
                 if (dialogueDismiss) {
                     preferencesUtil.customDialogueDismiss.postValue(false)
 
-                    preferencesDataUtilShape.shapes.icon = preferencesDataUtilShape.functionsClass.appIcon(preferencesDataUtilShape.functionsClass.customIconPackageName())
-                    preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.functionsClass.appName(preferencesDataUtilShape.functionsClass.customIconPackageName())
+                    preferencesDataUtilShape.shapes.icon = preferencesDataUtilShape.functionsClass.applicationIcon(preferencesDataUtilShape.functionsClass.customIconPackageName())
+                    preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.functionsClass.applicationName(preferencesDataUtilShape.functionsClass.customIconPackageName())
 
                     preferencesDataUtilShape.functionsClass.addAppShortcuts()
 

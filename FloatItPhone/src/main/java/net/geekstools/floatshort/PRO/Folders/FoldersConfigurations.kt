@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 8:41 AM
+ * Last modified 8/25/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -537,7 +537,7 @@ class FoldersConfigurations : AppCompatActivity(),
                 .addOnSuccessListener {
                     firebaseRemoteConfig.activate().addOnSuccessListener {
 
-                        if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(packageName)) {
+                        if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.applicationVersionCode(packageName)) {
 
                             val layerDrawableNewUpdate = getDrawable(R.drawable.ic_update) as LayerDrawable?
                             val gradientDrawableNewUpdate = layerDrawableNewUpdate?.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable?

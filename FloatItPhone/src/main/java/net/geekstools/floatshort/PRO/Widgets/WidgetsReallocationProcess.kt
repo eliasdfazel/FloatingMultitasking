@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/25/20 4:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -163,7 +163,7 @@ class WidgetsReallocationProcess : Activity() {
 
                     Handler().postDelayed({
 
-                        widgetInformation.icon = functionsClass.appIcon(widgetDataModel.PackageName)
+                        widgetInformation.icon = functionsClass.applicationIcon(widgetDataModel.PackageName)
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
                                     + widgetDataModel.WidgetLabel + "<br/>"
