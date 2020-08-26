@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 5:28 AM
+ * Last modified 8/26/20 5:00 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -105,10 +105,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
         GestureListenerInterface,
         FirebaseInAppMessagingClickListener {
 
-    private val functionsClassDataActivity: FunctionsClassDataActivity by lazy {
-        FunctionsClassDataActivity(this@ApplicationsViewPhone)
-    }
-
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
@@ -130,7 +126,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
     }
 
     private val dialogues: Dialogues by lazy {
-        Dialogues(functionsClassDataActivity, functionsClass)
+        Dialogues(this@ApplicationsViewPhone, functionsClass)
     }
 
     private val securityFunctions: SecurityFunctions by lazy {

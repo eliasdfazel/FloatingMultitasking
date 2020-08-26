@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 5:30 AM
+ * Last modified 8/26/20 4:59 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -95,10 +95,6 @@ class FoldersConfigurations : AppCompatActivity(),
         GestureListenerInterface,
         FirebaseInAppMessagingClickListener {
 
-    private val functionsClassDataActivity: FunctionsClassDataActivity by lazy {
-        FunctionsClassDataActivity(this@FoldersConfigurations)
-    }
-
     private val functionsClass: FunctionsClass by lazy {
         FunctionsClass(applicationContext)
     }
@@ -120,7 +116,7 @@ class FoldersConfigurations : AppCompatActivity(),
     }
 
     private val dialogues: Dialogues by lazy {
-        Dialogues(functionsClassDataActivity, functionsClass)
+        Dialogues(this@FoldersConfigurations, functionsClass)
     }
 
     private val floatingServices: FloatingServices by lazy {

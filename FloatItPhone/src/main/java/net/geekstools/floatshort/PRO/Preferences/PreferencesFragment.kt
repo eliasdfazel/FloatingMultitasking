@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/26/20 4:11 AM
+ * Last modified 8/26/20 5:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -59,8 +59,6 @@ import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppB
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 
 class PreferencesFragment : PreferenceFragmentCompat() {
-
-    lateinit var functionsClassDataActivity: FunctionsClassDataActivity
 
     lateinit var functionsClass: FunctionsClass
     lateinit var dialogues: Dialogues
@@ -125,10 +123,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_screen, rootKey)
 
-        functionsClassDataActivity = FunctionsClassDataActivity(requireActivity())
-
         functionsClass = FunctionsClass(requireContext())
-        dialogues = Dialogues(functionsClassDataActivity, functionsClass)
+        dialogues = Dialogues(requireActivity(), functionsClass)
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 

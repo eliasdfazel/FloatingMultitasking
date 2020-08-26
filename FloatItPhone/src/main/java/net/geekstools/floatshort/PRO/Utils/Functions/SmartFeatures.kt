@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:16 AM
+ * Last modified 8/26/20 4:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,7 +34,7 @@ class SmartFeatures() {
             left, right -> right.totalTimeInForeground.compareTo(left.totalTimeInForeground)
         })
 
-        val functionsClassApplicationsData = ApplicationsData(FunctionsClassDataContext(context))
+        val functionsClassApplicationsData = ApplicationsData(context)
 
         queryUsageStats.asFlow()
                 .map {

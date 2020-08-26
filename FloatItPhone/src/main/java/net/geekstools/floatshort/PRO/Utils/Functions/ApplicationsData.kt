@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:11 AM
+ * Last modified 8/26/20 4:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,13 +10,14 @@
 
 package net.geekstools.floatshort.PRO.Utils.Functions
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 
-class ApplicationsData(var functionsClassDataContext: FunctionsClassDataContext) {
+class ApplicationsData(var context: Context) {
 
     fun appIsInstalled(packageName: String): Boolean {
-        val packageManager: PackageManager = functionsClassDataContext.context.packageManager
+        val packageManager: PackageManager = context.packageManager
         return try {
             packageManager.getPackageInfo(packageName, 0)
             true
@@ -30,7 +31,7 @@ class ApplicationsData(var functionsClassDataContext: FunctionsClassDataContext)
     }
 
     fun isSystemApplication(packageName: String): Boolean {
-        val packageManager = functionsClassDataContext.context.packageManager
+        val packageManager = context.packageManager
 
         return  try {
             val targetPkgInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
@@ -49,12 +50,12 @@ class ApplicationsData(var functionsClassDataContext: FunctionsClassDataContext)
     fun isDefaultLauncher(packageName: String): Boolean {
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_HOME)
-        val defaultLauncher = functionsClassDataContext.context.packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+        val defaultLauncher = context.packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
         val defaultLauncherPackageName = defaultLauncher?.activityInfo?.packageName
         return (defaultLauncherPackageName == packageName)
     }
 
     fun canLaunch(packageName: String?): Boolean {
-        return functionsClassDataContext.context.packageManager.getLaunchIntentForPackage(packageName!!) != null
+        return context.packageManager.getLaunchIntentForPackage(packageName!!) != null
     }
 }
