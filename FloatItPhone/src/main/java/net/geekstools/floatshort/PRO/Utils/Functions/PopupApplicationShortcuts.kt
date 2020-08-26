@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 5:17 AM
+ * Last modified 8/26/20 3:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -31,8 +31,6 @@ class PopupApplicationShortcuts (private val context: Context) {
     private val fileIO: FileIO = FileIO(context)
 
     private val bitmapExtractor: BitmapExtractor = BitmapExtractor(context)
-
-    private val shapingBitmap: ShapingBitmap = ShapingBitmap(context)
 
     private val installedApplicationInformation: InstalledApplicationInformation = InstalledApplicationInformation(context)
 
@@ -119,7 +117,7 @@ class PopupApplicationShortcuts (private val context: Context) {
                 intent.addCategory(Intent.CATEGORY_DEFAULT)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 val drawCategory = context.getDrawable(R.drawable.draw_recovery_popup) as LayerDrawable
-                var shapeTempDrawable = shapingBitmap.shapesDrawables()
+                var shapeTempDrawable = bitmapExtractor.shapesDrawables()
                 if (shapeTempDrawable != null) {
                     val frontDrawable: Drawable? = context.getDrawable(R.drawable.w_recovery_popup)?.mutate()
                     frontDrawable?.setTint(Color.WHITE)
