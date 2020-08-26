@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 5:31 AM
+ * Last modified 8/26/20 5:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -146,7 +146,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -4351,52 +4350,6 @@ public class FunctionsClass {
 
     public boolean litePreferencesEnabled() {
         return readDefaultPreference("LitePreferences", false);
-    }
-
-    /*Let Me Know*/
-    public List<String> letMeKnow(Context context, int maxValue, long startTime /*‪86400000‬ = 1 days*/, long endTime  /*System.currentTimeMillis()*/) {
-        /*‪86400000 = 24h --- 82800000 = 23h‬*/
-        List<String> frequentlyUsedApps = new ArrayList<String>();
-        try {
-            if (UsageStatsEnabled()) {
-                UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
-                List<UsageStats> queryUsageStats = usageStatsManager
-                        .queryUsageStats(UsageStatsManager.INTERVAL_BEST,
-                                System.currentTimeMillis() - startTime,
-                                endTime);
-                Collections.sort(queryUsageStats, new Comparator<UsageStats>() {
-                    @Override
-                    public int compare(UsageStats left, UsageStats right) {
-                        return Long.compare(right.getTotalTimeInForeground(), left.getTotalTimeInForeground());
-                    }
-                });
-                for (int i = 0; i < maxValue; i++) {
-                    String aPackageName = queryUsageStats.get(i).getPackageName();
-                    try {
-                        if (!aPackageName.equals(context.getPackageName())) {
-                            if (appIsInstalled(aPackageName)) {
-                                if (!ifSystem(aPackageName)) {
-                                    if (!isDefaultLauncher(aPackageName)) {
-                                        if (canLaunch(aPackageName)) {
-                                            frequentlyUsedApps.add(aPackageName);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                Set<String> stringHashSet = new LinkedHashSet<>(frequentlyUsedApps);
-                frequentlyUsedApps.clear();
-                frequentlyUsedApps.addAll(stringHashSet);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return frequentlyUsedApps;
     }
 
     /*Firebase Remote Config*/

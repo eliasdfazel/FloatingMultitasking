@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/26/20 4:58 AM
+ * Last modified 8/26/20 5:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,40 +19,50 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import java.util.*
 
-class SmartFeatures() {
+interface SmartFeaturesResult {
+    fun frequentlyUsedApplicationsReady(frequentlyUsedApplications: List<String>) {}
+}
 
-    fun letMeKnow(context: Context, maxValue: Int, startTime: Long /*‪86400000‬ = 1 days*/, endTime: Long /*System.currentTimeMillis()*/) : Deferred<List<String>> = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
-        /*‪86400000 = 24h --- 82800000 = 23h‬*/
-        val frequentlyUsedApps: ArrayList<String> = ArrayList()
+class SmartFeatures {
 
-        val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        val queryUsageStats = usageStatsManager
-                .queryUsageStats(UsageStatsManager.INTERVAL_BEST,
-                        System.currentTimeMillis() - startTime,
-                        endTime)
-        queryUsageStats.sortWith(Comparator {
-            left, right -> right.totalTimeInForeground.compareTo(left.totalTimeInForeground)
-        })
+    /**
+     * ‪86400000 = 24h --- 82800000 = 23h‬
+     **/
+    fun letMeKnow(context: Context, maxValue: Int, startTime: Long /*‪86400000‬ = 1 days*/, endTime: Long /*System.currentTimeMillis()*/, smartFeaturesResult: SmartFeaturesResult) : Deferred<List<String>> =
+            CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
 
-        val functionsClassApplicationsData = ApplicationsData(context)
+                val frequentlyUsedApps: ArrayList<String> = ArrayList()
 
-        queryUsageStats.asFlow()
-                .map {
-                    val packageNameUsedApplication = it.packageName
+                val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+                val queryUsageStats = usageStatsManager
+                        .queryUsageStats(UsageStatsManager.INTERVAL_BEST,
+                                System.currentTimeMillis() - startTime,
+                                endTime)
+                queryUsageStats.sortWith(Comparator {
+                    left, right -> right.totalTimeInForeground.compareTo(left.totalTimeInForeground)
+                })
 
-                    packageNameUsedApplication
-                }
-                .filter { packageNameUsedApplication ->
+                val functionsClassApplicationsData = ApplicationsData(context)
 
-                    functionsClassApplicationsData.appIsInstalled(packageNameUsedApplication)
-                            && !functionsClassApplicationsData.isSystemApplication(packageNameUsedApplication)
-                            && !functionsClassApplicationsData.isDefaultLauncher(packageNameUsedApplication)
-                            && functionsClassApplicationsData.canLaunch(packageNameUsedApplication)
-                }
-                .collect {
-                    frequentlyUsedApps.add(it)
-                }
+                queryUsageStats.asFlow()
+                        .map {
+                            val packageNameUsedApplication = it.packageName
 
-        frequentlyUsedApps.distinct()
-    }
+                            packageNameUsedApplication
+                        }
+                        .filter { packageNameUsedApplication ->
+
+                            functionsClassApplicationsData.appIsInstalled(packageNameUsedApplication)
+                                    && !functionsClassApplicationsData.isSystemApplication(packageNameUsedApplication)
+                                    && !functionsClassApplicationsData.isDefaultLauncher(packageNameUsedApplication)
+                                    && functionsClassApplicationsData.canLaunch(packageNameUsedApplication)
+                        }
+                        .collect {
+                            frequentlyUsedApps.add(it)
+                        }
+
+                smartFeaturesResult.frequentlyUsedApplicationsReady(frequentlyUsedApps.distinct())
+
+                frequentlyUsedApps.distinct()
+            }
 }

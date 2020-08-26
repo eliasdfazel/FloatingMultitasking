@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 5:23 AM
+ * Last modified 8/26/20 5:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -22,12 +22,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.BootRecovery
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryAll
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
 import java.util.*
+import kotlin.collections.ArrayList
 
 class Configurations : AppCompatActivity() {
 
@@ -105,55 +110,8 @@ class Configurations : AppCompatActivity() {
                             System.currentTimeMillis()) //end
             Collections.sort(queryUsageStats, LastTimeLaunchedComparator())
 
-            val frequentAppsArray: Array<String>? = retrieveFreqUsedApp(functionsClass)
+            retrieveFrequentlyUsedApplications()
 
-            val previousAppPackageName = queryUsageStats[1].packageName
-            if (previousAppPackageName.contains("com.google.android.googlequicksearchbox")) {
-
-                val bundleFirebaseAnalytics = Bundle()
-                bundleFirebaseAnalytics.putString("COUNTRY", functionsClass.countryIso)
-                firebaseAnalytics.logEvent(Debug.REMOTE_TASK_OK_GOOGLE, bundleFirebaseAnalytics)
-
-                when (sharedPreferences.getString("boot", "1")) {
-                    BootRecovery.Mode.NONE -> {
-
-                        frequentAppsArray?.let {
-
-                            triggerOpenProcessWithFrequentApps(it)
-                        }
-                    }
-                    BootRecovery.Mode.SHORTCUTS -> {
-
-                        Intent(applicationContext, RecoveryShortcuts::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startService(this@apply)
-                        }
-                    }
-                    BootRecovery.Mode.FOLDERS -> {
-
-                        Intent(applicationContext, RecoveryFolders::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startService(this@apply)
-                        }
-                    }
-                    BootRecovery.Mode.RECOVER_ALL -> {
-
-                        Intent(applicationContext, RecoveryAll::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startService(this@apply)
-                        }
-                    }
-                }
-
-                this@Configurations.finish()
-                return
-            } else {
-
-                frequentAppsArray?.let {
-
-                    triggerOpenProcessWithFrequentApps(it)
-                }
-            }
         } else {
             sharedPreferences.edit().apply {
                 this.putBoolean("smart", false)
@@ -187,11 +145,72 @@ class Configurations : AppCompatActivity() {
     }
 
     @Throws(Exception::class)
-    fun retrieveFreqUsedApp(functionsClass: FunctionsClass): Array<String>? {
+    fun retrieveFrequentlyUsedApplications() {
 
-        val freqApps: List<String> = functionsClass.letMeKnow(this@Configurations, 25, (86400000 * 7).toLong(), System.currentTimeMillis())
+        val smartFeatures: SmartFeatures = SmartFeatures()
 
-        return freqApps.toTypedArray()
+        var frequentlyUsedApplications: List<String> = ArrayList()
+
+        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+            frequentlyUsedApplications = smartFeatures.letMeKnow(this@Configurations, 25, (86400000 * 7).toLong(), System.currentTimeMillis(),
+            object : SmartFeaturesResult {
+
+                override fun frequentlyUsedApplicationsReady(frequentlyUsedApplications: List<String>) {
+                    super.frequentlyUsedApplicationsReady(frequentlyUsedApplications)
+
+                    val previousAppPackageName = frequentlyUsedApplications[1].packageName
+                    if (previousAppPackageName.contains("com.google.android.googlequicksearchbox")) {
+
+                        val bundleFirebaseAnalytics = Bundle()
+                        bundleFirebaseAnalytics.putString("COUNTRY", functionsClass.countryIso)
+                        firebaseAnalytics.logEvent(Debug.REMOTE_TASK_OK_GOOGLE, bundleFirebaseAnalytics)
+
+                        when (sharedPreferences.getString("boot", "1")) {
+                            BootRecovery.Mode.NONE -> {
+
+                                frequentAppsArray?.let {
+
+                                    triggerOpenProcessWithFrequentApps(it)
+                                }
+                            }
+                            BootRecovery.Mode.SHORTCUTS -> {
+
+                                Intent(applicationContext, RecoveryShortcuts::class.java).apply {
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    startService(this@apply)
+                                }
+                            }
+                            BootRecovery.Mode.FOLDERS -> {
+
+                                Intent(applicationContext, RecoveryFolders::class.java).apply {
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    startService(this@apply)
+                                }
+                            }
+                            BootRecovery.Mode.RECOVER_ALL -> {
+
+                                Intent(applicationContext, RecoveryAll::class.java).apply {
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    startService(this@apply)
+                                }
+                            }
+                        }
+
+                        this@Configurations.finish()
+                        return
+                    } else {
+
+                        frequentlyUsedApplications?.let {
+
+                            triggerOpenProcessWithFrequentApps(it)
+                        }
+                    }
+
+                }
+
+            }).await()
+        }
+
     }
 
     private class LastTimeLaunchedComparator : Comparator<UsageStats> {
