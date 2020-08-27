@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 5:23 AM
+ * Last modified 8/27/20 3:28 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -74,6 +74,7 @@ fun Configurations.triggerOpenProcess() {
 }
 
 fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<String>) {
+
     if (functionsClass.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
 
         if (getFileStreamPath("Frequently").exists()) {
@@ -107,6 +108,7 @@ fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<S
 
         popupApplicationShortcuts.addPopupApplicationShortcuts()
     }
+
 }
 
 fun Configurations.indexFloatingShortcuts() {

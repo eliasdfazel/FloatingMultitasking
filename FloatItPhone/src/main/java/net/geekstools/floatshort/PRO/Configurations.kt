@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/26/20 5:57 AM
+ * Last modified 8/27/20 3:37 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -98,18 +98,6 @@ class Configurations : AppCompatActivity() {
 
         if (functionsClass.UsageStatsEnabled()) {
 
-            sharedPreferences.edit().apply {
-                this.putBoolean("smart", true)
-                this.apply()
-            }
-
-            val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-            val queryUsageStats = usageStatsManager
-                    .queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
-                            System.currentTimeMillis() - 1000 * 60,  //begin
-                            System.currentTimeMillis()) //end
-            Collections.sort(queryUsageStats, LastTimeLaunchedComparator())
-
             retrieveFrequentlyUsedApplications()
 
         } else {
@@ -145,71 +133,81 @@ class Configurations : AppCompatActivity() {
     }
 
     @Throws(Exception::class)
-    fun retrieveFrequentlyUsedApplications() {
+    fun retrieveFrequentlyUsedApplications() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
 
         val smartFeatures: SmartFeatures = SmartFeatures()
 
         var frequentlyUsedApplications: List<String> = ArrayList()
 
-        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-            frequentlyUsedApplications = smartFeatures.letMeKnow(this@Configurations, 25, (86400000 * 7).toLong(), System.currentTimeMillis(),
-            object : SmartFeaturesResult {
+        frequentlyUsedApplications = smartFeatures.letMeKnow(this@Configurations, 25, (86400000 * 7).toLong(), System.currentTimeMillis(),
+                object : SmartFeaturesResult {
 
-                override fun frequentlyUsedApplicationsReady(frequentlyUsedApplications: List<String>) {
-                    super.frequentlyUsedApplicationsReady(frequentlyUsedApplications)
+                    override fun frequentlyUsedApplicationsReady(frequentlyUsedApplications: List<String>) {
+                        super.frequentlyUsedApplicationsReady(frequentlyUsedApplications)
 
-                    val previousAppPackageName = frequentlyUsedApplications[1].packageName
-                    if (previousAppPackageName.contains("com.google.android.googlequicksearchbox")) {
+                        sharedPreferences.edit().apply {
+                            this.putBoolean("smart", true)
+                            this.apply()
+                        }
 
-                        val bundleFirebaseAnalytics = Bundle()
-                        bundleFirebaseAnalytics.putString("COUNTRY", functionsClass.countryIso)
-                        firebaseAnalytics.logEvent(Debug.REMOTE_TASK_OK_GOOGLE, bundleFirebaseAnalytics)
+                        val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+                        val queryUsageStats = usageStatsManager
+                                .queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
+                                        System.currentTimeMillis() - 1000 * 60,  //begin
+                                        System.currentTimeMillis()) //end
+                        Collections.sort(queryUsageStats, LastTimeLaunchedComparator())
 
-                        when (sharedPreferences.getString("boot", "1")) {
-                            BootRecovery.Mode.NONE -> {
+                        val previousAppPackageName = queryUsageStats[1].packageName
+                        if (previousAppPackageName.contains("com.google.android.googlequicksearchbox")) {
 
-                                frequentAppsArray?.let {
+                            val bundleFirebaseAnalytics = Bundle()
+                            bundleFirebaseAnalytics.putString("COUNTRY", functionsClass.countryIso)
+                            firebaseAnalytics.logEvent(Debug.REMOTE_TASK_OK_GOOGLE, bundleFirebaseAnalytics)
 
-                                    triggerOpenProcessWithFrequentApps(it)
+                            when (sharedPreferences.getString("boot", "1")) {
+                                BootRecovery.Mode.NONE -> {
+
+                                    frequentlyUsedApplications?.let {
+
+                                        triggerOpenProcessWithFrequentApps(it.toTypedArray())
+                                    }
+                                }
+                                BootRecovery.Mode.SHORTCUTS -> {
+
+                                    Intent(applicationContext, RecoveryShortcuts::class.java).apply {
+                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        startService(this@apply)
+                                    }
+                                }
+                                BootRecovery.Mode.FOLDERS -> {
+
+                                    Intent(applicationContext, RecoveryFolders::class.java).apply {
+                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        startService(this@apply)
+                                    }
+                                }
+                                BootRecovery.Mode.RECOVER_ALL -> {
+
+                                    Intent(applicationContext, RecoveryAll::class.java).apply {
+                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        startService(this@apply)
+                                    }
                                 }
                             }
-                            BootRecovery.Mode.SHORTCUTS -> {
 
-                                Intent(applicationContext, RecoveryShortcuts::class.java).apply {
-                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    startService(this@apply)
-                                }
-                            }
-                            BootRecovery.Mode.FOLDERS -> {
+                            this@Configurations.finish()
+                            return
+                        } else {
 
-                                Intent(applicationContext, RecoveryFolders::class.java).apply {
-                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    startService(this@apply)
-                                }
-                            }
-                            BootRecovery.Mode.RECOVER_ALL -> {
+                            frequentlyUsedApplications?.let {
 
-                                Intent(applicationContext, RecoveryAll::class.java).apply {
-                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    startService(this@apply)
-                                }
+                                triggerOpenProcessWithFrequentApps(it.toTypedArray())
                             }
                         }
 
-                        this@Configurations.finish()
-                        return
-                    } else {
-
-                        frequentlyUsedApplications?.let {
-
-                            triggerOpenProcessWithFrequentApps(it)
-                        }
                     }
 
-                }
-
-            }).await()
-        }
+                }).await()
 
     }
 
