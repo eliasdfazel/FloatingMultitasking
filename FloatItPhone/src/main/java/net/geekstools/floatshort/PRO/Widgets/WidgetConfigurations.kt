@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 4:03 AM
+ * Last modified 8/29/20 6:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -64,7 +64,9 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone
 import net.geekstools.floatshort.PRO.Utils.AdapterDataItem.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
-import net.geekstools.floatshort.PRO.Utils.Functions.*
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryWidgets
@@ -90,17 +92,8 @@ import kotlin.math.roundToInt
 
 class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
-    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
-        FunctionsClassLegacy(applicationContext)
-    }
-    private val fileIO: FileIO by lazy {
-        FileIO(applicationContext)
-    }
-    private val applicationThemeController: ApplicationThemeController by lazy {
-        ApplicationThemeController(applicationContext)
-    }
-    private val floatingServices: FloatingServices by lazy {
-        FloatingServices(applicationContext)
+    private val widgetConfigurationsDependencyInjection: WidgetConfigurationsDependencyInjection by lazy {
+        WidgetConfigurationsDependencyInjection(applicationContext)
     }
 
     private val indexListConfigured: ArrayList<String> = ArrayList<String>()
@@ -126,7 +119,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     private lateinit var appWidgetHost: AppWidgetHost
 
     private val loadCustomIcons: LoadCustomIcons by lazy {
-        LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())
+        LoadCustomIcons(applicationContext, widgetConfigurationsDependencyInjection.functionsClassLegacy.customIconPackageName())
     }
 
     private val swipeGestureListener: SwipeGestureListener by lazy {
@@ -151,10 +144,10 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         widgetConfigurationsViewsBinding = WidgetConfigurationsViewsBinding.inflate(layoutInflater)
         setContentView(widgetConfigurationsViewsBinding.root)
 
-        functionsClassLegacy.loadSavedColor()
-        functionsClassLegacy.checkLightDarkTheme()
+        widgetConfigurationsDependencyInjection.functionsClassLegacy.loadSavedColor()
+        widgetConfigurationsDependencyInjection.functionsClassLegacy.checkLightDarkTheme()
 
-        if (!functionsClassLegacy.readPreference("WidgetsInformation", "Reallocated", true)
+        if (!widgetConfigurationsDependencyInjection.functionsClassLegacy.readPreference("WidgetsInformation", "Reallocated", true)
                 && getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
             startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java),
                     ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
@@ -165,13 +158,13 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         widgetConfigurationsViewsBinding.widgetPickerTitle.text = Html.fromHtml(getString(net.geekstools.floatshort.PRO.R.string.widgetPickerTitle))
         widgetConfigurationsViewsBinding.widgetPickerTitle.setTextColor(if (PublicVariable.themeLightDark) getColor(R.color.dark) else getColor(net.geekstools.floatshort.PRO.R.color.light))
 
-        installedWidgetsRecyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClassLegacy.columnCount(190), OrientationHelper.VERTICAL, false)
+        installedWidgetsRecyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, widgetConfigurationsDependencyInjection.functionsClassLegacy.columnCount(190), OrientationHelper.VERTICAL, false)
         widgetConfigurationsViewsBinding.installedWidgetList.layoutManager = installedWidgetsRecyclerViewLayoutManager
 
-        configuredWidgetsRecyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, functionsClassLegacy.columnCount(190), OrientationHelper.VERTICAL, false)
+        configuredWidgetsRecyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, widgetConfigurationsDependencyInjection.functionsClassLegacy.columnCount(190), OrientationHelper.VERTICAL, false)
         widgetConfigurationsViewsBinding.configuredWidgetList.layoutManager = configuredWidgetsRecyclerViewLayoutManager
 
-        applicationThemeController.setThemeColorFloating(this, widgetConfigurationsViewsBinding.MainView, functionsClassLegacy.appThemeTransparent())
+        widgetConfigurationsDependencyInjection.applicationThemeController.setThemeColorFloating(this, widgetConfigurationsViewsBinding.MainView, widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent())
 
         appWidgetManager = AppWidgetManager.getInstance(applicationContext)
         appWidgetHost = AppWidgetHost(applicationContext, System.currentTimeMillis().toInt())
@@ -189,7 +182,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
             widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
 
-            if (functionsClassLegacy.appThemeTransparent()) {
+            if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
                 widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
             } else {
                 widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
@@ -223,16 +216,16 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         widgetConfigurationsViewsBinding.switchApps.setTextColor(getColor(R.color.light))
         widgetConfigurationsViewsBinding.switchCategories.setTextColor(getColor(R.color.light))
-        if (PublicVariable.themeLightDark /*light*/ && functionsClassLegacy.appThemeTransparent() /*transparent*/) {
+        if (PublicVariable.themeLightDark /*light*/ && widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent() /*transparent*/) {
             widgetConfigurationsViewsBinding.switchApps.setTextColor(getColor(R.color.dark))
             widgetConfigurationsViewsBinding.switchCategories.setTextColor(getColor(R.color.dark))
         }
 
-        widgetConfigurationsViewsBinding.switchCategories.setBackgroundColor(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        widgetConfigurationsViewsBinding.switchCategories.setRippleColor(ColorStateList.valueOf(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite))
+        widgetConfigurationsViewsBinding.switchCategories.setBackgroundColor(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        widgetConfigurationsViewsBinding.switchCategories.setRippleColor(ColorStateList.valueOf(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite))
 
-        widgetConfigurationsViewsBinding.switchApps.setBackgroundColor(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        widgetConfigurationsViewsBinding.switchApps.rippleColor = ColorStateList.valueOf(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        widgetConfigurationsViewsBinding.switchApps.setBackgroundColor(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        widgetConfigurationsViewsBinding.switchApps.rippleColor = ColorStateList.valueOf(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
         widgetConfigurationsViewsBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
         widgetConfigurationsViewsBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
@@ -242,12 +235,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
         val backgroundRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
-        backgroundRecoverFloatingCategories?.setTint(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        backgroundRecoverFloatingCategories?.setTint(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
         widgetConfigurationsViewsBinding.recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories)
         widgetConfigurationsViewsBinding.recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories)
 
         widgetConfigurationsViewsBinding.actionButton.setOnClickListener {
-            functionsClassLegacy.doVibrate(33)
+            widgetConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(33)
 
             if (!PublicVariable.actionCenter) {
                 if (widgetConfigurationsViewsBinding.installedNestedScrollView.isShown) {
@@ -266,7 +259,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             .start()
 
                     val startRadius = 0
-                    val endRadius = hypot(functionsClassLegacy.displayX().toDouble(), functionsClassLegacy.displayY().toDouble()).toInt()
+                    val endRadius = hypot(widgetConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), widgetConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
 
                     val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.installedNestedScrollView,
                             ((widgetConfigurationsViewsBinding.addWidget.x + widgetConfigurationsViewsBinding.addWidget.width / 2).roundToInt()),
@@ -293,7 +286,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         }
                     })
 
-                    if (functionsClassLegacy.appThemeTransparent()) {
+                    if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
                         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                         if (PublicVariable.themeLightDark) {
@@ -303,7 +296,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             }
                         }
                         val valueAnimator = ValueAnimator
-                                .ofArgb(window.navigationBarColor, functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
+                                .ofArgb(window.navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
                         valueAnimator.addUpdateListener { animator ->
                             window.statusBarColor = (animator.animatedValue) as Int
                             window.navigationBarColor = (animator.animatedValue) as Int
@@ -328,11 +321,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
                 }
 
-                val finalRadius = hypot(functionsClassLegacy.displayX().toDouble(), functionsClassLegacy.displayY().toDouble()).toInt()
+                val finalRadius = hypot(widgetConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), widgetConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
                 val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.recoveryAction,
                         widgetConfigurationsViewsBinding.actionButton.x.roundToInt(),
                         widgetConfigurationsViewsBinding.actionButton.y.roundToInt(),
-                        finalRadius.toFloat(), functionsClassLegacy.DpToInteger(13).toFloat())
+                        finalRadius.toFloat(), widgetConfigurationsDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat())
                 circularReveal.duration = 777
                 circularReveal.interpolator = AccelerateInterpolator()
                 circularReveal.start()
@@ -355,18 +348,18 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
                 })
 
-                functionsClassLegacy.openActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
+                widgetConfigurationsDependencyInjection.functionsClassLegacy.openActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
                         widgetConfigurationsViewsBinding.actionButton,
                         widgetConfigurationsViewsBinding.fullActionViews.isShown)
 
             } else {
                 widgetConfigurationsViewsBinding.recoveryAction.visibility = View.VISIBLE
 
-                val finalRadius = hypot(functionsClassLegacy.displayX().toDouble(), functionsClassLegacy.displayY().toDouble()).toInt()
+                val finalRadius = hypot(widgetConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), widgetConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
                 val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.recoveryAction,
                         widgetConfigurationsViewsBinding.actionButton.x.roundToInt(),
                         widgetConfigurationsViewsBinding.actionButton.y.roundToInt(),
-                        functionsClassLegacy.DpToInteger(13).toFloat(), finalRadius.toFloat())
+                        widgetConfigurationsDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat(), finalRadius.toFloat())
                 circularReveal.duration = 1300
                 circularReveal.interpolator = AccelerateInterpolator()
                 circularReveal.start()
@@ -389,13 +382,13 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
                 })
 
-                functionsClassLegacy.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
+                widgetConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
                         widgetConfigurationsViewsBinding.actionButton)
             }
         }
         widgetConfigurationsViewsBinding.switchCategories.setOnClickListener {
 
-            functionsClassLegacy.navigateToClass(this@WidgetConfigurations, FoldersConfigurations::class.java,
+            widgetConfigurationsDependencyInjection.functionsClassLegacy.navigateToClass(this@WidgetConfigurations, FoldersConfigurations::class.java,
                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
         }
         widgetConfigurationsViewsBinding.switchApps.setOnClickListener {
@@ -574,7 +567,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         }
 
         widgetConfigurationsViewsBinding.addWidget.setOnClickListener {
-            functionsClassLegacy.doVibrate(177)
+            widgetConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(177)
 
             if (widgetConfigurationsViewsBinding.installedNestedScrollView.isShown) {
 
@@ -594,7 +587,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 val xPosition = (widgetConfigurationsViewsBinding.addWidget.x + widgetConfigurationsViewsBinding.addWidget.width / 2).roundToInt()
                 val yPosition = (widgetConfigurationsViewsBinding.addWidget.y + widgetConfigurationsViewsBinding.addWidget.height / 2).roundToInt()
                 val startRadius = 0
-                val endRadius = hypot(functionsClassLegacy.displayX().toDouble(), functionsClassLegacy.displayY().toDouble()).toInt()
+                val endRadius = hypot(widgetConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), widgetConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
                 val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.installedNestedScrollView,
                         xPosition, yPosition,
                         endRadius.toFloat(), startRadius.toFloat())
@@ -619,7 +612,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
                 })
 
-                if (functionsClassLegacy.appThemeTransparent()) {
+                if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                     if (PublicVariable.themeLightDark) {
@@ -629,7 +622,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         }
                     }
                     val valueAnimator = ValueAnimator
-                            .ofArgb(window.navigationBarColor, functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
+                            .ofArgb(window.navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
                     valueAnimator.addUpdateListener { animator ->
                         window.statusBarColor = (animator.animatedValue) as Int
                         window.navigationBarColor = (animator.animatedValue) as Int
@@ -656,11 +649,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 if (PublicVariable.actionCenter) {
                     widgetConfigurationsViewsBinding.recoveryAction.visibility = View.VISIBLE
 
-                    val finalRadius = hypot(functionsClassLegacy.displayX().toDouble(), functionsClassLegacy.displayY().toDouble()).toInt()
+                    val finalRadius = hypot(widgetConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), widgetConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
                     val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.recoveryAction,
                             widgetConfigurationsViewsBinding.actionButton.x.roundToInt(),
                             widgetConfigurationsViewsBinding.actionButton.y.roundToInt(),
-                            functionsClassLegacy.DpToInteger(13).toFloat(), finalRadius.toFloat())
+                            widgetConfigurationsDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat(), finalRadius.toFloat())
                     circularReveal.duration = 1300
                     circularReveal.interpolator = AccelerateInterpolator()
                     circularReveal.start()
@@ -682,7 +675,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                         }
                     })
-                    functionsClassLegacy.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews, widgetConfigurationsViewsBinding.actionButton)
+                    widgetConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews, widgetConfigurationsViewsBinding.actionButton)
                 }
 
                 loadInstalledWidgets()
@@ -714,11 +707,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         firebaseRemoteConfig.activate().addOnSuccessListener {
-                            if (firebaseRemoteConfig.getLong(functionsClassLegacy.versionCodeRemoteConfigKey()) > functionsClassLegacy.applicationVersionCode(packageName)) {
-                                functionsClassLegacy.notificationCreator(
+                            if (firebaseRemoteConfig.getLong(widgetConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()) > widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationVersionCode(packageName)) {
+                                widgetConfigurationsDependencyInjection.functionsClassLegacy.notificationCreator(
                                         getString(R.string.updateAvailable),
-                                        firebaseRemoteConfig.getString(functionsClassLegacy.upcomingChangeLogSummaryConfigKey()),
-                                        firebaseRemoteConfig.getLong(functionsClassLegacy.versionCodeRemoteConfigKey()).toInt()
+                                        firebaseRemoteConfig.getString(widgetConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLogSummaryConfigKey()),
+                                        firebaseRemoteConfig.getLong(widgetConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toInt()
                                 )
                             } else {
 
@@ -729,7 +722,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
                 }
 
-        if (functionsClassLegacy.readPreference(".Password", "Pin", "0") == "0" && functionsClassLegacy.securityServicesSubscribed()) {
+        if (widgetConfigurationsDependencyInjection.functionsClassLegacy.readPreference(".Password", "Pin", "0") == "0" && widgetConfigurationsDependencyInjection.functionsClassLegacy.securityServicesSubscribed()) {
 
             startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
@@ -739,7 +732,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
             if (!WidgetConfigurations.alreadyAuthenticatedWidgets) {
 
-                if (functionsClassLegacy.securityServicesSubscribed()) {
+                if (widgetConfigurationsDependencyInjection.functionsClassLegacy.securityServicesSubscribed()) {
 
                     SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
@@ -780,14 +773,14 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         super.onPause()
 
         if (PublicVariable.actionCenter) {
-            functionsClassLegacy.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
+            widgetConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
                     widgetConfigurationsViewsBinding.actionButton)
         }
     }
 
     override fun onBackPressed() {
         if (widgetConfigurationsViewsBinding.installedNestedScrollView.isShown) {
-            functionsClassLegacy.doVibrate(77)
+            widgetConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(77)
 
             widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.INVISIBLE
             widgetConfigurationsViewsBinding.fastScrollerIndexIncludeInstalled.nestedIndexScrollView.visibility = View.INVISIBLE
@@ -803,7 +796,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     .setInterpolator(OvershootInterpolator(3.0f))
                     .start()
             val startRadius = 0
-            val endRadius = hypot(functionsClassLegacy.displayX().toDouble(), functionsClassLegacy.displayY().toDouble()).toInt()
+            val endRadius = hypot(widgetConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), widgetConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
             val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.installedNestedScrollView,
                     (widgetConfigurationsViewsBinding.addWidget.x + widgetConfigurationsViewsBinding.addWidget.width / 2).roundToInt(),
                     (widgetConfigurationsViewsBinding.addWidget.y + widgetConfigurationsViewsBinding.addWidget.height / 2).roundToInt(),
@@ -829,7 +822,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 }
             })
 
-            if (functionsClassLegacy.appThemeTransparent()) {
+            if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                 if (PublicVariable.themeLightDark) {
@@ -840,7 +833,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 }
 
                 val valueAnimator = ValueAnimator
-                        .ofArgb(window.navigationBarColor, functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
+                        .ofArgb(window.navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
                 valueAnimator.addUpdateListener { animator ->
                     window.statusBarColor = (animator.animatedValue) as Int
                     window.navigationBarColor = (animator.animatedValue) as Int
@@ -865,7 +858,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             }
         } else {
 
-            functionsClassLegacy.overrideBackPressToMain(this@WidgetConfigurations, this@WidgetConfigurations)
+            widgetConfigurationsDependencyInjection.functionsClassLegacy.overrideBackPressToMain(this@WidgetConfigurations, this@WidgetConfigurations)
         }
     }
 
@@ -877,12 +870,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 when (gestureConstants.horizontalDirection) {
                     GestureListenerConstants.SWIPE_RIGHT -> {
 
-                        functionsClassLegacy.navigateToClass(this@WidgetConfigurations, FoldersConfigurations::class.java,
+                        widgetConfigurationsDependencyInjection.functionsClassLegacy.navigateToClass(this@WidgetConfigurations, FoldersConfigurations::class.java,
                                 ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
 
-                        functionsClassLegacy.navigateToClass(this@WidgetConfigurations, ApplicationsViewPhone::class.java,
+                        widgetConfigurationsDependencyInjection.functionsClassLegacy.navigateToClass(this@WidgetConfigurations, ApplicationsViewPhone::class.java,
                                 ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
                     }
                 }
@@ -919,7 +912,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                     InstalledWidgetsAdapter.pickedWidgetPackageName!!,
                                     InstalledWidgetsAdapter.pickedWidgetClassNameProvider!!,
                                     InstalledWidgetsAdapter.pickedWidgetConfigClassName,
-                                    functionsClassLegacy.applicationName(InstalledWidgetsAdapter.pickedWidgetPackageName),
+                                    widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(InstalledWidgetsAdapter.pickedWidgetPackageName),
                                     InstalledWidgetsAdapter.pickedWidgetLabel,
                                     false
                             )
@@ -971,7 +964,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                         appWidgetInfo.provider.packageName,
                                         InstalledWidgetsAdapter.pickedWidgetClassNameProvider!!,
                                         InstalledWidgetsAdapter.pickedWidgetConfigClassName,
-                                        functionsClassLegacy.applicationName(appWidgetInfo.provider.packageName),
+                                        widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetInfo.provider.packageName),
                                         appWidgetInfo.loadLabel(packageManager),
                                         false
                                 )
@@ -1014,7 +1007,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                     appWidgetInfo.provider.packageName,
                                     InstalledWidgetsAdapter.pickedWidgetClassNameProvider!!,
                                     InstalledWidgetsAdapter.pickedWidgetConfigClassName,
-                                    functionsClassLegacy.applicationName(appWidgetInfo.provider.packageName),
+                                    widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetInfo.provider.packageName),
                                     appWidgetInfo.loadLabel(packageManager),
                                     false
                             )
@@ -1055,7 +1048,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         configuredWidgetsSections.clear()
         widgetConfigurationsViewsBinding.configuredWidgetList.removeAllViews()
 
-        if (functionsClassLegacy.appThemeTransparent()) {
+        if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
             widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
         } else {
             widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
@@ -1083,7 +1076,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         configuredWidgetAvailable = false
 
-        if (functionsClassLegacy.customIconsEnable()) {
+        if (widgetConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) {
             loadCustomIcons.load()
             Debug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }
@@ -1114,9 +1107,9 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         /*Search Engine*/
                         SearchEngine(activity = this@WidgetConfigurations, context = applicationContext,
                                 searchEngineViewBinding = widgetConfigurationsViewsBinding.searchEngineViewInclude,
-                                functionsClassLegacy = functionsClassLegacy,
-                                fileIO = fileIO,
-                                floatingServices = floatingServices,
+                                functionsClassLegacy = widgetConfigurationsDependencyInjection.functionsClassLegacy,
+                                fileIO = widgetConfigurationsDependencyInjection.fileIO,
+                                floatingServices = widgetConfigurationsDependencyInjection.floatingServices,
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {
 
@@ -1136,10 +1129,10 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                         Debug.PrintDebug("*** $appWidgetId *** PackageName: $packageName - ClassName: $className - Configure: $configClassName ***")
 
-                        if (functionsClassLegacy.appIsInstalled(packageName)) {
+                        if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appIsInstalled(packageName)) {
                             val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
-                            val newAppName = functionsClassLegacy.applicationName(packageName)
-                            val appIcon = if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClassLegacy.shapedAppIcon(packageName)) else functionsClassLegacy.shapedAppIcon(packageName)
+                            val newAppName = widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(packageName)
+                            val appIcon = if (widgetConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, widgetConfigurationsDependencyInjection.functionsClassLegacy.shapedAppIcon(packageName)) else widgetConfigurationsDependencyInjection.functionsClassLegacy.shapedAppIcon(packageName)
                             if (widgetIndex == 0) {
                                 configuredWidgetsSections.add(WidgetSectionedConfiguredAdapter.Section(widgetIndex, newAppName, appIcon))
                                 indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
@@ -1149,7 +1142,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                     indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
                                 }
                             }
-                            oldAppName = functionsClassLegacy.applicationName(packageName)
+                            oldAppName = widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(packageName)
                             indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
                             configuredWidgetsAdapterItems.add(AdapterItems(
                                     newAppName,
@@ -1229,12 +1222,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
             widgetProviderInfoList.sortWith(Comparator { appWidgetProviderInfoLeft, appWidgetProviderInfoRight ->
 
-                functionsClassLegacy.applicationName(appWidgetProviderInfoLeft.provider.packageName)
-                        .compareTo(functionsClassLegacy.applicationName(appWidgetProviderInfoRight.provider.packageName))
+                widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfoLeft.provider.packageName)
+                        .compareTo(widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfoRight.provider.packageName))
             })
         }
 
-        if (functionsClassLegacy.customIconsEnable()) {
+        if (widgetConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) {
             loadCustomIcons.load()
             Debug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }
@@ -1262,8 +1255,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                                 if (packageName.isNotEmpty() && className.isNotEmpty()) {
 
-                                    val newAppName = functionsClassLegacy.applicationName(packageName)
-                                    val newAppIcon = if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClassLegacy.shapedAppIcon(packageName)) else functionsClassLegacy.shapedAppIcon(packageName)
+                                    val newAppName = widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(packageName)
+                                    val newAppIcon = if (widgetConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, widgetConfigurationsDependencyInjection.functionsClassLegacy.shapedAppIcon(packageName)) else widgetConfigurationsDependencyInjection.functionsClassLegacy.shapedAppIcon(packageName)
 
                                     if (widgetIndex == 0) {
                                         installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
@@ -1275,13 +1268,13 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                         }
                                     }
 
-                                    oldAppName = functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName)
+                                    oldAppName = widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName)
 
                                     val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
                                     val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
 
                                     indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
-                                    installedWidgetsAdapterItems.add(AdapterItems(functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName),
+                                    installedWidgetsAdapterItems.add(AdapterItems(widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName),
                                             appWidgetProviderInfo.value.provider.packageName,
                                             appWidgetProviderInfo.value.provider.className,
                                             componentNameConfiguration.className,
@@ -1298,8 +1291,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             e.printStackTrace()
 
                             //Other Idiot Developers Could Not Even Create A Simple Widget - Idiot Developers Forgot To Setup Configuration Activity Or Remove It.
-                            val newAppName = functionsClassLegacy.applicationName(packageName)
-                            val newAppIcon = if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClassLegacy.shapedAppIcon(packageName)) else functionsClassLegacy.shapedAppIcon(packageName)
+                            val newAppName = widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(packageName)
+                            val newAppIcon = if (widgetConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, widgetConfigurationsDependencyInjection.functionsClassLegacy.shapedAppIcon(packageName)) else widgetConfigurationsDependencyInjection.functionsClassLegacy.shapedAppIcon(packageName)
 
                             if (widgetIndex == 0) {
                                 installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
@@ -1311,12 +1304,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 }
                             }
 
-                            oldAppName = functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName)
+                            oldAppName = widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName)
                             val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
                             val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
 
                             indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
-                            installedWidgetsAdapterItems.add(AdapterItems(functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName),
+                            installedWidgetsAdapterItems.add(AdapterItems(widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName),
                                     appWidgetProviderInfo.value.provider.packageName,
                                     appWidgetProviderInfo.value.provider.className,
                                     null,
@@ -1337,8 +1330,8 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                         if (packageName.isNotEmpty() && className.isNotEmpty()) {
 
-                            val newAppName = functionsClassLegacy.applicationName(packageName)
-                            val newAppIcon = if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, functionsClassLegacy.shapedAppIcon(packageName)) else functionsClassLegacy.shapedAppIcon(packageName)
+                            val newAppName = widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(packageName)
+                            val newAppIcon = if (widgetConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, widgetConfigurationsDependencyInjection.functionsClassLegacy.shapedAppIcon(packageName)) else widgetConfigurationsDependencyInjection.functionsClassLegacy.shapedAppIcon(packageName)
 
                             if (widgetIndex == 0) {
                                 installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
@@ -1350,12 +1343,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 }
                             }
 
-                            oldAppName = functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName)
+                            oldAppName = widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName)
                             val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
                             val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
 
                             indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
-                            installedWidgetsAdapterItems.add(AdapterItems(functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName),
+                            installedWidgetsAdapterItems.add(AdapterItems(widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName),
                                     appWidgetProviderInfo.value.provider.packageName,
                                     appWidgetProviderInfo.value.provider.className,
                                     null,
@@ -1401,7 +1394,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         val xPosition = (widgetConfigurationsViewsBinding.addWidget.x + widgetConfigurationsViewsBinding.addWidget.width / 2).roundToInt()
         val yPosition = (widgetConfigurationsViewsBinding.addWidget.y + widgetConfigurationsViewsBinding.addWidget.height / 2).roundToInt()
         val startRadius = 0
-        val endRadius = hypot(functionsClassLegacy.displayX().toDouble(), functionsClassLegacy.displayY().toDouble()).toInt()
+        val endRadius = hypot(widgetConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), widgetConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
         val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.installedNestedScrollView,
                 xPosition, yPosition,
                 startRadius.toFloat(), endRadius.toFloat())
@@ -1418,7 +1411,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                if (functionsClassLegacy.appThemeTransparent()) {
+                if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
                     val colorAnimation = ValueAnimator
                             .ofArgb(window.navigationBarColor, if (PublicVariable.themeLightDark) getColor(R.color.fifty_light_twice) else getColor(R.color.transparent_dark_high_twice))
                     colorAnimation.addUpdateListener { animator ->
@@ -1435,7 +1428,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             }
                         }
                         val colorAnimation = ValueAnimator
-                                .ofArgb(window.navigationBarColor, functionsClassLegacy.mixColors(getColor(R.color.light), getWindow().navigationBarColor, 0.70f))
+                                .ofArgb(window.navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(getColor(R.color.light), getWindow().navigationBarColor, 0.70f))
                         colorAnimation.addUpdateListener { animator ->
                             window.navigationBarColor = (animator.animatedValue) as Int
                             window.statusBarColor = (animator.animatedValue) as Int
@@ -1444,7 +1437,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     } else if (!PublicVariable.themeLightDark) {
                         widgetConfigurationsViewsBinding.installedNestedScrollView.setBackground(ColorDrawable(getColor(R.color.dark_transparent)))
                         val colorAnimation = ValueAnimator
-                                .ofArgb(getWindow().navigationBarColor, functionsClassLegacy.mixColors(getColor(R.color.dark), getWindow().navigationBarColor, 0.70f))
+                                .ofArgb(getWindow().navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(getColor(R.color.dark), getWindow().navigationBarColor, 0.70f))
                         colorAnimation.addUpdateListener { animator ->
                             window.navigationBarColor = (animator.animatedValue) as Int
                             window.statusBarColor = (animator.animatedValue) as Int
@@ -1498,7 +1491,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 recyclerView = widgetConfigurationsViewsBinding.configuredWidgetList,
                 fastScrollerIndexViewBinding = widgetConfigurationsViewsBinding.fastScrollerIndexIncludeConfigured,
                 indexedFastScrollerFactory = IndexedFastScrollerFactory(
-                        popupEnable = !functionsClassLegacy.litePreferencesEnabled(),
+                        popupEnable = !widgetConfigurationsDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
                         popupTextColor = PublicVariable.colorLightDarkOpposite,
                         indexItemTextColor = PublicVariable.colorLightDarkOpposite)
         )
@@ -1517,7 +1510,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 recyclerView = widgetConfigurationsViewsBinding.installedWidgetList,
                 fastScrollerIndexViewBinding = widgetConfigurationsViewsBinding.fastScrollerIndexIncludeInstalled,
                 indexedFastScrollerFactory = IndexedFastScrollerFactory(
-                        popupEnable = !functionsClassLegacy.litePreferencesEnabled(),
+                        popupEnable = !widgetConfigurationsDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
                         popupTextColor = PublicVariable.colorLightDarkOpposite,
                         indexItemTextColor = PublicVariable.colorLightDarkOpposite)
         )
