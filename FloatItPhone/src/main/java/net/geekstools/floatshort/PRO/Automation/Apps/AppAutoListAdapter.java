@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -30,7 +30,7 @@ import net.geekstools.floatshort.PRO.Automation.Alarms.TimeDialogue;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -42,7 +42,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
     private Context context;
     private Activity activity;
 
-    FunctionsClass functionsClass;
+    FunctionsClassLegacy functionsClassLegacy;
     FileIO fileIO;
 
     View view;
@@ -58,10 +58,10 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
         this.context = context;
         this.adapterItems = adapterItems;
 
-        functionsClass = new FunctionsClass(context);
+        functionsClassLegacy = new FunctionsClassLegacy(context);
         fileIO = new FileIO(context);
 
-        switch (functionsClass.shapesImageId()) {
+        switch (functionsClassLegacy.shapesImageId()) {
             case 1:
                 layoutInflater = R.layout.auto_apps_items_droplet;
                 break;
@@ -103,7 +103,7 @@ public class AppAutoListAdapter extends RecyclerView.Adapter<AppAutoListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolderBinder, final int position) {
-        viewHolderBinder.time.setTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 113));
+        viewHolderBinder.time.setTextColor(functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDarkOpposite, 113));
 
         if (PublicVariable.themeLightDark) {
             viewHolderBinder.autoChoice.setButtonTintList(ColorStateList.valueOf(context.getColor(R.color.dark)));

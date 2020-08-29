@@ -1,3 +1,13 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel
+ * Last modified 8/29/20 3:58 AM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions
 
 import android.content.ComponentName
@@ -31,7 +41,7 @@ fun AuthenticationFingerprint.setupAuthenticationUIWindow() {
     window.statusBarColor = Color.TRANSPARENT
     window.navigationBarColor = Color.TRANSPARENT
 
-    window.decorView.setBackgroundColor(functionsClass.setColorAlpha(primaryColor, 113f))
+    window.decorView.setBackgroundColor(functionsClassLegacy.setColorAlpha(primaryColor, 113f))
 }
 
 fun AuthenticationFingerprint.setupAuthenticationUIText() : String {
@@ -45,7 +55,7 @@ fun AuthenticationFingerprint.setupAuthenticationUIText() : String {
         val className = intent.getStringExtra(UserInterfaceExtraData.ClassName)!!
 
         val activityInformation: ActivityInfo? = packageManager.getActivityInfo(ComponentName(packageName, className),0)
-        dialogueTitle = functionsClass.activityLabel(activityInformation)
+        dialogueTitle = functionsClassLegacy.activityLabel(activityInformation)
 
     } else if (intent.hasExtra(UserInterfaceExtraData.OtherTitle)) {
 

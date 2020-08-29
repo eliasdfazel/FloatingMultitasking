@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:41 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,15 +26,15 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fing
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widgets.WidgetsReallocationProcess
 
 class FloatingWidgetHomeScreenShortcuts : Activity() {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
     private val securityFunctions: SecurityFunctions by lazy {
         SecurityFunctions(applicationContext)
@@ -43,7 +43,7 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (!functionsClass.readPreference("WidgetsInformation", "Reallocated", true)
+        if (!functionsClassLegacy.readPreference("WidgetsInformation", "Reallocated", true)
                 && getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
 
             startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
@@ -64,7 +64,7 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
                     && providerClassName != null
                     && widgetLabel != null) {
 
-                if (functionsClass.appIsInstalled(packageName)) {
+                if (functionsClassLegacy.appIsInstalled(packageName)) {
 
                     CoroutineScope(Dispatchers.Main).launch {
 
@@ -93,7 +93,7 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
                                     super.authenticatedFloatIt(extraInformation)
                                     Log.d(this@FloatingWidgetHomeScreenShortcuts.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                                    functionsClass
+                                    functionsClassLegacy
                                             .runUnlimitedWidgetService(appWidgetId, widgetLabel)
 
 
@@ -116,13 +116,13 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
 
                             startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
                                 putExtra(UserInterfaceExtraData.OtherTitle, widgetLabel)
-                                putExtra(UserInterfaceExtraData.PrimaryColor, functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageName)))
+                                putExtra(UserInterfaceExtraData.PrimaryColor, functionsClassLegacy.extractVibrantColor(functionsClassLegacy.applicationIcon(packageName)))
                                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
                         } else {
 
-                            functionsClass.runUnlimitedWidgetService(appWidgetId, widgetLabel)
+                            functionsClassLegacy.runUnlimitedWidgetService(appWidgetId, widgetLabel)
                         }
 
                         widgetDataInterface.close()

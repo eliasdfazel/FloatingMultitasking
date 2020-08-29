@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:42 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,7 +32,7 @@ import kotlinx.coroutines.withContext
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widgets.Utils.FunctionsClassWidgets
@@ -42,7 +42,7 @@ import java.util.*
 class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetConfigurations,
                                private val adapterItems: ArrayList<AdapterItems>, private val appWidgetManager: AppWidgetManager, private val appWidgetHost: AppWidgetHost) : RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder>() {
 
-    private val functionsClass: FunctionsClass = FunctionsClass(widgetConfigurationsActivity)
+    private val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(widgetConfigurationsActivity)
     private val functionsClassWidgets: FunctionsClassWidgets = FunctionsClassWidgets(widgetConfigurationsActivity)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -64,12 +64,12 @@ class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetC
 
         val drawFloatTheWidget = widgetConfigurationsActivity.getDrawable(R.drawable.draw_open) as LayerDrawable?
         val backFloatTheWidget = drawFloatTheWidget?.findDrawableByLayerId(R.id.backgroundTemporary)
-        backFloatTheWidget?.setTint(functionsClass.extractDominantColor(functionsClass.applicationIcon(adapterItems[position].packageName)))
+        backFloatTheWidget?.setTint(functionsClassLegacy.extractDominantColor(functionsClassLegacy.applicationIcon(adapterItems[position].packageName)))
 
         viewHolder.floatTheWidget.setImageDrawable(drawFloatTheWidget)
         viewHolder.floatTheWidget.setOnClickListener {
 
-            functionsClass.runUnlimitedWidgetService(adapterItems[position].appWidgetId, adapterItems[position].widgetLabel)
+            functionsClassLegacy.runUnlimitedWidgetService(adapterItems[position].appWidgetId, adapterItems[position].widgetLabel)
         }
 
         viewHolder.floatTheWidget.setOnLongClickListener { view ->
@@ -86,9 +86,9 @@ class ConfiguredWidgetsAdapter(private val widgetConfigurationsActivity: WidgetC
                         appWidgetProviderInfoLongClick.loadIcon(widgetConfigurationsActivity, DisplayMetrics.DENSITY_HIGH)
                     },
                     adapterItems[position].addedWidgetRecovery,
-                    functionsClass)
+                    functionsClassLegacy)
 
-            functionsClass.doVibrate(77)
+            functionsClassLegacy.doVibrate(77)
 
             false
         }

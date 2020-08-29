@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 7:36 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -29,7 +29,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Exte
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint.AuthenticationFingerprint
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
@@ -38,8 +38,8 @@ import net.geekstools.floatshort.PRO.Widgets.WidgetsReallocationProcess
 
 class RecoveryWidgets : Service() {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     var notAddedToRecovery = false
@@ -51,7 +51,7 @@ class RecoveryWidgets : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        if (!functionsClass.readPreference("WidgetsInformation", "Reallocated", true)
+        if (!functionsClassLegacy.readPreference("WidgetsInformation", "Reallocated", true)
                 && getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
 
             startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
@@ -70,7 +70,7 @@ class RecoveryWidgets : Service() {
 
                 val authenticatedFloatIt: Boolean = (intent.getBooleanExtra("AuthenticatedFloatIt", false))
 
-                if (functionsClass.securityServicesSubscribed()
+                if (functionsClassLegacy.securityServicesSubscribed()
                         && !authenticatedFloatIt) {
 
                     SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
@@ -114,9 +114,9 @@ class RecoveryWidgets : Service() {
         super.onCreate()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(333, functionsClass.bindServiceNotification(), Service.STOP_FOREGROUND_REMOVE)
+            startForeground(333, functionsClassLegacy.bindServiceNotification(), Service.STOP_FOREGROUND_REMOVE)
         } else {
-            startForeground(333, functionsClass.bindServiceNotification())
+            startForeground(333, functionsClassLegacy.bindServiceNotification())
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -141,8 +141,8 @@ class RecoveryWidgets : Service() {
 
         if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
 
-            if (functionsClass.customIconsEnable()) {
-                val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
+            if (functionsClassLegacy.customIconsEnable()) {
+                val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())
                 loadCustomIcons.load()
             }
 
@@ -167,7 +167,7 @@ class RecoveryWidgets : Service() {
                             }
                         }
 
-                        functionsClass.runUnlimitedWidgetService(widgetDataModel.WidgetId, widgetDataModel.WidgetLabel)
+                        functionsClassLegacy.runUnlimitedWidgetService(widgetDataModel.WidgetId, widgetDataModel.WidgetLabel)
 
                     } else {
 

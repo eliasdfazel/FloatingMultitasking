@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:13 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -17,10 +17,10 @@ import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
 
 fun AppSelectionList.setupConfirmButtonUI(confirmButtonProcessInterface: ConfirmButtonProcessInterface) : AppsConfirmButton {
 
-    val confirmButtonLayoutParams = RelativeLayout.LayoutParams(functionsClass.DpToInteger(63), functionsClass.DpToInteger(63))
+    val confirmButtonLayoutParams = RelativeLayout.LayoutParams(functionsClassLegacy.DpToInteger(63), functionsClassLegacy.DpToInteger(63))
 
     val appsConfirmButton = AppsConfirmButton(this@setupConfirmButtonUI, applicationContext,
-            functionsClass,
+            functionsClassLegacy,
             fileIO,
             confirmButtonProcessInterface)
 

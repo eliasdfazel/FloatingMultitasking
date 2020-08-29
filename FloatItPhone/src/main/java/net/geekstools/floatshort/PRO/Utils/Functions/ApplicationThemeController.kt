@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:15 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,7 +32,7 @@ import net.geekstools.floatshort.PRO.R
 
 class ApplicationThemeController (private val context: Context) {
 
-    private val functionsClass: FunctionsClass = FunctionsClass(context)
+    private val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(context)
 
     fun setThemeColorFloating(instanceOfActivity: AppCompatActivity, rootView: View, applyTransparency: Boolean) {
 
@@ -42,7 +42,7 @@ class ApplicationThemeController (private val context: Context) {
                 Utils().setBackgroundTheme(instanceOfActivity)
             }
 
-            rootView.setBackgroundColor(functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
+            rootView.setBackgroundColor(functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
 
             instanceOfActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             instanceOfActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -54,8 +54,8 @@ class ApplicationThemeController (private val context: Context) {
                 }
             }
 
-            instanceOfActivity.window.statusBarColor = functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f)
-            instanceOfActivity.window.navigationBarColor = functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f)
+            instanceOfActivity.window.statusBarColor = functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f)
+            instanceOfActivity.window.navigationBarColor = functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f)
 
         } else {
 
@@ -85,7 +85,7 @@ class ApplicationThemeController (private val context: Context) {
                 Utils().setBackgroundTheme(instanceOfActivity)
             }
 
-            rootView.setBackgroundColor(functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), if (Utils().wallpaperStaticLive()) {
+            rootView.setBackgroundColor(functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), if (Utils().wallpaperStaticLive()) {
                 180.toFloat()
             } else {
                 80.toFloat()
@@ -101,12 +101,12 @@ class ApplicationThemeController (private val context: Context) {
                 }
             }
 
-            instanceOfActivity.window.statusBarColor = functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.75f), if (Utils().wallpaperStaticLive()) {
+            instanceOfActivity.window.statusBarColor = functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.75f), if (Utils().wallpaperStaticLive()) {
                 245.toFloat()
             } else {
                 113.toFloat()
             })
-            instanceOfActivity.window.navigationBarColor = functionsClass.setColorAlpha(functionsClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), if (Utils().wallpaperStaticLive()) 180.toFloat() else 80.toFloat())
+            instanceOfActivity.window.navigationBarColor = functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), if (Utils().wallpaperStaticLive()) 180.toFloat() else 80.toFloat())
 
         } else {
 
@@ -136,7 +136,7 @@ class ApplicationThemeController (private val context: Context) {
                 Utils().setBackgroundTheme(instanceOfActivity)
             }
 
-            rootView.setBackgroundColor(functionsClass.setColorAlpha(PublicVariable.colorLightDark, if (Utils().wallpaperStaticLive()) {
+            rootView.setBackgroundColor(functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, if (Utils().wallpaperStaticLive()) {
                 180.toFloat()
             } else {
                 80.toFloat()
@@ -164,7 +164,7 @@ class ApplicationThemeController (private val context: Context) {
             }
 
             instanceOfActivity.window.statusBarColor = PublicVariable.primaryColor
-            instanceOfActivity.window.navigationBarColor = functionsClass.setColorAlpha(PublicVariable.colorLightDark, if (Utils().wallpaperStaticLive()) {
+            instanceOfActivity.window.navigationBarColor = functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, if (Utils().wallpaperStaticLive()) {
                 180.toFloat()
             } else {
                 80.toFloat()
@@ -205,15 +205,15 @@ class ApplicationThemeController (private val context: Context) {
                 val wallpaper = wallpaperManager.drawable as BitmapDrawable
                 val bitmapWallpaper = wallpaper.bitmap
 
-                val inputBitmap: Bitmap = if (bitmapWallpaper.width < functionsClass.displayX() || bitmapWallpaper.height < functionsClass.displayY()) {
-                    Bitmap.createScaledBitmap(bitmapWallpaper, functionsClass.displayX(), functionsClass.displayY(), false)
+                val inputBitmap: Bitmap = if (bitmapWallpaper.width < functionsClassLegacy.displayX() || bitmapWallpaper.height < functionsClassLegacy.displayY()) {
+                    Bitmap.createScaledBitmap(bitmapWallpaper, functionsClassLegacy.displayX(), functionsClassLegacy.displayY(), false)
                 } else {
                     Bitmap.createBitmap(
                             bitmapWallpaper,
-                            bitmapWallpaper.width / 2 - functionsClass.displayX() / 2,
-                            bitmapWallpaper.height / 2 - functionsClass.displayY() / 2,
-                            functionsClass.displayX(),
-                            functionsClass.displayY()
+                            bitmapWallpaper.width / 2 - functionsClassLegacy.displayX() / 2,
+                            bitmapWallpaper.height / 2 - functionsClassLegacy.displayY() / 2,
+                            functionsClassLegacy.displayX(),
+                            functionsClassLegacy.displayY()
                     )
                 }
                 val outputBitmap = Bitmap.createBitmap(inputBitmap)

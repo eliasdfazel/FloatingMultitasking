@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -35,7 +35,7 @@ import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType;
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine;
 import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
@@ -45,7 +45,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
     private Context context;
 
-    private FunctionsClass functionsClass;
+    private FunctionsClassLegacy functionsClassLegacy;
     private FloatingServices floatingServices;
 
     private int searchLayoutId;
@@ -60,10 +60,10 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
         SearchEngine.Companion.setAllSearchData(allSearchData);
 
-        functionsClass = new FunctionsClass(context);
+        functionsClassLegacy = new FunctionsClassLegacy(context);
         floatingServices = new FloatingServices(context);
 
-        switch (functionsClass.shapesImageId()) {
+        switch (functionsClassLegacy.shapesImageId()) {
             case 1:
                 searchLayoutId = R.layout.search_items_droplet;
 
@@ -132,7 +132,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
         /*Add Switch To Change for Different Type: Apps/Folders/Widgets*/
         switch (SearchEngine.Companion.getAllSearchResults().get(position).getSearchResultType()) {
             case SearchResultType.SearchShortcuts: {
-                dominantColor = functionsClass.extractDominantColor(SearchEngine.Companion.getAllSearchResults().get(position).getAppIcon());
+                dominantColor = functionsClassLegacy.extractDominantColor(SearchEngine.Companion.getAllSearchResults().get(position).getAppIcon());
 
                 viewHolder.itemAppIcon.setImageDrawable(SearchEngine.Companion.getAllSearchResults().get(position).getAppIcon());
                 viewHolder.itemAppName.setText(SearchEngine.Companion.getAllSearchResults().get(position).getAppName());
@@ -153,7 +153,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
 
                 Drawable backgroundDrawable = null;
                 try {
-                    backgroundDrawable = functionsClass.shapesDrawables().mutate();
+                    backgroundDrawable = functionsClassLegacy.shapesDrawables().mutate();
                     backgroundDrawable.setTint(PublicVariable.primaryColor);
 
                     viewHolder.itemAppIcon.setAlpha(0.59f);
@@ -165,7 +165,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                 break;
             }
             case SearchResultType.SearchWidgets: {
-                dominantColor = functionsClass.extractDominantColor(SearchEngine.Companion.getAllSearchResults().get(position).getAppWidgetProviderInfo().loadPreviewImage(context, DisplayMetrics.DENSITY_MEDIUM));
+                dominantColor = functionsClassLegacy.extractDominantColor(SearchEngine.Companion.getAllSearchResults().get(position).getAppWidgetProviderInfo().loadPreviewImage(context, DisplayMetrics.DENSITY_MEDIUM));
 
                 viewHolder.itemAppIcon.setImageDrawable(SearchEngine.Companion.getAllSearchResults()
                         .get(position).getAppWidgetProviderInfo().loadPreviewImage(context, DisplayMetrics.DENSITY_MEDIUM));
@@ -218,7 +218,7 @@ public class SearchEngineAdapter extends BaseAdapter implements Filterable {
                         break;
                     }
                     case SearchResultType.SearchWidgets: {
-                        functionsClass
+                        functionsClassLegacy
                                 .runUnlimitedWidgetService(SearchEngine.Companion.getAllSearchResults().get(position).getAppWidgetId(),
                                         SearchEngine.Companion.getAllSearchResults().get(position).getWidgetLabel());
 

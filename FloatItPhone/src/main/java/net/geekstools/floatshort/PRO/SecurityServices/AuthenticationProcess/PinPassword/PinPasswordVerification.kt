@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,13 +21,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.databinding.AuthVerificationWaitingBinding
 
 class PinPasswordVerification : Activity() {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     private lateinit var authVerificationWaitingBinding: AuthVerificationWaitingBinding
@@ -46,7 +46,7 @@ class PinPasswordVerification : Activity() {
 
         if (intent.hasExtra("RESET_PASSWORD_BY_FINGER_PRINT")) {
 
-            functionsClass.savePreference(".Password", "Pin", "0")
+            functionsClassLegacy.savePreference(".Password", "Pin", "0")
 
             Handler().postDelayed({
 
@@ -73,7 +73,7 @@ class PinPasswordVerification : Activity() {
 
                         Debug.PrintDebug("*** Email Verified ***")
 
-                        functionsClass.savePreference(".Password", "Pin", "0")
+                        functionsClassLegacy.savePreference(".Password", "Pin", "0")
                         Handler().postDelayed({
 
                             startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java)

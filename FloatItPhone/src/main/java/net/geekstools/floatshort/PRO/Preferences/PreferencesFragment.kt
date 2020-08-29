@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:24 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -60,7 +60,7 @@ import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserv
 
 class PreferencesFragment : PreferenceFragmentCompat() {
 
-    lateinit var functionsClass: FunctionsClass
+    lateinit var functionsClassLegacy: FunctionsClassLegacy
     lateinit var dialogues: Dialogues
 
     private val popupApplicationShortcuts: PopupApplicationShortcuts by lazy {
@@ -123,8 +123,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_screen, rootKey)
 
-        functionsClass = FunctionsClass(requireContext())
-        dialogues = Dialogues(requireActivity(), functionsClass)
+        functionsClassLegacy = FunctionsClassLegacy(requireContext())
+        dialogues = Dialogues(requireActivity(), functionsClassLegacy)
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -186,11 +186,11 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             themeColor.summary = getString(R.string.dark)
             PublicVariable.themeLightDark = false
         } else if (appTheme == "3") {
-            functionsClass.checkLightDarkTheme()
+            functionsClassLegacy.checkLightDarkTheme()
             themeColor.summary = getString(R.string.dynamic)
         }
 
-        delayPressHold.summary = functionsClass.readDefaultPreference("delayPressHold", 333).toString() + " " + getString(R.string.millis)
+        delayPressHold.summary = functionsClassLegacy.readDefaultPreference("delayPressHold", 333).toString() + " " + getString(R.string.millis)
 
         stable.setOnPreferenceClickListener {
             if (sharedPreferences.getBoolean("stable", true)) {
@@ -201,25 +201,25 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 if (PublicVariable.allFloatingCounter == 0) {
                     context?.stopService(Intent(context, BindServices::class.java))
                 }
-                functionsClass.saveDefaultPreference("LitePreferences", false)
+                functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
             }
             false
         }
 
         themeTrans.setOnPreferenceClickListener {
 
-            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.applicationVersionName(context?.packageName))
+            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClassLegacy.appThemeTransparent(), getString(R.string.settingTitle), functionsClassLegacy.applicationVersionName(context?.packageName))
 
-            functionsClass.saveDefaultPreference("LitePreferences", false)
+            functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
 
             false
         }
 
         blur.setOnPreferenceClickListener {
 
-            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClass.appThemeTransparent(), getString(R.string.settingTitle), functionsClass.applicationVersionName(context?.packageName))
+            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClassLegacy.appThemeTransparent(), getString(R.string.settingTitle), functionsClassLegacy.applicationVersionName(context?.packageName))
 
-            functionsClass.saveDefaultPreference("LitePreferences", false)
+            functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
 
             false
         }
@@ -230,7 +230,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                     blur.isChecked = false
                     blur.isEnabled = false
                 }
-                functionsClass.saveDefaultPreference("LitePreferences", false)
+                functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
             } else if (!sharedPreferences.getBoolean("transparent", true)) {
                 blur.isChecked = false
                 blur.isEnabled = false
@@ -241,7 +241,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         themeColor.setOnPreferenceChangeListener { preference, newValue ->
             Handler().postDelayed({
-                functionsClass.checkLightDarkTheme()
+                functionsClassLegacy.checkLightDarkTheme()
 
                 when (newValue.toString()) {
                     "1" -> {
@@ -254,7 +254,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         })
 
-                        functionsClass.saveDefaultPreference("LitePreferences", false)
+                        functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
                     }
                     "2" -> {
                         themeColor.summary = getString(R.string.dark)
@@ -266,19 +266,19 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         })
 
-                        functionsClass.saveDefaultPreference("LitePreferences", false)
+                        functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
                     }
                     "3" -> {
                         themeColor.summary = getString(R.string.dynamic)
 
                         PublicVariable.forceReload = true
-                        functionsClass.checkLightDarkTheme()
+                        functionsClassLegacy.checkLightDarkTheme()
 
                         startActivity(Intent(context, PreferencesActivity::class.java).apply {
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         })
 
-                        functionsClass.saveDefaultPreference("LitePreferences", false)
+                        functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
                     }
                 }
             }, 357)
@@ -300,7 +300,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         support.setOnPreferenceClickListener {
-            functionsClass.ContactSupport(activity)
+            functionsClassLegacy.ContactSupport(activity)
 
             true
         }
@@ -332,7 +332,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         pinPassword.setOnPreferenceClickListener{
-            if (functionsClass.securityServicesSubscribed()) {
+            if (functionsClassLegacy.securityServicesSubscribed()) {
                 startActivity(Intent(context, PinPasswordConfigurations::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
             } else {
@@ -360,15 +360,15 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 } else if (!sharedPreferences.getBoolean("smart", true)) {
                     smart.isChecked = false
 
-                    functionsClass.UsageAccess(activity, smart)
+                    functionsClassLegacy.UsageAccess(activity, smart)
                 }
             }
             true
         }
 
         observe.setOnPreferenceClickListener {
-            if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
-                functionsClass.AccessibilityServiceDialogue(activity, observe)
+            if (!functionsClassLegacy.AccessibilityServiceEnabled() && !functionsClassLegacy.SettingServiceRunning(InteractionObserver::class.java)) {
+                functionsClassLegacy.AccessibilityServiceDialogue(activity, observe)
             } else {
                 val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -406,9 +406,9 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 }
                 popupApplicationShortcuts.addPopupApplicationShortcuts()
             }
-            if (functionsClass.returnAPI() > 22) {
+            if (functionsClassLegacy.returnAPI() > 22) {
                 alertDialogBuilder.setNeutralButton(getString(R.string.read)) { dialog, which ->
-                    functionsClass.RemoteRecovery(activity)
+                    functionsClassLegacy.RemoteRecovery(activity)
                 }
             }
             alertDialogBuilder.show()
@@ -418,7 +418,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         notification.setOnPreferenceClickListener {
 
-            if (functionsClass.NotificationAccess() && functionsClass.NotificationListenerRunning()) {
+            if (functionsClassLegacy.NotificationAccess() && functionsClassLegacy.NotificationListenerRunning()) {
 
                 val notification = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
                 notification.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -426,14 +426,14 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
             } else {
 
-                functionsClass.NotificationAccessService(activity, notification)
+                functionsClassLegacy.NotificationAccessService(activity, notification)
             }
 
             true
         }
 
         shapes.setOnPreferenceClickListener {
-            PreferencesDataUtilShape(requireActivity(), sharedPreferences, functionsClass, shapes).let {
+            PreferencesDataUtilShape(requireActivity(), sharedPreferences, functionsClassLegacy, shapes).let {
                 setupShapes(it)
             }
 
@@ -441,8 +441,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         freeForm.setOnPreferenceClickListener{
-            if (functionsClass.FreeForm()) {
-                functionsClass.FreeFormInformation(activity, freeForm)
+            if (functionsClassLegacy.FreeForm()) {
+                functionsClassLegacy.FreeFormInformation(activity, freeForm)
             } else {
                 freeForm.isChecked = false
             }
@@ -483,11 +483,11 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             seekBarPreferences.progressTintMode = PorterDuff.Mode.SRC_IN
 
             seekBarPreferences.max = 213
-            seekBarPreferences.progress = functionsClass.readDefaultPreference("autoTransProgress", 0)
+            seekBarPreferences.progress = functionsClassLegacy.readDefaultPreference("autoTransProgress", 0)
 
             var layerDrawableLoadLogo: Drawable?
             try {
-                val backgroundDot = functionsClass.shapesDrawables().mutate()
+                val backgroundDot = functionsClassLegacy.shapesDrawables().mutate()
                 backgroundDot.setTint(PublicVariable.primaryColorOpposite)
                 layerDrawableLoadLogo = LayerDrawable(arrayOf(
                         backgroundDot,
@@ -498,7 +498,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 layerDrawableLoadLogo = requireContext().getDrawable(R.drawable.ic_launcher)
             }
 
-            transparentIcon.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+            transparentIcon.imageAlpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255)
             transparentIcon.setImageDrawable(layerDrawableLoadLogo)
 
             dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.autotrans) + "</font>")
@@ -509,8 +509,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     val alpha = 255 - progress
                     transparentIcon.imageAlpha = alpha
-                    functionsClass.saveDefaultPreference("autoTrans", alpha)
-                    functionsClass.saveDefaultPreference("autoTransProgress", progress)
+                    functionsClassLegacy.saveDefaultPreference("autoTrans", alpha)
+                    functionsClassLegacy.saveDefaultPreference("autoTransProgress", progress)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -523,8 +523,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             })
 
             revertDefault.setOnClickListener {
-                functionsClass.saveDefaultPreference("autoTrans", 113)
-                functionsClass.saveDefaultPreference("autoTransProgress", 95)
+                functionsClassLegacy.saveDefaultPreference("autoTrans", 113)
+                functionsClassLegacy.saveDefaultPreference("autoTransProgress", 95)
                 transparentIcon.imageAlpha = 113
                 seekBarPreferences.progress = 95
             }
@@ -533,7 +533,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 val drawPrefAutoTrans = requireContext().getDrawable(R.drawable.draw_pref)!!.mutate() as LayerDrawable
                 val backPrefAutoTrans = drawPrefAutoTrans.findDrawableByLayerId(R.id.backgroundTemporary).mutate()
                 backPrefAutoTrans.setTint(PublicVariable.primaryColor)
-                backPrefAutoTrans.alpha = functionsClass.readDefaultPreference("autoTrans", 255)
+                backPrefAutoTrans.alpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255)
                 autotrans.icon = drawPrefAutoTrans
 
                 PublicVariable.forceReload = false
@@ -579,11 +579,11 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             seekBarPreferences.progressTintMode = PorterDuff.Mode.SRC_IN
 
             seekBarPreferences.max = 5
-            seekBarPreferences.progress = functionsClass.readDefaultPreference("floatingSizeProgress", 2)
+            seekBarPreferences.progress = functionsClassLegacy.readDefaultPreference("floatingSizeProgress", 2)
 
             var layerDrawableLoadLogo: Drawable?
             try {
-                val backgroundDot = functionsClass.shapesDrawables().mutate()
+                val backgroundDot = functionsClassLegacy.shapesDrawables().mutate()
                 backgroundDot.setTint(PublicVariable.primaryColorOpposite)
                 layerDrawableLoadLogo = LayerDrawable(arrayOf(
                         backgroundDot,
@@ -594,7 +594,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 layerDrawableLoadLogo = requireContext().getDrawable(R.drawable.ic_launcher)
             }
 
-            val iconHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, functionsClass.readDefaultPreference("floatingSize", 39).toFloat(), resources.displayMetrics).toInt()
+            val iconHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, functionsClassLegacy.readDefaultPreference("floatingSize", 39).toFloat(), resources.displayMetrics).toInt()
             val layoutParamsIcon = RelativeLayout.LayoutParams(
                     iconHW,
                     iconHW
@@ -612,8 +612,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             seekBarPreferences.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     val size = 13 * progressTemp[progress]
-                    functionsClass.saveDefaultPreference("floatingSize", size)
-                    functionsClass.saveDefaultPreference("floatingSizeProgress", progress)
+                    functionsClassLegacy.saveDefaultPreference("floatingSize", size)
+                    functionsClassLegacy.saveDefaultPreference("floatingSizeProgress", progress)
                     val iconHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size.toFloat(), resources.displayMetrics).toInt()
                     val layoutParamsIcon = RelativeLayout.LayoutParams(
                             iconHW,
@@ -629,8 +629,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             })
 
             revertDefault.setOnClickListener {
-                functionsClass.saveDefaultPreference("floatingSize", 39)
-                functionsClass.saveDefaultPreference("floatingSizeProgress", 2)
+                functionsClassLegacy.saveDefaultPreference("floatingSize", 39)
+                functionsClassLegacy.saveDefaultPreference("floatingSizeProgress", 2)
 
                 val iconHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 39f, resources.displayMetrics).toInt()
                 val layoutParamsIcon = RelativeLayout.LayoutParams(
@@ -692,11 +692,11 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             seekBarPreferences.progressTintMode = PorterDuff.Mode.SRC_IN
 
             seekBarPreferences.max = 1000
-            seekBarPreferences.progress = functionsClass.readDefaultPreference("delayPressHoldProgress", 0)
+            seekBarPreferences.progress = functionsClassLegacy.readDefaultPreference("delayPressHoldProgress", 0)
 
             var layerDrawableLoadLogo: Drawable?
             try {
-                val backgroundDot = functionsClass.shapesDrawables().mutate()
+                val backgroundDot = functionsClassLegacy.shapesDrawables().mutate()
                 backgroundDot.setTint(PublicVariable.primaryColorOpposite)
                 layerDrawableLoadLogo = LayerDrawable(arrayOf(
                         backgroundDot,
@@ -726,10 +726,10 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                                 vibrator.vibrate(333)
                                 /*
                                                                          *
-                                                                         */PrintDebug("*** millis delay ::: " + functionsClass.readDefaultPreference("delayPressHold", 333))
+                                                                         */PrintDebug("*** millis delay ::: " + functionsClassLegacy.readDefaultPreference("delayPressHold", 333))
                             }
                         }
-                        handlerPressHold.postDelayed(runnablePressHold, functionsClass.readDefaultPreference("delayPressHold", 333).toLong())
+                        handlerPressHold.postDelayed(runnablePressHold, functionsClassLegacy.readDefaultPreference("delayPressHold", 333).toLong())
                     }
                     MotionEvent.ACTION_UP -> {
                         touchingDelay = false
@@ -743,8 +743,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             seekBarPreferences.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     val delay = 333 + progress
-                    functionsClass.saveDefaultPreference("delayPressHold", delay)
-                    functionsClass.saveDefaultPreference("delayPressHoldProgress", progress)
+                    functionsClassLegacy.saveDefaultPreference("delayPressHold", delay)
+                    functionsClassLegacy.saveDefaultPreference("delayPressHoldProgress", progress)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -752,13 +752,13 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             })
 
             revertDefault.setOnClickListener {
-                functionsClass.saveDefaultPreference("delayPressHold", 333)
-                functionsClass.saveDefaultPreference("delayPressHoldProgress", 0)
+                functionsClassLegacy.saveDefaultPreference("delayPressHold", 333)
+                functionsClassLegacy.saveDefaultPreference("delayPressHoldProgress", 0)
                 seekBarPreferences.progress = 0
             }
 
             dialog.setOnDismissListener {
-                delayPressHold.summary = functionsClass.readDefaultPreference("delayPressHold", 333).toString() + " " + getString(R.string.millis)
+                delayPressHold.summary = functionsClassLegacy.readDefaultPreference("delayPressHold", 333).toString() + " " + getString(R.string.millis)
                 PublicVariable.forceReload = false
                 dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             }
@@ -768,7 +768,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         flingSensitivity.setOnPreferenceClickListener {
-            PreferencesDataUtilFling(requireActivity(), functionsClass).let {
+            PreferencesDataUtilFling(requireActivity(), functionsClassLegacy).let {
                 setupFlingSensitivity(it)
             }
 
@@ -785,7 +785,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                         listView.smoothScrollToPosition(listView.bottom)
 
                         Handler().postDelayed({
-                            functionsClass.litePreferenceConfirm(activity)
+                            functionsClassLegacy.litePreferenceConfirm(activity)
 
                             fileIO.saveFileEmpty(".LitePreferenceCheckpoint")
                         }, 555)
@@ -794,7 +794,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             }
         }
         lite.setOnPreferenceClickListener {
-            functionsClass.litePreferenceConfirm(activity)
+            functionsClassLegacy.litePreferenceConfirm(activity)
 
             true
         }
@@ -806,13 +806,13 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             firebaseRemoteConfig.activate().addOnSuccessListener {
 
                 if (!this@PreferencesFragment.isRemoving) {
-                    if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.applicationVersionCode(requireContext().packageName)) {
-                        functionsClass.upcomingChangeLog(
+                    if (firebaseRemoteConfig.getLong(functionsClassLegacy.versionCodeRemoteConfigKey()) > functionsClassLegacy.applicationVersionCode(requireContext().packageName)) {
+                        functionsClassLegacy.upcomingChangeLog(
                                 requireActivity(),
-                                firebaseRemoteConfig.getString(functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toString())
+                                firebaseRemoteConfig.getString(functionsClassLegacy.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
                     }
 
-                    if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClass.applicationVersionCode(requireContext().packageName)) {
+                    if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClassLegacy.applicationVersionCode(requireContext().packageName)) {
                         whatsnew.summary = getString(R.string.betaUpdateAvailable)
                         betaChangeLog = firebaseRemoteConfig.getString(getString(R.string.BETAstringUpcomingChangeLogPhone))
                         betaVersionCode = firebaseRemoteConfig.getString(getString(R.string.BETAintegerVersionCodeNewUpdatePhone))
@@ -895,7 +895,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         backPref.setTint(PublicVariable.primaryColor)
 
         backPrefAutoTrans.setTint(PublicVariable.primaryColor)
-        backPrefAutoTrans.alpha = functionsClass.readDefaultPreference("autoTrans", 255)
+        backPrefAutoTrans.alpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255)
 
         backFloatIt.setTint(PublicVariable.primaryColor)
         backSupport.setTint(PublicVariable.primaryColorOpposite)
@@ -955,12 +955,12 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             }
         }
 
-        if (functionsClass.customIconsEnable()) {
-            shapes.icon = functionsClass.applicationIcon(functionsClass.customIconPackageName())
-            shapes.summary = functionsClass.applicationName(functionsClass.customIconPackageName())
+        if (functionsClassLegacy.customIconsEnable()) {
+            shapes.icon = functionsClassLegacy.applicationIcon(functionsClassLegacy.customIconPackageName())
+            shapes.summary = functionsClassLegacy.applicationName(functionsClassLegacy.customIconPackageName())
         }
 
-        if (functionsClass.UsageStatsEnabled()) {
+        if (functionsClassLegacy.UsageStatsEnabled()) {
             PublicVariable.forceReload = true
 
             smart.isChecked = true
@@ -968,28 +968,28 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             smart.isChecked = false
         }
 
-        if (functionsClass.returnAPI() < 24) {
+        if (functionsClassLegacy.returnAPI() < 24) {
             observe.summary = getString(R.string.observeSum)
             observe.isEnabled = false
             freeForm.summary = getString(R.string.observeSum)
             freeForm.isEnabled = false
         }
 
-        observe.isChecked = functionsClass.AccessibilityServiceEnabled() && functionsClass.SettingServiceRunning(InteractionObserver::class.java)
+        observe.isChecked = functionsClassLegacy.AccessibilityServiceEnabled() && functionsClassLegacy.SettingServiceRunning(InteractionObserver::class.java)
 
-        notification.isChecked = functionsClass.NotificationAccess() && functionsClass.NotificationListenerRunning()
+        notification.isChecked = functionsClassLegacy.NotificationAccess() && functionsClassLegacy.NotificationListenerRunning()
 
         if (!applicationThemeControllerUtils.wallpaperStaticLive()) {
             blur.isEnabled = false
         }
 
-        freeForm.isChecked = functionsClass.freeFormSupport(context) && functionsClass.FreeForm()
+        freeForm.isChecked = functionsClassLegacy.freeFormSupport(context) && functionsClassLegacy.FreeForm()
     }
 
     override fun onPause() {
         super.onPause()
 
-        functionsClass.loadSavedColor()
+        functionsClassLegacy.loadSavedColor()
 
     }
 

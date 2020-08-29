@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 6:36 PM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,12 +15,12 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 
 class FloatingSplashRemoval: AppCompatImageView, FloatingSplashInterface {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(context)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(context)
     }
 
     private val paint = Paint()
@@ -46,9 +46,9 @@ class FloatingSplashRemoval: AppCompatImageView, FloatingSplashInterface {
 
             canvas.drawPaint(paint)
 
-            canvas.drawCircle(functionsClass.displayX().toFloat(),
-                    functionsClass.displayY().toFloat(),
-                    functionsClass.displayY() * 2.toFloat(),
+            canvas.drawCircle(functionsClassLegacy.displayX().toFloat(),
+                    functionsClassLegacy.displayY().toFloat(),
+                    functionsClassLegacy.displayY() * 2.toFloat(),
                     paint)
         }
     }
@@ -57,7 +57,7 @@ class FloatingSplashRemoval: AppCompatImageView, FloatingSplashInterface {
 
         this@FloatingSplashRemoval.visibility = View.VISIBLE
 
-        functionsClass.circularRevealSplashScreenRemoval(
+        functionsClassLegacy.circularRevealSplashScreenRemoval(
                 this@FloatingSplashRemoval,
                 FloatingSplash.xPositionRemoval + FloatingSplash.HeightWidthRemoval / 2,
                 FloatingSplash.yPositionRemoval + FloatingSplash.HeightWidthRemoval / 2

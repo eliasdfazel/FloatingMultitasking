@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:29 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -59,7 +59,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsSearchEngine
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
@@ -69,7 +69,7 @@ import net.geekstools.floatshort.PRO.databinding.SearchEngineViewBinding
 
 class SearchEngine(private val activity: AppCompatActivity, private val context: Context,
                    private val searchEngineViewBinding: SearchEngineViewBinding,
-                   private val functionsClass: FunctionsClass,
+                   private val functionsClassLegacy: FunctionsClassLegacy,
                    private val fileIO: FileIO,
                    private val floatingServices: FloatingServices,
                    private val customIcons: LoadCustomIcons?,
@@ -137,12 +137,12 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                     .collect {
                         val installedPackageName = it.activityInfo.packageName
                         val installedClassName = it.activityInfo.name
-                        val installedAppName = functionsClass.activityLabel(it.activityInfo)
+                        val installedAppName = functionsClassLegacy.activityLabel(it.activityInfo)
 
-                        val installedAppIcon = if (functionsClass.customIconsEnable()) {
-                            customIcons?.getDrawableIconForPackage(installedPackageName, functionsClass.shapedAppIcon(it.activityInfo))
+                        val installedAppIcon = if (functionsClassLegacy.customIconsEnable()) {
+                            customIcons?.getDrawableIconForPackage(installedPackageName, functionsClassLegacy.shapedAppIcon(it.activityInfo))
                         } else {
-                            functionsClass.shapedAppIcon(it.activityInfo)
+                            functionsClassLegacy.shapedAppIcon(it.activityInfo)
                         }
 
                         searchAdapterItems.add(AdapterItemsSearchEngine(installedAppName, installedPackageName, installedClassName, installedAppIcon, SearchResultType.SearchShortcuts))
@@ -185,14 +185,14 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                             val className: String = widgetDataModel.ClassNameProvider
                             val configClassName: String? = widgetDataModel.ConfigClassName
 
-                            if (functionsClass.appIsInstalled(packageName)) {
+                            if (functionsClassLegacy.appIsInstalled(packageName)) {
 
                                 val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
-                                val newAppName = functionsClass.applicationName(packageName)
-                                val appIcon = if (functionsClass.customIconsEnable()) {
-                                    customIcons?.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
+                                val newAppName = functionsClassLegacy.applicationName(packageName)
+                                val appIcon = if (functionsClassLegacy.customIconsEnable()) {
+                                    customIcons?.getDrawableIconForPackage(packageName, functionsClassLegacy.shapedAppIcon(packageName))
                                 } else {
-                                    functionsClass.shapedAppIcon(packageName)
+                                    functionsClassLegacy.shapedAppIcon(packageName)
                                 }
 
                                 searchAdapterItems.add(AdapterItemsSearchEngine(
@@ -236,7 +236,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
         searchEngineViewBinding.searchView.scrollBarSize = 0
 
         searchEngineViewBinding.searchView.setTextColor(PublicVariable.colorLightDarkOpposite)
-        searchEngineViewBinding.searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
+        searchEngineViewBinding.searchView.compoundDrawableTintList = ColorStateList.valueOf(functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
 
         val layerDrawableSearchIcon = context.getDrawable(R.drawable.search_icon) as RippleDrawable?
         val backgroundTemporarySearchIcon = layerDrawableSearchIcon?.findDrawableByLayerId(R.id.backgroundTemporary)
@@ -245,13 +245,13 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
         backgroundTemporarySearchIcon?.setTint(PublicVariable.colorLightDarkOpposite)
         frontTemporarySearchIcon?.setTint(PublicVariable.colorLightDark)
         frontDrawableSearchIcon?.setTint(if (PublicVariable.themeLightDark) {
-            functionsClass.manipulateColor(PublicVariable.primaryColor, 0.90f)
+            functionsClassLegacy.manipulateColor(PublicVariable.primaryColor, 0.90f)
         } else {
-            functionsClass.manipulateColor(PublicVariable.primaryColor, 3.00f)
+            functionsClassLegacy.manipulateColor(PublicVariable.primaryColor, 3.00f)
         })
 
         layerDrawableSearchIcon?.setLayerInset(2,
-                functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13), functionsClass.DpToInteger(13))
+                functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13))
 
         searchEngineViewBinding.root.visibility = View.VISIBLE
 
@@ -281,15 +281,15 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
             val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
             firebaseAnalytics.logEvent(SearchEngineAdapter.SEARCH_ENGINE_USED_LOG, bundleSearchEngineUsed)
 
-            if (functionsClass.securityServicesSubscribed()) {
-                if (functionsClass.readPreference(".Password", "Pin", "0") == "0" && functionsClass.securityServicesSubscribed()) {
+            if (functionsClassLegacy.securityServicesSubscribed()) {
+                if (functionsClassLegacy.readPreference(".Password", "Pin", "0") == "0" && functionsClassLegacy.securityServicesSubscribed()) {
                     activity.startActivity(Intent(context, PinPasswordConfigurations::class.java).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }, ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
                 } else {
                     if (!SearchEngineAdapter.alreadyAuthenticatedSearchEngine) {
 
-                        if (functionsClass.securityServicesSubscribed()) {
+                        if (functionsClassLegacy.securityServicesSubscribed()) {
 
                             SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
@@ -334,14 +334,14 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
 
     private fun performSearchEngine(finalBackgroundTemporaryInput: GradientDrawable?) = CoroutineScope(Dispatchers.Main).launch {
 
-        if (functionsClass.searchEngineSubscribed()) {
+        if (functionsClassLegacy.searchEngineSubscribed()) {
             searchEngineViewBinding.textInputSearchView.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
             searchEngineViewBinding.textInputSearchView.visibility = View.VISIBLE
 
             searchEngineViewBinding.searchIcon.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
             searchEngineViewBinding.searchIcon.visibility = View.INVISIBLE
 
-            val valueAnimatorCornerDown = ValueAnimator.ofInt(functionsClass.DpToInteger(51), functionsClass.DpToInteger(7))
+            val valueAnimatorCornerDown = ValueAnimator.ofInt(functionsClassLegacy.DpToInteger(51), functionsClassLegacy.DpToInteger(7))
             valueAnimatorCornerDown.duration = 777
             valueAnimatorCornerDown.addUpdateListener { animator ->
                 val animatorValue = animator.animatedValue as Int
@@ -351,7 +351,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
             }
             valueAnimatorCornerDown.start()
 
-            val valueAnimatorScalesUp = ValueAnimator.ofInt(functionsClass.DpToInteger(51), (searchEngineViewBinding.root.width / 2))
+            val valueAnimatorScalesUp = ValueAnimator.ofInt(functionsClassLegacy.DpToInteger(51), (searchEngineViewBinding.root.width / 2))
             valueAnimatorScalesUp.duration = 777
             valueAnimatorScalesUp.addUpdateListener { animator ->
                 val animatorValue = animator.animatedValue as Int
@@ -399,7 +399,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                                 searchResultItem.folderName?.let { it -> floatingServices.runUnlimitedFoldersService(it) }
                             }
                             SearchResultType.SearchWidgets -> {
-                                functionsClass
+                                functionsClassLegacy
                                         .runUnlimitedWidgetService(searchResultItem.appWidgetId!!,
                                                 searchResultItem.widgetLabel)
                             }
@@ -433,7 +433,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                                 SearchEngine.allSearchResults[0].folderName?.let { floatingServices.runUnlimitedFoldersService(it) }
                             }
                             SearchResultType.SearchWidgets -> {
-                                functionsClass
+                                functionsClassLegacy
                                         .runUnlimitedWidgetService(SearchEngine.allSearchResults[0].appWidgetId!!,
                                                 SearchEngine.allSearchResults[0].widgetLabel)
                             }
@@ -443,7 +443,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
 
                         inputMethodManager.hideSoftInputFromWindow(searchEngineViewBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
-                        val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
+                        val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClassLegacy.DpToInteger(7), functionsClassLegacy.DpToInteger(51))
                         valueAnimatorCornerUp.duration = 777
                         valueAnimatorCornerUp.addUpdateListener { animator ->
                             val animatorValue = animator.animatedValue as Int
@@ -453,7 +453,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                         }
                         valueAnimatorCornerUp.start()
 
-                        val valueAnimatorScales = ValueAnimator.ofInt(searchEngineViewBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
+                        val valueAnimatorScales = ValueAnimator.ofInt(searchEngineViewBinding.textInputSearchView.width, functionsClassLegacy.DpToInteger(51))
                         valueAnimatorScales.duration = 777
                         valueAnimatorScales.addUpdateListener { animator ->
                             val animatorValue = animator.animatedValue as Int
@@ -504,7 +504,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
 
                 inputMethodManager.hideSoftInputFromWindow(searchEngineViewBinding.searchView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
-                val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClass.DpToInteger(7), functionsClass.DpToInteger(51))
+                val valueAnimatorCornerUp = ValueAnimator.ofInt(functionsClassLegacy.DpToInteger(7), functionsClassLegacy.DpToInteger(51))
                 valueAnimatorCornerUp.duration = 777
                 valueAnimatorCornerUp.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int
@@ -514,7 +514,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                 }
                 valueAnimatorCornerUp.start()
 
-                val valueAnimatorScales = ValueAnimator.ofInt(searchEngineViewBinding.textInputSearchView.width, functionsClass.DpToInteger(51))
+                val valueAnimatorScales = ValueAnimator.ofInt(searchEngineViewBinding.textInputSearchView.width, functionsClassLegacy.DpToInteger(51))
                 valueAnimatorScales.duration = 777
                 valueAnimatorScales.addUpdateListener { animator ->
                     val animatorValue = animator.animatedValue as Int

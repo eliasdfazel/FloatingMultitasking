@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -33,15 +33,15 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.tasks.Task
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.InAppUpdateViewBinding
 import java.util.*
 
 class InAppUpdateProcess : AppCompatActivity() {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     private lateinit var appUpdateManager: AppUpdateManager
@@ -58,13 +58,13 @@ class InAppUpdateProcess : AppCompatActivity() {
         inAppUpdateViewBinding = InAppUpdateViewBinding.inflate(layoutInflater)
         setContentView(inAppUpdateViewBinding.root)
 
-        window.statusBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f)
-        window.navigationBarColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f)
+        window.statusBarColor = functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 77f)
+        window.navigationBarColor = functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 77f)
 
-        inAppUpdateViewBinding.fullEmptyView.setBackgroundColor(functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f))
+        inAppUpdateViewBinding.fullEmptyView.setBackgroundColor(functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 77f))
         inAppUpdateViewBinding.inAppUpdateWaiting.setColor(PublicVariable.primaryColorOpposite)
 
-        inAppUpdateViewBinding.textInputChangeLog.boxBackgroundColor = functionsClass.setColorAlpha(PublicVariable.primaryColor, 77f)
+        inAppUpdateViewBinding.textInputChangeLog.boxBackgroundColor = functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 77f)
         inAppUpdateViewBinding.textInputChangeLog.hintTextColor = ColorStateList.valueOf(getColor(R.color.lighter))
         inAppUpdateViewBinding.textInputChangeLog.hint = "${getString(R.string.inAppUpdateAvailable)} ${intent.getStringExtra("UPDATE_VERSION")}"
 
@@ -100,7 +100,7 @@ class InAppUpdateProcess : AppCompatActivity() {
                     Debug.PrintDebug("*** UPDATE Canceled ***")
 
                     val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
-                    functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+                    functionsClassLegacy.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
 
                     this@InAppUpdateProcess.finish()
                 }
@@ -108,7 +108,7 @@ class InAppUpdateProcess : AppCompatActivity() {
                     Debug.PrintDebug("*** UPDATE Failed ***")
 
                     val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
-                    functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+                    functionsClassLegacy.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
 
                     this@InAppUpdateProcess.finish()
                 }
@@ -144,7 +144,7 @@ class InAppUpdateProcess : AppCompatActivity() {
 
             } else {
                 val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
-                functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+                functionsClassLegacy.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
 
                 this@InAppUpdateProcess.finish()
             }
@@ -153,7 +153,7 @@ class InAppUpdateProcess : AppCompatActivity() {
             Debug.PrintDebug("*** Exception Error ${it} ***")
 
             val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
-            functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+            functionsClassLegacy.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
         }
 
         appUpdateManager.unregisterListener {
@@ -181,7 +181,7 @@ class InAppUpdateProcess : AppCompatActivity() {
         inAppUpdateViewBinding.cancelInAppUpdateNow.setOnLongClickListener {
 
             val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
-            functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+            functionsClassLegacy.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
 
             appUpdateManager.unregisterListener {
 
@@ -245,7 +245,7 @@ class InAppUpdateProcess : AppCompatActivity() {
                     Debug.PrintDebug("*** RESULT CANCELED ***")
 
                     val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
-                    functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+                    functionsClassLegacy.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
 
                     appUpdateManager.unregisterListener(installStateUpdatedListener)
                     this@InAppUpdateProcess.finish()
@@ -282,7 +282,7 @@ class InAppUpdateProcess : AppCompatActivity() {
                 Debug.PrintDebug("*** Complete Update Failure Listener | ${it} ***")
 
                 val inAppUpdateTriggeredTime: Int = "${Calendar.getInstance().get(Calendar.YEAR)}${Calendar.getInstance().get(Calendar.MONTH)}${Calendar.getInstance().get(Calendar.DATE)}".toInt()
-                functionsClass.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
+                functionsClassLegacy.savePreference("InAppUpdate", "TriggeredDate", inAppUpdateTriggeredTime)
             }
         }
 

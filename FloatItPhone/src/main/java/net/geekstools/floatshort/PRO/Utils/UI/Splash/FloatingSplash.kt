@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/15/20 5:22 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,7 +21,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.databinding.RevealSplashBinding
 import net.geekstools.imageview.customshapes.ShapesImage
@@ -29,15 +29,15 @@ import net.geekstools.imageview.customshapes.ShapesImage
 
 class FloatingSplash : Service() {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     private val windowManager: WindowManager by lazy {
         getSystemService(Context.WINDOW_SERVICE) as WindowManager
     }
     private val layoutParams: WindowManager.LayoutParams by lazy {
-        functionsClass.splashRevealParams(
+        functionsClassLegacy.splashRevealParams(
                 0,
                 0
         )
@@ -70,7 +70,7 @@ class FloatingSplash : Service() {
     private var appClassName: String? = null
 
     private val loadCustomIcons: LoadCustomIcons by lazy {
-        LoadCustomIcons(applicationContext, functionsClass.customIconPackageName());
+        LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName());
     }
 
     private lateinit var revealSplashBinding: RevealSplashBinding
@@ -107,15 +107,15 @@ class FloatingSplash : Service() {
 
                 appClassName = intent.getStringExtra("className")
 
-                appIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageManager.getActivityInfo(ComponentName(appPackageName, appClassName!!), 0), functionsClass.shapedAppIcon(appPackageName).mutate()) else functionsClass.shapedAppIcon(appPackageName).mutate()
+                appIcon = if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageManager.getActivityInfo(ComponentName(appPackageName, appClassName!!), 0), functionsClassLegacy.shapedAppIcon(appPackageName).mutate()) else functionsClassLegacy.shapedAppIcon(appPackageName).mutate()
 
             } else {
 
-                appIcon = if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(appPackageName, functionsClass.shapedAppIcon(appPackageName).mutate()) else functionsClass.shapedAppIcon(appPackageName).mutate()
+                appIcon = if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(appPackageName, functionsClassLegacy.shapedAppIcon(appPackageName).mutate()) else functionsClassLegacy.shapedAppIcon(appPackageName).mutate()
 
             }
 
-            appIconColor = functionsClass.extractDominantColor(appIcon)
+            appIconColor = functionsClassLegacy.extractDominantColor(appIcon)
             val HW = intent.getIntExtra("HW", 0)
             val xPosition = intent.getIntExtra("X", 0)
             val yPosition = intent.getIntExtra("Y", 0)
@@ -125,7 +125,7 @@ class FloatingSplash : Service() {
             FloatingSplash.HeightWidthRemoval = HW
 
             revealSplashBinding = RevealSplashBinding.inflate(layoutInflater)
-            shapedIcon = functionsClass.initShapesImage(revealSplashBinding.shapedIcon)
+            shapedIcon = functionsClassLegacy.initShapesImage(revealSplashBinding.shapedIcon)
             val layoutParamsRelativeLayout = RelativeLayout.LayoutParams(
                     HW,
                     HW
@@ -151,7 +151,7 @@ class FloatingSplash : Service() {
 
                 try {
 
-                    functionsClass.circularRevealSplashScreen(
+                    functionsClassLegacy.circularRevealSplashScreen(
                             revealSplashBinding.splashView,
                             shapedIcon,
                             xPosition,
@@ -166,9 +166,9 @@ class FloatingSplash : Service() {
                     e.printStackTrace()
 
                     if (appClassName != null) {
-                        functionsClass.appsLaunchPad(appPackageName, appClassName)
+                        functionsClassLegacy.appsLaunchPad(appPackageName, appClassName)
                     } else {
-                        functionsClass.appsLaunchPad(appPackageName)
+                        functionsClassLegacy.appsLaunchPad(appPackageName)
                     }
                 }
 
@@ -195,7 +195,7 @@ class FloatingSplash : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        if (functionsClass.customIconsEnable()) {
+        if (functionsClassLegacy.customIconsEnable()) {
 
             loadCustomIcons.load()
 
@@ -210,7 +210,7 @@ class FloatingSplash : Service() {
             layoutParams.windowAnimations = android.R.style.Animation_Dialog
             windowManager.updateViewLayout(revealSplashBinding.root, layoutParams)
 
-            if (functionsClass.UsageStatsEnabled()) {
+            if (functionsClassLegacy.UsageStatsEnabled()) {
 
                 floatingSplashRemoval.floatingSplashRemoval()
 
@@ -220,7 +220,7 @@ class FloatingSplash : Service() {
 
             } else {
 
-                functionsClass.circularRevealSplashScreen(
+                functionsClassLegacy.circularRevealSplashScreen(
                         revealSplashBinding.splashView,
                         shapedIcon,
                         xPosition,

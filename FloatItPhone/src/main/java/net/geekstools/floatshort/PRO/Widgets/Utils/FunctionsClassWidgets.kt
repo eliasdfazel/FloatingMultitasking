@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:41 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -41,7 +41,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fing
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
@@ -129,7 +129,7 @@ class FunctionsClassWidgets (private val context: Context) {
                           packageName: String, providerClassName: String, widgetId: Int,
                           widgetLabel: String, widgetPreview: Drawable,
                           addedWidgetRecovery: Boolean,
-                          functionsClass: FunctionsClass) {
+                          functionsClassLegacy: FunctionsClassLegacy) {
 
         val popupMenu = if (PublicVariable.themeLightDark) {
             PopupMenu(context, anchorView, Gravity.CENTER, 0, R.style.GeeksEmpire_Dialogue_Category_Light)
@@ -143,12 +143,12 @@ class FunctionsClassWidgets (private val context: Context) {
             context.resources.getStringArray(R.array.ContextMenuWidget)
         }
 
-        val popupItemIcon = (if (functionsClass.returnAPI() >= 28) {
-            functionsClass.resizeDrawable(context.getDrawable(R.drawable.w_pref_popup), 100, 100)
+        val popupItemIcon = (if (functionsClassLegacy.returnAPI() >= 28) {
+            functionsClassLegacy.resizeDrawable(context.getDrawable(R.drawable.w_pref_popup), 100, 100)
         } else {
             context.getDrawable(R.drawable.w_pref_popup)
         })
-        popupItemIcon?.setTint(functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageName)))
+        popupItemIcon?.setTint(functionsClassLegacy.extractVibrantColor(functionsClassLegacy.applicationIcon(packageName)))
 
         for (itemId in menuItems.indices) {
 
@@ -245,7 +245,7 @@ class FunctionsClassWidgets (private val context: Context) {
                     widgetToHomeScreen(FloatingWidgetHomeScreenShortcuts::class.java,
                             packageName,
                             widgetLabel, widgetPreview,
-                            providerClassName, functionsClass)
+                            providerClassName, functionsClassLegacy)
 
                 }
                 PopupWidgetMenuItem.SECURITY_OPTION -> {
@@ -276,7 +276,7 @@ class FunctionsClassWidgets (private val context: Context) {
 
                     } else {
 
-                        if (functionsClass.securityServicesSubscribed()) {
+                        if (functionsClassLegacy.securityServicesSubscribed()) {
 
                             securityFunctions.doLockApps(packageName + providerClassName)
                             securityFunctions.uploadLockedAppsData()
@@ -303,7 +303,7 @@ class FunctionsClassWidgets (private val context: Context) {
     fun widgetToHomeScreen(className: Class<*>,
                            packageName: String, shortcutName: String?,
                            widgetPreviewDrawable: Drawable, providerClassName: String,
-                           functionsClass: FunctionsClass) {
+                           functionsClassLegacy: FunctionsClassLegacy) {
 
         val differentIntent = Intent(context, className)
         differentIntent.action = "CREATE_FLOATING_WIDGET_HOME_SCREEN_SHORTCUTS"
@@ -323,10 +323,10 @@ class FunctionsClassWidgets (private val context: Context) {
         }
 
         try {
-            if (widgetPreviewDrawable.intrinsicHeight < functionsClass.DpToInteger(77)) {
+            if (widgetPreviewDrawable.intrinsicHeight < functionsClassLegacy.DpToInteger(77)) {
 
             } else {
-                widgetShortcutIcon?.setDrawableByLayerId(R.id.appIconHomeShortcut, functionsClass.getAppIconDrawableCustomIcon(packageName))
+                widgetShortcutIcon?.setDrawableByLayerId(R.id.appIconHomeShortcut, functionsClassLegacy.getAppIconDrawableCustomIcon(packageName))
             }
         } catch (e: Exception) {
             widgetShortcutIcon?.setDrawableByLayerId(R.id.appIconHomeShortcut, forNull)
@@ -337,7 +337,7 @@ class FunctionsClassWidgets (private val context: Context) {
             val shortcutInfo = ShortcutInfo.Builder(context, packageName + providerClassName)
                     .setShortLabel(shortcutName!!)
                     .setLongLabel(shortcutName)
-                    .setIcon(Icon.createWithBitmap(functionsClass.layerDrawableToBitmap(widgetShortcutIcon)))
+                    .setIcon(Icon.createWithBitmap(functionsClassLegacy.layerDrawableToBitmap(widgetShortcutIcon)))
                     .setIntent(differentIntent)
                     .build()
 
@@ -351,7 +351,7 @@ class FunctionsClassWidgets (private val context: Context) {
             val addIntent = Intent()
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent)
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName)
-            addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, functionsClass.layerDrawableToBitmap(widgetShortcutIcon))
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, functionsClassLegacy.layerDrawableToBitmap(widgetShortcutIcon))
             addIntent.putExtra("duplicate", true)
             addIntent.action = "com.android.launcher.action.INSTALL_SHORTCUT"
 

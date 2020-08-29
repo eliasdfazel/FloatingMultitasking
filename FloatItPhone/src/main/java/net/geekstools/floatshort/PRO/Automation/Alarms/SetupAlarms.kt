@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,14 +18,14 @@ import net.geekstools.floatshort.PRO.Automation.Alarms.Utils.FunctionsClassAlarm
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import java.util.*
 import kotlin.collections.ArrayList
 
 class SetupAlarms : Service() {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     private val functionsClassAlarms: FunctionsClassAlarms by lazy {
@@ -123,11 +123,11 @@ class SetupAlarms : Service() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
-            startForeground(333, functionsClass.bindServiceNotification(), STOP_FOREGROUND_REMOVE)
+            startForeground(333, functionsClassLegacy.bindServiceNotification(), STOP_FOREGROUND_REMOVE)
 
         } else {
 
-            startForeground(333, functionsClass.bindServiceNotification())
+            startForeground(333, functionsClassLegacy.bindServiceNotification())
 
         }
 

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/26/20 5:03 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.dialogue_message.*
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.InAppReview.InAppReviewProcess
 
-class Dialogues (var activity: Activity, var functionsClass: FunctionsClass) {
+class Dialogues (var activity: Activity, var functionsClassLegacy: FunctionsClassLegacy) {
 
     private val fileIO: FileIO = FileIO(activity)
 
@@ -80,7 +80,7 @@ class Dialogues (var activity: Activity, var functionsClass: FunctionsClass) {
 
         dialog.setOnDismissListener {
 
-            if (functionsClass.applicationVersionCode(activity.packageName) > fileIO.readFile(".Updated")?.toInt()?:0) {
+            if (functionsClassLegacy.applicationVersionCode(activity.packageName) > fileIO.readFile(".Updated")?.toInt()?:0) {
 
                 if (!activity.isFinishing) {
 
@@ -90,7 +90,7 @@ class Dialogues (var activity: Activity, var functionsClass: FunctionsClass) {
 
             }
 
-            fileIO.saveFile(".Updated", functionsClass.applicationVersionCode(activity.packageName).toString())
+            fileIO.saveFile(".Updated", functionsClassLegacy.applicationVersionCode(activity.packageName).toString())
         }
 
         if (!activity.getFileStreamPath(".Updated").exists()) {
@@ -99,7 +99,7 @@ class Dialogues (var activity: Activity, var functionsClass: FunctionsClass) {
                 dialog.show()
             }
 
-        } else if (functionsClass.applicationVersionCode(activity.packageName) > fileIO.readFile(".Updated")?.toInt()?:0) {
+        } else if (functionsClassLegacy.applicationVersionCode(activity.packageName) > fileIO.readFile(".Updated")?.toInt()?:0) {
 
             if (!activity.isFinishing) {
                 dialog.show()
@@ -154,7 +154,7 @@ class Dialogues (var activity: Activity, var functionsClass: FunctionsClass) {
                 activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.play_store_link).toString() + activity.getPackageName()))
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             } else if (dialog.rateIt.text == activity.getString(R.string.betaUpdate)) {
-                functionsClass.upcomingChangeLog(activity, betaChangeLog, betaVersionCode)
+                functionsClassLegacy.upcomingChangeLog(activity, betaChangeLog, betaVersionCode)
             }
         }
 
@@ -165,7 +165,7 @@ class Dialogues (var activity: Activity, var functionsClass: FunctionsClass) {
         }
 
         dialog.setOnDismissListener {
-            fileIO.saveFile(".Updated", functionsClass.applicationVersionCode(activity.packageName).toString())
+            fileIO.saveFile(".Updated", functionsClassLegacy.applicationVersionCode(activity.packageName).toString())
         }
 
         if (!activity.isFinishing) {

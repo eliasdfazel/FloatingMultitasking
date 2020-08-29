@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:41 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,7 +20,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -37,7 +37,7 @@ public class LoadCustomIcons {
 
     private Context context;
 
-    private FunctionsClass functionsClass;
+    private FunctionsClassLegacy functionsClassLegacy;
 
     private String packageNameIconPack;
 
@@ -59,7 +59,7 @@ public class LoadCustomIcons {
         this.context = context;
         this.packageNameIconPack = iconsPackageName;
 
-        functionsClass = new FunctionsClass(context);
+        functionsClassLegacy = new FunctionsClassLegacy(context);
     }
 
     public void load() {
@@ -161,7 +161,7 @@ public class LoadCustomIcons {
             if (bitmap instanceof BitmapDrawable) {
                 return ((BitmapDrawable) bitmap).getBitmap();
             } else {
-                return functionsClass.drawableToBitmap(bitmap);
+                return functionsClassLegacy.drawableToBitmap(bitmap);
             }
         }
         return null;
@@ -174,23 +174,23 @@ public class LoadCustomIcons {
             if (bitmap instanceof BitmapDrawable) {
                 return ((BitmapDrawable) bitmap).getBitmap();
             } else {
-                return functionsClass.drawableToBitmap(bitmap);
+                return functionsClassLegacy.drawableToBitmap(bitmap);
             }
         } else {
             try {
-                Drawable iconback = functionsClass.bitmapToDrawable(backIconMask);
-                Drawable appIcon = functionsClass.applicationIcon(appPackageName);
+                Drawable iconback = functionsClassLegacy.bitmapToDrawable(backIconMask);
+                Drawable appIcon = functionsClassLegacy.applicationIcon(appPackageName);
                 LayerDrawable layerDrawableIcon = new LayerDrawable(new Drawable[]{
                         iconback,
                         appIcon
                 });
                 layerDrawableIcon.setLayerInset(1, 77, 77, 77, 77);
 
-                return functionsClass.drawableToBitmap(layerDrawableIcon);
+                return functionsClassLegacy.drawableToBitmap(layerDrawableIcon);
             } catch (Exception e) {
                 e.printStackTrace();
 
-                return functionsClass.drawableToBitmap(functionsClass.shapedAppIcon(appPackageName));
+                return functionsClassLegacy.drawableToBitmap(functionsClassLegacy.shapedAppIcon(appPackageName));
             }
         }
     }
@@ -202,8 +202,8 @@ public class LoadCustomIcons {
             return bitmap;
         } else {
             try {
-                Drawable iconback = functionsClass.bitmapToDrawable(backIconMask);
-                Drawable appIcon = functionsClass.applicationIcon(appPackageName);
+                Drawable iconback = functionsClassLegacy.bitmapToDrawable(backIconMask);
+                Drawable appIcon = functionsClassLegacy.applicationIcon(appPackageName);
                 LayerDrawable layerDrawableIcon = new LayerDrawable(new Drawable[]{
                         iconback,
                         appIcon
@@ -214,7 +214,7 @@ public class LoadCustomIcons {
             } catch (Exception e) {
                 e.printStackTrace();
 
-                return functionsClass.shapedAppIcon(appPackageName);
+                return functionsClassLegacy.shapedAppIcon(appPackageName);
             }
         }
     }
@@ -226,8 +226,8 @@ public class LoadCustomIcons {
             return bitmap;
         } else {
             try {
-                Drawable iconback = functionsClass.bitmapToDrawable(backIconMask);
-                Drawable appIcon = functionsClass.applicationIcon(activityInfo);
+                Drawable iconback = functionsClassLegacy.bitmapToDrawable(backIconMask);
+                Drawable appIcon = functionsClassLegacy.applicationIcon(activityInfo);
                 LayerDrawable layerDrawableIcon = new LayerDrawable(new Drawable[]{
                         iconback,
                         appIcon
@@ -238,7 +238,7 @@ public class LoadCustomIcons {
             } catch (Exception e) {
                 e.printStackTrace();
 
-                return functionsClass.shapedAppIcon(activityInfo);
+                return functionsClassLegacy.shapedAppIcon(activityInfo);
             }
         }
     }

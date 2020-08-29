@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/24/20 1:15 PM
- * Last modified 3/24/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -17,11 +17,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.accessibility.AccessibilityEvent;
 
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 
 public class InteractionObserver extends AccessibilityService {
 
-    FunctionsClass functionsClass;
+    FunctionsClassLegacy functionsClassLegacy;
 
     boolean doSplitPair = false;
     boolean doSplitSingle = false;
@@ -30,12 +30,12 @@ public class InteractionObserver extends AccessibilityService {
 
     @Override
     protected void onServiceConnected() {
-        functionsClass = new FunctionsClass(getApplicationContext());
+        functionsClassLegacy = new FunctionsClassLegacy(getApplicationContext());
     }
 
     @Override
     public void onAccessibilityEvent(final AccessibilityEvent accessibilityEvent) {
-        functionsClass = new FunctionsClass(getApplicationContext());
+        functionsClassLegacy = new FunctionsClassLegacy(getApplicationContext());
 
         switch (accessibilityEvent.getEventType()) {
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:41 AM
+ * Last modified 8/29/20 3:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -44,7 +44,7 @@ import androidx.preference.PreferenceManager;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
@@ -57,7 +57,7 @@ import java.util.Map;
 
 public class FloatingShortcutsForHIS extends Service {
 
-    FunctionsClass functionsClass;
+    FunctionsClassLegacy functionsClassLegacy;
 
     WindowManager windowManager;
     WindowManager.LayoutParams[] layoutParams;
@@ -105,7 +105,7 @@ public class FloatingShortcutsForHIS extends Service {
                     try {
                         if (floatingView != null) {
                             if (floatingView[J].isShown()) {
-                                layoutParams[J] = functionsClass.handleOrientationPortrait(classNames[J], layoutParams[J].height);
+                                layoutParams[J] = functionsClassLegacy.handleOrientationPortrait(classNames[J], layoutParams[J].height);
                                 windowManager.updateViewLayout(floatingView[J], layoutParams[J]);
                             }
                         }
@@ -121,7 +121,7 @@ public class FloatingShortcutsForHIS extends Service {
                     try {
                         if (floatingView != null) {
                             if (floatingView[J].isShown()) {
-                                layoutParams[J] = functionsClass.handleOrientationLandscape(classNames[J], layoutParams[J].height);
+                                layoutParams[J] = functionsClassLegacy.handleOrientationLandscape(classNames[J], layoutParams[J].height);
                                 windowManager.updateViewLayout(floatingView[J], layoutParams[J]);
                             }
                         }
@@ -150,9 +150,9 @@ public class FloatingShortcutsForHIS extends Service {
 
         startIdCounter = startId;
 
-        if (functionsClass.customIconsEnable()) {
+        if (functionsClassLegacy.customIconsEnable()) {
             if (loadCustomIcons == null) {
-                loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
+                loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClassLegacy.customIconPackageName());
             }
         }
 
@@ -168,10 +168,10 @@ public class FloatingShortcutsForHIS extends Service {
             activityInfo[startId] = getPackageManager().getActivityInfo(componentName[startId], 0);
 
             floatingView[startId] = (ViewGroup) layoutInflater.inflate(R.layout.floating_shortcuts, null, false);
-            controlIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.controlIcon);
-            shapedIcon[startId] = functionsClass.initShapesImage(floatingView[startId], R.id.shapedIcon);
-            notificationDot[startId] = functionsClass.initShapesImage(floatingView[startId],
-                    functionsClass.checkStickyEdge() ? R.id.notificationDotEnd : R.id.notificationDotStart);
+            controlIcon[startId] = functionsClassLegacy.initShapesImage(floatingView[startId], R.id.controlIcon);
+            shapedIcon[startId] = functionsClassLegacy.initShapesImage(floatingView[startId], R.id.shapedIcon);
+            notificationDot[startId] = functionsClassLegacy.initShapesImage(floatingView[startId],
+                    functionsClassLegacy.checkStickyEdge() ? R.id.notificationDotEnd : R.id.notificationDotStart);
 
             touchingDelay[startId] = false;
             StickyEdge[startId] = false;
@@ -230,16 +230,16 @@ public class FloatingShortcutsForHIS extends Service {
 
         mapPackageNameStartId.put(packageNames[startId], startId);
 
-        if (functionsClass.appIsInstalled(packageNames[startId]) == false) {
+        if (functionsClassLegacy.appIsInstalled(packageNames[startId]) == false) {
             return START_NOT_STICKY;
         }
 
-        appIcon[startId] = functionsClass.shapedAppIcon(activityInfo[startId]);
-        iconColor[startId] = functionsClass.extractDominantColor(functionsClass.applicationIcon(activityInfo[startId]));
-        shapedIcon[startId].setImageDrawable(functionsClass.customIconsEnable() ?
-                loadCustomIcons.getDrawableIconForPackage(packageNames[startId], functionsClass.shapedAppIcon(activityInfo[startId]))
+        appIcon[startId] = functionsClassLegacy.shapedAppIcon(activityInfo[startId]);
+        iconColor[startId] = functionsClassLegacy.extractDominantColor(functionsClassLegacy.applicationIcon(activityInfo[startId]));
+        shapedIcon[startId].setImageDrawable(functionsClassLegacy.customIconsEnable() ?
+                loadCustomIcons.getDrawableIconForPackage(packageNames[startId], functionsClassLegacy.shapedAppIcon(activityInfo[startId]))
                 :
-                functionsClass.shapedAppIcon(activityInfo[startId]));
+                functionsClassLegacy.shapedAppIcon(activityInfo[startId]));
 
         try {
             sharedPrefPosition = getSharedPreferences((classNames[startId]), MODE_PRIVATE);
@@ -251,7 +251,7 @@ public class FloatingShortcutsForHIS extends Service {
         yInit = yInit + 13;
         xPos = sharedPrefPosition.getInt("X", xInit);
         yPos = sharedPrefPosition.getInt("Y", yInit);
-        layoutParams[startId] = functionsClass.normalLayoutParams(PublicVariable.floatingViewsHW, xPos, yPos);
+        layoutParams[startId] = functionsClassLegacy.normalLayoutParams(PublicVariable.floatingViewsHW, xPos, yPos);
         try {
             floatingView[startId].setTag(startId);
             windowManager.addView(floatingView[startId], layoutParams[startId]);
@@ -262,18 +262,18 @@ public class FloatingShortcutsForHIS extends Service {
         xMove = xPos;
         yMove = yPos;
 
-        shapedIcon[startId].setImageAlpha(functionsClass.readDefaultPreference("autoTrans", 255));
+        shapedIcon[startId].setImageAlpha(functionsClassLegacy.readDefaultPreference("autoTrans", 255));
 
-        if (!functionsClass.litePreferencesEnabled()) {
+        if (!functionsClassLegacy.litePreferencesEnabled()) {
             flingAnimationX[startId] = new FlingAnimation(new FloatValueHolder())
-                    .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
+                    .setFriction(functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
             flingAnimationY[startId] = new FlingAnimation(new FloatValueHolder())
-                    .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
+                    .setFriction(functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f));
 
-            flingAnimationX[startId].setMaxValue(functionsClass.displayX() - PublicVariable.floatingViewsHW);
+            flingAnimationX[startId].setMaxValue(functionsClassLegacy.displayX() - PublicVariable.floatingViewsHW);
             flingAnimationX[startId].setMinValue(0);
 
-            flingAnimationY[startId].setMaxValue(functionsClass.displayY() - PublicVariable.floatingViewsHW);
+            flingAnimationY[startId].setMaxValue(functionsClassLegacy.displayY() - PublicVariable.floatingViewsHW);
             flingAnimationY[startId].setMinValue(0);
 
             simpleOnGestureListener[startId] = new GestureDetector.SimpleOnGestureListener() {
@@ -403,18 +403,18 @@ public class FloatingShortcutsForHIS extends Service {
                                             }
                                         }
                                     };
-                                    getbackHandler.postDelayed(getbackRunnable, 3333 + functionsClass.readDefaultPreference("delayPressHold", 333));
+                                    getbackHandler.postDelayed(getbackRunnable, 3333 + functionsClassLegacy.readDefaultPreference("delayPressHold", 333));
 
                                 }
                             }
                         };
-                        delayHandler.postDelayed(delayRunnable, 3333 + functionsClass.readDefaultPreference("delayPressHold", 333));
+                        delayHandler.postDelayed(delayRunnable, 3333 + functionsClassLegacy.readDefaultPreference("delayPressHold", 333));
 
                         runnablePressHold = new Runnable() {
                             @Override
                             public void run() {
                                 if (touchingDelay[startId] == true) {
-                                    functionsClass.PopupOptionShortcuts(
+                                    functionsClassLegacy.PopupOptionShortcuts(
                                             floatingView[startId],
                                             packageNames[startId],
                                             classNames[startId],
@@ -428,7 +428,7 @@ public class FloatingShortcutsForHIS extends Service {
                                 }
                             }
                         };
-                        handlerPressHold.postDelayed(runnablePressHold, functionsClass.readDefaultPreference("delayPressHold", 333));
+                        handlerPressHold.postDelayed(runnablePressHold, functionsClassLegacy.readDefaultPreference("delayPressHold", 333));
                         break;
                     case MotionEvent.ACTION_UP:
                         touchingDelay[startId] = false;
@@ -461,19 +461,19 @@ public class FloatingShortcutsForHIS extends Service {
                             editor.putInt("Y", layoutParamsOnTouch.y);
                             editor.apply();
                         } else {
-                            if (!functionsClass.litePreferencesEnabled()) {
+                            if (!functionsClassLegacy.litePreferencesEnabled()) {
                                 float initialTouchXBoundBack = getSharedPreferences((classNames[startId]), MODE_PRIVATE).getInt("X", 0);
                                 if (initialTouchXBoundBack < 0) {
                                     initialTouchXBoundBack = 0;
-                                } else if (initialTouchXBoundBack > functionsClass.displayX()) {
-                                    initialTouchXBoundBack = functionsClass.displayX();
+                                } else if (initialTouchXBoundBack > functionsClassLegacy.displayX()) {
+                                    initialTouchXBoundBack = functionsClassLegacy.displayX();
                                 }
 
                                 float initialTouchYBoundBack = getSharedPreferences((classNames[startId]), MODE_PRIVATE).getInt("Y", 0);
                                 if (initialTouchYBoundBack < 0) {
                                     initialTouchYBoundBack = 0;
-                                } else if (initialTouchYBoundBack > functionsClass.displayY()) {
-                                    initialTouchYBoundBack = functionsClass.displayY();
+                                } else if (initialTouchYBoundBack > functionsClassLegacy.displayY()) {
+                                    initialTouchYBoundBack = functionsClassLegacy.displayY();
                                 }
 
                                 SpringForce springForceX = new SpringForce()
@@ -497,24 +497,24 @@ public class FloatingShortcutsForHIS extends Service {
                                 float springStartValueX = motionEvent.getRawX();
                                 if (springStartValueX < 0f) {
                                     springStartValueX = 0;
-                                } else if (springStartValueX > functionsClass.displayX()) {
-                                    springStartValueX = functionsClass.displayX();
+                                } else if (springStartValueX > functionsClassLegacy.displayX()) {
+                                    springStartValueX = functionsClassLegacy.displayX();
                                 }
 
                                 float springStartValueY = motionEvent.getRawY();
                                 if (springStartValueY < 0f) {
                                     springStartValueY = 0;
-                                } else if (springStartValueY > functionsClass.displayY()) {
-                                    springStartValueY = functionsClass.displayY();
+                                } else if (springStartValueY > functionsClassLegacy.displayY()) {
+                                    springStartValueY = functionsClassLegacy.displayY();
                                 }
 
                                 springAnimationX.setStartValue(springStartValueX);
                                 springAnimationX.setStartVelocity(-0f);
-                                springAnimationX.setMaxValue(functionsClass.displayX());
+                                springAnimationX.setMaxValue(functionsClassLegacy.displayX());
 
                                 springAnimationY.setStartValue(springStartValueY);
                                 springAnimationY.setStartVelocity(-0f);
-                                springAnimationY.setMaxValue(functionsClass.displayY());
+                                springAnimationY.setMaxValue(functionsClassLegacy.displayY());
 
                                 springAnimationX.addUpdateListener(new DynamicAnimation.OnAnimationUpdateListener() {
                                     @Override
@@ -577,7 +577,7 @@ public class FloatingShortcutsForHIS extends Service {
                             flingPositionX = layoutParamsOnTouch.x;
                             flingPositionY = layoutParamsOnTouch.y;
                         } else {
-                            if (!functionsClass.litePreferencesEnabled()) {
+                            if (!functionsClassLegacy.litePreferencesEnabled()) {
                                 layoutParamsOnTouch.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);     // X movePoint
                                 layoutParamsOnTouch.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);     // Y movePoint
                                 windowManager.updateViewLayout(floatingView[startId], layoutParamsOnTouch);
@@ -634,7 +634,7 @@ public class FloatingShortcutsForHIS extends Service {
                     }
                 } else {
                     if (openIt[startId]) {
-                        if (functionsClass.splashReveal()) {
+                        if (functionsClassLegacy.splashReveal()) {
                             Intent splashReveal = new Intent(getApplicationContext(), FloatingSplash.class);
                             splashReveal.putExtra("packageName", packageNames[startId]);
                             splashReveal.putExtra("className", classNames[startId]);
@@ -648,16 +648,16 @@ public class FloatingShortcutsForHIS extends Service {
                             splashReveal.putExtra("HW", layoutParams[startId].width);
                             startService(splashReveal);
                         } else {
-                            if (functionsClass.FreeForm()) {
-                                functionsClass.openApplicationFreeForm(packageNames[startId],
+                            if (functionsClassLegacy.FreeForm()) {
+                                functionsClassLegacy.openApplicationFreeForm(packageNames[startId],
                                         classNames[startId],
                                         layoutParams[startId].x,
-                                        (functionsClass.displayX() / 2),
+                                        (functionsClassLegacy.displayX() / 2),
                                         layoutParams[startId].y,
-                                        (functionsClass.displayY() / 2)
+                                        (functionsClassLegacy.displayY() / 2)
                                 );
                             } else {
-                                functionsClass.appsLaunchPad(packageNames[startId], classNames[startId]);
+                                functionsClassLegacy.appsLaunchPad(packageNames[startId], classNames[startId]);
                             }
                         }
                     } else {
@@ -669,7 +669,7 @@ public class FloatingShortcutsForHIS extends Service {
         notificationDot[startId].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                functionsClass.PopupNotificationShortcuts(
+                functionsClassLegacy.PopupNotificationShortcuts(
                         floatingView[startId],
                         packageNames[startId],
                         FloatingShortcutsForHIS.class.getSimpleName(),
@@ -684,8 +684,8 @@ public class FloatingShortcutsForHIS extends Service {
         notificationDot[startId].setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (functionsClass.AccessibilityServiceEnabled() && functionsClass.SettingServiceRunning(InteractionObserver.class)) {
-                    functionsClass.sendInteractionObserverEvent(view, packageNames[startId], AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED, 66666);
+                if (functionsClassLegacy.AccessibilityServiceEnabled() && functionsClassLegacy.SettingServiceRunning(InteractionObserver.class)) {
+                    functionsClassLegacy.sendInteractionObserverEvent(view, packageNames[startId], AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED, 66666);
                 } else {
                     try {
                         Object sbservice = getSystemService("statusbar");
@@ -743,21 +743,21 @@ public class FloatingShortcutsForHIS extends Service {
                                 startActivity(splitSingle);
                                 PublicVariable.splitScreen = true;
 
-                                functionsClass.Toast(functionsClass.applicationName(PublicVariable.splitSinglePackage), Gravity.TOP);
+                                functionsClassLegacy.Toast(functionsClassLegacy.applicationName(PublicVariable.splitSinglePackage), Gravity.TOP);
                             } catch (NullPointerException e) {
                                 e.printStackTrace();
                             }
                         }
                     }, 200);
                 } else if (intent.getAction().equals("Pin_App_" + className)) {
-                    Debug.Companion.PrintDebug(functionsClass.applicationName(packageNames[intent.getIntExtra("startId", 1)]));
+                    Debug.Companion.PrintDebug(functionsClassLegacy.applicationName(packageNames[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = false;
 
                     Drawable pinDrawable = null;
-                    if (functionsClass.customIconsEnable()) {
-                        pinDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate();
+                    if (functionsClassLegacy.customIconsEnable()) {
+                        pinDrawable = functionsClassLegacy.getAppIconDrawableCustomIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate();
                     } else {
-                        switch (functionsClass.shapesImageId()) {
+                        switch (functionsClassLegacy.shapesImageId()) {
                             case 1:
                                 pinDrawable = getDrawable(R.drawable.pin_droplet_icon);
                                 controlIcon[intent.getIntExtra("startId", 1)].setPadding(-3, -3, -3, -3);
@@ -772,12 +772,12 @@ public class FloatingShortcutsForHIS extends Service {
                                 pinDrawable = getDrawable(R.drawable.pin_squircle_icon);
                                 break;
                             case 0:
-                                pinDrawable = functionsClass.applicationIcon(activityInfo[intent.getIntExtra("startId", 1)]).mutate();
+                                pinDrawable = functionsClassLegacy.applicationIcon(activityInfo[intent.getIntExtra("startId", 1)]).mutate();
                                 break;
                         }
                     }
-                    pinDrawable.setTint(functionsClass.setColorAlpha(Color.RED, 175));
-                    if (functionsClass.returnAPI() >= 26) {
+                    pinDrawable.setTint(functionsClassLegacy.setColorAlpha(Color.RED, 175));
+                    if (functionsClassLegacy.returnAPI() >= 26) {
                         pinDrawable.setAlpha(175);
 
                         pinDrawable.setTint(Color.RED);
@@ -785,17 +785,17 @@ public class FloatingShortcutsForHIS extends Service {
                     }
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable);
                 } else if (intent.getAction().equals("Unpin_App_" + className)) {
-                    Debug.Companion.PrintDebug(functionsClass.applicationName(packageNames[intent.getIntExtra("startId", 1)]));
+                    Debug.Companion.PrintDebug(functionsClassLegacy.applicationName(packageNames[intent.getIntExtra("startId", 1)]));
                     allowMove[intent.getIntExtra("startId", 1)] = true;
                     controlIcon[intent.getIntExtra("startId", 1)].setImageDrawable(null);
                 } else if (intent.getAction().equals("Float_It_" + className)) {
-                    if (functionsClass.splashReveal()) {
-                        if (!functionsClass.FreeForm()) {
-                            functionsClass.saveDefaultPreference("freeForm", true);
+                    if (functionsClassLegacy.splashReveal()) {
+                        if (!functionsClassLegacy.FreeForm()) {
+                            functionsClassLegacy.saveDefaultPreference("freeForm", true);
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    functionsClass.saveDefaultPreference("freeForm", false);
+                                    functionsClassLegacy.saveDefaultPreference("freeForm", false);
                                 }
                             }, 1000);
                         }
@@ -813,12 +813,12 @@ public class FloatingShortcutsForHIS extends Service {
                         splashReveal.putExtra("HW", layoutParams[intent.getIntExtra("startId", 1)].width);
                         startService(splashReveal);
                     } else {
-                        functionsClass.openApplicationFreeForm(packageNames[intent.getIntExtra("startId", 1)],
+                        functionsClassLegacy.openApplicationFreeForm(packageNames[intent.getIntExtra("startId", 1)],
                                 classNames[intent.getIntExtra("startId", 1)],
                                 layoutParams[intent.getIntExtra("startId", 1)].x,
-                                (functionsClass.displayX() / 2),
+                                (functionsClassLegacy.displayX() / 2),
                                 layoutParams[intent.getIntExtra("startId", 1)].y,
-                                (functionsClass.displayY() / 2)
+                                (functionsClassLegacy.displayY() / 2)
                         );
                     }
 
@@ -857,7 +857,7 @@ public class FloatingShortcutsForHIS extends Service {
                                 if (floatingView[r].isShown()) {
                                     try {
                                         StickyEdge[r] = true;
-                                        StickyEdgeParams[r] = functionsClass.moveToEdge(FloatingShortcutsForHIS.this.classNames[r], layoutParams[r].height);
+                                        StickyEdgeParams[r] = functionsClassLegacy.moveToEdge(FloatingShortcutsForHIS.this.classNames[r], layoutParams[r].height);
                                         windowManager.updateViewLayout(floatingView[r], StickyEdgeParams[r]);
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -881,7 +881,7 @@ public class FloatingShortcutsForHIS extends Service {
                                             StickyEdge[r] = false;
                                             xPos = sharedPrefPosition.getInt("X", xInit);
                                             yPos = sharedPrefPosition.getInt("Y", yInit);
-                                            windowManager.updateViewLayout(floatingView[r], functionsClass.backFromEdge(layoutParams[r].height, xPos, yPos));
+                                            windowManager.updateViewLayout(floatingView[r], functionsClassLegacy.backFromEdge(layoutParams[r].height, xPos, yPos));
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -902,10 +902,10 @@ public class FloatingShortcutsForHIS extends Service {
                             if (floatingView[StartIdNotification].isShown()) {
                                 /*add dot*/
                                 Drawable dotDrawable = null;
-                                if (functionsClass.customIconsEnable()) {
-                                    dotDrawable = functionsClass.getAppIconDrawableCustomIcon(packageNames[StartIdNotification]).mutate();
+                                if (functionsClassLegacy.customIconsEnable()) {
+                                    dotDrawable = functionsClassLegacy.getAppIconDrawableCustomIcon(packageNames[StartIdNotification]).mutate();
                                 } else {
-                                    switch (functionsClass.shapesImageId()) {
+                                    switch (functionsClassLegacy.shapesImageId()) {
                                         case 1:
                                             dotDrawable = getDrawable(R.drawable.dot_droplet_icon);
                                             break;
@@ -919,14 +919,14 @@ public class FloatingShortcutsForHIS extends Service {
                                             dotDrawable = getDrawable(R.drawable.dot_squircle_icon);
                                             break;
                                         case 0:
-                                            dotDrawable = functionsClass.applicationIcon(packageNames[StartIdNotification]).mutate();
+                                            dotDrawable = functionsClassLegacy.applicationIcon(packageNames[StartIdNotification]).mutate();
                                             break;
                                     }
                                 }
                                 if (PublicVariable.themeLightDark) {
-                                    dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageNames[StartIdNotification])), 1.30f));
+                                    dotDrawable.setTint(functionsClassLegacy.manipulateColor(functionsClassLegacy.extractVibrantColor(functionsClassLegacy.applicationIcon(packageNames[StartIdNotification])), 1.30f));
                                 } else {
-                                    dotDrawable.setTint(functionsClass.manipulateColor(functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageNames[StartIdNotification])), 0.50f));
+                                    dotDrawable.setTint(functionsClassLegacy.manipulateColor(functionsClassLegacy.extractVibrantColor(functionsClassLegacy.applicationIcon(packageNames[StartIdNotification])), 0.50f));
                                 }
                                 notificationDot[StartIdNotification].setImageDrawable(dotDrawable);
                                 notificationDot[StartIdNotification].setVisibility(View.VISIBLE);
@@ -963,7 +963,7 @@ public class FloatingShortcutsForHIS extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        functionsClass = new FunctionsClass(getApplicationContext());
+        functionsClassLegacy = new FunctionsClassLegacy(getApplicationContext());
 
         array = getApplicationContext().getPackageManager().getInstalledApplications(0).size() * 2;
         layoutParams = new WindowManager.LayoutParams[array];
@@ -981,7 +981,7 @@ public class FloatingShortcutsForHIS extends Service {
         touchingDelay = new boolean[array];
         StickyEdge = new boolean[array];
         openIt = new boolean[array];
-        if (!functionsClass.litePreferencesEnabled()) {
+        if (!functionsClassLegacy.litePreferencesEnabled()) {
             simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener[array];
             gestureDetector = new GestureDetector[array];
 
@@ -994,8 +994,8 @@ public class FloatingShortcutsForHIS extends Service {
 
         mapPackageNameStartId = new LinkedHashMap<String, Integer>();
 
-        if (functionsClass.customIconsEnable()) {
-            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
+        if (functionsClassLegacy.customIconsEnable()) {
+            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClassLegacy.customIconPackageName());
         }
     }
 }

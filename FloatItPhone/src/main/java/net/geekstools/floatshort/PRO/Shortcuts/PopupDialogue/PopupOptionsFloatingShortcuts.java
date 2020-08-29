@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:41 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,7 +27,7 @@ import android.widget.RelativeLayout;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.FloatingShortcutsPopupOptionsAdapter;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsFloatingShortcutsPopuiOptions;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import java.util.List;
 
 public class PopupOptionsFloatingShortcuts extends Service {
 
-    FunctionsClass functionsClass;
+    FunctionsClassLegacy functionsClassLegacy;
     WindowManager windowManager;
     WindowManager.LayoutParams layoutParams;
 
@@ -99,23 +99,23 @@ public class PopupOptionsFloatingShortcuts extends Service {
 
             LayerDrawable popupItemsIcon = (LayerDrawable) getDrawable(R.drawable.draw_popup_shortcuts);
             Drawable popupItemsIconBack = popupItemsIcon.findDrawableByLayerId(R.id.backgroundTemporary);
-            popupItemsIconBack.setTint(functionsClass.extractVibrantColor(functionsClass.applicationIcon(packageName)));
+            popupItemsIconBack.setTint(functionsClassLegacy.extractVibrantColor(functionsClassLegacy.applicationIcon(packageName)));
 
-            switch (functionsClass.displaySection(xPosition, yPosition)) {
-                case FunctionsClass.DisplaySection.TopLeft:
-                    if (functionsClass.returnAPI() < 24) {
-                        if (functionsClass.UsageStatsEnabled()) {
+            switch (functionsClassLegacy.displaySection(xPosition, yPosition)) {
+                case FunctionsClassLegacy.DisplaySection.TopLeft:
+                    if (functionsClassLegacy.returnAPI() < 24) {
+                        if (functionsClassLegacy.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
                         popupItems.add(getString(R.string.pin));
                         popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.remove));
                     } else {
-                        if (functionsClass.addFloatItItem()) {
+                        if (functionsClassLegacy.addFloatItItem()) {
                             popupItems.add(getString(R.string.floatIt));
                         }
                         popupItems.add(getString(R.string.splitIt));
-                        if (functionsClass.UsageStatsEnabled()) {
+                        if (functionsClassLegacy.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
                         popupItems.add(getString(R.string.pin));
@@ -127,20 +127,20 @@ public class PopupOptionsFloatingShortcuts extends Service {
                     itemMenuView.setY(yPosition + HW);
 
                     break;
-                case FunctionsClass.DisplaySection.TopRight:
-                    if (functionsClass.returnAPI() < 24) {
-                        if (functionsClass.UsageStatsEnabled()) {
+                case FunctionsClassLegacy.DisplaySection.TopRight:
+                    if (functionsClassLegacy.returnAPI() < 24) {
+                        if (functionsClassLegacy.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
                         popupItems.add(getString(R.string.pin));
                         popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.remove));
                     } else {
-                        if (functionsClass.addFloatItItem()) {
+                        if (functionsClassLegacy.addFloatItItem()) {
                             popupItems.add(getString(R.string.floatIt));
                         }
                         popupItems.add(getString(R.string.splitIt));
-                        if (functionsClass.UsageStatsEnabled()) {
+                        if (functionsClassLegacy.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
                         popupItems.add(getString(R.string.pin));
@@ -148,74 +148,74 @@ public class PopupOptionsFloatingShortcuts extends Service {
                         popupItems.add(getString(R.string.remove));
                     }
 
-                    itemMenuView.setX(xPosition - (functionsClass.DpToInteger(177) - HW));
+                    itemMenuView.setX(xPosition - (functionsClassLegacy.DpToInteger(177) - HW));
                     itemMenuView.setY(yPosition + HW);
 
                     break;
-                case FunctionsClass.DisplaySection.BottomLeft:
-                    if (functionsClass.returnAPI() < 24) {
+                case FunctionsClassLegacy.DisplaySection.BottomLeft:
+                    if (functionsClassLegacy.returnAPI() < 24) {
                         popupItems.add(getString(R.string.remove));
                         popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.pin));
-                        if (functionsClass.UsageStatsEnabled()) {
+                        if (functionsClassLegacy.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
                     } else {
                         popupItems.add(getString(R.string.remove));
                         popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.pin));
-                        if (functionsClass.UsageStatsEnabled()) {
+                        if (functionsClassLegacy.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
                         popupItems.add(getString(R.string.splitIt));
-                        if (functionsClass.addFloatItItem()) {
+                        if (functionsClassLegacy.addFloatItItem()) {
                             popupItems.add(getString(R.string.floatIt));
                         }
                     }
 
                     itemMenuView.setX(xPosition);
-                    itemMenuView.setY(yPosition - ((functionsClass.DpToInteger(37) * popupItems.size()) + functionsClass.DpToInteger(3)));
+                    itemMenuView.setY(yPosition - ((functionsClassLegacy.DpToInteger(37) * popupItems.size()) + functionsClassLegacy.DpToInteger(3)));
 
                     break;
-                case FunctionsClass.DisplaySection.BottomRight:
-                    if (functionsClass.returnAPI() < 24) {
+                case FunctionsClassLegacy.DisplaySection.BottomRight:
+                    if (functionsClassLegacy.returnAPI() < 24) {
                         popupItems.add(getString(R.string.remove));
                         popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.pin));
-                        if (functionsClass.UsageStatsEnabled()) {
+                        if (functionsClassLegacy.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
                     } else {
                         popupItems.add(getString(R.string.remove));
                         popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.pin));
-                        if (functionsClass.UsageStatsEnabled()) {
+                        if (functionsClassLegacy.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
                         popupItems.add(getString(R.string.splitIt));
-                        if (functionsClass.addFloatItItem()) {
+                        if (functionsClassLegacy.addFloatItItem()) {
                             popupItems.add(getString(R.string.floatIt));
                         }
                     }
 
-                    itemMenuView.setX(xPosition - (functionsClass.DpToInteger(177) - HW));
-                    itemMenuView.setY(yPosition - ((functionsClass.DpToInteger(37) * popupItems.size()) + functionsClass.DpToInteger(3)));
+                    itemMenuView.setX(xPosition - (functionsClassLegacy.DpToInteger(177) - HW));
+                    itemMenuView.setY(yPosition - ((functionsClassLegacy.DpToInteger(37) * popupItems.size()) + functionsClassLegacy.DpToInteger(3)));
 
                     break;
                 default:
-                    if (functionsClass.returnAPI() < 24) {
-                        if (functionsClass.UsageStatsEnabled()) {
+                    if (functionsClassLegacy.returnAPI() < 24) {
+                        if (functionsClassLegacy.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
                         popupItems.add(getString(R.string.pin));
                         popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.remove));
                     } else {
-                        if (functionsClass.addFloatItItem()) {
+                        if (functionsClassLegacy.addFloatItItem()) {
                             popupItems.add(getString(R.string.floatIt));
                         }
                         popupItems.add(getString(R.string.splitIt));
-                        if (functionsClass.UsageStatsEnabled()) {
+                        if (functionsClassLegacy.UsageStatsEnabled()) {
                             popupItems.add(getString(R.string.close));
                         }
                         popupItems.add(getString(R.string.pin));
@@ -253,7 +253,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
             e.printStackTrace();
         }
 
-        layoutParams = functionsClass.splashRevealParams(
+        layoutParams = functionsClassLegacy.splashRevealParams(
                 0,
                 0
         );
@@ -262,7 +262,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
             @Override
             public void run() {
                 try {
-                    functionsClass.circularRevealViewScreen(
+                    functionsClassLegacy.circularRevealViewScreen(
                             wholeMenuView,
                             xPosition,
                             yPosition,
@@ -299,17 +299,17 @@ public class PopupOptionsFloatingShortcuts extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        functionsClass = new FunctionsClass(getApplicationContext());
+        functionsClassLegacy = new FunctionsClassLegacy(getApplicationContext());
 
-        if (functionsClass.customIconsEnable()) {
-            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
+        if (functionsClassLegacy.customIconsEnable()) {
+            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClassLegacy.customIconPackageName());
         }
     }
 
     @Override
     public void onDestroy() {
         try {
-            functionsClass.circularRevealViewScreen(
+            functionsClassLegacy.circularRevealViewScreen(
                     wholeMenuView,
                     xPosition,
                     yPosition,

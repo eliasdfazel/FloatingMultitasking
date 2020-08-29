@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,14 +25,14 @@ import android.text.Html
 import android.view.WindowManager
 import android.widget.Toast
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.CheckPointBinding
 
 class Checkpoint : Activity() {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     companion object {
@@ -53,7 +53,7 @@ class Checkpoint : Activity() {
                             && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             && Settings.canDrawOverlays(applicationContext)) {
 
-                        functionsClass.savePreference(".Configuration", "Permissions", true)
+                        functionsClassLegacy.savePreference(".Configuration", "Permissions", true)
 
                         startActivity(Intent(applicationContext, Configurations::class.java))
 
@@ -101,7 +101,7 @@ class Checkpoint : Activity() {
 
         if (intent.hasExtra(getString(R.string.splitIt))) {
 
-            functionsClass.AccessibilityServiceDialogue(this@Checkpoint)
+            functionsClassLegacy.AccessibilityServiceDialogue(this@Checkpoint)
 
         } else {
 
@@ -122,7 +122,7 @@ class Checkpoint : Activity() {
 
             }
 
-            if (functionsClass.returnAPI() >= Build.VERSION_CODES.O) {
+            if (functionsClassLegacy.returnAPI() >= Build.VERSION_CODES.O) {
 
                 permissionsList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
                 permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)

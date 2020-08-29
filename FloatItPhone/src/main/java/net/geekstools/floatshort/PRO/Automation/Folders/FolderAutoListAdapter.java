@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -33,7 +33,7 @@ import net.geekstools.floatshort.PRO.Automation.Alarms.TimeDialogue;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
@@ -45,7 +45,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
     private Context context;
     private Activity activity;
 
-    FunctionsClass functionsClass;
+    FunctionsClassLegacy functionsClassLegacy;
     FileIO fileIO;
 
     ImageView imageView;
@@ -65,7 +65,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
         this.context = context;
         this.adapterItems = adapterItems;
 
-        functionsClass = new FunctionsClass(context);
+        functionsClassLegacy = new FunctionsClassLegacy(context);
         fileIO = new FileIO(context);
 
         if (PublicVariable.autoID != null) {
@@ -82,8 +82,8 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
             }
         }
 
-        if (functionsClass.customIconsEnable()) {
-            loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
+        if (functionsClassLegacy.customIconsEnable()) {
+            loadCustomIcons = new LoadCustomIcons(context, functionsClassLegacy.customIconPackageName());
         }
     }
 
@@ -100,7 +100,7 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
         RelativeLayout categoryItem = viewHolderBinder.categoryItem;
 
         viewHolderBinder.categoryName.setTextColor(PublicVariable.colorLightDarkOpposite);
-        viewHolderBinder.categoryName.setHintTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175));
+        viewHolderBinder.categoryName.setHintTextColor(functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175));
 
         viewHolderBinder.autoChoice.setButtonTintList(ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite));
 
@@ -128,11 +128,11 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
                 }
                 for (int i = 0; i < previewItems; i++) {
                     freqLayout = (RelativeLayout) activity.getLayoutInflater().inflate(R.layout.selected_apps_item, null);
-                    imageView = functionsClass.initShapesImage(freqLayout, R.id.appSelectedItem);
-                    imageView.setImageDrawable(functionsClass.customIconsEnable() ?
-                            loadCustomIcons.getDrawableIconForPackage(categoryPackages[i], functionsClass.shapedAppIcon(categoryPackages[i]))
+                    imageView = functionsClassLegacy.initShapesImage(freqLayout, R.id.appSelectedItem);
+                    imageView.setImageDrawable(functionsClassLegacy.customIconsEnable() ?
+                            loadCustomIcons.getDrawableIconForPackage(categoryPackages[i], functionsClassLegacy.shapedAppIcon(categoryPackages[i]))
                             :
-                            functionsClass.shapedAppIcon(categoryPackages[i]));
+                            functionsClassLegacy.shapedAppIcon(categoryPackages[i]));
                     viewHolderBinder.selectedApp.addView(freqLayout);
                 }
             }
@@ -220,8 +220,8 @@ public class FolderAutoListAdapter extends RecyclerView.Adapter<FolderAutoListAd
         });
 
         RippleDrawable drawItem = (RippleDrawable) context.getDrawable(R.drawable.ripple_effect_folder_logo);
-        drawItem.setDrawableByLayerId(R.id.folder_logo_layer, functionsClass.shapesDrawablesCategory(viewHolderBinder.timeView));
-        drawItem.setDrawableByLayerId(android.R.id.mask, functionsClass.shapesDrawablesCategory(viewHolderBinder.timeView));
+        drawItem.setDrawableByLayerId(R.id.folder_logo_layer, functionsClassLegacy.shapesDrawablesCategory(viewHolderBinder.timeView));
+        drawItem.setDrawableByLayerId(android.R.id.mask, functionsClassLegacy.shapesDrawablesCategory(viewHolderBinder.timeView));
         Drawable categoryLogoLayer = (Drawable) drawItem.findDrawableByLayerId(R.id.folder_logo_layer);
         Drawable categoryMask = (Drawable) drawItem.findDrawableByLayerId(android.R.id.mask);
         categoryLogoLayer.setTint(PublicVariable.primaryColorOpposite);

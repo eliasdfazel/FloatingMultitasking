@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 3:04 PM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,7 +18,7 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class RecoveryWidgetActivity : Activity() {
@@ -26,7 +26,7 @@ class RecoveryWidgetActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val functionsClass = FunctionsClass(applicationContext)
+        val functionsClass = FunctionsClassLegacy(applicationContext)
 
         if (intent.action == Intent.ACTION_CREATE_SHORTCUT) {
             val shapeTempDrawable = functionsClass.shapesDrawables()

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:21 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -53,7 +53,7 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.ApplicationThemeController;
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug;
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants;
@@ -67,7 +67,7 @@ import java.util.ArrayList;
 
 public class FolderAutoFeatures extends AppCompatActivity implements View.OnClickListener, GestureListenerInterface {
 
-    FunctionsClass functionsClass;
+    FunctionsClassLegacy functionsClassLegacy;
     FileIO fileIO;
 
     ApplicationThemeController applicationThemeController;
@@ -117,14 +117,14 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
         swipeGestureListener = new SwipeGestureListener(getApplicationContext(), FolderAutoFeatures.this);
 
-        functionsClass = new FunctionsClass(getApplicationContext());
+        functionsClassLegacy = new FunctionsClassLegacy(getApplicationContext());
         fileIO = new FileIO(getApplicationContext());
 
         applicationThemeController = new ApplicationThemeController(getApplicationContext());
         functionsClassThemeUtils = applicationThemeController.new Utils();
 
-        functionsClass.loadSavedColor();
-        functionsClass.checkLightDarkTheme();
+        functionsClassLegacy.loadSavedColor();
+        functionsClassLegacy.checkLightDarkTheme();
 
         if (!getFileStreamPath(".categoryInfo").exists()
                 || !(fileIO.fileLinesCounter(".categoryInfo") > 0)) {
@@ -136,8 +136,8 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             return;
         }
 
-        if (functionsClass.returnAPI() >= 26) {
-            if (!functionsClass.ControlPanel()) {
+        if (functionsClassLegacy.returnAPI() >= 26) {
+            if (!functionsClassLegacy.ControlPanel()) {
                 Snackbar snackbar = Snackbar.make(MainView, Html.fromHtml("<big>" + getString(R.string.enableControlPanel) + "</big>"), Snackbar.LENGTH_INDEFINITE)
                         .setAction(Html.fromHtml("<b>" + getString(R.string.enable).toUpperCase() + "</b>"), new View.OnClickListener() {
                             @Override
@@ -156,7 +156,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
                         GradientDrawable.Orientation.BOTTOM_TOP,
                         new int[]{
                                 Color.TRANSPARENT,
-                                functionsClass.setColorAlpha(PublicVariable.primaryColor, 207),
+                                functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 207),
                                 Color.TRANSPARENT
                         });
 
@@ -167,10 +167,10 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             }
         }
 
-        applicationThemeController.setThemeColorAutomationFeature(FolderAutoFeatures.this, MainView, functionsClass.appThemeTransparent());
+        applicationThemeController.setThemeColorAutomationFeature(FolderAutoFeatures.this, MainView, functionsClassLegacy.appThemeTransparent());
 
-        if (functionsClass.customIconsEnable()) {
-            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
+        if (functionsClassLegacy.customIconsEnable()) {
+            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClassLegacy.customIconPackageName());
         }
 
         adapterItems = new ArrayList<AdapterItems>();
@@ -180,7 +180,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
         autoApps.setTextColor(getColor(R.color.light));
         autoCategories.setTextColor(getColor(R.color.light));
-        if (PublicVariable.themeLightDark && functionsClass.appThemeTransparent()) {
+        if (PublicVariable.themeLightDark && functionsClassLegacy.appThemeTransparent()) {
             autoApps.setTextColor(getColor(R.color.dark));
             autoCategories.setTextColor(getColor(R.color.dark));
         }
@@ -190,13 +190,13 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         Drawable gradientDrawableShortcutsBackground = rippleDrawableShortcuts.findDrawableByLayerId(R.id.backgroundItem);
         Drawable gradientDrawableMaskShortcuts = rippleDrawableShortcuts.findDrawableByLayerId(android.R.id.mask);
 
-        if (functionsClass.appThemeTransparent()) {
+        if (functionsClassLegacy.appThemeTransparent()) {
             rippleDrawableShortcuts.setColor(ColorStateList.valueOf(PublicVariable.primaryColor));
-            gradientDrawableShortcutsForeground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 255));
-            if (functionsClass.returnAPI() > 21) {
-                gradientDrawableShortcutsBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
+            gradientDrawableShortcutsForeground.setTint(functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 255));
+            if (functionsClassLegacy.returnAPI() > 21) {
+                gradientDrawableShortcutsBackground.setTint(functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
             } else {
-                gradientDrawableShortcutsBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
+                gradientDrawableShortcutsBackground.setTint(functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
             }
             gradientDrawableMaskShortcuts.setTint(PublicVariable.primaryColor);
         } else {
@@ -212,15 +212,15 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         Drawable gradientDrawableCategoriesBackground = rippleDrawableCategories.findDrawableByLayerId(R.id.backgroundItem);
         Drawable gradientDrawableMaskCategories = rippleDrawableCategories.findDrawableByLayerId(android.R.id.mask);
 
-        if (functionsClass.appThemeTransparent()) {
+        if (functionsClassLegacy.appThemeTransparent()) {
             rippleDrawableCategories.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
             gradientDrawableCategoriesForeground.setTint(
-                    functionsClass.setColorAlpha(
-                            functionsClass.mixColors(
+                    functionsClassLegacy.setColorAlpha(
+                            functionsClassLegacy.mixColors(
                                     PublicVariable.primaryColor, PublicVariable.colorLightDark,
                                     0.75f), functionsClassThemeUtils.wallpaperStaticLive() ? 245 : 113)
             );
-            gradientDrawableCategoriesBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, functionsClassThemeUtils.wallpaperStaticLive() ? 150 : 155));
+            gradientDrawableCategoriesBackground.setTint(functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, functionsClassThemeUtils.wallpaperStaticLive() ? 150 : 155));
             gradientDrawableMaskCategories.setTint(PublicVariable.primaryColorOpposite);
         } else {
             rippleDrawableCategories.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
@@ -237,7 +237,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
         floatingLogo.setImageDrawable(drawFloatingLogo);
 
         loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
-        if (functionsClass.appThemeTransparent() == true) {
+        if (functionsClassLegacy.appThemeTransparent() == true) {
             loadingSplash.setBackgroundColor(Color.TRANSPARENT);
         } else {
             loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
@@ -261,7 +261,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             public void onClick(View view) {
                 PublicVariable.autoID = null;
                 try {
-                    functionsClass.navigateToClass(FolderAutoFeatures.this, AppAutoFeatures.class,
+                    functionsClassLegacy.navigateToClass(FolderAutoFeatures.this, AppAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
                     finish();
                 } catch (Exception e) {
@@ -543,9 +543,9 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
     @Override
     public void onBackPressed() {
         try {
-            functionsClass.CheckSystemRAM(FolderAutoFeatures.this);
+            functionsClassLegacy.CheckSystemRAM(FolderAutoFeatures.this);
 
-            functionsClass.overrideBackPressToMain(FolderAutoFeatures.this, FolderAutoFeatures.this);
+            functionsClassLegacy.overrideBackPressToMain(FolderAutoFeatures.this, FolderAutoFeatures.this);
             overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
         } catch (Exception e) {
             e.printStackTrace();
@@ -563,7 +563,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             switch (((GestureConstants.SwipeHorizontal) gestureConstants).getHorizontalDirection()) {
                 case GestureListenerConstants.SWIPE_RIGHT: {
 
-                    functionsClass.navigateToClass(FolderAutoFeatures.this, AppAutoFeatures.class,
+                    functionsClassLegacy.navigateToClass(FolderAutoFeatures.this, AppAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_left, R.anim.slide_to_right));
 
                     FolderAutoFeatures.this.finish();
@@ -670,7 +670,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
 
             loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
             loadingSplash.setVisibility(View.VISIBLE);
-            if (functionsClass.appThemeTransparent() == true) {
+            if (functionsClassLegacy.appThemeTransparent() == true) {
                 loadingSplash.setBackgroundColor(Color.TRANSPARENT);
             } else {
                 loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
@@ -693,7 +693,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             try {
                 String[] appData = fileIO.readFileLinesAsArray(".categoryInfo");
 
-                if (functionsClass.customIconsEnable()) {
+                if (functionsClassLegacy.customIconsEnable()) {
                     loadCustomIcons.load();
                     Debug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }

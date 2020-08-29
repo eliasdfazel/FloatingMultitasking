@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/27/20 3:37 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,8 +36,8 @@ import kotlin.collections.ArrayList
 
 class Configurations : AppCompatActivity() {
 
-    val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
     val fileIO: FileIO by lazy {
         FileIO(applicationContext)
@@ -78,7 +78,7 @@ class Configurations : AppCompatActivity() {
             PublicVariable.Stable = false
         }
 
-        if (functionsClass.returnAPI() >= 26) {
+        if (functionsClassLegacy.returnAPI() >= 26) {
             if (!Settings.canDrawOverlays(applicationContext)
                     || !getSharedPreferences(".Configuration", Context.MODE_PRIVATE).getBoolean("Permissions", false)) {
 
@@ -96,7 +96,7 @@ class Configurations : AppCompatActivity() {
             }
         }
 
-        if (functionsClass.UsageStatsEnabled()) {
+        if (functionsClassLegacy.UsageStatsEnabled()) {
 
             retrieveFrequentlyUsedApplications()
 
@@ -161,7 +161,7 @@ class Configurations : AppCompatActivity() {
                         if (previousAppPackageName.contains("com.google.android.googlequicksearchbox")) {
 
                             val bundleFirebaseAnalytics = Bundle()
-                            bundleFirebaseAnalytics.putString("COUNTRY", functionsClass.countryIso)
+                            bundleFirebaseAnalytics.putString("COUNTRY", functionsClassLegacy.countryIso)
                             firebaseAnalytics.logEvent(Debug.REMOTE_TASK_OK_GOOGLE, bundleFirebaseAnalytics)
 
                             when (sharedPreferences.getString("boot", "1")) {

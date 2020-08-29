@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:33 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,7 +36,7 @@ import net.geekstools.floatshort.PRO.Folders.FloatingServices.Utils.FloatingFold
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
@@ -45,8 +45,8 @@ import kotlin.math.abs
 
 class FloatingFoldersForNfc : Service() {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
     private val fileIO: FileIO by lazy {
         FileIO(applicationContext)
@@ -91,7 +91,7 @@ class FloatingFoldersForNfc : Service() {
     private var handlerPressHold: Handler = Handler()
 
     private val loadCustomIcons: LoadCustomIcons by lazy {
-        LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
+        LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())
     }
 
     private val simpleOnGestureListener: ArrayList<SimpleOnGestureListener> = ArrayList<SimpleOnGestureListener>()
@@ -121,7 +121,7 @@ class FloatingFoldersForNfc : Service() {
                     try {
                         if (floatingView[J].isShown) {
                             layoutParams.set(J,
-                                    functionsClass.handleOrientationPortrait(folderName[J], layoutParams[J].height))
+                                    functionsClassLegacy.handleOrientationPortrait(folderName[J], layoutParams[J].height))
 
                             windowManager.updateViewLayout(floatingView[J], layoutParams[J])
                         }
@@ -136,7 +136,7 @@ class FloatingFoldersForNfc : Service() {
                     try {
                         if (floatingView[J].isShown) {
                             layoutParams.set(J,
-                                    functionsClass.handleOrientationLandscape(folderName[J], layoutParams[J].height))
+                                    functionsClassLegacy.handleOrientationLandscape(folderName[J], layoutParams[J].height))
 
                             windowManager.updateViewLayout(floatingView[J], layoutParams[J])
                         }
@@ -232,7 +232,7 @@ class FloatingFoldersForNfc : Service() {
             }
 
             var folderBackgroundDrawable: Drawable? = null
-            when (functionsClass.shapesImageId()) {
+            when (functionsClassLegacy.shapesImageId()) {
                 1 -> folderBackgroundDrawable = getDrawable(R.drawable.category_droplet_icon)
                 2 -> folderBackgroundDrawable = getDrawable(R.drawable.category_circle_icon)
                 3 -> folderBackgroundDrawable = getDrawable(R.drawable.category_square_icon)
@@ -241,17 +241,17 @@ class FloatingFoldersForNfc : Service() {
             }
             if (folderBackgroundDrawable != null) {
                 folderBackgroundDrawable.setTint(PublicVariable.primaryColor)
-                folderBackgroundDrawable.alpha = functionsClass.readDefaultPreference("autoTrans", 255)
+                folderBackgroundDrawable.alpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255)
             }
             floatingView[startId].background = folderBackgroundDrawable
 
-            val bottomRight = functionsClass.initShapesImage(floatingView[startId], R.id.bottomRight)
-            val topLeft = functionsClass.initShapesImage(floatingView[startId], R.id.topLeft)
-            val bottomLeft = functionsClass.initShapesImage(floatingView[startId], R.id.bottomLeft)
-            val topRight = functionsClass.initShapesImage(floatingView[startId], R.id.topRight)
+            val bottomRight = functionsClassLegacy.initShapesImage(floatingView[startId], R.id.bottomRight)
+            val topLeft = functionsClassLegacy.initShapesImage(floatingView[startId], R.id.topLeft)
+            val bottomLeft = functionsClassLegacy.initShapesImage(floatingView[startId], R.id.bottomLeft)
+            val topRight = functionsClassLegacy.initShapesImage(floatingView[startId], R.id.topRight)
 
-            pinIndicatorView.add(startId, functionsClass.initShapesImage(floatingView[startId], R.id.pinIndicatorView))
-            notificationDotView.add(startId, functionsClass.initShapesImage(floatingView[startId], if (functionsClass.checkStickyEdge()) {
+            pinIndicatorView.add(startId, functionsClassLegacy.initShapesImage(floatingView[startId], R.id.pinIndicatorView))
+            notificationDotView.add(startId, functionsClassLegacy.initShapesImage(floatingView[startId], if (functionsClassLegacy.checkStickyEdge()) {
                 R.id.notificationDotEnd
             } else {
                 R.id.notificationDotStart
@@ -276,12 +276,12 @@ class FloatingFoldersForNfc : Service() {
                 //bottomRight
                 try {
 
-                    bottomRight.setImageDrawable(if (functionsClass.customIconsEnable()) {
-                        loadCustomIcons.getDrawableIconForPackage(appsInFolder[0], functionsClass.shapedAppIcon(appsInFolder[0]))
+                    bottomRight.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) {
+                        loadCustomIcons.getDrawableIconForPackage(appsInFolder[0], functionsClassLegacy.shapedAppIcon(appsInFolder[0]))
                     } else {
-                        functionsClass.shapedAppIcon(appsInFolder[0])
+                        functionsClassLegacy.shapedAppIcon(appsInFolder[0])
                     })
-                    bottomRight.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+                    bottomRight.imageAlpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255)
 
                 } catch (e: Exception) {
                     bottomRight.setImageDrawable(null)
@@ -289,12 +289,12 @@ class FloatingFoldersForNfc : Service() {
 
                 //topLeft
                 try {
-                    topLeft.setImageDrawable(if (functionsClass.customIconsEnable()) {
-                        loadCustomIcons.getDrawableIconForPackage(appsInFolder[1], functionsClass.shapedAppIcon(appsInFolder[1]))
+                    topLeft.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) {
+                        loadCustomIcons.getDrawableIconForPackage(appsInFolder[1], functionsClassLegacy.shapedAppIcon(appsInFolder[1]))
                     } else {
-                        functionsClass.shapedAppIcon(appsInFolder[1])
+                        functionsClassLegacy.shapedAppIcon(appsInFolder[1])
                     })
-                    topLeft.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+                    topLeft.imageAlpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255)
 
                 } catch (e: Exception) {
                     topLeft.setImageDrawable(null)
@@ -303,12 +303,12 @@ class FloatingFoldersForNfc : Service() {
                 //bottomLeft
                 try {
 
-                    bottomLeft.setImageDrawable(if (functionsClass.customIconsEnable()) {
-                        loadCustomIcons.getDrawableIconForPackage(appsInFolder[2], functionsClass.shapedAppIcon(appsInFolder[2]))
+                    bottomLeft.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) {
+                        loadCustomIcons.getDrawableIconForPackage(appsInFolder[2], functionsClassLegacy.shapedAppIcon(appsInFolder[2]))
                     } else {
-                        functionsClass.shapedAppIcon(appsInFolder[2])
+                        functionsClassLegacy.shapedAppIcon(appsInFolder[2])
                     })
-                    bottomLeft.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+                    bottomLeft.imageAlpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255)
 
                 } catch (e: Exception) {
                     bottomLeft.setImageDrawable(null)
@@ -316,8 +316,8 @@ class FloatingFoldersForNfc : Service() {
 
                 //topRight
                 try {
-                    topRight.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(appsInFolder[3], functionsClass.shapedAppIcon(appsInFolder[3])) else functionsClass.shapedAppIcon(appsInFolder[3]))
-                    topRight.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+                    topRight.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(appsInFolder[3], functionsClassLegacy.shapedAppIcon(appsInFolder[3])) else functionsClassLegacy.shapedAppIcon(appsInFolder[3]))
+                    topRight.imageAlpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255)
                 } catch (e: Exception) {
                     topRight.setImageDrawable(null)
                 }
@@ -335,7 +335,7 @@ class FloatingFoldersForNfc : Service() {
             XY.xPosition = sharedPreferencesPosition.getInt("X", XY.xInitial)
             XY.yPosition = sharedPreferencesPosition.getInt("Y", XY.yInitial)
 
-            layoutParams.add(startId, functionsClass.normalLayoutParams(HW, XY.xPosition, XY.yPosition))
+            layoutParams.add(startId, functionsClassLegacy.normalLayoutParams(HW, XY.xPosition, XY.yPosition))
 
             try {
                 floatingView[startId].tag = startId
@@ -347,17 +347,17 @@ class FloatingFoldersForNfc : Service() {
             XY.xMove = XY.xPosition
             XY.yMove = XY.yPosition
 
-            if (!functionsClass.litePreferencesEnabled()) {
+            if (!functionsClassLegacy.litePreferencesEnabled()) {
                 flingAnimationX.add(startId, FlingAnimation(FloatValueHolder())
-                        .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)))
+                        .setFriction(functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)))
 
-                flingAnimationX[startId].setMaxValue((functionsClass.displayX() - folderSize).toFloat())
+                flingAnimationX[startId].setMaxValue((functionsClassLegacy.displayX() - folderSize).toFloat())
                 flingAnimationX[startId].setMinValue(0f)
 
                 flingAnimationY.add(startId, FlingAnimation(FloatValueHolder())
-                        .setFriction(functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)))
+                        .setFriction(functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)))
 
-                flingAnimationY[startId].setMaxValue((functionsClass.displayY() - folderSize).toFloat())
+                flingAnimationY[startId].setMaxValue((functionsClassLegacy.displayY() - folderSize).toFloat())
                 flingAnimationY[startId].setMinValue(0f)
 
                 simpleOnGestureListener.add(startId, object : SimpleOnGestureListener() {
@@ -462,7 +462,7 @@ class FloatingFoldersForNfc : Service() {
 
                                 if (touchingDelay[startId]) {
 
-                                    functionsClass.PopupOptionFolder(
+                                    functionsClassLegacy.PopupOptionFolder(
                                             view,
                                             folderName[startId],
                                             this@FloatingFoldersForNfc.javaClass.simpleName,
@@ -475,7 +475,7 @@ class FloatingFoldersForNfc : Service() {
                                 }
                             }
 
-                            handlerPressHold.postDelayed(runnablePressHold, functionsClass.readDefaultPreference("delayPressHold", 333).toLong())
+                            handlerPressHold.postDelayed(runnablePressHold, functionsClassLegacy.readDefaultPreference("delayPressHold", 333).toLong())
 
                         }
                         MotionEvent.ACTION_UP -> {
@@ -504,20 +504,20 @@ class FloatingFoldersForNfc : Service() {
 
                             } else {
 
-                                if (!functionsClass.litePreferencesEnabled()) {
+                                if (!functionsClassLegacy.litePreferencesEnabled()) {
 
                                     var initialTouchXBoundBack = getSharedPreferences(folderName[startId], Context.MODE_PRIVATE).getInt("X", 0).toFloat()
                                     if (initialTouchXBoundBack < 0) {
                                         initialTouchXBoundBack = 0f
-                                    } else if (initialTouchXBoundBack > functionsClass.displayX()) {
-                                        initialTouchXBoundBack = functionsClass.displayX().toFloat()
+                                    } else if (initialTouchXBoundBack > functionsClassLegacy.displayX()) {
+                                        initialTouchXBoundBack = functionsClassLegacy.displayX().toFloat()
                                     }
 
                                     var initialTouchYBoundBack = getSharedPreferences(folderName[startId], Context.MODE_PRIVATE).getInt("Y", 0).toFloat()
                                     if (initialTouchYBoundBack < 0) {
                                         initialTouchYBoundBack = 0f
-                                    } else if (initialTouchYBoundBack > functionsClass.displayY()) {
-                                        initialTouchYBoundBack = functionsClass.displayY().toFloat()
+                                    } else if (initialTouchYBoundBack > functionsClassLegacy.displayY()) {
+                                        initialTouchYBoundBack = functionsClassLegacy.displayY().toFloat()
                                     }
 
                                     val springForceX = SpringForce()
@@ -541,24 +541,24 @@ class FloatingFoldersForNfc : Service() {
                                     var springStartValueX = motionEvent.rawX
                                     if (springStartValueX < 0f) {
                                         springStartValueX = 0f
-                                    } else if (springStartValueX > functionsClass.displayX()) {
-                                        springStartValueX = functionsClass.displayX().toFloat()
+                                    } else if (springStartValueX > functionsClassLegacy.displayX()) {
+                                        springStartValueX = functionsClassLegacy.displayX().toFloat()
                                     }
 
                                     var springStartValueY = motionEvent.rawY
                                     if (springStartValueY < 0f) {
                                         springStartValueY = 0f
-                                    } else if (springStartValueY > functionsClass.displayY()) {
-                                        springStartValueY = functionsClass.displayY().toFloat()
+                                    } else if (springStartValueY > functionsClassLegacy.displayY()) {
+                                        springStartValueY = functionsClassLegacy.displayY().toFloat()
                                     }
 
                                     springAnimationX.setStartValue(springStartValueX)
                                     springAnimationX.setStartVelocity(-0f)
-                                    springAnimationX.setMaxValue(functionsClass.displayX().toFloat())
+                                    springAnimationX.setMaxValue(functionsClassLegacy.displayX().toFloat())
 
                                     springAnimationY.setStartValue(springStartValueY)
                                     springAnimationY.setStartVelocity(-0f)
-                                    springAnimationY.setMaxValue(functionsClass.displayY().toFloat())
+                                    springAnimationY.setMaxValue(functionsClassLegacy.displayY().toFloat())
 
                                     springAnimationX.addUpdateListener { animation, value, velocity ->
 
@@ -613,7 +613,7 @@ class FloatingFoldersForNfc : Service() {
                                 flingPositionY = layoutParamsOnTouch.y.toFloat()
 
                             } else {
-                                if (!functionsClass.litePreferencesEnabled()) {
+                                if (!functionsClassLegacy.litePreferencesEnabled()) {
 
                                     layoutParamsOnTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt() // X movePoint
                                     layoutParamsOnTouch.y = initialY + (motionEvent.rawY - initialTouchY).toInt() // Y movePoint
@@ -647,7 +647,7 @@ class FloatingFoldersForNfc : Service() {
 
                 if (openPermit[startId]) {
 
-                    functionsClass.PopupAppListFolder(
+                    functionsClassLegacy.PopupAppListFolder(
                             view,
                             folderName[startId],
                             fileIO.readFileLinesAsArray(folderName[startId]),
@@ -662,7 +662,7 @@ class FloatingFoldersForNfc : Service() {
 
             notificationDotView[startId].setOnClickListener {
 
-                functionsClass.PopupNotificationShortcuts(
+                functionsClassLegacy.PopupNotificationShortcuts(
                         notificationDotView[startId],
                         notificationDotView[startId].tag.toString(),
                         this@FloatingFoldersForNfc.javaClass.simpleName,
@@ -676,9 +676,9 @@ class FloatingFoldersForNfc : Service() {
 
             notificationDotView[startId].setOnLongClickListener { view ->
 
-                if (functionsClass.AccessibilityServiceEnabled() && functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
+                if (functionsClassLegacy.AccessibilityServiceEnabled() && functionsClassLegacy.SettingServiceRunning(InteractionObserver::class.java)) {
 
-                    functionsClass
+                    functionsClassLegacy
                             .sendInteractionObserverEvent(view,
                                     notificationDotView[startId].tag.toString(),
                                     AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED, 66666)
@@ -782,8 +782,8 @@ class FloatingFoldersForNfc : Service() {
 
                                     }, 200)
 
-                                    functionsClass.Toast(functionsClass.applicationName(packageNameSplitOne), Gravity.TOP)
-                                    functionsClass.Toast(functionsClass.applicationName(packageNameSplitTwo), Gravity.BOTTOM)
+                                    functionsClassLegacy.Toast(functionsClassLegacy.applicationName(packageNameSplitOne), Gravity.TOP)
+                                    functionsClassLegacy.Toast(functionsClassLegacy.applicationName(packageNameSplitTwo), Gravity.BOTTOM)
 
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()
@@ -815,7 +815,7 @@ class FloatingFoldersForNfc : Service() {
                             movePermit[intent.getIntExtra("startId", 0)] = false
 
                             var folderBackgroundDrawablePin: Drawable? = null
-                            when (functionsClass.shapesImageId()) {
+                            when (functionsClassLegacy.shapesImageId()) {
                                 1 -> {
                                     folderBackgroundDrawablePin = getDrawable(R.drawable.pin_droplet_icon)
                                     folderBackgroundDrawablePin?.setTint(context.getColor(R.color.red_transparent))
@@ -890,7 +890,7 @@ class FloatingFoldersForNfc : Service() {
 
                                 stickedToEdge[stickyCounter] = true
 
-                                stickyEdgeParams.add(stickyCounter, functionsClass.moveToEdge(this@FloatingFoldersForNfc.folderName.get(stickyCounter), layoutParams[stickyCounter].height))
+                                stickyEdgeParams.add(stickyCounter, functionsClassLegacy.moveToEdge(this@FloatingFoldersForNfc.folderName.get(stickyCounter), layoutParams[stickyCounter].height))
 
                                 if (floatingView[stickyCounter].isShown
                                         && floatingView[stickyCounter] != null) {
@@ -924,7 +924,7 @@ class FloatingFoldersForNfc : Service() {
 
                                         windowManager
                                                 .updateViewLayout(floatingView[stickyCounter],
-                                                        functionsClass.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
+                                                        functionsClassLegacy.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
 
                                     } catch (e: WindowManager.BadTokenException) {
                                         e.printStackTrace()
@@ -943,10 +943,10 @@ class FloatingFoldersForNfc : Service() {
 
                                     if (floatingView[startIdNotification].isShown) {
                                         /*Add Dot*/
-                                        val dotDrawable = if (functionsClass.customIconsEnable()) {
-                                            loadCustomIcons.getDrawableIconForPackage(it, functionsClass.shapedAppIcon(it).mutate()).mutate()
+                                        val dotDrawable = if (functionsClassLegacy.customIconsEnable()) {
+                                            loadCustomIcons.getDrawableIconForPackage(it, functionsClassLegacy.shapedAppIcon(it).mutate()).mutate()
                                         } else {
-                                            functionsClass.shapedAppIcon(it).mutate()
+                                            functionsClassLegacy.shapedAppIcon(it).mutate()
                                         }
 
                                         notificationDotView[startIdNotification].setImageDrawable(dotDrawable)

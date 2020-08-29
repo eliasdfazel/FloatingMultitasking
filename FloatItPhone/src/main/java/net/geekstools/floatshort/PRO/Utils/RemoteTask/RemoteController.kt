@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,14 +14,14 @@ import android.content.Intent
 import android.os.IBinder
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryAll
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Remove.RemoveAll
 
 class RemoteController : Service() {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     private val fileIO: FileIO by lazy {
@@ -44,7 +44,7 @@ class RemoteController : Service() {
             when (intent.getStringExtra("RemoteController")) {
                 RemoteController.COMMANDS.CancelRemote -> {
 
-                    if (fileIO.automationFeatureEnable() || functionsClass.ControlPanel()) {
+                    if (fileIO.automationFeatureEnable() || functionsClassLegacy.ControlPanel()) {
                         /**/
                     } else {
 

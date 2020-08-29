@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,14 +27,14 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 
 class RecoveryShortcuts : Service() {
     
-    private val functionsClass: FunctionsClass by lazy { 
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     private val fileIO: FileIO by lazy {
@@ -54,7 +54,7 @@ class RecoveryShortcuts : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingSizeNumber = functionsClassLegacy.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
 
         if (!applicationContext.getFileStreamPath(".uFile").exists()) {
@@ -76,7 +76,7 @@ class RecoveryShortcuts : Service() {
 
                     val authenticatedFloatIt = intent.getBooleanExtra("AuthenticatedFloatIt", false)
 
-                    if (functionsClass.securityServicesSubscribed()
+                    if (functionsClassLegacy.securityServicesSubscribed()
                             && !authenticatedFloatIt) {
 
                         SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
@@ -135,9 +135,9 @@ class RecoveryShortcuts : Service() {
         super.onCreate()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(333, functionsClass.bindServiceNotification(), STOP_FOREGROUND_REMOVE)
+            startForeground(333, functionsClassLegacy.bindServiceNotification(), STOP_FOREGROUND_REMOVE)
         } else {
-            startForeground(333, functionsClass.bindServiceNotification())
+            startForeground(333, functionsClassLegacy.bindServiceNotification())
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -162,8 +162,8 @@ class RecoveryShortcuts : Service() {
 
         FirebaseAppIndex.getInstance().removeAll()
 
-        if (functionsClass.customIconsEnable()) {
-            val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
+        if (functionsClassLegacy.customIconsEnable()) {
+            val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())
             loadCustomIcons.load()
         }
 

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/25/20 11:40 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.geekstools.floatshort.PRO.Preferences.PreferencesUtil;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThemeAdapter.ViewHolder> {
 
-    private FunctionsClass functionsClass;
+    private FunctionsClassLegacy functionsClassLegacy;
 
     private PreferencesUtil preferencesUtil;
 
@@ -49,7 +49,7 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
         this.adapterItems = adapterItems;
         this.dialog = dialog;
 
-        functionsClass = new FunctionsClass(context);
+        functionsClassLegacy = new FunctionsClassLegacy(context);
     }
 
     @Override
@@ -69,15 +69,15 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
         viewHolderBinder.customIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                functionsClass.saveDefaultPreference("customIcon", adapterItems.get(position).getPackageName());
+                functionsClassLegacy.saveDefaultPreference("customIcon", adapterItems.get(position).getPackageName());
 
-                functionsClass.saveDefaultPreference("LitePreferences", false);
-                if (functionsClass.customIconsEnable()) {
+                functionsClassLegacy.saveDefaultPreference("LitePreferences", false);
+                if (functionsClassLegacy.customIconsEnable()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, adapterItems.get(position).getPackageName());
                     loadCustomIcons.load();
                 }
 
-                functionsClass.saveDefaultPreference("LitePreferences", false);
+                functionsClassLegacy.saveDefaultPreference("LitePreferences", false);
 
                 preferencesUtil.getCustomDialogueDismiss().postValue(true);
                 dialog.dismiss();
@@ -87,12 +87,12 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
         viewHolderBinder.customIcon.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (functionsClass.customIconsEnable()) {
+                if (functionsClassLegacy.customIconsEnable()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, adapterItems.get(position).getPackageName());
                     loadCustomIcons.load();
 
 
-                    functionsClass.Toast(String.valueOf(loadCustomIcons.getTotalIconsNumber()), Gravity.BOTTOM, PublicVariable.primaryColor);
+                    functionsClassLegacy.Toast(String.valueOf(loadCustomIcons.getTotalIconsNumber()), Gravity.BOTTOM, PublicVariable.primaryColor);
                 }
 
                 return true;

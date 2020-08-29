@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,7 +24,7 @@ import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonViewInterface
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
@@ -36,7 +36,7 @@ class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
 
     private lateinit var activity: Activity
 
-    lateinit var functionsClass: FunctionsClass
+    lateinit var functionsClassLegacy: FunctionsClassLegacy
     lateinit var fileIO: FileIO
 
     private lateinit var confirmButtonProcessInterface: ConfirmButtonProcessInterface
@@ -48,14 +48,14 @@ class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
     private lateinit var dismissDrawable: LayerDrawable
 
     constructor(activity: Activity, context: Context,
-                functionsClass: FunctionsClass,
+                functionsClassLegacy: FunctionsClassLegacy,
                 fileIO: FileIO,
                 confirmButtonProcessInterface: ConfirmButtonProcessInterface) : super(context) {
 
         this.activity = activity
 
 
-        this.functionsClass = functionsClass
+        this.functionsClassLegacy = functionsClassLegacy
         this.fileIO = fileIO
 
         this.confirmButtonProcessInterface = confirmButtonProcessInterface
@@ -138,7 +138,7 @@ class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
     override fun onSingleTapUp(motionEvent: MotionEvent) {
         super.onSingleTapUp(motionEvent)
 
-        functionsClass.navigateToClass(FoldersConfigurations::class.java, activity)
+        functionsClassLegacy.navigateToClass(FoldersConfigurations::class.java, activity)
     }
 
     /*ConfirmButtonViewInterface*/

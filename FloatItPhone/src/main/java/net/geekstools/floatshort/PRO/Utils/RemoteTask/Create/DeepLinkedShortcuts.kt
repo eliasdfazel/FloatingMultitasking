@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,7 +14,7 @@ import android.os.Bundle
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 
@@ -26,10 +26,10 @@ class DeepLinkedShortcuts : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val functionsClass: FunctionsClass = FunctionsClass(applicationContext)
+        val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(applicationContext)
         val floatingServices: FloatingServices = FloatingServices(applicationContext)
 
-        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingSizeNumber = functionsClassLegacy.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
 
         intent.dataString?.let { dataString ->
@@ -38,8 +38,8 @@ class DeepLinkedShortcuts : AppCompatActivity() {
             val packageName: String = incomingURI.substring(incomingURI.lastIndexOf(htmlSymbol) + 1)
                     .replace(htmlSymbolDelete, "")
 
-            if (functionsClass.customIconsEnable()) {
-                val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
+            if (functionsClassLegacy.customIconsEnable()) {
+                val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())
                 loadCustomIcons.load()
             }
 

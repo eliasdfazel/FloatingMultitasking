@@ -1,17 +1,27 @@
+/*
+ * Copyright © 2020 By Geeks Empire.
+ *
+ * Created by Elias Fazel
+ * Last modified 8/29/20 3:58 AM
+ *
+ * Licensed Under MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 package net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.Utils
 
 import android.content.Context
 import android.content.Intent
 import android.view.WindowManager
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash
 
-class OpenActions(private val context: Context, private val functionsClass: FunctionsClass) {
+class OpenActions(private val context: Context, private val functionsClassLegacy: FunctionsClassLegacy) {
 
     fun startProcess(packageName: String, className: String,
                      layoutParams: WindowManager.LayoutParams) {
 
-        if (functionsClass.splashReveal()) {
+        if (functionsClassLegacy.splashReveal()) {
 
             val splashReveal = Intent(context, FloatingSplash::class.java).apply {
                 putExtra("packageName", packageName)
@@ -27,19 +37,19 @@ class OpenActions(private val context: Context, private val functionsClass: Func
 
         } else {
 
-            if (functionsClass.FreeForm()) {
+            if (functionsClassLegacy.FreeForm()) {
 
-                functionsClass.openApplicationFreeForm(
+                functionsClassLegacy.openApplicationFreeForm(
                         packageName,
                         className,
                         layoutParams.x,
-                        functionsClass.displayX() / 2,
+                        functionsClassLegacy.displayX() / 2,
                         layoutParams.y,
-                        functionsClass.displayY() / 2
+                        functionsClassLegacy.displayY() / 2
                 )
             } else {
 
-                functionsClass
+                functionsClassLegacy
                         .appsLaunchPad(packageName, className)
             }
         }
@@ -48,7 +58,7 @@ class OpenActions(private val context: Context, private val functionsClass: Func
     fun startProcess(packageName: String,
                      layoutParams: WindowManager.LayoutParams) {
 
-        if (functionsClass.splashReveal()) {
+        if (functionsClassLegacy.splashReveal()) {
 
             val splashReveal = Intent(context, FloatingSplash::class.java).apply {
                 putExtra("packageName", packageName)
@@ -63,18 +73,18 @@ class OpenActions(private val context: Context, private val functionsClass: Func
 
         } else {
 
-            if (functionsClass.FreeForm()) {
+            if (functionsClassLegacy.FreeForm()) {
 
-                functionsClass.openApplicationFreeForm(
+                functionsClassLegacy.openApplicationFreeForm(
                         packageName,
                         layoutParams.x,
-                        functionsClass.displayX() / 2,
+                        functionsClassLegacy.displayX() / 2,
                         layoutParams.y,
-                        functionsClass.displayY() / 2
+                        functionsClassLegacy.displayY() / 2
                 )
             } else {
 
-                functionsClass
+                functionsClassLegacy
                         .appsLaunchPad(packageName)
             }
         }

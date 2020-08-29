@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -37,14 +37,14 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.AuthHandlerViewsBinding
 import java.util.*
 
 class PinPasswordConfigurations : Activity() {
 
-    private lateinit var functionClass: FunctionsClass
+    private lateinit var functionClassLegacy: FunctionsClassLegacy
     private lateinit var securityFunctions: SecurityFunctions
 
     private lateinit var firebaseAuth: FirebaseAuth
@@ -59,7 +59,7 @@ class PinPasswordConfigurations : Activity() {
         authHandlerViewsBinding = AuthHandlerViewsBinding.inflate(layoutInflater)
         setContentView(authHandlerViewsBinding.root)
 
-        functionClass = FunctionsClass(applicationContext)
+        functionClassLegacy = FunctionsClassLegacy(applicationContext)
         securityFunctions = SecurityFunctions(applicationContext)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -85,9 +85,9 @@ class PinPasswordConfigurations : Activity() {
         authHandlerViewsBinding.pinFullViewScrollView.setBackgroundColor(PublicVariable.primaryColor)
         authHandlerViewsBinding.pinFullView.setBackgroundColor(PublicVariable.primaryColor)
 
-        authHandlerViewsBinding.textInputPasswordCurrent.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
-        authHandlerViewsBinding.textInputPinPassword.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
-        authHandlerViewsBinding.textInputPasswordRepeat.boxBackgroundColor = functionClass.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
+        authHandlerViewsBinding.textInputPasswordCurrent.boxBackgroundColor = functionClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
+        authHandlerViewsBinding.textInputPinPassword.boxBackgroundColor = functionClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
+        authHandlerViewsBinding.textInputPasswordRepeat.boxBackgroundColor = functionClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.91f)
 
         authHandlerViewsBinding.textInputPasswordCurrent.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
         authHandlerViewsBinding.textInputPinPassword.defaultHintTextColor = ColorStateList.valueOf(PublicVariable.colorLightDarkOpposite)
@@ -97,7 +97,7 @@ class PinPasswordConfigurations : Activity() {
         authHandlerViewsBinding.pinPasswordEditText.setTextColor(PublicVariable.colorLightDarkOpposite)
         authHandlerViewsBinding.passwordRepeat.setTextColor(PublicVariable.colorLightDarkOpposite)
 
-        currentPasswordExist = (functionClass.readPreference(".Password", "Pin", "0") != "0")
+        currentPasswordExist = (functionClassLegacy.readPreference(".Password", "Pin", "0") != "0")
         if (currentPasswordExist) {
             authHandlerViewsBinding.textInputPasswordCurrent.visibility = View.VISIBLE
             authHandlerViewsBinding.forgotPassword.visibility = View.VISIBLE
@@ -164,7 +164,7 @@ class PinPasswordConfigurations : Activity() {
         super.onStart()
 
         authHandlerViewsBinding.forgotPassword.setOnClickListener {
-            functionClass.doVibrate(113)
+            functionClassLegacy.doVibrate(113)
             authHandlerViewsBinding.spinKitView.visibility = View.VISIBLE
 
             if (securityFunctions.canPerformFingerprintProcess()) {
@@ -210,7 +210,7 @@ class PinPasswordConfigurations : Activity() {
 
                 firebaseAuth.sendSignInLinkToEmail(firebaseUser.email.toString(), actionCodeSettings).addOnSuccessListener {
                     Debug.PrintDebug("*** Password Verification Email Sent To ${firebaseUser.email} ***")
-                    functionClass.Toast(getString(R.string.passwordResetSent), Gravity.BOTTOM, getColor(R.color.red_transparent))
+                    functionClassLegacy.Toast(getString(R.string.passwordResetSent), Gravity.BOTTOM, getColor(R.color.red_transparent))
 
                     Handler().postDelayed({
                         authHandlerViewsBinding.spinKitView.visibility = View.INVISIBLE
@@ -228,7 +228,7 @@ class PinPasswordConfigurations : Activity() {
             authHandlerViewsBinding.securityWarningText.visibility = View.VISIBLE
 
             authHandlerViewsBinding.securityWarningIcon.setOnClickListener {
-                functionClass.doVibrate(99)
+                functionClassLegacy.doVibrate(99)
 
                 val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     Intent(Settings.ACTION_FINGERPRINT_ENROLL)
@@ -239,7 +239,7 @@ class PinPasswordConfigurations : Activity() {
             }
 
             authHandlerViewsBinding.securityWarningText.setOnClickListener {
-                functionClass.doVibrate(99)
+                functionClassLegacy.doVibrate(99)
 
                 val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     Intent(Settings.ACTION_FINGERPRINT_ENROLL)

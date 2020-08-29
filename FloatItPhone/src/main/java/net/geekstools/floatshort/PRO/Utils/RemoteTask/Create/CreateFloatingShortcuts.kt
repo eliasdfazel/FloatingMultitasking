@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 2:51 PM
- * Last modified 3/26/20 2:33 PM
+ * Created by Elias Fazel
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -11,7 +11,7 @@ package net.geekstools.floatshort.PRO.Utils.RemoteTask.Create
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 
 class CreateFloatingShortcuts : AppCompatActivity() {
@@ -22,7 +22,7 @@ class CreateFloatingShortcuts : AppCompatActivity() {
         if (intent.hasExtra("PackageName")
                 && intent.hasExtra("ClassName")) {
 
-            val functionsClass = FunctionsClass(applicationContext)
+            val functionsClass = FunctionsClassLegacy(applicationContext)
 
             val packageName = intent.getStringExtra("PackageName")
             val className = intent.getStringExtra("ClassName")

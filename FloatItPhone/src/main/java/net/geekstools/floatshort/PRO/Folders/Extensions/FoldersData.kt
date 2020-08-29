@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:29 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -37,11 +37,11 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
         if (applicationContext.packageManager.getLaunchIntentForPackage((applicationInfo).packageName) != null) {
 
             val packageName = applicationInfo.packageName
-            val appName = functionsClass.applicationName(packageName)
-            val appIcon = if (functionsClass.customIconsEnable()) {
-                loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
+            val appName = functionsClassLegacy.applicationName(packageName)
+            val appIcon = if (functionsClassLegacy.customIconsEnable()) {
+                loadCustomIcons.getDrawableIconForPackage(packageName, functionsClassLegacy.shapedAppIcon(packageName))
             } else {
-                functionsClass.shapedAppIcon(packageName)
+                functionsClassLegacy.shapedAppIcon(packageName)
             }
 
             installedAppsListItem.add(
@@ -56,7 +56,7 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
     withContext(Dispatchers.Main) {
 
         appSelectionListAdapter = AppSelectionListAdapter(applicationContext,
-                functionsClass,
+                functionsClassLegacy,
                 advanceAppSelectionListBinding,
                 installedAppsListItem,
                 appsConfirmButton!!,
@@ -106,7 +106,7 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
             recyclerView = advanceAppSelectionListBinding.recyclerListView,
             fastScrollerIndexViewBinding = advanceAppSelectionListBinding.fastScrollerIndexInclude,
             indexedFastScrollerFactory = IndexedFastScrollerFactory(
-                    popupEnable = !functionsClass.litePreferencesEnabled(),
+                    popupEnable = !functionsClassLegacy.litePreferencesEnabled(),
                     popupTextColor = PublicVariable.colorLightDarkOpposite,
                     indexItemTextColor = PublicVariable.colorLightDarkOpposite)
     )

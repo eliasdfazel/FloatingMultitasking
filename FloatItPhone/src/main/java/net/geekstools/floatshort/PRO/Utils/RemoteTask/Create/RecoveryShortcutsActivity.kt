@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 3:03 PM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,7 +18,7 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class RecoveryShortcutsActivity : Activity() {
@@ -26,9 +26,9 @@ class RecoveryShortcutsActivity : Activity() {
         super.onCreate(Saved)
 
         if (intent.action == Intent.ACTION_CREATE_SHORTCUT) {
-            val functionsClass: FunctionsClass = FunctionsClass(applicationContext)
+            val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(applicationContext)
 
-            val shapeTempDrawable: Drawable? = functionsClass.shapesDrawables()
+            val shapeTempDrawable: Drawable? = functionsClassLegacy.shapesDrawables()
             shapeTempDrawable?.setTint(PublicVariable.primaryColor)
 
             val recoveryDrawable = getDrawable(R.drawable.draw_widget_shortcuts) as LayerDrawable?

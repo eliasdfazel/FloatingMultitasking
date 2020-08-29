@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,12 +24,12 @@ import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import java.util.*
 
 class SavedAppsListPopupAdapter(private val context: Context,
-                                private val functionsClass: FunctionsClass,
+                                private val functionsClassLegacy: FunctionsClassLegacy,
                                 private val fileIO: FileIO,
                                 private val selectedAppsListItem: ArrayList<AdapterItems>, private val splitNumber: Int,
                                 private val appsConfirmButton: AppsConfirmButton,
@@ -46,7 +46,7 @@ class SavedAppsListPopupAdapter(private val context: Context,
     private var layoutInflaterLayout = 0
 
     init {
-        when (functionsClass.shapesImageId()) {
+        when (functionsClassLegacy.shapesImageId()) {
             1 -> layoutInflaterLayout = R.layout.item_saved_app_droplet
             2 -> layoutInflaterLayout = R.layout.item_saved_app_circle
             3 -> layoutInflaterLayout = R.layout.item_saved_app_square
@@ -96,7 +96,7 @@ class SavedAppsListPopupAdapter(private val context: Context,
 
         }
 
-        if (functionsClass.returnAPI() < 24) {
+        if (functionsClassLegacy.returnAPI() < 24) {
             savedAppsListPopupAdapterViewHolder.confirmItem?.visibility = View.INVISIBLE
         }
 

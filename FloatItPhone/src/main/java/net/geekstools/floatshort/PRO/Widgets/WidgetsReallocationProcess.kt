@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:41 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,14 +32,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataModel
 
 class WidgetsReallocationProcess : Activity() {
 
-    lateinit var functionsClass: FunctionsClass
+    lateinit var functionsClassLegacy: FunctionsClassLegacy
 
     lateinit var appWidgetHost: AppWidgetHost
 
@@ -51,7 +51,7 @@ class WidgetsReallocationProcess : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.reallocating)
 
-        functionsClass = FunctionsClass(applicationContext)
+        functionsClassLegacy = FunctionsClassLegacy(applicationContext)
 
         window.statusBarColor = PublicVariable.primaryColor
         window.navigationBarColor = PublicVariable.primaryColor
@@ -126,7 +126,7 @@ class WidgetsReallocationProcess : Activity() {
                         widgetsReallocationProcess(widgetDataModelsReallocation[REALLOCATION_COUNTER], appWidgetHost)
 
                     } else if (REALLOCATION_COUNTER >= widgetDataModelsReallocation.size) {
-                        functionsClass.savePreference("WidgetsInformation", "Reallocated", true)
+                        functionsClassLegacy.savePreference("WidgetsInformation", "Reallocated", true)
 
                         startActivity(Intent(applicationContext, WidgetConfigurations::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                 ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
@@ -140,7 +140,7 @@ class WidgetsReallocationProcess : Activity() {
 
     private fun widgetsReallocationProcess(widgetDataModel: WidgetDataModel, appWidgetHost: AppWidgetHost) = CoroutineScope(Dispatchers.Main).launch {
 
-        if (functionsClass.appIsInstalled(widgetDataModel.PackageName)) {
+        if (functionsClassLegacy.appIsInstalled(widgetDataModel.PackageName)) {
 
             val widgetId = appWidgetHost.allocateAppWidgetId()
 
@@ -151,19 +151,19 @@ class WidgetsReallocationProcess : Activity() {
             val valueAnimatorScaleWidgetInformation =
                     ValueAnimator.ofInt(
                             widgetInformation.width,
-                            functionsClass.DpToInteger(51)
+                            functionsClassLegacy.DpToInteger(51)
                     )
             valueAnimatorScaleWidgetInformation.duration = 1000
             valueAnimatorScaleWidgetInformation.addUpdateListener { animator ->
                 widgetInformation.layoutParams.width = (animator.animatedValue as Int)
                 widgetInformation.requestLayout()
-                if ((animator.animatedValue as Int) < functionsClass.DpToInteger(300)) {
+                if ((animator.animatedValue as Int) < functionsClassLegacy.DpToInteger(300)) {
                     widgetInformation.text = null
                     widgetInformation.icon = null
 
                     Handler().postDelayed({
 
-                        widgetInformation.icon = functionsClass.applicationIcon(widgetDataModel.PackageName)
+                        widgetInformation.icon = functionsClassLegacy.applicationIcon(widgetDataModel.PackageName)
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
                                     + widgetDataModel.WidgetLabel + "<br/>"
@@ -185,8 +185,8 @@ class WidgetsReallocationProcess : Activity() {
                 override fun onAnimationEnd(animation: Animator?) {
                     val valueAnimatorScaleWidgetInformationRevert =
                             ValueAnimator.ofInt(
-                                    functionsClass.DpToInteger(51),
-                                    functionsClass.DpToInteger(313)
+                                    functionsClassLegacy.DpToInteger(51),
+                                    functionsClassLegacy.DpToInteger(313)
                             )
                     valueAnimatorScaleWidgetInformationRevert.duration = 500
                     valueAnimatorScaleWidgetInformationRevert.addUpdateListener { animator ->

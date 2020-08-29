@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 6:29 PM
- * Last modified 3/28/20 6:27 PM
+ * Created by Elias Fazel
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,7 +19,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.imageview.customshapes.ShapesImage
 import java.util.*
@@ -28,7 +28,7 @@ class WidgetSectionedConfiguredAdapter(private val context: Context,
                                        private val sectionLayoutResourceId: Int,
                                        private val recyclerView: RecyclerView, private val baseAdapter: RecyclerView.Adapter<ConfiguredWidgetsAdapter.ViewHolder>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val functionsClass: FunctionsClass = FunctionsClass(context)
+    private val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(context)
 
     private val sectionSparseArray = SparseArray<Section?>()
 
@@ -170,7 +170,7 @@ class WidgetSectionedConfiguredAdapter(private val context: Context,
         init {
             appIcon = view.findViewById<View>(R.id.appIcon) as ShapesImage
             appName = view.findViewById<View>(R.id.appName) as TextView
-            appIcon.setShapeDrawable(functionsClass.shapesDrawables())
+            appIcon.setShapeDrawable(functionsClassLegacy.shapesDrawables())
         }
     }
 

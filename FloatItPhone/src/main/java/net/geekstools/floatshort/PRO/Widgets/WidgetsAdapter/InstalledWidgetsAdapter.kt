@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/5/20 1:49 PM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,7 +25,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import java.util.*
@@ -33,7 +33,7 @@ import java.util.*
 class InstalledWidgetsAdapter(private val widgetConfigurationsActivity: WidgetConfigurations, private val context: Context,
                               private val adapterItems: ArrayList<AdapterItems>, private val appWidgetHost: AppWidgetHost) : RecyclerView.Adapter<InstalledWidgetsAdapter.ViewHolder>() {
 
-    private val functionsClass: FunctionsClass = FunctionsClass(context)
+    private val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(context)
 
     companion object {
         const val WIDGET_CONFIGURATION_REQUEST = 666
@@ -65,7 +65,7 @@ class InstalledWidgetsAdapter(private val widgetConfigurationsActivity: WidgetCo
         }
 
         viewHolder.widgetitem.setOnLongClickListener {
-            functionsClass.doVibrate(77)
+            functionsClassLegacy.doVibrate(77)
 
             InstalledWidgetsAdapter.pickedWidgetPackageName = adapterItems[position].packageName
             InstalledWidgetsAdapter.pickedWidgetClassNameProvider = adapterItems[position].classNameProviderWidget

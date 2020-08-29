@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 8:58 PM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -33,14 +33,14 @@ import android.widget.TextView
 import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Widgets.Utils.FunctionsClassWidgets
 import net.geekstools.floatshort.PRO.databinding.FloatingWidgetsBinding
 
 class WidgetUnlimitedFloating : Service() {
 
-    private lateinit var functionsClass: FunctionsClass
+    private lateinit var functionsClassLegacy: FunctionsClassLegacy
     private lateinit var functionsClassWidgets: FunctionsClassWidgets
 
     private lateinit var windowManager: WindowManager
@@ -181,16 +181,16 @@ class WidgetUnlimitedFloating : Service() {
                 appWidgetHosts[startId].startListening()
 
                 if (PublicVariable.themeLightDark) {
-                    wholeViewWidget[startId].backgroundTintList = ColorStateList.valueOf(if (functionsClass.appThemeTransparent()) getColor(R.color.light_transparent) else getColor(R.color.light))
+                    wholeViewWidget[startId].backgroundTintList = ColorStateList.valueOf(if (functionsClassLegacy.appThemeTransparent()) getColor(R.color.light_transparent) else getColor(R.color.light))
                     widgetLabel[startId].setBackgroundColor(getColor(R.color.light_transparent_high))
                     widgetLabel[startId].setTextColor(getColor(R.color.dark))
                 } else {
-                    wholeViewWidget[startId].backgroundTintList = ColorStateList.valueOf(if (functionsClass.appThemeTransparent()) getColor(R.color.dark_transparent) else getColor(R.color.dark))
+                    wholeViewWidget[startId].backgroundTintList = ColorStateList.valueOf(if (functionsClassLegacy.appThemeTransparent()) getColor(R.color.dark_transparent) else getColor(R.color.dark))
                     widgetLabel[startId].setBackgroundColor(getColor(R.color.dark_transparent_high))
                     widgetLabel[startId].setTextColor(getColor(R.color.light))
                 }
 
-                widgetColor.add(startId, functionsClass.extractVibrantColor(appWidgetProviderInfo[startId].loadIcon(applicationContext, DisplayMetrics.DENSITY_LOW)))
+                widgetColor.add(startId, functionsClassLegacy.extractVibrantColor(appWidgetProviderInfo[startId].loadIcon(applicationContext, DisplayMetrics.DENSITY_LOW)))
 
                 if (this@run.hasExtra("WidgetLabel")) {
                     val widgetLabelText = this@run.getStringExtra("WidgetLabel")
@@ -229,8 +229,8 @@ class WidgetUnlimitedFloating : Service() {
                 val widgetBundleConfiguration = Bundle()
                 widgetBundleConfiguration.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, initWidth)
                 widgetBundleConfiguration.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, initHeight)
-                widgetBundleConfiguration.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, functionsClass.displayX() / 2)
-                widgetBundleConfiguration.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, functionsClass.displayY() / 2)
+                widgetBundleConfiguration.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, functionsClassLegacy.displayX() / 2)
+                widgetBundleConfiguration.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, functionsClassLegacy.displayY() / 2)
                 appWidgetManager.bindAppWidgetIdIfAllowed(appWidgetId[startId], appWidgetProviderInfo[startId].provider, widgetBundleConfiguration)
 
                 appWidgetHostView[startId].setAppWidget(appWidgetId[startId], appWidgetProviderInfo[startId])
@@ -244,7 +244,7 @@ class WidgetUnlimitedFloating : Service() {
                 wholeViewWidget[startId].requestLayout()
 
                 layoutParams.add(startId,
-                        functionsClass.normalWidgetLayoutParams(appWidgetProviderInfo[startId].provider.packageName,
+                        functionsClassLegacy.normalWidgetLayoutParams(appWidgetProviderInfo[startId].provider.packageName,
                                 appWidgetId[startId],
                                 initWidth, initHeight))
 
@@ -284,9 +284,9 @@ class WidgetUnlimitedFloating : Service() {
                                 layoutParamsTouch.x = initialX + ((motionEvent.rawX - initialTouchX)).toInt()
                                 layoutParamsTouch.y = initialY + ((motionEvent.rawY - initialTouchY)).toInt()
 
-                                functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                functionsClassLegacy.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
                                         "X", layoutParamsTouch.x)
-                                functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                functionsClassLegacy.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
                                         "Y", layoutParamsTouch.y)
                             }
                             MotionEvent.ACTION_MOVE -> {
@@ -334,9 +334,9 @@ class WidgetUnlimitedFloating : Service() {
                                 layoutParamsTouch.x = (initialX + (motionEvent.rawX - initialTouchX)).toInt()
                                 layoutParamsTouch.y = (initialY + (motionEvent.rawY - initialTouchY)).toInt()
 
-                                functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                functionsClassLegacy.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
                                         "X", layoutParamsTouch.x)
-                                functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                functionsClassLegacy.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
                                         "Y", layoutParamsTouch.y)
                             }
                             MotionEvent.ACTION_MOVE -> {
@@ -402,9 +402,9 @@ class WidgetUnlimitedFloating : Service() {
                                 if (layoutParamsTouch.width < initWidth || layoutParamsTouch.height < initHeight) {
 
                                 } else {
-                                    functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                    functionsClassLegacy.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
                                             "WidgetWidth", layoutParamsTouch.width)
-                                    functionsClass.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
+                                    functionsClassLegacy.savePreference(appWidgetId[startId].toString() + appWidgetProviderInfo[startId].provider.packageName,
                                             "WidgetHeight", layoutParamsTouch.height)
                                 }
                             MotionEvent.ACTION_MOVE -> {
@@ -432,7 +432,7 @@ class WidgetUnlimitedFloating : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        functionsClass = FunctionsClass(applicationContext)
+        functionsClassLegacy = FunctionsClassLegacy(applicationContext)
         functionsClassWidgets = FunctionsClassWidgets(applicationContext)
 
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager

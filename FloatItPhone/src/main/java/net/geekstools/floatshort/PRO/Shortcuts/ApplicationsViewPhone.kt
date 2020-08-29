@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:52 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -110,7 +110,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
     }
 
     private val dialogues: Dialogues by lazy {
-        Dialogues(this@ApplicationsViewPhone, applicationsViewPhoneDependencyInjection.functionsClass)
+        Dialogues(this@ApplicationsViewPhone, applicationsViewPhoneDependencyInjection.functionsClassLegacy)
     }
 
     private val listOfNewCharOfItemsForIndex: ArrayList<String> = ArrayList<String>()
@@ -142,7 +142,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
     private lateinit var waitingDialogueLiveData: WaitingDialogueLiveData
 
     private val loadCustomIcons: LoadCustomIcons by lazy {
-        LoadCustomIcons(applicationContext, applicationsViewPhoneDependencyInjection.functionsClass.customIconPackageName())
+        LoadCustomIcons(applicationContext, applicationsViewPhoneDependencyInjection.functionsClassLegacy.customIconPackageName())
     }
 
     private lateinit var hybridApplicationViewBinding: HybridApplicationViewBinding
@@ -156,13 +156,13 @@ class ApplicationsViewPhone : AppCompatActivity(),
         hybridApplicationViewBinding = HybridApplicationViewBinding.inflate(layoutInflater)
         setContentView(hybridApplicationViewBinding.root)
 
-        applicationsViewPhoneDependencyInjection.functionsClass.loadSavedColor()
-        applicationsViewPhoneDependencyInjection.functionsClass.checkLightDarkTheme()
+        applicationsViewPhoneDependencyInjection.functionsClassLegacy.loadSavedColor()
+        applicationsViewPhoneDependencyInjection.functionsClassLegacy.checkLightDarkTheme()
 
-        applicationsViewPhoneDependencyInjection.applicationThemeController.setThemeColorFloating(this, hybridApplicationViewBinding.MainView, applicationsViewPhoneDependencyInjection.functionsClass.appThemeTransparent())
+        applicationsViewPhoneDependencyInjection.applicationThemeController.setThemeColorFloating(this, hybridApplicationViewBinding.MainView, applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent())
         dialogues.changeLog()
 
-        recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, applicationsViewPhoneDependencyInjection.functionsClass.columnCount(105), OrientationHelper.VERTICAL, false)
+        recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, applicationsViewPhoneDependencyInjection.functionsClassLegacy.columnCount(105), OrientationHelper.VERTICAL, false)
         hybridApplicationViewBinding.applicationsListView.layoutManager = recyclerViewLayoutManager
 
         /*All Loading Process*/
@@ -176,16 +176,16 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         hybridApplicationViewBinding.switchWidgets.setTextColor(getColor(R.color.light))
         hybridApplicationViewBinding.switchCategories.setTextColor(getColor(R.color.light))
-        if (PublicVariable.themeLightDark /*light*/ && applicationsViewPhoneDependencyInjection.functionsClass.appThemeTransparent() /*transparent*/) {
+        if (PublicVariable.themeLightDark /*light*/ && applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent() /*transparent*/) {
             hybridApplicationViewBinding.switchWidgets.setTextColor(getColor(R.color.dark))
             hybridApplicationViewBinding.switchCategories.setTextColor(getColor(R.color.dark))
         }
 
-        hybridApplicationViewBinding.switchCategories.setBackgroundColor(if (applicationsViewPhoneDependencyInjection.functionsClass.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        hybridApplicationViewBinding.switchCategories.rippleColor = ColorStateList.valueOf(if (applicationsViewPhoneDependencyInjection.functionsClass.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        hybridApplicationViewBinding.switchCategories.setBackgroundColor(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        hybridApplicationViewBinding.switchCategories.rippleColor = ColorStateList.valueOf(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
-        hybridApplicationViewBinding.switchWidgets.setBackgroundColor(if (applicationsViewPhoneDependencyInjection.functionsClass.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        hybridApplicationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (applicationsViewPhoneDependencyInjection.functionsClass.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        hybridApplicationViewBinding.switchWidgets.setBackgroundColor(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        hybridApplicationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
         hybridApplicationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
         hybridApplicationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
@@ -195,22 +195,22 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
         val backRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
-        backRecoverFloatingCategories?.setTint(if (applicationsViewPhoneDependencyInjection.functionsClass.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        backRecoverFloatingCategories?.setTint(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
 
         val drawRecoverFloatingWidgets = getDrawable(R.drawable.draw_recovery_widgets)?.mutate() as LayerDrawable?
         val backRecoverFloatingWidgets = drawRecoverFloatingWidgets?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
-        backRecoverFloatingWidgets?.setTint(if (applicationsViewPhoneDependencyInjection.functionsClass.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        backRecoverFloatingWidgets?.setTint(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
 
         hybridApplicationViewBinding.recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories)
         hybridApplicationViewBinding.recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
 
         hybridApplicationViewBinding.actionButton.setOnClickListener {
-            applicationsViewPhoneDependencyInjection.functionsClass.doVibrate(33)
+            applicationsViewPhoneDependencyInjection.functionsClassLegacy.doVibrate(33)
 
             if (!PublicVariable.actionCenter) {
 
-                val finalRadius = hypot(applicationsViewPhoneDependencyInjection.functionsClass.displayX().toDouble(), applicationsViewPhoneDependencyInjection.functionsClass.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(hybridApplicationViewBinding.recoveryAction, hybridApplicationViewBinding.actionButton.x.toInt(), hybridApplicationViewBinding.actionButton.y.toInt(), finalRadius.toFloat(), applicationsViewPhoneDependencyInjection.functionsClass.DpToInteger(13).toFloat())
+                val finalRadius = hypot(applicationsViewPhoneDependencyInjection.functionsClassLegacy.displayX().toDouble(), applicationsViewPhoneDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
+                val circularReveal = ViewAnimationUtils.createCircularReveal(hybridApplicationViewBinding.recoveryAction, hybridApplicationViewBinding.actionButton.x.toInt(), hybridApplicationViewBinding.actionButton.y.toInt(), finalRadius.toFloat(), applicationsViewPhoneDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat())
                 circularReveal.duration = 777
                 circularReveal.interpolator = AccelerateInterpolator()
                 circularReveal.start()
@@ -232,12 +232,12 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     }
                 })
 
-                applicationsViewPhoneDependencyInjection.functionsClass.openActionMenuOption(this@ApplicationsViewPhone, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton, hybridApplicationViewBinding.fullActionViews.isShown)
+                applicationsViewPhoneDependencyInjection.functionsClassLegacy.openActionMenuOption(this@ApplicationsViewPhone, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton, hybridApplicationViewBinding.fullActionViews.isShown)
             } else {
                 hybridApplicationViewBinding.recoveryAction.visibility = View.VISIBLE
 
-                val finalRadius = hypot(applicationsViewPhoneDependencyInjection.functionsClass.displayX().toDouble(), applicationsViewPhoneDependencyInjection.functionsClass.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(hybridApplicationViewBinding.recoveryAction, hybridApplicationViewBinding.actionButton.x.toInt(), hybridApplicationViewBinding.actionButton.y.toInt(), applicationsViewPhoneDependencyInjection.functionsClass.DpToInteger(13).toFloat(), finalRadius.toFloat())
+                val finalRadius = hypot(applicationsViewPhoneDependencyInjection.functionsClassLegacy.displayX().toDouble(), applicationsViewPhoneDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
+                val circularReveal = ViewAnimationUtils.createCircularReveal(hybridApplicationViewBinding.recoveryAction, hybridApplicationViewBinding.actionButton.x.toInt(), hybridApplicationViewBinding.actionButton.y.toInt(), applicationsViewPhoneDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat(), finalRadius.toFloat())
                 circularReveal.duration = 1300
                 circularReveal.interpolator = AccelerateInterpolator()
                 circularReveal.start()
@@ -263,7 +263,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         hybridApplicationViewBinding.switchCategories.setOnClickListener {
             try {
-                applicationsViewPhoneDependencyInjection.functionsClass.navigateToClass(this@ApplicationsViewPhone, FoldersConfigurations::class.java,
+                applicationsViewPhoneDependencyInjection.functionsClassLegacy.navigateToClass(this@ApplicationsViewPhone, FoldersConfigurations::class.java,
                         ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -272,9 +272,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
         hybridApplicationViewBinding.switchWidgets.setOnClickListener {
             if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
 
-                if (applicationsViewPhoneDependencyInjection.functionsClass.floatingWidgetsPurchased()) {
+                if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.floatingWidgetsPurchased()) {
 
-                    applicationsViewPhoneDependencyInjection.functionsClass.navigateToClass(this@ApplicationsViewPhone, WidgetConfigurations::class.java,
+                    applicationsViewPhoneDependencyInjection.functionsClassLegacy.navigateToClass(this@ApplicationsViewPhone, WidgetConfigurations::class.java,
                             ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
 
                 } else {
@@ -298,7 +298,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         hybridApplicationViewBinding.automationAction.setOnClickListener {
-            applicationsViewPhoneDependencyInjection.functionsClass.doVibrate(50)
+            applicationsViewPhoneDependencyInjection.functionsClassLegacy.doVibrate(50)
 
             val intent = Intent(applicationContext, AppAutoFeatures::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -450,9 +450,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        if (BuildConfig.VERSION_NAME.contains("[BETA]") && !applicationsViewPhoneDependencyInjection.functionsClass.readPreference(".UserInformation", "SubscribeToBeta", false)) {
+        if (BuildConfig.VERSION_NAME.contains("[BETA]") && !applicationsViewPhoneDependencyInjection.functionsClassLegacy.readPreference(".UserInformation", "SubscribeToBeta", false)) {
             FirebaseMessaging.getInstance().subscribeToTopic("BETA").addOnSuccessListener {
-                applicationsViewPhoneDependencyInjection.functionsClass.savePreference(".UserInformation", "SubscribeToBeta", true)
+                applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "SubscribeToBeta", true)
             }.addOnFailureListener {
 
             }
@@ -473,7 +473,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
             val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
                 override fun onReceive(context: Context, intent: Intent) {
                     if (intent.action == getString(R.string.license)) {
-                        applicationsViewPhoneDependencyInjection.functionsClass.dialogueLicense(this@ApplicationsViewPhone)
+                        applicationsViewPhoneDependencyInjection.functionsClassLegacy.dialogueLicense(this@ApplicationsViewPhone)
 
                         Handler().postDelayed({
                             stopService(Intent(applicationContext, LicenseValidator::class.java))
@@ -487,7 +487,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection()
-                && applicationsViewPhoneDependencyInjection.functionsClass.readPreference(".UserInformation", "userEmail", null) == null
+                && applicationsViewPhoneDependencyInjection.functionsClassLegacy.readPreference(".UserInformation", "userEmail", null) == null
                 && firebaseAuth.currentUser == null) {
 
             val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -515,7 +515,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         hybridApplicationViewBinding.shareIt.setImageDrawable(drawableShare)
         hybridApplicationViewBinding.shareIt.setOnClickListener {
-            applicationsViewPhoneDependencyInjection.functionsClass.doVibrate(50)
+            applicationsViewPhoneDependencyInjection.functionsClassLegacy.doVibrate(50)
 
             val shareText = getString(R.string.shareTitle) +
                     "\n" + getString(R.string.shareSummary) +
@@ -539,7 +539,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 .addOnSuccessListener {
 
                     firebaseRemoteConfig.activate().addOnSuccessListener {
-                        if (firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClass.versionCodeRemoteConfigKey()) > applicationsViewPhoneDependencyInjection.functionsClass.applicationVersionCode(packageName)) {
+                        if (firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()) > applicationsViewPhoneDependencyInjection.functionsClassLegacy.applicationVersionCode(packageName)) {
 
                             val layerDrawableNewUpdate = getDrawable(R.drawable.ic_update) as LayerDrawable?
                             val gradientDrawableNewUpdate = layerDrawableNewUpdate?.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable?
@@ -549,15 +549,15 @@ class ApplicationsViewPhone : AppCompatActivity(),
                             hybridApplicationViewBinding.newUpdate.visibility = View.VISIBLE
 
                             hybridApplicationViewBinding.newUpdate.setOnClickListener {
-                                applicationsViewPhoneDependencyInjection.functionsClass.upcomingChangeLog(
+                                applicationsViewPhoneDependencyInjection.functionsClassLegacy.upcomingChangeLog(
                                         this@ApplicationsViewPhone,
-                                        firebaseRemoteConfig.getString(applicationsViewPhoneDependencyInjection.functionsClass.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClass.versionCodeRemoteConfigKey()).toString())
+                                        firebaseRemoteConfig.getString(applicationsViewPhoneDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
                             }
 
-                            applicationsViewPhoneDependencyInjection.functionsClass.notificationCreator(
+                            applicationsViewPhoneDependencyInjection.functionsClassLegacy.notificationCreator(
                                     getString(R.string.updateAvailable),
-                                    firebaseRemoteConfig.getString(applicationsViewPhoneDependencyInjection.functionsClass.upcomingChangeLogSummaryConfigKey()),
-                                    firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClass.versionCodeRemoteConfigKey()).toInt()
+                                    firebaseRemoteConfig.getString(applicationsViewPhoneDependencyInjection.functionsClassLegacy.upcomingChangeLogSummaryConfigKey()),
+                                    firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toInt()
                             )
 
                             val inAppUpdateTriggeredTime =
@@ -565,11 +565,11 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                             .toInt()
 
                             if (firebaseAuth.currentUser != null
-                                    && applicationsViewPhoneDependencyInjection.functionsClass.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
+                                    && applicationsViewPhoneDependencyInjection.functionsClassLegacy.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
 
                                 startActivity(Intent(applicationContext, InAppUpdateProcess::class.java)
-                                        .putExtra("UPDATE_CHANGE_LOG", firebaseRemoteConfig.getString(applicationsViewPhoneDependencyInjection.functionsClass.upcomingChangeLogRemoteConfigKey()))
-                                        .putExtra("UPDATE_VERSION", firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClass.versionCodeRemoteConfigKey()).toString())
+                                        .putExtra("UPDATE_CHANGE_LOG", firebaseRemoteConfig.getString(applicationsViewPhoneDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()))
+                                        .putExtra("UPDATE_VERSION", firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
                                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                         ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
                             }
@@ -585,7 +585,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
             firebaseAuth.addAuthStateListener { firebaseAuth ->
                 val user = firebaseAuth.currentUser
                 if (user == null) {
-                    applicationsViewPhoneDependencyInjection.functionsClass.savePreference(".UserInformation", "userEmail", null)
+                    applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", null)
 
                     val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                             .requestIdToken(getString(R.string.webClientId))
@@ -607,12 +607,12 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         applicationsViewPhoneDependencyInjection.popupApplicationShortcuts.addPopupApplicationShortcuts()
 
-        applicationsViewPhoneDependencyInjection.functionsClass.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition())
+        applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition())
         if (PublicVariable.actionCenter) {
-            applicationsViewPhoneDependencyInjection.functionsClass.closeActionMenuOption(this@ApplicationsViewPhone, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton)
+            applicationsViewPhoneDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@ApplicationsViewPhone, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton)
         }
 
-        applicationsViewPhoneDependencyInjection.functionsClass.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
+        applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
     }
 
     override fun onDestroy() {
@@ -627,7 +627,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
         startActivity(homeScreen, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
-        applicationsViewPhoneDependencyInjection.functionsClass.CheckSystemRAM(this@ApplicationsViewPhone)
+        applicationsViewPhoneDependencyInjection.functionsClassLegacy.CheckSystemRAM(this@ApplicationsViewPhone)
     }
 
     override fun onClick(view: View?) {
@@ -650,7 +650,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                         super.authenticatedFloatIt(extraInformation)
                         Log.d(this@ApplicationsViewPhone.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                        applicationsViewPhoneDependencyInjection.functionsClass
+                        applicationsViewPhoneDependencyInjection.functionsClassLegacy
                                 .appsLaunchPad(frequentlyUsedAppsList[position])
                     }
 
@@ -668,13 +668,13 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 }
 
                 startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
-                    putExtra(UserInterfaceExtraData.OtherTitle, applicationsViewPhoneDependencyInjection.functionsClass.applicationName(frequentlyUsedAppsList[position]))
+                    putExtra(UserInterfaceExtraData.OtherTitle, applicationsViewPhoneDependencyInjection.functionsClassLegacy.applicationName(frequentlyUsedAppsList[position]))
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
             } else {
 
-                applicationsViewPhoneDependencyInjection.functionsClass
+                applicationsViewPhoneDependencyInjection.functionsClassLegacy
                         .appsLaunchPad(frequentlyUsedAppsList[position])
             }
         }
@@ -690,9 +690,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     GestureListenerConstants.SWIPE_RIGHT -> {
                         if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
 
-                            if (applicationsViewPhoneDependencyInjection.functionsClass.floatingWidgetsPurchased()) {
+                            if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.floatingWidgetsPurchased()) {
 
-                                applicationsViewPhoneDependencyInjection.functionsClass.navigateToClass(this@ApplicationsViewPhone, WidgetConfigurations::class.java,
+                                applicationsViewPhoneDependencyInjection.functionsClassLegacy.navigateToClass(this@ApplicationsViewPhone, WidgetConfigurations::class.java,
                                         ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
 
                             } else {
@@ -714,7 +714,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                         }
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
-                        applicationsViewPhoneDependencyInjection.functionsClass.navigateToClass(this@ApplicationsViewPhone, FoldersConfigurations::class.java,
+                        applicationsViewPhoneDependencyInjection.functionsClassLegacy.navigateToClass(this@ApplicationsViewPhone, FoldersConfigurations::class.java,
                                 ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
                     }
                 }
@@ -747,9 +747,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                 if (firebaseUser != null) {
                                     PrintDebug("Firebase Activities Done Successfully")
 
-                                    applicationsViewPhoneDependencyInjection.functionsClass.savePreference(".UserInformation", "userEmail", firebaseUser.email)
+                                    applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", firebaseUser.email)
 
-                                    applicationsViewPhoneDependencyInjection.functionsClass.Toast(getString(R.string.signinFinished), Gravity.TOP)
+                                    applicationsViewPhoneDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
 
                                     applicationsViewPhoneDependencyInjection.securityFunctions.downloadLockedAppsData()
 
@@ -782,7 +782,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
     }
 
     private fun initiateLoadingProcessAll() {
-        if (applicationsViewPhoneDependencyInjection.functionsClass.appThemeTransparent()) {
+        if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
             hybridApplicationViewBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
         } else {
             hybridApplicationViewBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
@@ -804,7 +804,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
     private fun loadApplicationsData() = CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
 
-        if (applicationsViewPhoneDependencyInjection.functionsClass.customIconsEnable()) {
+        if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.customIconsEnable()) {
             loadCustomIcons.load()
         }
 
@@ -849,7 +849,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
                     val installedPackageName = it.value.activityInfo.packageName
                     val installedClassName = it.value.activityInfo.name
-                    val installedAppName: String? = applicationsViewPhoneDependencyInjection.functionsClass.activityLabel(it.value.activityInfo)
+                    val installedAppName: String? = applicationsViewPhoneDependencyInjection.functionsClassLegacy.activityLabel(it.value.activityInfo)
 
                     try {
                         newChar = installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
@@ -870,16 +870,16 @@ class ApplicationsViewPhone : AppCompatActivity(),
                         }
                     }
 
-                    val installedAppIcon = if (applicationsViewPhoneDependencyInjection.functionsClass.customIconsEnable()) {
-                        loadCustomIcons.getDrawableIconForPackage(installedPackageName, applicationsViewPhoneDependencyInjection.functionsClass.shapedAppIcon(it.value.activityInfo))
+                    val installedAppIcon = if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.customIconsEnable()) {
+                        loadCustomIcons.getDrawableIconForPackage(installedPackageName, applicationsViewPhoneDependencyInjection.functionsClassLegacy.shapedAppIcon(it.value.activityInfo))
                     } else {
-                        applicationsViewPhoneDependencyInjection.functionsClass.shapedAppIcon(it.value.activityInfo)
+                        applicationsViewPhoneDependencyInjection.functionsClassLegacy.shapedAppIcon(it.value.activityInfo)
                     }
 
                     applicationsAdapterItems.add(AdapterItemsApplications(installedAppName?:"Unknown",
                             installedPackageName!!, installedClassName!!,
                             installedAppIcon!!,
-                            applicationsViewPhoneDependencyInjection.functionsClass.extractDominantColor(installedAppIcon),
+                            applicationsViewPhoneDependencyInjection.functionsClassLegacy.extractDominantColor(installedAppIcon),
                             SearchResultType.SearchShortcuts))
 
                     listOfNewCharOfItemsForIndex.add(newChar)
@@ -914,7 +914,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     /*Search Engine*/
                     SearchEngine(activity = this@ApplicationsViewPhone, context = applicationContext,
                             searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
-                            functionsClass = applicationsViewPhoneDependencyInjection.functionsClass,
+                            functionsClass = applicationsViewPhoneDependencyInjection.functionsClassLegacy,
                             fileIO = applicationsViewPhoneDependencyInjection.fileIO,
                             floatingServices = applicationsViewPhoneDependencyInjection.floatingServices,
                             customIcons = loadCustomIcons,
@@ -981,7 +981,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 recyclerView = hybridApplicationViewBinding.applicationsListView,
                 fastScrollerIndexViewBinding = hybridApplicationViewBinding.fastScrollerIndexInclude,
                 indexedFastScrollerFactory = IndexedFastScrollerFactory(
-                        popupEnable = !applicationsViewPhoneDependencyInjection.functionsClass.litePreferencesEnabled(),
+                        popupEnable = !applicationsViewPhoneDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
                         popupTextColor = PublicVariable.colorLightDarkOpposite,
                         indexItemTextColor = PublicVariable.colorLightDarkOpposite)
         )
@@ -1015,14 +1015,14 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         for (i in 0 until freqLength) {
             val freqLayout = layoutInflater.inflate(R.layout.freq_item, null) as RelativeLayout
-            val shapesImage = applicationsViewPhoneDependencyInjection.functionsClass.initShapesImage(freqLayout, R.id.freqItems)
+            val shapesImage = applicationsViewPhoneDependencyInjection.functionsClassLegacy.initShapesImage(freqLayout, R.id.freqItems)
             shapesImage.id = i
             shapesImage.setOnClickListener(this@ApplicationsViewPhone)
             shapesImage.setOnLongClickListener(this@ApplicationsViewPhone)
-            shapesImage.setImageDrawable(if (applicationsViewPhoneDependencyInjection.functionsClass.customIconsEnable()) {
-                loadCustomIcons.getDrawableIconForPackage(frequentlyUsedAppsList[i], applicationsViewPhoneDependencyInjection.functionsClass.shapedAppIcon(frequentlyUsedAppsList[i]))
+            shapesImage.setImageDrawable(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.customIconsEnable()) {
+                loadCustomIcons.getDrawableIconForPackage(frequentlyUsedAppsList[i], applicationsViewPhoneDependencyInjection.functionsClassLegacy.shapedAppIcon(frequentlyUsedAppsList[i]))
             } else {
-                applicationsViewPhoneDependencyInjection.functionsClass.shapedAppIcon(frequentlyUsedAppsList[i])
+                applicationsViewPhoneDependencyInjection.functionsClassLegacy.shapedAppIcon(frequentlyUsedAppsList[i])
             })
             hybridApplicationViewBinding.freqItem.addView(freqLayout)
 

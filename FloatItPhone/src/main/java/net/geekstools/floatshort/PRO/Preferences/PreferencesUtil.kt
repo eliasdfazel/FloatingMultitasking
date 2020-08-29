@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 5:29 AM
+ * Last modified 8/29/20 3:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -39,7 +39,7 @@ import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Utils.AdapterDataItem.CustomIconsThemeAdapter
 import net.geekstools.floatshort.PRO.Utils.AdapterDataItem.RecycleViewSmoothLayoutList
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PopupApplicationShortcuts
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
@@ -50,9 +50,9 @@ class PreferencesUtil : ViewModel() {
     }
 }
 
-data class PreferencesDataUtilShape(var activity: FragmentActivity, var sharedPreferences: SharedPreferences, var functionsClass: FunctionsClass, var shapes: Preference)
+data class PreferencesDataUtilShape(var activity: FragmentActivity, var sharedPreferences: SharedPreferences, var functionsClassLegacy: FunctionsClassLegacy, var shapes: Preference)
 
-data class PreferencesDataUtilFling(var activity: FragmentActivity, var functionsClass: FunctionsClass)
+data class PreferencesDataUtilFling(var activity: FragmentActivity, var functionsClassLegacy: FunctionsClassLegacy)
 
 fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
     val currentShape: Int = preferencesDataUtilShape.sharedPreferences.getInt("iconShape", 0)
@@ -124,7 +124,7 @@ fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
     noShape.setTextColor(PublicVariable.colorLightDarkOpposite)
 
     teardropShape.setOnClickListener {
-        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
+        preferencesDataUtilShape.functionsClassLegacy.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
         val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 1)
@@ -134,12 +134,12 @@ fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
         preferencesDataUtilShape.shapes.icon = layerDrawable
         preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.activity.getString(R.string.droplet)
 
-        preferencesDataUtilShape.functionsClass.saveDefaultPreference("LitePreferences", false)
+        preferencesDataUtilShape.functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
 
         dialog.dismiss()
     }
     circleShape.setOnClickListener {
-        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
+        preferencesDataUtilShape.functionsClassLegacy.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
         val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 2)
@@ -149,12 +149,12 @@ fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
         preferencesDataUtilShape.shapes.icon = layerDrawable
         preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.activity.getString(R.string.circle)
 
-        preferencesDataUtilShape.functionsClass.saveDefaultPreference("LitePreferences", false)
+        preferencesDataUtilShape.functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
 
         dialog.dismiss()
     }
     squareShape.setOnClickListener {
-        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
+        preferencesDataUtilShape.functionsClassLegacy.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
         val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 3)
@@ -164,12 +164,12 @@ fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
         preferencesDataUtilShape.shapes.icon = layerDrawable
         preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.activity.getString(R.string.square)
 
-        preferencesDataUtilShape.functionsClass.saveDefaultPreference("LitePreferences", false)
+        preferencesDataUtilShape.functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
 
         dialog.dismiss()
     }
     squircleShape.setOnClickListener {
-        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
+        preferencesDataUtilShape.functionsClassLegacy.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
         val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 4)
@@ -179,7 +179,7 @@ fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
         preferencesDataUtilShape.shapes.icon = layerDrawable
         preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.activity.getString(R.string.squircle)
 
-        preferencesDataUtilShape.functionsClass.saveDefaultPreference("LitePreferences", false)
+        preferencesDataUtilShape.functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
 
         dialog.dismiss()
     }
@@ -191,7 +191,7 @@ fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
     }
 
     noShape.setOnClickListener {
-        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
+        preferencesDataUtilShape.functionsClassLegacy.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
         val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 0)
@@ -258,16 +258,16 @@ fun listCustomIconsPackage(preferencesDataUtilShape: PreferencesDataUtilShape) {
     adapterItems.clear()
     for (packageName in PublicVariable.customIconsPackages) {
         adapterItems.add(AdapterItems(
-                preferencesDataUtilShape.functionsClass.applicationName(packageName),
+                preferencesDataUtilShape.functionsClassLegacy.applicationName(packageName),
                 packageName,
-                preferencesDataUtilShape.functionsClass.applicationIcon(packageName)
+                preferencesDataUtilShape.functionsClassLegacy.applicationIcon(packageName)
         ))
     }
     val customIconsThemeAdapter = CustomIconsThemeAdapter(preferencesUtil, preferencesDataUtilShape.activity, adapterItems, dialog)
     customIconList.adapter = customIconsThemeAdapter
 
     defaultTheme.setOnClickListener {
-        preferencesDataUtilShape.functionsClass.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
+        preferencesDataUtilShape.functionsClassLegacy.saveDefaultPreference("customIcon", preferencesDataUtilShape.activity.packageName)
 
         val editor = preferencesDataUtilShape.sharedPreferences.edit()
         editor.putInt("iconShape", 0)
@@ -298,8 +298,8 @@ fun listCustomIconsPackage(preferencesDataUtilShape: PreferencesDataUtilShape) {
                 if (dialogueDismiss) {
                     preferencesUtil.customDialogueDismiss.postValue(false)
 
-                    preferencesDataUtilShape.shapes.icon = preferencesDataUtilShape.functionsClass.applicationIcon(preferencesDataUtilShape.functionsClass.customIconPackageName())
-                    preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.functionsClass.applicationName(preferencesDataUtilShape.functionsClass.customIconPackageName())
+                    preferencesDataUtilShape.shapes.icon = preferencesDataUtilShape.functionsClassLegacy.applicationIcon(preferencesDataUtilShape.functionsClassLegacy.customIconPackageName())
+                    preferencesDataUtilShape.shapes.summary = preferencesDataUtilShape.functionsClassLegacy.applicationName(preferencesDataUtilShape.functionsClassLegacy.customIconPackageName())
 
                     PopupApplicationShortcuts(preferencesDataUtilShape.activity).addPopupApplicationShortcuts()
 
@@ -343,14 +343,14 @@ fun setupFlingSensitivity(preferencesDataUtilFling: PreferencesDataUtilFling) {
     seekBarPreferences.progressTintMode = PorterDuff.Mode.SRC_IN
 
     seekBarPreferences.max = 50
-    seekBarPreferences.progress = preferencesDataUtilFling.functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValueProgress", 30)
+    seekBarPreferences.progress = preferencesDataUtilFling.functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValueProgress", 30)
     if (seekBarPreferences.progress <= 10) {
         seekBarPreferences.progressTintList = ColorStateList.valueOf(preferencesDataUtilFling.activity.getColor(R.color.red))
     }
 
     var layerDrawableLoadLogo: Drawable?
     try {
-        val backgroundDot: Drawable = preferencesDataUtilFling.functionsClass.shapesDrawables().mutate()
+        val backgroundDot: Drawable = preferencesDataUtilFling.functionsClassLegacy.shapesDrawables().mutate()
         backgroundDot.setTint(PublicVariable.primaryColorOpposite)
         layerDrawableLoadLogo = LayerDrawable(arrayOf(
                 backgroundDot,
@@ -361,7 +361,7 @@ fun setupFlingSensitivity(preferencesDataUtilFling: PreferencesDataUtilFling) {
         layerDrawableLoadLogo = preferencesDataUtilFling.activity.getDrawable(R.drawable.ic_launcher)
     }
 
-    val iconHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, preferencesDataUtilFling.functionsClass.readDefaultPreference("floatingSize", 39).toFloat(), preferencesDataUtilFling.activity.resources.displayMetrics).toInt()
+    val iconHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, preferencesDataUtilFling.functionsClassLegacy.readDefaultPreference("floatingSize", 39).toFloat(), preferencesDataUtilFling.activity.resources.displayMetrics).toInt()
     val layoutParamsIcon = RelativeLayout.LayoutParams(
             iconHW,
             iconHW
@@ -376,15 +376,15 @@ fun setupFlingSensitivity(preferencesDataUtilFling: PreferencesDataUtilFling) {
     revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite)
 
     val flingAnimationX = FlingAnimation(flingingIcon, DynamicAnimation.TRANSLATION_X)
-            .setFriction(preferencesDataUtilFling.functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
+            .setFriction(preferencesDataUtilFling.functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
     val flingAnimationY = FlingAnimation(flingingIcon, DynamicAnimation.TRANSLATION_Y)
-            .setFriction(preferencesDataUtilFling.functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
+            .setFriction(preferencesDataUtilFling.functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
 
-    flingAnimationX.setMinValue(-preferencesDataUtilFling.functionsClass.DpToPixel(97f))
-    flingAnimationX.setMaxValue(preferencesDataUtilFling.functionsClass.DpToPixel(97f))
+    flingAnimationX.setMinValue(-preferencesDataUtilFling.functionsClassLegacy.DpToPixel(97f))
+    flingAnimationX.setMaxValue(preferencesDataUtilFling.functionsClassLegacy.DpToPixel(97f))
 
     flingAnimationY.setMinValue(0f)
-    flingAnimationY.setMaxValue(preferencesDataUtilFling.functionsClass.DpToPixel(197f))
+    flingAnimationY.setMaxValue(preferencesDataUtilFling.functionsClassLegacy.DpToPixel(197f))
 
     val simpleOnGestureListener: SimpleOnGestureListener = object : SimpleOnGestureListener() {
         override fun onDown(motionEvent: MotionEvent): Boolean {
@@ -429,10 +429,10 @@ fun setupFlingSensitivity(preferencesDataUtilFling: PreferencesDataUtilFling) {
 
     seekBarPreferences.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-            preferencesDataUtilFling.functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValueProgress", progress)
+            preferencesDataUtilFling.functionsClassLegacy.savePreference("FlingSensitivity", "FlingSensitivityValueProgress", progress)
             if (progress <= 10) {
                 seekBarPreferences.progressTintList = ColorStateList.valueOf(preferencesDataUtilFling.activity.getColor(R.color.red))
-                preferencesDataUtilFling.functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValue", 0.5f)
+                preferencesDataUtilFling.functionsClassLegacy.savePreference("FlingSensitivity", "FlingSensitivityValue", 0.5f)
                 try {
                     flingAnimationX.friction = 0.5f
                     flingAnimationY.friction = 0.5f
@@ -441,10 +441,10 @@ fun setupFlingSensitivity(preferencesDataUtilFling: PreferencesDataUtilFling) {
                 }
             } else {
                 seekBarPreferences.progressTintList = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
-                preferencesDataUtilFling.functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValue", (progress / 10).toFloat())
+                preferencesDataUtilFling.functionsClassLegacy.savePreference("FlingSensitivity", "FlingSensitivityValue", (progress / 10).toFloat())
                 try {
-                    flingAnimationX.friction = preferencesDataUtilFling.functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)
-                    flingAnimationY.friction = preferencesDataUtilFling.functionsClass.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)
+                    flingAnimationX.friction = preferencesDataUtilFling.functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)
+                    flingAnimationY.friction = preferencesDataUtilFling.functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -462,8 +462,8 @@ fun setupFlingSensitivity(preferencesDataUtilFling: PreferencesDataUtilFling) {
 
 
     revertDefault.setOnClickListener {
-        preferencesDataUtilFling.functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValueProgress", 30)
-        preferencesDataUtilFling.functionsClass.savePreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)
+        preferencesDataUtilFling.functionsClassLegacy.savePreference("FlingSensitivity", "FlingSensitivityValueProgress", 30)
+        preferencesDataUtilFling.functionsClassLegacy.savePreference("FlingSensitivity", "FlingSensitivityValue", 3.0f)
 
         seekBarPreferences.progress = 30
         seekBarPreferences.progressTintList = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:21 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -55,7 +55,7 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.Functions.ApplicationThemeController;
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug;
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants;
@@ -73,7 +73,7 @@ import java.util.Map;
 
 public class AppAutoFeatures extends AppCompatActivity implements View.OnClickListener, GestureListenerInterface {
 
-    FunctionsClass functionsClass;
+    FunctionsClassLegacy functionsClassLegacy;
     FileIO fileIO;
 
     ApplicationThemeController applicationThemeController;
@@ -141,20 +141,20 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
         swipeGestureListener = new SwipeGestureListener(getApplicationContext(), AppAutoFeatures.this);
 
-        functionsClass = new FunctionsClass(getApplicationContext());
+        functionsClassLegacy = new FunctionsClassLegacy(getApplicationContext());
         fileIO = new FileIO(getApplicationContext());
 
         applicationThemeController = new ApplicationThemeController(getApplicationContext());
         functionsClassThemeUtils = applicationThemeController.new Utils();
 
-        functionsClass.loadSavedColor();
-        functionsClass.checkLightDarkTheme();
+        functionsClassLegacy.loadSavedColor();
+        functionsClassLegacy.checkLightDarkTheme();
 
         recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
         loadView.setLayoutManager(recyclerViewLayoutManager);
 
-        if (functionsClass.returnAPI() >= 26) {
-            if (!functionsClass.ControlPanel()) {
+        if (functionsClassLegacy.returnAPI() >= 26) {
+            if (!functionsClassLegacy.ControlPanel()) {
                 Snackbar snackbar = Snackbar.make(MainView, Html.fromHtml("<big>" + getString(R.string.enableControlPanel) + "</big>"), Snackbar.LENGTH_INDEFINITE)
                         .setAction(Html.fromHtml("<b>" + getString(R.string.enable).toUpperCase() + "</b>"), new View.OnClickListener() {
                             @Override
@@ -173,7 +173,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                         GradientDrawable.Orientation.BOTTOM_TOP,
                         new int[]{
                                 Color.TRANSPARENT,
-                                functionsClass.setColorAlpha(PublicVariable.primaryColor, 207),
+                                functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 207),
                                 Color.TRANSPARENT
                         });
 
@@ -184,10 +184,10 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             }
         }
 
-        applicationThemeController.setThemeColorAutomationFeature(AppAutoFeatures.this, MainView, functionsClass.appThemeTransparent());
+        applicationThemeController.setThemeColorAutomationFeature(AppAutoFeatures.this, MainView, functionsClassLegacy.appThemeTransparent());
 
-        if (functionsClass.customIconsEnable()) {
-            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
+        if (functionsClassLegacy.customIconsEnable()) {
+            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClassLegacy.customIconPackageName());
         }
 
         adapterItems = new ArrayList<AdapterItems>();
@@ -197,7 +197,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
         autoApps.setTextColor(getColor(R.color.light));
         autoCategories.setTextColor(getColor(R.color.light));
-        if (PublicVariable.themeLightDark /*light*/ && functionsClass.appThemeTransparent() /*transparent*/) {
+        if (PublicVariable.themeLightDark /*light*/ && functionsClassLegacy.appThemeTransparent() /*transparent*/) {
             autoApps.setTextColor(getColor(R.color.dark));
             autoCategories.setTextColor(getColor(R.color.dark));
         }
@@ -207,15 +207,15 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         Drawable gradientDrawableShortcutsBackground = rippleDrawableShortcuts.findDrawableByLayerId(R.id.backgroundItem);
         Drawable gradientDrawableMaskShortcuts = rippleDrawableShortcuts.findDrawableByLayerId(android.R.id.mask);
 
-        if (functionsClass.appThemeTransparent()) {
+        if (functionsClassLegacy.appThemeTransparent()) {
             rippleDrawableShortcuts.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
             gradientDrawableShortcutsForeground.setTint(
-                    functionsClass.setColorAlpha(
-                            functionsClass.mixColors(
+                    functionsClassLegacy.setColorAlpha(
+                            functionsClassLegacy.mixColors(
                                     PublicVariable.primaryColor, PublicVariable.colorLightDark,
                                     0.75f), functionsClassThemeUtils.wallpaperStaticLive() ? 245 : 113)
             );
-            gradientDrawableShortcutsBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColor, functionsClassThemeUtils.wallpaperStaticLive() ? 150 : 155));
+            gradientDrawableShortcutsBackground.setTint(functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, functionsClassThemeUtils.wallpaperStaticLive() ? 150 : 155));
             gradientDrawableMaskShortcuts.setTint(PublicVariable.primaryColorOpposite);
         } else {
             rippleDrawableShortcuts.setColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite));
@@ -230,13 +230,13 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         Drawable gradientDrawableCategoriesBackground = rippleDrawableCategories.findDrawableByLayerId(R.id.backgroundItem);
         Drawable gradientDrawableMaskCategories = rippleDrawableCategories.findDrawableByLayerId(android.R.id.mask);
 
-        if (functionsClass.appThemeTransparent()) {
+        if (functionsClassLegacy.appThemeTransparent()) {
             rippleDrawableCategories.setColor(ColorStateList.valueOf(PublicVariable.primaryColor));
-            gradientDrawableCategoriesForeground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 255));
-            if (functionsClass.returnAPI() > 21) {
-                gradientDrawableCategoriesBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
+            gradientDrawableCategoriesForeground.setTint(functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 255));
+            if (functionsClassLegacy.returnAPI() > 21) {
+                gradientDrawableCategoriesBackground.setTint(functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
             } else {
-                gradientDrawableShortcutsBackground.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
+                gradientDrawableShortcutsBackground.setTint(functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 175));
             }
             gradientDrawableMaskCategories.setTint(PublicVariable.primaryColor);
         } else {
@@ -254,7 +254,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         floatingLogo.setImageDrawable(drawFloatingLogo);
 
         loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
-        if (functionsClass.appThemeTransparent() == true) {
+        if (functionsClassLegacy.appThemeTransparent() == true) {
             loadingSplash.setBackgroundColor(Color.TRANSPARENT);
         } else {
             loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
@@ -278,7 +278,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             public void onClick(View view) {
                 PublicVariable.autoID = null;
                 try {
-                    functionsClass.navigateToClass(AppAutoFeatures.this, FolderAutoFeatures.class,
+                    functionsClassLegacy.navigateToClass(AppAutoFeatures.this, FolderAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
                     finish();
                 } catch (Exception e) {
@@ -560,9 +560,9 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         try {
-            functionsClass.CheckSystemRAM(AppAutoFeatures.this);
+            functionsClassLegacy.CheckSystemRAM(AppAutoFeatures.this);
 
-            functionsClass.overrideBackPressToMain(AppAutoFeatures.this, AppAutoFeatures.this);
+            functionsClassLegacy.overrideBackPressToMain(AppAutoFeatures.this, AppAutoFeatures.this);
             overridePendingTransition(android.R.anim.fade_in, R.anim.go_up);
         } catch (Exception e) {
             e.printStackTrace();
@@ -584,7 +584,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                 }
                 case GestureListenerConstants.SWIPE_LEFT: {
 
-                    functionsClass.navigateToClass(AppAutoFeatures.this, FolderAutoFeatures.class,
+                    functionsClassLegacy.navigateToClass(AppAutoFeatures.this, FolderAutoFeatures.class,
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_from_right, R.anim.slide_to_left));
 
                     AppAutoFeatures.this.finish();
@@ -688,7 +688,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
 
             loadingSplash = (RelativeLayout) findViewById(R.id.loadingSplash);
             loadingSplash.setVisibility(View.VISIBLE);
-            if (functionsClass.appThemeTransparent() == true) {
+            if (functionsClassLegacy.appThemeTransparent() == true) {
                 loadingSplash.setBackgroundColor(Color.TRANSPARENT);
             } else {
                 loadingSplash.setBackgroundColor(getWindow().getNavigationBarColor());
@@ -718,7 +718,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                 adapterItems = new ArrayList<AdapterItems>();
                 mapIndexFirstItem = new LinkedHashMap<String, Integer>();
 
-                if (functionsClass.customIconsEnable()) {
+                if (functionsClassLegacy.customIconsEnable()) {
                     loadCustomIcons.load();
                     Debug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }
@@ -727,8 +727,8 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                     if (getApplicationContext().getPackageManager().getLaunchIntentForPackage(applicationInfoList.get(appInfo).packageName) != null) {
                         try {
                             PackageName = applicationInfoList.get(appInfo).packageName;
-                            AppName = functionsClass.applicationName(PackageName);
-                            AppIcon = functionsClass.customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
+                            AppName = functionsClassLegacy.applicationName(PackageName);
+                            AppIcon = functionsClassLegacy.customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClassLegacy.shapedAppIcon(PackageName)) : functionsClassLegacy.shapedAppIcon(PackageName);
 
                             if (getFileStreamPath(PackageName + ".Time").exists()) {
                                 AppTime = fileIO.readFile(PackageName + ".Time");
@@ -841,13 +841,13 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
         nestedIndexScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in));
         nestedIndexScrollView.setVisibility(View.VISIBLE);
 
-        float popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (functionsClass.UsageStatsEnabled() ? functionsClass.DpToInteger(7) : functionsClass.DpToInteger(7));
+        float popupIndexOffsetY = PublicVariable.statusBarHeight + PublicVariable.actionBarHeight + (functionsClassLegacy.UsageStatsEnabled() ? functionsClassLegacy.DpToInteger(7) : functionsClassLegacy.DpToInteger(7));
         nestedIndexScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        if (functionsClass.litePreferencesEnabled()) {
+                        if (functionsClassLegacy.litePreferencesEnabled()) {
 
                         } else {
                             String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
@@ -863,7 +863,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                         break;
                     }
                     case MotionEvent.ACTION_MOVE: {
-                        if (functionsClass.litePreferencesEnabled()) {
+                        if (functionsClassLegacy.litePreferencesEnabled()) {
 
                         } else {
                             String indexText = mapRangeIndex.get(((int) motionEvent.getY()));
@@ -895,7 +895,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                         break;
                     }
                     case MotionEvent.ACTION_UP: {
-                        if (functionsClass.litePreferencesEnabled()) {
+                        if (functionsClassLegacy.litePreferencesEnabled()) {
                             try {
                                 nestedScrollView.smoothScrollTo(
                                         0,

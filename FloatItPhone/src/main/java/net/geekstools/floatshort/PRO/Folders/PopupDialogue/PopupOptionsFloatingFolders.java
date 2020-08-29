@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:29 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,7 +27,7 @@ import android.widget.RelativeLayout;
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.PopupFolderOptionAdapter;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 public class PopupOptionsFloatingFolders extends Service {
 
-    FunctionsClass functionsClass;
+    FunctionsClassLegacy functionsClassLegacy;
     WindowManager windowManager;
     WindowManager.LayoutParams layoutParams;
 
@@ -113,7 +113,7 @@ public class PopupOptionsFloatingFolders extends Service {
                 Drawable[] drawables = new Drawable[2];
                 drawables[0] = getDrawable(R.drawable.ic_launcher);
                 try {
-                    drawables[0] = functionsClass.shapesDrawables().mutate();
+                    drawables[0] = functionsClassLegacy.shapesDrawables().mutate();
                     drawables[0].setTint(PublicVariable.primaryColor);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
@@ -122,9 +122,9 @@ public class PopupOptionsFloatingFolders extends Service {
                 drawables[1] = getDrawable(R.drawable.w_pref);
                 LayerDrawable popupItemsIconCategory = new LayerDrawable(drawables);
 
-                switch (functionsClass.displaySection(xPosition, yPosition)) {
-                    case FunctionsClass.DisplaySection.TopLeft:
-                        if (functionsClass.returnAPI() < 24) {
+                switch (functionsClassLegacy.displaySection(xPosition, yPosition)) {
+                    case FunctionsClassLegacy.DisplaySection.TopLeft:
+                        if (functionsClassLegacy.returnAPI() < 24) {
                             popupItems = new String[]{
                                     getString(R.string.pin_folder),
                                     getString(R.string.unpin_folder),
@@ -153,8 +153,8 @@ public class PopupOptionsFloatingFolders extends Service {
                         itemMenuView.setX(xPosition);
                         itemMenuView.setY(yPosition + HW);
                         break;
-                    case FunctionsClass.DisplaySection.TopRight:
-                        if (functionsClass.returnAPI() < 24) {
+                    case FunctionsClassLegacy.DisplaySection.TopRight:
+                        if (functionsClassLegacy.returnAPI() < 24) {
                             popupItems = new String[]{
                                     getString(R.string.pin_folder),
                                     getString(R.string.unpin_folder),
@@ -180,11 +180,11 @@ public class PopupOptionsFloatingFolders extends Service {
                             };
                         }
 
-                        itemMenuView.setX(xPosition - (functionsClass.DpToInteger(213) - HW));
+                        itemMenuView.setX(xPosition - (functionsClassLegacy.DpToInteger(213) - HW));
                         itemMenuView.setY(yPosition + HW);
                         break;
-                    case FunctionsClass.DisplaySection.BottomLeft:
-                        if (functionsClass.returnAPI() < 24) {
+                    case FunctionsClassLegacy.DisplaySection.BottomLeft:
+                        if (functionsClassLegacy.returnAPI() < 24) {
                             popupItems = new String[]{
                                     getString(R.string.remove_folder) + " " + categoryName,
                                     getString(R.string.unpin_folder),
@@ -211,10 +211,10 @@ public class PopupOptionsFloatingFolders extends Service {
                         }
 
                         itemMenuView.setX(xPosition);
-                        itemMenuView.setY(yPosition - ((functionsClass.DpToInteger(52) * popupItems.length) + functionsClass.DpToInteger(3)));
+                        itemMenuView.setY(yPosition - ((functionsClassLegacy.DpToInteger(52) * popupItems.length) + functionsClassLegacy.DpToInteger(3)));
                         break;
-                    case FunctionsClass.DisplaySection.BottomRight:
-                        if (functionsClass.returnAPI() < 24) {
+                    case FunctionsClassLegacy.DisplaySection.BottomRight:
+                        if (functionsClassLegacy.returnAPI() < 24) {
                             popupItems = new String[]{
                                     getString(R.string.remove_folder) + " " + categoryName,
                                     getString(R.string.unpin_folder),
@@ -240,11 +240,11 @@ public class PopupOptionsFloatingFolders extends Service {
                             };
                         }
 
-                        itemMenuView.setX(xPosition - (functionsClass.DpToInteger(213) - HW));
-                        itemMenuView.setY(yPosition - ((functionsClass.DpToInteger(52) * popupItems.length) + functionsClass.DpToInteger(3)));
+                        itemMenuView.setX(xPosition - (functionsClassLegacy.DpToInteger(213) - HW));
+                        itemMenuView.setY(yPosition - ((functionsClassLegacy.DpToInteger(52) * popupItems.length) + functionsClassLegacy.DpToInteger(3)));
                         break;
                     default:
-                        if (functionsClass.returnAPI() < 24) {
+                        if (functionsClassLegacy.returnAPI() < 24) {
                             popupItems = new String[]{
                                     getString(R.string.pin_folder),
                                     getString(R.string.unpin_folder),
@@ -290,7 +290,7 @@ public class PopupOptionsFloatingFolders extends Service {
                 Drawable[] drawables = new Drawable[2];
                 drawables[0] = getDrawable(R.drawable.ic_launcher);
                 try {
-                    drawables[0] = functionsClass.shapesDrawables().mutate();
+                    drawables[0] = functionsClassLegacy.shapesDrawables().mutate();
                     drawables[0].setTint(PublicVariable.primaryColor);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
@@ -299,16 +299,16 @@ public class PopupOptionsFloatingFolders extends Service {
                 drawables[1] = getDrawable(R.drawable.w_pref);
                 LayerDrawable popupItemsIcon = new LayerDrawable(drawables);
 
-                switch (functionsClass.displaySection(xPosition, yPosition)) {
-                    case FunctionsClass.DisplaySection.TopLeft:
+                switch (functionsClassLegacy.displaySection(xPosition, yPosition)) {
+                    case FunctionsClassLegacy.DisplaySection.TopLeft:
                         for (String packageName : packagesNames) {
                             navDrawerItemsSaved.add(new AdapterItems(
-                                    functionsClass.applicationName(packageName),
+                                    functionsClassLegacy.applicationName(packageName),
                                     packageName,
-                                    functionsClass.customIconsEnable() ?
-                                            loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
+                                    functionsClassLegacy.customIconsEnable() ?
+                                            loadCustomIcons.getDrawableIconForPackage(packageName, functionsClassLegacy.shapedAppIcon(packageName))
                                             :
-                                            functionsClass.shapedAppIcon(packageName)));
+                                            functionsClassLegacy.shapedAppIcon(packageName)));
                         }
                         navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_folder) + " " + categoryName,
@@ -316,71 +316,71 @@ public class PopupOptionsFloatingFolders extends Service {
                                 popupItemsIcon));
 
                         itemMenuView.setX(xPosition);
-                        itemMenuView.setY(yPosition + HW + functionsClass.DpToInteger(19));
+                        itemMenuView.setY(yPosition + HW + functionsClassLegacy.DpToInteger(19));
                         break;
-                    case FunctionsClass.DisplaySection.TopRight:
+                    case FunctionsClassLegacy.DisplaySection.TopRight:
                         for (String packageName : packagesNames) {
                             navDrawerItemsSaved.add(new AdapterItems(
-                                    functionsClass.applicationName(packageName),
+                                    functionsClassLegacy.applicationName(packageName),
                                     packageName,
-                                    functionsClass.customIconsEnable() ?
-                                            loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
+                                    functionsClassLegacy.customIconsEnable() ?
+                                            loadCustomIcons.getDrawableIconForPackage(packageName, functionsClassLegacy.shapedAppIcon(packageName))
                                             :
-                                            functionsClass.shapedAppIcon(packageName)));
+                                            functionsClassLegacy.shapedAppIcon(packageName)));
                         }
                         navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_folder) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
 
-                        itemMenuView.setX(xPosition - (functionsClass.DpToInteger(213) - HW));
-                        itemMenuView.setY(yPosition + HW + functionsClass.DpToInteger(19));
+                        itemMenuView.setX(xPosition - (functionsClassLegacy.DpToInteger(213) - HW));
+                        itemMenuView.setY(yPosition + HW + functionsClassLegacy.DpToInteger(19));
                         break;
-                    case FunctionsClass.DisplaySection.BottomLeft:
+                    case FunctionsClassLegacy.DisplaySection.BottomLeft:
                         navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_folder) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
                         for (String packageName : packagesNames) {
                             navDrawerItemsSaved.add(new AdapterItems(
-                                    functionsClass.applicationName(packageName),
+                                    functionsClassLegacy.applicationName(packageName),
                                     packageName,
-                                    functionsClass.customIconsEnable() ?
-                                            loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
+                                    functionsClassLegacy.customIconsEnable() ?
+                                            loadCustomIcons.getDrawableIconForPackage(packageName, functionsClassLegacy.shapedAppIcon(packageName))
                                             :
-                                            functionsClass.shapedAppIcon(packageName)));
+                                            functionsClassLegacy.shapedAppIcon(packageName)));
                         }
 
                         itemMenuView.setX(xPosition);
-                        itemMenuView.setY(yPosition - (functionsClass.DpToInteger(191)));
+                        itemMenuView.setY(yPosition - (functionsClassLegacy.DpToInteger(191)));
                         break;
-                    case FunctionsClass.DisplaySection.BottomRight:
+                    case FunctionsClassLegacy.DisplaySection.BottomRight:
                         navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_folder) + " " + categoryName,
                                 getPackageName(),
                                 popupItemsIcon));
                         for (String packageName : packagesNames) {
                             navDrawerItemsSaved.add(new AdapterItems(
-                                    functionsClass.applicationName(packageName),
+                                    functionsClassLegacy.applicationName(packageName),
                                     packageName,
-                                    functionsClass.customIconsEnable() ?
-                                            loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
+                                    functionsClassLegacy.customIconsEnable() ?
+                                            loadCustomIcons.getDrawableIconForPackage(packageName, functionsClassLegacy.shapedAppIcon(packageName))
                                             :
-                                            functionsClass.shapedAppIcon(packageName)));
+                                            functionsClassLegacy.shapedAppIcon(packageName)));
                         }
 
-                        itemMenuView.setX(xPosition - (functionsClass.DpToInteger(213) - HW));
-                        itemMenuView.setY(yPosition - (functionsClass.DpToInteger(191)));
+                        itemMenuView.setX(xPosition - (functionsClassLegacy.DpToInteger(213) - HW));
+                        itemMenuView.setY(yPosition - (functionsClassLegacy.DpToInteger(191)));
                         break;
                     default:
                         for (String packageName : packagesNames) {
                             navDrawerItemsSaved.add(new AdapterItems(
-                                    functionsClass.applicationName(packageName),
+                                    functionsClassLegacy.applicationName(packageName),
                                     packageName,
-                                    functionsClass.customIconsEnable() ?
-                                            loadCustomIcons.getDrawableIconForPackage(packageName, functionsClass.shapedAppIcon(packageName))
+                                    functionsClassLegacy.customIconsEnable() ?
+                                            loadCustomIcons.getDrawableIconForPackage(packageName, functionsClassLegacy.shapedAppIcon(packageName))
                                             :
-                                            functionsClass.shapedAppIcon(packageName)));
+                                            functionsClassLegacy.shapedAppIcon(packageName)));
                         }
                         navDrawerItemsSaved.add(new AdapterItems(
                                 getString(R.string.edit_folder) + " " + categoryName,
@@ -388,7 +388,7 @@ public class PopupOptionsFloatingFolders extends Service {
                                 popupItemsIcon));
 
                         itemMenuView.setX(xPosition);
-                        itemMenuView.setY(yPosition + HW + functionsClass.DpToInteger(19));
+                        itemMenuView.setY(yPosition + HW + functionsClassLegacy.DpToInteger(19));
                         break;
                 }
 
@@ -402,7 +402,7 @@ public class PopupOptionsFloatingFolders extends Service {
             e.printStackTrace();
         }
 
-        layoutParams = functionsClass.splashRevealParams(
+        layoutParams = functionsClassLegacy.splashRevealParams(
                 0,
                 0
         );
@@ -411,7 +411,7 @@ public class PopupOptionsFloatingFolders extends Service {
             @Override
             public void run() {
                 try {
-                    functionsClass.circularRevealViewScreen(
+                    functionsClassLegacy.circularRevealViewScreen(
                             wholeMenuView,
                             xPosition,
                             yPosition,
@@ -448,17 +448,17 @@ public class PopupOptionsFloatingFolders extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        functionsClass = new FunctionsClass(getApplicationContext());
+        functionsClassLegacy = new FunctionsClassLegacy(getApplicationContext());
 
-        if (functionsClass.customIconsEnable()) {
-            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClass.customIconPackageName());
+        if (functionsClassLegacy.customIconsEnable()) {
+            loadCustomIcons = new LoadCustomIcons(getApplicationContext(), functionsClassLegacy.customIconPackageName());
         }
     }
 
     @Override
     public void onDestroy() {
         try {
-            functionsClass.circularRevealViewScreen(
+            functionsClassLegacy.circularRevealViewScreen(
                     wholeMenuView,
                     xPosition,
                     yPosition,

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -30,7 +30,7 @@ import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import java.util.*
@@ -39,7 +39,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
                          private val context: Context,
                          private val adapterItems: ArrayList<AdapterItems>) : RecyclerView.Adapter<FoldersListAdapter.ViewHolder>() {
 
-    var functionsClass: FunctionsClass = FunctionsClass(context)
+    var functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(context)
     var fileIO: FileIO = FileIO(context)
     var floatingServices: FloatingServices = FloatingServices(context)
 
@@ -50,7 +50,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
     private var cardFolderDrawable: LayerDrawable? = null
 
     init {
-        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingSizeNumber = functionsClassLegacy.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), context.resources.displayMetrics).toInt()
 
         cardFolderDrawable = context.getDrawable(R.drawable.card_folder_drawable) as LayerDrawable?
@@ -58,8 +58,8 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
         folderItemBackground?.setTint(PublicVariable.colorLightDark)
         cardFolderDrawable?.alpha = 7
 
-        if (functionsClass.customIconsEnable()) {
-            loadCustomIcons = LoadCustomIcons(context, functionsClass.customIconPackageName())
+        if (functionsClassLegacy.customIconsEnable()) {
+            loadCustomIcons = LoadCustomIcons(context, functionsClassLegacy.customIconPackageName())
         }
     }
 
@@ -72,12 +72,12 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
 
         viewHolderBinder.categoryItem.background = cardFolderDrawable
         viewHolderBinder.categoryName.setTextColor(PublicVariable.colorLightDarkOpposite)
-        viewHolderBinder.categoryName.setHintTextColor(functionsClass.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
+        viewHolderBinder.categoryName.setHintTextColor(functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDarkOpposite, 175f))
 
         val folderName = adapterItems[position].category
         val includedPackagesInFolder = adapterItems[position].packageNames
 
-        if (functionsClass.loadRecoveryIndicatorCategory(folderName)) {
+        if (functionsClassLegacy.loadRecoveryIndicatorCategory(folderName)) {
             viewHolderBinder.categoryName.setText("${adapterItems[position].category} \uD83D\uDD04")
         } else {
             viewHolderBinder.categoryName.setText(adapterItems[position].category)
@@ -108,11 +108,11 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
                 for (i in 0 until previewItems) {
                     val selectedAppsPreview = instanceOfFoldersConfigurationsActivity.layoutInflater.inflate(R.layout.selected_apps_item, null) as RelativeLayout
 
-                    val imageView = functionsClass.initShapesImage(selectedAppsPreview, R.id.appSelectedItem)
-                    imageView?.setImageDrawable(if (functionsClass.customIconsEnable()) {
-                        loadCustomIcons!!.getDrawableIconForPackage(includedPackagesInFolder[i], functionsClass.shapedAppIcon(includedPackagesInFolder[i]))
+                    val imageView = functionsClassLegacy.initShapesImage(selectedAppsPreview, R.id.appSelectedItem)
+                    imageView?.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) {
+                        loadCustomIcons!!.getDrawableIconForPackage(includedPackagesInFolder[i], functionsClassLegacy.shapedAppIcon(includedPackagesInFolder[i]))
                     } else {
-                        functionsClass.shapedAppIcon(includedPackagesInFolder[i])
+                        functionsClassLegacy.shapedAppIcon(includedPackagesInFolder[i])
                     })
 
                     viewHolderBinder.selectedApp.addView(selectedAppsPreview)
@@ -173,7 +173,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
             if (adapterItems[position].category != context.packageName) {
                 PublicVariable.itemPosition = position
                 val categoryName = adapterItems[position].category
-                functionsClass.popupOptionFolders(instanceOfFoldersConfigurationsActivity, context,
+                functionsClassLegacy.popupOptionFolders(instanceOfFoldersConfigurationsActivity, context,
                         viewHolderBinder.itemView,
                         categoryName, position)
             }
@@ -191,7 +191,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
             if (adapterItems[position].category != context.packageName) {
                 PublicVariable.itemPosition = position
                 val categoryName = adapterItems[position].category
-                functionsClass.popupOptionFolders(instanceOfFoldersConfigurationsActivity, context,
+                functionsClassLegacy.popupOptionFolders(instanceOfFoldersConfigurationsActivity, context,
                         viewHolderBinder.itemView,
                         categoryName, position)
             }
@@ -199,8 +199,8 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
         }
 
         val rippleEffectFolderLogo = context.getDrawable(R.drawable.ripple_effect_folder_logo) as RippleDrawable?
-        rippleEffectFolderLogo!!.setDrawableByLayerId(R.id.folder_logo_layer, functionsClass.shapesDrawablesCategory(viewHolderBinder.runCategory))
-        rippleEffectFolderLogo.setDrawableByLayerId(android.R.id.mask, functionsClass.shapesDrawablesCategory(viewHolderBinder.runCategory))
+        rippleEffectFolderLogo!!.setDrawableByLayerId(R.id.folder_logo_layer, functionsClassLegacy.shapesDrawablesCategory(viewHolderBinder.runCategory))
+        rippleEffectFolderLogo.setDrawableByLayerId(android.R.id.mask, functionsClassLegacy.shapesDrawablesCategory(viewHolderBinder.runCategory))
         val categoryLogoLayer = rippleEffectFolderLogo.findDrawableByLayerId(R.id.folder_logo_layer) as Drawable
         val categoryMask = rippleEffectFolderLogo.findDrawableByLayerId(android.R.id.mask) as Drawable
         categoryLogoLayer.setTint(PublicVariable.primaryColorOpposite)
@@ -239,7 +239,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
                     }
                 }
 
-                if (functionsClass.loadRecoveryIndicatorCategory(adapterItems[position].category)) {
+                if (functionsClassLegacy.loadRecoveryIndicatorCategory(adapterItems[position].category)) {
                     fileIO.removeLine(".uCategory", adapterItems[position].category)
                     fileIO.saveFileAppendLine(".uCategory", PublicVariable.folderName)
                 }

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/26/20 5:36 AM
+ * Last modified 8/29/20 3:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -33,7 +33,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsFloatingShortcutsPopuiOptions
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import java.util.*
@@ -42,7 +42,7 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
 
     private val context: Context
 
-    private val functionsClass: FunctionsClass
+    private val functionsClassLegacy: FunctionsClassLegacy
     private val securityFunctions: SecurityFunctions
 
     private val adapterItems: ArrayList<AdapterItemsFloatingShortcutsPopuiOptions>
@@ -64,7 +64,7 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
         this.packageName = packageName
         this.startId = startId
 
-        functionsClass = FunctionsClass(context)
+        functionsClassLegacy = FunctionsClassLegacy(context)
         securityFunctions = SecurityFunctions(context)
     }
 
@@ -81,7 +81,7 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
         this.className = className
         this.startId = startId
 
-        functionsClass = FunctionsClass(context)
+        functionsClassLegacy = FunctionsClassLegacy(context)
         securityFunctions = SecurityFunctions(context)
     }
 
@@ -121,8 +121,8 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
         viewHolder.iconViewItem!!.setImageDrawable(adapterItems[position].optionItemIcon)
         viewHolder.titleViewItem!!.text = adapterItems[position].optionItemTitle
 
-        val itemsListColor = if (functionsClass.appThemeTransparent()) {
-            functionsClass.setColorAlpha(PublicVariable.colorLightDark, 50f)
+        val itemsListColor = if (functionsClassLegacy.appThemeTransparent()) {
+            functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, 50f)
         } else {
             PublicVariable.colorLightDark
         }
@@ -146,7 +146,7 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
                             super.authenticatedFloatIt(extraInformation)
                             Log.d(this@FloatingShortcutsPopupOptionsAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                            if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
+                            if (!functionsClassLegacy.AccessibilityServiceEnabled() && !functionsClassLegacy.SettingServiceRunning(InteractionObserver::class.java)) {
                                 context.startActivity(Intent(context, Checkpoint::class.java)
                                         .putExtra(context.getString(R.string.splitIt), context.packageName)
                                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
@@ -187,7 +187,7 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
                     }, ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle())
 
                 } else {
-                    if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
+                    if (!functionsClassLegacy.AccessibilityServiceEnabled() && !functionsClassLegacy.SettingServiceRunning(InteractionObserver::class.java)) {
                         context.startActivity(Intent(context, Checkpoint::class.java)
                                 .putExtra(context.getString(R.string.splitIt), context.packageName)
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
@@ -221,7 +221,7 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
 
             } else if (adapterItems[position].optionItemTitle == context.getString(R.string.close)) {
 
-                if (functionsClass.UsageStatsEnabled()) {
+                if (functionsClassLegacy.UsageStatsEnabled()) {
                     try {
                         val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
                         val queryUsageStats = usageStatsManager

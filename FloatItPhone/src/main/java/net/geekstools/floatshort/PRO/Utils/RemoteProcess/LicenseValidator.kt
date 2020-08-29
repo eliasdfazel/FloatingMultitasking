@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,7 +21,7 @@ import com.google.android.vending.licensing.LicenseCheckerCallback
 import com.google.android.vending.licensing.ServerManagedPolicy
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 
 class LicenseValidator : Service() {
 
@@ -36,8 +36,8 @@ class LicenseValidator : Service() {
         )
     }
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     private val fileIO: FileIO by lazy {
@@ -53,7 +53,7 @@ class LicenseValidator : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        startForeground(666, functionsClass.notificationCreator(
+        startForeground(666, functionsClassLegacy.notificationCreator(
                 Html.fromHtml("<small><font color='" + getColor(R.color.default_color_darker) + "'>" + getString(R.string.license_info_desc) + "</font></small>").toString(),
                 getString(R.string.updating_info),
                 666

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/27/20 3:28 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,14 +20,14 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 fun Configurations.checkUserInformation() {
 
-    functionsClass.savePreference(".UserInformation", "isBetaTester", functionsClass.applicationVersionName(packageName).contains("[BETA]"))
-    functionsClass.savePreference(".UserInformation", "installedVersionCode", functionsClass.applicationVersionCode(packageName))
-    functionsClass.savePreference(".UserInformation", "installedVersionName", functionsClass.applicationVersionName(packageName))
-    functionsClass.savePreference(".UserInformation", "deviceModel", functionsClass.deviceName)
-    functionsClass.savePreference(".UserInformation", "userRegion", functionsClass.countryIso)
+    functionsClassLegacy.savePreference(".UserInformation", "isBetaTester", functionsClassLegacy.applicationVersionName(packageName).contains("[BETA]"))
+    functionsClassLegacy.savePreference(".UserInformation", "installedVersionCode", functionsClassLegacy.applicationVersionCode(packageName))
+    functionsClassLegacy.savePreference(".UserInformation", "installedVersionName", functionsClassLegacy.applicationVersionName(packageName))
+    functionsClassLegacy.savePreference(".UserInformation", "deviceModel", functionsClassLegacy.deviceName)
+    functionsClassLegacy.savePreference(".UserInformation", "userRegion", functionsClassLegacy.countryIso)
 
-    if (functionsClass.applicationVersionName(packageName).contains("[BETA]")) {
-        functionsClass.saveDefaultPreference("JoinedBetaProgrammer", true)
+    if (functionsClassLegacy.applicationVersionName(packageName).contains("[BETA]")) {
+        functionsClassLegacy.saveDefaultPreference("JoinedBetaProgrammer", true)
     }
 }
 
@@ -45,17 +45,17 @@ fun Configurations.initializeParameterUI() {
     PublicVariable.statusBarHeight = result
     PublicVariable.navigationBarHeight = resources.getDimensionPixelSize(resources.getIdentifier("navigation_bar_height", "dimen", "android"))
 
-    functionsClass.extractWallpaperColor()
-    functionsClass.loadSavedColor()
-    functionsClass.checkLightDarkTheme()
+    functionsClassLegacy.extractWallpaperColor()
+    functionsClassLegacy.loadSavedColor()
+    functionsClassLegacy.checkLightDarkTheme()
 
-    PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+    PublicVariable.floatingSizeNumber = functionsClassLegacy.readDefaultPreference("floatingSize", 39)
     PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
 }
 
 fun Configurations.triggerOpenProcess() {
 
-    if (functionsClass.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
+    if (functionsClassLegacy.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
 
         Intent(applicationContext, FoldersConfigurations::class.java).apply {
 
@@ -75,7 +75,7 @@ fun Configurations.triggerOpenProcess() {
 
 fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<String>) {
 
-    if (functionsClass.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
+    if (functionsClassLegacy.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
 
         if (getFileStreamPath("Frequently").exists()) {
             fileIO.removeLine(".categoryInfo", "Frequently")
@@ -122,11 +122,11 @@ fun Configurations.indexFloatingShortcuts() {
             it.forEach { lineContent ->
 
                 indexingProcess.indexAppInfoShortcuts(
-                        functionsClass.applicationName(lineContent) + " | " + lineContent
+                        functionsClassLegacy.applicationName(lineContent) + " | " + lineContent
                 )
             }
         }
 
-        functionsClass.updateRecoverShortcuts()
+        functionsClassLegacy.updateRecoverShortcuts()
     }
 }

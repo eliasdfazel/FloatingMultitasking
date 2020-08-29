@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:18 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -36,7 +36,7 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.ApplicationThemeController
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.databinding.AdvanceAppSelectionListBinding
@@ -45,8 +45,8 @@ import java.util.*
 class AppSelectionList : AppCompatActivity(),
         ConfirmButtonProcessInterface {
 
-    val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     val fileIO: FileIO by lazy {
@@ -74,7 +74,7 @@ class AppSelectionList : AppCompatActivity(),
     var resetAdapter = false
 
     val loadCustomIcons: LoadCustomIcons by lazy {
-        LoadCustomIcons(applicationContext, functionsClass.customIconPackageName())
+        LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())
     }
 
     lateinit var advanceAppSelectionListBinding: AdvanceAppSelectionListBinding
@@ -87,10 +87,10 @@ class AppSelectionList : AppCompatActivity(),
         advanceAppSelectionListBinding.temporaryFallingIcon.bringToFront()
         advanceAppSelectionListBinding.confirmLayout.bringToFront()
 
-        functionsClass.initShapesImage(advanceAppSelectionListBinding.firstSplitIcon)
-        functionsClass.initShapesImage(advanceAppSelectionListBinding.secondSplitIcon)
+        functionsClassLegacy.initShapesImage(advanceAppSelectionListBinding.firstSplitIcon)
+        functionsClassLegacy.initShapesImage(advanceAppSelectionListBinding.secondSplitIcon)
 
-        applicationThemeController.setThemeColorFloating(this@AppSelectionList, advanceAppSelectionListBinding.root, functionsClass.appThemeTransparent())
+        applicationThemeController.setThemeColorFloating(this@AppSelectionList, advanceAppSelectionListBinding.root, functionsClassLegacy.appThemeTransparent())
 
         recyclerViewLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
         advanceAppSelectionListBinding.recyclerListView.layoutManager = recyclerViewLayoutManager
@@ -103,14 +103,14 @@ class AppSelectionList : AppCompatActivity(),
         advanceAppSelectionListBinding.appSelectedCounterView.typeface = typeface
         advanceAppSelectionListBinding.appSelectedCounterView.bringToFront()
 
-        if (functionsClass.loadRecoveryIndicatorCategory(PublicVariable.folderName)) {
+        if (functionsClassLegacy.loadRecoveryIndicatorCategory(PublicVariable.folderName)) {
             advanceAppSelectionListBinding.folderNameView.text = "${PublicVariable.folderName} \uD83D\uDD04"
         } else {
             advanceAppSelectionListBinding.folderNameView.text = PublicVariable.folderName
         }
 
-        advanceAppSelectionListBinding.folderNameView.setBackgroundColor(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        advanceAppSelectionListBinding.folderNameView.rippleColor = ColorStateList.valueOf(if (functionsClass.appThemeTransparent()) functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        advanceAppSelectionListBinding.folderNameView.setBackgroundColor(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        advanceAppSelectionListBinding.folderNameView.rippleColor = ColorStateList.valueOf(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
         val layerDrawableLoadLogo = getDrawable(R.drawable.ic_launcher_layer) as LayerDrawable?
         val gradientDrawableLoadLogo = layerDrawableLoadLogo!!.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
@@ -131,7 +131,7 @@ class AppSelectionList : AppCompatActivity(),
     override fun onStart() {
         super.onStart()
 
-        if (functionsClass.returnAPI() < 24) {
+        if (functionsClassLegacy.returnAPI() < 24) {
 
             advanceAppSelectionListBinding.firstSplitIcon.visibility = View.INVISIBLE
             advanceAppSelectionListBinding.secondSplitIcon.visibility = View.INVISIBLE
@@ -156,24 +156,24 @@ class AppSelectionList : AppCompatActivity(),
 
             if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitOne").exists()) {
 
-                advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"), functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne")))
+                advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"), functionsClassLegacy.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClassLegacy.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne")))
 
             } else {
 
                 val addOne = getDrawable(R.drawable.add_quick_app)
-                addOne!!.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175f))
+                addOne!!.setTint(functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 175f))
                 advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(addOne)
 
             }
 
             if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitTwo").exists()) {
 
-                advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo"), functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo")))
+                advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo"), functionsClassLegacy.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClassLegacy.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo")))
 
             } else {
 
                 val addTwo = getDrawable(R.drawable.add_quick_app)
-                addTwo!!.setTint(functionsClass.setColorAlpha(PublicVariable.primaryColorOpposite, 175f))
+                addTwo!!.setTint(functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 175f))
                 advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(addTwo)
 
             }
@@ -186,14 +186,14 @@ class AppSelectionList : AppCompatActivity(),
 
                         for (aSavedLine in it) {
                             selectedAppsListItem.add(AdapterItems(
-                                    functionsClass.applicationName(aSavedLine),
+                                    functionsClassLegacy.applicationName(aSavedLine),
                                     aSavedLine,
-                                    if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
+                                    if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClassLegacy.shapedAppIcon(aSavedLine)) else functionsClassLegacy.shapedAppIcon(aSavedLine)))
                         }
                     }
 
                     val savedAppsListPopupAdapter = appsConfirmButton?.let { it1 ->
-                        SavedAppsListPopupAdapter(applicationContext, functionsClass, fileIO,
+                        SavedAppsListPopupAdapter(applicationContext, functionsClassLegacy, fileIO,
                                 selectedAppsListItem, 1,
                                 it1, this@AppSelectionList)
                     }
@@ -221,14 +221,14 @@ class AppSelectionList : AppCompatActivity(),
 
                         for (aSavedLine in it) {
                             selectedAppsListItem.add(AdapterItems(
-                                    functionsClass.applicationName(aSavedLine),
+                                    functionsClassLegacy.applicationName(aSavedLine),
                                     aSavedLine,
-                                    if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
+                                    if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClassLegacy.shapedAppIcon(aSavedLine)) else functionsClassLegacy.shapedAppIcon(aSavedLine)))
                         }
                     }
 
                     val savedAppsListPopupAdapter = appsConfirmButton?.let { it1 ->
-                        SavedAppsListPopupAdapter(applicationContext, functionsClass, fileIO,
+                        SavedAppsListPopupAdapter(applicationContext, functionsClassLegacy, fileIO,
                                 selectedAppsListItem, 2,
                                 it1, this@AppSelectionList)
                     }
@@ -259,7 +259,7 @@ class AppSelectionList : AppCompatActivity(),
     override fun onBackPressed() {
         super.onBackPressed()
 
-        functionsClass.navigateToClass(FoldersConfigurations::class.java, this@AppSelectionList)
+        functionsClassLegacy.navigateToClass(FoldersConfigurations::class.java, this@AppSelectionList)
     }
 
     /*ConfirmButtonProcess*/
@@ -279,14 +279,14 @@ class AppSelectionList : AppCompatActivity(),
 
                 for (aSavedLine in it) {
                     selectedAppsListItem.add(AdapterItems(
-                            functionsClass.applicationName(aSavedLine),
+                            functionsClassLegacy.applicationName(aSavedLine),
                             aSavedLine,
-                            if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClass.shapedAppIcon(aSavedLine)) else functionsClass.shapedAppIcon(aSavedLine)))
+                            if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(aSavedLine, functionsClassLegacy.shapedAppIcon(aSavedLine)) else functionsClassLegacy.shapedAppIcon(aSavedLine)))
                 }
             }
 
             val savedAppsListPopupAdapter = appsConfirmButton?.let {
-                SavedAppsListPopupAdapter(applicationContext, functionsClass, fileIO,
+                SavedAppsListPopupAdapter(applicationContext, functionsClassLegacy, fileIO,
                         selectedAppsListItem, 1,
                         it,
                         this@AppSelectionList)
@@ -325,10 +325,10 @@ class AppSelectionList : AppCompatActivity(),
 
 
         if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitOne").exists()) {
-            advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"), functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne")))
+            advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"), functionsClassLegacy.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClassLegacy.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne")))
         }
         if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitTwo").exists()) {
-            advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo"), functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo")))
+            advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo"), functionsClassLegacy.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClassLegacy.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo")))
         }
     }
     /*ConfirmButtonProcess*/

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:29 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -33,7 +33,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash
 import net.geekstools.imageview.customshapes.ShapesImage
@@ -47,14 +47,14 @@ class PopupShortcutsNotification(private val context: Context,
                                  private val startId: Int,
                                  private val xPosition: Int, private val yPosition: Int, private val HW: Int) : BaseAdapter() {
 
-    private val functionsClass: FunctionsClass = FunctionsClass(context)
+    private val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(context)
     private val fileIO: FileIO = FileIO(context)
     private val securityFunctions: SecurityFunctions = SecurityFunctions(context)
 
     private var layoutInflator = 0
 
     init {
-        layoutInflator = when (functionsClass.shapesImageId()) {
+        layoutInflator = when (functionsClassLegacy.shapesImageId()) {
             1 -> R.layout.item_popup_notification_droplet
             2 -> R.layout.item_popup_notification_circle
             3 -> R.layout.item_popup_notification_square
@@ -100,8 +100,8 @@ class PopupShortcutsNotification(private val context: Context,
             viewHolder = convertView.tag as ViewHolder
         }
 
-        val itemBackground: Int = if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setColorAlpha(PublicVariable.colorLightDark, 50f)
+        val itemBackground: Int = if (functionsClassLegacy.appThemeTransparent() == true) {
+            functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, 50f)
         } else {
             PublicVariable.colorLightDark
         }
@@ -120,9 +120,9 @@ class PopupShortcutsNotification(private val context: Context,
         viewHolder.notificationText!!.text = adapterItems[position].notificationText
 
         if (PublicVariable.themeLightDark) {
-            viewHolder.notificationAppName!!.setTextColor(functionsClass.manipulateColor(functionsClass.extractVibrantColor(adapterItems[position].notificationAppIcon), 0.50f))
+            viewHolder.notificationAppName!!.setTextColor(functionsClassLegacy.manipulateColor(functionsClassLegacy.extractVibrantColor(adapterItems[position].notificationAppIcon), 0.50f))
         } else {
-            viewHolder.notificationAppName!!.setTextColor(functionsClass.manipulateColor(functionsClass.extractVibrantColor(adapterItems[position].notificationAppIcon), 1.30f))
+            viewHolder.notificationAppName!!.setTextColor(functionsClassLegacy.manipulateColor(functionsClassLegacy.extractVibrantColor(adapterItems[position].notificationAppIcon), 1.30f))
         }
 
         viewHolder.notificationTitle!!.setTextColor(PublicVariable.colorLightDarkOpposite)
@@ -136,7 +136,7 @@ class PopupShortcutsNotification(private val context: Context,
                         super.authenticatedFloatIt(extraInformation)
                         Log.d(this@PopupShortcutsNotification.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                        if (functionsClass.splashReveal()) {
+                        if (functionsClassLegacy.splashReveal()) {
                             val splashReveal = Intent(context, FloatingSplash::class.java)
                             splashReveal.putExtra("packageName", packageName)
                             splashReveal.putExtra("X", xPosition)
@@ -146,15 +146,15 @@ class PopupShortcutsNotification(private val context: Context,
                             context.startService(splashReveal)
                         } else {
 
-                            if (functionsClass.FreeForm()) {
-                                functionsClass.openApplicationFreeForm(packageName,
+                            if (functionsClassLegacy.FreeForm()) {
+                                functionsClassLegacy.openApplicationFreeForm(packageName,
                                         xPosition,
-                                        functionsClass.displayX() / 2,
+                                        functionsClassLegacy.displayX() / 2,
                                         yPosition,
-                                        functionsClass.displayY() / 2
+                                        functionsClassLegacy.displayY() / 2
                                 )
                             } else {
-                                functionsClass.appsLaunchPad(packageName)
+                                functionsClassLegacy.appsLaunchPad(packageName)
                             }
                         }
                     }
@@ -173,14 +173,14 @@ class PopupShortcutsNotification(private val context: Context,
                 }
 
                 context.startActivity(Intent(context, AuthenticationFingerprint::class.java).apply {
-                    putExtra(UserInterfaceExtraData.OtherTitle, functionsClass.applicationName(packageName))
+                    putExtra(UserInterfaceExtraData.OtherTitle, functionsClassLegacy.applicationName(packageName))
                     putExtra(UserInterfaceExtraData.PrimaryColor, (iconColor))
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }, ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle())
 
             } else {
 
-                if (functionsClass.splashReveal()) {
+                if (functionsClassLegacy.splashReveal()) {
                     val splashReveal = Intent(context, FloatingSplash::class.java)
                     splashReveal.putExtra("packageName", packageName)
                     splashReveal.putExtra("X", xPosition)
@@ -190,15 +190,15 @@ class PopupShortcutsNotification(private val context: Context,
                     context.startService(splashReveal)
                 } else {
 
-                    if (functionsClass.FreeForm()) {
-                        functionsClass.openApplicationFreeForm(packageName,
+                    if (functionsClassLegacy.FreeForm()) {
+                        functionsClassLegacy.openApplicationFreeForm(packageName,
                                 xPosition,
-                                functionsClass.displayX() / 2,
+                                functionsClassLegacy.displayX() / 2,
                                 yPosition,
-                                functionsClass.displayY() / 2
+                                functionsClassLegacy.displayY() / 2
                         )
                     } else {
-                        functionsClass.appsLaunchPad(packageName)
+                        functionsClassLegacy.appsLaunchPad(packageName)
                     }
                 }
             }
@@ -212,7 +212,7 @@ class PopupShortcutsNotification(private val context: Context,
 
             override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
 
-                val X = functionsClass.DpToInteger(37)
+                val X = functionsClassLegacy.DpToInteger(37)
 
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> xPosition = motionEvent.x

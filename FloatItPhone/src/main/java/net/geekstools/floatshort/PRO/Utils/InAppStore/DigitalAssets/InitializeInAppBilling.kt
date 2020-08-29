@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 8:38 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,7 +25,7 @@ import com.android.billingclient.api.SkuDetails
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.NetworkCheckpoint
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.setupInAppBillingUI
@@ -38,8 +38,8 @@ import net.geekstools.floatshort.PRO.databinding.InAppBillingViewBinding
 
 class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
 
-    val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     private val inAppBillingData: InAppBillingData by lazy {
@@ -123,7 +123,7 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
         when (billingResult?.responseCode) {
             BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
 
-                functionsClass
+                functionsClassLegacy
                         .savePreference(".PurchasedItem",
                                 intent.getStringExtra(Entry.ItemToPurchase),
                                 true)
@@ -190,7 +190,7 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
 
         PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.INAPP)
 
-        functionsClass
+        functionsClassLegacy
                 .savePreference(".PurchasedItem",
                         purchase.sku,
                         true)
@@ -201,7 +201,7 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
     override fun purchaseFlowPaid(skuDetails: SkuDetails) {
         Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Paid: ${skuDetails}")
 
-        functionsClass
+        functionsClassLegacy
                 .savePreference(".PurchasedItem",
                         skuDetails.sku,
                         true)

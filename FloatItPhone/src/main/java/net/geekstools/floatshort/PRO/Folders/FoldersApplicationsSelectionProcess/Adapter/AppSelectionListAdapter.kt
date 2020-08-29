@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -29,7 +29,7 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.databinding.AdvanceAppSelectionListBinding
@@ -38,7 +38,7 @@ import java.util.*
 import kotlin.math.abs
 
 class AppSelectionListAdapter(private val context: Context,
-                              private val functionsClass: FunctionsClass,
+                              private val functionsClassLegacy: FunctionsClassLegacy,
                               private val advanceAppSelectionListBinding: AdvanceAppSelectionListBinding,
                               private val adapterItems: ArrayList<AdapterItems>,
                               private val appsConfirmButton: AppsConfirmButton,
@@ -48,7 +48,7 @@ class AppSelectionListAdapter(private val context: Context,
 
     private val fileIO: FileIO = FileIO(context)
 
-    var temporaryFallingIcon: ImageView = functionsClass.initShapesImage(advanceAppSelectionListBinding.temporaryFallingIcon)
+    var temporaryFallingIcon: ImageView = functionsClassLegacy.initShapesImage(advanceAppSelectionListBinding.temporaryFallingIcon)
 
     object PickedAttribute {
         var fromX: Float = 0f
@@ -84,7 +84,7 @@ class AppSelectionListAdapter(private val context: Context,
 
         PickedAttribute.animationType = Animation.ABSOLUTE
 
-        when (functionsClass.shapesImageId()) {
+        when (functionsClassLegacy.shapesImageId()) {
             1 -> layoutInflaterView = R.layout.selection_item_card_list_droplet
             2 -> layoutInflaterView = R.layout.selection_item_card_list_circle
             3 -> layoutInflaterView = R.layout.selection_item_card_list_square
@@ -92,8 +92,8 @@ class AppSelectionListAdapter(private val context: Context,
             0 -> layoutInflaterView = R.layout.selection_item_card_list_noshape
         }
 
-        if (functionsClass.customIconsEnable()) {
-            loadCustomIcons = LoadCustomIcons(context, functionsClass.customIconPackageName())
+        if (functionsClassLegacy.customIconsEnable()) {
+            loadCustomIcons = LoadCustomIcons(context, functionsClassLegacy.customIconPackageName())
         }
     }
 
@@ -166,10 +166,10 @@ class AppSelectionListAdapter(private val context: Context,
 
                         translateAnimation.duration = abs(PickedAttribute.fromY).toLong()
 
-                        temporaryFallingIcon.setImageDrawable(if (functionsClass.customIconsEnable()) {
-                            loadCustomIcons.getDrawableIconForPackage(adapterItems[position].packageName, functionsClass.shapedAppIcon(adapterItems[position].packageName))
+                        temporaryFallingIcon.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) {
+                            loadCustomIcons.getDrawableIconForPackage(adapterItems[position].packageName, functionsClassLegacy.shapedAppIcon(adapterItems[position].packageName))
                         } else {
-                            functionsClass.shapedAppIcon(adapterItems[position].packageName)
+                            functionsClassLegacy.shapedAppIcon(adapterItems[position].packageName)
                         })
                         temporaryFallingIcon.startAnimation(translateAnimation)
 

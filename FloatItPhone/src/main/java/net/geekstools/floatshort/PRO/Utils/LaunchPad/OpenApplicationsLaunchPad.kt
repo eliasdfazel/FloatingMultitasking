@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 7:04 PM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -11,13 +11,13 @@ package net.geekstools.floatshort.PRO.Utils.LaunchPad
 
 import android.app.Activity
 import android.os.Bundle
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 
 class OpenApplicationsLaunchPad : Activity() {
     override fun onCreate(Saved: Bundle?) {
         super.onCreate(Saved)
 
-        val functionsClass = FunctionsClass(applicationContext)
+        val functionsClass = FunctionsClassLegacy(applicationContext)
 
         val appPackageName: String? = intent.getStringExtra("packageName")
 

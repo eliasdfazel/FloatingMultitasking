@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/26/20 3:43 PM
- * Last modified 3/26/20 3:00 PM
+ * Created by Elias Fazel
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,12 +25,12 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions.setupAuthenticationPinPasswordUI
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.databinding.AuthDialogContentBinding
 
 class AuthenticationPinPassword : DialogFragment() {
 
-    private lateinit var functionsClass: FunctionsClass
+    private lateinit var functionsClassLegacy: FunctionsClassLegacy
     private lateinit var securityFunctions: SecurityFunctions
 
     lateinit var authDialogContentBinding: AuthDialogContentBinding
@@ -44,7 +44,7 @@ class AuthenticationPinPassword : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        functionsClass = FunctionsClass(requireContext())
+        functionsClassLegacy = FunctionsClassLegacy(requireContext())
         securityFunctions = SecurityFunctions(requireContext())
 
         setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Dialog)

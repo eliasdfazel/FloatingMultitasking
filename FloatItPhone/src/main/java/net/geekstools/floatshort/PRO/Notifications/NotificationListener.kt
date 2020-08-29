@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:02 AM
+ * Last modified 8/29/20 3:57 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,8 +26,8 @@ import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 
 class NotificationListener : NotificationListenerService() {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     private val fileIO: FileIO by lazy {
@@ -97,7 +97,7 @@ class NotificationListener : NotificationListenerService() {
                     notificationTitle = try {
                         extras.getString(Notification.EXTRA_TITLE)!!
                     } catch (e: Exception) {
-                        functionsClass.applicationName(notificationPackage)
+                        functionsClassLegacy.applicationName(notificationPackage)
                     }
 
                     /*LOAD TEXT CONTENT*/
@@ -125,7 +125,7 @@ class NotificationListener : NotificationListenerService() {
 
                             } catch (e: Exception) {
 
-                                functionsClass.applicationIcon(notificationPackage)
+                                functionsClassLegacy.applicationIcon(notificationPackage)
 
                             }
                         }
@@ -134,10 +134,10 @@ class NotificationListener : NotificationListenerService() {
 
                         notificationIcon = try {
 
-                            functionsClass.bitmapToDrawable(statusBarNotification.notification.largeIcon)
+                            functionsClassLegacy.bitmapToDrawable(statusBarNotification.notification.largeIcon)
 
                         } catch (e: Exception) {
-                            functionsClass.applicationIcon(notificationPackage)
+                            functionsClassLegacy.applicationIcon(notificationPackage)
                         }
                     }
 

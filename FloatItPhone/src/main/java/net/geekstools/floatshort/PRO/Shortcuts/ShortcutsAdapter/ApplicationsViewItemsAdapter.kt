@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,7 +27,7 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.imageview.customshapes.ShapesImage
 import java.util.*
@@ -35,7 +35,7 @@ import java.util.*
 class ApplicationsViewItemsAdapter(private val context: Context,
                                    private val adapterItemsApplications: ArrayList<AdapterItemsApplications>) : RecyclerView.Adapter<ApplicationsViewItemsAdapter.ViewHolder>() {
 
-    private val functionsClass: FunctionsClass = FunctionsClass(context)
+    private val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(context)
     private val fileIO: FileIO = FileIO(context)
     private val floatingServices: FloatingServices = FloatingServices(context)
 
@@ -45,14 +45,14 @@ class ApplicationsViewItemsAdapter(private val context: Context,
     private var recoveryIndicatorDrawable: LayerDrawable? = null
 
     init {
-        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingSizeNumber = functionsClassLegacy.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), context.resources.displayMetrics).toInt()
 
         recoveryIndicatorDrawable = context.getDrawable(R.drawable.draw_recovery_indicator) as LayerDrawable?
         val backgroundTemporary: Drawable? = recoveryIndicatorDrawable?.findDrawableByLayerId(R.id.backgroundTemporary)
         backgroundTemporary?.setTint(PublicVariable.primaryColor)
 
-        when (functionsClass.shapesImageId()) {
+        when (functionsClassLegacy.shapesImageId()) {
             1 -> {
                 layoutInflater = R.layout.item_card_hybrid_droplet
                 idRippleShape = R.drawable.ripple_effect_shape_droplet
@@ -95,7 +95,7 @@ class ApplicationsViewItemsAdapter(private val context: Context,
         drawItemRippleDrawable?.setColor(ColorStateList.valueOf(adapterItemsApplications[position].AppIconDominantColor))
         viewHolderBinder.fullItemView.background = drawItemRippleDrawable
 
-        if (functionsClass.loadRecoveryIndicator(adapterItemsApplications[position].PackageName)) {
+        if (functionsClassLegacy.loadRecoveryIndicator(adapterItemsApplications[position].PackageName)) {
             viewHolderBinder.recoveryIndicator.visibility = View.VISIBLE
             viewHolderBinder.recoveryIndicator.background = recoveryIndicatorDrawable
         } else {
@@ -121,7 +121,7 @@ class ApplicationsViewItemsAdapter(private val context: Context,
             val packageName = adapterItemsApplications[position].PackageName
             val className = adapterItemsApplications[position].ClassName
 
-            functionsClass.popupOptionShortcuts(floatingServices,
+            functionsClassLegacy.popupOptionShortcuts(floatingServices,
                     context,
                     view,
                     packageName, className)
@@ -134,7 +134,7 @@ class ApplicationsViewItemsAdapter(private val context: Context,
 
             viewHolderBinder.recoveryIndicator.visibility = View.INVISIBLE
 
-            functionsClass.updateRecoverShortcuts()
+            functionsClassLegacy.updateRecoverShortcuts()
         }
     }
 

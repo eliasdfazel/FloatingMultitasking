@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -22,27 +22,27 @@ import androidx.preference.PreferenceManager;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug;
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO;
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass;
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders;
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 
 public class BootRecoverReceiver extends BroadcastReceiver {
 
-    FunctionsClass functionsClass;
+    FunctionsClassLegacy functionsClassLegacy;
     FileIO fileIO;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
 
-        functionsClass = new FunctionsClass(context);
+        functionsClassLegacy = new FunctionsClassLegacy(context);
         fileIO = new FileIO(context);
 
-        functionsClass.savePreference("WidgetsInformation", "Reallocated", false);
+        functionsClassLegacy.savePreference("WidgetsInformation", "Reallocated", false);
 
         try {
             if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-                if (functionsClass.ControlPanel() || fileIO.automationFeatureEnable()) {
+                if (functionsClassLegacy.ControlPanel() || fileIO.automationFeatureEnable()) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         context.startForegroundService(new Intent(context, BindServices.class));
                     } else {
@@ -50,8 +50,8 @@ public class BootRecoverReceiver extends BroadcastReceiver {
                     }
                 }
 
-                if (functionsClass.customIconsEnable()) {
-                    LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, functionsClass.customIconPackageName());
+                if (functionsClassLegacy.customIconsEnable()) {
+                    LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, functionsClassLegacy.customIconPackageName());
                     loadCustomIcons.load();
                     Debug.Companion.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.getTotalIconsNumber());
                 }

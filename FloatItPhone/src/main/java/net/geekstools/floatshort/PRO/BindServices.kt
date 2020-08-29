@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,12 +32,12 @@ import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcut
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForWifi
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class BindServices : Service() {
 
-    lateinit var functionsClass: FunctionsClass
+    lateinit var functionsClassLegacy: FunctionsClassLegacy
     lateinit var fileIO: FileIO
 
     var broadcastReceiverAction: BroadcastReceiver? = null
@@ -59,12 +59,12 @@ class BindServices : Service() {
         Debug.PrintDebug("*** Bind Service StartId $startId ***")
 
         if (startId == 1) {
-            startForeground(333, functionsClass.bindServiceNotification())
+            startForeground(333, functionsClassLegacy.bindServiceNotification())
 
-            PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+            PublicVariable.floatingSizeNumber = functionsClassLegacy.readDefaultPreference("floatingSize", 39)
             PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), applicationContext.resources.displayMetrics).toInt()
 
-            if (functionsClass.returnAPI() >= Build.VERSION_CODES.O
+            if (functionsClassLegacy.returnAPI() >= Build.VERSION_CODES.O
                     && fileIO.automationFeatureEnable()) {
 
                 val intentFilter = IntentFilter()
@@ -183,11 +183,11 @@ class BindServices : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        functionsClass = FunctionsClass(applicationContext)
+        functionsClassLegacy = FunctionsClassLegacy(applicationContext)
         fileIO = FileIO(applicationContext)
 
-        functionsClass.loadSavedColor()
-        functionsClass.checkLightDarkTheme()
+        functionsClassLegacy.loadSavedColor()
+        functionsClassLegacy.checkLightDarkTheme()
     }
 
     override fun onBind(intent: Intent?): IBinder? {

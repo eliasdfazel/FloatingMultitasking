@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:20 AM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -34,7 +34,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
@@ -47,7 +47,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
 
     private var context: Context
 
-    private var functionsClass: FunctionsClass
+    private var functionsClassLegacy: FunctionsClassLegacy
     private var fileIO: FileIO
     private var preferencesIO: PreferencesIO
 
@@ -82,22 +82,22 @@ class PopupFolderOptionAdapter : BaseAdapter {
         this.classNameCommand = classNameCommand
         this.startId = startId
 
-        functionsClass = FunctionsClass(context)
+        functionsClassLegacy = FunctionsClassLegacy(context)
         fileIO = FileIO(context)
         preferencesIO = PreferencesIO(context)
 
         securityFunctions = SecurityFunctions(context)
 
         PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
-        when (functionsClass.shapesImageId()) {
+        when (functionsClassLegacy.shapesImageId()) {
             1 -> layoutInflater = R.layout.item_popup_category_droplet
             2 -> layoutInflater = R.layout.item_popup_category_circle
             3 -> layoutInflater = R.layout.item_popup_category_square
             4 -> layoutInflater = R.layout.item_popup_category_squircle
             0 -> layoutInflater = R.layout.item_popup_category_noshape
         }
-        if (functionsClass.customIconsEnable()) {
-            loadCustomIcons = LoadCustomIcons(context, functionsClass.customIconPackageName())
+        if (functionsClassLegacy.customIconsEnable()) {
+            loadCustomIcons = LoadCustomIcons(context, functionsClassLegacy.customIconPackageName())
         }
     }
 
@@ -112,7 +112,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
         this.yPosition = yPosition
         this.HW = HW
 
-        functionsClass = FunctionsClass(context)
+        functionsClassLegacy = FunctionsClassLegacy(context)
         fileIO = FileIO(context)
         preferencesIO = PreferencesIO(context)
 
@@ -120,7 +120,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
 
         PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
 
-        when (functionsClass.shapesImageId()) {
+        when (functionsClassLegacy.shapesImageId()) {
             1 -> layoutInflater = R.layout.item_popup_category_droplet
             2 -> layoutInflater = R.layout.item_popup_category_circle
             3 -> layoutInflater = R.layout.item_popup_category_square
@@ -128,8 +128,8 @@ class PopupFolderOptionAdapter : BaseAdapter {
             0 -> layoutInflater = R.layout.item_popup_category_noshape
         }
 
-        if (functionsClass.customIconsEnable()) {
-            loadCustomIcons = LoadCustomIcons(context, functionsClass.customIconPackageName())
+        if (functionsClassLegacy.customIconsEnable()) {
+            loadCustomIcons = LoadCustomIcons(context, functionsClassLegacy.customIconPackageName())
         }
     }
 
@@ -171,15 +171,15 @@ class PopupFolderOptionAdapter : BaseAdapter {
                     && context.getFileStreamPath(adapterItems[position].packageName + ".SplitTwo").exists()
                     && adapterItems[position].appName == context.getString(R.string.splitIt)) {
 
-                splitOne = if (functionsClass.customIconsEnable()) {
-                    loadCustomIcons!!.getDrawableIconForPackage(fileIO.readFile(adapterItems[position].packageName + ".SplitOne"), functionsClass.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitOne")))
+                splitOne = if (functionsClassLegacy.customIconsEnable()) {
+                    loadCustomIcons!!.getDrawableIconForPackage(fileIO.readFile(adapterItems[position].packageName + ".SplitOne"), functionsClassLegacy.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitOne")))
                 } else {
-                    functionsClass.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitOne"))
+                    functionsClassLegacy.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitOne"))
                 }
-                splitTwo = if (functionsClass.customIconsEnable()) {
-                    loadCustomIcons!!.getDrawableIconForPackage(fileIO.readFile(adapterItems[position].packageName + ".SplitTwo"), functionsClass.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitTwo")))
+                splitTwo = if (functionsClassLegacy.customIconsEnable()) {
+                    loadCustomIcons!!.getDrawableIconForPackage(fileIO.readFile(adapterItems[position].packageName + ".SplitTwo"), functionsClassLegacy.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitTwo")))
                 } else {
-                    functionsClass.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitTwo"))
+                    functionsClassLegacy.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitTwo"))
                 }
                 viewHolder.split_one!!.setImageDrawable(splitOne)
                 viewHolder.split_two!!.setImageDrawable(splitTwo)
@@ -189,21 +189,21 @@ class PopupFolderOptionAdapter : BaseAdapter {
 
             } else if (adapterItems[position].appName == context.getString(R.string.splitIt)) {
 
-                splitOne = if (functionsClass.customIconsEnable()) {
+                splitOne = if (functionsClassLegacy.customIconsEnable()) {
                     loadCustomIcons!!.getDrawableIconForPackage(fileIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(0)
-                            ?:"null", functionsClass.shapedAppIcon(fileIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(0)
+                            ?:"null", functionsClassLegacy.shapedAppIcon(fileIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(0)
                             ?:"null"))
                 } else {
-                    functionsClass.shapedAppIcon(fileIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(0)
+                    functionsClassLegacy.shapedAppIcon(fileIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(0)
                             ?:"null")
                 }
 
-                splitTwo = if (functionsClass.customIconsEnable()) {
+                splitTwo = if (functionsClassLegacy.customIconsEnable()) {
                     loadCustomIcons!!.getDrawableIconForPackage(fileIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(1)
-                            ?:"null", functionsClass.shapedAppIcon(fileIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(1)
+                            ?:"null", functionsClassLegacy.shapedAppIcon(fileIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(1)
                             ?:"null"))
                 } else {
-                    functionsClass.shapedAppIcon(fileIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(1)
+                    functionsClassLegacy.shapedAppIcon(fileIO.readFileLinesAsArray(adapterItems[position].packageName)?.get(1)
                             ?:"null")
                 }
 
@@ -223,8 +223,8 @@ class PopupFolderOptionAdapter : BaseAdapter {
         viewHolder.imgIcon!!.imageAlpha = preferencesIO.readDefaultPreference("autoTrans", 255)
         viewHolder.textAppName!!.alpha = if (preferencesIO.readDefaultPreference("autoTrans", 255) < 130) 0.70f else 1.0f
 
-        val itemsListColor: Int = if (functionsClass.appThemeTransparent() == true) {
-            functionsClass.setColorAlpha(PublicVariable.colorLightDark, 77f)
+        val itemsListColor: Int = if (functionsClassLegacy.appThemeTransparent() == true) {
+            functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, 77f)
         } else {
             PublicVariable.colorLightDark
         }
@@ -246,7 +246,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
                 } else if (adapterItems[position].appName.contains(context.getString(R.string.pin_folder))) {
                     context.sendBroadcast(Intent("Pin_App_$classNameCommand").putExtra("startId", startId))
                 } else if (adapterItems[position].appName.contains(context.getString(R.string.splitIt))) {
-                    if (functionsClass.securityServicesSubscribed()) {
+                    if (functionsClassLegacy.securityServicesSubscribed()) {
 
                         SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
@@ -254,7 +254,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
                                 super.authenticatedFloatIt(extraInformation)
                                 Log.d(this@PopupFolderOptionAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                                if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
+                                if (!functionsClassLegacy.AccessibilityServiceEnabled() && !functionsClassLegacy.SettingServiceRunning(InteractionObserver::class.java)) {
                                     context.startActivity(Intent(context, Checkpoint::class.java)
                                             .putExtra(context.getString(R.string.splitIt), context.packageName)
                                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
@@ -292,7 +292,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
                         }, ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle())
 
                     } else {
-                        if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
+                        if (!functionsClassLegacy.AccessibilityServiceEnabled() && !functionsClassLegacy.SettingServiceRunning(InteractionObserver::class.java)) {
                             context.startActivity(Intent(context, Checkpoint::class.java)
                                     .putExtra(context.getString(R.string.splitIt), context.packageName)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
@@ -318,7 +318,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
                                 super.authenticatedFloatIt(extraInformation)
                                 Log.d(this@PopupFolderOptionAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                                if (functionsClass.splashReveal()) {
+                                if (functionsClassLegacy.splashReveal()) {
                                     val splashReveal = Intent(context, FloatingSplash::class.java)
                                     splashReveal.putExtra("packageName", adapterItems[position].packageName)
                                     splashReveal.putExtra("X", xPosition)
@@ -326,15 +326,15 @@ class PopupFolderOptionAdapter : BaseAdapter {
                                     splashReveal.putExtra("HW", HW)
                                     context.startService(splashReveal)
                                 } else {
-                                    if (functionsClass.FreeForm()) {
-                                        functionsClass.openApplicationFreeForm(adapterItems[position].packageName,
+                                    if (functionsClassLegacy.FreeForm()) {
+                                        functionsClassLegacy.openApplicationFreeForm(adapterItems[position].packageName,
                                                 xPosition,
-                                                functionsClass.displayX() / 2,
+                                                functionsClassLegacy.displayX() / 2,
                                                 yPosition,
-                                                functionsClass.displayY() / 2
+                                                functionsClassLegacy.displayY() / 2
                                         )
                                     } else {
-                                        functionsClass.appsLaunchPad(adapterItems[position].packageName)
+                                        functionsClassLegacy.appsLaunchPad(adapterItems[position].packageName)
                                     }
                                 }
                             }
@@ -359,7 +359,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
                         }, ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, 0).toBundle())
 
                     } else {
-                        if (functionsClass.splashReveal()) {
+                        if (functionsClassLegacy.splashReveal()) {
                             val splashReveal = Intent(context, FloatingSplash::class.java)
                             splashReveal.putExtra("packageName", adapterItems[position].packageName)
                             splashReveal.putExtra("X", xPosition)
@@ -367,15 +367,15 @@ class PopupFolderOptionAdapter : BaseAdapter {
                             splashReveal.putExtra("HW", HW)
                             context.startService(splashReveal)
                         } else {
-                            if (functionsClass.FreeForm()) {
-                                functionsClass.openApplicationFreeForm(adapterItems[position].packageName,
+                            if (functionsClassLegacy.FreeForm()) {
+                                functionsClassLegacy.openApplicationFreeForm(adapterItems[position].packageName,
                                         xPosition,
-                                        functionsClass.displayX() / 2,
+                                        functionsClassLegacy.displayX() / 2,
                                         yPosition,
-                                        functionsClass.displayY() / 2
+                                        functionsClassLegacy.displayY() / 2
                                 )
                             } else {
-                                functionsClass.appsLaunchPad(adapterItems[position].packageName)
+                                functionsClassLegacy.appsLaunchPad(adapterItems[position].packageName)
                             }
                         }
                     }
@@ -387,14 +387,14 @@ class PopupFolderOptionAdapter : BaseAdapter {
             context.sendBroadcast(Intent("Hide_PopupListView_Category"))
         }
         convertView?.setOnLongClickListener { view ->
-            if (functionsClass.returnAPI() >= 24) {
-                if (!functionsClass.AccessibilityServiceEnabled() && !functionsClass.SettingServiceRunning(InteractionObserver::class.java)) {
+            if (functionsClassLegacy.returnAPI() >= 24) {
+                if (!functionsClassLegacy.AccessibilityServiceEnabled() && !functionsClassLegacy.SettingServiceRunning(InteractionObserver::class.java)) {
                     context.startActivity(Intent(context, Checkpoint::class.java)
                             .putExtra(context.getString(R.string.splitIt), context.packageName)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 } else {
                     PublicVariable.splitSinglePackage = adapterItems[position].packageName
-                    if (functionsClass.appIsInstalled(PublicVariable.splitSinglePackage)) {
+                    if (functionsClassLegacy.appIsInstalled(PublicVariable.splitSinglePackage)) {
                         val accessibilityManager = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
                         val accessibilityEvent = AccessibilityEvent.obtain()
                         accessibilityEvent.setSource(view)

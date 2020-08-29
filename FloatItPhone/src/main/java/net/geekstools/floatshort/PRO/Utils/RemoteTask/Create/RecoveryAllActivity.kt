@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/25/20 2:56 PM
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -17,7 +17,7 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class RecoveryAllActivity : Activity() {
@@ -26,9 +26,9 @@ class RecoveryAllActivity : Activity() {
 
         if (intent.action == Intent.ACTION_CREATE_SHORTCUT) {
 
-            val functionsClass: FunctionsClass = FunctionsClass(applicationContext)
+            val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(applicationContext)
 
-            val shapeTempDrawable = functionsClass.shapesDrawables()
+            val shapeTempDrawable = functionsClassLegacy.shapesDrawables()
             shapeTempDrawable?.setTint(PublicVariable.primaryColor)
 
             val recoveryDrawable = getDrawable(R.drawable.draw_recovery) as LayerDrawable?

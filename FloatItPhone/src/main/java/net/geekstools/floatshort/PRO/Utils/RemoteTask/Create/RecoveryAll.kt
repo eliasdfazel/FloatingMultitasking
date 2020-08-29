@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 3/28/20 12:48 PM
- * Last modified 3/28/20 10:35 AM
+ * Created by Elias Fazel
+ * Last modified 8/29/20 3:58 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,16 +21,16 @@ import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint.AuthenticationFingerprint
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.AuthenticationCallback
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 
 class RecoveryAll : Service() {
 
-    private val functionsClass: FunctionsClass by lazy {
-        FunctionsClass(applicationContext)
+    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
+        FunctionsClassLegacy(applicationContext)
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        if (functionsClass.securityServicesSubscribed()) {
+        if (functionsClassLegacy.securityServicesSubscribed()) {
 
             SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
@@ -86,9 +86,9 @@ class RecoveryAll : Service() {
         super.onCreate()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(333, functionsClass.bindServiceNotification(), STOP_FOREGROUND_REMOVE)
+            startForeground(333, functionsClassLegacy.bindServiceNotification(), STOP_FOREGROUND_REMOVE)
         } else {
-            startForeground(333, functionsClass.bindServiceNotification())
+            startForeground(333, functionsClassLegacy.bindServiceNotification())
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
