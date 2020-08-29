@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 8/29/20 4:00 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -914,7 +914,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     /*Search Engine*/
                     SearchEngine(activity = this@ApplicationsViewPhone, context = applicationContext,
                             searchEngineViewBinding = hybridApplicationViewBinding.searchEngineViewInclude,
-                            functionsClass = applicationsViewPhoneDependencyInjection.functionsClassLegacy,
+                            functionsClassLegacy = applicationsViewPhoneDependencyInjection.functionsClassLegacy,
                             fileIO = applicationsViewPhoneDependencyInjection.fileIO,
                             floatingServices = applicationsViewPhoneDependencyInjection.floatingServices,
                             customIcons = loadCustomIcons,

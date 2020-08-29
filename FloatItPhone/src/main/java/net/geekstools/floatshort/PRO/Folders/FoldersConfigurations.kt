@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 8/29/20 4:03 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -781,7 +781,7 @@ class FoldersConfigurations : AppCompatActivity(),
                         /*Search Engine*/
                         SearchEngine(activity = this@FoldersConfigurations, context = applicationContext,
                                 searchEngineViewBinding = foldersConfigurationViewBinding.searchEngineViewInclude,
-                                functionsClass = functionsClassLegacy,
+                                functionsClassLegacy = functionsClassLegacy,
                                 fileIO = fileIO,
                                 floatingServices = floatingServices,
                                 customIcons = loadCustomIcons,
