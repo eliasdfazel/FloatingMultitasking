@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 4:03 AM
+ * Last modified 8/29/20 6:40 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -63,10 +63,11 @@ import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
-import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
-import net.geekstools.floatshort.PRO.Utils.Functions.*
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
+import net.geekstools.floatshort.PRO.Utils.Functions.Dialogues
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchasesCheckpoint
@@ -95,43 +96,19 @@ class FoldersConfigurations : AppCompatActivity(),
         GestureListenerInterface,
         FirebaseInAppMessagingClickListener {
 
-    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
-        FunctionsClassLegacy(applicationContext)
-    }
-
-    private val fileIO: FileIO by lazy {
-        FileIO(applicationContext)
-    }
-
-    private val popupApplicationShortcuts: PopupApplicationShortcuts by lazy {
-        PopupApplicationShortcuts(applicationContext)
-    }
-
-    private val applicationThemeController: ApplicationThemeController by lazy {
-        ApplicationThemeController(applicationContext)
-    }
-
-    private val securityFunctions: SecurityFunctions by lazy {
-        SecurityFunctions(applicationContext)
+    private val foldersConfigurationsDependencyInjection: FoldersConfigurationsDependencyInjection by lazy {
+        FoldersConfigurationsDependencyInjection(applicationContext)
     }
 
     private val dialogues: Dialogues by lazy {
-        Dialogues(this@FoldersConfigurations, functionsClassLegacy)
-    }
-
-    private val floatingServices: FloatingServices by lazy {
-        FloatingServices(applicationContext)
-    }
-
-    private val networkCheckpoint: NetworkCheckpoint by lazy {
-        NetworkCheckpoint(applicationContext)
+        Dialogues(this@FoldersConfigurations, foldersConfigurationsDependencyInjection.functionsClassLegacy)
     }
 
     private lateinit var foldersListAdapter: RecyclerView.Adapter<FoldersListAdapter.ViewHolder>
     private val folderAdapterItems: ArrayList<AdapterItems> = ArrayList<AdapterItems>()
 
     private val loadCustomIcons: LoadCustomIcons by lazy {
-        LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())
+        LoadCustomIcons(applicationContext, foldersConfigurationsDependencyInjection.functionsClassLegacy.customIconPackageName())
     }
 
     private val swipeGestureListener: SwipeGestureListener by lazy {
@@ -157,10 +134,10 @@ class FoldersConfigurations : AppCompatActivity(),
         foldersConfigurationViewBinding = FoldersConfigurationViewBinding.inflate(layoutInflater)
         setContentView(foldersConfigurationViewBinding.root)
 
-        functionsClassLegacy.loadSavedColor()
-        functionsClassLegacy.checkLightDarkTheme()
+        foldersConfigurationsDependencyInjection.functionsClassLegacy.loadSavedColor()
+        foldersConfigurationsDependencyInjection.functionsClassLegacy.checkLightDarkTheme()
 
-        applicationThemeController.setThemeColorFloating(this@FoldersConfigurations, foldersConfigurationViewBinding.wholeCategory, functionsClassLegacy.appThemeTransparent())
+        foldersConfigurationsDependencyInjection.applicationThemeController.setThemeColorFloating(this@FoldersConfigurations, foldersConfigurationViewBinding.wholeCategory, foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent())
         dialogues.changeLog()
 
         val recyclerViewLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
@@ -180,16 +157,16 @@ class FoldersConfigurations : AppCompatActivity(),
 
         foldersConfigurationViewBinding.switchWidgets.setTextColor(getColor(R.color.light))
         foldersConfigurationViewBinding.switchApps.setTextColor(getColor(R.color.light))
-        if (PublicVariable.themeLightDark /*light*/ && functionsClassLegacy.appThemeTransparent() /*transparent*/) {
+        if (PublicVariable.themeLightDark /*light*/ && foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent() /*transparent*/) {
             foldersConfigurationViewBinding.switchWidgets.setTextColor(getColor(R.color.dark))
             foldersConfigurationViewBinding.switchApps.setTextColor(getColor(R.color.dark))
         }
 
-        foldersConfigurationViewBinding.switchApps.setBackgroundColor(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        foldersConfigurationViewBinding.switchApps.rippleColor = ColorStateList.valueOf(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        foldersConfigurationViewBinding.switchApps.setBackgroundColor(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        foldersConfigurationViewBinding.switchApps.rippleColor = ColorStateList.valueOf(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
-        foldersConfigurationViewBinding.switchWidgets.setBackgroundColor(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        foldersConfigurationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        foldersConfigurationViewBinding.switchWidgets.setBackgroundColor(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        foldersConfigurationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
         foldersConfigurationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
         foldersConfigurationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
@@ -199,23 +176,23 @@ class FoldersConfigurations : AppCompatActivity(),
 
         val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
         val backRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
-        backRecoverFloatingCategories?.setTint(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        backRecoverFloatingCategories?.setTint(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
 
         val drawRecoverFloatingWidgets = getDrawable(R.drawable.draw_recovery_widgets)?.mutate() as LayerDrawable?
         val backRecoverFloatingWidgets = drawRecoverFloatingWidgets?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
-        backRecoverFloatingWidgets?.setTint(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        backRecoverFloatingWidgets?.setTint(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
 
         foldersConfigurationViewBinding.recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories)
         foldersConfigurationViewBinding.recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
 
         foldersConfigurationViewBinding.actionButton.setOnClickListener {
-            functionsClassLegacy.doVibrate(33)
+            foldersConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(33)
 
             if (!PublicVariable.actionCenter) {
-                val finalRadius = hypot(functionsClassLegacy.displayX().toDouble(), functionsClassLegacy.displayY().toDouble()).toInt()
+                val finalRadius = hypot(foldersConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), foldersConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
                 val circularReveal = ViewAnimationUtils.createCircularReveal(foldersConfigurationViewBinding.recoveryAction,
                         foldersConfigurationViewBinding.actionButton.x.roundToInt(), foldersConfigurationViewBinding.actionButton.y.roundToInt(),
-                        finalRadius.toFloat(), functionsClassLegacy.DpToInteger(13).toFloat())
+                        finalRadius.toFloat(), foldersConfigurationsDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat())
                 circularReveal.duration = 777
                 circularReveal.interpolator = AccelerateInterpolator()
                 circularReveal.start()
@@ -237,14 +214,14 @@ class FoldersConfigurations : AppCompatActivity(),
 
                     }
                 })
-                functionsClassLegacy.openActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton, foldersConfigurationViewBinding.fullActionViews.isShown)
+                foldersConfigurationsDependencyInjection.functionsClassLegacy.openActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton, foldersConfigurationViewBinding.fullActionViews.isShown)
             } else {
                 foldersConfigurationViewBinding.recoveryAction.visibility = View.VISIBLE
 
-                val finalRadius = hypot(functionsClassLegacy.displayX().toDouble(), functionsClassLegacy.displayY().toDouble()).toInt()
+                val finalRadius = hypot(foldersConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), foldersConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
                 val circularReveal = ViewAnimationUtils.createCircularReveal(foldersConfigurationViewBinding.recoveryAction,
                         foldersConfigurationViewBinding.actionButton.x.roundToInt(), foldersConfigurationViewBinding.actionButton.y.roundToInt(),
-                        functionsClassLegacy.DpToInteger(13).toFloat(), finalRadius.toFloat())
+                        foldersConfigurationsDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat(), finalRadius.toFloat())
                 circularReveal.duration = 1300
                 circularReveal.interpolator = AccelerateInterpolator()
                 circularReveal.start()
@@ -266,18 +243,18 @@ class FoldersConfigurations : AppCompatActivity(),
 
                     }
                 })
-                functionsClassLegacy.closeActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton)
+                foldersConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton)
             }
         }
         foldersConfigurationViewBinding.switchApps.setOnClickListener {
 
-            functionsClassLegacy.navigateToClass(this@FoldersConfigurations, ApplicationsViewPhone::class.java,
+            foldersConfigurationsDependencyInjection.functionsClassLegacy.navigateToClass(this@FoldersConfigurations, ApplicationsViewPhone::class.java,
                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
         }
         foldersConfigurationViewBinding.switchWidgets.setOnClickListener {
-            if (networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
-                if (functionsClassLegacy.floatingWidgetsPurchased()) {
-                    functionsClassLegacy.navigateToClass(this@FoldersConfigurations, WidgetConfigurations::class.java,
+            if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
+                if (foldersConfigurationsDependencyInjection.functionsClassLegacy.floatingWidgetsPurchased()) {
+                    foldersConfigurationsDependencyInjection.functionsClassLegacy.navigateToClass(this@FoldersConfigurations, WidgetConfigurations::class.java,
                             ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
                 } else {
 
@@ -289,7 +266,7 @@ class FoldersConfigurations : AppCompatActivity(),
 
                 }
             } else {
-                if (networkCheckpoint.networkConnection()) {
+                if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection()) {
                     Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
                 }
                 if (firebaseAuth.currentUser == null) {
@@ -298,7 +275,7 @@ class FoldersConfigurations : AppCompatActivity(),
             }
         }
         foldersConfigurationViewBinding.automationAction.setOnClickListener {
-            functionsClassLegacy.doVibrate(50)
+            foldersConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(50)
 
             Intent(applicationContext, FolderAutoFeatures::class.java).apply {
                 this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -456,10 +433,10 @@ class FoldersConfigurations : AppCompatActivity(),
         PurchasesCheckpoint(this@FoldersConfigurations).trigger()
 
         if (BuildConfig.VERSION_NAME.contains("[BETA]")
-                && !functionsClassLegacy.readPreference(".UserInformation", "SubscribeToBeta", false)) {
+                && !foldersConfigurationsDependencyInjection.functionsClassLegacy.readPreference(".UserInformation", "SubscribeToBeta", false)) {
             FirebaseMessaging.getInstance().subscribeToTopic("BETA")
                     .addOnSuccessListener {
-                        functionsClassLegacy.savePreference(".UserInformation", "SubscribeToBeta", true) }
+                        foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "SubscribeToBeta", true) }
                     .addOnFailureListener {
 
                     }
@@ -469,7 +446,7 @@ class FoldersConfigurations : AppCompatActivity(),
     override fun onStart() {
         super.onStart()
 
-        if (!getFileStreamPath(".License").exists() && networkCheckpoint.networkConnection()) {
+        if (!getFileStreamPath(".License").exists() && foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection()) {
             startService(Intent(applicationContext, LicenseValidator::class.java))
 
             val intentFilter = IntentFilter()
@@ -477,7 +454,7 @@ class FoldersConfigurations : AppCompatActivity(),
             val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
                 override fun onReceive(context: Context, intent: Intent) {
                     if (intent.action == getString(R.string.license)) {
-                        functionsClassLegacy.dialogueLicense(this@FoldersConfigurations)
+                        foldersConfigurationsDependencyInjection.functionsClassLegacy.dialogueLicense(this@FoldersConfigurations)
 
                         Handler().postDelayed({
                             stopService(Intent(applicationContext, LicenseValidator::class.java))
@@ -490,8 +467,8 @@ class FoldersConfigurations : AppCompatActivity(),
             registerReceiver(broadcastReceiver, intentFilter)
         }
 
-        if (networkCheckpoint.networkConnection()
-                && functionsClassLegacy.readPreference(".UserInformation", "userEmail", null) == null
+        if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection()
+                && foldersConfigurationsDependencyInjection.functionsClassLegacy.readPreference(".UserInformation", "userEmail", null) == null
                 && firebaseAuth.currentUser == null) {
 
             val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -519,7 +496,7 @@ class FoldersConfigurations : AppCompatActivity(),
 
         foldersConfigurationViewBinding.shareIt.setImageDrawable(drawableShare)
         foldersConfigurationViewBinding.shareIt.setOnClickListener {
-            functionsClassLegacy.doVibrate(50)
+            foldersConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(50)
 
             val shareText = getString(R.string.shareTitle) +
                     "\n" + getString(R.string.shareSummary) +
@@ -542,7 +519,7 @@ class FoldersConfigurations : AppCompatActivity(),
                 .addOnSuccessListener {
                     firebaseRemoteConfig.activate().addOnSuccessListener {
 
-                        if (firebaseRemoteConfig.getLong(functionsClassLegacy.versionCodeRemoteConfigKey()) > functionsClassLegacy.applicationVersionCode(packageName)) {
+                        if (firebaseRemoteConfig.getLong(foldersConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()) > foldersConfigurationsDependencyInjection.functionsClassLegacy.applicationVersionCode(packageName)) {
 
                             val layerDrawableNewUpdate = getDrawable(R.drawable.ic_update) as LayerDrawable?
                             val gradientDrawableNewUpdate = layerDrawableNewUpdate?.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable?
@@ -552,15 +529,15 @@ class FoldersConfigurations : AppCompatActivity(),
                             foldersConfigurationViewBinding.newUpdate.visibility = View.VISIBLE
 
                             foldersConfigurationViewBinding.newUpdate.setOnClickListener {
-                                functionsClassLegacy.upcomingChangeLog(
+                                foldersConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLog(
                                         this@FoldersConfigurations,
-                                        firebaseRemoteConfig.getString(functionsClassLegacy.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
+                                        firebaseRemoteConfig.getString(foldersConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(foldersConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
                             }
 
-                            functionsClassLegacy.notificationCreator(
+                            foldersConfigurationsDependencyInjection.functionsClassLegacy.notificationCreator(
                                     getString(R.string.updateAvailable),
-                                    firebaseRemoteConfig.getString(functionsClassLegacy.upcomingChangeLogSummaryConfigKey()),
-                                    firebaseRemoteConfig.getLong(functionsClassLegacy.versionCodeRemoteConfigKey()).toInt()
+                                    firebaseRemoteConfig.getString(foldersConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLogSummaryConfigKey()),
+                                    firebaseRemoteConfig.getLong(foldersConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toInt()
                             )
 
                             val inAppUpdateTriggeredTime =
@@ -568,11 +545,11 @@ class FoldersConfigurations : AppCompatActivity(),
                                             .toInt()
 
                             if (firebaseAuth.currentUser != null
-                                    && functionsClassLegacy.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
+                                    && foldersConfigurationsDependencyInjection.functionsClassLegacy.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
 
                                 startActivity(Intent(applicationContext, InAppUpdateProcess::class.java)
-                                        .putExtra("UPDATE_CHANGE_LOG", firebaseRemoteConfig.getString(functionsClassLegacy.upcomingChangeLogRemoteConfigKey()))
-                                        .putExtra("UPDATE_VERSION", firebaseRemoteConfig.getLong(functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
+                                        .putExtra("UPDATE_CHANGE_LOG", firebaseRemoteConfig.getString(foldersConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()))
+                                        .putExtra("UPDATE_VERSION", firebaseRemoteConfig.getLong(foldersConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
                                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                                         ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
                             }
@@ -580,7 +557,7 @@ class FoldersConfigurations : AppCompatActivity(),
                     }
                 }
 
-        popupApplicationShortcuts.addPopupApplicationShortcuts()
+        foldersConfigurationsDependencyInjection.popupApplicationShortcuts.addPopupApplicationShortcuts()
     }
 
     override fun onPause() {
@@ -590,7 +567,7 @@ class FoldersConfigurations : AppCompatActivity(),
             firebaseAuth.addAuthStateListener { firebaseAuth ->
                 val user = firebaseAuth.currentUser
                 if (user == null) {
-                    functionsClassLegacy.savePreference(".UserInformation", "userEmail", null)
+                    foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", null)
 
                     val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                             .requestIdToken(getString(R.string.webClientId))
@@ -611,10 +588,10 @@ class FoldersConfigurations : AppCompatActivity(),
         }
 
         if (PublicVariable.actionCenter) {
-            functionsClassLegacy.closeActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton)
+            foldersConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton)
         }
 
-        functionsClassLegacy.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
+        foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
     }
 
     override fun onDestroy() {
@@ -629,7 +606,7 @@ class FoldersConfigurations : AppCompatActivity(),
         }
         startActivity(homeScreen, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
-        functionsClassLegacy.CheckSystemRAM(this@FoldersConfigurations)
+        foldersConfigurationsDependencyInjection.functionsClassLegacy.CheckSystemRAM(this@FoldersConfigurations)
     }
 
     override fun onClick(view: View?) {
@@ -649,16 +626,16 @@ class FoldersConfigurations : AppCompatActivity(),
                 when (gestureConstants.horizontalDirection) {
                     GestureListenerConstants.SWIPE_RIGHT -> {
 
-                        functionsClassLegacy.navigateToClass(this@FoldersConfigurations, ApplicationsViewPhone::class.java,
+                        foldersConfigurationsDependencyInjection.functionsClassLegacy.navigateToClass(this@FoldersConfigurations, ApplicationsViewPhone::class.java,
                                 ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
 
-                        if (networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
+                        if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
 
-                            if (functionsClassLegacy.floatingWidgetsPurchased()) {
+                            if (foldersConfigurationsDependencyInjection.functionsClassLegacy.floatingWidgetsPurchased()) {
 
-                                functionsClassLegacy.navigateToClass(this@FoldersConfigurations, WidgetConfigurations::class.java,
+                                foldersConfigurationsDependencyInjection.functionsClassLegacy.navigateToClass(this@FoldersConfigurations, WidgetConfigurations::class.java,
                                         ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
 
                             } else {
@@ -671,7 +648,7 @@ class FoldersConfigurations : AppCompatActivity(),
 
                             }
                         } else {
-                            if (networkCheckpoint.networkConnection()) {
+                            if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection()) {
                                 Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
                             }
 
@@ -709,11 +686,11 @@ class FoldersConfigurations : AppCompatActivity(),
                                 if (firebaseUser != null) {
                                     Debug.PrintDebug("Firebase Activities Done Successfully")
 
-                                    functionsClassLegacy.savePreference(".UserInformation", "userEmail", firebaseUser.email)
+                                    foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", firebaseUser.email)
 
-                                    functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
+                                    foldersConfigurationsDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
 
-                                    securityFunctions.downloadLockedAppsData()
+                                    foldersConfigurationsDependencyInjection.securityFunctions.downloadLockedAppsData()
 
                                     waitingDialogue.dismiss()
                                 }
@@ -741,7 +718,7 @@ class FoldersConfigurations : AppCompatActivity(),
     }
 
     fun loadFolders() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
-        if (functionsClassLegacy.appThemeTransparent()) {
+        if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
             foldersConfigurationViewBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
         } else {
             foldersConfigurationViewBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
@@ -764,7 +741,7 @@ class FoldersConfigurations : AppCompatActivity(),
             foldersConfigurationViewBinding.loadingSplash.startAnimation(animation)
         }
 
-        if (functionsClassLegacy.customIconsEnable()) {
+        if (foldersConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) {
             loadCustomIcons.load()
             Debug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }
@@ -781,9 +758,9 @@ class FoldersConfigurations : AppCompatActivity(),
                         /*Search Engine*/
                         SearchEngine(activity = this@FoldersConfigurations, context = applicationContext,
                                 searchEngineViewBinding = foldersConfigurationViewBinding.searchEngineViewInclude,
-                                functionsClassLegacy = functionsClassLegacy,
-                                fileIO = fileIO,
-                                floatingServices = floatingServices,
+                                functionsClassLegacy = foldersConfigurationsDependencyInjection.functionsClassLegacy,
+                                fileIO = foldersConfigurationsDependencyInjection.fileIO,
+                                floatingServices = foldersConfigurationsDependencyInjection.floatingServices,
                                 customIcons = loadCustomIcons,
                                 firebaseAuth = firebaseAuth).apply {
 
@@ -794,7 +771,7 @@ class FoldersConfigurations : AppCompatActivity(),
                     .withIndex().collect { folderInformation ->
 
                         folderAdapterItems.add(AdapterItems(folderInformation.value,
-                                fileIO.readFileLinesAsArray(folderInformation.value), SearchResultType.SearchFolders))
+                                foldersConfigurationsDependencyInjection.fileIO.readFileLinesAsArray(folderInformation.value), SearchResultType.SearchFolders))
                     }
 
             folderAdapterItems.add(AdapterItems(packageName, arrayOf(packageName), SearchResultType.SearchFolders))
