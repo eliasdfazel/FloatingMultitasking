@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/26/20 5:11 AM
+ * Last modified 8/29/20 3:24 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -849,7 +849,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                         }
 
                         PrintDebug("*** " + firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) + " ***")
-                        if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > functionsClass.readPreference(".AdApp", "FetchTime", java.lang.Long.valueOf(0))) {
+                        if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > preferencesIO.readPreference(".AdApp", "FetchTime", java.lang.Long.valueOf(0))) {
                             this@PreferencesFragment.scrollToPreference("app")
 
                             preferencesIO.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)))

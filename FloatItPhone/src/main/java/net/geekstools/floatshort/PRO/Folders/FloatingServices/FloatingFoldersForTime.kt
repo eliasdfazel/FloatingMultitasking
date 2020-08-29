@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:29 AM
+ * Last modified 8/29/20 3:33 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -735,8 +735,12 @@ class FloatingFoldersForTime : Service() {
                             if (getFileStreamPath(PublicVariable.splitPairPackage.toString() + ".SplitOne").exists()
                                     && getFileStreamPath(PublicVariable.splitPairPackage.toString() + ".SplitTwo").exists()) {
 
-                                packageNameSplitOne = functionsClass.readFile(PublicVariable.splitPairPackage.toString() + ".SplitOne")
-                                packageNameSplitTwo = functionsClass.readFile(PublicVariable.splitPairPackage.toString() + ".SplitTwo")
+                                fileIO.readFile(PublicVariable.splitPairPackage.toString() + ".SplitOne")?.let {
+                                    packageNameSplitOne = it
+                                }
+                                fileIO.readFile(PublicVariable.splitPairPackage.toString() + ".SplitTwo")?.let {
+                                    packageNameSplitTwo = it
+                                }
 
                             } else {
 

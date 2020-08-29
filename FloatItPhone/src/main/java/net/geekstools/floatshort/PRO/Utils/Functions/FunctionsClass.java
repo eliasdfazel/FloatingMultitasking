@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/26/20 5:57 AM
+ * Last modified 8/29/20 3:35 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -139,7 +139,6 @@ import net.geekstools.imageview.customshapes.ShapesImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -482,6 +481,8 @@ public class FunctionsClass {
         Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(50);
 
+        FileIO fileIO = new FileIO(context);
+
         ArrayList<AdapterItems> navDrawerItemsSaved = new ArrayList<AdapterItems>();
         try {
             int W = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
@@ -495,18 +496,18 @@ public class FunctionsClass {
                 loadCustomIcons = new LoadCustomIcons(context, customIconPackageName());
             }
 
-            String[] packageContentTime = readFileLine(notificationPackage + "_" + "Notification" + "Package");
+            String[] packageContentTime = fileIO.readFileLinesAsArray(notificationPackage + "_" + "Notification" + "Package");
             for (String notificationTime : packageContentTime) {
                 navDrawerItemsSaved.add(
                         new AdapterItems(
                                 notificationTime,
                                 notificationPackage,
                                 applicationName(notificationPackage),
-                                readFile(notificationTime + "_" + "Notification" + "Title"),
-                                readFile(notificationTime + "_" + "Notification" + "Text"),
+                                fileIO.readFile(notificationTime + "_" + "Notification" + "Title"),
+                                fileIO.readFile(notificationTime + "_" + "Notification" + "Text"),
                                 customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(notificationPackage, shapedAppIcon(notificationPackage)) : shapedAppIcon(notificationPackage),
                                 shapedNotificationUser(Drawable.createFromPath(context.getFileStreamPath(notificationTime + "_" + "Notification" + "Icon").getPath())),
-                                readFile(notificationTime + "_" + "Notification" + "Key"),
+                                fileIO.readFile(notificationTime + "_" + "Notification" + "Key"),
                                 PublicVariable.notificationIntent.get(notificationTime)
                         )
                 );
@@ -1685,65 +1686,6 @@ public class FunctionsClass {
                 ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,android.R.anim.fade_out).toBundle());
     }
 
-    /*File Functions*/
-    @Deprecated
-    public void saveBitmapIcon(String fileName, Bitmap bitmapToSave) {
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            bitmapToSave.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
-            fileOutputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.close();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
-    }
-
-    @Deprecated
-    public void saveBitmapIcon(String fileName, Drawable drawableToSave) {
-        FileOutputStream fileOutputStream = null;
-        try {
-            Bitmap bitmapToSave = drawableToBitmap(drawableToSave);
-            fileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            bitmapToSave.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
-            fileOutputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.close();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
-    }
-
-    @Deprecated
-    private  @Nullable String[] readFileLine(String fileName) {
-
-
-        //Move It To FunctionsClassIO
-
-
-        FileIO fileIO = new FileIO(context);
-
-        return fileIO.readFileLinesAsArray(fileName);
-    }
-
-    @Deprecated
-    public String readFile(String fileName) {
-        FileIO fileIO = new FileIO(context);
-
-        return fileIO.readFile(fileName);
-    }
-
     /*Preferences Functions*/
     @Deprecated
     public void savePreference(String PreferenceName, String KEY, String VALUE) {
@@ -1812,11 +1754,6 @@ public class FunctionsClass {
     }
 
     @Deprecated
-    public long readPreference(String PreferenceName, String KEY, long defaultVALUE) {
-        return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getLong(KEY, defaultVALUE);
-    }
-
-    @Deprecated
     public float readPreference(String PreferenceName, String KEY, float defaultVALUE) {
         return context.getSharedPreferences(PreferenceName, Context.MODE_PRIVATE).getFloat(KEY, defaultVALUE);
     }
@@ -1829,16 +1766,6 @@ public class FunctionsClass {
     @Deprecated
     public int readDefaultPreference(String KEY, int defaultVALUE) {
         return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY, defaultVALUE);
-    }
-
-    @Deprecated
-    public String readDefaultPreference(String KEY, String defaultVALUE) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(KEY, defaultVALUE);
-    }
-
-    @Deprecated
-    public boolean readDefaultPreference(String KEY, boolean defaultVALUE) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY, defaultVALUE);
     }
 
     /*Shaping Functions*/
@@ -2767,7 +2694,7 @@ public class FunctionsClass {
                     foldersConfigurations.loadFolders();
                 } else if (item.getItemId() == 4) {
                     try {
-                        String[] categoryContent = readFileLine(folderName);
+                        String[] categoryContent = fileIO.readFileLinesAsArray(folderName);
 
                         for (String packageName : categoryContent) {
                             context.deleteFile(packageName + folderName);
@@ -2803,7 +2730,7 @@ public class FunctionsClass {
                             public void authenticatedFloatIt(@Nullable Bundle extraInformation) {
 
                                 if (context.getFileStreamPath(folderName).exists() && context.getFileStreamPath(folderName).isFile()) {
-                                    String[] packageNames = readFileLine(folderName);
+                                    String[] packageNames = fileIO.readFileLinesAsArray(folderName);
 
                                     for (String packageName : packageNames) {
                                         securityFunctions.doUnlockApps(packageName);
@@ -2827,7 +2754,7 @@ public class FunctionsClass {
                             if (context.getFileStreamPath(folderName).exists() && context.getFileStreamPath(folderName).isFile()) {
                                 savePreference(".LockedApps", folderName, true);
 
-                                String[] packageNames = readFileLine(folderName);
+                                String[] packageNames = fileIO.readFileLinesAsArray(folderName);
                                 for (String packageName : packageNames) {
                                     securityFunctions.doLockApps(packageName);
                                 }
@@ -2979,9 +2906,13 @@ public class FunctionsClass {
     }
 
     public boolean loadRecoveryIndicatorCategory(String categoryName) {
+
         boolean inRecovery = false;
+
+        FileIO fileIO = new FileIO(context);
+
         try {
-            for (String anAppNameArrayRecovery : readFileLine(".uCategory")) {
+            for (String anAppNameArrayRecovery : fileIO.readFileLinesAsArray(".uCategory")) {
                 if (categoryName.equals(anAppNameArrayRecovery)) {
                     inRecovery = true;
                     break;
@@ -3854,8 +3785,9 @@ public class FunctionsClass {
 
     /*Custom Icons*/
     public String customIconPackageName() {
+        PreferencesIO preferencesIO = new PreferencesIO(context);
         //com.Fraom.Smugy
-        return readDefaultPreference("customIcon", context.getPackageName());
+        return preferencesIO.readDefaultPreference("customIcon", context.getPackageName());
     }
 
     public boolean customIconsEnable() {
@@ -4349,12 +4281,16 @@ public class FunctionsClass {
     }
 
     public boolean litePreferencesEnabled() {
-        return readDefaultPreference("LitePreferences", false);
+        PreferencesIO preferencesIO = new PreferencesIO(context);
+
+        return preferencesIO.readDefaultPreference("LitePreferences", false);
     }
 
     /*Firebase Remote Config*/
     public boolean joinedBetaProgram() {
-        return readDefaultPreference("JoinedBetaProgrammer", false);
+        PreferencesIO preferencesIO = new PreferencesIO(context);
+
+        return preferencesIO.readDefaultPreference("JoinedBetaProgrammer", false);
     }
 
     public String versionCodeRemoteConfigKey() {

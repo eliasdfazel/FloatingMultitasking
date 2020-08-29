@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:29 AM
+ * Last modified 8/29/20 3:18 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -156,7 +156,7 @@ class AppSelectionList : AppCompatActivity(),
 
             if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitOne").exists()) {
 
-                advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne")))
+                advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"), functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne")))
 
             } else {
 
@@ -168,7 +168,7 @@ class AppSelectionList : AppCompatActivity(),
 
             if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitTwo").exists()) {
 
-                advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitTwo")))
+                advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo"), functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo")))
 
             } else {
 
@@ -325,10 +325,10 @@ class AppSelectionList : AppCompatActivity(),
 
 
         if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitOne").exists()) {
-            advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne")))
+            advanceAppSelectionListBinding.firstSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"), functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne")))
         }
         if (getFileStreamPath(PublicVariable.folderName.toString() + ".SplitTwo").exists()) {
-            advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(functionsClass.readFile(PublicVariable.folderName.toString() + ".SplitTwo")))
+            advanceAppSelectionListBinding.secondSplitIcon.setImageDrawable(if (functionsClass.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo"), functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitOne"))) else functionsClass.shapedAppIcon(fileIO.readFile(PublicVariable.folderName.toString() + ".SplitTwo")))
         }
     }
     /*ConfirmButtonProcess*/

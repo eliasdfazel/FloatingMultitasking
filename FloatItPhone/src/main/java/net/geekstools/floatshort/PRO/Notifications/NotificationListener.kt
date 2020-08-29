@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:42 AM
+ * Last modified 8/29/20 3:02 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,11 +21,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug
+import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
-import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
-import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class NotificationListener : NotificationListenerService() {
 
@@ -35,6 +32,10 @@ class NotificationListener : NotificationListenerService() {
 
     private val fileIO: FileIO by lazy {
         FileIO(applicationContext)
+    }
+
+    private val bitmapExtractor: BitmapExtractor by lazy {
+        BitmapExtractor(applicationContext)
     }
 
     lateinit var broadcastReceiver: BroadcastReceiver
@@ -153,7 +154,7 @@ class NotificationListener : NotificationListenerService() {
                 fileIO.saveFile(notificationTime + "_" + "Notification" + "Key", notificationId)
                 fileIO.saveFile(notificationTime + "_" + "Notification" + "Title", notificationTitle)
                 fileIO.saveFile(notificationTime + "_" + "Notification" + "Text", notificationText.toString())
-                functionsClass.saveBitmapIcon(notificationTime + "_" + "Notification" + "Icon", notificationIcon)
+                bitmapExtractor.saveBitmapIcon(notificationTime + "_" + "Notification" + "Icon", notificationIcon)
                 PublicVariable.notificationIntent[notificationTime] = statusBarNotification.notification.contentIntent
 
 

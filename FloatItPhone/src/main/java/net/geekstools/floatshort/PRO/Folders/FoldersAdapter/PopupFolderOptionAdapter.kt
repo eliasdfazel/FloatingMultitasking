@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -35,6 +35,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClass
+import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
@@ -48,6 +49,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
 
     private var functionsClass: FunctionsClass
     private var fileIO: FileIO
+    private var preferencesIO: PreferencesIO
 
     private var securityFunctions: SecurityFunctions
 
@@ -82,9 +84,11 @@ class PopupFolderOptionAdapter : BaseAdapter {
 
         functionsClass = FunctionsClass(context)
         fileIO = FileIO(context)
+        preferencesIO = PreferencesIO(context)
+
         securityFunctions = SecurityFunctions(context)
 
-        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
         when (functionsClass.shapesImageId()) {
             1 -> layoutInflater = R.layout.item_popup_category_droplet
             2 -> layoutInflater = R.layout.item_popup_category_circle
@@ -110,9 +114,11 @@ class PopupFolderOptionAdapter : BaseAdapter {
 
         functionsClass = FunctionsClass(context)
         fileIO = FileIO(context)
+        preferencesIO = PreferencesIO(context)
+
         securityFunctions = SecurityFunctions(context)
 
-        PublicVariable.floatingSizeNumber = functionsClass.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
 
         when (functionsClass.shapesImageId()) {
             1 -> layoutInflater = R.layout.item_popup_category_droplet
@@ -166,20 +172,20 @@ class PopupFolderOptionAdapter : BaseAdapter {
                     && adapterItems[position].appName == context.getString(R.string.splitIt)) {
 
                 splitOne = if (functionsClass.customIconsEnable()) {
-                    loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFile(adapterItems[position].packageName + ".SplitOne"), functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems[position].packageName + ".SplitOne")))
+                    loadCustomIcons!!.getDrawableIconForPackage(fileIO.readFile(adapterItems[position].packageName + ".SplitOne"), functionsClass.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitOne")))
                 } else {
-                    functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems[position].packageName + ".SplitOne"))
+                    functionsClass.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitOne"))
                 }
                 splitTwo = if (functionsClass.customIconsEnable()) {
-                    loadCustomIcons!!.getDrawableIconForPackage(functionsClass.readFile(adapterItems[position].packageName + ".SplitTwo"), functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems[position].packageName + ".SplitTwo")))
+                    loadCustomIcons!!.getDrawableIconForPackage(fileIO.readFile(adapterItems[position].packageName + ".SplitTwo"), functionsClass.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitTwo")))
                 } else {
-                    functionsClass.shapedAppIcon(functionsClass.readFile(adapterItems[position].packageName + ".SplitTwo"))
+                    functionsClass.shapedAppIcon(fileIO.readFile(adapterItems[position].packageName + ".SplitTwo"))
                 }
                 viewHolder.split_one!!.setImageDrawable(splitOne)
                 viewHolder.split_two!!.setImageDrawable(splitTwo)
 
-                viewHolder.split_one!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
-                viewHolder.split_two!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+                viewHolder.split_one!!.imageAlpha = preferencesIO.readDefaultPreference("autoTrans", 255)
+                viewHolder.split_two!!.imageAlpha = preferencesIO.readDefaultPreference("autoTrans", 255)
 
             } else if (adapterItems[position].appName == context.getString(R.string.splitIt)) {
 
@@ -203,8 +209,8 @@ class PopupFolderOptionAdapter : BaseAdapter {
 
                 viewHolder.split_one!!.setImageDrawable(splitOne)
                 viewHolder.split_two!!.setImageDrawable(splitTwo)
-                viewHolder.split_one!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
-                viewHolder.split_two!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
+                viewHolder.split_one!!.imageAlpha = preferencesIO.readDefaultPreference("autoTrans", 255)
+                viewHolder.split_two!!.imageAlpha = preferencesIO.readDefaultPreference("autoTrans", 255)
             } else {
                 viewHolder!!.split_one!!.setImageDrawable(null)
                 viewHolder.split_two!!.setImageDrawable(null)
@@ -214,8 +220,8 @@ class PopupFolderOptionAdapter : BaseAdapter {
         }
         viewHolder!!.imgIcon!!.setImageDrawable(adapterItems[position].appIcon)
         viewHolder.textAppName!!.text = adapterItems[position].appName
-        viewHolder.imgIcon!!.imageAlpha = functionsClass.readDefaultPreference("autoTrans", 255)
-        viewHolder.textAppName!!.alpha = if (functionsClass.readDefaultPreference("autoTrans", 255) < 130) 0.70f else 1.0f
+        viewHolder.imgIcon!!.imageAlpha = preferencesIO.readDefaultPreference("autoTrans", 255)
+        viewHolder.textAppName!!.alpha = if (preferencesIO.readDefaultPreference("autoTrans", 255) < 130) 0.70f else 1.0f
 
         val itemsListColor: Int = if (functionsClass.appThemeTransparent() == true) {
             functionsClass.setColorAlpha(PublicVariable.colorLightDark, 77f)

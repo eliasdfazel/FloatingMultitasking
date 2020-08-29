@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/25/20 4:29 AM
+ * Last modified 8/29/20 3:21 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -731,7 +731,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
                             AppIcon = functionsClass.customIconsEnable() ? loadCustomIcons.getDrawableIconForPackage(PackageName, functionsClass.shapedAppIcon(PackageName)) : functionsClass.shapedAppIcon(PackageName);
 
                             if (getFileStreamPath(PackageName + ".Time").exists()) {
-                                AppTime = functionsClass.readFile(PackageName + ".Time");
+                                AppTime = fileIO.readFile(PackageName + ".Time");
                                 String tempTimeHour = AppTime.split(":")[0];
                                 String tempTimeMinute = AppTime.split(":")[1];
                                 if (Integer.parseInt(tempTimeMinute) < 10) {

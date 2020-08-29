@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 8/29/20 3:21 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -702,7 +702,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
                 for (int navItem = 0; navItem < appData.length; navItem++) {
                     try {
                         if (getFileStreamPath(appData[navItem] + ".Time").exists()) {
-                            AppTime = functionsClass.readFile(appData[navItem] + ".Time");
+                            AppTime = fileIO.readFile(appData[navItem] + ".Time");
                             String tempTimeHour = AppTime.split(":")[0];
                             String tempTimeMinute = AppTime.split(":")[1];
                             if (Integer.parseInt(tempTimeMinute) < 10) {

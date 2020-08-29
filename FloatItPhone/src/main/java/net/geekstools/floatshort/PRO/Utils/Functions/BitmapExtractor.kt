@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/26/20 3:44 AM
+ * Last modified 8/29/20 3:35 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -225,7 +225,7 @@ class BitmapExtractor(private val context: Context) {
 
     /**
      * 255 is Transparent.
-     */
+     **/
     fun setColorAlpha(color: Int, alphaValue: Float /*1 -- 255*/): Int {
         val alpha = Math.round(Color.alpha(color) * alphaValue)
         val red = Color.red(color)
@@ -635,6 +635,24 @@ class BitmapExtractor(private val context: Context) {
             appIconDrawable = applicationIcon(activityInfo)
         }
         return appIconDrawable
+    }
+
+    fun saveBitmapIcon(fileName: String, drawableToSave: Drawable) {
+
+        try {
+
+            val bitmapToSave: Bitmap? = drawableToBitmap(drawableToSave)
+
+            val fileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
+
+            bitmapToSave?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+
+            fileOutputStream.close()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+
+        }
     }
 
 }
