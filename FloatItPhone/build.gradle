@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 2:47 AM
+ * Last modified 8/29/20 6:06 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -159,5 +159,5 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
 }
