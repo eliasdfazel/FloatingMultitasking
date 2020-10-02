@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 4:00 AM
+ * Last modified 10/2/20 5:31 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -907,7 +907,12 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     if (loadFrequentlyApps) {
                         CoroutineScope(Dispatchers.Main).launch {
 
-                            loadFrequentlyUsedApplications().await()
+                            val loadFrequentlyUsedApplications = loadFrequentlyUsedApplications()
+                            loadFrequentlyUsedApplications.flowOn(Dispatchers.Main).collect {
+
+
+                            }
+
                         }
                     }
 
@@ -992,7 +997,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         loadInstalledCustomIconPackages().await()
     }
 
-    private fun loadFrequentlyUsedApplications() = CoroutineScope(SupervisorJob() + Dispatchers.Main).async {
+    private fun loadFrequentlyUsedApplications(): Flow<String> =flow() {
 
         val layoutParamsAbove = hybridApplicationViewBinding.searchEngineViewInclude.root.layoutParams as RelativeLayout.LayoutParams
         layoutParamsAbove.addRule(RelativeLayout.ABOVE, R.id.freqList)
@@ -1014,7 +1019,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
         applicationsViewPhoneDependencyInjection.fileIO.saveFileAppendLine(".categoryInfo", "Frequently")
 
         for (i in 0 until freqLength) {
+
             val freqLayout = layoutInflater.inflate(R.layout.freq_item, null) as RelativeLayout
+
             val shapesImage = applicationsViewPhoneDependencyInjection.functionsClassLegacy.initShapesImage(freqLayout, R.id.freqItems)
             shapesImage.id = i
             shapesImage.setOnClickListener(this@ApplicationsViewPhone)
@@ -1024,10 +1031,14 @@ class ApplicationsViewPhone : AppCompatActivity(),
             } else {
                 applicationsViewPhoneDependencyInjection.functionsClassLegacy.shapedAppIcon(frequentlyUsedAppsList[i])
             })
+
             hybridApplicationViewBinding.freqItem.addView(freqLayout)
 
             applicationsViewPhoneDependencyInjection.fileIO.saveFileAppendLine("Frequently", frequentlyUsedAppsList[i])
             applicationsViewPhoneDependencyInjection.fileIO.saveFile(frequentlyUsedAppsList[i] + "Frequently", frequentlyUsedAppsList[i])
+
+            this.emit(frequentlyUsedAppsList[i])
+
         }
 
         applicationsViewPhoneDependencyInjection.popupApplicationShortcuts.addPopupApplicationShortcuts()
