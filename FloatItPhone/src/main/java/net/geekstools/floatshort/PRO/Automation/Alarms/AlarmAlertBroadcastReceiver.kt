@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:17 AM
+ * Last modified 10/15/20 10:30 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -38,7 +38,9 @@ class AlarmAlertBroadcastReceiver : BroadcastReceiver() {
                 PublicVariable.floatingSizeNumber = functionsClassPreferences.readDefaultPreference("floatingSize", 39)
                 PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), context.resources.displayMetrics).toInt()
 
-                val alarmedPackageNames = functionsClassIO.readFileLinesAsArray(setTime)
+                val alarmedPackageNames = setTime?.let { fileName ->
+                    functionsClassIO.readFileLinesAsArray(fileName)
+                }
 
                 if (!alarmedPackageNames.isNullOrEmpty()) {
 
