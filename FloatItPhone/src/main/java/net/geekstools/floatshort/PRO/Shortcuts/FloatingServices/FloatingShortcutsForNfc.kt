@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 10/15/20 10:44 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -230,7 +230,7 @@ class FloatingShortcutsForNfc : Service() {
             val startId = startIdCounter.size
             startIdCounter.add(startId)
 
-            packageNames.add(startId, this@run.getStringExtra("PackageName"))
+            packageNames.add(startId, this@run.getStringExtra("PackageName")!!)
 
             if (!functionsClassLegacy.appIsInstalled(packageNames[startId])) {
 

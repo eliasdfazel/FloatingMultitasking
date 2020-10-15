@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:35 AM
+ * Last modified 10/15/20 10:45 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -399,7 +399,7 @@ class BitmapExtractor(private val context: Context) {
         return resizedDrawable
     }
 
-    fun applicationIcon(packageName: String?): Drawable? {
+    fun applicationIcon(packageName: String): Drawable? {
         var icon: Drawable? = null
         try {
             val packManager = context.packageManager
@@ -551,7 +551,7 @@ class BitmapExtractor(private val context: Context) {
         return shapedDrawable
     }
 
-    fun shapedAppIcon(packageName: String?): Drawable? {
+    fun shapedAppIcon(packageName: String): Drawable? {
         var appIconDrawable: Drawable? = null
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         if (sharedPreferences.getInt("iconShape", 0) == 1 || sharedPreferences.getInt("iconShape", 0) == 2 || sharedPreferences.getInt("iconShape", 0) == 3 || sharedPreferences.getInt("iconShape", 0) == 4 || sharedPreferences.getInt("iconShape", 0) == 5) {

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 10/3/20 9:18 AM
+ * Last modified 10/15/20 10:44 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -838,7 +838,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 .onCompletion {
 
                     if (intent.getStringArrayExtra("frequentApps") != null) {
-                        frequentlyUsedAppsList = intent.getStringArrayExtra("frequentApps")
+                        frequentlyUsedAppsList = intent.getStringArrayExtra("frequentApps")!!
                         val freqLength = intent.getIntExtra("frequentAppsNumbers", -1)
 
                         PublicVariable.frequentlyUsedApps = frequentlyUsedAppsList
@@ -1014,7 +1014,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         hybridApplicationViewBinding.freqList.visibility = View.VISIBLE
 
         frequentlyUsedAppsCounter = IntArray(25)
-        frequentlyUsedAppsList = intent.getStringArrayExtra("frequentApps")
+        frequentlyUsedAppsList = intent.getStringArrayExtra("frequentApps")!!
         val freqLength = intent.getIntExtra("frequentAppsNumbers", -1)
         if (getFileStreamPath("Frequently").exists()) {
             applicationsViewPhoneDependencyInjection.fileIO.removeLine(".categoryInfo", "Frequently")

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 10/15/20 10:44 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -203,7 +203,7 @@ class FloatingFoldersForNfc : Service() {
             val startId = startIdCounter.size
             startIdCounter.add(startId)
 
-            folderName.add(startId, intent.getStringExtra("folderName"))
+            folderName.add(startId, intent.getStringExtra("folderName")!!)
 
             touchingDelay.add(startId, false)
             stickedToEdge.add(startId, false)

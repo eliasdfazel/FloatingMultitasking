@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 10/15/20 10:44 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -100,7 +100,7 @@ class FloatingSplash : Service() {
                 statusBarHeight = resources.getDimensionPixelSize(resourceIdStatus)
             }
 
-            appPackageName = intent.getStringExtra("packageName")
+            appPackageName = intent.getStringExtra("packageName")!!
             var appIcon = getDrawable(R.drawable.ic_launcher_balloon)
 
             if (intent.hasExtra("className")) {

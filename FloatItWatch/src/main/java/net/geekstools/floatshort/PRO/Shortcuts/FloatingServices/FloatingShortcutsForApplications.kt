@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 8:53 PM
+ * Last modified 10/15/20 10:40 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -174,14 +174,14 @@ class FloatingShortcutsForApplications : Service() {
             val startId = startIdCounter.size
             startIdCounter.add(startId)
 
-            packageNames.add(startId, this@run.getStringExtra("PackageName"))
+            packageNames.add(startId, this@run.getStringExtra("PackageName")!!)
 
             if (!functionsClass.appIsInstalled(packageNames[startId])) {
 
                 return START_NOT_STICKY
             }
 
-            classNames.add(startId, this@run.getStringExtra("ClassName"))
+            classNames.add(startId, this@run.getStringExtra("ClassName")!!)
             activityInformation.add(startId, packageManager.getActivityInfo(ComponentName(packageNames[startId], classNames[startId]), 0))
 
             floatingShortcutsBinding.add(startId, FloatingShortcutsBinding.inflate(layoutInflater))
