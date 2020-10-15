@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 10/2/20 5:31 AM
+ * Last modified 10/3/20 9:18 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -457,6 +457,10 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
             }
         }
+
+
+
+
     }
 
     override fun onStart() {
