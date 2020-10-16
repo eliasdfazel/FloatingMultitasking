@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "517247283133-j6jo6uak93lr9ob1de1qkvb5qb1ope1u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.geekstools.floatshort.PRO",
+            "certificate_hash": "a4919f5b41e0ea24cf4aaa9fc316ac9e97ca07a4"
+          }
+        },
+        {
           "client_id": "517247283133-ereu2msnnucqc6ddefie1mttj7fqccta.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
