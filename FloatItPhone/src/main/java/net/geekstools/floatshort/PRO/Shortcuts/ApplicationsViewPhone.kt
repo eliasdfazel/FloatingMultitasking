@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 10/15/20 10:44 AM
+ * Last modified 10/20/20 8:11 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -182,9 +182,11 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         hybridApplicationViewBinding.switchCategories.setBackgroundColor(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+
         hybridApplicationViewBinding.switchCategories.rippleColor = ColorStateList.valueOf(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
         hybridApplicationViewBinding.switchWidgets.setBackgroundColor(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+
         hybridApplicationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
         hybridApplicationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
