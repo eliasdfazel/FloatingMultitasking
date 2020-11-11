@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 10/15/20 10:44 AM
+ * Last modified 11/11/20 10:45 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,6 +20,7 @@ import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.util.TypedValue
 import android.view.*
 import android.view.GestureDetector.SimpleOnGestureListener
@@ -88,7 +89,7 @@ class FloatingFoldersForNfc : Service() {
     private val mapFolderNameStartId: HashMap<String, Int> = HashMap<String, Int>()
 
     lateinit var runnablePressHold: Runnable
-    private var handlerPressHold: Handler = Handler()
+    private var handlerPressHold: Handler = Handler(Looper.getMainLooper())
 
     private val loadCustomIcons: LoadCustomIcons by lazy {
         LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())
@@ -483,7 +484,7 @@ class FloatingFoldersForNfc : Service() {
                             touchingDelay[startId] = false
                             handlerPressHold.removeCallbacks(runnablePressHold)
 
-                            Handler().postDelayed({
+                            Handler(Looper.getMainLooper()).postDelayed({
                                 openPermit[startId] = true
                             }, 130)
 
@@ -751,7 +752,7 @@ class FloatingFoldersForNfc : Service() {
 
                             }
 
-                            Handler().postDelayed({
+                            Handler(Looper.getMainLooper()).postDelayed({
                                 try {
                                     val splitOne = packageManager.getLaunchIntentForPackage(packageNameSplitOne)
                                     splitOne?.flags = Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT or
@@ -768,7 +769,7 @@ class FloatingFoldersForNfc : Service() {
                                         startActivity(it)
                                     }
 
-                                    Handler().postDelayed({
+                                    Handler(Looper.getMainLooper()).postDelayed({
                                         splitTwo?.let {
 
                                             startActivity(it)
@@ -776,7 +777,7 @@ class FloatingFoldersForNfc : Service() {
 
                                         PublicVariable.splitScreen = true
 
-                                        Handler().postDelayed({
+                                        Handler(Looper.getMainLooper()).postDelayed({
                                             sendBroadcast(Intent("split_pair_finish"))
                                         }, 700)
 
@@ -792,7 +793,7 @@ class FloatingFoldersForNfc : Service() {
                         } else if (intent.action == "Split_Apps_Single_$floatingFolderClassInCommand" && PublicVariable.splitScreen) {
                             PublicVariable.splitScreen = false
 
-                            Handler().postDelayed({
+                            Handler(Looper.getMainLooper()).postDelayed({
                                 try {
                                     packageManager.getLaunchIntentForPackage(PublicVariable.splitSinglePackage)?.let {
                                         it.flags = Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT or
@@ -804,7 +805,7 @@ class FloatingFoldersForNfc : Service() {
 
                                     PublicVariable.splitScreen = true
 
-                                    Handler().postDelayed({ sendBroadcast(Intent("split_single_finish")) }, 500)
+                                    Handler(Looper.getMainLooper()).postDelayed({ sendBroadcast(Intent("split_single_finish")) }, 500)
 
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()

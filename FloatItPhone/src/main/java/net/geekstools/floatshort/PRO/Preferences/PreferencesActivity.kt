@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/11/20 10:45 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -18,6 +18,7 @@ import android.content.res.Resources.Theme
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
@@ -158,7 +159,7 @@ class PreferencesActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             this@PreferencesActivity.finish()
         }, 700)
     }

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 6:40 AM
+ * Last modified 11/11/20 10:49 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,6 +25,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -456,7 +457,7 @@ class FoldersConfigurations : AppCompatActivity(),
                     if (intent.action == getString(R.string.license)) {
                         foldersConfigurationsDependencyInjection.functionsClassLegacy.dialogueLicense(this@FoldersConfigurations)
 
-                        Handler().postDelayed({
+                        Handler(Looper.getMainLooper()).postDelayed({
                             stopService(Intent(applicationContext, LicenseValidator::class.java))
                         }, 1000)
 

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/11/20 10:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -16,6 +16,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.WindowManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
@@ -48,7 +49,7 @@ class PinPasswordVerification : Activity() {
 
             functionsClassLegacy.savePreference(".Password", "Pin", "0")
 
-            Handler().postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
 
                 startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java)
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
@@ -74,7 +75,7 @@ class PinPasswordVerification : Activity() {
                         Debug.PrintDebug("*** Email Verified ***")
 
                         functionsClassLegacy.savePreference(".Password", "Pin", "0")
-                        Handler().postDelayed({
+                        Handler(Looper.getMainLooper()).postDelayed({
 
                             startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())

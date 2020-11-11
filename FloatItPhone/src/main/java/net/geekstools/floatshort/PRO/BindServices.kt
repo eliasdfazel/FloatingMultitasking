@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/11/20 10:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,6 +20,7 @@ import android.nfc.NfcManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.util.TypedValue
 import net.geekstools.floatshort.PRO.Automation.RecoveryServices.RecoveryGps
 import net.geekstools.floatshort.PRO.Automation.RecoveryServices.RecoveryNfc
@@ -172,7 +173,7 @@ class BindServices : Service() {
                 }
                 registerReceiver(broadcastReceiverAction, intentFilter)
 
-                Handler().postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
                     triggerWifiBroadcast = true
                 }, 3000)
             }

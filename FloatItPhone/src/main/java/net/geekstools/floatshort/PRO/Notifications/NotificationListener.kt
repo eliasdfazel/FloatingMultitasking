@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:57 AM
+ * Last modified 11/11/20 10:45 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,6 +19,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import net.geekstools.floatshort.PRO.Utils.Functions.*
@@ -78,7 +79,7 @@ class NotificationListener : NotificationListenerService() {
 
                     if (PublicVariable.previousDuplicated == notificationPackage) {
 
-                        Handler().postDelayed({
+                        Handler(Looper.getMainLooper()).postDelayed({
 
                             PublicVariable.previousDuplicated = null
 

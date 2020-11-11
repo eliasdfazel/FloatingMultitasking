@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 10/15/20 10:44 AM
+ * Last modified 11/11/20 10:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,6 +24,7 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.text.Html
 import android.util.Log
 import android.view.*
@@ -112,9 +113,9 @@ class FloatingShortcutsForGps : Service() {
     lateinit var getBackRunnable: Runnable
     lateinit var runnablePressHold: Runnable
 
-    var delayHandler = Handler()
-    var getBackHandler: Handler = Handler()
-    var handlerPressHold: Handler = Handler()
+    var delayHandler = Handler(Looper.getMainLooper())
+    var getBackHandler: Handler = Handler(Looper.getMainLooper())
+    var handlerPressHold: Handler = Handler(Looper.getMainLooper())
 
 
     val mapPackageNameStartId: HashMap<String, Int> = HashMap<String, Int>()
@@ -440,7 +441,7 @@ class FloatingShortcutsForGps : Service() {
                             delayHandler.removeCallbacks(delayRunnable)
                             handlerPressHold.removeCallbacks(runnablePressHold)
 
-                            Handler().postDelayed({
+                            Handler(Looper.getMainLooper()).postDelayed({
                                 openPermit[startId] = true
                             }, 113)
 
@@ -765,7 +766,7 @@ class FloatingShortcutsForGps : Service() {
                             Debug.PrintDebug("Split Apps Single")
 
                             PublicVariable.splitScreen = false
-                            Handler().postDelayed({
+                            Handler(Looper.getMainLooper()).postDelayed({
                                 try {
                                     var splitSingle: Intent? = Intent()
                                     if (PublicVariable.splitSingleClassName != null) {

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/11/20 10:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -21,6 +21,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.Html
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -161,7 +162,7 @@ class WidgetsReallocationProcess : Activity() {
                     widgetInformation.text = null
                     widgetInformation.icon = null
 
-                    Handler().postDelayed({
+                    Handler(Looper.getMainLooper()).postDelayed({
 
                         widgetInformation.icon = functionsClassLegacy.applicationIcon(widgetDataModel.PackageName)
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

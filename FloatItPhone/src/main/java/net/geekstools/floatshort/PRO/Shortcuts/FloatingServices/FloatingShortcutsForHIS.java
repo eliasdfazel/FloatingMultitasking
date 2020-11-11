@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:57 AM
+ * Last modified 11/11/20 10:51 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,6 +24,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -78,7 +79,7 @@ public class FloatingShortcutsForHIS extends Service {
     ShapesImage[] shapedIcon, controlIcon, notificationDot;
 
     Runnable delayRunnable = null, getbackRunnable = null, runnablePressHold = null;
-    Handler delayHandler = new Handler(), getbackHandler = new Handler(), handlerPressHold = new Handler();
+    Handler delayHandler = new Handler(Looper.getMainLooper()), getbackHandler = new Handler(Looper.getMainLooper()), handlerPressHold = new Handler(Looper.getMainLooper());
 
     BroadcastReceiver broadcastReceiver;
     SharedPreferences sharedPrefPosition;
@@ -434,7 +435,7 @@ public class FloatingShortcutsForHIS extends Service {
                         touchingDelay[startId] = false;
                         delayHandler.removeCallbacks(delayRunnable);
                         handlerPressHold.removeCallbacks(runnablePressHold);
-                        new Handler().postDelayed(new Runnable() {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 openIt[startId] = true;
@@ -726,7 +727,7 @@ public class FloatingShortcutsForHIS extends Service {
                     Debug.Companion.PrintDebug("Split Apps Single");
                     PublicVariable.splitScreen = false;
 
-                    new Handler().postDelayed(new Runnable() {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             try {
@@ -792,7 +793,7 @@ public class FloatingShortcutsForHIS extends Service {
                     if (functionsClassLegacy.splashReveal()) {
                         if (!functionsClassLegacy.FreeForm()) {
                             functionsClassLegacy.saveDefaultPreference("freeForm", true);
-                            new Handler().postDelayed(new Runnable() {
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     functionsClassLegacy.saveDefaultPreference("freeForm", false);

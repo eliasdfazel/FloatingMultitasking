@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 10/15/20 10:44 AM
+ * Last modified 11/11/20 10:32 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -24,6 +24,7 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.text.Html
 import android.util.Log
 import android.view.*
@@ -43,6 +44,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.Utils.OpenActions
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
+import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
@@ -56,6 +58,10 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
     private val functionsClassLegacy: FunctionsClassLegacy by lazy {
         FunctionsClassLegacy(applicationContext)
+    }
+
+    private val preferencesIO: PreferencesIO by lazy {
+        PreferencesIO(applicationContext)
     }
 
     private lateinit var securityFunctions: SecurityFunctions
@@ -112,9 +118,9 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
     lateinit var getBackRunnable: Runnable
     lateinit var runnablePressHold: Runnable
 
-    var delayHandler = Handler()
-    var getBackHandler: Handler = Handler()
-    var handlerPressHold: Handler = Handler()
+    var delayHandler = Handler(Looper.getMainLooper())
+    var getBackHandler: Handler = Handler(Looper.getMainLooper())
+    var handlerPressHold: Handler = Handler(Looper.getMainLooper())
 
 
     val mapPackageNameStartId: HashMap<String, Int> = HashMap<String, Int>()
@@ -288,17 +294,17 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
             XY.xMove = XY.xPosition
             XY.yMove = XY.yPosition
 
-            shapedIcons[startId].imageAlpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255)
+            shapedIcons[startId].imageAlpha = preferencesIO.readDefaultPreference("autoTrans", 255)
 
             if (!functionsClassLegacy.litePreferencesEnabled()) {
 
                 flingAnimationX.add(startId, FlingAnimation(FloatValueHolder())
-                        .setFriction(functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
+                        .setFriction(preferencesIO.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
                         .setMaxValue(functionsClassLegacy.displayX() - PublicVariable.floatingViewsHW.toFloat())
                         .setMinValue(0f))
 
                 flingAnimationY.add(startId, FlingAnimation(FloatValueHolder())
-                        .setFriction(functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
+                        .setFriction(preferencesIO.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
                         .setMaxValue(functionsClassLegacy.displayY() - PublicVariable.floatingViewsHW.toFloat())
                         .setMinValue(0f))
 
@@ -440,7 +446,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                             delayHandler.removeCallbacks(delayRunnable)
                             handlerPressHold.removeCallbacks(runnablePressHold)
 
-                            Handler().postDelayed({
+                            Handler(Looper.getMainLooper()).postDelayed({
                                 openPermit[startId] = true
                             }, 113)
 
@@ -765,7 +771,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                             Debug.PrintDebug("Split Apps Single")
 
                             PublicVariable.splitScreen = false
-                            Handler().postDelayed({
+                            Handler(Looper.getMainLooper()).postDelayed({
                                 try {
                                     var splitSingle: Intent? = Intent()
                                     if (PublicVariable.splitSingleClassName != null) {

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 10/15/20 10:44 AM
+ * Last modified 11/11/20 10:47 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -16,6 +16,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -147,7 +148,7 @@ class FloatingSplash : Service() {
                 e.printStackTrace()
             }
 
-            Handler().postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
 
                 try {
 
@@ -181,7 +182,7 @@ class FloatingSplash : Service() {
                 homeScreen.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(homeScreen)
 
-                Handler().postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
                     stopSelf()
                 }, 159)
 
@@ -214,7 +215,7 @@ class FloatingSplash : Service() {
 
                 floatingSplashRemoval.floatingSplashRemoval()
 
-                Handler().postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
                     windowManager.removeViewImmediate(revealSplashBinding.root)
                 }, 888)
 
@@ -230,7 +231,7 @@ class FloatingSplash : Service() {
                         appClassName,
                         false
                 )
-                Handler().postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
 
                     windowManager.removeViewImmediate(revealSplashBinding.root)
 

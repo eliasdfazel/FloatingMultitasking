@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/11/20 10:51 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -16,6 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -407,7 +408,7 @@ public class PopupOptionsFloatingFolders extends Service {
                 0
         );
         windowManager.addView(viewGroup, layoutParams);
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -418,7 +419,7 @@ public class PopupOptionsFloatingFolders extends Service {
                             true
                     );
 
-                    new Handler().postDelayed(new Runnable() {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             itemMenuView.setVisibility(View.VISIBLE);
@@ -433,7 +434,7 @@ public class PopupOptionsFloatingFolders extends Service {
         viewGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Handler().postDelayed(new Runnable() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         stopSelf();
@@ -464,7 +465,7 @@ public class PopupOptionsFloatingFolders extends Service {
                     yPosition,
                     false
             );
-            new Handler().postDelayed(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     windowManager.removeViewImmediate(viewGroup);

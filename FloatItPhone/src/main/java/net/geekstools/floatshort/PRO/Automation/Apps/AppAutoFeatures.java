@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/11/20 10:50 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -27,6 +27,7 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
@@ -759,7 +760,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             loadView.setAdapter(adapter);
             registerForContextMenu(loadView);
 
-            new Handler().postDelayed(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
@@ -812,7 +813,7 @@ public class AppAutoFeatures extends AppCompatActivity implements View.OnClickLi
             }
 
             TextView finalTextView = textView;
-            new Handler().postDelayed(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     int upperRange = (int) (indexView.getY() - finalTextView.getHeight());

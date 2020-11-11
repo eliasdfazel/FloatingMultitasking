@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/11/20 10:51 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -62,6 +62,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
@@ -533,7 +534,7 @@ public class FunctionsClassLegacy {
             } finally {
                 if (returnAPI() < 23) {
                     if (listPopupWindow.isShowing()) {
-                        new Handler().postDelayed(new Runnable() {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 listPopupWindow.dismiss();
@@ -811,7 +812,7 @@ public class FunctionsClassLegacy {
             Intent r = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()));
             r.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             activity.startActivity(r);
-            new Handler().postDelayed(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     uninstallApp(context.getPackageName());
@@ -836,7 +837,7 @@ public class FunctionsClassLegacy {
                 Intent r = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()));
                 r.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 activity.startActivity(r);
-                new Handler().postDelayed(new Runnable() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         uninstallApp(context.getPackageName());
@@ -850,7 +851,7 @@ public class FunctionsClassLegacy {
                 Intent r = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName().replace(".PRO", "")));
                 r.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 activity.startActivity(r);
-                new Handler().postDelayed(new Runnable() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         uninstallApp(context.getPackageName());
@@ -919,7 +920,7 @@ public class FunctionsClassLegacy {
             alertDialog.show();
         } catch (Exception e) {
             activity.finish();
-            new Handler().postDelayed(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     context.startActivity(
@@ -1057,7 +1058,7 @@ public class FunctionsClassLegacy {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
 
-                new Handler().postDelayed(new Runnable() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         liteAppPreferences(instanceOfActivity);
@@ -1141,7 +1142,7 @@ public class FunctionsClassLegacy {
         context.startActivity(new Intent(context, returnClass)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 activityToFinish.finish();
@@ -1169,7 +1170,7 @@ public class FunctionsClassLegacy {
             hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
             instanceOfActivity.startActivity(hybridViewOff);
         }
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 activityToFinish.finish();
@@ -1183,7 +1184,7 @@ public class FunctionsClassLegacy {
         hybridViewOff.putExtra("frequentAppsNumbers", PublicVariable.freqLength);
         hybridViewOff.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
         instanceOfActivity.startActivity(hybridViewOff);
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 activityToFinish.finish();
@@ -1501,7 +1502,7 @@ public class FunctionsClassLegacy {
                 homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(homeScreen);
             }
-            new Handler().postDelayed(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     ActivityOptions activityOptions = ActivityOptions.makeBasic();
@@ -2656,7 +2657,7 @@ public class FunctionsClassLegacy {
                     PublicVariable.floatingSizeNumber = 26;
                     runUnlimitedFolderService(folderName);
 
-                    new Handler().postDelayed(new Runnable() {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             revertFloatingSize();
@@ -2666,7 +2667,7 @@ public class FunctionsClassLegacy {
                     PublicVariable.floatingSizeNumber = 52;
                     runUnlimitedFolderService(folderName);
 
-                    new Handler().postDelayed(new Runnable() {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             revertFloatingSize();
@@ -2676,7 +2677,7 @@ public class FunctionsClassLegacy {
                     PublicVariable.floatingSizeNumber = 78;
                     runUnlimitedFolderService(folderName);
 
-                    new Handler().postDelayed(new Runnable() {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             revertFloatingSize();
@@ -2779,7 +2780,7 @@ public class FunctionsClassLegacy {
     }
 
     public void revertFloatingSize() {
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 PublicVariable.floatingSizeNumber = readDefaultPreference("floatingSize", 39);
@@ -3111,7 +3112,7 @@ public class FunctionsClassLegacy {
                             String inFrontPackageName = queryUsageStats.get(0).getPackageName();
                             String secondPackageName = queryUsageStats.get(1).getPackageName();
                             if (inFrontPackageName.contains(packageName) || secondPackageName.contains(packageName)) {
-                                new Handler().postDelayed(new Runnable() {
+                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
                                         context.stopService(new Intent(context, FloatingSplash.class));
@@ -3348,7 +3349,7 @@ public class FunctionsClassLegacy {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    new Handler().postDelayed(new Runnable() {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             if (className != null) {
@@ -3392,7 +3393,7 @@ public class FunctionsClassLegacy {
                             });
                             String inFrontPackage = queryUsageStats.get(0).getPackageName();
                             if (inFrontPackage.contains(packageName)) {
-                                new Handler().postDelayed(new Runnable() {
+                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
                                         context.stopService(new Intent(context, FloatingSplash.class));
@@ -3842,7 +3843,7 @@ public class FunctionsClassLegacy {
             public void onClick(View view) {
                 PublicVariable.actionCenter = false;
                 PublicVariable.recoveryCenter = false;
-                new Handler().postDelayed(new Runnable() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         ActivityOptionsCompat options = ActivityOptionsCompat.
@@ -4024,7 +4025,7 @@ public class FunctionsClassLegacy {
         Animation elementsAnim = AnimationUtils.loadAnimation(context, R.anim.up_down);
         LayoutAnimationController itemController = new LayoutAnimationController(elementsAnim, 0.777f);
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 Preferences(instanceOfActivity, true);
@@ -4271,7 +4272,7 @@ public class FunctionsClassLegacy {
         saveDefaultPreference("LitePreferences", true);
 
         instanceOfActivity.finish();
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 instanceOfActivity.startActivity(new Intent(context, Configurations.class)

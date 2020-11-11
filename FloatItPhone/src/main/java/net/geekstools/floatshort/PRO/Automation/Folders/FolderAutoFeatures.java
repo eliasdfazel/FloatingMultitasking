@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/11/20 10:51 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -25,6 +25,7 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
@@ -732,7 +733,7 @@ public class FolderAutoFeatures extends AppCompatActivity implements View.OnClic
             super.onPostExecute(result);
             categorylist.setAdapter(categoryAutoListAdapter);
             registerForContextMenu(categorylist);
-            new Handler().postDelayed(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);

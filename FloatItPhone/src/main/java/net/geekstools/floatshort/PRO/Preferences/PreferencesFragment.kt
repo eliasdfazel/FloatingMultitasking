@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/11/20 10:45 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,6 +28,7 @@ import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.os.Vibrator
 import android.provider.Settings
 import android.text.Html
@@ -110,7 +111,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     lateinit var adApp: Preference
 
     lateinit var runnablePressHold: Runnable
-    val handlerPressHold = Handler()
+    val handlerPressHold = Handler(Looper.getMainLooper())
 
     var touchingDelay: Boolean = false
     var FromWidgetsConfigurations: Boolean = false
@@ -240,7 +241,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         themeColor.setOnPreferenceChangeListener { preference, newValue ->
-            Handler().postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 functionsClassLegacy.checkLightDarkTheme()
 
                 when (newValue.toString()) {
@@ -781,10 +782,10 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             if (activityManager != null) {
                 activityManager.getMemoryInfo(memoryInfo)
                 if (memoryInfo.totalMem <= 2000000000 || memoryInfo.lowMemory) {
-                    Handler().postDelayed({
+                    Handler(Looper.getMainLooper()).postDelayed({
                         listView.smoothScrollToPosition(listView.bottom)
 
-                        Handler().postDelayed({
+                        Handler(Looper.getMainLooper()).postDelayed({
                             functionsClassLegacy.litePreferenceConfirm(activity)
 
                             fileIO.saveFileEmpty(".LitePreferenceCheckpoint")

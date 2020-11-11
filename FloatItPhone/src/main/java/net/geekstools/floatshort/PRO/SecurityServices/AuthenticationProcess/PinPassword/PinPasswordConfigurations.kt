@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:57 AM
+ * Last modified 11/11/20 10:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -17,6 +17,7 @@ import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
@@ -212,7 +213,7 @@ class PinPasswordConfigurations : Activity() {
                     Debug.PrintDebug("*** Password Verification Email Sent To ${firebaseUser.email} ***")
                     functionClassLegacy.Toast(getString(R.string.passwordResetSent), Gravity.BOTTOM, getColor(R.color.red_transparent))
 
-                    Handler().postDelayed({
+                    Handler(Looper.getMainLooper()).postDelayed({
                         authHandlerViewsBinding.spinKitView.visibility = View.INVISIBLE
                     }, 1333)
                 }

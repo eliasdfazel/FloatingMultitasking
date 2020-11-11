@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/11/20 10:51 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 
 import androidx.preference.PreferenceManager;
 
@@ -60,7 +61,7 @@ public class BootRecoverReceiver extends BroadcastReceiver {
                 String boot = sharedPrefBoot.getString("boot", "1");
                 if (boot.equals("0")) {
                 } else if (boot.equals("1")) {
-                    new Handler().postDelayed(new Runnable() {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             Intent shortcutsRecovery = new Intent(context, RecoveryShortcuts.class);
@@ -74,7 +75,7 @@ public class BootRecoverReceiver extends BroadcastReceiver {
                         }
                     }, 1000);
                 } else if (boot.equals("2")) {
-                    new Handler().postDelayed(new Runnable() {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             Intent categoryRecovery = new Intent(context, RecoveryFolders.class);
@@ -87,7 +88,7 @@ public class BootRecoverReceiver extends BroadcastReceiver {
                         }
                     }, 3000);
                 } else if (boot.equals("3")) {
-                    new Handler().postDelayed(new Runnable() {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             Intent shortcutsRecovery = new Intent(context, RecoveryShortcuts.class);
@@ -99,7 +100,7 @@ public class BootRecoverReceiver extends BroadcastReceiver {
                             }
                         }
                     }, 1000);
-                    new Handler().postDelayed(new Runnable() {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             Intent categoryRecovery = new Intent(context, RecoveryFolders.class);

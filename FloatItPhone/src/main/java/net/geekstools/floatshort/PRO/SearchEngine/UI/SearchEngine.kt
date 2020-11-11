@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/11/20 10:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -26,6 +26,7 @@ import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -369,7 +370,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
 
                     inputMethodManager.showSoftInput(searchEngineViewBinding.searchView, InputMethodManager.SHOW_IMPLICIT)
 
-                    Handler().postDelayed({
+                    Handler(Looper.getMainLooper()).postDelayed({
                         searchEngineViewBinding.searchFloatIt.startAnimation(AnimationUtils.loadAnimation(context, R.anim.scale_up_bounce_interpolator))
                         searchEngineViewBinding.searchFloatIt.visibility = View.VISIBLE
 

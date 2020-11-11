@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 10/20/20 8:11 AM
+ * Last modified 11/11/20 10:49 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -29,6 +29,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
@@ -361,7 +362,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         hybridApplicationViewBinding.actionButton.setOnLongClickListener {
-            Handler().postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@ApplicationsViewPhone, hybridApplicationViewBinding.actionButton, "transition")
                 Intent().let {
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -481,7 +482,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     if (intent.action == getString(R.string.license)) {
                         applicationsViewPhoneDependencyInjection.functionsClassLegacy.dialogueLicense(this@ApplicationsViewPhone)
 
-                        Handler().postDelayed({
+                        Handler(Looper.getMainLooper()).postDelayed({
                             stopService(Intent(applicationContext, LicenseValidator::class.java))
                         }, 1000)
 
