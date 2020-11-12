@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/12/20 11:34 AM
+ * Last modified 11/12/20 11:59 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,6 +19,13 @@ import android.widget.RemoteViews
 import net.geekstools.floatshort.PRO.R
 
 class SearchEngineWidget : AppWidgetProvider() {
+
+    override fun onEnabled(context: Context?) {
+        super.onEnabled(context)
+
+
+
+     }
 
     override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)

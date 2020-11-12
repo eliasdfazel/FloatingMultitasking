@@ -3,38 +3,24 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 11/12/20 11:06 AM
+  ~ Last modified 11/12/20 12:01 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:apps="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="77dp"
     android:layout_height="77dp"
     android:layout_margin="7dp"
     android:background="@android:color/transparent">
 
-    <com.google.android.material.button.MaterialButton
+    <ImageView
         android:id="@+id/searchInvocationView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:insetLeft="0dp"
-        android:insetRight="0dp"
-        android:gravity="center"
+        android:padding="7dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/search_engine_icon"/>
 
-        apps:cornerRadius="51dp"
-        apps:elevation="23dp"
-        apps:icon="@drawable/search_engine_icon"
-        apps:iconSize="49dp"
-        apps:iconGravity="textStart"
-        apps:iconTint="@android:color/transparent"
-        apps:iconTintMode="add"
-        apps:iconPadding="0dp"
-        apps:rippleColor="@color/default_color_game_light"
-        apps:backgroundTint="@color/default_color_transparent_twice" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 11/12/20 11:27 AM
+  ~ Last modified 11/12/20 12:08 PM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -369,6 +369,9 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SearchEngine.Widgets.WidgetActivity"
+            android:theme="@style/SearchEngineWidget"/>
 
         <activity-alias
             android:name=".Alias.FoldersConfigurations"
