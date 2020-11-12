@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 8/15/20 4:55 AM
+  ~ Last modified 11/12/20 11:27 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -613,6 +613,19 @@
 
                 <data android:scheme="package"/>
             </intent-filter>
+        </receiver>
+
+        <receiver
+            android:label="@string/floatingSearch"
+            android:icon="@drawable/search_engine_icon"
+            android:name=".SearchEngine.Widgets.SearchEngineWidget" >
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/search_engine_widget" />
         </receiver>
 
     </application>

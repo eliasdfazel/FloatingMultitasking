@@ -2,7 +2,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 5/18/20 2:34 PM
+  ~ Last modified 11/12/20 11:27 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -122,6 +122,7 @@
     <string name="automation">Automation Features</string>
     <string name="smartCategory">Smart Features</string>
     <string name="smartTitle">Intelligent Services</string>
+    <string name="floatingSearch">Floating Search</string>
     <string name="smartSummary">Let Me Know…</string>
     <string name="smartPermission">
         <![CDATA[
