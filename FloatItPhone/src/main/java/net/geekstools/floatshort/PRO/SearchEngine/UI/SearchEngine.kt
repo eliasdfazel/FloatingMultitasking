@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/11/20 10:46 AM
+ * Last modified 11/12/20 10:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -95,17 +95,16 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
 
         val searchEngineViewModel: SearchEngineViewModel = ViewModelProvider(activity).get(SearchEngineViewModel::class.java)
 
-        searchEngineViewModel.allSearchData.observe(activity,
-                Observer { searchAdapterItems ->
+        searchEngineViewModel.allSearchData.observe(activity, Observer { searchAdapterItems ->
 
-                    val searchRecyclerViewAdapter = SearchEngineAdapter(context, searchAdapterItems)
+            val searchRecyclerViewAdapter = SearchEngineAdapter(context, searchAdapterItems)
 
-                    activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+            activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
-                    if (searchAdapterItems.size > 0) {
-                        setupSearchView(searchRecyclerViewAdapter)
-                    }
-                })
+            if (searchAdapterItems.size > 0) {
+                setupSearchView(searchRecyclerViewAdapter)
+            }
+        })
 
         searchEngineViewModel.viewModelScope.launch {
 
