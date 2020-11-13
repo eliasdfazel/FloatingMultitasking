@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/11/20 10:51 AM
+ * Last modified 11/13/20 4:30 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -4343,7 +4343,7 @@ public class FunctionsClassLegacy {
 
     public boolean searchEngineSubscribed() {
 
-        return (BuildConfig.DEBUG) ? false :
+        return (BuildConfig.DEBUG) ? true :
                 readPreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSearchEngines, false);
     }
 

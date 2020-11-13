@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/13/20 4:27 AM
+ * Last modified 11/13/20 4:38 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,13 +15,12 @@ import android.app.WallpaperManager
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
-import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
-import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
+import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.databinding.SearchEngineWidgetActivityBinding
 
@@ -36,7 +35,16 @@ class WidgetActivity : AppCompatActivity() {
 
         val functionsClassLegacy = FunctionsClassLegacy(applicationContext)
 
+       val preferencesIO = PreferencesIO(applicationContext)
+
         val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())
+        loadCustomIcons.load()
+
+        functionsClassLegacy.loadSavedColor()
+        functionsClassLegacy.checkLightDarkTheme()
+
+        PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
+        PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
 
         functionsClassLegacy.doVibrate(159)
 

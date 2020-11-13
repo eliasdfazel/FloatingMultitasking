@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/12/20 10:41 AM
+ * Last modified 11/13/20 4:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -74,7 +74,8 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                    private val fileIO: FileIO,
                    private val floatingServices: FloatingServices,
                    private val customIcons: LoadCustomIcons?,
-                   private val firebaseAuth: FirebaseAuth) {
+                   private val firebaseAuth: FirebaseAuth,
+                   private val widgetInvoked: Boolean = false) {
 
     private val inputMethodManager: InputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
