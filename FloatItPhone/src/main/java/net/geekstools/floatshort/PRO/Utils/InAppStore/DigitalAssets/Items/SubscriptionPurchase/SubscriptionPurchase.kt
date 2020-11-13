@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:11 AM
+ * Last modified 11/13/20 4:09 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -182,84 +182,87 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
 
                                     subscriptionPurchaseFlow(skuDetailsListInApp[0])
 
-                                    if (listOfItems[0] == InAppBillingData.SKU.InAppItemDonation) {
+                                    if (listOfItems.isNotEmpty()) {
+                                        if (listOfItems[0] == InAppBillingData.SKU.InAppItemDonation) {
 
-                                        inAppBillingSubscriptionPurchaseViewBinding.itemTitleView.visibility = View.GONE
-                                        inAppBillingSubscriptionPurchaseViewBinding.itemDescriptionView.text =
-                                                Html.fromHtml("<br/>" +
-                                                        "<big>${skuDetailsListInApp[0].title}</big>" +
-                                                        "<br/>" +
-                                                        "<br/>" +
-                                                        "${skuDetailsListInApp[0].description}" +
-                                                        "<br/>")
-
-                                        (inAppBillingSubscriptionPurchaseViewBinding
-                                                .centerPurchaseButton.root as MaterialButton).text = getString(R.string.donate)
-                                        (inAppBillingSubscriptionPurchaseViewBinding
-                                                .bottomPurchaseButton.root as MaterialButton).visibility = View.INVISIBLE
-
-                                        inAppBillingSubscriptionPurchaseViewBinding.itemScreenshotsView.visibility = View.GONE
-
-                                    } else {
-
-                                        inAppBillingSubscriptionPurchaseViewBinding.itemTitleView.text = (listOfItems[0].convertToItemTitle())
-
-                                        val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-                                        firebaseRemoteConfig.setConfigSettingsAsync(FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build())
-                                        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
-                                        firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
-
-                                            inAppBillingSubscriptionPurchaseViewBinding
-                                                    .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigDescriptionKey()))
+                                            inAppBillingSubscriptionPurchaseViewBinding.itemTitleView.visibility = View.GONE
+                                            inAppBillingSubscriptionPurchaseViewBinding.itemDescriptionView.text =
+                                                    Html.fromHtml("<br/>" +
+                                                            "<big>${skuDetailsListInApp[0].title}</big>" +
+                                                            "<br/>" +
+                                                            "<br/>" +
+                                                            "${skuDetailsListInApp[0].description}" +
+                                                            "<br/>")
 
                                             (inAppBillingSubscriptionPurchaseViewBinding
-                                                    .centerPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigPriceInformation())
+                                                    .centerPurchaseButton.root as MaterialButton).text = getString(R.string.donate)
                                             (inAppBillingSubscriptionPurchaseViewBinding
-                                                    .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigPriceInformation())
+                                                    .bottomPurchaseButton.root as MaterialButton).visibility = View.INVISIBLE
 
-                                            screenshotsNumber = firebaseRemoteConfig.getLong(listOfItems[0].convertToRemoteConfigScreenshotNumberKey()).toInt()
+                                            inAppBillingSubscriptionPurchaseViewBinding.itemScreenshotsView.visibility = View.GONE
 
-                                            for (i in 1..screenshotsNumber) {
-                                                val firebaseStorage = FirebaseStorage.getInstance()
-                                                val firebaseStorageReference = firebaseStorage.reference
-                                                val storageReference = firebaseStorageReference
-                                                        .child("Assets/Images/Screenshots/${listOfItems[0].convertToStorageScreenshotsDirectory()}/IAP.Demo/${listOfItems[0].convertToStorageScreenshotsFileName(i)}")
-                                                storageReference.downloadUrl.addOnSuccessListener { screenshotLink ->
+                                        } else {
 
-                                                    requestManager
-                                                            .load(screenshotLink)
-                                                            .diskCacheStrategy(DiskCacheStrategy.DATA)
-                                                            .addListener(object : RequestListener<Drawable> {
-                                                                override fun onLoadFailed(glideException: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                            inAppBillingSubscriptionPurchaseViewBinding.itemTitleView.text = (listOfItems[0].convertToItemTitle())
 
-                                                                    return false
-                                                                }
+                                            val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+                                            firebaseRemoteConfig.setConfigSettingsAsync(FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build())
+                                            firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
+                                            firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
 
-                                                                override fun onResourceReady(resource: Drawable, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                                                                    glideLoadCounter++
+                                                inAppBillingSubscriptionPurchaseViewBinding
+                                                        .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigDescriptionKey()))
 
-                                                                    val beforeToken: String = screenshotLink.toString().split("?alt=media&token=")[0]
-                                                                    val drawableIndex = beforeToken[beforeToken.length - 5].toString().toInt()
+                                                (inAppBillingSubscriptionPurchaseViewBinding
+                                                        .centerPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigPriceInformation())
+                                                (inAppBillingSubscriptionPurchaseViewBinding
+                                                        .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigPriceInformation())
 
-                                                                    mapIndexDrawable[drawableIndex] = resource
-                                                                    mapIndexURI[drawableIndex] = screenshotLink
+                                                screenshotsNumber = firebaseRemoteConfig.getLong(listOfItems[0].convertToRemoteConfigScreenshotNumberKey()).toInt()
 
-                                                                    if (glideLoadCounter == screenshotsNumber) {
+                                                for (i in 1..screenshotsNumber) {
+                                                    val firebaseStorage = FirebaseStorage.getInstance()
+                                                    val firebaseStorageReference = firebaseStorage.reference
+                                                    val storageReference = firebaseStorageReference
+                                                            .child("Assets/Images/Screenshots/${listOfItems[0].convertToStorageScreenshotsDirectory()}/IAP.Demo/${listOfItems[0].convertToStorageScreenshotsFileName(i)}")
+                                                    storageReference.downloadUrl.addOnSuccessListener { screenshotLink ->
 
-                                                                        setScreenshots()
+                                                        requestManager
+                                                                .load(screenshotLink)
+                                                                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                                                                .addListener(object : RequestListener<Drawable> {
+                                                                    override fun onLoadFailed(glideException: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+
+                                                                        return false
                                                                     }
 
-                                                                    return false
-                                                                }
+                                                                    override fun onResourceReady(resource: Drawable, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                                                                        glideLoadCounter++
 
-                                                            }).submit()
+                                                                        val beforeToken: String = screenshotLink.toString().split("?alt=media&token=")[0]
+                                                                        val drawableIndex = beforeToken[beforeToken.length - 5].toString().toInt()
+
+                                                                        mapIndexDrawable[drawableIndex] = resource
+                                                                        mapIndexURI[drawableIndex] = screenshotLink
+
+                                                                        if (glideLoadCounter == screenshotsNumber) {
+
+                                                                            setScreenshots()
+                                                                        }
+
+                                                                        return false
+                                                                    }
+
+                                                                }).submit()
+                                                    }
                                                 }
+
+                                            }.addOnFailureListener {
+
                                             }
-
-                                        }.addOnFailureListener {
-
                                         }
                                     }
+
                                 }
                             }
                         }
@@ -279,6 +282,8 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
 
     override fun onPause() {
         super.onPause()
+
+        billingClient.endConnection()
 
         requestManager.pauseAllRequests()
     }

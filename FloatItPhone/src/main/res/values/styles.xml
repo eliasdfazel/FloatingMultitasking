@@ -2,7 +2,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 11/12/20 12:20 PM
+  ~ Last modified 11/13/20 4:17 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -286,12 +286,12 @@
         <item name="colorControlActivated">@color/default_color_light</item>
     </style>
 
-    <style name="SearchEngineWidget" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="SearchEngineWidget" parent="@style/GeeksEmpire.Material">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/default_color_transparent</item>
 
-        <item name="android:navigationBarColor">@color/default_color_transparent</item>
-        <item name="android:statusBarColor">@color/default_color_transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
 
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
