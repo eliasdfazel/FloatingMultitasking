@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/13/20 4:43 AM
+ * Last modified 11/13/20 8:09 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -75,7 +75,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                    private val floatingServices: FloatingServices,
                    private val customIcons: LoadCustomIcons?,
                    private val firebaseAuth: FirebaseAuth,
-                   private val widgetInvoked: Boolean = false) {
+                   private val requestFocus: Boolean = false) {
 
     private val inputMethodManager: InputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -251,8 +251,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
             functionsClassLegacy.manipulateColor(PublicVariable.primaryColor, 3.00f)
         })
 
-        layerDrawableSearchIcon?.setLayerInset(2,
-                functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13))
+        layerDrawableSearchIcon?.setLayerInset(2, functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13))
 
         searchEngineViewBinding.root.visibility = View.VISIBLE
 
@@ -267,6 +266,14 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
         val backgroundTemporaryInput = layerDrawableBackgroundInput?.findDrawableByLayerId(R.id.backgroundTemporary) as GradientDrawable?
         backgroundTemporaryInput?.setTint(PublicVariable.colorLightDark)
         searchEngineViewBinding.textInputSearchView.background = layerDrawableBackgroundInput
+
+        if (requestFocus) {
+
+            searchEngineViewBinding.searchView.post {
+                performSearchEngine(backgroundTemporaryInput)
+            }
+
+        }
 
         setupSearchEngineProcess(backgroundTemporaryInput)
     }

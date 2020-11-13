@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 11/13/20 4:40 AM
+  ~ Last modified 11/13/20 8:43 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -374,6 +374,8 @@
             android:noHistory="true"
             android:exported="true"
             android:excludeFromRecents="true"
+            android:supportsPictureInPicture="true"
+            android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/SearchEngineWidget"/>
 

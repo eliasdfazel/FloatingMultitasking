@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/13/20 4:38 AM
+ * Last modified 11/13/20 7:53 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -40,8 +40,8 @@ class WidgetActivity : AppCompatActivity() {
         val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())
         loadCustomIcons.load()
 
-        functionsClassLegacy.loadSavedColor()
         functionsClassLegacy.checkLightDarkTheme()
+        functionsClassLegacy.loadSavedColor()
 
         PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
@@ -74,7 +74,8 @@ class WidgetActivity : AppCompatActivity() {
                 fileIO = FileIO(applicationContext),
                 floatingServices = FloatingServices(applicationContext),
                 customIcons = loadCustomIcons,
-                firebaseAuth = Firebase.auth).apply {
+                firebaseAuth = Firebase.auth,
+                requestFocus = true).apply {
 
             initializeSearchEngineData()
         }

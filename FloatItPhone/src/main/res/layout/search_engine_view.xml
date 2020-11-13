@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright © 2020 By Geeks Empire.
   ~
-  ~ Created by Elias Fazel on 3/24/20 1:15 PM
-  ~ Last modified 3/24/20 12:41 PM
+  ~ Created by Elias Fazel
+  ~ Last modified 11/13/20 8:34 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -23,6 +23,7 @@
         android:hint="@string/searchHint"
         android:textColorHint="@color/default_color_light"
         android:visibility="invisible"
+
         apps:boxBackgroundMode="outline"
         apps:boxBackgroundColor="@android:color/transparent"
         apps:boxCornerRadiusTopStart="51dp"
