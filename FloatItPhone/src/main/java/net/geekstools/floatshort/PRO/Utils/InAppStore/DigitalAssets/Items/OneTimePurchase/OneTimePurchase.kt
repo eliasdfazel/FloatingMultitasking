@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:10 AM
+ * Last modified 11/14/20 4:41 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -281,6 +281,8 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
     override fun onDetach() {
         super.onDetach()
+
+        billingClient.endConnection()
 
         listOfItems.clear()
     }
