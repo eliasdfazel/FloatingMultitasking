@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/14/20 4:37 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,7 +10,6 @@
 
 package net.geekstools.floatshort.PRO
 
-import android.R
 import android.content.Intent
 import android.util.TypedValue
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
@@ -20,14 +19,14 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 fun Configurations.checkUserInformation() {
 
-    functionsClassLegacy.savePreference(".UserInformation", "isBetaTester", functionsClassLegacy.applicationVersionName(packageName).contains("[BETA]"))
-    functionsClassLegacy.savePreference(".UserInformation", "installedVersionCode", functionsClassLegacy.applicationVersionCode(packageName))
-    functionsClassLegacy.savePreference(".UserInformation", "installedVersionName", functionsClassLegacy.applicationVersionName(packageName))
-    functionsClassLegacy.savePreference(".UserInformation", "deviceModel", functionsClassLegacy.deviceName)
-    functionsClassLegacy.savePreference(".UserInformation", "userRegion", functionsClassLegacy.countryIso)
+    preferencesIO.savePreference(".UserInformation", "isBetaTester", BuildConfig.VERSION_NAME.contains("[BETA]"))
+    preferencesIO.savePreference(".UserInformation", "installedVersionCode", BuildConfig.VERSION_CODE)
+    preferencesIO.savePreference(".UserInformation", "installedVersionName", BuildConfig.VERSION_NAME)
+    preferencesIO.savePreference(".UserInformation", "deviceModel", functionsClassLegacy.deviceName)
+    preferencesIO.savePreference(".UserInformation", "userRegion", functionsClassLegacy.countryIso)
 
-    if (functionsClassLegacy.applicationVersionName(packageName).contains("[BETA]")) {
-        functionsClassLegacy.saveDefaultPreference("JoinedBetaProgrammer", true)
+    if (BuildConfig.VERSION_NAME.contains("[BETA]")) {
+        preferencesIO.saveDefaultPreference("JoinedBetaProgrammer", true)
     }
 }
 
@@ -49,13 +48,13 @@ fun Configurations.initializeParameterUI() {
     functionsClassLegacy.loadSavedColor()
     functionsClassLegacy.checkLightDarkTheme()
 
-    PublicVariable.floatingSizeNumber = functionsClassLegacy.readDefaultPreference("floatingSize", 39)
+    PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
     PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), this.resources.displayMetrics).toInt()
 }
 
 fun Configurations.triggerOpenProcess() {
 
-    if (functionsClassLegacy.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
+    if (preferencesIO.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
 
         Intent(applicationContext, FoldersConfigurations::class.java).apply {
 
@@ -75,38 +74,42 @@ fun Configurations.triggerOpenProcess() {
 
 fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<String>) {
 
-    if (functionsClassLegacy.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
+    if (frequentAppsArray.isNotEmpty()) {
 
-        if (getFileStreamPath("Frequently").exists()) {
-            fileIO.removeLine(".categoryInfo", "Frequently")
-            deleteFile("Frequently")
+        if (preferencesIO.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
+
+            if (getFileStreamPath("Frequently").exists()) {
+                fileIO.removeLine(".categoryInfo", "Frequently")
+                deleteFile("Frequently")
+            }
+
+            PublicVariable.frequentlyUsedApps = frequentAppsArray
+            PublicVariable.freqLength = frequentAppsArray.size
+
+            for (frequentApp in frequentAppsArray) {
+                fileIO.saveFileAppendLine("Frequently", frequentApp)
+                fileIO.saveFile(frequentApp + "Frequently", frequentApp)
+            }
+
+            fileIO.saveFileAppendLine(".categoryInfo", "Frequently")
+
+            popupApplicationShortcuts.addPopupApplicationShortcuts()
+
+            val categoryIntent = Intent(applicationContext, FoldersConfigurations::class.java)
+            startActivity(categoryIntent)
+        } else {//Floating Shortcuts
+            PublicVariable.frequentlyUsedApps = frequentAppsArray
+            PublicVariable.freqLength = PublicVariable.frequentlyUsedApps.size
+
+            Intent(applicationContext, ApplicationsViewPhone::class.java).apply {
+                putExtra("frequentApps", frequentAppsArray)
+                putExtra("frequentAppsNumbers", frequentAppsArray.size)
+                startActivity(this)
+            }
+
+            popupApplicationShortcuts.addPopupApplicationShortcuts()
         }
 
-        PublicVariable.frequentlyUsedApps = frequentAppsArray
-        PublicVariable.freqLength = frequentAppsArray.size
-
-        for (frequentApp in frequentAppsArray) {
-            fileIO.saveFileAppendLine("Frequently", frequentApp)
-            fileIO.saveFile(frequentApp + "Frequently", frequentApp)
-        }
-
-        fileIO.saveFileAppendLine(".categoryInfo", "Frequently")
-
-        popupApplicationShortcuts.addPopupApplicationShortcuts()
-
-        val categoryIntent = Intent(applicationContext, FoldersConfigurations::class.java)
-        startActivity(categoryIntent)
-    } else {//Floating Shortcuts
-        PublicVariable.frequentlyUsedApps = frequentAppsArray
-        PublicVariable.freqLength = PublicVariable.frequentlyUsedApps.size
-
-        Intent(applicationContext, ApplicationsViewPhone::class.java).apply {
-            putExtra("frequentApps", frequentAppsArray)
-            putExtra("frequentAppsNumbers", frequentAppsArray.size)
-            startActivity(this)
-        }
-
-        popupApplicationShortcuts.addPopupApplicationShortcuts()
     }
 
 }

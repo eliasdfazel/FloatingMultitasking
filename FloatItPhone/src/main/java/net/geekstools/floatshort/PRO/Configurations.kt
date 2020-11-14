@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 11/14/20 4:37 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -32,16 +32,21 @@ import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryAll
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
 import java.util.*
-import kotlin.collections.ArrayList
 
 class Configurations : AppCompatActivity() {
 
     val functionsClassLegacy: FunctionsClassLegacy by lazy {
         FunctionsClassLegacy(applicationContext)
     }
+
     val fileIO: FileIO by lazy {
         FileIO(applicationContext)
     }
+
+    val preferencesIO: PreferencesIO by lazy {
+        PreferencesIO(applicationContext)
+    }
+
     private val systemInformation: SystemInformation by lazy {
         SystemInformation(applicationContext)
     }
@@ -78,7 +83,7 @@ class Configurations : AppCompatActivity() {
             PublicVariable.Stable = false
         }
 
-        if (functionsClassLegacy.returnAPI() >= 26) {
+        if (Build.VERSION.SDK_INT >= 26) {
             if (!Settings.canDrawOverlays(applicationContext)
                     || !getSharedPreferences(".Configuration", Context.MODE_PRIVATE).getBoolean("Permissions", false)) {
 
@@ -137,12 +142,10 @@ class Configurations : AppCompatActivity() {
 
         val smartFeatures: SmartFeatures = SmartFeatures()
 
-        var frequentlyUsedApplications: List<String> = ArrayList()
-
-        frequentlyUsedApplications = smartFeatures.letMeKnow(this@Configurations, 25, (86400000 * 7).toLong(), System.currentTimeMillis(),
+        smartFeatures.letMeKnow(this@Configurations, 25, (86400000 * 7).toLong(), System.currentTimeMillis(),
                 object : SmartFeaturesResult {
 
-                    override fun frequentlyUsedApplicationsReady(frequentlyUsedApplications: List<String>) {
+                    override fun frequentlyUsedApplicationsReady(frequentlyUsedApplications: List<String>?) {
                         super.frequentlyUsedApplicationsReady(frequentlyUsedApplications)
 
                         sharedPreferences.edit().apply {

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/26/20 5:57 AM
+ * Last modified 11/14/20 4:31 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.map
 import java.util.*
 
 interface SmartFeaturesResult {
-    fun frequentlyUsedApplicationsReady(frequentlyUsedApplications: List<String>) {}
+    fun frequentlyUsedApplicationsReady(frequentlyUsedApplications: List<String>?) {}
 }
 
 class SmartFeatures {
