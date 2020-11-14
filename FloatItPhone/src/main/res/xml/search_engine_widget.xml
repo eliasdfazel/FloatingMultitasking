@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 11/12/20 11:06 AM
+  ~ Last modified 11/14/20 4:11 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -13,6 +13,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="77dp"
     android:minHeight="77dp"
+    android:previewImage="@drawable/search_engine_widget_background"
     android:updatePeriodMillis="0"
     android:initialLayout="@layout/search_engine_widget_view">
 </appwidget-provider>
