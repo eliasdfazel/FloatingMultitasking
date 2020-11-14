@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/14/20 4:37 AM
+ * Last modified 11/14/20 11:09 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -59,6 +59,8 @@ class Configurations : AppCompatActivity() {
         FirebaseAnalytics.getInstance(applicationContext)
     }
 
+    val smartFeatures: SmartFeatures = SmartFeatures()
+
     private val sharedPreferences: SharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(applicationContext)
     }
@@ -101,7 +103,7 @@ class Configurations : AppCompatActivity() {
             }
         }
 
-        if (functionsClassLegacy.UsageStatsEnabled()) {
+        if (smartFeatures.usageStatsEnabled(applicationContext)) {
 
             retrieveFrequentlyUsedApplications()
 

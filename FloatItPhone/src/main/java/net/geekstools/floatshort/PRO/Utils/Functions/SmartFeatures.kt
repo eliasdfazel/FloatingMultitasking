@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/14/20 4:31 AM
+ * Last modified 11/14/20 11:08 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,8 +10,10 @@
 
 package net.geekstools.floatshort.PRO.Utils.Functions
 
+import android.app.AppOpsManager
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import android.os.Process
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
@@ -24,6 +26,15 @@ interface SmartFeaturesResult {
 }
 
 class SmartFeatures {
+
+    fun usageStatsEnabled(context: Context): Boolean {
+
+        val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+
+        val modeAppOpsManager = appOpsManager.checkOp("android:get_usage_stats", Process.myUid(), context.packageName)
+
+        return (modeAppOpsManager == AppOpsManager.MODE_ALLOWED)
+    }
 
     /**
      * ‪86400000 = 24h --- 82800000 = 23h‬
@@ -38,8 +49,8 @@ class SmartFeatures {
                         .queryUsageStats(UsageStatsManager.INTERVAL_BEST,
                                 System.currentTimeMillis() - startTime,
                                 endTime)
-                queryUsageStats.sortWith(Comparator {
-                    left, right -> right.totalTimeInForeground.compareTo(left.totalTimeInForeground)
+                queryUsageStats.sortWith(Comparator { left, right ->
+                    right.totalTimeInForeground.compareTo(left.totalTimeInForeground)
                 })
 
                 val functionsClassApplicationsData = ApplicationsData(context)

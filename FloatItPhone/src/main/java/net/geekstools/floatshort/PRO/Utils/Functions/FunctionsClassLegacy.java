@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/13/20 4:30 AM
+ * Last modified 11/14/20 11:05 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1111,6 +1111,7 @@ public class FunctionsClassLegacy {
         return false;
     }
 
+    @Deprecated
     public boolean UsageStatsEnabled() {
         AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
         int mode = appOps.checkOp("android:get_usage_stats", android.os.Process.myUid(), context.getPackageName());
