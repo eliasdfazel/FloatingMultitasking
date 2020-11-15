@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/11/20 10:45 AM
+ * Last modified 11/15/20 5:14 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -138,7 +138,9 @@ class NotificationListener : NotificationListenerService() {
                             functionsClassLegacy.bitmapToDrawable(statusBarNotification.notification.largeIcon)
 
                         } catch (e: Exception) {
+
                             functionsClassLegacy.applicationIcon(notificationPackage)
+
                         }
                     }
 
