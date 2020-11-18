@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 11/18/20 6:19 AM
+  ~ Last modified 11/18/20 7:59 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -567,7 +567,7 @@
         <!-- Notification Tile -->
         <service
             android:name=".Utils.RemoteTask.Create.Tiles.RecoveryShortcutsTile"
-            android:icon="@drawable/alias_shortcuts_recovery"
+            android:icon="@drawable/widget_shortcuts_recovery"
             android:label="@string/recover_apps"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
@@ -577,7 +577,7 @@
         </service>
         <service
             android:name=".Utils.RemoteTask.Create.Tiles.RecoveryFoldersTile"
-            android:icon="@drawable/alias_categories_recovery"
+            android:icon="@drawable/widget_categories_recovery"
             android:label="@string/recover_folder"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
@@ -587,7 +587,7 @@
         </service>
         <service
             android:name=".Utils.RemoteTask.Create.Tiles.RecoveryWidgetsTile"
-            android:icon="@drawable/alias_widgets"
+            android:icon="@drawable/widget_widgets_recovery"
             android:label="@string/recover_widgets"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
@@ -597,7 +597,7 @@
         </service>
         <service
             android:name=".Utils.RemoteTask.Create.Tiles.RecoveryAllTile"
-            android:icon="@drawable/draw_recovery"
+            android:icon="@drawable/w_recovery"
             android:label="@string/recover_all"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
