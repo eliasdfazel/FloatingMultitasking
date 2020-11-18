@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 11/18/20 6:17 AM
+  ~ Last modified 11/18/20 6:19 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -578,7 +578,7 @@
         <service
             android:name=".Utils.RemoteTask.Create.Tiles.RecoveryFoldersTile"
             android:icon="@drawable/alias_categories_recovery"
-            android:label="@string/recover_apps"
+            android:label="@string/recover_folder"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action
@@ -588,7 +588,7 @@
         <service
             android:name=".Utils.RemoteTask.Create.Tiles.RecoveryWidgetsTile"
             android:icon="@drawable/alias_widgets"
-            android:label="@string/recover_apps"
+            android:label="@string/recover_widgets"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action
@@ -598,7 +598,7 @@
         <service
             android:name=".Utils.RemoteTask.Create.Tiles.RecoveryAllTile"
             android:icon="@drawable/draw_recovery"
-            android:label="@string/recover_apps"
+            android:label="@string/recover_all"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action
