@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/19/20 8:02 AM
+ * Last modified 11/19/20 8:14 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -90,7 +90,7 @@ class BootRecoveryReceiver : BroadcastReceiver() {
                                 context.startService(categoryRecovery)
                             }
 
-                        }, 3000)
+                        }, 2000)
 
                     }
                     BootRecovery.Mode.RECOVER_ALL -> {
