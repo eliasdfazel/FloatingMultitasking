@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/19/20 7:52 AM
+ * Last modified 11/19/20 8:26 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -126,7 +126,7 @@ class RemoveAll : Service() {
         Intent(applicationContext, PopupOptionsFloatingShortcuts::class.java).apply {
             putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
 
-            startService(this@apply)
+            stopService(this@apply)
         }
 
         this@RemoveAll.stopSelf()
