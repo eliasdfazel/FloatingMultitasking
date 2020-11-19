@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 11/18/20 7:59 AM
+  ~ Last modified 11/19/20 8:02 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -643,15 +643,6 @@
             android:name=".Automation.Receivers.ColorReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.WALLPAPER_CHANGED"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name=".Automation.Receivers.BootRecoverReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>

@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 5/24/20 8:00 PM
+ * Last modified 11/19/20 7:52 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -15,6 +15,7 @@ import android.os.IBinder
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.*
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.*
+import net.geekstools.floatshort.PRO.Shortcuts.PopupDialogue.PopupOptionsFloatingShortcuts
 import net.geekstools.floatshort.PRO.Widgets.FloatingServices.WidgetUnlimitedFloating
 
 class RemoveAll : Service() {
@@ -116,6 +117,13 @@ class RemoveAll : Service() {
 
         /*Frequently*/
         Intent(applicationContext, FloatingShortcutsForFrequentlyApplications::class.java).apply {
+            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
+
+            startService(this@apply)
+        }
+
+        /*PopupOptionsFloatingShortcuts*/
+        Intent(applicationContext, PopupOptionsFloatingShortcuts::class.java).apply {
             putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
 
             startService(this@apply)

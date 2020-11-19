@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/11/20 10:45 AM
+ * Last modified 11/19/20 8:06 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -381,13 +381,14 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         boot.setOnPreferenceClickListener {
             val remoteOptions = resources.getStringArray(R.array.Boot)
-            var alertDialogBuilder: AlertDialog.Builder? = null
-            if (PublicVariable.themeLightDark === true) {
-                alertDialogBuilder = AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light)
-            } else if (PublicVariable.themeLightDark === false) {
-                alertDialogBuilder = AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark)
+            val alertDialogBuilder: AlertDialog.Builder = if (PublicVariable.themeLightDark) {
+                AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light)
+            } else if (!PublicVariable.themeLightDark) {
+                AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark)
+            } else {
+                AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light)
             }
-            alertDialogBuilder!!.setTitle(getString(R.string.boot))
+            alertDialogBuilder .setTitle(getString(R.string.boot))
             alertDialogBuilder.setSingleChoiceItems(remoteOptions, sharedPreferences.getString("boot", "1")!!.toInt(), null)
             alertDialogBuilder.setPositiveButton(android.R.string.ok) { dialog, whichButton ->
                 val editor = sharedPreferences.edit()
