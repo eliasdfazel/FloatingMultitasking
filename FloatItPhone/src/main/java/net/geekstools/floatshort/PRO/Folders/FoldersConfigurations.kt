@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/11/20 10:49 AM
+ * Last modified 12/6/20 7:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -39,6 +39,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.billingclient.api.BillingClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -123,6 +124,8 @@ class FoldersConfigurations : AppCompatActivity(),
     private lateinit var waitingDialogue: Dialog
 
     private lateinit var waitingDialogueLiveData: WaitingDialogueLiveData
+
+    private var billingClient: BillingClient? = null
 
     private lateinit var foldersConfigurationViewBinding: FoldersConfigurationViewBinding
 
@@ -431,7 +434,7 @@ class FoldersConfigurations : AppCompatActivity(),
         }
 
         //In-App Billing
-        PurchasesCheckpoint(this@FoldersConfigurations).trigger()
+        billingClient = PurchasesCheckpoint(this@FoldersConfigurations).trigger()
 
         if (BuildConfig.VERSION_NAME.contains("[BETA]")
                 && !foldersConfigurationsDependencyInjection.functionsClassLegacy.readPreference(".UserInformation", "SubscribeToBeta", false)) {
@@ -563,6 +566,7 @@ class FoldersConfigurations : AppCompatActivity(),
 
     override fun onPause() {
         super.onPause()
+
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         firebaseUser?.reload()?.addOnCompleteListener {
             firebaseAuth.addAuthStateListener { firebaseAuth ->
@@ -593,6 +597,9 @@ class FoldersConfigurations : AppCompatActivity(),
         }
 
         foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
+
+        billingClient?.endConnection()
+
     }
 
     override fun onDestroy() {

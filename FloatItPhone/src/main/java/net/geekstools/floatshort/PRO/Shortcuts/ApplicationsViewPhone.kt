@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/11/20 10:49 AM
+ * Last modified 12/6/20 7:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -47,6 +47,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.android.billingclient.api.BillingClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -145,6 +146,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
     private val loadCustomIcons: LoadCustomIcons by lazy {
         LoadCustomIcons(applicationContext, applicationsViewPhoneDependencyInjection.functionsClassLegacy.customIconPackageName())
     }
+
+    private var billingClient: BillingClient? = null
 
     private lateinit var hybridApplicationViewBinding: HybridApplicationViewBinding
 
@@ -449,7 +452,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         //In-App Billing
-        PurchasesCheckpoint(this@ApplicationsViewPhone).trigger()
+        billingClient = PurchasesCheckpoint(this@ApplicationsViewPhone).trigger()
 
         firebaseAuth = FirebaseAuth.getInstance()
 
@@ -587,6 +590,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
     override fun onPause() {
         super.onPause()
+
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         firebaseUser?.reload()?.addOnCompleteListener {
             firebaseAuth.addAuthStateListener { firebaseAuth ->
@@ -620,11 +624,16 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
+
+        billingClient?.endConnection()
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
+
         PublicVariable.inMemory = false
+
     }
 
     override fun onBackPressed() {
