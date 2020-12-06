@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 12/6/20 7:07 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -19,11 +19,14 @@ import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.NetworkCheckpoint
+import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 
 class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesUpdatedListener {
 
     val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(appCompatActivity)
+
+    val preferencesIO: PreferencesIO = PreferencesIO(appCompatActivity)
 
     val networkCheckpoint: NetworkCheckpoint by lazy {
         NetworkCheckpoint(appCompatActivity)
@@ -45,14 +48,14 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
 
                     billingResult?.let {
                         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                            functionsClassLegacy.savePreference(".PurchasedItem", InAppBillingData.SKU.InAppItemFloatingWidgets, false)
+                            preferencesIO.savePreference(".PurchasedItem", InAppBillingData.SKU.InAppItemFloatingWidgets, false)
 
                             billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList?.let { purchases ->
 
                                 for (purchase in purchases) {
                                     PrintDebug("*** Purchased Item: $purchase ***")
 
-                                    functionsClassLegacy.savePreference(".PurchasedItem", purchase.sku, true)
+                                    preferencesIO.savePreference(".PurchasedItem", purchase.sku, true)
 
                                     //Consume Donation
                                     if (purchase.sku == InAppBillingData.SKU.InAppItemDonation
@@ -62,7 +65,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
                                             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                                                 PrintDebug("*** Consumed Item: $purchaseToken ***")
 
-                                                functionsClassLegacy.savePreference(".PurchasedItem", purchase.sku, false)
+                                                preferencesIO.savePreference(".PurchasedItem", purchase.sku, false)
                                             }
                                         }
                                         val consumeParams = ConsumeParams.newBuilder()
@@ -91,15 +94,15 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
 
                     billingResult?.let {
                         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                            functionsClassLegacy.savePreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSecurityServices, false)
-                            functionsClassLegacy.savePreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSearchEngines, false)
+                            preferencesIO.savePreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSecurityServices, false)
+                            preferencesIO.savePreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSearchEngines, false)
 
                             billingClient.queryPurchases(BillingClient.SkuType.SUBS).purchasesList?.let { purchases ->
 
                                 for (purchase in purchases) {
                                     PrintDebug("*** Subscribed Item: $purchase ***")
 
-                                    functionsClassLegacy.savePreference(".SubscribedItem", purchase.sku, true)
+                                    preferencesIO.savePreference(".SubscribedItem", purchase.sku, true)
 
                                     PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.SUBS)
                                 }
