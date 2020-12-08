@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/11/20 10:53 AM
+ * Last modified 12/8/20 11:42 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,6 +14,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.WallpaperManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -30,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceManager
+import net.geekstools.floatshort.PRO.Checkpoint
 import net.geekstools.floatshort.PRO.R
 
 class ApplicationThemeController (private val context: Context) {
@@ -249,10 +251,33 @@ class ApplicationThemeController (private val context: Context) {
 
         fun setWallpaperToBackground(instanceOfActivity: Activity) {
 
-            val wallpaperManager = WallpaperManager.getInstance(context)
-            val wallpaperManagerDrawable = wallpaperManager.drawable as BitmapDrawable
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            instanceOfActivity.window.decorView.background = wallpaperManagerDrawable
+                if (instanceOfActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
+                        || instanceOfActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+
+                    instanceOfActivity.startActivity(Intent(instanceOfActivity, Checkpoint::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+
+                } else {
+
+                    val wallpaperManager = WallpaperManager.getInstance(context)
+                    val wallpaperManagerDrawable = wallpaperManager.drawable as BitmapDrawable
+
+                    instanceOfActivity.window.decorView.background = wallpaperManagerDrawable
+
+                }
+
+            } else {
+
+                val wallpaperManager = WallpaperManager.getInstance(context)
+                val wallpaperManagerDrawable = wallpaperManager.drawable as BitmapDrawable
+
+                instanceOfActivity.window.decorView.background = wallpaperManagerDrawable
+
+            }
+
+
 
         }
 
