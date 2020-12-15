@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/14/20 4:41 AM
+ * Last modified 12/15/20 9:49 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -44,7 +44,6 @@ import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTim
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchaseFlowController
 import net.geekstools.floatshort.PRO.databinding.InAppBillingOneTimePurchaseViewBinding
 import java.util.*
-import kotlin.collections.ArrayList
 
 class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListener {
 
@@ -61,7 +60,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
         Glide.with(requireContext())
     }
 
-    private val listOfItems: ArrayList<String> = ArrayList<String>()
+    private var itemToPurchase: String = InAppBillingData.SKU.InAppItemDonation
 
     val mapIndexDrawable = TreeMap<Int, Drawable>()
     val mapIndexURI = TreeMap<Int, Uri>()
@@ -102,7 +101,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        listOfItems.add(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
+        itemToPurchase = (arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
     }
 
     override fun onCreateView(layoutInflater: LayoutInflater, viewGroup: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -128,7 +127,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
             override fun onBillingSetupFinished(billingResult: BillingResult) {
 
                 val skuDetailsParams = SkuDetailsParams.newBuilder()
-                        .setSkusList(listOfItems)
+                        .setSkusList(listOf(itemToPurchase))
                         .setType(BillingClient.SkuType.INAPP)
                         .build()
 
@@ -179,7 +178,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
                                 oneTimePurchaseFlow(skuDetailsListInApp[0])
 
-                                if (listOfItems[0] == InAppBillingData.SKU.InAppItemDonation) {
+                                if (itemToPurchase == InAppBillingData.SKU.InAppItemDonation) {
 
                                     inAppBillingOneTimePurchaseViewBinding.itemTitleView.visibility = View.GONE
                                     inAppBillingOneTimePurchaseViewBinding.itemDescriptionView.text =
@@ -199,7 +198,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
                                 } else {
 
-                                    inAppBillingOneTimePurchaseViewBinding.itemTitleView.text = (listOfItems[0].convertToItemTitle())
+                                    inAppBillingOneTimePurchaseViewBinding.itemTitleView.text = (itemToPurchase.convertToItemTitle())
 
                                     val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
                                     firebaseRemoteConfig.setConfigSettingsAsync(FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build())
@@ -207,51 +206,58 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                                     firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
 
                                         inAppBillingOneTimePurchaseViewBinding
-                                                .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigDescriptionKey()))
+                                                .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(itemToPurchase.convertToRemoteConfigDescriptionKey()))
 
                                         (inAppBillingOneTimePurchaseViewBinding
-                                                .centerPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigPriceInformation())
+                                                .centerPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(itemToPurchase.convertToRemoteConfigPriceInformation())
                                         (inAppBillingOneTimePurchaseViewBinding
-                                                .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigPriceInformation())
+                                                .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(itemToPurchase.convertToRemoteConfigPriceInformation())
 
-                                        screenshotsNumber = firebaseRemoteConfig.getLong(listOfItems[0].convertToRemoteConfigScreenshotNumberKey()).toInt()
+                                        val firebaseStorage = FirebaseStorage.getInstance()
+                                        val firebaseStorageReference = firebaseStorage.reference
+                                        firebaseStorageReference
+                                                .child("Assets/Images/Screenshots/${itemToPurchase.convertToStorageScreenshotsDirectory()}/IAP.Demo/")
+                                                .listAll()
+                                                .addOnSuccessListener { itemsStorageReference ->
 
-                                        for (i in 1..screenshotsNumber) {
-                                            val firebaseStorage = FirebaseStorage.getInstance()
-                                            val firebaseStorageReference = firebaseStorage.reference
-                                            val storageReference = firebaseStorageReference
-                                                    .child("Assets/Images/Screenshots/${listOfItems[0].convertToStorageScreenshotsDirectory()}/IAP.Demo/${listOfItems[0].convertToStorageScreenshotsFileName(i)}")
-                                            storageReference.downloadUrl.addOnSuccessListener { screenshotLink ->
+                                                    screenshotsNumber = itemsStorageReference.items.size
 
-                                                requestManager
-                                                        .load(screenshotLink)
-                                                        .diskCacheStrategy(DiskCacheStrategy.DATA)
-                                                        .addListener(object : RequestListener<Drawable> {
-                                                            override fun onLoadFailed(glideException: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                                    itemsStorageReference.items.forEachIndexed { index, storageReference ->
 
-                                                                return false
-                                                            }
+                                                        storageReference.downloadUrl.addOnSuccessListener { screenshotLink ->
 
-                                                            override fun onResourceReady(resource: Drawable, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                                                                glideLoadCounter++
+                                                            requestManager
+                                                                    .load(screenshotLink)
+                                                                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                                                                    .addListener(object : RequestListener<Drawable> {
+                                                                        override fun onLoadFailed(glideException: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
 
-                                                                val beforeToken: String = screenshotLink.toString().split("?alt=media&token=")[0]
-                                                                val drawableIndex = beforeToken[beforeToken.length - 5].toString().toInt()
+                                                                            return false
+                                                                        }
 
-                                                                mapIndexDrawable[drawableIndex] = resource
-                                                                mapIndexURI[drawableIndex] = screenshotLink
+                                                                        override fun onResourceReady(resource: Drawable, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                                                                            glideLoadCounter++
 
-                                                                if (glideLoadCounter == screenshotsNumber) {
+                                                                            val beforeToken: String = screenshotLink.toString().split("?alt=media&token=")[0]
+                                                                            val drawableIndex = beforeToken[beforeToken.length - 5].toString().toInt()
 
-                                                                    setScreenshots()
-                                                                }
+                                                                            mapIndexDrawable[drawableIndex] = resource
+                                                                            mapIndexURI[drawableIndex] = screenshotLink
 
-                                                                return false
-                                                            }
+                                                                            if (glideLoadCounter == screenshotsNumber) {
 
-                                                        }).submit()
-                                            }
-                                        }
+                                                                                setScreenshots()
+                                                                            }
+
+                                                                            return false
+                                                                        }
+
+                                                                    }).submit()
+                                                        }
+
+                                                    }
+
+                                                }
 
                                     }.addOnFailureListener {
 
@@ -284,18 +290,35 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
         billingClient.endConnection()
 
-        listOfItems.clear()
+        itemToPurchase = InAppBillingData.SKU.InAppItemDonation
     }
 
     override fun onClick(view: View?) {
 
         when(view) {
             is ImageView -> {
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse(view.getTag().toString())
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    requireContext().startActivity(this@apply)
+
+                if (view.tag.toString().contains("_Youtube")) {
+
+                    val youtubeVideoId = view.tag.toString().split("/Assets%2FImages%2FScreenshots%2FFloatingWidgets%2FIAP.Demo%2F")[1].split("?alt=media&token")[0].replace("_Youtube0.png", "")
+                    val youtubeLink = "https://www.youtube.com/watch?v=".plus(youtubeVideoId)
+
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(youtubeLink)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        requireContext().startActivity(this@apply)
+                    }
+
+                } else {
+
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(view.getTag().toString())
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        requireContext().startActivity(this@apply)
+                    }
+
                 }
+
             }
         }
     }

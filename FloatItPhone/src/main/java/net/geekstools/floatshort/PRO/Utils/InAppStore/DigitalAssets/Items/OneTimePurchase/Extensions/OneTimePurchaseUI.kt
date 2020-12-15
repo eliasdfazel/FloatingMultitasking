@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/18/20 3:04 AM
+ * Last modified 12/15/20 9:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,7 +28,7 @@ fun OneTimePurchase.setupOneTimePurchaseUI() {
 
 fun OneTimePurchase.setScreenshots() = CoroutineScope(Dispatchers.Main).launch {
 
-    for (i in 1..screenshotsNumber) {
+    for (i in 0..screenshotsNumber) {
         val inAppBillingScreenshots = requireActivity().layoutInflater.inflate(R.layout.in_app_billing_screenshots, null) as RelativeLayout
         val screenshotItemView = inAppBillingScreenshots.findViewById<View>(R.id.screenshotItemView) as ImageView
 

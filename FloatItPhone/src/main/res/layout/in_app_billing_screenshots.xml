@@ -3,7 +3,7 @@
   ~ Copyright © 2020 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/17/20 2:07 AM
+  ~ Last modified 12/15/20 9:18 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -11,12 +11,15 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_gravity="center_vertical">
 
     <ImageView
         android:id="@+id/screenshotItemView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:padding="7dp"
         android:scaleType="fitCenter"
         android:contentDescription="@string/app_name" />

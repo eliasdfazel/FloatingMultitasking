@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/15/20 8:00 AM
+ * Last modified 12/15/20 7:43 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -107,6 +107,7 @@ import androidx.preference.SwitchPreference;
 import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
 import net.geekstools.floatshort.PRO.Automation.Folders.FolderAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
+import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Checkpoint;
 import net.geekstools.floatshort.PRO.Configurations;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFolders;
@@ -4349,7 +4350,7 @@ public class FunctionsClassLegacy {
 
     public boolean floatingWidgetsPurchased() {
 
-        return //(BuildConfig.DEBUG) ? false :
+        return (BuildConfig.DEBUG) ? false :
                 readPreference(".PurchasedItem", InAppBillingData.SKU.InAppItemFloatingWidgets, false);
     }
 
