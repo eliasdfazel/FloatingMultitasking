@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 12/15/20 9:49 AM
+ * Last modified 12/15/20 9:55 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -300,7 +300,10 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
                 if (view.tag.toString().contains("_Youtube")) {
 
-                    val youtubeVideoId = view.tag.toString().split("/Assets%2FImages%2FScreenshots%2FFloatingWidgets%2FIAP.Demo%2F")[1].split("?alt=media&token")[0].replace("_Youtube0.png", "")
+                    val youtubeVideoId = view.tag.toString()
+                            .split("/Assets%2FImages%2FScreenshots%2FFloatingWidgets%2FIAP.Demo%2F")[1]
+                            .split("?alt=media&token")[0]
+                            .split("_Youtube")[0]
                     val youtubeLink = "https://www.youtube.com/watch?v=".plus(youtubeVideoId)
 
                     Intent(Intent.ACTION_VIEW).apply {
