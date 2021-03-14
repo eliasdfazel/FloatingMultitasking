@@ -1,8 +1,8 @@
 /*
- * Copyright © 2020 By Geeks Empire.
+ * Copyright © 2021 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:57 AM
+ * Last modified 12/19/20 4:29 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -57,9 +57,10 @@ data class PreferencesDataUtilFling(var activity: FragmentActivity, var function
 fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
     val currentShape: Int = preferencesDataUtilShape.sharedPreferences.getInt("iconShape", 0)
 
-    val layoutParams = WindowManager.LayoutParams()
     val dialogueWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 377f, preferencesDataUtilShape.activity.resources.displayMetrics).toInt()
     val dialogueHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 387f, preferencesDataUtilShape.activity.resources.displayMetrics).toInt()
+
+    val layoutParams = WindowManager.LayoutParams()
 
     layoutParams.width = dialogueWidth
     layoutParams.height = dialogueHeight

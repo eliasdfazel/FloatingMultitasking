@@ -1,8 +1,8 @@
 /*
- * Copyright © 2020 By Geeks Empire.
+ * Copyright © 2021 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 12/9/20 1:07 AM
+ * Last modified 1/4/21 11:00 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -1017,7 +1017,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         loadInstalledCustomIconPackages().await()
     }
 
-    private fun loadFrequentlyUsedApplications(): Flow<String> =flow() {
+    private fun loadFrequentlyUsedApplications(): Flow<String> = flow() {
 
         val layoutParamsAbove = hybridApplicationViewBinding.searchEngineViewInclude.root.layoutParams as RelativeLayout.LayoutParams
         layoutParamsAbove.addRule(RelativeLayout.ABOVE, R.id.freqList)
