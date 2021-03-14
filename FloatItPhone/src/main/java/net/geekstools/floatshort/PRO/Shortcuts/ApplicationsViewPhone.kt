@@ -2,7 +2,7 @@
  * Copyright © 2021 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 1/4/21 11:00 AM
+ * Last modified 3/14/21 9:55 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -829,9 +829,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         val applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
-            this.action = Intent.ACTION_MAIN
-            this.addCategory(Intent.CATEGORY_LAUNCHER)
-        }, PackageManager.GET_RESOLVED_FILTER)
+            action = Intent.ACTION_MAIN
+            addCategory(Intent.CATEGORY_LAUNCHER)
+        }, PackageManager.MATCH_ALL)
         val applicationInfoListSorted = applicationInfoList.sortedWith(ResolveInfo.DisplayNameComparator(packageManager))
 
         var newChar: String = "A"
@@ -840,16 +840,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
         listOfNewCharOfItemsForIndex.clear()
 
         applicationInfoListSorted.asFlow()
-                .onEach {
-
-                }
                 .filter {
 
                     (packageManager.getLaunchIntentForPackage(it.activityInfo.packageName) != null)
-                }
-                .map {
-
-                    it
                 }
                 .onCompletion {
 
@@ -871,12 +864,16 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     val installedClassName = it.value.activityInfo.name
                     val installedAppName: String? = applicationsViewPhoneDependencyInjection.functionsClassLegacy.activityLabel(it.value.activityInfo)
 
-                    try {
-                        newChar = installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
+                    println(">>> >> > " + installedAppName)
+
+                    newChar = try {
+
+                        installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
+
                     } catch (e: StringIndexOutOfBoundsException) {
                         e.printStackTrace()
 
-                        newChar = "Z"
+                        "Z"
                     }
 
                     if (it.index == 0) {
@@ -906,12 +903,14 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
                     indexSectionsPosition += 1
 
-                    try {
-                        oldChar = installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
+                    oldChar = try {
+
+                        installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
+
                     } catch (e: StringIndexOutOfBoundsException) {
                         e.printStackTrace()
 
-                        oldChar = "Z"
+                        "Z"
                     }
                 }
 
