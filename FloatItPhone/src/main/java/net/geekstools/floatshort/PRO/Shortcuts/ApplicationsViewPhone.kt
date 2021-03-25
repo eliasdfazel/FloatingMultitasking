@@ -2,7 +2,7 @@
  * Copyright © 2021 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 3/14/21 9:55 AM
+ * Last modified 3/25/21 10:30 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -840,6 +840,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         listOfNewCharOfItemsForIndex.clear()
 
         applicationInfoListSorted.asFlow()
+//                .flowOn(Dispatchers.IO)
                 .filter {
 
                     (packageManager.getLaunchIntentForPackage(it.activityInfo.packageName) != null)
