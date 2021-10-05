@@ -1,8 +1,8 @@
 /*
- * Copyright © 2020 By Geeks Empire.
+ * Copyright © 2021 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/14/20 4:37 AM
+ * Last modified 10/5/21, 8:14 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -10,6 +10,7 @@
 
 package net.geekstools.floatshort.PRO
 
+import android.content.Context
 import android.content.Intent
 import android.util.TypedValue
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
@@ -114,13 +115,13 @@ fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<S
 
 }
 
-fun Configurations.indexFloatingShortcuts() {
+fun Configurations.indexFloatingShortcuts(context: Context) {
 
     if (getFileStreamPath(".uFile").exists()) {
 
         fileIO.readFileLinesAsArray(".uFile")?.let {
 
-            val indexingProcess = IndexingProcess()
+            val indexingProcess = IndexingProcess(context)
 
             it.forEach { lineContent ->
 

@@ -1,8 +1,8 @@
 /*
- * Copyright © 2020 By Geeks Empire.
+ * Copyright © 2021 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/29/20 3:58 AM
+ * Last modified 10/5/21, 8:13 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -160,7 +160,7 @@ class RecoveryShortcuts : Service() {
 
     private fun floatingShortcutsRecoveryProcess(applicationsDataLines: Array<String>) {
 
-        FirebaseAppIndex.getInstance().removeAll()
+        FirebaseAppIndex.getInstance(applicationContext).removeAll()
 
         if (functionsClassLegacy.customIconsEnable()) {
             val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())

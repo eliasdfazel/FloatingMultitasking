@@ -3,7 +3,7 @@
   ~ Copyright © 2021 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 3/14/21 10:12 AM
+  ~ Last modified 10/5/21, 8:10 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -83,6 +83,7 @@
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
+            android:exported="true"
             android:theme="@style/Splash.GeeksEmpire">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -157,6 +158,7 @@
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"/>
         <activity
             android:name=".Utils.RemoteTask.Create.DeepLinkedShortcuts"
+            android:exported="true"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter
                 android:autoVerify="true"
@@ -175,6 +177,7 @@
         </activity>
         <activity
             android:name=".Utils.RemoteTask.Create.DeepLinkedFolders"
+            android:exported="true"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter
                 android:autoVerify="true"
@@ -311,6 +314,7 @@
             android:name=".Utils.RemoteTask.Create.FloatingWidgetHomeScreenShortcuts"
             android:excludeFromRecents="true"
             android:noHistory="true"
+            android:exported="false"
             android:theme="@style/Transparent">
             <intent-filter>
                 <action android:name="CREATE_FLOATING_WIDGET_HOME_SCREEN_SHORTCUTS" />
@@ -327,6 +331,7 @@
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:theme="@style/GeeksEmpire.Material"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter
                 android:label="@string/app_name"
@@ -346,6 +351,7 @@
             android:label="@string/app_name"
             android:noHistory="true"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -364,6 +370,7 @@
             android:theme="@style/TransparentInAppUpdate" />
         <activity
             android:name=".Utils.InAppStore.DigitalAssets.InitializeInAppBilling"
+            android:exported="false"
             android:theme="@style/GeeksEmpire.Material.IAP.DARK">
             <intent-filter>
                 <action android:name="In_App_Store"/>
@@ -385,6 +392,7 @@
             android:enabled="false"
             android:icon="@drawable/alias_categories"
             android:label="@string/floatingFolders"
+            android:exported="true"
             android:targetActivity=".Folders.FoldersConfigurations">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -397,6 +405,7 @@
             android:enabled="false"
             android:icon="@drawable/alias_widgets"
             android:label="@string/floatingWidget"
+            android:exported="true"
             android:targetActivity=".Widgets.WidgetConfigurations">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -409,6 +418,7 @@
             android:enabled="false"
             android:icon="@drawable/alias_auto"
             android:label="@string/automation"
+            android:exported="true"
             android:targetActivity=".Automation.Apps.AppAutoFeatures">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -421,6 +431,7 @@
             android:enabled="false"
             android:icon="@drawable/alias_shortcuts_recovery"
             android:label="@string/recoveryShortcuts"
+            android:exported="true"
             android:targetActivity=".Utils.RemoteTask.Create.RecoveryShortcutsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -433,6 +444,7 @@
             android:enabled="false"
             android:icon="@drawable/alias_categories_recovery"
             android:label="@string/recover_folder"
+            android:exported="true"
             android:targetActivity=".Utils.RemoteTask.Create.RecoveryFoldersActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -528,6 +540,7 @@
         <!-- Float It -->
 
         <service
+            android:exported="false"
             android:name=".Utils.RemoteProcess.CloudNotificationHandler">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
@@ -535,6 +548,7 @@
         </service>
         <service
             android:name=".Utils.InteractionObserver.InteractionObserver"
+            android:exported="false"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService"/>
@@ -553,6 +567,7 @@
         <service
             android:name=".Notifications.NotificationListener"
             android:label="@string/app_name"
+            android:exported="false"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService"/>
@@ -571,6 +586,7 @@
             android:name=".Utils.RemoteTask.Create.Tiles.RecoveryShortcutsTile"
             android:icon="@drawable/widget_shortcuts_recovery"
             android:label="@string/recover_apps"
+            android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action
@@ -581,6 +597,7 @@
             android:name=".Utils.RemoteTask.Create.Tiles.RecoveryFoldersTile"
             android:icon="@drawable/widget_categories_recovery"
             android:label="@string/recover_folder"
+            android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action
@@ -591,6 +608,7 @@
             android:name=".Utils.RemoteTask.Create.Tiles.RecoveryWidgetsTile"
             android:icon="@drawable/widget_widgets_recovery"
             android:label="@string/recover_widgets"
+            android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action
@@ -601,6 +619,7 @@
             android:name=".Utils.RemoteTask.Create.Tiles.RecoveryAllTile"
             android:icon="@drawable/w_recovery"
             android:label="@string/recover_all"
+            android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action
@@ -610,6 +629,7 @@
         <!-- Notification Tile -->
 
         <receiver
+            android:exported="false"
             android:name=".Automation.Receivers.ReceiverWifi">
             <intent-filter>
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
@@ -618,6 +638,7 @@
             </intent-filter>
         </receiver>
         <receiver
+            android:exported="false"
             android:name=".Automation.Receivers.ReceiverBluetooth">
             <intent-filter>
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
@@ -626,6 +647,7 @@
             </intent-filter>
         </receiver>
         <receiver
+            android:exported="false"
             android:name=".Automation.Receivers.ReceiverGPS">
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED"/>
@@ -634,6 +656,7 @@
             </intent-filter>
         </receiver>
         <receiver
+            android:exported="false"
             android:name=".Automation.Receivers.ReceiverNFC">
             <intent-filter>
                 <action android:name="android.nfc.action.ADAPTER_STATE_CHANGED"/>
@@ -642,6 +665,7 @@
             </intent-filter>
         </receiver>
         <receiver
+            android:exported="false"
             android:name=".Automation.Receivers.ColorReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.WALLPAPER_CHANGED"/>
@@ -652,6 +676,7 @@
         <receiver
             android:name=".Automation.Alarms.AlarmAlertBroadcastReceiver"/>
         <receiver
+            android:exported="false"
             android:name=".Automation.Receivers.AppsReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED"/>
@@ -660,6 +685,7 @@
             </intent-filter>
         </receiver>
         <receiver
+            android:exported="false"
             android:name=".Automation.Receivers.BootRecoveryReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -671,6 +697,7 @@
         <receiver
             android:label="@string/floatingSearch"
             android:icon="@drawable/search_engine_icon"
+            android:exported="false"
             android:name=".SearchEngine.Widgets.SearchEngineWidget" >
             <intent-filter >
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

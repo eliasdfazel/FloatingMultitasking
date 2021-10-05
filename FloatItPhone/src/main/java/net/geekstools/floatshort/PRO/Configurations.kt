@@ -1,8 +1,8 @@
 /*
- * Copyright © 2020 By Geeks Empire.
+ * Copyright © 2021 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/14/20 11:09 AM
+ * Last modified 10/5/21, 8:16 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -129,7 +129,7 @@ class Configurations : AppCompatActivity() {
             }
         }
 
-        indexFloatingShortcuts()
+        indexFloatingShortcuts(applicationContext)
 
         finish()
     }

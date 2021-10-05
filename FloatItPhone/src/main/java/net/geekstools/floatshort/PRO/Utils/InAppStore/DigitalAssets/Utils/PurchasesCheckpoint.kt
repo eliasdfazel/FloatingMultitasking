@@ -1,8 +1,8 @@
 /*
- * Copyright © 2020 By Geeks Empire.
+ * Copyright © 2021 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 12/6/20 7:07 AM
+ * Last modified 10/5/21, 8:04 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -11,11 +11,9 @@
 package net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.android.billingclient.api.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.NetworkCheckpoint
@@ -50,30 +48,34 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
                         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                             preferencesIO.savePreference(".PurchasedItem", InAppBillingData.SKU.InAppItemFloatingWidgets, false)
 
-                            billingClient.queryPurchases(BillingClient.SkuType.INAPP).purchasesList?.let { purchases ->
+                            appCompatActivity.lifecycleScope.async {
 
-                                for (purchase in purchases) {
-                                    PrintDebug("*** Purchased Item: $purchase ***")
+                                billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP).purchasesList.let { purchases ->
 
-                                    preferencesIO.savePreference(".PurchasedItem", purchase.sku, true)
+                                    for (purchase in purchases) {
+                                        PrintDebug("*** Purchased Item: $purchase ***")
 
-                                    //Consume Donation
-                                    if (purchase.sku == InAppBillingData.SKU.InAppItemDonation
+                                        preferencesIO.savePreference(".PurchasedItem", purchase.skus.first(), true)
+
+                                        //Consume Donation
+                                        if (purchase.skus.first() == InAppBillingData.SKU.InAppItemDonation
                                             && functionsClassLegacy.alreadyDonated()) {
 
-                                        val consumeResponseListener = ConsumeResponseListener { billingResult, purchaseToken ->
-                                            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                                                PrintDebug("*** Consumed Item: $purchaseToken ***")
+                                            val consumeResponseListener = ConsumeResponseListener { billingResult, purchaseToken ->
+                                                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                                                    PrintDebug("*** Consumed Item: $purchaseToken ***")
 
-                                                preferencesIO.savePreference(".PurchasedItem", purchase.sku, false)
+                                                    preferencesIO.savePreference(".PurchasedItem", purchase.skus.first(), false)
+                                                }
                                             }
+                                            val consumeParams = ConsumeParams.newBuilder()
+                                            consumeParams.setPurchaseToken(purchase.purchaseToken)
+                                            billingClient.consumeAsync(consumeParams.build(), consumeResponseListener)
                                         }
-                                        val consumeParams = ConsumeParams.newBuilder()
-                                        consumeParams.setPurchaseToken(purchase.purchaseToken)
-                                        billingClient.consumeAsync(consumeParams.build(), consumeResponseListener)
+
+                                        PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.INAPP)
                                     }
 
-                                    PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.INAPP)
                                 }
 
                             }
@@ -97,16 +99,21 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
                             preferencesIO.savePreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSecurityServices, false)
                             preferencesIO.savePreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSearchEngines, false)
 
-                            billingClient.queryPurchases(BillingClient.SkuType.SUBS).purchasesList?.let { purchases ->
+                            appCompatActivity.lifecycleScope.async {
 
-                                for (purchase in purchases) {
-                                    PrintDebug("*** Subscribed Item: $purchase ***")
+                                billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS).purchasesList.let { purchases ->
 
-                                    preferencesIO.savePreference(".SubscribedItem", purchase.sku, true)
+                                    for (purchase in purchases) {
+                                        PrintDebug("*** Subscribed Item: $purchase ***")
 
-                                    PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.SUBS)
+                                        preferencesIO.savePreference(".SubscribedItem", purchase.skus.first(), true)
+
+                                        PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.SUBS)
+                                    }
                                 }
+
                             }
+
                         }
                     }
                 }
@@ -145,7 +152,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
         fun purchaseAcknowledgeProcess(billingClient: BillingClient, purchase: Purchase, purchaseType: String) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
             if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                PrintDebug("*** ${purchase.sku} Purchase Acknowledged: ${purchase.isAcknowledged} ***")
+                PrintDebug("*** ${purchase.skus.first()} Purchase Acknowledged: ${purchase.isAcknowledged} ***")
 
                 if (!purchase.isAcknowledged) {
 
@@ -154,7 +161,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
 
                     val aPurchaseResult: BillingResult = billingClient.acknowledgePurchase(acknowledgePurchaseParams.build())
 
-                    PrintDebug("*** Purchased Acknowledged Result: ${purchase.sku} -> ${aPurchaseResult.debugMessage} ***")
+                    PrintDebug("*** Purchased Acknowledged Result: ${purchase.skus.first()} -> ${aPurchaseResult.debugMessage} ***")
                 }
             }
         }

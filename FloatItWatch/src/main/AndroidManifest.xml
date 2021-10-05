@@ -3,7 +3,7 @@
   ~ Copyright © 2021 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 3/14/21 10:17 AM
+  ~ Last modified 10/5/21, 8:09 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -65,6 +65,7 @@
         <activity
             android:name=".Configurations"
             android:label="@string/app_name"
+            android:exported="false"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -75,10 +76,12 @@
         <activity
             android:name=".PermissionDialogue"
             android:label="@string/app_name"
+            android:exported="false"
             android:theme="@android:style/Theme.DeviceDefault.Light"/>
         <activity
             android:name=".Preferences.PreferencesUI"
             android:label="@string/settingTitle"
+            android:exported="false"
             android:theme="@android:style/Theme.DeviceDefault.Wallpaper"/>
         <activity
             android:name=".Shortcuts.ApplicationsViewWatch"
@@ -87,6 +90,7 @@
         <activity
             android:name=".Utils.LaunchPad.OpenApplications"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:exported="false"
             android:theme="@style/Transparent"/>
         <activity
             android:name=".Utils.RemoteTask.CreateFloatingShortcuts"
@@ -107,6 +111,7 @@
             android:foregroundServiceType="dataSync"/>
         <service
             android:name=".Automation.RecoveryShortcuts"
+            android:exported="true"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="net.geekstools.floatshort.pro.LAUNCH_BACKGROUND"/>
@@ -126,6 +131,7 @@
         <!-- Float It -->
         <service
             android:name=".Utils.RemoteProcess.CloudNotificationHandler"
+            android:exported="false"
             android:icon="@drawable/ic_launcher">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
@@ -137,6 +143,7 @@
             android:name=".Utils.RemoteTask.RecoveryComplication"
             android:icon="@drawable/draw_recovery"
             android:label="@string/bootRecovery"
+            android:exported="false"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST"/>
@@ -154,7 +161,9 @@
         <service
             android:name=".Folders.PopupDialogue.PopupOptionsFloatingFolders"/>
 
-        <receiver android:name=".Automation.Receivers.BootRecoverReceiver">
+        <receiver
+            android:exported="false"
+            android:name=".Automation.Receivers.BootRecoverReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
