@@ -1,8 +1,8 @@
 /*
- * Copyright © 2020 By Geeks Empire.
+ * Copyright © 2022 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/19/20 8:06 AM
+ * Last modified 4/14/22, 7:20 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -127,7 +127,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         functionsClassLegacy = FunctionsClassLegacy(requireContext())
         dialogues = Dialogues(requireActivity(), functionsClassLegacy)
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         stable = findPreference("stable")!!
         themeTrans = findPreference("transparent")!!
