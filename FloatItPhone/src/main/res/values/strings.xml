@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright © 2020 By Geeks Empire.
+  ~ Copyright © 2022 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 11/12/20 11:27 AM
+  ~ Last modified 4/14/22, 7:06 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -58,10 +58,10 @@
     <string name="observeDesc">
         <![CDATA[
                 <br/>
-                This Permission Allows Me to Create Multi-Window Mode 🗔 & Open Pair of Apps in Split Screen Simultaneously.<br/>(<big>Android 7 & Higher</big>)<br/><br/>
-                ♿ <b>How it Helps People with Disability</b>?<br/>
+                This Permission Allows Me to Create Multi-Window Mode 🗔 & Open Pair of Apps in Split Screen Simultaneously.<br/>(<big>Android 7 & Higher</big>)<br/><br/><br/>
+                ♿ <small><b>How it Helps People with Disability</b>?<br/>
                 It is Difficult for People with Disability to Open an App Or Switch Between Apps.<br/>
-                So, I am Using Accessibility Service to Create Multi-Window Mode to Open Two Apps Together.<br/>
+                So, I am Using Accessibility Service to Create Multi-Window Mode to Open Two Apps Together.<br/></small>
         ]]>
     </string>
     <string name="freeFormInfo">
@@ -96,6 +96,7 @@
     <string name="retry">Retry Now</string>
     <string name="observeSum">Android 7.0 (Nougat) &amp; Higher</string>
     <string name="grant">Grant Permission</string>
+    <string name="skipNow">Not Now</string>
     <string name="read">Read More</string>
     <string name="grantFreeForm">Done</string>
     <string name="confirm">Confirm</string>

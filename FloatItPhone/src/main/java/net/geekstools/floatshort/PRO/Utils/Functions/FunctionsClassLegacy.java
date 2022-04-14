@@ -1,14 +1,17 @@
 /*
- * Copyright © 2021 By Geeks Empire.
+ * Copyright © 2022 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 1/9/21 12:53 PM
+ * Last modified 4/14/22, 7:17 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
 
 package net.geekstools.floatshort.PRO.Utils.Functions;
+
+import static android.content.Context.ACCESSIBILITY_SERVICE;
+import static android.content.Context.VIBRATOR_SERVICE;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -148,9 +151,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-
-import static android.content.Context.ACCESSIBILITY_SERVICE;
-import static android.content.Context.VIBRATOR_SERVICE;
 
 public class FunctionsClassLegacy {
 
@@ -648,6 +648,13 @@ public class FunctionsClassLegacy {
                 dialog.dismiss();
             }
         });
+        alertDialog.setNegativeButton(context.getString(R.string.skipNow), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
         alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -678,6 +685,13 @@ public class FunctionsClassLegacy {
                 Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setNegativeButton(context.getString(R.string.skipNow), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
                 dialog.dismiss();
             }
