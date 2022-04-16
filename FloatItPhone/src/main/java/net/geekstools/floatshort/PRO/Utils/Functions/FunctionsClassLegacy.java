@@ -2,7 +2,7 @@
  * Copyright © 2022 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/14/22, 7:17 AM
+ * Last modified 4/16/22, 3:27 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -638,7 +638,7 @@ public class FunctionsClassLegacy {
         alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.observeDesc)));
         alertDialog.setIcon(context.getDrawable(R.drawable.ic_launcher));
         alertDialog.setCancelable(true);
-        alertDialog.setPositiveButton(context.getString(R.string.grant), new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(context.getString(R.string.agree), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
@@ -679,7 +679,7 @@ public class FunctionsClassLegacy {
         alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.observeDesc)));
         alertDialog.setIcon(context.getDrawable(R.drawable.ic_launcher));
         alertDialog.setCancelable(true);
-        alertDialog.setPositiveButton(context.getString(R.string.grant), new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(context.getString(R.string.agree), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
