@@ -2,7 +2,7 @@
   ~ Copyright © 2022 By Geeks Empire.
   ~
   ~ Created by Elias Fazel
-  ~ Last modified 4/16/22, 3:27 AM
+  ~ Last modified 4/16/22, 5:27 AM
   ~
   ~ Licensed Under MIT License.
   ~ https://opensource.org/licenses/MIT
@@ -58,8 +58,11 @@
     <string name="observeDesc">
         <![CDATA[
                 <br/>
-                I Need This Permission Because It Allows Me to Create Multi-Window Mode 🗔 & Open Pair of Applications in Split Screen Simultaneously.<br/>(<big>It is Compatible with Android 7.0 & Higher</big>)
-                <br/><br/><br/>
+                I Need Accessibility Service To Be Enabled Because It Allows Me to Create Multi-Window Mode 🗔 To Open Pair of Applications in Split Screen Simultaneously.
+                <br/>The Core Purpose Of Requiring This Permission Is Opening Two Applications Together To Increase Productivity and Multitasking.
+                <br/>⚠ No Data Read Or Collect ⚠
+                <br/>(<b>It is Compatible with Android 7.0 & Higher</b>)
+                <br/><br/><br/><br/><br/>
                 ♿ <small><b>How it Helps People with Disability</b>?<br/>
                 It is Difficult for People with Disability to Open an App Or Switch Between Apps.<br/>
                 So, I am Using Accessibility Service to Create Multi-Window Mode to Open Two Apps Together.<br/></small>
