@@ -2,7 +2,7 @@
  * Copyright © 2022 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/16/22, 3:27 AM
+ * Last modified 4/19/22, 3:37 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -4191,23 +4191,23 @@ public class FunctionsClassLegacy {
 
         Intent CancelStable = new Intent(context, RemoteController.class);
         CancelStable.putExtra("RemoteController", RemoteController.COMMANDS.CancelRemote);
-        PendingIntent cancelPending = PendingIntent.getService(context, 0, CancelStable, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent cancelPending = PendingIntent.getService(context, 0, CancelStable, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Intent RecoverAll = new Intent(context, RemoteController.class);
         RecoverAll.putExtra("RemoteController", RemoteController.COMMANDS.RecoverAll);
-        PendingIntent pendingRecoverAll = PendingIntent.getService(context, 1, RecoverAll, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingRecoverAll = PendingIntent.getService(context, 1, RecoverAll, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Intent RemoveAll = new Intent(context, RemoteController.class);
         RemoveAll.putExtra("RemoteController", RemoteController.COMMANDS.RemoveAll);
-        PendingIntent pendingRemoveAll = PendingIntent.getService(context, 2, RemoveAll, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingRemoveAll = PendingIntent.getService(context, 2, RemoveAll, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Intent Sticky_Edge = new Intent(context, RemoteController.class);
         Sticky_Edge.putExtra("RemoteController", RemoteController.COMMANDS.Sticky_Edge);
-        PendingIntent pendingSticky_Edge = PendingIntent.getService(context, 3, Sticky_Edge, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingSticky_Edge = PendingIntent.getService(context, 3, Sticky_Edge, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Intent Sticky_Edge_No = new Intent(context, RemoteController.class);
         Sticky_Edge_No.putExtra("RemoteController", RemoteController.COMMANDS.Sticky_Edge_No);
-        PendingIntent pendingSticky_Edge_No = PendingIntent.getService(context, 4, Sticky_Edge_No, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingSticky_Edge_No = PendingIntent.getService(context, 4, Sticky_Edge_No, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         remoteNotification.setOnClickPendingIntent(R.id.recoverAll, pendingRecoverAll);
         remoteNotification.setOnClickPendingIntent(R.id.removeAll, pendingRemoveAll);
