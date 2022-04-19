@@ -1,8 +1,8 @@
 /*
- * Copyright © 2020 By Geeks Empire.
+ * Copyright © 2022 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 4/27/20 10:24 AM
+ * Last modified 4/19/22, 3:39 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -52,7 +52,7 @@ class BindServices : Service() {
 
         notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0,
                 Intent(this, Configurations::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT))
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
 
         return notificationBuilder.build()
     }
@@ -79,7 +79,7 @@ class BindServices : Service() {
 
         notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0,
                 Intent(this, Configurations::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT))
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
 
         return notificationBuilder.build()
     }
