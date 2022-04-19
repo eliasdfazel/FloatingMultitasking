@@ -1,8 +1,8 @@
 /*
- * Copyright © 2020 By Geeks Empire.
+ * Copyright © 2022 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 8/24/20 6:11 AM
+ * Last modified 4/19/22, 3:40 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -28,7 +28,7 @@ class FunctionsClassAlarms (private val context: Context) {
         alarmIntent.putExtra("time", setTime)
         alarmIntent.putExtra("position", position)
 
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT or  PendingIntent.FLAG_IMMUTABLE)
 
         newAlarmTime.add(Calendar.DAY_OF_MONTH, 1)
 
