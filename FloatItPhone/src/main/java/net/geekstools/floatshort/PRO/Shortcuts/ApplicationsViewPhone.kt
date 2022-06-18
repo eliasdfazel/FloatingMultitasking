@@ -1,8 +1,8 @@
 /*
- * Copyright © 2021 By Geeks Empire.
+ * Copyright © 2022 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 3/25/21 10:30 AM
+ * Last modified 6/18/22, 9:18 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -99,7 +99,6 @@ import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFa
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.HybridApplicationViewBinding
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.hypot
 
 class ApplicationsViewPhone : AppCompatActivity(),
@@ -735,6 +734,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     }
                 }
             }
+            else -> {}
         }
     }
 
