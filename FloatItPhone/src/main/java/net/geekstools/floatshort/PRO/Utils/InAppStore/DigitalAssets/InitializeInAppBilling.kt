@@ -20,13 +20,14 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
-import com.android.billingclient.api.SkuDetails
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.NetworkCheckpoint
+import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.setupInAppBillingUI
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
@@ -40,6 +41,10 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
 
     val functionsClassLegacy: FunctionsClassLegacy by lazy {
         FunctionsClassLegacy(applicationContext)
+    }
+
+    val preferencesIO: PreferencesIO by lazy {
+        PreferencesIO(applicationContext)
     }
 
     private val inAppBillingData: InAppBillingData by lazy {
@@ -123,7 +128,7 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
         when (billingResult?.responseCode) {
             BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
 
-                functionsClassLegacy
+                preferencesIO
                         .savePreference(".PurchasedItem",
                                 intent.getStringExtra(Entry.ItemToPurchase),
                                 true)
@@ -154,7 +159,7 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
         snackbar.setBackgroundTint(PublicVariable.primaryColor)
         snackbar.setTextColor(PublicVariable.colorLightDarkOpposite)
         snackbar.setActionTextColor(getColor(R.color.default_color_game_light))
-        snackbar.setAction(Html.fromHtml(getString(R.string.retry))) {
+        snackbar.setAction(Html.fromHtml(getString(R.string.retry), Html.FROM_HTML_MODE_COMPACT)) {
 
         }
         snackbar.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
@@ -180,30 +185,30 @@ class InitializeInAppBilling : AppCompatActivity(), PurchaseFlowController {
         snackbar.show()
     }
 
-    override fun purchaseFlowSucceeded(skuDetails: SkuDetails) {
-        Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Succeeded: ${skuDetails}")
+    override fun purchaseFlowSucceeded(productDetails: ProductDetails) {
+        Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Succeeded: ${productDetails}")
 
     }
 
     override fun purchaseFlowPaid(billingClient: BillingClient, purchase: Purchase) {
         Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Paid: ${purchase}")
 
-        PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.INAPP)
+        PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.ProductType.INAPP)
 
-        functionsClassLegacy
+        preferencesIO
                 .savePreference(".PurchasedItem",
-                        purchase.skus.first(),
+                        purchase.products.first(),
                         true)
 
         this@InitializeInAppBilling.finish()
     }
 
-    override fun purchaseFlowPaid(skuDetails: SkuDetails) {
-        Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Paid: ${skuDetails}")
+    override fun purchaseFlowPaid(productDetails: ProductDetails) {
+        Log.d(this@InitializeInAppBilling.javaClass.simpleName, "Purchase Flow Paid: ${productDetails}")
 
-        functionsClassLegacy
+        preferencesIO
                 .savePreference(".PurchasedItem",
-                        skuDetails.sku,
+                        productDetails.productId,
                         true)
 
         this@InitializeInAppBilling.finish()

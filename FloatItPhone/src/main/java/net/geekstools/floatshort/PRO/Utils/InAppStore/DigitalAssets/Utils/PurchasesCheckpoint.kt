@@ -50,22 +50,26 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
 
                             appCompatActivity.lifecycleScope.async {
 
-                                billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP).purchasesList.let { purchases ->
+                                val queryPurchasesParams = QueryPurchasesParams.newBuilder()
+                                    .setProductType(BillingClient.ProductType.INAPP)
+                                    .build()
+
+                                billingClient.queryPurchasesAsync(queryPurchasesParams).purchasesList.let { purchases ->
 
                                     for (purchase in purchases) {
                                         PrintDebug("*** Purchased Item: $purchase ***")
 
-                                        preferencesIO.savePreference(".PurchasedItem", purchase.skus.first(), true)
+                                        preferencesIO.savePreference(".PurchasedItem", purchase.products.first(), true)
 
                                         //Consume Donation
-                                        if (purchase.skus.first() == InAppBillingData.SKU.InAppItemDonation
+                                        if (purchase.products.first() == InAppBillingData.SKU.InAppItemDonation
                                             && functionsClassLegacy.alreadyDonated()) {
 
                                             val consumeResponseListener = ConsumeResponseListener { billingResult, purchaseToken ->
                                                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                                                     PrintDebug("*** Consumed Item: $purchaseToken ***")
 
-                                                    preferencesIO.savePreference(".PurchasedItem", purchase.skus.first(), false)
+                                                    preferencesIO.savePreference(".PurchasedItem", purchase.products.first(), false)
                                                 }
                                             }
                                             val consumeParams = ConsumeParams.newBuilder()
@@ -73,7 +77,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
                                             billingClient.consumeAsync(consumeParams.build(), consumeResponseListener)
                                         }
 
-                                        PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.INAPP)
+                                        PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.ProductType.INAPP)
                                     }
 
                                 }
@@ -94,21 +98,25 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
 
                 override fun onBillingSetupFinished(billingResult: BillingResult) {
 
-                    billingResult?.let {
+                    billingResult.let {
                         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                             preferencesIO.savePreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSecurityServices, false)
                             preferencesIO.savePreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSearchEngines, false)
 
                             appCompatActivity.lifecycleScope.async {
 
-                                billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS).purchasesList.let { purchases ->
+                                val queryPurchasesParams = QueryPurchasesParams.newBuilder()
+                                    .setProductType(BillingClient.ProductType.SUBS)
+                                    .build()
+
+                                billingClient.queryPurchasesAsync(queryPurchasesParams).purchasesList.let { purchases ->
 
                                     for (purchase in purchases) {
                                         PrintDebug("*** Subscribed Item: $purchase ***")
 
-                                        preferencesIO.savePreference(".SubscribedItem", purchase.skus.first(), true)
+                                        preferencesIO.savePreference(".SubscribedItem", purchase.products.first(), true)
 
-                                        PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.SkuType.SUBS)
+                                        PurchasesCheckpoint.purchaseAcknowledgeProcess(billingClient, purchase, BillingClient.ProductType.SUBS)
                                     }
                                 }
 
@@ -129,7 +137,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
 
     override fun onPurchasesUpdated(billingResult: BillingResult, purchasesList: MutableList<Purchase>?) {
 
-        billingResult?.let {
+        billingResult.let {
             if (!purchasesList.isNullOrEmpty()) {
 
                 when (billingResult.responseCode) {

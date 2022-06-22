@@ -44,7 +44,6 @@ import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.Subscr
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchaseFlowController
 import net.geekstools.floatshort.PRO.databinding.InAppBillingSubscriptionPurchaseViewBinding
 import java.util.*
-import kotlin.collections.ArrayList
 
 class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListener {
 
@@ -61,7 +60,7 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
         Glide.with(requireContext())
     }
 
-    private val listOfItems: ArrayList<String> = ArrayList<String>()
+    private val listOfItems: ArrayList<QueryProductDetailsParams.Product> = ArrayList<QueryProductDetailsParams.Product>()
 
     val mapIndexDrawable = TreeMap<Int, Drawable>()
     val mapIndexURI = TreeMap<Int, Uri>()
@@ -77,7 +76,7 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
     override fun onPurchasesUpdated(billingResult: BillingResult, purchasesList: MutableList<Purchase>?) {
         Log.d(this@SubscriptionPurchase.javaClass.simpleName, "Purchases Updated: ${billingResult?.debugMessage}")
 
-        billingResult?.let {
+        billingResult.let {
             if (!purchasesList.isNullOrEmpty()) {
 
                 when (billingResult.responseCode) {
@@ -102,7 +101,10 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        listOfItems.add(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
+        listOfItems.add(QueryProductDetailsParams.Product.newBuilder()
+            .setProductId(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
+            .setProductType(BillingClient.ProductType.SUBS)
+            .build())
     }
 
     override fun onCreateView(layoutInflater: LayoutInflater, viewGroup: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -127,13 +129,12 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
 
             override fun onBillingSetupFinished(billingResult: BillingResult) {
 
-                val skuDetailsParams = SkuDetailsParams.newBuilder()
-                        .setSkusList(listOfItems)
-                        .setType(BillingClient.SkuType.SUBS)
+                val skuDetailsParams = QueryProductDetailsParams.newBuilder()
+                        .setProductList(listOfItems)
                         .build()
 
-                billingClient.querySkuDetailsAsync(skuDetailsParams) { queryBillingResult, skuDetailsListInApp ->
-                    Debug.PrintDebug("Billing Result: ${queryBillingResult.debugMessage} | Sku Details List In App Purchase: $skuDetailsListInApp")
+                billingClient.queryProductDetailsAsync(skuDetailsParams) { queryBillingResult, productsDetailsListInApp ->
+                    Debug.PrintDebug("Billing Result: ${queryBillingResult.debugMessage} | Sku Details List In App Purchase: $productsDetailsListInApp")
 
                     when (queryBillingResult.responseCode) {
                         BillingClient.BillingResponseCode.ERROR -> {
@@ -166,33 +167,40 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
                         }
                         BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
 
-                            if (skuDetailsListInApp != null) {
-                                if (skuDetailsListInApp.isNotEmpty()) {
+                            if (productsDetailsListInApp != null) {
+                                if (productsDetailsListInApp.isNotEmpty()) {
 
-                                    purchaseFlowController?.purchaseFlowPaid(skuDetails = skuDetailsListInApp[0])
+                                    purchaseFlowController?.purchaseFlowPaid(productDetails = productsDetailsListInApp[0])
                                 }
                             }
                         }
                         BillingClient.BillingResponseCode.OK -> {
 
-                            if (skuDetailsListInApp != null) {
-                                if (skuDetailsListInApp.isNotEmpty()) {
+                            if (productsDetailsListInApp != null) {
+                                if (productsDetailsListInApp.isNotEmpty()) {
 
-                                    purchaseFlowController?.purchaseFlowSucceeded(skuDetails = skuDetailsListInApp[0])
+                                    purchaseFlowController?.purchaseFlowSucceeded(productDetails = productsDetailsListInApp[0])
 
-                                    subscriptionPurchaseFlow(skuDetailsListInApp[0])
+                                    subscriptionPurchaseFlow(productsDetailsListInApp[0])
 
                                     if (listOfItems.isNotEmpty()) {
-                                        if (listOfItems[0] == InAppBillingData.SKU.InAppItemDonation) {
+
+
+                                        val queriedProduct = QueryProductDetailsParams.Product.newBuilder()
+                                            .setProductId(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
+                                            .setProductType(BillingClient.ProductType.SUBS)
+                                            .build()
+
+                                        if (listOfItems[0] == queriedProduct) {
 
                                             inAppBillingSubscriptionPurchaseViewBinding.itemTitleView.visibility = View.GONE
                                             inAppBillingSubscriptionPurchaseViewBinding.itemDescriptionView.text =
                                                     Html.fromHtml("<br/>" +
-                                                            "<big>${skuDetailsListInApp[0].title}</big>" +
+                                                            "<big>${productsDetailsListInApp[0].title}</big>" +
                                                             "<br/>" +
                                                             "<br/>" +
-                                                            "${skuDetailsListInApp[0].description}" +
-                                                            "<br/>")
+                                                            productsDetailsListInApp[0].description +
+                                                            "<br/>", Html.FROM_HTML_MODE_COMPACT)
 
                                             (inAppBillingSubscriptionPurchaseViewBinding
                                                     .centerPurchaseButton.root as MaterialButton).text = getString(R.string.donate)
@@ -211,7 +219,7 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
                                             firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
 
                                                 inAppBillingSubscriptionPurchaseViewBinding
-                                                        .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigDescriptionKey()))
+                                                        .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigDescriptionKey()), Html.FROM_HTML_MODE_COMPACT)
 
                                                 (inAppBillingSubscriptionPurchaseViewBinding
                                                         .centerPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigPriceInformation())

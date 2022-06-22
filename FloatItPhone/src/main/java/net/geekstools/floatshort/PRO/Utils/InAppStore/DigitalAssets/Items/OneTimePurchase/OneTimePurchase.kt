@@ -35,7 +35,10 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
-import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.*
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToItemTitle
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToRemoteConfigDescriptionKey
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToRemoteConfigPriceInformation
+import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToStorageScreenshotsDirectory
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase.Extensions.oneTimePurchaseFlow
@@ -167,14 +170,14 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
                             if (!skuDetailsListInApp.isNullOrEmpty()) {
 
-                                purchaseFlowController?.purchaseFlowPaid(skuDetails = skuDetailsListInApp[0])
+                                purchaseFlowController?.purchaseFlowPaid(productDetails = skuDetailsListInApp[0])
                             }
                         }
                         BillingClient.BillingResponseCode.OK -> {
 
                             if (!skuDetailsListInApp.isNullOrEmpty()) {
 
-                                purchaseFlowController?.purchaseFlowSucceeded(skuDetails = skuDetailsListInApp[0])
+                                purchaseFlowController?.purchaseFlowSucceeded(productDetails = skuDetailsListInApp[0])
 
                                 oneTimePurchaseFlow(skuDetailsListInApp[0])
 
