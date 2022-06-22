@@ -140,8 +140,8 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                     .setProductList(listOf(itemToPurchase))
                     .build()
 
-                billingClient.queryProductDetailsAsync(queryProductDetailsParams) { queryBillingResult, skuDetailsListInApp ->
-                    Debug.PrintDebug("Billing Result: ${queryBillingResult.debugMessage} | Sku Details List In App Purchase: $skuDetailsListInApp")
+                billingClient.queryProductDetailsAsync(queryProductDetailsParams) { queryBillingResult, productsDetailsListInApp ->
+                    Debug.PrintDebug("Billing Result: ${queryBillingResult.debugMessage} | Sku Details List In App Purchase: $productsDetailsListInApp")
 
                     when (queryBillingResult.responseCode) {
                         BillingClient.BillingResponseCode.ERROR -> {
@@ -174,18 +174,18 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                         }
                         BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
 
-                            if (!skuDetailsListInApp.isNullOrEmpty()) {
+                            if (!productsDetailsListInApp.isNullOrEmpty()) {
 
-                                purchaseFlowController?.purchaseFlowPaid(productDetails = skuDetailsListInApp[0])
+                                purchaseFlowController?.purchaseFlowPaid(productDetails = productsDetailsListInApp[0])
                             }
                         }
                         BillingClient.BillingResponseCode.OK -> {
 
-                            if (!skuDetailsListInApp.isNullOrEmpty()) {
+                            if (!productsDetailsListInApp.isNullOrEmpty()) {
 
-                                purchaseFlowController?.purchaseFlowSucceeded(productDetails = skuDetailsListInApp[0])
+                                purchaseFlowController?.purchaseFlowSucceeded(productDetails = productsDetailsListInApp[0])
 
-                                oneTimePurchaseFlow(skuDetailsListInApp[0])
+                                oneTimePurchaseFlow(productsDetailsListInApp[0])
 
                                 val queriedProduct = QueryProductDetailsParams.Product.newBuilder()
                                     .setProductId(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
@@ -197,10 +197,10 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                                     inAppBillingOneTimePurchaseViewBinding.itemTitleView.visibility = View.GONE
                                     inAppBillingOneTimePurchaseViewBinding.itemDescriptionView.text =
                                             Html.fromHtml("<br/>" +
-                                                    "<big>${skuDetailsListInApp[0].title}</big>" +
+                                                    "<big>${productsDetailsListInApp[0].title}</big>" +
                                                     "<br/>" +
                                                     "<br/>" +
-                                                    "${skuDetailsListInApp[0].description}" +
+                                                    productsDetailsListInApp[0].description +
                                                     "<br/>", Html.FROM_HTML_MODE_COMPACT)
 
                                     (inAppBillingOneTimePurchaseViewBinding
@@ -212,7 +212,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
                                 } else {
 
-                                    inAppBillingOneTimePurchaseViewBinding.itemTitleView.text = (itemToPurchase.convertToItemTitle())
+                                    inAppBillingOneTimePurchaseViewBinding.itemTitleView.text = (productsDetailsListInApp.first().productId.convertToItemTitle())
 
                                     val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
                                     firebaseRemoteConfig.setConfigSettingsAsync(FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build())
@@ -220,17 +220,17 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                                     firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
 
                                         inAppBillingOneTimePurchaseViewBinding
-                                                .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(itemToPurchase.convertToRemoteConfigDescriptionKey()))
+                                                .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigDescriptionKey()), Html.FROM_HTML_MODE_COMPACT)
 
                                         (inAppBillingOneTimePurchaseViewBinding
-                                                .centerPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(itemToPurchase.convertToRemoteConfigPriceInformation())
+                                                .centerPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigPriceInformation())
                                         (inAppBillingOneTimePurchaseViewBinding
-                                                .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(itemToPurchase.convertToRemoteConfigPriceInformation())
+                                                .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigPriceInformation())
 
                                         val firebaseStorage = FirebaseStorage.getInstance()
                                         val firebaseStorageReference = firebaseStorage.reference
                                         firebaseStorageReference
-                                                .child("Assets/Images/Screenshots/${itemToPurchase.convertToStorageScreenshotsDirectory()}/IAP.Demo/")
+                                                .child("Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}/IAP.Demo/")
                                                 .listAll()
                                                 .addOnSuccessListener { itemsStorageReference ->
 

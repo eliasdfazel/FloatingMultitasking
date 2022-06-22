@@ -211,7 +211,7 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
 
                                         } else {
 
-                                            inAppBillingSubscriptionPurchaseViewBinding.itemTitleView.text = (listOfItems[0].convertToItemTitle())
+                                            inAppBillingSubscriptionPurchaseViewBinding.itemTitleView.text = (productsDetailsListInApp.first().productId.convertToItemTitle())
 
                                             val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
                                             firebaseRemoteConfig.setConfigSettingsAsync(FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build())
@@ -219,20 +219,20 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
                                             firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
 
                                                 inAppBillingSubscriptionPurchaseViewBinding
-                                                        .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigDescriptionKey()), Html.FROM_HTML_MODE_COMPACT)
+                                                        .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigDescriptionKey()), Html.FROM_HTML_MODE_COMPACT)
 
                                                 (inAppBillingSubscriptionPurchaseViewBinding
-                                                        .centerPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigPriceInformation())
+                                                        .centerPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigPriceInformation())
                                                 (inAppBillingSubscriptionPurchaseViewBinding
-                                                        .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(listOfItems[0].convertToRemoteConfigPriceInformation())
+                                                        .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigPriceInformation())
 
-                                                screenshotsNumber = firebaseRemoteConfig.getLong(listOfItems[0].convertToRemoteConfigScreenshotNumberKey()).toInt()
+                                                screenshotsNumber = firebaseRemoteConfig.getLong(productsDetailsListInApp.first().productId.convertToRemoteConfigScreenshotNumberKey()).toInt()
 
                                                 for (i in 1..screenshotsNumber) {
                                                     val firebaseStorage = FirebaseStorage.getInstance()
                                                     val firebaseStorageReference = firebaseStorage.reference
                                                     val storageReference = firebaseStorageReference
-                                                            .child("Assets/Images/Screenshots/${listOfItems[0].convertToStorageScreenshotsDirectory()}/IAP.Demo/${listOfItems[0].convertToStorageScreenshotsFileName(i)}")
+                                                            .child("Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}/IAP.Demo/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsFileName(i)}")
                                                     storageReference.downloadUrl.addOnSuccessListener { screenshotLink ->
 
                                                         requestManager
