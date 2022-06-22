@@ -63,7 +63,10 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
         Glide.with(requireContext())
     }
 
-    private var itemToPurchase: String = InAppBillingData.SKU.InAppItemDonation
+    private var itemToPurchase: QueryProductDetailsParams.Product = QueryProductDetailsParams.Product.newBuilder()
+        .setProductId(InAppBillingData.SKU.InAppItemDonation)
+        .setProductType(BillingClient.ProductType.INAPP)
+        .build()
 
     val mapIndexDrawable = TreeMap<Int, Drawable>()
     val mapIndexURI = TreeMap<Int, Uri>()
@@ -79,7 +82,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
     override fun onPurchasesUpdated(billingResult: BillingResult, purchasesList: MutableList<Purchase>?) {
         Log.d(this@OneTimePurchase.javaClass.simpleName, "Purchases Updated: ${billingResult?.debugMessage}")
 
-        billingResult?.let {
+        billingResult.let {
             if (!purchasesList.isNullOrEmpty()) {
 
                 when (billingResult.responseCode) {
@@ -104,7 +107,11 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        itemToPurchase = (arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
+        itemToPurchase = QueryProductDetailsParams.Product.newBuilder()
+            .setProductId(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
+            .setProductType(BillingClient.ProductType.INAPP)
+            .build()
+
     }
 
     override fun onCreateView(layoutInflater: LayoutInflater, viewGroup: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -129,12 +136,11 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
             override fun onBillingSetupFinished(billingResult: BillingResult) {
 
-                val skuDetailsParams = SkuDetailsParams.newBuilder()
-                        .setSkusList(listOf(itemToPurchase))
-                        .setType(BillingClient.SkuType.INAPP)
-                        .build()
+                val queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
+                    .setProductList(listOf(itemToPurchase))
+                    .build()
 
-                billingClient.querySkuDetailsAsync(skuDetailsParams) { queryBillingResult, skuDetailsListInApp ->
+                billingClient.queryProductDetailsAsync(queryProductDetailsParams) { queryBillingResult, skuDetailsListInApp ->
                     Debug.PrintDebug("Billing Result: ${queryBillingResult.debugMessage} | Sku Details List In App Purchase: $skuDetailsListInApp")
 
                     when (queryBillingResult.responseCode) {
@@ -181,7 +187,12 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
                                 oneTimePurchaseFlow(skuDetailsListInApp[0])
 
-                                if (itemToPurchase == InAppBillingData.SKU.InAppItemDonation) {
+                                val queriedProduct = QueryProductDetailsParams.Product.newBuilder()
+                                    .setProductId(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
+                                    .setProductType(BillingClient.ProductType.INAPP)
+                                    .build()
+
+                                if (itemToPurchase == queriedProduct) {
 
                                     inAppBillingOneTimePurchaseViewBinding.itemTitleView.visibility = View.GONE
                                     inAppBillingOneTimePurchaseViewBinding.itemDescriptionView.text =
@@ -190,7 +201,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                                                     "<br/>" +
                                                     "<br/>" +
                                                     "${skuDetailsListInApp[0].description}" +
-                                                    "<br/>")
+                                                    "<br/>", Html.FROM_HTML_MODE_COMPACT)
 
                                     (inAppBillingOneTimePurchaseViewBinding
                                             .centerPurchaseButton.root as MaterialButton).text = getString(R.string.donate)
@@ -293,7 +304,10 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
         billingClient.endConnection()
 
-        itemToPurchase = InAppBillingData.SKU.InAppItemDonation
+        itemToPurchase = QueryProductDetailsParams.Product.newBuilder()
+            .setProductId(InAppBillingData.SKU.InAppItemDonation)
+            .setProductType(BillingClient.ProductType.INAPP)
+            .build()
     }
 
     override fun onClick(view: View?) {

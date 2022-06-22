@@ -129,11 +129,11 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
 
             override fun onBillingSetupFinished(billingResult: BillingResult) {
 
-                val skuDetailsParams = QueryProductDetailsParams.newBuilder()
+                val queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
                         .setProductList(listOfItems)
                         .build()
 
-                billingClient.queryProductDetailsAsync(skuDetailsParams) { queryBillingResult, productsDetailsListInApp ->
+                billingClient.queryProductDetailsAsync(queryProductDetailsParams) { queryBillingResult, productsDetailsListInApp ->
                     Debug.PrintDebug("Billing Result: ${queryBillingResult.debugMessage} | Sku Details List In App Purchase: $productsDetailsListInApp")
 
                     when (queryBillingResult.responseCode) {
