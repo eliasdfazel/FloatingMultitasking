@@ -44,7 +44,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
 
                 override fun onBillingSetupFinished(billingResult: BillingResult) {
 
-                    billingResult?.let {
+                    billingResult.let {
                         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                             preferencesIO.savePreference(".PurchasedItem", InAppBillingData.SKU.InAppItemFloatingWidgets, false)
 
