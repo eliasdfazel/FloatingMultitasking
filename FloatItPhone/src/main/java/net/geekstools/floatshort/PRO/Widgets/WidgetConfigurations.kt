@@ -50,8 +50,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.withIndex
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
@@ -85,8 +87,6 @@ import net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter.WidgetSectionedConfi
 import net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter.WidgetSectionedInstalledAdapter
 import net.geekstools.floatshort.PRO.databinding.WidgetConfigurationsViewsBinding
 import java.util.*
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 import kotlin.math.hypot
 import kotlin.math.roundToInt
 
@@ -229,9 +229,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         widgetConfigurationsViewsBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
         widgetConfigurationsViewsBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
-
-        widgetConfigurationsViewsBinding.automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
-        widgetConfigurationsViewsBinding.automationAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
 
         val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
         val backgroundRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
@@ -396,14 +393,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             startActivity(Intent(applicationContext, ApplicationsViewPhone::class.java),
                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left).toBundle())
         }
-        widgetConfigurationsViewsBinding.automationAction.setOnClickListener {
 
-            Intent(applicationContext, AppAutoFeatures::class.java).apply {
-                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(this,
-                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.up_down, android.R.anim.fade_out).toBundle())
-            }
-        }
         widgetConfigurationsViewsBinding.recoveryAction.setOnClickListener {
 
             Intent(applicationContext, RecoveryWidgets::class.java).apply {

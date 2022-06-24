@@ -44,13 +44,8 @@ class RemoteController : Service() {
             when (intent.getStringExtra("RemoteController")) {
                 RemoteController.COMMANDS.CancelRemote -> {
 
-                    if (fileIO.automationFeatureEnable() || functionsClassLegacy.ControlPanel()) {
-                        /**/
-                    } else {
+                    stopService(Intent(applicationContext, BindServices::class.java))
 
-                        stopService(Intent(applicationContext, BindServices::class.java))
-
-                    }
                 }
                 RemoteController.COMMANDS.RecoverAll -> {
 

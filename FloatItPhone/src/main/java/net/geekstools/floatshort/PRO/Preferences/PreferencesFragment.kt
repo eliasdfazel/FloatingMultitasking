@@ -998,8 +998,5 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (fileIO.automationFeatureEnable()) {
-            requireContext().startService(Intent(context, BindServices::class.java))
-        }
     }
 }

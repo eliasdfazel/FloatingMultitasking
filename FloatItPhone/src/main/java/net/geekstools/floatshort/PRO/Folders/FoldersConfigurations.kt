@@ -56,7 +56,6 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
-import net.geekstools.floatshort.PRO.Automation.Folders.FolderAutoFeatures
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.FoldersListAdapter
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
@@ -173,9 +172,6 @@ class FoldersConfigurations : AppCompatActivity(),
         foldersConfigurationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
         foldersConfigurationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
 
-        foldersConfigurationViewBinding.automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
-        foldersConfigurationViewBinding.automationAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
-
         val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
         val backRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
         backRecoverFloatingCategories?.setTint(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
@@ -276,15 +272,7 @@ class FoldersConfigurations : AppCompatActivity(),
                 }
             }
         }
-        foldersConfigurationViewBinding.automationAction.setOnClickListener {
-            foldersConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(50)
 
-            Intent(applicationContext, FolderAutoFeatures::class.java).apply {
-                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(this,
-                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.up_down, android.R.anim.fade_out).toBundle())
-            }
-        }
         foldersConfigurationViewBinding.recoveryAction.setOnClickListener {
 
             Intent(applicationContext, RecoveryFolders::class.java).apply {

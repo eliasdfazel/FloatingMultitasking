@@ -58,7 +58,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
@@ -193,9 +192,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
         hybridApplicationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
         hybridApplicationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
 
-        hybridApplicationViewBinding.automationAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
-        hybridApplicationViewBinding.automationAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
-
         val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
         val backRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
         backRecoverFloatingCategories?.setTint(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
@@ -298,14 +294,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     Toast.makeText(applicationContext, getString(R.string.authError), Toast.LENGTH_LONG).show()
                 }
             }
-        }
-
-        hybridApplicationViewBinding.automationAction.setOnClickListener {
-            applicationsViewPhoneDependencyInjection.functionsClassLegacy.doVibrate(50)
-
-            val intent = Intent(applicationContext, AppAutoFeatures::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.up_down, android.R.anim.fade_out).toBundle())
         }
 
         hybridApplicationViewBinding.recoveryAction.setOnClickListener {

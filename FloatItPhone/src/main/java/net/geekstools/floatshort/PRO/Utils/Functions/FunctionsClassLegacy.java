@@ -107,8 +107,6 @@ import androidx.palette.graphics.Palette;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
-import net.geekstools.floatshort.PRO.Automation.Apps.AppAutoFeatures;
-import net.geekstools.floatshort.PRO.Automation.Folders.FolderAutoFeatures;
 import net.geekstools.floatshort.PRO.BindServices;
 import net.geekstools.floatshort.PRO.BuildConfig;
 import net.geekstools.floatshort.PRO.Checkpoint;
@@ -3946,21 +3944,6 @@ public class FunctionsClassLegacy {
         Drawable backFloating = drawFloating.findDrawableByLayerId(R.id.backgroundTemporary);
         backFloating.setTint(PublicVariable.primaryColor);
 
-        CharSequence[] charSequence = new CharSequence[]{
-                instanceOfActivity.getClass().getSimpleName().equals(AppAutoFeatures.class.getSimpleName()) || instanceOfActivity.getClass().getSimpleName().equals(FolderAutoFeatures.class.getSimpleName())
-                        ? context.getString(R.string.floatingFolders) : context.getString(R.string.automation),
-        };
-        Drawable[] drawables = new Drawable[]{
-                drawFloating,
-        };
-
-        ArrayList<AdapterItems> adapterItems = new ArrayList<AdapterItems>();
-        for (int navItem = 0; navItem < charSequence.length; navItem++) {
-            CharSequence itemText = charSequence[navItem];
-            Drawable itemIcon = drawables[navItem];
-
-            adapterItems.add(new AdapterItems(itemText, itemIcon));
-        }
 
         if (appThemeTransparent() == true) {
             if (PublicVariable.themeLightDark) {
