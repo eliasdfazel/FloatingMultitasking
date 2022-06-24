@@ -128,7 +128,9 @@ dependencies {
     implementation 'androidx.biometric:biometric:1.1.0'
 
 
-    implementation 'com.google.android.play:core-ktx:1.8.1'
+    implementation 'com.google.android.play:app-update-ktx:2.0.0'
+    implementation 'com.google.android.play:review-ktx:2.0.0'
+
 
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
 
@@ -137,9 +139,9 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-analytics:21.0.0'
 
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.5'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.6'
 
-    implementation 'com.google.firebase:firebase-messaging:23.0.5'
+    implementation 'com.google.firebase:firebase-messaging:23.0.6'
     implementation 'com.google.firebase:firebase-inappmessaging-display-ktx:20.1.2'
 
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'

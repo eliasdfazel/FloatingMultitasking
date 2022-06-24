@@ -11,7 +11,6 @@
 package net.geekstools.floatshort.PRO.Shortcuts
 
 import android.animation.Animator
-import android.app.Activity
 import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.BroadcastReceiver
@@ -50,7 +49,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.BillingClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.inappmessaging.FirebaseInAppMessagingClickListener
@@ -755,42 +753,36 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         when (requestCode) {
             Google.SignInRequest -> {
-                if (resultCode == Activity.RESULT_OK) {
 
-                    val googleSignInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
-                    val googleSignInAccount = googleSignInAccountTask.getResult(ApiException::class.java)
+                GoogleSignIn.getSignedInAccountFromIntent(data).addOnCompleteListener { googleSignInAccountTask ->
 
-                    val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
+                    val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask.result.idToken, null)
                     firebaseAuth.signInWithCredential(authCredential)
-                            .addOnSuccessListener {
-                                val firebaseUser = firebaseAuth.currentUser
-                                if (firebaseUser != null) {
-                                    PrintDebug("Firebase Activities Done Successfully")
+                        .addOnSuccessListener {
+                            val firebaseUser = firebaseAuth.currentUser
+                            if (firebaseUser != null) {
+                                PrintDebug("Firebase Activities Done Successfully")
 
-                                    applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", firebaseUser.email)
+                                applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", firebaseUser.email)
 
-                                    applicationsViewPhoneDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
+                                applicationsViewPhoneDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
 
-                                    applicationsViewPhoneDependencyInjection.securityFunctions.downloadLockedAppsData()
+                                applicationsViewPhoneDependencyInjection.securityFunctions.downloadLockedAppsData()
 
-                                    waitingDialogue.dismiss()
-                                }
-                            }.addOnFailureListener { exception ->
-
-                                waitingDialogueLiveData.run {
-                                    this.dialogueTitle.value = getString(R.string.error)
-                                    this.dialogueMessage.value = exception.message
-                                }
+                                waitingDialogue.dismiss()
                             }
+                        }.addOnFailureListener { exception ->
 
-                } else {
+                            println(">>> >> > nnn000")
 
-                    waitingDialogueLiveData.run {
-                        this.dialogueTitle.value = getString(R.string.error)
-                        this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
-                    }
+                            waitingDialogueLiveData.run {
+                                this.dialogueTitle.value = getString(R.string.error)
+                                this.dialogueMessage.value = exception.message
+                            }
+                        }
 
                 }
+
             }
         }
     }
@@ -864,8 +856,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     val installedPackageName = it.value.activityInfo.packageName
                     val installedClassName = it.value.activityInfo.name
                     val installedAppName: String? = applicationsViewPhoneDependencyInjection.functionsClassLegacy.activityLabel(it.value.activityInfo)
-
-                    println(">>> >> > " + installedAppName)
 
                     newChar = try {
 

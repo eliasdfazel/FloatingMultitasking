@@ -42,7 +42,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.BillingClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.inappmessaging.FirebaseInAppMessagingClickListener
@@ -54,7 +53,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
@@ -681,42 +679,51 @@ class FoldersConfigurations : AppCompatActivity(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 Google.SignInRequest -> {
-                    val googleSignInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
-                    val googleSignInAccount = googleSignInAccountTask.getResult(ApiException::class.java)
 
-                    val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
-                    firebaseAuth.signInWithCredential(authCredential)
-                            .addOnSuccessListener {
-                                val firebaseUser = firebaseAuth.currentUser
-                                if (firebaseUser != null) {
-                                    Debug.PrintDebug("Firebase Activities Done Successfully")
+                    if (resultCode == Activity.RESULT_OK) {
 
-                                    foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", firebaseUser.email)
+                        GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { googleSignInAccountTask ->
 
-                                    foldersConfigurationsDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
+                            val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask?.idToken, null)
+                            firebaseAuth.signInWithCredential(authCredential)
+                                .addOnSuccessListener {
+                                    val firebaseUser = firebaseAuth.currentUser
+                                    if (firebaseUser != null) {
+                                        Debug.PrintDebug("Firebase Activities Done Successfully")
 
-                                    foldersConfigurationsDependencyInjection.securityFunctions.downloadLockedAppsData()
+                                        foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", firebaseUser.email)
 
-                                    waitingDialogue.dismiss()
+                                        foldersConfigurationsDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
+
+                                        foldersConfigurationsDependencyInjection.securityFunctions.downloadLockedAppsData()
+
+                                        waitingDialogue.dismiss()
+                                    }
+                                }.addOnFailureListener { exception ->
+
+                                    waitingDialogueLiveData.run {
+                                        this.dialogueTitle.value = getString(R.string.error)
+                                        this.dialogueMessage.value = exception.message
+                                    }
                                 }
-                            }.addOnFailureListener { exception ->
 
-                                waitingDialogueLiveData.run {
-                                    this.dialogueTitle.value = getString(R.string.error)
-                                    this.dialogueMessage.value = exception.message
-                                }
-                            }
+                        }
+
+                    } else {
+
+                        waitingDialogueLiveData.run {
+                            this.dialogueTitle.value = getString(R.string.error)
+                            this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
+                        }
+
+                    }
+
                 }
             }
-        } else {
-            waitingDialogueLiveData.run {
-                this.dialogueTitle.value = getString(R.string.error)
-                this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
-            }
-        }
+
+
     }
 
     override fun messageClicked(inAppMessage: InAppMessage, action: Action) {
