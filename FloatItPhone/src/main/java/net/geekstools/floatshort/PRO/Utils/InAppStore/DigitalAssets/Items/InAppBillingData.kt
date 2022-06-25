@@ -36,8 +36,8 @@ class InAppBillingData {
     }
 
     init {
-        SKU.SKUS[BillingClient.SkuType.INAPP] = arrayListOf(SKU.InAppItemDonation, SKU.InAppItemFloatingWidgets)
-        SKU.SKUS[BillingClient.SkuType.SUBS] = arrayListOf(SKU.InAppItemSecurityServices, SKU.InAppItemSearchEngines)
+        SKU.SKUS[BillingClient.ProductType.INAPP] = arrayListOf(SKU.InAppItemDonation, SKU.InAppItemFloatingWidgets)
+        SKU.SKUS[BillingClient.ProductType.SUBS] = arrayListOf(SKU.InAppItemSecurityServices, SKU.InAppItemSearchEngines)
     }
 
     /**
@@ -45,7 +45,7 @@ class InAppBillingData {
      * OR
      * BillingClient.SkuType.SUBS
      **/
-    fun getAllSkusByType(@BillingClient.SkuType skuType: String) : ArrayList<String>? {
+    fun getAllSkusByType(@BillingClient.ProductType skuType: String) : ArrayList<String>? {
 
         return SKU.SKUS[skuType]
     }

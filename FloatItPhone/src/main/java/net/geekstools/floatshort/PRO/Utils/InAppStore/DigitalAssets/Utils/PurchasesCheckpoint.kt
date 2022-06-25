@@ -160,7 +160,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
         fun purchaseAcknowledgeProcess(billingClient: BillingClient, purchase: Purchase, purchaseType: String) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
             if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                PrintDebug("*** ${purchase.skus.first()} Purchase Acknowledged: ${purchase.isAcknowledged} ***")
+                PrintDebug("*** ${purchase.products.first()} Purchase Acknowledged: ${purchase.isAcknowledged} ***")
 
                 if (!purchase.isAcknowledged) {
 
@@ -169,7 +169,7 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
 
                     val aPurchaseResult: BillingResult = billingClient.acknowledgePurchase(acknowledgePurchaseParams.build())
 
-                    PrintDebug("*** Purchased Acknowledged Result: ${purchase.skus.first()} -> ${aPurchaseResult.debugMessage} ***")
+                    PrintDebug("*** Purchased Acknowledged Result: ${purchase.products.first()} -> ${aPurchaseResult.debugMessage} ***")
                 }
             }
         }
