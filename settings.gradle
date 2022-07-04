@@ -9,6 +9,7 @@
  */
 include ':BlurryEffectLibrary'
 
-include ':FloatItPhone', ':FloatItWatch', ':LoadingSpin'
+include ':FloatItPhone'
+include ':LoadingSpin'
 include ':ShapesCustomImageViewLibrary'
 include ':LicenseLibrary'
