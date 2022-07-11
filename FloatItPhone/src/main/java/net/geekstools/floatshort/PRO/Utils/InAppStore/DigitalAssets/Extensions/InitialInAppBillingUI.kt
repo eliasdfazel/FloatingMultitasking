@@ -53,6 +53,6 @@ fun InitializeInAppBilling.setupInAppBillingUI() {
     inAppBillingViewBinding.rateFloatIt.setOnClickListener {
 
         startActivity(Intent(Intent.ACTION_VIEW,
-                Uri.parse(getString(R.string.play_store_link) + packageName)))
+                Uri.parse(getString(R.string.play_store_link) + packageName)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }

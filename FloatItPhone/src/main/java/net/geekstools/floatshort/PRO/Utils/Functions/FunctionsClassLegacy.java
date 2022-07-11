@@ -1019,17 +1019,21 @@ public class FunctionsClassLegacy {
                     activity.startActivity(Intent.createChooser(email, context.getString(R.string.feedback_tag)));
                 } else if (selectedPosition == 1) {
                     Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_facebook_app)));
+                    a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(a);
                 } else if (selectedPosition == 2) {
                     Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_xda)));
+                    a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(a);
                 } else if (selectedPosition == 3) {
                     Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_alpha) + context.getPackageName()));
+                    a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(a);
 
                     Toast(context.getResources().getString(R.string.alphaTitle), Gravity.BOTTOM);
                 } else if (selectedPosition == 4) {
                     Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()));
+                    a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(a);
 
                     Toast(context.getResources().getString(R.string.alphaTitle), Gravity.BOTTOM);
@@ -4125,6 +4129,7 @@ public class FunctionsClassLegacy {
         notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
 
         Intent newUpdate = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()));
+        newUpdate.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);;
         PendingIntent newUpdatePendingIntent = PendingIntent.getActivity(context, 5, newUpdate, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

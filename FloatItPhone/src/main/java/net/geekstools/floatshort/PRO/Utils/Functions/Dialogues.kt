@@ -69,13 +69,13 @@ class Dialogues (var activity: Activity, var functionsClassLegacy: FunctionsClas
         dialog.rateIt.setOnClickListener {
             dialog.dismiss()
 
-            activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.play_store_link))))
+            activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.play_store_link))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
 
         dialog.followIt.setOnClickListener {
             dialog.dismiss()
 
-            activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.link_facebook_app))))
+            activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.link_facebook_app))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
 
         dialog.setOnDismissListener {
@@ -161,7 +161,7 @@ class Dialogues (var activity: Activity, var functionsClassLegacy: FunctionsClas
         dialog.followIt.setOnClickListener {
             dialog.dismiss()
 
-            activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.link_facebook_app))))
+            activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.link_facebook_app))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
 
         dialog.setOnDismissListener {

@@ -327,7 +327,9 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         adApp.title = Html.fromHtml(getString(R.string.adApp))
         adApp.summary = Html.fromHtml(getString(R.string.adAppSummary))
         adApp.setOnPreferenceClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_ad_app))))
+
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_ad_app)))
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 
             true
         }
