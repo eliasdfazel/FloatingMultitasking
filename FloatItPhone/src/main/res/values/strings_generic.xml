@@ -25,15 +25,6 @@
     <string name="app_name" translatable="false">Float It</string>
     <string name="geeksempire" translatable="false">Geeks Empire</string>
 
-    <string name="visibilityActionAdvance" translatable="false">VISIBILITY_ACTION_ADVANCE</string>
-    <string name="animtaionActionAdvance" translatable="false">ANIMATION_ACTION_ADVANCE</string>
-    <string name="setDismissAdvance" translatable="false">SET_DISMISS_ADVANCE</string>
-    <string name="counterActionAdvance" translatable="false">COUNTER_ACTION_ADVANCE</string>
-    <string name="savedActionAdvance" translatable="false">SAVED_ACTION_ADVANCE</string>
-    <string name="savedActionHideAdvance" translatable="false">SAVED_ACTION_HIDE_ADVANCE</string>
-    <string name="checkboxActionAdvance" translatable="false">CHECKBOX_ACTION_ADVANCE</string>
-    <string name="splitActionAdvance" translatable="false">SET_SPLIT_ADVANCE</string>
-
     <string name="millis">Millisecond</string>
 
     <string name="shareTitle" translatable="false">
@@ -46,7 +37,6 @@
     <string name="buy" translatable="false">Purchase</string>
     <string name="free" translatable="false">Free Edition</string>
     <string name="contact" translatable="false">Contact me</string>
-    <string name="license_info" translatable="false">License Issuing</string>
     <string name="license_info_desc" translatable="false">Retrieving License Information from Google Play Store</string>
     <string name="license_title" translatable="false">
         <![CDATA[
@@ -98,8 +88,6 @@
 
     <string name="share" translatable="false">Share With Friends</string>
     <string name="facebook" translatable="false">Like Me on…</string>
-    <string name="twitter" translatable="false">Follow Me on…</string>
-    <string name="email" translatable="false">Appreciate your Feedback</string>
     <string name="rate" translatable="false">Rate Me Five Star</string>
     <string name="rateReview" translatable="false">Please Rate &amp; Write Review</string>
     <string name="supportEmail" translatable="false">Support@GeeksEmpire.net</string>
@@ -108,8 +96,6 @@
     <string name="link_ad_app" translatable="false">https://play.google.com/store/apps/details?id=net.geekstools.supershortcuts.PRO</string>
     <string name="link_alpha" translatable="false">https://play.google.com/apps/testing/</string>
     <string name="link_xda" translatable="false">https://forum.xda-developers.com/showpost.php?p=58661916&amp;postcount=4</string>
-    <string name="link_twitter" translatable="false">https://twitter.com/GeeksEmpire</string>
-    <string name="link_facebook" translatable="false">https://www.facebook.com/GeeksEmpire</string>
     <string name="link_facebook_app" translatable="false">https://www.facebook.com/FloatIt.Android/</string>
     <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
 

@@ -19,17 +19,11 @@
 
     <color name="default_color_game">#ae2357</color>
     <color name="default_color_game_light">#FF005D</color>
-    <color name="default_color_game_dark">#760F35</color>
     <color name="default_color_game_transparent">#80ae2357</color>
 
     <color name="red">#9b000e</color>
     <color name="red_transparent">#4d9b000e</color>
-    <color name="green">#007b08</color>
     <color name="yellow">#FFEA00</color>
-
-    <color name="warning_color">#FE5475</color>
-    <color name="hint_color">#42000000</color>
-    <color name="success_color">#1FD4AF</color>
 
     <color name="transparent_light">#b3f2f7ff</color>
     <color name="fifty_light_twice">#c8f2f7ff</color>
@@ -46,7 +40,6 @@
     <color name="dark_transparent_high">#4b0a0f18</color>
     <color name="transparent_dark_high_twice">#c80a0f18</color>
 
-    <color name="borderColor" tools:override="true">@color/default_color_game</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">
         @color/default_color_game
     </color>

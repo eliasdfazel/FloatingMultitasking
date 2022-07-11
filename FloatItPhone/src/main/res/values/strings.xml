@@ -10,8 +10,6 @@
 
 <resources>
 
-    <string name="recoveryErrorCategory">Press &amp; Hold on a Folder to Add It in Recovery 🔁</string>
-    <string name="recoveryErrorWidget">Press &amp; Hold on a Widget to Add It in Recovery 🔁</string>
     <string name="recovery_center">Recovery Center</string>
     <string name="settingTitle">Preferences</string>
     <string name="recoveryShortcuts">Recover Floating Shortcuts</string>
@@ -36,7 +34,6 @@
     <string name="signinTitle">Welcome to Geeks Empire!</string>
     <string name="signinMessage">Thanks for Joining to Our #FloatIt 🎈 Community.</string>
     <string name="signinFinished"> ⚡ Become Master Of Multitasking ⚡ </string>
-    <string name="thanks">Thanks in Advance 🙏 </string>
     <string name="permTitle">
         <![CDATA[
             <b>Permissions Info</b>, Be Patient!
@@ -110,22 +107,9 @@
     <string name="ui_floating">Floating Interface</string>
     <string name="pref_floating">Floating Preferences</string>
     <string name="advance">Advanced Features</string>
-    <string name="wifi">Apps for WiFi</string>👍
-    <string name="bluetooth">Apps for Bluetooth</string>
-    <string name="gps">Apps for GPS</string>
-    <string name="nfc">Apps for NFC</string>
-    <string name="time">Apps for Time</string>
-    <string name="auto_apps">Auto Applications</string>
-    <string name="wifi_folder">Folders for WiFi</string>
-    <string name="bluetooth_folder">Folders for Bluetooth</string>
-    <string name="gps_folder">Folders for GPS</string>
-    <string name="nfc_folder">Folders for NFC</string>
-    <string name="time_folder">Folders for Time</string>
-    <string name="auto_categories">Auto Folders</string>
-    <string name="selectAutoFeature">Please Select a Feature</string>
+    👍
     <string name="wait">Please, Be Patient!</string>
     <string name="stable">Control Panel</string>
-    <string name="automation">Automation Features</string>
     <string name="smartCategory">Smart Features</string>
     <string name="smartTitle">Intelligent Services</string>
     <string name="floatingSearch">Floating Search</string>
@@ -229,12 +213,8 @@
     <string name="splitIt">Split It</string>
     <string name="deleteText">Delete</string>
     <string name="edit_folder">Edit: </string>
-    <string name="autorecovs">Always Ready</string>
-    <string name="syscache">Load &amp; Open Apps Faster</string>
-    <string name="enableControlPanel">Control Panel Will Be Started Automatically</string>
     <string name="freeFormTitle">Extended Float It</string>
     <string name="freeFormDesc">Always Open All Apps in Floating View (FreeForm)</string>
-    <string name="enable">Enable Now</string>
     <string name="liteTitle">Lite Preferences</string>
     <string name="liteSummary">Set Preferences to Minimum for Better Performance</string>
     <string name="liteDesc">
@@ -277,11 +257,7 @@
     </string>
 
     <!-- Finger Print -->
-    <string name="authing">Fingerprint Authentication</string>
-    <string name="fingerprint_description">Confirm Your Fingerprint to Continue…</string>
-    <string name="fingerprint_hint">Touch Sensor</string>
     <string name="fingerprint_not_recognized">Fingerprint Not Recognized.\nTry Again…</string>
-    <string name="fingerprint_success">Fingerprint Recognized</string>
     <string name="lockIt">Lock It 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
     <string name="pinHint">Enter Pin Password 🔑 </string>
@@ -298,33 +274,6 @@
 
     <string name="purchase"> Purchase 💸 </string>
     <string name="donate"> Send A Gift 🎁 </string>
-    <string name="restorePurchase">ℹ Click To Restore The Item ℹ</string>
-    <string name="floatingWidgetsDemoDescriptions">
-        <![CDATA[
-            🔵 <b><big>Floating Widgets</big></b> 🔳 🔲 | Open Floating Widgets Directly from Home Screen <br/>
-            &bull; First Select & Setup Widgets<br/>
-            &bull; then, Click on ✔ to Create Floating Widget<br/>
-            &bull; Press & Hold on ✔ to See More Options & Create Shortcuts of Floating Widgets on Home Screen<br/>
-        ]]>
-    </string>
-    <string name="searchEngineDemoDescriptions">
-        <![CDATA[
-            🔵 <b><big>Search Engine</big></b> 🔍 <br/>
-            &bull; Search in List of Installed Applications<br/>
-            &bull; Search in List of Configured Folders & Widgets<br/>
-            &bull; then, Click on Search Result to Float It<br/>
-            &bull; Or Click on 3 Floating Dots Icon (Right Side) to Float All Apps in Search Result<br/>
-        ]]>
-    </string>
-    <string name="securityServicesDemoDescriptions">
-        <![CDATA[
-            🔵 <b><big>Security Services</big></b><br/>
-            &bull; <b>Lock It 🔒</b> | Secure Your Apps By Your Fingerprint <br/>
-            &bull; <b>Lock It 🔒</b> | Secure Your Apps By Pin Password <br/>
-            &bull; (<small>Press & Hold on an App/Folder/Widget in the List</small>)<br/><br/>
-            ✨ Please, Rate Float It 🌟🌟🌟🌟🌟
-        ]]>
-    </string>
     <string name="purchaseFlowDisrupted">Purchase Flow Disrupted</string>
 
     <string-array name="ContextMenuLock">
