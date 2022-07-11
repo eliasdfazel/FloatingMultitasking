@@ -42,11 +42,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.BillingClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.inappmessaging.FirebaseInAppMessagingClickListener
 import com.google.firebase.inappmessaging.model.Action
 import com.google.firebase.inappmessaging.model.InAppMessage
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.coroutines.CoroutineScope
@@ -486,6 +489,11 @@ class FoldersConfigurations : AppCompatActivity(),
 
         foldersConfigurationViewBinding.shareIt.setImageDrawable(drawableShare)
         foldersConfigurationViewBinding.shareIt.setOnClickListener {
+
+            Firebase.analytics.logEvent("ShareIt", Bundle().apply {
+                putString("Email Address", Firebase.auth.currentUser?.email)
+            })
+
             foldersConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(50)
 
             val shareText = getString(R.string.shareTitle) +
