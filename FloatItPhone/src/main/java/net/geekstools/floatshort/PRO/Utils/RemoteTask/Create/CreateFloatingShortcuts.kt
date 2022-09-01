@@ -32,7 +32,8 @@ class CreateFloatingShortcuts : AppCompatActivity() {
                 loadCustomIcons.load()
             }
 
-            functionsClass.runUnlimitedShortcutsServiceHIS(packageName, className)        }
+            functionsClass.runUnlimitedShortcutsServiceHIS(packageName, className)
+        }
 
         finish()
     }

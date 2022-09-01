@@ -114,6 +114,7 @@ import net.geekstools.floatshort.PRO.Configurations;
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFolders;
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations;
 import net.geekstools.floatshort.PRO.Folders.PopupDialogue.PopupOptionsFloatingFolders;
+import net.geekstools.floatshort.PRO.HomeScreen.HomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.Notifications.PopupAdapter.PopupShortcutsNotification;
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
@@ -2600,6 +2601,12 @@ public class FunctionsClassLegacy {
 
                         }
                     }
+                } else if (item.getItemId() == 4) {
+                    new HomeScreenShortcuts(context).create(
+                            PackageName,
+                            ClassName,
+                            FunctionsClassLegacy.this
+                    );
                 }
                 updateRecoverShortcuts();
                 return true;
