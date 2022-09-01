@@ -8,14 +8,17 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.FloatIt
 
 class HomeScreenShortcuts (private val context: Context) {
 
     fun create(packageName: String, className: String,
                functionsClassLegacy: FunctionsClassLegacy) {
 
+
         val differentIntent = Intent()
-        differentIntent.action = "Create_Floating_Shortcuts"
+        differentIntent.setClass(context, FloatIt::class.java)
+        differentIntent.action = "Float_It"
         differentIntent.addCategory(Intent.CATEGORY_DEFAULT)
         differentIntent.putExtra("PackageName", packageName)
         differentIntent.putExtra("ClassName", className)
@@ -33,10 +36,8 @@ class HomeScreenShortcuts (private val context: Context) {
                 .setIntent(differentIntent)
                 .build()
 
-            context.getSystemService(ShortcutManager::class.java)?.let {
-
-                it.requestPinShortcut(shortcutInfo, null)
-            }
+            context.getSystemService(ShortcutManager::class.java)
+                .requestPinShortcut(shortcutInfo, null)
 
         } else {
 

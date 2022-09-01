@@ -288,6 +288,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Utils.RemoteTask.Create.FloatIt"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/Transparent">
+            <intent-filter>
+                <action android:name="Float_It"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Utils.RemoteTask.Create.FloatingWidgetHomeScreenShortcuts"
             android:excludeFromRecents="true"
             android:noHistory="true"
