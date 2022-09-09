@@ -81,6 +81,7 @@
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
             android:exported="true"
+            android:noHistory="true"
             android:theme="@style/Splash.GeeksEmpire">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
