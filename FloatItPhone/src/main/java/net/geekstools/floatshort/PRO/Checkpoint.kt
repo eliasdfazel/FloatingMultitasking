@@ -26,6 +26,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
+import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.CheckPointBinding
 
@@ -33,6 +34,10 @@ class Checkpoint : Activity() {
 
     private val functionsClassLegacy: FunctionsClassLegacy by lazy {
         FunctionsClassLegacy(applicationContext)
+    }
+
+    private val preferencesIO: PreferencesIO by lazy {
+        PreferencesIO(applicationContext)
     }
 
     companion object {
@@ -53,7 +58,7 @@ class Checkpoint : Activity() {
                             && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             && Settings.canDrawOverlays(applicationContext)) {
 
-                        functionsClassLegacy.savePreference(".Configuration", "Permissions", true)
+                        preferencesIO.savePreference(".Configuration", "Permissions", true)
 
                         startActivity(Intent(applicationContext, Configurations::class.java))
 

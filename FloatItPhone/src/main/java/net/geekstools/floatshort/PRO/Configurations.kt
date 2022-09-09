@@ -77,9 +77,13 @@ class Configurations : AppCompatActivity() {
         if (sharedPreferences.getBoolean("stable", true)) {
             PublicVariable.Stable = true
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
                 startForegroundService(Intent(applicationContext, BindServices::class.java))
+
             } else {
+
                 startService(Intent(applicationContext, BindServices::class.java))
+
             }
         } else {
             PublicVariable.Stable = false
@@ -96,6 +100,7 @@ class Configurations : AppCompatActivity() {
             }
         } else {
             if (!Settings.canDrawOverlays(applicationContext)) {
+
                 startActivity(Intent(applicationContext, Checkpoint::class.java))
 
                 finish()
