@@ -675,50 +675,49 @@ class FoldersConfigurations : AppCompatActivity(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-            when (requestCode) {
-                Google.SignInRequest -> {
+        when (requestCode) {
+            Google.SignInRequest -> {
 
-                    if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == Activity.RESULT_OK) {
 
-                        GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { googleSignInAccountTask ->
+                    GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { googleSignInAccountTask ->
 
-                            val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask?.idToken, null)
-                            firebaseAuth.signInWithCredential(authCredential)
-                                .addOnSuccessListener {
-                                    val firebaseUser = firebaseAuth.currentUser
-                                    if (firebaseUser != null) {
-                                        Debug.PrintDebug("Firebase Activities Done Successfully")
+                        val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask?.idToken, null)
+                        firebaseAuth.signInWithCredential(authCredential)
+                            .addOnSuccessListener {
+                                val firebaseUser = firebaseAuth.currentUser
+                                if (firebaseUser != null) {
+                                    Debug.PrintDebug("Firebase Activities Done Successfully")
 
-                                        foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", firebaseUser.email)
+                                    foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", firebaseUser.email)
 
-                                        foldersConfigurationsDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
+                                    foldersConfigurationsDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
 
-                                        foldersConfigurationsDependencyInjection.securityFunctions.downloadLockedAppsData()
+                                    foldersConfigurationsDependencyInjection.securityFunctions.downloadLockedAppsData()
 
-                                        waitingDialogue.dismiss()
-                                    }
-                                }.addOnFailureListener { exception ->
-
-                                    waitingDialogueLiveData.run {
-                                        this.dialogueTitle.value = getString(R.string.error)
-                                        this.dialogueMessage.value = exception.message
-                                    }
+                                    waitingDialogue.dismiss()
                                 }
+                            }.addOnFailureListener { exception ->
 
-                        }
-
-                    } else {
-
-                        waitingDialogueLiveData.run {
-                            this.dialogueTitle.value = getString(R.string.error)
-                            this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
-                        }
+                                waitingDialogueLiveData.run {
+                                    this.dialogueTitle.value = getString(R.string.error)
+                                    this.dialogueMessage.value = exception.message
+                                }
+                            }
 
                     }
 
-                }
-            }
+                } else {
 
+                    waitingDialogueLiveData.run {
+                        this.dialogueTitle.value = getString(R.string.error)
+                        this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
+                    }
+
+                }
+
+            }
+        }
 
     }
 
