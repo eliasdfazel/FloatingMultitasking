@@ -870,6 +870,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
                 }
             }
+            else -> {}
         }
     }
 

@@ -661,6 +661,7 @@ class FoldersConfigurations : AppCompatActivity(),
                     }
                 }
             }
+            else -> {}
         }
     }
 
