@@ -167,7 +167,8 @@ class Configurations : AppCompatActivity() {
                         Collections.sort(queryUsageStats, LastTimeLaunchedComparator())
 
                         val previousAppPackageName = queryUsageStats[1].packageName
-                        if (previousAppPackageName.contains("com.google.android.googlequicksearchbox")) {
+                        if (previousAppPackageName.contains("com.google.android.googlequicksearchbox")
+                            || previousAppPackageName.contains("com.google.android.apps.googleassistant")) {
 
                             val bundleFirebaseAnalytics = Bundle()
                             bundleFirebaseAnalytics.putString("COUNTRY", functionsClassLegacy.countryIso)
