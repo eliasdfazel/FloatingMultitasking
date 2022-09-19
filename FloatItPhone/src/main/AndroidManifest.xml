@@ -34,7 +34,11 @@
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
 
     <uses-permission android:name="com.android.vending.CHECK_LICENSE"/>
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>

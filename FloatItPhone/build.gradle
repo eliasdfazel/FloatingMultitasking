@@ -25,7 +25,7 @@ android {
     defaultConfig {
         applicationId "net.geekstools.floatshort.PRO"
 
-        minSdkVersion 23
+        minSdkVersion 25
         targetSdkVersion 32
 
         versionCode 818
