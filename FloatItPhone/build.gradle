@@ -19,14 +19,14 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
-    compileSdkVersion 32
-    buildToolsVersion "32.1.0-rc1"
+    compileSdkVersion 33
+    buildToolsVersion "3301.0"
 
     defaultConfig {
         applicationId "net.geekstools.floatshort.PRO"
 
         minSdkVersion 25
-        targetSdkVersion 32
+        targetSdkVersion 33
 
         versionCode 819
         versionName "${majorVersion}." + getDateMonth() + "." + getDateDay() + "." + getDateYear() + ".${versionCode}"
