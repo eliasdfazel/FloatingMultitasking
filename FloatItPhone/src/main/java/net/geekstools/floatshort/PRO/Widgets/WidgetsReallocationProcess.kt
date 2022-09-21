@@ -179,11 +179,11 @@ class WidgetsReallocationProcess : Activity() {
             }
             valueAnimatorScaleWidgetInformation.start()
             valueAnimatorScaleWidgetInformation.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(animation: Animator?) {
+                override fun onAnimationRepeat(animation: Animator) {
 
                 }
 
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     val valueAnimatorScaleWidgetInformationRevert =
                             ValueAnimator.ofInt(
                                     functionsClassLegacy.DpToInteger(51),
@@ -196,29 +196,29 @@ class WidgetsReallocationProcess : Activity() {
                     }
                     valueAnimatorScaleWidgetInformationRevert.start()
                     valueAnimatorScaleWidgetInformationRevert.addListener(object : Animator.AnimatorListener {
-                        override fun onAnimationRepeat(animation: Animator?) {
+                        override fun onAnimationRepeat(animation: Animator) {
 
                         }
 
-                        override fun onAnimationEnd(animation: Animator?) {
+                        override fun onAnimationEnd(animation: Animator) {
 
                         }
 
-                        override fun onAnimationCancel(animation: Animator?) {
+                        override fun onAnimationCancel(animation: Animator) {
 
                         }
 
-                        override fun onAnimationStart(animation: Animator?) {
+                        override fun onAnimationStart(animation: Animator) {
 
                         }
                     })
                 }
 
-                override fun onAnimationCancel(animation: Animator?) {
+                override fun onAnimationCancel(animation: Animator) {
 
                 }
 
-                override fun onAnimationStart(animation: Animator?) {
+                override fun onAnimationStart(animation: Animator) {
 
                 }
             })

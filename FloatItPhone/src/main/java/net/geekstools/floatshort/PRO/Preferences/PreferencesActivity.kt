@@ -91,19 +91,19 @@ class PreferencesActivity : AppCompatActivity() {
                     rootLayout.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                     circularReveal.addListener(object : Animator.AnimatorListener {
-                        override fun onAnimationRepeat(animation: Animator?) {
+                        override fun onAnimationRepeat(animation: Animator) {
 
                         }
 
-                        override fun onAnimationEnd(animation: Animator?) {
+                        override fun onAnimationEnd(animation: Animator) {
                             rootLayout.visibility = View.VISIBLE;
                         }
 
-                        override fun onAnimationCancel(animation: Animator?) {
+                        override fun onAnimationCancel(animation: Animator) {
 
                         }
 
-                        override fun onAnimationStart(animation: Animator?) {
+                        override fun onAnimationStart(animation: Animator) {
 
                         }
                     })

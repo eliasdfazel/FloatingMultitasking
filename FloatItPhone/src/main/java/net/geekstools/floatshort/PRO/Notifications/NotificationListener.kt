@@ -49,7 +49,7 @@ class NotificationListener : NotificationListenerService() {
     lateinit var notificationTime: String
     lateinit var notificationId: String
 
-    lateinit var notificationIcon: Drawable
+    var notificationIcon: Drawable? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return super.onStartCommand(intent, flags, startId)
@@ -157,7 +157,9 @@ class NotificationListener : NotificationListenerService() {
                 fileIO.saveFile(notificationTime + "_" + "Notification" + "Key", notificationId)
                 fileIO.saveFile(notificationTime + "_" + "Notification" + "Title", notificationTitle)
                 fileIO.saveFile(notificationTime + "_" + "Notification" + "Text", notificationText.toString())
-                bitmapExtractor.saveBitmapIcon(notificationTime + "_" + "Notification" + "Icon", notificationIcon)
+                notificationIcon?.let { drawable ->
+                    bitmapExtractor.saveBitmapIcon(notificationTime + "_" + "Notification" + "Icon", drawable)
+                }
                 PublicVariable.notificationIntent[notificationTime] = statusBarNotification.notification.contentIntent
 
 

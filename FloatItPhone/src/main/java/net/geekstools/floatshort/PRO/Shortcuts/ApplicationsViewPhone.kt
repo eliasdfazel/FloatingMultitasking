@@ -217,19 +217,19 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 circularReveal.interpolator = AccelerateInterpolator()
                 circularReveal.start()
                 circularReveal.addListener(object : Animator.AnimatorListener {
-                    override fun onAnimationRepeat(animation: Animator?) {
+                    override fun onAnimationRepeat(animation: Animator) {
 
                     }
 
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationEnd(animation: Animator) {
                         hybridApplicationViewBinding.recoveryAction.visibility = View.INVISIBLE
                     }
 
-                    override fun onAnimationCancel(animation: Animator?) {
+                    override fun onAnimationCancel(animation: Animator) {
 
                     }
 
-                    override fun onAnimationStart(animation: Animator?) {
+                    override fun onAnimationStart(animation: Animator) {
 
                     }
                 })
@@ -244,19 +244,19 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 circularReveal.interpolator = AccelerateInterpolator()
                 circularReveal.start()
                 circularReveal.addListener(object : Animator.AnimatorListener {
-                    override fun onAnimationRepeat(animation: Animator?) {
+                    override fun onAnimationRepeat(animation: Animator) {
 
                     }
 
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationEnd(animation: Animator) {
                         hybridApplicationViewBinding.recoveryAction.visibility = View.VISIBLE
                     }
 
-                    override fun onAnimationCancel(animation: Animator?) {
+                    override fun onAnimationCancel(animation: Animator) {
 
                     }
 
-                    override fun onAnimationStart(animation: Animator?) {
+                    override fun onAnimationStart(animation: Animator) {
 
                     }
                 })
