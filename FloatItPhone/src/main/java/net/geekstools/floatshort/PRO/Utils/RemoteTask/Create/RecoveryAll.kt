@@ -12,6 +12,7 @@ package net.geekstools.floatshort.PRO.Utils.RemoteTask.Create
 import android.app.ActivityOptions
 import android.app.Service
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -86,7 +87,7 @@ class RecoveryAll : Service() {
         super.onCreate()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(333, functionsClassLegacy.bindServiceNotification(), STOP_FOREGROUND_REMOVE)
+            startForeground(333, functionsClassLegacy.bindServiceNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
         } else {
             startForeground(333, functionsClassLegacy.bindServiceNotification())
         }

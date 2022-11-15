@@ -25,6 +25,7 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -254,15 +255,25 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         hybridApplicationViewBinding.recoveryAction.setOnClickListener {
-            Intent(applicationContext, RecoveryShortcuts::class.java).let {
+
+            Intent(this@ApplicationsViewPhone, RecoveryShortcuts::class.java).let {
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startService(it)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(it)
+                } else {
+                    startService(it)
+                }
             }
+
         }
         hybridApplicationViewBinding.recoverFloatingCategories.setOnClickListener {
             Intent(applicationContext, RecoveryFolders::class.java).let {
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startService(it)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(it)
+                }  else {
+                    startService(it)
+                }
             }
 
             val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
@@ -285,7 +296,11 @@ class ApplicationsViewPhone : AppCompatActivity(),
         hybridApplicationViewBinding.recoverFloatingWidgets.setOnClickListener {
             Intent(applicationContext, RecoveryWidgets::class.java).let {
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startService(it)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(it)
+                } else {
+                    startService(it)
+                }
             }
 
             val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
@@ -420,7 +435,11 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 && applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection()
                 && !BuildConfig.DEBUG) {
 
-            startService(Intent(applicationContext, LicenseValidator::class.java))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(Intent(applicationContext, LicenseValidator::class.java))
+            } else {
+                startService(Intent(applicationContext, LicenseValidator::class.java))
+            }
 
             val intentFilter = IntentFilter()
             intentFilter.addAction(getString(R.string.license))

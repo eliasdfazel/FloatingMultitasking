@@ -22,6 +22,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -73,7 +74,6 @@ import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.Purcha
 import net.geekstools.floatshort.PRO.Utils.InAppUpdate.InAppUpdateProcess
 import net.geekstools.floatshort.PRO.Utils.RemoteProcess.CloudMessageHandler
 import net.geekstools.floatshort.PRO.Utils.RemoteProcess.LicenseValidator
-import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryWidgets
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
@@ -226,15 +226,24 @@ class FoldersConfigurations : AppCompatActivity(),
 
         foldersConfigurationViewBinding.recoveryAction.setOnClickListener {
 
-            Intent(applicationContext, RecoveryFolders::class.java).apply {
-                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startService(this)
+            Intent(applicationContext, RecoveryShortcuts::class.java).let {
+                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(it)
+                } else {
+                    startService(it)
+                }
             }
+
         }
         foldersConfigurationViewBinding.recoverFloatingApps.setOnClickListener {
             Intent(applicationContext, RecoveryShortcuts::class.java).apply {
                 this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startService(this)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(this)
+                } else {
+                    startService(this)
+                }
             }
 
             val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
@@ -257,7 +266,11 @@ class FoldersConfigurations : AppCompatActivity(),
         foldersConfigurationViewBinding.recoverFloatingWidgets.setOnClickListener {
             Intent(applicationContext, RecoveryWidgets::class.java).apply {
                 this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startService(this)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(this)
+                } else {
+                    startService(this)
+                }
             }
 
             val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
@@ -390,7 +403,11 @@ class FoldersConfigurations : AppCompatActivity(),
         super.onStart()
 
         if (!getFileStreamPath(".License").exists() && foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection()) {
-            startService(Intent(applicationContext, LicenseValidator::class.java))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(Intent(applicationContext, LicenseValidator::class.java))
+            } else {
+                startService(Intent(applicationContext, LicenseValidator::class.java))
+            }
 
             val intentFilter = IntentFilter()
             intentFilter.addAction(getString(R.string.license))

@@ -399,14 +399,22 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             Intent(applicationContext, RecoveryWidgets::class.java).apply {
                 putExtra("AuthenticatedFloatIt", true)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startService(this)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(this)
+                } else {
+                    startService(this)
+                }
             }
         }
         widgetConfigurationsViewsBinding.recoverFloatingCategories.setOnClickListener {
 
             Intent(applicationContext, RecoveryFolders::class.java).apply {
                 this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startService(this)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(this)
+                } else {
+                    startService(this)
+                }
             }
 
             val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
@@ -430,7 +438,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
             Intent(applicationContext, RecoveryShortcuts::class.java).apply {
                 this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startService(this)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(this)
+                }  else {
+                    startService(this)
+                }
             }
 
             val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)

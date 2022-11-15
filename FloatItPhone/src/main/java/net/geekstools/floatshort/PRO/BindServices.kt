@@ -43,12 +43,12 @@ class BindServices : Service() {
         Debug.PrintDebug("*** Bind Service StartId $startId ***")
 
         if (startId == 1) {
-            startForeground(333, functionsClassLegacy.bindServiceNotification())
 
             PublicVariable.floatingSizeNumber = functionsClassLegacy.readDefaultPreference("floatingSize", 39)
             PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), applicationContext.resources.displayMetrics).toInt()
 
         }
+
         return START_STICKY
     }
 
@@ -60,6 +60,9 @@ class BindServices : Service() {
 
         functionsClassLegacy.loadSavedColor()
         functionsClassLegacy.checkLightDarkTheme()
+
+        startForeground(333, functionsClassLegacy.bindServiceNotification())
+
     }
 
     override fun onBind(intent: Intent?): IBinder? {
