@@ -169,7 +169,7 @@
     <string name="reallocatingWidgets"> 🔁 Reconfiguring… </string>
     <string name="reconfiguringWidgets"> Reconfiguring… </string>
     <string name="folderDescription">Please Write a Folder Name</string>
-    <string name="colortext">App Theme</string>
+    <string name="colortext">Color Theme</string>
     <string name="themeTrans">Transparent Theme</string>
     <string name="blurryTitle">Blurry Theme</string>
     <string name="autotrans">Floating Transparency</string>
