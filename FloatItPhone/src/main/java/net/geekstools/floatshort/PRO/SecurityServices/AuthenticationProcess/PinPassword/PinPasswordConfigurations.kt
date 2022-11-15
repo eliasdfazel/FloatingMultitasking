@@ -39,6 +39,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
+import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.AuthHandlerViewsBinding
 import java.util.*
@@ -47,6 +48,10 @@ class PinPasswordConfigurations : Activity() {
 
     private lateinit var functionClassLegacy: FunctionsClassLegacy
     private lateinit var securityFunctions: SecurityFunctions
+
+    private val preferencesIO: PreferencesIO by lazy {
+        PreferencesIO(applicationContext)
+    }
 
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseUser: FirebaseUser
@@ -98,7 +103,7 @@ class PinPasswordConfigurations : Activity() {
         authHandlerViewsBinding.pinPasswordEditText.setTextColor(PublicVariable.colorLightDarkOpposite)
         authHandlerViewsBinding.passwordRepeat.setTextColor(PublicVariable.colorLightDarkOpposite)
 
-        currentPasswordExist = (functionClassLegacy.readPreference(".Password", "Pin", "0") != "0")
+        currentPasswordExist = (preferencesIO.readPreference(".Password", "Pin", "0") != "0")
         if (currentPasswordExist) {
             authHandlerViewsBinding.textInputPasswordCurrent.visibility = View.VISIBLE
             authHandlerViewsBinding.forgotPassword.visibility = View.VISIBLE

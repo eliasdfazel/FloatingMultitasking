@@ -22,13 +22,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
+import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.databinding.AuthVerificationWaitingBinding
 
 class PinPasswordVerification : Activity() {
 
-    private val functionsClassLegacy: FunctionsClassLegacy by lazy {
-        FunctionsClassLegacy(applicationContext)
+    private val preferencesIO: PreferencesIO by lazy {
+        PreferencesIO(applicationContext)
     }
 
     private lateinit var authVerificationWaitingBinding: AuthVerificationWaitingBinding
@@ -47,7 +47,7 @@ class PinPasswordVerification : Activity() {
 
         if (intent.hasExtra("RESET_PASSWORD_BY_FINGER_PRINT")) {
 
-            functionsClassLegacy.savePreference(".Password", "Pin", "0")
+            preferencesIO.savePreference(".Password", "Pin", "0")
 
             Handler(Looper.getMainLooper()).postDelayed({
 
@@ -74,7 +74,7 @@ class PinPasswordVerification : Activity() {
 
                         Debug.PrintDebug("*** Email Verified ***")
 
-                        functionsClassLegacy.savePreference(".Password", "Pin", "0")
+                        preferencesIO.savePreference(".Password", "Pin", "0")
                         Handler(Looper.getMainLooper()).postDelayed({
 
                             startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java)

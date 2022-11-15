@@ -71,6 +71,7 @@ android {
             versionNameSuffix '[PRO][Android][Phone][BETA]'
         }
     }
+    namespace 'net.geekstools.floatshort.PRO'
 }
 
 static def getDateYear() {
@@ -99,7 +100,7 @@ dependencies {
     implementation project(':BlurryEffectLibrary')
 
 
-    implementation 'com.android.billingclient:billing-ktx:5.0.0'
+    implementation 'com.android.billingclient:billing-ktx:5.1.0'
 
 
     implementation 'androidx.appcompat:appcompat:1.5.1'
