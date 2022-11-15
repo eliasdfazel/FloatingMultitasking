@@ -149,7 +149,7 @@ class IndexedFastScroller(private val context: Context,
             val indexText = (fastScrollerIndexViewBinding.indexView.getChildAt(number) as TextView).text.toString()
             val indexRange = (fastScrollerIndexViewBinding.indexView.getChildAt(number).y + fastScrollerIndexViewBinding.indexView.y + finalTextView.height).toInt()
 
-            for (jRange in upperRange..indexRange) {
+            for (jRange in IntRange(upperRange, indexRange)) {
                 mapRangeIndex[jRange] = indexText
             }
 

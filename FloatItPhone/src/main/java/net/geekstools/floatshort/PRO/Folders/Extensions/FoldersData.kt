@@ -22,7 +22,6 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.IndexedFastScrollerFactory
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFastScroller
 import java.util.*
-import kotlin.collections.ArrayList
 
 fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
     installedAppsListItem.clear()
@@ -106,9 +105,10 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
             recyclerView = advanceAppSelectionListBinding.recyclerListView,
             fastScrollerIndexViewBinding = advanceAppSelectionListBinding.fastScrollerIndexInclude,
             indexedFastScrollerFactory = IndexedFastScrollerFactory(
-                    popupEnable = !functionsClassLegacy.litePreferencesEnabled(),
-                    popupTextColor = PublicVariable.colorLightDarkOpposite,
-                    indexItemTextColor = PublicVariable.colorLightDarkOpposite)
+                popupEnable = !functionsClassLegacy.litePreferencesEnabled(),
+                popupBackgroundTint = PublicVariable.primaryColor,
+                popupTextColor = PublicVariable.colorLightDark,
+                indexItemTextColor = PublicVariable.colorLightDarkOpposite)
     )
     indexedFastScroller.initializeIndexView().await()
             .loadIndexData(listOfNewCharOfItemsForIndex = listOfNewCharOfItemsForIndex).await()

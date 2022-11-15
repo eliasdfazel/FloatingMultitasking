@@ -950,9 +950,10 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 recyclerView = hybridApplicationViewBinding.applicationsListView,
                 fastScrollerIndexViewBinding = hybridApplicationViewBinding.fastScrollerIndexInclude,
                 indexedFastScrollerFactory = IndexedFastScrollerFactory(
-                        popupEnable = !applicationsViewPhoneDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
-                        popupTextColor = PublicVariable.colorLightDarkOpposite,
-                        indexItemTextColor = PublicVariable.colorLightDarkOpposite)
+                    popupEnable = !applicationsViewPhoneDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
+                    popupBackgroundTint = PublicVariable.primaryColor,
+                    popupTextColor = PublicVariable.colorLightDarkOpposite,
+                    indexItemTextColor = PublicVariable.colorLightDarkOpposite)
         )
         indexedFastScroller.initializeIndexView().await()
                 .loadIndexData(listOfNewCharOfItemsForIndex = listOfNewCharOfItemsForIndex).await()
