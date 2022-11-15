@@ -16,6 +16,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
+import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -63,6 +64,15 @@ class RecoveryAllActivity : Activity() {
                 startService(Intent(applicationContext, RecoveryAll::class.java))
 
             }
+
+            if (PublicVariable.allFloatingCounter == 1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(Intent(applicationContext, BindServices::class.java))
+                } else {
+                    startService(Intent(applicationContext, BindServices::class.java))
+                }
+            }
+
         }
 
         this@RecoveryAllActivity.finish()

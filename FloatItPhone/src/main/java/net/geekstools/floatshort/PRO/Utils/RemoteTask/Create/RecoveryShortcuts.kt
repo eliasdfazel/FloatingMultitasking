@@ -141,11 +141,6 @@ class RecoveryShortcuts : Service() {
             startForeground(333, functionsClassLegacy.bindServiceNotification())
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(Intent(applicationContext, BindServices::class.java))
-        } else {
-            startService(Intent(applicationContext, BindServices::class.java))
-        }
     }
 
     override fun onDestroy() {

@@ -54,6 +54,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.withIndex
+import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
@@ -405,6 +406,15 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     startService(this)
                 }
             }
+
+            if (PublicVariable.allFloatingCounter == 1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(Intent(applicationContext, BindServices::class.java))
+                } else {
+                    startService(Intent(applicationContext, BindServices::class.java))
+                }
+            }
+
         }
         widgetConfigurationsViewsBinding.recoverFloatingCategories.setOnClickListener {
 
@@ -414,6 +424,14 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     startForegroundService(this)
                 } else {
                     startService(this)
+                }
+            }
+
+            if (PublicVariable.allFloatingCounter == 1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(Intent(applicationContext, BindServices::class.java))
+                } else {
+                    startService(Intent(applicationContext, BindServices::class.java))
                 }
             }
 
@@ -442,6 +460,14 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     startForegroundService(this)
                 }  else {
                     startService(this)
+                }
+            }
+
+            if (PublicVariable.allFloatingCounter == 1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(Intent(applicationContext, BindServices::class.java))
+                } else {
+                    startService(Intent(applicationContext, BindServices::class.java))
                 }
             }
 

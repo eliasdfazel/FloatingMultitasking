@@ -57,6 +57,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
+import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.FoldersListAdapter
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
@@ -235,6 +236,14 @@ class FoldersConfigurations : AppCompatActivity(),
                 }
             }
 
+            if (PublicVariable.allFloatingCounter == 1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(Intent(applicationContext, BindServices::class.java))
+                } else {
+                    startService(Intent(applicationContext, BindServices::class.java))
+                }
+            }
+
         }
         foldersConfigurationViewBinding.recoverFloatingApps.setOnClickListener {
             Intent(applicationContext, RecoveryShortcuts::class.java).apply {
@@ -243,6 +252,14 @@ class FoldersConfigurations : AppCompatActivity(),
                     startForegroundService(this)
                 } else {
                     startService(this)
+                }
+            }
+
+            if (PublicVariable.allFloatingCounter == 1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(Intent(applicationContext, BindServices::class.java))
+                } else {
+                    startService(Intent(applicationContext, BindServices::class.java))
                 }
             }
 
@@ -270,6 +287,14 @@ class FoldersConfigurations : AppCompatActivity(),
                     startForegroundService(this)
                 } else {
                     startService(this)
+                }
+            }
+
+            if (PublicVariable.allFloatingCounter == 1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(Intent(applicationContext, BindServices::class.java))
+                } else {
+                    startService(Intent(applicationContext, BindServices::class.java))
                 }
             }
 

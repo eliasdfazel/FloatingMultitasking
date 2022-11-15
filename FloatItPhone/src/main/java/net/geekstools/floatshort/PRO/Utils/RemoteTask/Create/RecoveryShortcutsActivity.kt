@@ -17,6 +17,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
+import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -60,6 +61,15 @@ class RecoveryShortcutsActivity : Activity() {
                 startService(Intent(applicationContext, RecoveryShortcuts::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 
             }
+
+            if (PublicVariable.allFloatingCounter == 1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(Intent(applicationContext, BindServices::class.java))
+                } else {
+                    startService(Intent(applicationContext, BindServices::class.java))
+                }
+            }
+
         }
 
         this@RecoveryShortcutsActivity.finish()
