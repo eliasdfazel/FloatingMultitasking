@@ -10,7 +10,6 @@
 
 package net.geekstools.floatshort.PRO.Folders
 
-import android.animation.Animator
 import android.app.Activity
 import android.app.ActivityOptions
 import android.app.Dialog
@@ -29,8 +28,6 @@ import android.os.Looper
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewAnimationUtils
-import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -90,8 +87,6 @@ import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.FoldersConfigurationViewBinding
 import java.nio.charset.Charset
 import java.util.*
-import kotlin.math.hypot
-import kotlin.math.roundToInt
 
 class FoldersConfigurations : AppCompatActivity(),
         View.OnClickListener, View.OnLongClickListener,
@@ -186,66 +181,19 @@ class FoldersConfigurations : AppCompatActivity(),
         foldersConfigurationViewBinding.recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories)
         foldersConfigurationViewBinding.recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
 
-        foldersConfigurationViewBinding.actionButton.setOnClickListener {
+        foldersConfigurationViewBinding.actionButton.setOnClickListener { preferencesView ->
             foldersConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(33)
 
-            if (!PublicVariable.actionCenter) {
-                val finalRadius = hypot(foldersConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), foldersConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(foldersConfigurationViewBinding.recoveryAction,
-                        foldersConfigurationViewBinding.actionButton.x.roundToInt(), foldersConfigurationViewBinding.actionButton.y.roundToInt(),
-                        finalRadius.toFloat(), foldersConfigurationsDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat())
-                circularReveal.duration = 777
-                circularReveal.interpolator = AccelerateInterpolator()
-                circularReveal.start()
-                circularReveal.addListener(object : Animator.AnimatorListener {
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this@FoldersConfigurations,
+                preferencesView,
+                "transition"
+            )
 
-                    override fun onAnimationStart(animation: Animator) {
+            val intent = Intent(this@FoldersConfigurations, PreferencesActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent, options.toBundle())
 
-                    }
-
-                    override fun onAnimationEnd(animation: Animator) {
-                        foldersConfigurationViewBinding.recoveryAction.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationCancel(animation: Animator) {
-
-                    }
-
-                    override fun onAnimationRepeat(animation: Animator) {
-
-                    }
-                })
-                foldersConfigurationsDependencyInjection.functionsClassLegacy.openActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton, foldersConfigurationViewBinding.fullActionViews.isShown)
-            } else {
-                foldersConfigurationViewBinding.recoveryAction.visibility = View.VISIBLE
-
-                val finalRadius = hypot(foldersConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), foldersConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(foldersConfigurationViewBinding.recoveryAction,
-                        foldersConfigurationViewBinding.actionButton.x.roundToInt(), foldersConfigurationViewBinding.actionButton.y.roundToInt(),
-                        foldersConfigurationsDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat(), finalRadius.toFloat())
-                circularReveal.duration = 1300
-                circularReveal.interpolator = AccelerateInterpolator()
-                circularReveal.start()
-                circularReveal.addListener(object : Animator.AnimatorListener {
-
-                    override fun onAnimationStart(animation: Animator) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animator) {
-                        foldersConfigurationViewBinding.recoveryAction.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationCancel(animation: Animator) {
-
-                    }
-
-                    override fun onAnimationRepeat(animation: Animator) {
-
-                    }
-                })
-                foldersConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton)
-            }
         }
         foldersConfigurationViewBinding.switchApps.setOnClickListener {
 
@@ -332,13 +280,15 @@ class FoldersConfigurations : AppCompatActivity(),
 
         foldersConfigurationViewBinding.actionButton.setOnLongClickListener {
 
-            val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@FoldersConfigurations, foldersConfigurationViewBinding.actionButton, "transition")
+            Handler(Looper.getMainLooper()).postDelayed({
 
-            Intent().apply {
-                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                this.setClass(this@FoldersConfigurations, PreferencesActivity::class.java)
-                startActivity(this, activityOptionsCompat.toBundle())
-            }
+                startActivity(Intent(this@FoldersConfigurations, InitializeInAppBilling::class.java)
+                    .putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
+                    .putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemDonation)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    ActivityOptions.makeCustomAnimation(this@FoldersConfigurations, R.anim.down_up, android.R.anim.fade_out).toBundle())
+
+            }, 113)
 
             true
         }

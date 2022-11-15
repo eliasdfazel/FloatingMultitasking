@@ -4348,7 +4348,7 @@ public class FunctionsClassLegacy {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return //(BuildConfig.DEBUG) ? false :
+        return (BuildConfig.DEBUG) ? true :
                 readPreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSecurityServices, false);
     }
 

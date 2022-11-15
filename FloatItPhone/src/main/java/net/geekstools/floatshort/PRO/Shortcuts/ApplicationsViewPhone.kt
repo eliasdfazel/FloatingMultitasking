@@ -10,7 +10,6 @@
 
 package net.geekstools.floatshort.PRO.Shortcuts
 
-import android.animation.Animator
 import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.BroadcastReceiver
@@ -33,8 +32,6 @@ import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewAnimationUtils
-import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -99,7 +96,6 @@ import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFa
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.HybridApplicationViewBinding
 import java.util.*
-import kotlin.math.hypot
 
 class ApplicationsViewPhone : AppCompatActivity(),
         View.OnClickListener, View.OnLongClickListener,
@@ -206,61 +202,19 @@ class ApplicationsViewPhone : AppCompatActivity(),
         hybridApplicationViewBinding.recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories)
         hybridApplicationViewBinding.recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
 
-        hybridApplicationViewBinding.actionButton.setOnClickListener {
+        hybridApplicationViewBinding.actionButton.setOnClickListener { preferencesView ->
             applicationsViewPhoneDependencyInjection.functionsClassLegacy.doVibrate(33)
 
-            if (!PublicVariable.actionCenter) {
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this@ApplicationsViewPhone,
+                preferencesView,
+                "transition"
+            )
 
-                val finalRadius = hypot(applicationsViewPhoneDependencyInjection.functionsClassLegacy.displayX().toDouble(), applicationsViewPhoneDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(hybridApplicationViewBinding.recoveryAction, hybridApplicationViewBinding.actionButton.x.toInt(), hybridApplicationViewBinding.actionButton.y.toInt(), finalRadius.toFloat(), applicationsViewPhoneDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat())
-                circularReveal.duration = 777
-                circularReveal.interpolator = AccelerateInterpolator()
-                circularReveal.start()
-                circularReveal.addListener(object : Animator.AnimatorListener {
-                    override fun onAnimationRepeat(animation: Animator) {
+            val intent = Intent(this@ApplicationsViewPhone, PreferencesActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent, options.toBundle())
 
-                    }
-
-                    override fun onAnimationEnd(animation: Animator) {
-                        hybridApplicationViewBinding.recoveryAction.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationCancel(animation: Animator) {
-
-                    }
-
-                    override fun onAnimationStart(animation: Animator) {
-
-                    }
-                })
-
-                applicationsViewPhoneDependencyInjection.functionsClassLegacy.openActionMenuOption(this@ApplicationsViewPhone, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton, hybridApplicationViewBinding.fullActionViews.isShown)
-            } else {
-                hybridApplicationViewBinding.recoveryAction.visibility = View.VISIBLE
-
-                val finalRadius = hypot(applicationsViewPhoneDependencyInjection.functionsClassLegacy.displayX().toDouble(), applicationsViewPhoneDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(hybridApplicationViewBinding.recoveryAction, hybridApplicationViewBinding.actionButton.x.toInt(), hybridApplicationViewBinding.actionButton.y.toInt(), applicationsViewPhoneDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat(), finalRadius.toFloat())
-                circularReveal.duration = 1300
-                circularReveal.interpolator = AccelerateInterpolator()
-                circularReveal.start()
-                circularReveal.addListener(object : Animator.AnimatorListener {
-                    override fun onAnimationRepeat(animation: Animator) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animator) {
-                        hybridApplicationViewBinding.recoveryAction.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationCancel(animation: Animator) {
-
-                    }
-
-                    override fun onAnimationStart(animation: Animator) {
-
-                    }
-                })
-            }
         }
 
         hybridApplicationViewBinding.switchCategories.setOnClickListener {
@@ -353,13 +307,15 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         hybridApplicationViewBinding.actionButton.setOnLongClickListener {
+
             Handler(Looper.getMainLooper()).postDelayed({
-                val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@ApplicationsViewPhone, hybridApplicationViewBinding.actionButton, "transition")
-                Intent().let {
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    it.setClass(this@ApplicationsViewPhone, PreferencesActivity::class.java)
-                    startActivity(it, activityOptionsCompat.toBundle())
-                }
+
+                startActivity(Intent(this@ApplicationsViewPhone, InitializeInAppBilling::class.java)
+                    .putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
+                    .putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemDonation)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    ActivityOptions.makeCustomAnimation(this@ApplicationsViewPhone, R.anim.down_up, android.R.anim.fade_out).toBundle())
+
             }, 113)
 
             true
