@@ -426,10 +426,10 @@ class FoldersConfigurations : AppCompatActivity(),
         billingClient = PurchasesCheckpoint(this@FoldersConfigurations).trigger()
 
         if (BuildConfig.VERSION_NAME.contains("[BETA]")
-                && !foldersConfigurationsDependencyInjection.functionsClassLegacy.readPreference(".UserInformation", "SubscribeToBeta", false)) {
+                && !foldersConfigurationsDependencyInjection.preferencesIO.readPreference(".UserInformation", "SubscribeToBeta", false)) {
             FirebaseMessaging.getInstance().subscribeToTopic("BETA")
                     .addOnSuccessListener {
-                        foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "SubscribeToBeta", true) }
+                        foldersConfigurationsDependencyInjection.preferencesIO.savePreference(".UserInformation", "SubscribeToBeta", true) }
                     .addOnFailureListener {
 
                     }
@@ -461,7 +461,7 @@ class FoldersConfigurations : AppCompatActivity(),
         }
 
         if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection()
-                && foldersConfigurationsDependencyInjection.functionsClassLegacy.readPreference(".UserInformation", "userEmail", null) == null
+                && foldersConfigurationsDependencyInjection.preferencesIO.readPreference(".UserInformation", "userEmail", null) == null
                 && firebaseAuth.currentUser == null) {
 
             val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -543,7 +543,7 @@ class FoldersConfigurations : AppCompatActivity(),
                                             .toInt()
 
                             if (firebaseAuth.currentUser != null
-                                    && foldersConfigurationsDependencyInjection.functionsClassLegacy.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
+                                    && foldersConfigurationsDependencyInjection.preferencesIO.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
 
                                 startActivity(Intent(applicationContext, InAppUpdateProcess::class.java)
                                         .putExtra("UPDATE_CHANGE_LOG", firebaseRemoteConfig.getString(foldersConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()))
@@ -566,7 +566,7 @@ class FoldersConfigurations : AppCompatActivity(),
             firebaseAuth.addAuthStateListener { firebaseAuth ->
                 val user = firebaseAuth.currentUser
                 if (user == null) {
-                    foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", null)
+                    foldersConfigurationsDependencyInjection.preferencesIO.savePreference(".UserInformation", "userEmail", null)
 
                     val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                             .requestIdToken(getString(R.string.webClientId))
@@ -590,7 +590,7 @@ class FoldersConfigurations : AppCompatActivity(),
             foldersConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton)
         }
 
-        foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
+        foldersConfigurationsDependencyInjection.preferencesIO.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
 
         billingClient?.endConnection()
 
@@ -681,30 +681,34 @@ class FoldersConfigurations : AppCompatActivity(),
 
                 if (resultCode == Activity.RESULT_OK) {
 
-                    GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { googleSignInAccountTask ->
+                    data?.let {
 
-                        val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask?.idToken, null)
-                        firebaseAuth.signInWithCredential(authCredential)
-                            .addOnSuccessListener {
-                                val firebaseUser = firebaseAuth.currentUser
-                                if (firebaseUser != null) {
-                                    Debug.PrintDebug("Firebase Activities Done Successfully")
+                        GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { googleSignInAccountTask ->
 
-                                    foldersConfigurationsDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", firebaseUser.email)
+                            val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask?.idToken, null)
+                            firebaseAuth.signInWithCredential(authCredential)
+                                .addOnSuccessListener {
+                                    val firebaseUser = firebaseAuth.currentUser
+                                    if (firebaseUser != null) {
+                                        Debug.PrintDebug("Firebase Activities Done Successfully")
 
-                                    foldersConfigurationsDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
+                                        foldersConfigurationsDependencyInjection.preferencesIO.savePreference(".UserInformation", "userEmail", firebaseUser.email)
 
-                                    foldersConfigurationsDependencyInjection.securityFunctions.downloadLockedAppsData()
+                                        foldersConfigurationsDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
 
-                                    waitingDialogue.dismiss()
+                                        foldersConfigurationsDependencyInjection.securityFunctions.downloadLockedAppsData()
+
+                                        waitingDialogue.dismiss()
+                                    }
+                                }.addOnFailureListener { exception ->
+
+                                    waitingDialogueLiveData.run {
+                                        this.dialogueTitle.value = getString(R.string.error)
+                                        this.dialogueMessage.value = exception.message
+                                    }
                                 }
-                            }.addOnFailureListener { exception ->
 
-                                waitingDialogueLiveData.run {
-                                    this.dialogueTitle.value = getString(R.string.error)
-                                    this.dialogueMessage.value = exception.message
-                                }
-                            }
+                        }
 
                     }
 

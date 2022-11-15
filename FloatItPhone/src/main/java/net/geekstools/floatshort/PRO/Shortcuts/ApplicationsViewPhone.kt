@@ -444,9 +444,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        if (BuildConfig.VERSION_NAME.contains("[BETA]") && !applicationsViewPhoneDependencyInjection.functionsClassLegacy.readPreference(".UserInformation", "SubscribeToBeta", false)) {
+        if (BuildConfig.VERSION_NAME.contains("[BETA]") && !applicationsViewPhoneDependencyInjection.preferencesIO.readPreference(".UserInformation", "SubscribeToBeta", false)) {
             FirebaseMessaging.getInstance().subscribeToTopic("BETA").addOnSuccessListener {
-                applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "SubscribeToBeta", true)
+                applicationsViewPhoneDependencyInjection.preferencesIO.savePreference(".UserInformation", "SubscribeToBeta", true)
             }.addOnFailureListener {
 
             }
@@ -485,7 +485,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection()
-                && applicationsViewPhoneDependencyInjection.functionsClassLegacy.readPreference(".UserInformation", "userEmail", null) == null
+                && applicationsViewPhoneDependencyInjection.preferencesIO.readPreference(".UserInformation", "userEmail", null) == null
                 && firebaseAuth.currentUser == null) {
 
             val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -568,7 +568,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                             .toInt()
 
                             if (firebaseAuth.currentUser != null
-                                    && applicationsViewPhoneDependencyInjection.functionsClassLegacy.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
+                                    && applicationsViewPhoneDependencyInjection.preferencesIO.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
 
                                 startActivity(Intent(applicationContext, InAppUpdateProcess::class.java)
                                         .putExtra("UPDATE_CHANGE_LOG", firebaseRemoteConfig.getString(applicationsViewPhoneDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()))
@@ -589,7 +589,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
             firebaseAuth.addAuthStateListener { firebaseAuth ->
                 val user = firebaseAuth.currentUser
                 if (user == null) {
-                    applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", null)
+                    applicationsViewPhoneDependencyInjection.preferencesIO.savePreference(".UserInformation", "userEmail", null)
 
                     val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                             .requestIdToken(getString(R.string.webClientId))
@@ -611,12 +611,12 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         applicationsViewPhoneDependencyInjection.popupApplicationShortcuts.addPopupApplicationShortcuts()
 
-        applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition())
+        applicationsViewPhoneDependencyInjection.preferencesIO.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition())
         if (PublicVariable.actionCenter) {
             applicationsViewPhoneDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@ApplicationsViewPhone, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton)
         }
 
-        applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
+        applicationsViewPhoneDependencyInjection.preferencesIO.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
 
         billingClient?.endConnection()
 
@@ -750,30 +750,34 @@ class ApplicationsViewPhone : AppCompatActivity(),
         when (requestCode) {
             Google.SignInRequest -> {
 
-                GoogleSignIn.getSignedInAccountFromIntent(data).addOnCompleteListener { googleSignInAccountTask ->
+                data?.let {
 
-                    val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask.result.idToken, null)
-                    firebaseAuth.signInWithCredential(authCredential)
-                        .addOnSuccessListener {
-                            val firebaseUser = firebaseAuth.currentUser
-                            if (firebaseUser != null) {
-                                PrintDebug("Firebase Activities Done Successfully")
+                    GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { googleSignInAccountTask ->
 
-                                applicationsViewPhoneDependencyInjection.functionsClassLegacy.savePreference(".UserInformation", "userEmail", firebaseUser.email)
+                        val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask.idToken, null)
+                        firebaseAuth.signInWithCredential(authCredential)
+                            .addOnSuccessListener {
+                                val firebaseUser = firebaseAuth.currentUser
+                                if (firebaseUser != null) {
+                                    PrintDebug("Firebase Activities Done Successfully")
 
-                                applicationsViewPhoneDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
+                                    applicationsViewPhoneDependencyInjection.preferencesIO.savePreference(".UserInformation", "userEmail", firebaseUser.email)
 
-                                applicationsViewPhoneDependencyInjection.securityFunctions.downloadLockedAppsData()
+                                    applicationsViewPhoneDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
 
-                                waitingDialogue.dismiss()
+                                    applicationsViewPhoneDependencyInjection.securityFunctions.downloadLockedAppsData()
+
+                                    waitingDialogue.dismiss()
+                                }
+                            }.addOnFailureListener { exception ->
+
+                                waitingDialogueLiveData.run {
+                                    this.dialogueTitle.value = getString(R.string.error)
+                                    this.dialogueMessage.value = exception.message
+                                }
                             }
-                        }.addOnFailureListener { exception ->
 
-                            waitingDialogueLiveData.run {
-                                this.dialogueTitle.value = getString(R.string.error)
-                                this.dialogueMessage.value = exception.message
-                            }
-                        }
+                    }
 
                 }
 

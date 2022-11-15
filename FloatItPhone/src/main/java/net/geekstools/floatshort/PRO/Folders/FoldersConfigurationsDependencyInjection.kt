@@ -44,4 +44,8 @@ class FoldersConfigurationsDependencyInjection (applicationContext: Context) {
         NetworkCheckpoint(applicationContext)
     }
 
+    val preferencesIO: PreferencesIO by lazy {
+        PreferencesIO(applicationContext)
+    }
+
 }
