@@ -25,6 +25,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.WallpaperColors;
 import android.app.WallpaperManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -45,7 +46,6 @@ import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -3545,37 +3545,32 @@ public class FunctionsClassLegacy {
     }
 
     public void extractWallpaperColor() {
-        int vibrantColor, darkMutedColor, dominantColor;
-        String darkMutedColorString;
-        Palette currentColor;
+
+        int vibrantColor = context.getColor(R.color.default_color);
+        int darkMutedColor = context.getColor(R.color.default_color);
+        String darkMutedColorString = "" + context.getColor(R.color.default_color);
+
+        int dominantColor = context.getColor(R.color.default_color);
+
         try {
+
             WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
 
-            final Drawable currentWallpaper = wallpaperManager.peekDrawable();
-            Bitmap bitmap = ((BitmapDrawable) currentWallpaper).getBitmap();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O_MR1) {
 
-            if (bitmap != null && !bitmap.isRecycled()) {
-                currentColor = Palette.from(bitmap).generate();
-            } else {
-                Bitmap bitmapTemp = BitmapFactory.decodeResource(context.getResources(), R.drawable.brilliant);
-                currentColor = Palette.from(bitmapTemp).generate();
+                WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
+
+                vibrantColor = wallpaperColors.getSecondaryColor().toArgb();
+                darkMutedColor = wallpaperColors.getTertiaryColor().toArgb();
+                dominantColor = wallpaperColors.getPrimaryColor().toArgb();
+
+                darkMutedColorString = String.valueOf(darkMutedColor);
+
             }
 
-            int defaultColor = context.getColor(R.color.default_color);
 
-            vibrantColor = currentColor.getVibrantColor(defaultColor);
-            darkMutedColor = currentColor.getDarkMutedColor(defaultColor);
-            darkMutedColorString = "#" + Integer.toHexString(currentColor.getDarkMutedColor(defaultColor)).substring(2);
-
-            dominantColor = currentColor.getDominantColor(defaultColor);
         } catch (Exception e) {
             e.printStackTrace();
-
-            vibrantColor = context.getColor(R.color.default_color);
-            darkMutedColor = context.getColor(R.color.default_color);
-            darkMutedColorString = "" + context.getColor(R.color.default_color);
-
-            dominantColor = context.getColor(R.color.default_color);
         }
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(".themeColor", Context.MODE_PRIVATE);

@@ -10,19 +10,8 @@
 
 package net.geekstools.floatshort.PRO.Utils.Functions
 
-import android.Manifest
-import android.app.Activity
-import android.app.WallpaperManager
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build
-import android.renderscript.Allocation
-import android.renderscript.Element
-import android.renderscript.RenderScript
-import android.renderscript.ScriptIntrinsicBlur
 import android.text.Html
 import android.view.View
 import android.view.WindowManager
@@ -30,8 +19,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
-import androidx.preference.PreferenceManager
-import net.geekstools.floatshort.PRO.Checkpoint
 import net.geekstools.floatshort.PRO.R
 
 class ApplicationThemeController (private val context: Context) {
@@ -41,10 +28,6 @@ class ApplicationThemeController (private val context: Context) {
     fun setThemeColorFloating(instanceOfActivity: AppCompatActivity, rootView: View, applyTransparency: Boolean) {
 
         if (applyTransparency) {
-
-            if (Utils().wallpaperStaticLive()) {
-                Utils().setBackgroundTheme(instanceOfActivity)
-            }
 
             rootView.setBackgroundColor(functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
 
@@ -81,70 +64,11 @@ class ApplicationThemeController (private val context: Context) {
         }
     }
 
-    fun setThemeColorAutomationFeature(instanceOfActivity: AppCompatActivity, rootView: View, applyTransparency: Boolean) {
-
-        if (applyTransparency) {
-
-            if (Utils().wallpaperStaticLive()) {
-                Utils().setBackgroundTheme(instanceOfActivity)
-            }
-
-            rootView.setBackgroundColor(functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), if (Utils().wallpaperStaticLive()) {
-                180.toFloat()
-            } else {
-                80.toFloat()
-            }))
-
-            instanceOfActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            instanceOfActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
-            if (PublicVariable.themeLightDark) {
-                instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                if (Build.VERSION.SDK_INT > 25) {
-                    instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                }
-            }
-
-            instanceOfActivity.window.statusBarColor = functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.75f), if (Utils().wallpaperStaticLive()) {
-                245.toFloat()
-            } else {
-                113.toFloat()
-            })
-            instanceOfActivity.window.navigationBarColor = functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), if (Utils().wallpaperStaticLive()) 180.toFloat() else 80.toFloat())
-
-        } else {
-
-            rootView.setBackgroundColor(PublicVariable.colorLightDark)
-
-            instanceOfActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            instanceOfActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
-            if (PublicVariable.themeLightDark) {
-                instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                if (Build.VERSION.SDK_INT > 25) {
-                    instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                }
-            }
-
-            instanceOfActivity.window.statusBarColor = PublicVariable.primaryColor
-            instanceOfActivity.window.navigationBarColor = PublicVariable.colorLightDark
-        }
-
-    }
-
     fun setThemeColorPreferences(instanceOfActivity: FragmentActivity, rootView: View, preferencesToolbar: Toolbar, applyTransparency: Boolean, title: String, subTitle: String) {
 
         if (applyTransparency) {
 
-            if (Utils().wallpaperStaticLive()) {
-                Utils().setBackgroundTheme(instanceOfActivity)
-            }
-
-            rootView.setBackgroundColor(functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, if (Utils().wallpaperStaticLive()) {
-                180.toFloat()
-            } else {
-                80.toFloat()
-            }))
+            rootView.setBackgroundColor(functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, 80.toFloat()))
 
             preferencesToolbar.setBackgroundColor(PublicVariable.primaryColor)
             if (PublicVariable.themeLightDark) {
@@ -168,11 +92,7 @@ class ApplicationThemeController (private val context: Context) {
             }
 
             instanceOfActivity.window.statusBarColor = PublicVariable.primaryColor
-            instanceOfActivity.window.navigationBarColor = functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, if (Utils().wallpaperStaticLive()) {
-                180.toFloat()
-            } else {
-                80.toFloat()
-            })
+            instanceOfActivity.window.navigationBarColor = functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, 80.toFloat())
 
         } else {
 
@@ -200,121 +120,6 @@ class ApplicationThemeController (private val context: Context) {
     }
 
     inner class Utils {
-
-        fun setAppThemeBlur(instanceOfActivity: Activity) {
-
-            if (Build.VERSION.SDK_INT >= 26) {
-                if (instanceOfActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                        || instanceOfActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-
-                    return
-
-                }
-            }
-
-            if (appThemeBlurry()) {
-
-                val wallpaperManager = WallpaperManager.getInstance(context)
-                val wallpaper = wallpaperManager.drawable as BitmapDrawable
-                val bitmapWallpaper = wallpaper.bitmap
-
-                val inputBitmap: Bitmap = if (bitmapWallpaper.width < functionsClassLegacy.displayX() || bitmapWallpaper.height < functionsClassLegacy.displayY()) {
-                    Bitmap.createScaledBitmap(bitmapWallpaper, functionsClassLegacy.displayX(), functionsClassLegacy.displayY(), false)
-                } else {
-                    Bitmap.createBitmap(
-                            bitmapWallpaper,
-                            bitmapWallpaper.width / 2 - functionsClassLegacy.displayX() / 2,
-                            bitmapWallpaper.height / 2 - functionsClassLegacy.displayY() / 2,
-                            functionsClassLegacy.displayX(),
-                            functionsClassLegacy.displayY()
-                    )
-                }
-                val outputBitmap = Bitmap.createBitmap(inputBitmap)
-                val renderScript = RenderScript.create(context)
-
-                val intrinsicBlur = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript))
-
-                val allocationIn = Allocation.createFromBitmap(renderScript, inputBitmap)
-                val allocationOut = Allocation.createFromBitmap(renderScript, outputBitmap)
-
-                intrinsicBlur.setRadius(25f)
-                intrinsicBlur.setInput(allocationIn)
-                intrinsicBlur.forEach(allocationOut)
-                allocationOut.copyTo(outputBitmap)
-
-                val bitmapDrawable = BitmapDrawable(context.resources, outputBitmap)
-
-                instanceOfActivity.window.decorView.background = bitmapDrawable
-
-            }
-        }
-
-        fun setWallpaperToBackground(instanceOfActivity: Activity) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-                if (instanceOfActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                        || instanceOfActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-
-                    instanceOfActivity.startActivity(Intent(instanceOfActivity, Checkpoint::class.java)
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-
-                } else {
-
-                    val wallpaperManager = WallpaperManager.getInstance(context)
-                    val wallpaperManagerDrawable = wallpaperManager.drawable as BitmapDrawable
-
-                    instanceOfActivity.window.decorView.background = wallpaperManagerDrawable
-
-                }
-
-            } else {
-
-                val wallpaperManager = WallpaperManager.getInstance(context)
-                val wallpaperManagerDrawable = wallpaperManager.drawable as BitmapDrawable
-
-                instanceOfActivity.window.decorView.background = wallpaperManagerDrawable
-
-            }
-
-
-
-        }
-
-        fun setBackgroundTheme(instanceOfActivity: Activity) {
-
-            if (appThemeBlurry()) {
-
-                setAppThemeBlur(instanceOfActivity)
-
-            } else {
-
-                setWallpaperToBackground(instanceOfActivity)
-
-            }
-        }
-
-        fun wallpaperStaticLive(): Boolean {
-            var wallpaperMode = false
-
-            if (WallpaperManager.getInstance(context).wallpaperInfo == null) { //static
-
-                wallpaperMode = true
-
-            } else if (WallpaperManager.getInstance(context).wallpaperInfo != null) { //live
-
-                wallpaperMode = false
-                PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("blur", false).apply()
-
-            }
-
-            return wallpaperMode
-        }
-
-        fun appThemeBlurry(): Boolean {
-
-            return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("blur", false)
-        }
 
     }
 }

@@ -90,9 +90,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     lateinit var stick: ListPreference
 
     lateinit var stable: SwitchPreference
-    lateinit var themeTrans: SwitchPreference
     lateinit var smart: SwitchPreference
-    lateinit var blur: SwitchPreference
     lateinit var observe: SwitchPreference
     lateinit var notification: SwitchPreference
     lateinit var floatingSplash: SwitchPreference
@@ -131,8 +129,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         stable = findPreference("stable")!!
-        themeTrans = findPreference("transparent")!!
-        blur = findPreference("blur")!!
         smart = findPreference("smart")!!
         observe = findPreference("observe")!!
         notification = findPreference("notification")!!
@@ -207,39 +203,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
             }
             false
-        }
-
-        themeTrans.setOnPreferenceClickListener {
-
-            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClassLegacy.appThemeTransparent(), getString(R.string.settingTitle), functionsClassLegacy.applicationVersionName(context?.packageName))
-
-            functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
-
-            false
-        }
-
-        blur.setOnPreferenceClickListener {
-
-            applicationThemeController.setThemeColorPreferences(requireActivity(), requireActivity().findViewById(R.id.fullPreferencesActivity), requireActivity().findViewById(R.id.preferencesToolbar), functionsClassLegacy.appThemeTransparent(), getString(R.string.settingTitle), functionsClassLegacy.applicationVersionName(context?.packageName))
-
-            functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
-
-            false
-        }
-        blur.setOnPreferenceChangeListener { preference, newValue ->
-            if (sharedPreferences.getBoolean("transparent", false)) {
-                blur.isEnabled = true
-                if (!applicationThemeControllerUtils.wallpaperStaticLive()) {
-                    blur.isChecked = false
-                    blur.isEnabled = false
-                }
-                functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
-            } else if (!sharedPreferences.getBoolean("transparent", false)) {
-                blur.isChecked = false
-                blur.isEnabled = false
-            }
-
-            true
         }
 
         themeColor.setOnPreferenceChangeListener { preference, newValue ->
@@ -920,8 +883,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         sizes.icon = drawPref
         delayPressHold.icon = drawPref
         flingSensitivity.icon = drawPref
-        themeTrans.icon = drawPref
-        blur.icon = drawPref
         stick.icon = drawPref
         notification.icon = drawPref
 
@@ -991,10 +952,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         observe.isChecked = functionsClassLegacy.AccessibilityServiceEnabled() && functionsClassLegacy.SettingServiceRunning(InteractionObserver::class.java)
 
         notification.isChecked = functionsClassLegacy.NotificationAccess() && functionsClassLegacy.NotificationListenerRunning()
-
-        if (!applicationThemeControllerUtils.wallpaperStaticLive()) {
-            blur.isEnabled = false
-        }
 
         freeForm.isChecked = functionsClassLegacy.freeFormSupport(context) && functionsClassLegacy.FreeForm()
     }
