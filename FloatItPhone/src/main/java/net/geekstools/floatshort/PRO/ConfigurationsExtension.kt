@@ -10,12 +10,10 @@
 
 package net.geekstools.floatshort.PRO
 
-import android.content.Context
 import android.content.Intent
 import android.util.TypedValue
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone
-import net.geekstools.floatshort.PRO.Utils.Functions.IndexingProcess
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 fun Configurations.checkUserInformation() {
@@ -113,24 +111,4 @@ fun Configurations.triggerOpenProcessWithFrequentApps(frequentAppsArray: Array<S
 
     }
 
-}
-
-fun Configurations.indexFloatingShortcuts(context: Context) {
-
-    if (getFileStreamPath(".uFile").exists()) {
-
-        fileIO.readFileLinesAsArray(".uFile")?.let {
-
-            val indexingProcess = IndexingProcess(context)
-
-            it.forEach { lineContent ->
-
-                indexingProcess.indexAppInfoShortcuts(
-                        functionsClassLegacy.applicationName(lineContent) + " | " + lineContent
-                )
-            }
-        }
-
-        functionsClassLegacy.updateRecoverShortcuts()
-    }
 }

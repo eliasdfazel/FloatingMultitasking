@@ -134,8 +134,6 @@ class Configurations : AppCompatActivity() {
             }
         }
 
-        indexFloatingShortcuts(applicationContext)
-
     }
 
     override fun onDestroy() {

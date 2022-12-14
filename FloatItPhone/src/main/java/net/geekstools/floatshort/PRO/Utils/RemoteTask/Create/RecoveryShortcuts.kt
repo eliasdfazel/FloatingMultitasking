@@ -19,7 +19,6 @@ import android.os.IBinder
 import android.util.Log
 import android.util.TypedValue
 import androidx.preference.PreferenceManager
-import com.google.firebase.appindexing.FirebaseAppIndex
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions.UserInterfaceExtraData
@@ -155,8 +154,6 @@ class RecoveryShortcuts : Service() {
     }
 
     private fun floatingShortcutsRecoveryProcess(applicationsDataLines: Array<String>) {
-
-        FirebaseAppIndex.getInstance(applicationContext).removeAll()
 
         if (functionsClassLegacy.customIconsEnable()) {
             val loadCustomIcons = LoadCustomIcons(applicationContext, functionsClassLegacy.customIconPackageName())
