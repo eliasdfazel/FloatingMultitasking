@@ -107,6 +107,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     lateinit var boot: Preference
     lateinit var lite: Preference
     lateinit var support: Preference
+    lateinit var privacy: Preference
     lateinit var whatsnew: Preference
     lateinit var adApp: Preference
 
@@ -149,6 +150,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         adApp = findPreference("app")!!
         whatsnew = findPreference("whatsnew")!!
         support = findPreference("support")!!
+        privacy = findPreference("privacy")!!
 
         themeColor = findPreference("themeColor")!!
         stick = findPreference("stick")!!
@@ -302,6 +304,13 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         support.setOnPreferenceClickListener {
             functionsClassLegacy.ContactSupport(activity)
+
+            true
+        }
+
+        privacy.setOnPreferenceClickListener {
+
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacyPolicy))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 
             true
         }

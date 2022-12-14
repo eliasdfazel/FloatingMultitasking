@@ -137,6 +137,10 @@
             android:icon="@drawable/draw_support"
             android:key="support"
             android:title="@string/supportTitle"/>
+        <Preference
+            android:icon="@drawable/draw_support"
+            android:key="privacy"
+            android:summary="@string/privacyTitle"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/geeksempire">

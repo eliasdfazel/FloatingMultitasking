@@ -100,6 +100,7 @@
     <string name="link_xda" translatable="false">https://forum.xda-developers.com/showpost.php?p=58661916&amp;postcount=4</string>
     <string name="link_facebook_app" translatable="false">https://www.facebook.com/FloatIt.Android/</string>
     <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
+    <string name="privacyPolicy" translatable="false">https://GeeksEmpire.co/PrivacyPolicy</string>
 
     <string name="integerVersionCodeNewUpdatePhone" translatable="false">integer_version_code_new_update_phone</string>
     <string name="stringVersionNameNewUpdatePhone" translatable="false">string_version_name_new_update_phone</string>
