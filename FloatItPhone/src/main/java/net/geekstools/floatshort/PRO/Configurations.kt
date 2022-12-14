@@ -71,9 +71,6 @@ class Configurations : AppCompatActivity() {
 
         systemInformation.checkDeviceInformation()
 
-        checkUserInformation()
-        initializeParameterUI()
-
         if (sharedPreferences.getBoolean("stable", true)) {
             PublicVariable.Stable = true
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -133,6 +130,9 @@ class Configurations : AppCompatActivity() {
                 deleteFile("Frequently")
             }
         }
+
+        checkUserInformation()
+        initializeParameterUI()
 
     }
 

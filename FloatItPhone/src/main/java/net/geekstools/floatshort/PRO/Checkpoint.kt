@@ -15,8 +15,6 @@ import android.app.Activity
 import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -54,9 +52,7 @@ class Checkpoint : Activity() {
 
                 if (Build.VERSION.SDK_INT >= 26) {
 
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                            && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                            && Settings.canDrawOverlays(applicationContext)) {
+                    if (Settings.canDrawOverlays(applicationContext)) {
 
                         preferencesIO.savePreference(".Configuration", "Permissions", true)
 
@@ -83,32 +79,17 @@ class Checkpoint : Activity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
-        if (Build.VERSION.SDK_INT >= 26) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-
-                window.statusBarColor = PublicVariable.vibrantColor
-                window.navigationBarColor = PublicVariable.vibrantColor
-
-            } else {
-
-                window.statusBarColor = Color.TRANSPARENT
-                window.navigationBarColor = Color.TRANSPARENT
-
-            }
-
-        } else {
-
-            window.statusBarColor = PublicVariable.vibrantColor
-            window.navigationBarColor = PublicVariable.vibrantColor
-
-        }
-
         if (intent.hasExtra(getString(R.string.splitIt))) {
 
             functionsClassLegacy.AccessibilityServiceDialogue(this@Checkpoint)
 
         } else {
+
+            if (!Settings.canDrawOverlays(applicationContext)) {
+
+                canOverlyPermission()
+
+            }
 
             val permissionsList: ArrayList<String> = ArrayList<String>()
             permissionsList.add(Manifest.permission.INTERNET)
@@ -130,17 +111,10 @@ class Checkpoint : Activity() {
             if (functionsClassLegacy.returnAPI() >= Build.VERSION_CODES.O) {
 
                 permissionsList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-                permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
             }
 
             requestPermissions(permissionsList.toTypedArray(), PermissionRequestCodeIntent)
-
-            if (!Settings.canDrawOverlays(applicationContext)) {
-
-                canOverlyPermission()
-
-            }
 
         }
 
@@ -154,8 +128,10 @@ class Checkpoint : Activity() {
 
                 if (Settings.canDrawOverlays(applicationContext)) {
                     PrintDebug("*** Overlay Permission Granted ***")
+
                     startActivity(Intent(applicationContext, Configurations::class.java),
                             ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
+
                 }
 
             }

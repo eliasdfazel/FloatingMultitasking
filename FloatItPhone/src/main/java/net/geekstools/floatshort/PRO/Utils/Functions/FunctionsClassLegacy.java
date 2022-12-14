@@ -1211,7 +1211,6 @@ public class FunctionsClassLegacy {
     }
 
 
-
     public String applicationName(String packageName) {
         String Name = "null";
         try {
@@ -1261,7 +1260,6 @@ public class FunctionsClassLegacy {
         }
         return VersionCode;
     }
-
 
 
     public boolean SettingServiceRunning(Class aClass) {
@@ -1702,7 +1700,7 @@ public class FunctionsClassLegacy {
         homeScreen.addCategory(Intent.CATEGORY_HOME);
         homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(homeScreen,
-                ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,android.R.anim.fade_out).toBundle());
+                ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
     }
 
     /*Preferences Functions*/
@@ -3553,7 +3551,7 @@ public class FunctionsClassLegacy {
         try {
             WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
 
-            final Drawable currentWallpaper = wallpaperManager.getDrawable();
+            final Drawable currentWallpaper = wallpaperManager.getBuiltInDrawable(WallpaperManager.FLAG_SYSTEM);
             Bitmap bitmap = ((BitmapDrawable) currentWallpaper).getBitmap();
 
             if (bitmap != null && !bitmap.isRecycled()) {
