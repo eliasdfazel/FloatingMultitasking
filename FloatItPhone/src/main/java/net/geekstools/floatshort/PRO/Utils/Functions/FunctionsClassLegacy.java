@@ -3571,8 +3571,6 @@ public class FunctionsClassLegacy {
         } catch (Exception e) {
             e.printStackTrace();
 
-            System.out.println(">>> >> > " + e.getMessage());
-
             vibrantColor = context.getColor(R.color.default_color);
             darkMutedColor = context.getColor(R.color.default_color);
             darkMutedColorString = "" + context.getColor(R.color.default_color);
