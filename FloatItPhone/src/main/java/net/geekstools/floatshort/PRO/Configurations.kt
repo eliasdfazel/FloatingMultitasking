@@ -69,6 +69,17 @@ class Configurations : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(applicationContext)
 
+        /* Start - Temporarily */
+        val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val defaultSharedPreferencesEditor = defaultSharedPreferences.edit()
+        /*OFF Blurry Theme*/
+        defaultSharedPreferencesEditor.putBoolean("blur", false)
+
+        /*OFF Transparent Theme*/
+        defaultSharedPreferencesEditor.putBoolean("transparent", false)
+        defaultSharedPreferencesEditor.apply()
+        /* End - Temporarily */
+
         systemInformation.checkDeviceInformation()
 
         if (sharedPreferences.getBoolean("stable", true)) {

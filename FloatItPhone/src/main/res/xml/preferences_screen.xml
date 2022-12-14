@@ -87,17 +87,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/ui_app">
-        <SwitchPreference
-            android:defaultValue="false"
-            android:icon="@drawable/draw_pref"
-            android:key="transparent"
-            android:title="@string/themeTrans"/>
-        <SwitchPreference
-            android:defaultValue="false"
-            android:dependency="transparent"
-            android:icon="@drawable/draw_pref"
-            android:key="blur"
-            android:title="@string/blurryTitle"/>
         <ListPreference
             android:defaultValue="2"
             android:entries="@array/AppThemes"
