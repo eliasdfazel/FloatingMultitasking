@@ -108,12 +108,6 @@ class Checkpoint : Activity() {
 
             }
 
-            if (functionsClassLegacy.returnAPI() >= Build.VERSION_CODES.O) {
-
-                permissionsList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-
-            }
-
             requestPermissions(permissionsList.toTypedArray(), PermissionRequestCodeIntent)
 
         }

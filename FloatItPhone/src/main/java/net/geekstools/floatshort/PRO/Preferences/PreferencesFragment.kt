@@ -227,14 +227,14 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             false
         }
         blur.setOnPreferenceChangeListener { preference, newValue ->
-            if (sharedPreferences.getBoolean("transparent", true)) {
+            if (sharedPreferences.getBoolean("transparent", false)) {
                 blur.isEnabled = true
                 if (!applicationThemeControllerUtils.wallpaperStaticLive()) {
                     blur.isChecked = false
                     blur.isEnabled = false
                 }
                 functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
-            } else if (!sharedPreferences.getBoolean("transparent", true)) {
+            } else if (!sharedPreferences.getBoolean("transparent", false)) {
                 blur.isChecked = false
                 blur.isEnabled = false
             }

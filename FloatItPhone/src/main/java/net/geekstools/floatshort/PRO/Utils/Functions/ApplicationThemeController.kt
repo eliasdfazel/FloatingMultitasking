@@ -313,7 +313,7 @@ class ApplicationThemeController (private val context: Context) {
 
         fun appThemeBlurry(): Boolean {
 
-            return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("blur", true)
+            return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("blur", false)
         }
 
     }

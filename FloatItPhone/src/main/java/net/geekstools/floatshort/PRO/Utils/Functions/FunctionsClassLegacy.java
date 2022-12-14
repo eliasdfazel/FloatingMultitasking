@@ -2228,7 +2228,7 @@ public class FunctionsClassLegacy {
     public boolean appThemeTransparent() {
 
         return PreferenceManager.
-                getDefaultSharedPreferences(context).getBoolean("transparent", true);
+                getDefaultSharedPreferences(context).getBoolean("transparent", false);
     }
 
     public void checkLightDarkTheme() {
@@ -3551,7 +3551,7 @@ public class FunctionsClassLegacy {
         try {
             WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
 
-            final Drawable currentWallpaper = wallpaperManager.getBuiltInDrawable(WallpaperManager.FLAG_SYSTEM);
+            final Drawable currentWallpaper = wallpaperManager.peekDrawable();
             Bitmap bitmap = ((BitmapDrawable) currentWallpaper).getBitmap();
 
             if (bitmap != null && !bitmap.isRecycled()) {
@@ -3570,6 +3570,8 @@ public class FunctionsClassLegacy {
             dominantColor = currentColor.getDominantColor(defaultColor);
         } catch (Exception e) {
             e.printStackTrace();
+
+            System.out.println(">>> >> > " + e.getMessage());
 
             vibrantColor = context.getColor(R.color.default_color);
             darkMutedColor = context.getColor(R.color.default_color);
