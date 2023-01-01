@@ -84,6 +84,7 @@
                 6️⃣  Open Terminal (Command Line) & Type these Commands<br/>
                 7️⃣  <b>adb shell</b> <br/>
                 8️⃣️  <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
+                ➡️If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
                 9️⃣  <b>adb reboot</b><br/>
                 1️⃣0️⃣  Come Back Here ⚙ & <b>Turn ON Float It</b>
                 <br/><br/><br/>

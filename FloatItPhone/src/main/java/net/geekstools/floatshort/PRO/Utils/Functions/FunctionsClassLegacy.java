@@ -139,6 +139,8 @@ import net.geekstools.floatshort.PRO.Widgets.FloatingServices.WidgetUnlimitedFlo
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
+import org.lsposed.hiddenapibypass.HiddenApiBypass;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -1451,6 +1453,13 @@ public class FunctionsClassLegacy {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.P)
+    public static void allowReflection() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            HiddenApiBypass.addHiddenApiExemptions("");
+        }
+    }
+
     /*Open Functions*/
     public boolean canLaunch(String packageName) {
         return (context.getPackageManager().getLaunchIntentForPackage(packageName) != null);
@@ -1523,8 +1532,11 @@ public class FunctionsClassLegacy {
                 public void run() {
                     ActivityOptions activityOptions = ActivityOptions.makeBasic();
                     try {
+                        allowReflection();
+
                         Method method = ActivityOptions.class.getMethod(getWindowingModeMethodName(), int.class);
                         method.invoke(activityOptions, getFreeformWindowModeId());
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1603,81 +1615,81 @@ public class FunctionsClassLegacy {
         //Enable Developer Option & Turn ON 'Force Activities to be Resizable'
         //adb shell settings put global enable_freeform_support 1
         //adb shell settings put global force_resizable_activities 1
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            ActivityOptions activityOptions = ActivityOptions.makeBasic();
-            try {
-                Method method = ActivityOptions.class.getMethod(getWindowingModeMethodName(), int.class);
-                method.invoke(activityOptions, getFreeformWindowModeId());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            switch (displaySection(leftPositionX, topPositionY)) {
-                case DisplaySection.TopLeft: {
-                    Debug.Companion.PrintDebug("***** DisplaySection.TopLeft");
-                    activityOptions.setLaunchBounds(
-                            new Rect(
-                                    leftPositionX,
-                                    topPositionY,
-                                    rightPositionX,
-                                    bottomPositionY)
-                    );
-                    break;
-                }
-                case DisplaySection.TopRight: {
-                    Debug.Companion.PrintDebug("***** DisplaySection.TopRight");
-                    activityOptions.setLaunchBounds(
-                            new Rect(
-                                    leftPositionX - (displayX() / 2),
-                                    topPositionY,
-                                    leftPositionX,
-                                    bottomPositionY)
-                    );
-                    break;
-                }
-                case DisplaySection.BottomRight: {
-                    Debug.Companion.PrintDebug("***** DisplaySection.BottomRight");
-                    activityOptions.setLaunchBounds(
-                            new Rect(
-                                    leftPositionX - (displayX() / 2),
-                                    topPositionY - (displayY() / 2),
-                                    leftPositionX,
-                                    topPositionY)
-                    );
-                    break;
-                }
-                case DisplaySection.BottomLeft: {
-                    Debug.Companion.PrintDebug("***** DisplaySection.BottomLeft");
-                    activityOptions.setLaunchBounds(
-                            new Rect(
-                                    leftPositionX,
-                                    topPositionY - (displayY() / 2),
-                                    leftPositionX + (displayX() / 2),
-                                    topPositionY)
-                    );
-                    break;
-                }
-                default: {
-                    Debug.Companion.PrintDebug("***** DisplaySection.Not.Supported");
-                    activityOptions.setLaunchBounds(
-                            new Rect(
-                                    displayX() / 4,
-                                    (displayX() / 2),
-                                    displayY() / 4,
-                                    (displayY() / 2))
-                    );
-                    break;
-                }
-            }
+        ActivityOptions activityOptions = ActivityOptions.makeBasic();
+        try {
+            allowReflection();
 
-            Intent openAlias = new Intent();
-            openAlias.setClassName(PackageName, ClassName);
-            openAlias.addCategory(Intent.CATEGORY_LAUNCHER);
-            openAlias.setFlags(
-                    Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
-                            Intent.FLAG_ACTIVITY_NEW_TASK |
-                            Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            context.startActivity(openAlias, activityOptions.toBundle());
+            Method method = ActivityOptions.class.getMethod(getWindowingModeMethodName(), int.class);
+            method.invoke(activityOptions, getFreeformWindowModeId());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        switch (displaySection(leftPositionX, topPositionY)) {
+            case DisplaySection.TopLeft: {
+                Debug.Companion.PrintDebug("***** DisplaySection.TopLeft");
+                activityOptions.setLaunchBounds(
+                        new Rect(
+                                leftPositionX,
+                                topPositionY,
+                                rightPositionX,
+                                bottomPositionY)
+                );
+                break;
+            }
+            case DisplaySection.TopRight: {
+                Debug.Companion.PrintDebug("***** DisplaySection.TopRight");
+                activityOptions.setLaunchBounds(
+                        new Rect(
+                                leftPositionX - (displayX() / 2),
+                                topPositionY,
+                                leftPositionX,
+                                bottomPositionY)
+                );
+                break;
+            }
+            case DisplaySection.BottomRight: {
+                Debug.Companion.PrintDebug("***** DisplaySection.BottomRight");
+                activityOptions.setLaunchBounds(
+                        new Rect(
+                                leftPositionX - (displayX() / 2),
+                                topPositionY - (displayY() / 2),
+                                leftPositionX,
+                                topPositionY)
+                );
+                break;
+            }
+            case DisplaySection.BottomLeft: {
+                Debug.Companion.PrintDebug("***** DisplaySection.BottomLeft");
+                activityOptions.setLaunchBounds(
+                        new Rect(
+                                leftPositionX,
+                                topPositionY - (displayY() / 2),
+                                leftPositionX + (displayX() / 2),
+                                topPositionY)
+                );
+                break;
+            }
+            default: {
+                Debug.Companion.PrintDebug("***** DisplaySection.Not.Supported");
+                activityOptions.setLaunchBounds(
+                        new Rect(
+                                displayX() / 4,
+                                (displayX() / 2),
+                                displayY() / 4,
+                                (displayY() / 2))
+                );
+                break;
+            }
+        }
+
+        Intent openAlias = new Intent();
+        openAlias.setClassName(PackageName, ClassName);
+        openAlias.addCategory(Intent.CATEGORY_LAUNCHER);
+        openAlias.setFlags(
+                Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
+                        Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        context.startActivity(openAlias, activityOptions.toBundle());
     }
 
     public void appsLaunchPad(String packageName) {
