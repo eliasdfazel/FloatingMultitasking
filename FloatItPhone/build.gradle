@@ -28,7 +28,7 @@ android {
         minSdkVersion 25
         targetSdkVersion 33
 
-        versionCode 824
+        versionCode 825
         versionName "${majorVersion}." + getDateMonth() + "." + getDateDay() + "." + getDateYear() + ".${versionCode}"
 
     }
@@ -103,7 +103,7 @@ dependencies {
     implementation 'com.android.billingclient:billing-ktx:5.1.0'
 
 
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
 
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
@@ -119,11 +119,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
 
-    implementation 'androidx.room:room-ktx:2.4.3'
-    implementation 'androidx.room:room-runtime:2.4.3'
-    implementation 'androidx.room:room-rxjava2:2.4.3'
-    annotationProcessor 'androidx.room:room-compiler:2.4.3'
-    kapt 'androidx.room:room-compiler:2.4.3'
+    implementation 'androidx.room:room-ktx:2.5.0'
+    implementation 'androidx.room:room-runtime:2.5.0'
+    implementation 'androidx.room:room-rxjava2:2.5.0'
+    annotationProcessor 'androidx.room:room-compiler:2.5.0'
+    kapt 'androidx.room:room-compiler:2.5.0'
 
     implementation 'androidx.biometric:biometric:1.1.0'
 
@@ -132,9 +132,9 @@ dependencies {
     implementation 'com.google.android.play:review-ktx:2.0.1'
 
 
-    implementation 'com.google.android.gms:play-services-auth:20.4.0'
+    implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
-    implementation 'com.google.android.material:material:1.8.0-beta01'
+    implementation 'com.google.android.material:material:1.9.0-alpha01'
 
 
     implementation platform('com.google.firebase:firebase-bom:31.0.3')
