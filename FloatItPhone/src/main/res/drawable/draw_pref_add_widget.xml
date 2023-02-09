@@ -10,7 +10,11 @@
   -->
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/backgroundTemporary">
+
+    <item
+        android:width="23dp"
+        android:height="23dp"
+        android:id="@+id/backgroundTemporary">
         <shape android:shape="oval">
             <solid android:color="@color/default_color" />
         </shape>
@@ -18,9 +22,10 @@
 
     <item
         android:id="@+id/frontTemporary"
-        android:width="23dp"
-        android:height="23dp"
+        android:width="21dp"
+        android:height="21dp"
         android:gravity="center">
         <bitmap android:src="@drawable/add_quick_app" />
     </item>
+
 </layer-list>

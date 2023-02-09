@@ -24,6 +24,7 @@
     <string name="medium">Medium</string>
     <string name="large">Large</string>
     <string name="addRecovery">Add To Recovery</string>
+    <string name="addFolder">New Folder</string>
     <string name="removeRecovery">Remove From Recovery</string>
     <string name="index_item">S</string>
     <string name="not_install">THE APP IS NOT AVAILABLE</string>

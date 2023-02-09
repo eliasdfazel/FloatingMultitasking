@@ -14,8 +14,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.RippleDrawable
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -124,6 +122,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
                 }
             }
         }
+
         viewHolderBinder.categoryName.clearFocus()
         viewHolderBinder.categoryName.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -133,52 +132,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
             true
         }
 
-        viewHolderBinder.categoryName.addTextChangedListener(object : TextWatcher {
 
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-
-            }
-
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-
-            }
-
-            override fun afterTextChanged(editable: Editable) {
-                endEdited = editable.toString()
-
-                if (viewHolderBinder.addApp.isShown) {
-                    viewHolderBinder.addApp.visibility = View.INVISIBLE
-                }
-            }
-        })
-
-        viewHolderBinder.addApp.setOnClickListener {
-            if (adapterItems[position].category != context.packageName) {
-                folderNameProcess(adapterItems[position].category, position)
-            } else {
-                if (endEdited.length > 0) {
-                    folderNameProcess(endEdited, position)
-                }
-            }
-        }
-
-        viewHolderBinder.selectedApp.setOnClickListener {
-            if (adapterItems[position].category != context.packageName) {
-                floatingServices
-                        .runUnlimitedFoldersService(adapterItems[position].category)
-            }
-        }
-
-        viewHolderBinder.selectedApp.setOnLongClickListener {
-            if (adapterItems[position].category != context.packageName) {
-                PublicVariable.itemPosition = position
-                val categoryName = adapterItems[position].category
-                functionsClassLegacy.popupOptionFolders(instanceOfFoldersConfigurationsActivity, context,
-                        viewHolderBinder.itemView,
-                        categoryName, position)
-            }
-            true
-        }
 
         viewHolderBinder.runCategory.setOnClickListener {
             if (adapterItems[position].category != context.packageName) {

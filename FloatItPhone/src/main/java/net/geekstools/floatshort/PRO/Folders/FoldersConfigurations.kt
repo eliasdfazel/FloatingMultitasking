@@ -725,6 +725,7 @@ class FoldersConfigurations : AppCompatActivity(),
     }
 
     fun loadFolders() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+
         if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
             foldersConfigurationViewBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
         } else {
@@ -779,15 +780,15 @@ class FoldersConfigurations : AppCompatActivity(),
 
                         folderAdapterItems.add(AdapterItems(folderInformation.value,
                                 foldersConfigurationsDependencyInjection.fileIO.readFileLinesAsArray(folderInformation.value), SearchResultType.SearchFolders))
+
                     }
 
-            folderAdapterItems.add(AdapterItems(packageName, arrayOf(packageName), SearchResultType.SearchFolders))
             foldersListAdapter = FoldersListAdapter(this@FoldersConfigurations, applicationContext, folderAdapterItems)
 
         } else {
+
             folderAdapterItems.clear()
 
-            folderAdapterItems.add(AdapterItems(packageName, arrayOf(packageName), SearchResultType.SearchFolders))
             foldersListAdapter = FoldersListAdapter(this@FoldersConfigurations, applicationContext, folderAdapterItems)
         }
 
