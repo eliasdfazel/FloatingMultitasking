@@ -104,8 +104,8 @@
     </RelativeLayout>
 
     <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/folderNameView"
-        android:layout_width="wrap_content"
+        android:id="@+id/folderNameBackground"
+        android:layout_width="153dp"
         android:layout_height="53.70dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
@@ -121,11 +121,28 @@
         android:fontFamily="@font/upcil"
         android:textColor="@color/light"
         android:textStyle="bold"
-        android:visibility="invisible"
+        android:visibility="visible"
+
         apps:cornerRadius="57dp"
         apps:elevation="13dp"
         apps:backgroundTint="@color/default_color"
         apps:rippleColor="@color/light" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/folderNameView"
+        android:layout_width="153dp"
+        android:layout_height="53.70dp"
+        android:paddingHorizontal="3dp"
+        android:lines="1"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:elevation="7dp"
+        android:layout_alignTop="@id/folderNameBackground"
+        android:layout_alignEnd="@id/folderNameBackground"
+        android:gravity="center"
+        android:hint="@string/folderDescription"
+        android:textSize="15sp"
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/appSelectedCounterView"
@@ -176,7 +193,7 @@
         android:id="@+id/loadingSplash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/loadingLogo"

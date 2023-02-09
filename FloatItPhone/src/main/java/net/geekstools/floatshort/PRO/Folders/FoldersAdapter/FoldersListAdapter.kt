@@ -18,13 +18,14 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import net.geekstools.floatshort.PRO.Folders.FoldersApplicationsSelectionProcess.AppSelectionList
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
@@ -40,8 +41,6 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
     var functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(context)
     var fileIO: FileIO = FileIO(context)
     var floatingServices: FloatingServices = FloatingServices(context)
-
-    var endEdited = ""
 
     var loadCustomIcons: LoadCustomIcons? = null
 
@@ -87,7 +86,6 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
 
             viewHolderBinder.runCategory.text = context.getString(R.string.index_item)
             viewHolderBinder.categoryName.setText("")
-            viewHolderBinder.addApp.visibility = View.INVISIBLE
 
             viewHolderBinder.selectedApp.removeAllViews()
 
@@ -114,25 +112,10 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
                     })
 
                     viewHolderBinder.selectedApp.addView(selectedAppsPreview)
-                    viewHolderBinder.addApp.visibility = View.VISIBLE
 
-                    val addAppsDrawable = context.getDrawable(R.drawable.ic_add_apps)
-                    addAppsDrawable?.setTint(PublicVariable.primaryColorOpposite)
-                    viewHolderBinder.addApp.setImageDrawable(addAppsDrawable)
                 }
             }
         }
-
-        viewHolderBinder.categoryName.clearFocus()
-        viewHolderBinder.categoryName.setOnEditorActionListener { textView, actionId, keyEvent ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-
-                folderNameProcess(textView.text.toString().replace(" \uD83D\uDD04", ""), position)
-            }
-            true
-        }
-
-
 
         viewHolderBinder.runCategory.setOnClickListener {
             if (adapterItems[position].category != context.packageName) {
@@ -152,6 +135,14 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
             true
         }
 
+        viewHolderBinder.addApp.setOnClickListener {
+
+            PublicVariable.folderName = adapterItems[position].category
+
+            context.startActivity(Intent(context, AppSelectionList::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+
+        }
+
         val rippleEffectFolderLogo = context.getDrawable(R.drawable.ripple_effect_folder_logo) as RippleDrawable?
         rippleEffectFolderLogo!!.setDrawableByLayerId(R.id.folder_logo_layer, functionsClassLegacy.shapesDrawablesCategory(viewHolderBinder.runCategory))
         rippleEffectFolderLogo.setDrawableByLayerId(android.R.id.mask, functionsClassLegacy.shapesDrawablesCategory(viewHolderBinder.runCategory))
@@ -166,60 +157,10 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
         return adapterItems.size
     }
 
-    private fun folderNameProcess(currentFolderName: String, position: Int) {
-        PublicVariable.folderName = currentFolderName
-
-        val file = context.getFileStreamPath(adapterItems[position].category)
-        if (file.exists() && file.isFile) { //Edit Folder Name
-            if (adapterItems[position].category == PublicVariable.folderName) {
-                PublicVariable.folderName = adapterItems[position].category
-                context.startActivity(Intent(context, AppSelectionList::class.java)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                )
-            } else { //Edit Folder Name
-                SearchEngine.clearSearchDataToForceReload()
-
-
-                if (PublicVariable.folderName.isEmpty()) {
-                    PublicVariable.folderName = PublicVariable.folderName + "_" + System.currentTimeMillis()
-                }
-
-                fileIO.readFileLinesAsArray(adapterItems[position].category)?.let {
-
-                    for (appContent in it) {
-                        context.deleteFile(appContent + adapterItems[position].category)
-                        fileIO.saveFileAppendLine(PublicVariable.folderName, appContent)
-                        fileIO.saveFile(appContent + PublicVariable.folderName, appContent)
-                    }
-                }
-
-                if (functionsClassLegacy.loadRecoveryIndicatorCategory(adapterItems[position].category)) {
-                    fileIO.removeLine(".uCategory", adapterItems[position].category)
-                    fileIO.saveFileAppendLine(".uCategory", PublicVariable.folderName)
-                }
-
-                fileIO.removeLine(".categoryInfo", adapterItems[position].category)
-                fileIO.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
-                context.deleteFile(adapterItems[position].category)
-                context.startActivity(Intent(context, AppSelectionList::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            }
-        } else {
-            SearchEngine.clearSearchDataToForceReload()
-
-            if (PublicVariable.folderName.isEmpty()) {
-                PublicVariable.folderName = PublicVariable.folderName + "_" + System.currentTimeMillis()
-            }
-
-            fileIO.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
-            fileIO.saveFileEmpty(PublicVariable.folderName)
-            context.startActivity(Intent(context, AppSelectionList::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-        }
-    }
-
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var categoryItem: RelativeLayout = view.findViewById<View>(R.id.categoryItem) as RelativeLayout
         var selectedApp: LinearLayout = view.findViewById<View>(R.id.selectedApps) as LinearLayout
-        var categoryName: EditText = view.findViewById<View>(R.id.categoryName) as EditText
+        var categoryName: TextView = view.findViewById<View>(R.id.categoryName) as TextView
         var addApp: ImageView = view.findViewById<View>(R.id.addApps) as ImageView
         var runCategory: TextView = view.findViewById<View>(R.id.runCategory) as TextView
     }

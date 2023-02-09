@@ -138,6 +138,8 @@ class AppsConfirmButton : AppCompatButton, GestureListenerInterface,
     override fun onSingleTapUp(motionEvent: MotionEvent) {
         super.onSingleTapUp(motionEvent)
 
+        confirmButtonProcessInterface.confirmed()
+
         functionsClassLegacy.navigateToClass(FoldersConfigurations::class.java, activity)
     }
 

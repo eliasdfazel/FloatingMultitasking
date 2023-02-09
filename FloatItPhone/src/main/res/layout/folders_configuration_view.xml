@@ -45,7 +45,7 @@
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
-                android:paddingBottom="51dp"
+                android:paddingBottom="73dp"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="7dp"
                 android:isScrollContainer="false"

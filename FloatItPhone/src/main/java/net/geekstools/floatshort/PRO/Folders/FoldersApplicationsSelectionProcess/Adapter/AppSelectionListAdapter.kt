@@ -128,70 +128,75 @@ class AppSelectionListAdapter(private val context: Context,
 
         viewHolderBinder.item.setOnTouchListener { view, motionEvent ->
 
-            when (motionEvent.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    PickedAttribute.fromY = -(PickedAttribute.dpHeight - motionEvent.rawY - PickedAttribute.systemUiHeight)
-                }
-                MotionEvent.ACTION_UP -> {
-                    val pickedPackageName = adapterItems[position].packageName
-                    val pickedPackageNameFile = context.getFileStreamPath(pickedPackageName + PublicVariable.folderName)
+            if (PublicVariable.folderName != "FloatingFolder") {
 
-                    if (pickedPackageNameFile.exists()) {
-                        context.deleteFile(pickedPackageName + PublicVariable.folderName)
-                        fileIO.removeLine(PublicVariable.folderName, adapterItems[position].packageName)
+                when (motionEvent.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        PickedAttribute.fromY = -(PickedAttribute.dpHeight - motionEvent.rawY - PickedAttribute.systemUiHeight)
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        val pickedPackageName = adapterItems[position].packageName
+                        val pickedPackageNameFile = context.getFileStreamPath(pickedPackageName + PublicVariable.folderName)
 
-                        viewHolderBinder.checkboxSelectItem.isChecked = false
+                        if (pickedPackageNameFile.exists()) {
+                            context.deleteFile(pickedPackageName + PublicVariable.folderName)
+                            fileIO.removeLine(PublicVariable.folderName, adapterItems[position].packageName)
 
-                        confirmButtonProcessInterface.savedShortcutCounter()
-                        confirmButtonProcessInterface.hideSavedShortcutList()
-                        appsConfirmButton.makeItVisible()
+                            viewHolderBinder.checkboxSelectItem.isChecked = false
 
-                        if (securityFunctions.isAppLocked(PublicVariable.folderName)) {
-                            securityFunctions.doUnlockApps(adapterItems[position].packageName)
-                        }
+                            confirmButtonProcessInterface.savedShortcutCounter()
+                            confirmButtonProcessInterface.hideSavedShortcutList()
+                            appsConfirmButton.makeItVisible()
 
-                    } else {
-                        fileIO.saveFile(pickedPackageName + PublicVariable.folderName, pickedPackageName)
-                        fileIO.saveFileAppendLine(PublicVariable.folderName, pickedPackageName)
+                            if (securityFunctions.isAppLocked(PublicVariable.folderName)) {
+                                securityFunctions.doUnlockApps(adapterItems[position].packageName)
+                            }
 
-                        viewHolderBinder.checkboxSelectItem.isChecked = true
-                        if (securityFunctions.isAppLocked(PublicVariable.folderName)) {
-                            securityFunctions.doLockApps(adapterItems[position].packageName)
-                        }
+                        } else {
+                            fileIO.saveFile(pickedPackageName + PublicVariable.folderName, pickedPackageName)
+                            fileIO.saveFileAppendLine(PublicVariable.folderName, pickedPackageName)
 
-                        val translateAnimation = TranslateAnimation(PickedAttribute.animationType, PickedAttribute.fromX,
+                            viewHolderBinder.checkboxSelectItem.isChecked = true
+                            if (securityFunctions.isAppLocked(PublicVariable.folderName)) {
+                                securityFunctions.doLockApps(adapterItems[position].packageName)
+                            }
+
+                            val translateAnimation = TranslateAnimation(PickedAttribute.animationType, PickedAttribute.fromX,
                                 PickedAttribute.animationType, PickedAttribute.toX,
                                 PickedAttribute.animationType, PickedAttribute.fromY,
                                 PickedAttribute.animationType, PickedAttribute.toY)
 
-                        translateAnimation.duration = abs(PickedAttribute.fromY).toLong()
+                            translateAnimation.duration = abs(PickedAttribute.fromY).toLong()
 
-                        temporaryFallingIcon.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) {
-                            loadCustomIcons.getDrawableIconForPackage(adapterItems[position].packageName, functionsClassLegacy.shapedAppIcon(adapterItems[position].packageName))
-                        } else {
-                            functionsClassLegacy.shapedAppIcon(adapterItems[position].packageName)
-                        })
-                        temporaryFallingIcon.startAnimation(translateAnimation)
+                            temporaryFallingIcon.setImageDrawable(if (functionsClassLegacy.customIconsEnable()) {
+                                loadCustomIcons.getDrawableIconForPackage(adapterItems[position].packageName, functionsClassLegacy.shapedAppIcon(adapterItems[position].packageName))
+                            } else {
+                                functionsClassLegacy.shapedAppIcon(adapterItems[position].packageName)
+                            })
+                            temporaryFallingIcon.startAnimation(translateAnimation)
 
-                        translateAnimation.setAnimationListener(object : Animation.AnimationListener {
-                            override fun onAnimationStart(animation: Animation) {
-                                confirmButtonProcessInterface.hideSavedShortcutList()
-                                appsConfirmButton.makeItVisible()
-                                temporaryFallingIcon.visibility = View.VISIBLE
-                            }
+                            translateAnimation.setAnimationListener(object : Animation.AnimationListener {
+                                override fun onAnimationStart(animation: Animation) {
+                                    confirmButtonProcessInterface.hideSavedShortcutList()
+                                    appsConfirmButton.makeItVisible()
+                                    temporaryFallingIcon.visibility = View.VISIBLE
+                                }
 
-                            override fun onAnimationEnd(animation: Animation) {
-                                temporaryFallingIcon.visibility = View.INVISIBLE
-                                
-                                appsConfirmButton.startCustomAnimation(null)
-                                confirmButtonProcessInterface.savedShortcutCounter()
-                            }
+                                override fun onAnimationEnd(animation: Animation) {
+                                    temporaryFallingIcon.visibility = View.INVISIBLE
 
-                            override fun onAnimationRepeat(animation: Animation) {}
-                        })
+                                    appsConfirmButton.startCustomAnimation(null)
+                                    confirmButtonProcessInterface.savedShortcutCounter()
+                                }
+
+                                override fun onAnimationRepeat(animation: Animation) {}
+                            })
+                        }
                     }
                 }
+
             }
+
             true
         }
     }

@@ -1,6 +1,9 @@
 package net.geekstools.floatshort.PRO.Folders.Utils
 
 interface ConfirmButtonProcessInterface {
+
+    fun confirmed()
+
     /**
      * Check Increase/Decrease In Counter Of Saved Shortcuts
      */

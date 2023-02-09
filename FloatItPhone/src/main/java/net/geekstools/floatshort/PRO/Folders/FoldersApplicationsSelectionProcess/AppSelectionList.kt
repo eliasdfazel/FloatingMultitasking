@@ -11,15 +11,18 @@
 package net.geekstools.floatshort.PRO.Folders.FoldersApplicationsSelectionProcess
 
 import android.content.pm.ApplicationInfo
-import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ListPopupWindow
@@ -33,6 +36,7 @@ import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Folders.UI.AppsConfirmButton
 import net.geekstools.floatshort.PRO.Folders.Utils.ConfirmButtonProcessInterface
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.ApplicationThemeController
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
@@ -40,7 +44,6 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.databinding.AdvanceAppSelectionListBinding
-import java.util.*
 
 class AppSelectionList : AppCompatActivity(),
         ConfirmButtonProcessInterface {
@@ -60,7 +63,6 @@ class AppSelectionList : AppCompatActivity(),
     private val listPopupWindow: ListPopupWindow by lazy {
         ListPopupWindow(applicationContext)
     }
-
 
     private lateinit var recyclerViewLayoutManager: LinearLayoutManager
     var applicationInfoList: ArrayList<ApplicationInfo> = ArrayList<ApplicationInfo>()
@@ -103,14 +105,26 @@ class AppSelectionList : AppCompatActivity(),
         advanceAppSelectionListBinding.appSelectedCounterView.typeface = typeface
         advanceAppSelectionListBinding.appSelectedCounterView.bringToFront()
 
-        if (functionsClassLegacy.loadRecoveryIndicatorCategory(PublicVariable.folderName)) {
-            advanceAppSelectionListBinding.folderNameView.text = "${PublicVariable.folderName} \uD83D\uDD04"
+        if (PublicVariable.folderName == "FloatingFolder") {
+
+            advanceAppSelectionListBinding.folderNameView.requestFocus()
+
+            advanceAppSelectionListBinding.folderNameView.setText("")
+
         } else {
-            advanceAppSelectionListBinding.folderNameView.text = PublicVariable.folderName
+
+            if (functionsClassLegacy.loadRecoveryIndicatorCategory(PublicVariable.folderName)) {
+                advanceAppSelectionListBinding.folderNameView.setText("\uD83D\uDD04 ${PublicVariable.folderName}")
+            } else {
+                advanceAppSelectionListBinding.folderNameView.setText(PublicVariable.folderName)
+            }
+
         }
 
-        advanceAppSelectionListBinding.folderNameView.setBackgroundColor(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        advanceAppSelectionListBinding.folderNameView.rippleColor = ColorStateList.valueOf(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        advanceAppSelectionListBinding.folderNameBackground.setBackgroundColor(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+
+        advanceAppSelectionListBinding.folderNameView.setTextColor(PublicVariable.colorLightDarkOpposite)
+        advanceAppSelectionListBinding.folderNameView.setHintTextColor(PublicVariable.colorLightDarkOpposite)
 
         val layerDrawableLoadLogo = getDrawable(R.drawable.ic_launcher_layer) as LayerDrawable?
         val gradientDrawableLoadLogo = layerDrawableLoadLogo!!.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
@@ -124,6 +138,28 @@ class AppSelectionList : AppCompatActivity(),
         }
 
         appsConfirmButton = setupConfirmButtonUI(this@AppSelectionList)
+
+        advanceAppSelectionListBinding.folderNameView.setOnEditorActionListener { textView, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                PublicVariable.folderName = textView.text.toString()
+
+            }
+            true
+        }
+
+        advanceAppSelectionListBinding.folderNameView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                PublicVariable.folderName = s.toString()
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+
+        })
 
         loadInstalledAppsData()
     }
@@ -260,12 +296,29 @@ class AppSelectionList : AppCompatActivity(),
         super.onBackPressed()
 
         functionsClassLegacy.navigateToClass(FoldersConfigurations::class.java, this@AppSelectionList)
+
     }
 
     /*ConfirmButtonProcess*/
+    override fun confirmed() {
+        Log.d(this@AppSelectionList.javaClass.simpleName, "Confirmed -> ${PublicVariable.folderName}")
+
+        folderNameProcess(PublicVariable.folderName, advanceAppSelectionListBinding.folderNameView.text.toString())
+
+    }
+
     override fun savedShortcutCounter() {
 
-        advanceAppSelectionListBinding.appSelectedCounterView.text = fileIO.fileLinesCounter(PublicVariable.folderName).toString()
+        val folderCounter = fileIO.fileLinesCounter(PublicVariable.folderName)
+
+        advanceAppSelectionListBinding.appSelectedCounterView.text = folderCounter.toString()
+
+        if (folderCounter == 1) {
+
+            folderNameProcess(PublicVariable.folderName, advanceAppSelectionListBinding.folderNameView.text.toString())
+
+        }
+
     }
 
     override fun showSavedShortcutList() {
@@ -332,4 +385,58 @@ class AppSelectionList : AppCompatActivity(),
         }
     }
     /*ConfirmButtonProcess*/
+
+    private fun folderNameProcess(currentFolderName: String, newFolderName: String) {
+
+        if (getFileStreamPath(".categoryInfo").exists()) {
+
+            val file = getFileStreamPath(newFolderName)
+
+            if (file.exists() && file.isFile) { //Edit Folder Name
+
+                if (newFolderName == currentFolderName) {
+
+                    //
+
+                } else { //Edit Folder Name
+                    SearchEngine.clearSearchDataToForceReload()
+
+                    fileIO.readFileLinesAsArray(newFolderName)?.let {
+
+                        for (appContent in it) {
+                            deleteFile(appContent + newFolderName)
+                            fileIO.saveFileAppendLine(PublicVariable.folderName, appContent)
+                            fileIO.saveFile(appContent + PublicVariable.folderName, appContent)
+                        }
+
+                    }
+
+                    if (functionsClassLegacy.loadRecoveryIndicatorCategory(newFolderName)) {
+                        fileIO.removeLine(".uCategory", newFolderName)
+                        fileIO.saveFileAppendLine(".uCategory", PublicVariable.folderName)
+                    }
+
+                    fileIO.removeLine(".categoryInfo", newFolderName)
+                    fileIO.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
+                    deleteFile(newFolderName)
+                }
+
+            } else {
+
+                SearchEngine.clearSearchDataToForceReload()
+
+                fileIO.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
+
+            }
+
+        } else {
+
+            SearchEngine.clearSearchDataToForceReload()
+
+            fileIO.saveFileAppendLine(".categoryInfo", PublicVariable.folderName)
+
+        }
+
+    }
+
 }

@@ -110,7 +110,6 @@
     <string name="ui_floating">Floating Interface</string>
     <string name="pref_floating">Floating Preferences</string>
     <string name="advance">Advanced Features</string>
-    👍
     <string name="wait">Please, Be Patient!</string>
     <string name="stable">Control Panel</string>
     <string name="smartCategory">Smart Features</string>
@@ -171,7 +170,7 @@
     <string name="recover_widgets">Recover Floating Widgets</string>
     <string name="reallocatingWidgets"> 🔁 Reconfiguring… </string>
     <string name="reconfiguringWidgets"> Reconfiguring… </string>
-    <string name="folderDescription">Please Write a Folder Name</string>
+    <string name="folderDescription">Enter A Name</string>
     <string name="colortext">Color Theme</string>
     <string name="themeTrans">Transparent Theme</string>
     <string name="blurryTitle">Blurry Theme</string>

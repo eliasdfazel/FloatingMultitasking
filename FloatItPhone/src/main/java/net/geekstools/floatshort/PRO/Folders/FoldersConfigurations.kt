@@ -60,6 +60,7 @@ import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersAdapter.FoldersListAdapter
+import net.geekstools.floatshort.PRO.Folders.FoldersApplicationsSelectionProcess.AppSelectionList
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
@@ -408,6 +409,15 @@ class FoldersConfigurations : AppCompatActivity(),
                 })
             }
             true
+        }
+
+        foldersConfigurationViewBinding.addNewFolder.setOnClickListener {
+
+            PublicVariable.folderName = "FloatingFolder"
+
+            startActivity(Intent(this@FoldersConfigurations, AppSelectionList::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+
         }
 
         //In-App Billing
