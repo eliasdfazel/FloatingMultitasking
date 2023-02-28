@@ -24,7 +24,6 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.R
-import java.util.*
 
 class PopupApplicationShortcuts (private val context: Context) {
 
@@ -132,8 +131,7 @@ class PopupApplicationShortcuts (private val context: Context) {
                     drawCategory.setDrawableByLayerId(R.id.backgroundTemporary, shapeTempDrawable)
                     drawCategory.setDrawableByLayerId(R.id.fronttemp, frontDrawable)
                 }
-                val recoveryBitmap = Bitmap
-                        .createBitmap(drawCategory.intrinsicWidth, drawCategory.intrinsicHeight, Bitmap.Config.ARGB_8888)
+                val recoveryBitmap = Bitmap.createBitmap(drawCategory.intrinsicWidth, drawCategory.intrinsicHeight, Bitmap.Config.ARGB_8888)
                 drawCategory.setBounds(0, 0, drawCategory.intrinsicWidth, drawCategory.intrinsicHeight)
                 drawCategory.draw(Canvas(recoveryBitmap))
                 val shortcutInfo = ShortcutInfo.Builder(context, dynamicLabel)
