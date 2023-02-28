@@ -128,4 +128,40 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
         }
     }
 
+    fun startProcess(packageName: String,
+                     xPosition: Int, yPosition: Int, HW: Int) {
+
+        if (functionsClassLegacy.splashReveal()) {
+
+            val splashReveal = Intent(context, FloatingSplash::class.java).apply {
+                putExtra("packageName", packageName)
+
+                putExtra("X", xPosition)
+                putExtra("Y", yPosition)
+
+                putExtra("HW", HW)
+            }
+
+            context.startService(splashReveal)
+
+        } else {
+
+            if (functionsClassLegacy.FreeForm()) {
+
+                functionsClassLegacy.openApplicationFreeForm(
+                    packageName,
+                    xPosition,
+                    functionsClassLegacy.displayX() / 2,
+                    yPosition,
+                    functionsClassLegacy.displayY() / 2
+                )
+            } else {
+
+                functionsClassLegacy
+                    .appsLaunchPad(packageName)
+
+            }
+        }
+    }
+
 }

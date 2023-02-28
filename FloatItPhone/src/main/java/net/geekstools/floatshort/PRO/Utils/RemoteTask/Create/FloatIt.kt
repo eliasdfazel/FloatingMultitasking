@@ -41,8 +41,16 @@ class FloatIt : AppCompatActivity() {
         PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), resources.displayMetrics).toInt()
 
-        val aPackageName = intent.getStringExtra("PackageName")!!
-        val aClassName = intent.getStringExtra("ClassName")!!
+        val aPackageName = try {
+            intent.getStringExtra("PackageName")!!
+        } catch (e: NullPointerException) {
+            intent.getStringExtra("packageName")!!
+        }
+        val aClassName = try {
+            intent.getStringExtra("ClassName")!!
+        } catch (e: NullPointerException) {
+            intent.getStringExtra("packageName")!!
+        }
 
         val sharedPreferencesPosition = getSharedPreferences(aClassName, Context.MODE_PRIVATE)
 
@@ -57,7 +65,11 @@ class FloatIt : AppCompatActivity() {
 
             } else {
 
-                openActions.startProcess(aPackageName, aClassName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+                if (aPackageName == aClassName) {
+                    openActions.startProcess(aPackageName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+                } else {
+                    openActions.startProcess(aPackageName, aClassName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+                }
 
             }
 
@@ -71,7 +83,11 @@ class FloatIt : AppCompatActivity() {
 
             } else {
 
-                openActions.startProcess(aPackageName, aClassName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+                if (aPackageName == aClassName) {
+                    openActions.startProcess(aPackageName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+                } else {
+                    openActions.startProcess(aPackageName, aClassName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+                }
 
             }
 
@@ -83,8 +99,16 @@ class FloatIt : AppCompatActivity() {
 
     private fun invokeSecurityServices() {
 
-        val aPackageName = intent.getStringExtra("PackageName")!!
-        val aClassName = intent.getStringExtra("ClassName")!!
+        val aPackageName = try {
+            intent.getStringExtra("PackageName")!!
+        } catch (e: NullPointerException) {
+            intent.getStringExtra("packageName")!!
+        }
+        val aClassName = try {
+            intent.getStringExtra("ClassName")!!
+        } catch (e: NullPointerException) {
+            intent.getStringExtra("packageName")!!
+        }
 
         val sharedPreferencesPosition = getSharedPreferences(aClassName, Context.MODE_PRIVATE)
 
@@ -97,7 +121,11 @@ class FloatIt : AppCompatActivity() {
                 super.authenticatedFloatIt(extraInformation)
                 Log.d(this@FloatIt.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                openActions.startProcess(aPackageName, aClassName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+                if (aPackageName == aClassName) {
+                    openActions.startProcess(aPackageName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+                } else {
+                    openActions.startProcess(aPackageName, aClassName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+                }
 
             }
 

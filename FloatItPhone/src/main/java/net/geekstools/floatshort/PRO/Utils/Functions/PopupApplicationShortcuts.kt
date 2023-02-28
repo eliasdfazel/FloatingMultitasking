@@ -24,6 +24,7 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.FloatIt
 
 class PopupApplicationShortcuts (private val context: Context) {
 
@@ -43,6 +44,7 @@ class PopupApplicationShortcuts (private val context: Context) {
             shortcutInfos.clear()
 
             val intent = Intent()
+            intent.setClass(context, FloatIt::class.java)
 
             if (context.getFileStreamPath("Frequently").exists()) {
 
@@ -52,7 +54,7 @@ class PopupApplicationShortcuts (private val context: Context) {
 
                     appShortcuts?.let {
 
-                        intent.action = "Remote_Single_Floating_Shortcuts"
+                        intent.action = "Float_It"
                         intent.addCategory(Intent.CATEGORY_DEFAULT)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         intent.putExtra("packageName", appShortcuts[i])
@@ -79,7 +81,7 @@ class PopupApplicationShortcuts (private val context: Context) {
 
                         appShortcuts?.let {
 
-                            intent.action = "Remote_Single_Floating_Shortcuts"
+                            intent.action = "Float_It"
                             intent.addCategory(Intent.CATEGORY_DEFAULT)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             intent.putExtra("packageName", appShortcuts[i])
