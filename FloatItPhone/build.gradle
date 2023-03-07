@@ -28,7 +28,7 @@ android {
         minSdkVersion 25
         targetSdkVersion 33
 
-        versionCode 827
+        versionCode 828
         versionName "${majorVersion}." + getDateMonth() + "." + getDateDay() + "." + getDateYear() + ".${versionCode}"
 
     }
@@ -103,7 +103,7 @@ dependencies {
     implementation 'com.android.billingclient:billing-ktx:5.1.0'
 
 
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.preference:preference-ktx:1.2.0'
 
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
@@ -134,10 +134,10 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
-    implementation 'com.google.android.material:material:1.9.0-alpha01'
+    implementation 'com.google.android.material:material:1.9.0-alpha02'
 
 
-    implementation platform('com.google.firebase:firebase-bom:31.0.3')
+    implementation platform('com.google.firebase:firebase-bom:31.2.3')
 
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics'
