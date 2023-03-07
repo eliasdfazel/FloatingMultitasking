@@ -15,6 +15,7 @@ import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -97,9 +98,19 @@ class Configurations : AppCompatActivity() {
             PublicVariable.Stable = false
         }
 
-        if (Build.VERSION.SDK_INT >= 26) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (!Settings.canDrawOverlays(applicationContext)
-                    || !getSharedPreferences(".Configuration", Context.MODE_PRIVATE).getBoolean("Permissions", false)) {
+                || !getSharedPreferences(".Configuration", Context.MODE_PRIVATE).getBoolean("Permissions", false)
+                || checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+
+                startActivity(Intent(applicationContext, Checkpoint::class.java))
+
+                finish()
+                return
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!Settings.canDrawOverlays(applicationContext)
+                || !getSharedPreferences(".Configuration", Context.MODE_PRIVATE).getBoolean("Permissions", false)) {
 
                 startActivity(Intent(applicationContext, Checkpoint::class.java))
 

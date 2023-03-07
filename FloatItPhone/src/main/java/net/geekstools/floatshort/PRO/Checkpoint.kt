@@ -108,6 +108,10 @@ class Checkpoint : Activity() {
 
             }
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                permissionsList.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+
             requestPermissions(permissionsList.toTypedArray(), PermissionRequestCodeIntent)
 
         }
