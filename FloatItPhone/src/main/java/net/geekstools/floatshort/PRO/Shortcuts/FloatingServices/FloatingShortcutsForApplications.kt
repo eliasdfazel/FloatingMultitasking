@@ -188,6 +188,7 @@ class FloatingShortcutsForApplications : Service() {
         return null
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
         Debug.PrintDebug(this@FloatingShortcutsForApplications.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
