@@ -101,7 +101,7 @@ class Configurations : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (!Settings.canDrawOverlays(applicationContext)
                 || !getSharedPreferences(".Configuration", Context.MODE_PRIVATE).getBoolean("Permissions", false)
-                || checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                || checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
 
                 startActivity(Intent(applicationContext, Checkpoint::class.java))
 

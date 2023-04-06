@@ -93,19 +93,12 @@ class Checkpoint : Activity() {
 
             val permissionsList: ArrayList<String> = ArrayList<String>()
             permissionsList.add(Manifest.permission.INTERNET)
-            permissionsList.add(Manifest.permission.CHANGE_WIFI_STATE)
-            permissionsList.add(Manifest.permission.ACCESS_WIFI_STATE)
-            permissionsList.add(Manifest.permission.ACCESS_NETWORK_STATE)
             permissionsList.add(Manifest.permission.WAKE_LOCK)
-            permissionsList.add(Manifest.permission.BLUETOOTH)
-            permissionsList.add(Manifest.permission.BLUETOOTH_ADMIN)
             permissionsList.add(Manifest.permission.RECEIVE_BOOT_COMPLETED)
             permissionsList.add(Manifest.permission.VIBRATE)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-
                 permissionsList.add(Manifest.permission.USE_BIOMETRIC)
-
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
