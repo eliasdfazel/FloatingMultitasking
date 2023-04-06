@@ -80,6 +80,20 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/draw_facebook"
                 android:background="@android:color/transparent"/>
+            <ImageView
+                android:id="@+id/deleteAccount"
+                android:layout_width="51dp"
+                android:layout_height="51dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="53dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="0dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/draw_delete_account"
+                android:background="@android:color/transparent"/>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 

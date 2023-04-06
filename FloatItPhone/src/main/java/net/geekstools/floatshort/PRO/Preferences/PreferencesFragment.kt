@@ -76,10 +76,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         ApplicationThemeController(requireContext())
     }
 
-    private val applicationThemeControllerUtils: ApplicationThemeController.Utils by lazy {
-        applicationThemeController.Utils()
-    }
-
     private val fileIO: FileIO by lazy {
         FileIO(requireContext())
     }

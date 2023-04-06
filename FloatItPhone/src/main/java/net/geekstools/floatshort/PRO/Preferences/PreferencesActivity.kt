@@ -24,7 +24,8 @@ import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.preferences_activity_view.*
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.ApplicationThemeController
@@ -33,8 +34,8 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
+import net.geekstools.floatshort.PRO.databinding.PreferencesActivityViewBinding
 import kotlin.math.hypot
-
 
 class PreferencesActivity : AppCompatActivity() {
 
@@ -58,16 +59,19 @@ class PreferencesActivity : AppCompatActivity() {
         return theme
     }
 
+    lateinit var preferencesActivityViewBinding: PreferencesActivityViewBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.preferences_activity_view)
+        preferencesActivityViewBinding = PreferencesActivityViewBinding.inflate(layoutInflater)
+        setContentView(preferencesActivityViewBinding.root)
 
         functionsClassLegacy = FunctionsClassLegacy(applicationContext)
 
         functionsClassLegacy.loadSavedColor()
         functionsClassLegacy.checkLightDarkTheme()
 
-        applicationThemeController.setThemeColorPreferences(this, fullPreferencesActivity, preferencesToolbar, functionsClassLegacy.appThemeTransparent(), getString(R.string.settingTitle), "${BuildConfig.VERSION_NAME}")
+        applicationThemeController.setThemeColorPreferences(this, preferencesActivityViewBinding.fullPreferencesActivity, preferencesActivityViewBinding.preferencesToolbar, functionsClassLegacy.appThemeTransparent(), getString(R.string.settingTitle), BuildConfig.VERSION_NAME)
 
         rootLayout = this.window.decorView
         rootLayout.visibility = View.INVISIBLE
@@ -119,7 +123,7 @@ class PreferencesActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        giftIcon.setOnClickListener {
+        preferencesActivityViewBinding.giftIcon.setOnClickListener {
 
             startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
                 putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
@@ -127,10 +131,17 @@ class PreferencesActivity : AppCompatActivity() {
             }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
         }
 
-        facebookIcon.setOnClickListener {
+        preferencesActivityViewBinding.facebookIcon.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_facebook_app)))
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
+
+        preferencesActivityViewBinding.deleteAccount.setOnClickListener {
+
+            Firebase.auth.currentUser?.delete()
+
+        }
+
     }
 
     override fun onBackPressed() {

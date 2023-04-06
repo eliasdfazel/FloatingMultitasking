@@ -119,7 +119,4 @@ class ApplicationThemeController (private val context: Context) {
 
     }
 
-    inner class Utils {
-
-    }
 }
