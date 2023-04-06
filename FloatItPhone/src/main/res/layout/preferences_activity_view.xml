@@ -93,6 +93,7 @@
                 android:paddingStart="0dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/draw_delete_account"
+                android:visibility="invisible"
                 android:background="@android:color/transparent"/>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>

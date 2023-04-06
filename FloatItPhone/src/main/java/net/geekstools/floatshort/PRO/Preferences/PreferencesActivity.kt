@@ -138,7 +138,22 @@ class PreferencesActivity : AppCompatActivity() {
 
         preferencesActivityViewBinding.deleteAccount.setOnClickListener {
 
-            Firebase.auth.currentUser?.delete()
+            Firebase.auth.currentUser?.delete()?.addOnSuccessListener {
+
+                preferencesActivityViewBinding.deleteAccount.visibility = View.INVISIBLE
+
+            }
+
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        Firebase.auth.currentUser?.let {
+
+            preferencesActivityViewBinding.deleteAccount.visibility = View.VISIBLE
 
         }
 
