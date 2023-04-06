@@ -463,8 +463,7 @@ class FoldersConfigurations : AppCompatActivity(),
         }
 
         if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection()
-                && foldersConfigurationsDependencyInjection.preferencesIO.readPreference(".UserInformation", "userEmail", null) == null
-                && firebaseAuth.currentUser == null) {
+                && foldersConfigurationsDependencyInjection.preferencesIO.readPreference(".UserInformation", "userEmail", null) == null) {
 
             val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.webClientId))
@@ -562,31 +561,6 @@ class FoldersConfigurations : AppCompatActivity(),
 
     override fun onPause() {
         super.onPause()
-
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
-        firebaseUser?.reload()?.addOnCompleteListener {
-            firebaseAuth.addAuthStateListener { firebaseAuth ->
-                val user = firebaseAuth.currentUser
-                if (user == null) {
-                    foldersConfigurationsDependencyInjection.preferencesIO.savePreference(".UserInformation", "userEmail", null)
-
-                    val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                            .requestIdToken(getString(R.string.webClientId))
-                            .requestEmail()
-                            .build()
-
-                    val googleSignInClient = GoogleSignIn.getClient(this@FoldersConfigurations, googleSignInOptions)
-                    try {
-                        googleSignInClient.signOut()
-                        googleSignInClient.revokeAccess()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                } else {
-
-                }
-            }
-        }
 
         if (PublicVariable.actionCenter) {
             foldersConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton)

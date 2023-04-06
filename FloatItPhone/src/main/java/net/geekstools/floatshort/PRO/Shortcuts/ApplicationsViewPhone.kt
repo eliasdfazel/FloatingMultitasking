@@ -485,8 +485,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection()
-                && applicationsViewPhoneDependencyInjection.preferencesIO.readPreference(".UserInformation", "userEmail", null) == null
-                && firebaseAuth.currentUser == null) {
+                && applicationsViewPhoneDependencyInjection.preferencesIO.readPreference(".UserInformation", "userEmail", null) == null) {
 
             val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.webClientId))
@@ -583,31 +582,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
     override fun onPause() {
         super.onPause()
-
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
-        firebaseUser?.reload()?.addOnCompleteListener {
-            firebaseAuth.addAuthStateListener { firebaseAuth ->
-                val user = firebaseAuth.currentUser
-                if (user == null) {
-                    applicationsViewPhoneDependencyInjection.preferencesIO.savePreference(".UserInformation", "userEmail", null)
-
-                    val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                            .requestIdToken(getString(R.string.webClientId))
-                            .requestEmail()
-                            .build()
-
-                    val googleSignInClient = GoogleSignIn.getClient(this@ApplicationsViewPhone, googleSignInOptions)
-                    try {
-                        googleSignInClient.signOut()
-                        googleSignInClient.revokeAccess()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                } else {
-
-                }
-            }
-        }
 
         applicationsViewPhoneDependencyInjection.popupApplicationShortcuts.addPopupApplicationShortcuts()
 
