@@ -4353,25 +4353,25 @@ public class FunctionsClassLegacy {
     /*In-App Purchase*/
     public boolean securityServicesSubscribed() {
 
-        return //(BuildConfig.DEBUG) ? false :
+        return (BuildConfig.DEBUG) ? false :
                 readPreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSecurityServices, false);
     }
 
     public boolean searchEngineSubscribed() {
 
-        return //(BuildConfig.DEBUG) ? true :
+        return (BuildConfig.DEBUG) ? true :
                 readPreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSearchEngines, false);
     }
 
     public boolean floatingWidgetsPurchased() {
 
-        return (BuildConfig.DEBUG) ? false :
+        return (BuildConfig.DEBUG) ? true :
                 readPreference(".PurchasedItem", InAppBillingData.SKU.InAppItemFloatingWidgets, false);
     }
 
     public boolean alreadyDonated() {
 
-        return //(BuildConfig.DEBUG) ? false :
+        return (BuildConfig.DEBUG) ? true :
                 readPreference(".PurchasedItem", InAppBillingData.SKU.InAppItemDonation, false);
     }
 }

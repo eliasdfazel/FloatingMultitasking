@@ -170,16 +170,17 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         appWidgetManager = AppWidgetManager.getInstance(applicationContext)
         appWidgetHost = AppWidgetHost(applicationContext, System.currentTimeMillis().toInt())
 
+        widgetConfigurationsViewsBinding.actionButton.bringToFront()
+        widgetConfigurationsViewsBinding.addWidget.bringToFront()
+
         if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
 
             loadConfiguredWidgets().invokeOnCompletion {
 
             }
+
         } else {
             widgetConfigurationsViewsBinding.reconfigure.visibility = View.INVISIBLE
-
-            widgetConfigurationsViewsBinding.actionButton.bringToFront()
-            widgetConfigurationsViewsBinding.addWidget.bringToFront()
 
             widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
 
