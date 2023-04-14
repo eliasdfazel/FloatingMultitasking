@@ -19,13 +19,13 @@
     <string name="light">Light</string>
     <string name="dynamic">Dinâmica</string>
     <string name="leftEdge">Borda Esquerda</string>
-    <string name="rightEdge">Right Edge</string>
+    <string name="rightEdge">Borda direita</string>
     <string name="small">Small</string>
     <string name="medium">Medium</string>
     <string name="large">Grande</string>
     <string name="addRecovery">Adicionar à recuperação.</string>
     <string name="addFolder">Nova pasta</string>
-    <string name="removeRecovery">Remove From Recovery</string>
+    <string name="removeRecovery">Remover da recuperação</string>
     <string name="index_item">S</string>
     <string name="not_install">O APLICATIVO NÃO ESTÁ DISPONÍVEL</string>
     <string name="updating_info">Updating Applications Information</string>
@@ -94,7 +94,7 @@
             ⏺ Se você estiver interessado neste recurso e não souber o que fazer, sinta-se à vontade para entrar em contato comigo pelo Centro de Suporte 👍 😉
         ]]>
     </string>
-    <string name="retry">Retry Now</string>
+    <string name="retry">Tente novamente agora</string>
     <string name="observeSum">Android 7.0 (Nougat) +</string>
     <string name="grant">Conceder permissão</string>
     <string name="agree">Acordada</string>
@@ -176,7 +176,7 @@
     <string name="flingSensitivityTitle">Sensibilidade de Arremessar</string>
     <string name="flingSensitivitySummary">Jogue atalhos flutuantes e pastas ao redor</string>
     <string name="delayPressHoldExtraInfo">Pressione e segure o ícone para testar o atraso</string>
-    <string name="revertDefault">Set Recommended Value</string>
+    <string name="revertDefault">Definir valor recomendado</string>
     <string name="splashTitle">Floating Splash</string>
     <string name="splashDesc">Waiting Screen for Opening Apps</string>
     <string name="shortsizepref">Floating Size</string>
