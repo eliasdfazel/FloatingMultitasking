@@ -14,7 +14,7 @@
     <string name="settingTitle">Preferences</string>
     <string name="recoveryShortcuts">Recover Floating Shortcuts</string>
     <string name="overlayPermission">Turn On Permission, Please!</string>
-    <string name="bindDesc">Swipe Down To See More Options</string>
+    <string name="bindDesc">Deslize para baixo para ver mais opções.</string>
     <string name="dark">Dark</string>
     <string name="light">Light</string>
     <string name="dynamic">Dynamic</string>
@@ -23,8 +23,8 @@
     <string name="small">Small</string>
     <string name="medium">Medium</string>
     <string name="large">Large</string>
-    <string name="addRecovery">Add To Recovery</string>
-    <string name="addFolder">New Folder</string>
+    <string name="addRecovery">Adicionar à recuperação.</string>
+    <string name="addFolder">Nova pasta</string>
     <string name="removeRecovery">Remove From Recovery</string>
     <string name="index_item">S</string>
     <string name="not_install">THE APP IS NOT AVAILABLE</string>
@@ -101,16 +101,16 @@
     <string name="retry">Retry Now</string>
     <string name="observeSum">Android 7.0 (Nougat) &amp; Higher</string>
     <string name="grant">Grant Permission</string>
-    <string name="agree">Agree</string>
+    <string name="agree">Acordada</string>
     <string name="skipNow">Not Now</string>
     <string name="read">Read More</string>
     <string name="grantFreeForm">Done</string>
-    <string name="confirm">Confirm</string>
+    <string name="confirm">confirme</string>
     <string name="support">Contact Support</string>
     <string name="ui_app">App Interface</string>
     <string name="ui_floating">Floating Interface</string>
     <string name="pref_floating">Floating Preferences</string>
-    <string name="advance">Advanced Features</string>
+    <string name="advance">Características avançadas</string>
     <string name="wait">Please, Be Patient!</string>
     <string name="stable">Control Panel</string>
     <string name="smartCategory">Smart Features</string>
@@ -128,14 +128,14 @@
         ]]>
     </string>
     <string name="observeTitle">Interactions Observer</string>
-    <string name="boot">Remote Recovery</string>
+    <string name="boot">Recuperação Remota</string>
     <string name="bootPermission">
         <![CDATA[
             <br/>
-            <big>Recover Floating Shortcuts/Folders When</big>…<br/>
-            1. <b>Saying \'🆗 Google Open Float It\'</b><br/>
-            2. <b>Using Popup AppShortcuts</b> | Press & Hold ⏺ on App Shortcut on Home Screen (Android 7.1.1 & Higher)<br/>
-            3. <b>Turning On 🔄 your Device</b><br/>
+            <big>Recupere atalhos e pastas flutuantes quando…</big>…<br/>
+            1. <b>Dizendo \'🆗 Google Open Float It\'</b><br/>
+            2. <b>Usando atalhos de aplicativos pop-up</b> | Pressione e segure o atalho do aplicativo na tela inicial (Android 7.1.1 & Higher)<br/>
+            3. <b>Ligando seu dispositivo</b><br/>
             <br/>
         ]]>
     </string>
@@ -172,10 +172,10 @@
     <string name="reallocatingWidgets"> 🔁 Reconfiguring… </string>
     <string name="reconfiguringWidgets"> Reconfiguring… </string>
     <string name="folderDescription">Enter A Name</string>
-    <string name="colortext">Color Theme</string>
+    <string name="colortext">Tema de cores</string>
     <string name="themeTrans">Transparent Theme</string>
-    <string name="blurryTitle">Blurry Theme</string>
-    <string name="autotrans">Floating Transparency</string>
+    <string name="blurryTitle">Tema embaçado</string>
+    <string name="autotrans">Flutuante Transparência</string>
     <string name="delayPressHold">Popup Menu Delay</string>
     <string name="flingSensitivityTitle">Fling Sensitivity</string>
     <string name="flingSensitivitySummary">Throw Floating Shortcuts/Folders Around</string>
@@ -188,7 +188,7 @@
     <string name="shapesTitle">Floating Shapes</string>
     <string name="shapedDesc">Set Shape to…</string>
     <string name="droplet">Droplet</string>
-    <string name="circle">Circle</string>
+    <string name="circle">Círculo</string>
     <string name="square">Square</string>
     <string name="squircle">Squircle</string>
     <string name="noshape">No Shape</string>
@@ -196,18 +196,18 @@
     <string name="defaultTheme">Set Default Theme of Icons</string>
     <string name="customIconTitle">Theme of Icons</string>
     <string name="shortcuts">Floating Shortcuts</string>
-    <string name="boot_warning">All</string>
-    <string name="boot_none">None</string>
+    <string name="boot_warning">Todos</string>
+    <string name="boot_none">Nenhum</string>
     <string name="remove_all_floatings">REMOVE ALL</string>
     <string name="remove_all">❌ Remove All</string>
     <string name="recover_all">✔️ Recover All</string>
     <string name="moveEdgeLeft">⬅️️ Move To Edge</string>
     <string name="moveEdgeRight">➡️️️ Move To Edge</string>
-    <string name="backToScreenLeft">➡️️️ Back To Screen</string>
-    <string name="backToScreenRight">⬅️️ Back To Screen️</string>
+    <string name="backToScreenLeft">➡️️️ Voltar à tela</string>
+    <string name="backToScreenRight">⬅️️ Voltar à tela</string>
     <string name="pin">Pin Shortcut</string>
     <string name="unpin">Unpin Shortcut</string>
-    <string name="close">Minimize It</string>
+    <string name="close">Minimize</string>
     <string name="remove">Remove Shortcut</string>
     <string name="pin_folder">Pin Folder</string>
     <string name="unpin_folder">Unpin Folder</string>
@@ -248,14 +248,14 @@
 
     <!-- Security Options -->
     <string name="securityServices">Security Services</string>
-    <string name="changePin">Pin Password</string>
-    <string name="changePinSummary">Create Or Edit Pin Password</string>
+    <string name="changePin">PIN senha</string>
+    <string name="changePinSummary">Crie ou edite a senha do PIN</string>
     <string name="passwordError">Password Error ⚠</string>
     <string name="authenticationProcessInvoked">
         <![CDATA[
-            Authentication Process Has Invoked
+            Processo de Autenticação Invocou
             <br/>
-            First Authenticate <b>%1$s</b>
+            Primeiro Autenticar <b>%1$s</b>
         ]]>
     </string>
 
