@@ -138,14 +138,14 @@
         ]]>
     </string>
     <string name="notificationEmoji">🔔</string>
-    <string name="notificationTitle">Floating Notification</string>
-    <string name="notificationSummary">Notification Dot on Floating Shortcuts/Folders</string>
+    <string name="notificationTitle">Schwebende Benachrichtigung</string>
+    <string name="notificationSummary">Benachrichtigungspunkt auf schwebenden Verknüpfungen und Ordnern</string>
     <string name="notificationDesc">
         <![CDATA[
             <br/>
-            This Permission Allows Me to Get Content of <b>Unread Notification</b> 🔔<br/>
-            1️⃣ to Add a <b>Notification Dot</b> on Floating Shortcuts/Folders<br/>
-            2️⃣ & Show <b>Notification Content</b> from Floating Shortcuts/Folders.
+            Diese Berechtigung erlaubt mir, den Inhalt einer ungelesenen Benachrichtigung abzurufen 🔔<br/>
+            1️⃣ um einen Benachrichtigungspunkt zu schwebenden Verknüpfungen und Ordnern hinzuzufügen<br/>
+            2️⃣ & Benachrichtigungsinhalte von schwebenden Verknüpfungen und Ordnern anzeigen
             <br/>
         ]]>
     </string>

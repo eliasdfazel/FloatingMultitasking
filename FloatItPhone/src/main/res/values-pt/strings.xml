@@ -138,14 +138,14 @@
         ]]>
     </string>
     <string name="notificationEmoji">🔔</string>
-    <string name="notificationTitle">Floating Notification</string>
-    <string name="notificationSummary">Notification Dot on Floating Shortcuts/Folders</string>
+    <string name="notificationTitle">Notificação flutuante</string>
+    <string name="notificationSummary">Ponto de notificação em atalhos e pastas flutuantes</string>
     <string name="notificationDesc">
         <![CDATA[
             <br/>
-            This Permission Allows Me to Get Content of <b>Unread Notification</b> 🔔<br/>
-            1️⃣ to Add a <b>Notification Dot</b> on Floating Shortcuts/Folders<br/>
-            2️⃣ & Show <b>Notification Content</b> from Floating Shortcuts/Folders.
+            Esta permissão me permite obter conteúdo de notificação não lida 🔔<br/>
+            1️⃣ para adicionar um ponto de notificação em atalhos e pastas flutuantes<br/>
+            2️⃣ & Mostrar Conteúdo de Notificação de Atalhos e Pastas Flutuantes
             <br/>
         ]]>
     </string>
