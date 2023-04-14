@@ -11,7 +11,7 @@
 <resources>
 
     <string name="recovery_center">Erholungszentrum</string>
-    <string name="settingTitle">Preferences</string>
+    <string name="settingTitle">Einstellungen</string>
     <string name="recoveryShortcuts">Schwimmende Verknüpfungen Wiederherstellen</string>
     <string name="overlayPermission">Berechtigung einschalten, bitte!</string>
     <string name="bindDesc">Streichen Sie nach unten, um weitere Optionen anzuzeigen.</string>
@@ -20,7 +20,7 @@
     <string name="dynamic">Dynamisch</string>
     <string name="leftEdge">Linke Ecke</string>
     <string name="rightEdge">Rechte Ecke</string>
-    <string name="small">Small</string>
+    <string name="small">Klein</string>
     <string name="medium">Mittel</string>
     <string name="large">Groß</string>
     <string name="addRecovery">Zur Wiederherstellung hinzufügen.</string>
@@ -98,7 +98,7 @@
     <string name="observeSum">Android 7.0 (Nougat) +</string>
     <string name="grant">Erlaubnis erteilen</string>
     <string name="agree">Einverstanden</string>
-    <string name="skipNow">Not Now</string>
+    <string name="skipNow">Nicht jetzt</string>
     <string name="read">Weiterlesen</string>
     <string name="grantFreeForm">Done</string>
     <string name="confirm">Bestätigen</string>
@@ -109,18 +109,18 @@
     <string name="advance">Erweiterte Funktionen</string>
     <string name="wait">Please, Be Patient!</string>
     <string name="stable">Control Panel</string>
-    <string name="smartCategory">Smart Features</string>
+    <string name="smartCategory">Intelligente Funktionen</string>
     <string name="smartTitle">Intelligent Services</string>
     <string name="floatingSearch">Schwimmende Suche</string>
     <string name="smartSummary">Let Me Know…</string>
     <string name="smartPermission">
         <![CDATA[
-            <br/>
-            This Permission Allows Me to Get List of <b>Frequently Used Application</b> to Set Quick Bar.<br/><br/>
-            Also, It is Essential for<br/>
-            1. <b>🔄 Remote Recovery of Floating Shortcuts/Folders</b> to Recognize Command…<br/>
-            2. <b>🆗 Google! Open Float It</b><br/>
-            3. <b>🕐 Optimizing Floating Splash</b><br/>
+            Diese Berechtigung ermöglicht es mir, eine Liste häufig verwendeter Anwendungen zum Festlegen der Schnellleiste zu erhalten.
+
+            Außerdem ist es wesentlich für
+            1. 🔄 Remote-Wiederherstellung von schwebenden Verknüpfungen/Ordnern zur Erkennung von Befehlen…
+            2. 🆗 Google! Öffnen Sie es
+            3. 🕐 Floating Splash optimieren
         ]]>
     </string>
     <string name="observeTitle">Interaktions-Beobachter</string>
@@ -179,10 +179,10 @@
     <string name="revertDefault">Empfohlenen Wert festlegen</string>
     <string name="splashTitle">Floating Splash</string>
     <string name="splashDesc">Waiting Screen for Opening Apps</string>
-    <string name="shortsizepref">Floating Size</string>
+    <string name="shortsizepref">Schwebende Größe</string>
     <string name="stick">Sticky Edge</string>
-    <string name="shapesTitle">Floating Shapes</string>
-    <string name="shapedDesc">Set Shape to…</string>
+    <string name="shapesTitle">Schwebende Formen</string>
+    <string name="shapedDesc">Form einstellen auf…</string>
     <string name="droplet">Tröpfchen</string>
     <string name="circle">Kreis</string>
     <string name="square">Square</string>
@@ -191,7 +191,7 @@
     <string name="iconPack">Pakete von Symbolen</string>
     <string name="defaultTheme">Legen Sie das Standarddesign für Symbole fest</string>
     <string name="customIconTitle">Thema Ikonen</string>
-    <string name="shortcuts">Floating Shortcuts</string>
+    <string name="shortcuts">Schwebende Verknüpfungen</string>
     <string name="boot_warning">Alle</string>
     <string name="boot_none">Keiner</string>
     <string name="remove_all_floatings">Alles entfernen</string>
@@ -230,10 +230,10 @@
     </string>
 
     <!-- Search Engine -->
-    <string name="searchHint">Type To Search</string>
+    <string name="searchHint">Tippe um zu suchen</string>
     <string name="searchFolderHint">
         <![CDATA[
-            <small>| Folder</small>
+            <small>| Ordner</small>
         ]]>
     </string>
     <string name="searchWidgetHint">
@@ -243,7 +243,7 @@
     </string>
 
     <!-- Security Options -->
-    <string name="securityServices">Security Services</string>
+    <string name="securityServices">Sicherheitsdienste</string>
     <string name="changePin">PIN-Passwort</string>
     <string name="changePinSummary">Pin-Passwort erstellen oder bearbeiten</string>
     <string name="passwordError">Passwort Fehler ⚠</string>
@@ -267,7 +267,7 @@
     <string name="passwordResetSent">"E-Mail zum Zurücksetzen des PIN-Passworts gesendet 📩 | Öffnen Sie es auf diesem Telefon 📱 "</string>
     <string name="verifying">Verifying Authentication Data 🔑</string>
     <string name="floatingShortcutsSecurityService">Lassen Sie es schweben | Sicherheitsdienste</string>
-    <string name="securityWarningFingerprint"> ⚠ Security Warning | Fingerprint Is Not Set ⚠ </string>
+    <string name="securityWarningFingerprint">⚠ Sicherheitswarnung | Fingerabdruck ist nicht eingestellt ⚠</string>
     <!-- Finger Print -->
     <!-- Security Options -->
 

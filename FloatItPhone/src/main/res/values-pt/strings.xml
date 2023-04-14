@@ -11,7 +11,7 @@
 <resources>
 
     <string name="recovery_center">centro de recuperação</string>
-    <string name="settingTitle">Preferences</string>
+    <string name="settingTitle">Preferências</string>
     <string name="recoveryShortcuts">Recuperar Atalhos Flutuantes</string>
     <string name="overlayPermission">Ligue a permissão, por favor!</string>
     <string name="bindDesc">Deslize para baixo para ver mais opções.</string>
@@ -20,7 +20,7 @@
     <string name="dynamic">Dinâmica</string>
     <string name="leftEdge">Borda Esquerda</string>
     <string name="rightEdge">Borda direita</string>
-    <string name="small">Small</string>
+    <string name="small">Pequena</string>
     <string name="medium">Medium</string>
     <string name="large">Grande</string>
     <string name="addRecovery">Adicionar à recuperação.</string>
@@ -98,7 +98,7 @@
     <string name="observeSum">Android 7.0 (Nougat) +</string>
     <string name="grant">Conceder permissão</string>
     <string name="agree">Acordada</string>
-    <string name="skipNow">Not Now</string>
+    <string name="skipNow">Agora não</string>
     <string name="read">consulte Mais informação</string>
     <string name="grantFreeForm">Feita</string>
     <string name="confirm">confirme</string>
@@ -109,18 +109,18 @@
     <string name="advance">Características avançadas</string>
     <string name="wait">Please, Be Patient!</string>
     <string name="stable">Control Panel</string>
-    <string name="smartCategory">Smart Features</string>
+    <string name="smartCategory">Recursos inteligentes</string>
     <string name="smartTitle">Intelligent Services</string>
     <string name="floatingSearch">Pesquisa flutuante</string>
     <string name="smartSummary">Let Me Know…</string>
     <string name="smartPermission">
         <![CDATA[
-            <br/>
-            This Permission Allows Me to Get List of <b>Frequently Used Application</b> to Set Quick Bar.<br/><br/>
-            Also, It is Essential for<br/>
-            1. <b>🔄 Remote Recovery of Floating Shortcuts/Folders</b> to Recognize Command…<br/>
-            2. <b>🆗 Google! Open Float It</b><br/>
-            3. <b>🕐 Optimizing Floating Splash</b><br/>
+            Esta permissão me permite obter uma lista de aplicativos usados com frequência para definir a barra rápida.
+
+            Além disso, é essencial para
+            1. 🔄 Recuperação remota de atalhos/pastas flutuantes para reconhecer comandos…
+            2. 🆗 Google! Abrir flutuar
+            3. 🕐 Otimizando Floating Splash
         ]]>
     </string>
     <string name="observeTitle">Observador de Interações</string>
@@ -179,10 +179,10 @@
     <string name="revertDefault">Definir valor recomendado</string>
     <string name="splashTitle">Floating Splash</string>
     <string name="splashDesc">Waiting Screen for Opening Apps</string>
-    <string name="shortsizepref">Floating Size</string>
+    <string name="shortsizepref">Tamanho Flutuante</string>
     <string name="stick">Sticky Edge</string>
-    <string name="shapesTitle">Floating Shapes</string>
-    <string name="shapedDesc">Set Shape to…</string>
+    <string name="shapesTitle">Formas Flutuantes</string>
+    <string name="shapedDesc">Definir forma para…</string>
     <string name="droplet">Gotícula</string>
     <string name="circle">Círculo</string>
     <string name="square">Square</string>
@@ -191,7 +191,7 @@
     <string name="iconPack">Pacotes de Ícones</string>
     <string name="defaultTheme">Definir tema padrão de ícones</string>
     <string name="customIconTitle">Tema de Ícones</string>
-    <string name="shortcuts">Floating Shortcuts</string>
+    <string name="shortcuts">Atalhos Flutuantes</string>
     <string name="boot_warning">Todos</string>
     <string name="boot_none">Nenhum</string>
     <string name="remove_all_floatings">Deletar tudo</string>
@@ -230,10 +230,10 @@
     </string>
 
     <!-- Search Engine -->
-    <string name="searchHint">Type To Search</string>
+    <string name="searchHint">Escreva para pesquisar</string>
     <string name="searchFolderHint">
         <![CDATA[
-            <small>| Folder</small>
+            <small>| Pasta</small>
         ]]>
     </string>
     <string name="searchWidgetHint">
@@ -243,7 +243,7 @@
     </string>
 
     <!-- Security Options -->
-    <string name="securityServices">Security Services</string>
+    <string name="securityServices">Serviços de segurança</string>
     <string name="changePin">PIN senha</string>
     <string name="changePinSummary">Crie ou edite a senha do PIN</string>
     <string name="passwordError">Erro de senha ⚠</string>
@@ -267,7 +267,7 @@
     <string name="passwordResetSent">E-mail para redefinir a senha do PIN enviado 📩 | Abra neste telefone 📱</string>
     <string name="verifying">Verifying Authentication Data 🔑</string>
     <string name="floatingShortcutsSecurityService">Flutue | Serviços de segurança</string>
-    <string name="securityWarningFingerprint"> ⚠ Security Warning | Fingerprint Is Not Set ⚠ </string>
+    <string name="securityWarningFingerprint">⚠ Aviso de Segurança | A impressão digital não está definida ⚠</string>
     <!-- Finger Print -->
     <!-- Security Options -->
 
