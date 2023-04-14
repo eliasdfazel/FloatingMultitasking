@@ -98,7 +98,7 @@
     </string>
     <string name="retry">Retry Now</string>
     <string name="observeSum">Android 7.0 (Nougat) &amp; Higher</string>
-    <string name="grant">Grant Permission</string>
+    <string name="grant">Conceder permissão</string>
     <string name="agree">Acordada</string>
     <string name="skipNow">Not Now</string>
     <string name="read">Read More</string>
@@ -214,7 +214,7 @@
     <string name="splitIt">Split It</string>
     <string name="deleteText">Excluir</string>
     <string name="edit_folder">Editar:</string>
-    <string name="freeFormTitle">Extended Float It</string>
+    <string name="freeFormTitle">Flutuação Estendida</string>
     <string name="freeFormDesc">Sempre abra todos os aplicativos na visualização flutuante (FreeForm)</string>
     <string name="liteTitle">Lite Preferences</string>
     <string name="liteSummary">Set Preferences to Minimum for Better Performance</string>
