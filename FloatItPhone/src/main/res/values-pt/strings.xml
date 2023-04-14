@@ -13,7 +13,7 @@
     <string name="recovery_center">Recovery Center</string>
     <string name="settingTitle">Preferences</string>
     <string name="recoveryShortcuts">Recover Floating Shortcuts</string>
-    <string name="overlayPermission">Turn On Permission, Please!</string>
+    <string name="overlayPermission">Ligue a permissão, por favor!</string>
     <string name="bindDesc">Deslize para baixo para ver mais opções.</string>
     <string name="dark">Escura</string>
     <string name="light">Light</string>
@@ -57,15 +57,13 @@
     <string name="split_service_summary">Split Float It ᴾᴿᴼ | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)</string>
     <string name="observeDesc">
         <![CDATA[
-                <br/>
-                I Need Accessibility Service To Be Enabled Because It Allows Me to Create Multi-Window Mode 🗔 To Open Pair of Applications in Split Screen Simultaneously.
-                <br/>The Core Purpose Of Requiring This Permission Is Opening Two Applications Together To Increase Productivity and Multitasking.
-                <br/>⚠ No Data Read Or Collect ⚠
-                <br/>(<b>It is Compatible with Android 7.0 & Higher</b>)
-                <br/><br/><br/><br/><br/>
-                ♿ <small><b>How it Helps People with Disability</b>?<br/>
-                It is Difficult for People with Disability to Open an App Or Switch Between Apps.<br/>
-                So, I am Using Accessibility Service to Create Multi-Window Mode to Open Two Apps Together.<br/></small>
+            Preciso que o serviço de acessibilidade seja ativado porque me permite criar o modo de várias janelas 🗔 para abrir um par de aplicativos na tela dividida simultaneamente.
+            O principal objetivo de exigir essa permissão é abrir dois aplicativos juntos para aumentar a produtividade e a multitarefa.
+            ⚠ Nenhum dado lido ou coletado ⚠
+            (É compatível com Android 7.0 e superior)
+            ♿ Como isso ajuda as pessoas com deficiência?
+            É difícil para pessoas com deficiência abrir um aplicativo ou alternar entre aplicativos.
+            Então, estou usando o serviço de acessibilidade para criar o modo de várias janelas para abrir dois aplicativos juntos.
         ]]>
     </string>
     <string name="freeFormInfo">
@@ -97,7 +95,7 @@
         ]]>
     </string>
     <string name="retry">Retry Now</string>
-    <string name="observeSum">Android 7.0 (Nougat) &amp; Higher</string>
+    <string name="observeSum">Android 7.0 (Nougat) +</string>
     <string name="grant">Conceder permissão</string>
     <string name="agree">Acordada</string>
     <string name="skipNow">Not Now</string>
@@ -125,7 +123,7 @@
             3. <b>🕐 Optimizing Floating Splash</b><br/>
         ]]>
     </string>
-    <string name="observeTitle">Interactions Observer</string>
+    <string name="observeTitle">Observador de Interações</string>
     <string name="boot">Recuperação Remota</string>
     <string name="bootPermission">
         <![CDATA[
@@ -248,7 +246,7 @@
     <string name="securityServices">Security Services</string>
     <string name="changePin">PIN senha</string>
     <string name="changePinSummary">Crie ou edite a senha do PIN</string>
-    <string name="passwordError">Password Error ⚠</string>
+    <string name="passwordError">Erro de senha ⚠</string>
     <string name="authenticationProcessInvoked">
         <![CDATA[
             Processo de Autenticação Invocou
@@ -262,8 +260,8 @@
     <string name="lockIt">Tranque-o 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
     <string name="pinHint">Enter Pin Password 🔑 </string>
-    <string name="passwordHint">Enter New Pin Password 🔑 </string>
-    <string name="passwordHintRepeat">Repeat New Pin Password 🔑 </string>
+    <string name="passwordHint">"Insira a nova senha PIN 🔑 "</string>
+    <string name="passwordHintRepeat">"Repita a nova senha PIN 🔑 "</string>
     <string name="enterCurrentPassword">Digite a senha atual 🔑</string>
     <string name="forgetPassword">"Esqueceu sua senha? 🤔 "</string>
     <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 | Open It On This Phone 📱 </string>

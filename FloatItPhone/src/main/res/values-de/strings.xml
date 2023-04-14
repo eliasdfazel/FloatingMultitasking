@@ -13,7 +13,7 @@
     <string name="recovery_center">Recovery Center</string>
     <string name="settingTitle">Preferences</string>
     <string name="recoveryShortcuts">Recover Floating Shortcuts</string>
-    <string name="overlayPermission">Turn On Permission, Please!</string>
+    <string name="overlayPermission">Berechtigung einschalten, bitte!</string>
     <string name="bindDesc">Streichen Sie nach unten, um weitere Optionen anzuzeigen.</string>
     <string name="dark">Dunkel</string>
     <string name="light">Light</string>
@@ -57,15 +57,13 @@
     <string name="split_service_summary">Split Float It ᴾᴿᴼ | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)</string>
     <string name="observeDesc">
         <![CDATA[
-                <br/>
-                I Need Accessibility Service To Be Enabled Because It Allows Me to Create Multi-Window Mode 🗔 To Open Pair of Applications in Split Screen Simultaneously.
-                <br/>The Core Purpose Of Requiring This Permission Is Opening Two Applications Together To Increase Productivity and Multitasking.
-                <br/>⚠ No Data Read Or Collect ⚠
-                <br/>(<b>It is Compatible with Android 7.0 & Higher</b>)
-                <br/><br/><br/><br/><br/>
-                ♿ <small><b>How it Helps People with Disability</b>?<br/>
-                It is Difficult for People with Disability to Open an App Or Switch Between Apps.<br/>
-                So, I am Using Accessibility Service to Create Multi-Window Mode to Open Two Apps Together.<br/></small>
+            Ich muss den Barrierefreiheitsdienst aktivieren, da er mir erlaubt, den Multi-Window-Modus zu erstellen 🗔 Zum gleichzeitigen Öffnen von Anwendungspaaren im geteilten Bildschirm.
+            Der Hauptzweck dieser Berechtigung ist das gemeinsame Öffnen von zwei Anwendungen, um die Produktivität und das Multitasking zu steigern.
+            ⚠ Keine Daten lesen oder sammeln ⚠
+            (Es ist kompatibel mit Android 7.0 und höher)
+            ♿ Wie hilft es Menschen mit Behinderung?
+            Für Menschen mit Behinderungen ist es schwierig, eine App zu öffnen oder zwischen Apps zu wechseln.
+            Also verwende ich den Accessibility Service, um den Multi-Window-Modus zu erstellen, um zwei Apps zusammen zu öffnen.
         ]]>
     </string>
     <string name="freeFormInfo">
@@ -97,7 +95,7 @@
         ]]>
     </string>
     <string name="retry">Retry Now</string>
-    <string name="observeSum">Android 7.0 (Nougat) &amp; Higher</string>
+    <string name="observeSum">Android 7.0 (Nougat) +</string>
     <string name="grant">Erlaubnis erteilen</string>
     <string name="agree">Einverstanden</string>
     <string name="skipNow">Not Now</string>
@@ -125,7 +123,7 @@
             3. <b>🕐 Optimizing Floating Splash</b><br/>
         ]]>
     </string>
-    <string name="observeTitle">Interactions Observer</string>
+    <string name="observeTitle">Interaktions-Beobachter</string>
     <string name="boot">Remote-Wiederherstellung</string>
     <string name="bootPermission">
         <![CDATA[
@@ -248,7 +246,7 @@
     <string name="securityServices">Security Services</string>
     <string name="changePin">PIN-Passwort</string>
     <string name="changePinSummary">Pin-Passwort erstellen oder bearbeiten</string>
-    <string name="passwordError">Password Error ⚠</string>
+    <string name="passwordError">Passwort Fehler ⚠</string>
     <string name="authenticationProcessInvoked">
         <![CDATA[
             Der Authentifizierungsprozess wurde aufgerufen
@@ -262,8 +260,8 @@
     <string name="lockIt">Verschließe es 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
     <string name="pinHint">Enter Pin Password 🔑 </string>
-    <string name="passwordHint">Enter New Pin Password 🔑 </string>
-    <string name="passwordHintRepeat">Repeat New Pin Password 🔑 </string>
+    <string name="passwordHint">"Geben Sie das neue PIN-Passwort ein 🔑 "</string>
+    <string name="passwordHintRepeat">"Wiederholen Sie das neue PIN-Passwort 🔑 "</string>
     <string name="enterCurrentPassword">Geben Sie das aktuelle Passwort ein 🔑</string>
     <string name="forgetPassword">"Haben Sie Ihr Passwort vergessen? 🤔 "</string>
     <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 | Open It On This Phone 📱 </string>
