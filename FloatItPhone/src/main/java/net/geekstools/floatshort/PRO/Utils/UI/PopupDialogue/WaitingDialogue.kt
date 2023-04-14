@@ -22,9 +22,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.waiting_dialogue.*
-import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.databinding.WaitingDialogueBinding
 
 class WaitingDialogueLiveData() : ViewModel() {
     val dialogueTitle: MutableLiveData<String> by lazy {
@@ -52,28 +51,30 @@ class WaitingDialogue {
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.57f
 
+        val waitingDialogueBinding = WaitingDialogueBinding.inflate(initActivity.layoutInflater)
+
         val dialog = Dialog(initActivity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.waiting_dialogue)
+        dialog.setContentView(waitingDialogueBinding.root)
         dialog.setCancelable(true)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.decorView?.setBackgroundColor(Color.TRANSPARENT)
         dialog.window?.attributes = layoutParams
 
-        dialog.dialogueView.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)
-        dialog.waitLoading.setColor(PublicVariable.primaryColor)
+        waitingDialogueBinding.dialogueView.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)
+        waitingDialogueBinding.waitLoading.setColor(PublicVariable.primaryColor)
 
-        dialog.waitTextTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
-        dialog.waitTextMessage.setTextColor(PublicVariable.colorLightDarkOpposite)
+        waitingDialogueBinding.waitTextTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
+        waitingDialogueBinding.waitTextMessage.setTextColor(PublicVariable.colorLightDarkOpposite)
 
         waitingDialogueLiveData.dialogueTitle.observe(initActivity,
                 Observer<String> { dialogueTitle ->
-                    dialog.waitTextTitle.text = dialogueTitle
+                    waitingDialogueBinding.waitTextTitle.text = dialogueTitle
                 })
 
         waitingDialogueLiveData.dialogueMessage.observe(initActivity,
                 Observer<String> { dialogueMessage ->
-                    dialog.waitTextMessage.text = dialogueMessage
+                    waitingDialogueBinding.waitTextMessage.text = dialogueMessage
                 })
 
         dialog.setOnDismissListener {

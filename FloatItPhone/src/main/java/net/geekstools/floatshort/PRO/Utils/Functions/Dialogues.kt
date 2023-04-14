@@ -24,9 +24,9 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.dialogue_message.*
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.InAppReview.InAppReviewProcess
+import net.geekstools.floatshort.PRO.databinding.DialogueMessageBinding
 
 class Dialogues (var activity: Activity, var functionsClassLegacy: FunctionsClassLegacy) {
 
@@ -43,9 +43,11 @@ class Dialogues (var activity: Activity, var functionsClassLegacy: FunctionsClas
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.57f
 
+        val dialogueMessageBinding = DialogueMessageBinding.inflate(activity.layoutInflater)
+
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialogue_message)
+        dialog.setContentView(dialogueMessageBinding.root)
         dialog.window?.attributes = layoutParams
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.decorView?.setBackgroundColor(Color.TRANSPARENT)
@@ -54,25 +56,25 @@ class Dialogues (var activity: Activity, var functionsClassLegacy: FunctionsClas
         val dialogueView: View = dialog.findViewById<RelativeLayout>(R.id.dialogueView)
         dialogueView.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)
 
-        dialog.dialogueTitle.text = activity.getString(R.string.whatsnew)
-        dialog.dialogueMessage.text = Html.fromHtml(activity.getString(R.string.changelog), Html.FROM_HTML_MODE_COMPACT)
+        dialogueMessageBinding.dialogueTitle.text = activity.getString(R.string.whatsnew)
+        dialogueMessageBinding.dialogueMessage.text = Html.fromHtml(activity.getString(R.string.changelog), Html.FROM_HTML_MODE_COMPACT)
 
-        dialog.rateIt.setBackgroundColor(if (PublicVariable.themeLightDark) { activity.getColor(R.color.lighter) } else { activity.getColor(R.color.darker) })
-        dialog.followIt.setBackgroundColor(if (PublicVariable.themeLightDark) { activity.getColor(R.color.lighter) } else { activity.getColor(R.color.darker) })
+        dialogueMessageBinding.rateIt.setBackgroundColor(if (PublicVariable.themeLightDark) { activity.getColor(R.color.lighter) } else { activity.getColor(R.color.darker) })
+        dialogueMessageBinding.followIt.setBackgroundColor(if (PublicVariable.themeLightDark) { activity.getColor(R.color.lighter) } else { activity.getColor(R.color.darker) })
 
-        dialog.dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
-        dialog.dialogueMessage.setTextColor(PublicVariable.colorLightDarkOpposite)
+        dialogueMessageBinding.dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
+        dialogueMessageBinding.dialogueMessage.setTextColor(PublicVariable.colorLightDarkOpposite)
 
-        dialog.rateIt.setTextColor(PublicVariable.colorLightDarkOpposite)
-        dialog.followIt.setTextColor(PublicVariable.colorLightDarkOpposite)
+        dialogueMessageBinding.rateIt.setTextColor(PublicVariable.colorLightDarkOpposite)
+        dialogueMessageBinding.followIt.setTextColor(PublicVariable.colorLightDarkOpposite)
 
-        dialog.rateIt.setOnClickListener {
+        dialogueMessageBinding.rateIt.setOnClickListener {
             dialog.dismiss()
 
             activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.play_store_link))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
 
-        dialog.followIt.setOnClickListener {
+        dialogueMessageBinding.followIt.setOnClickListener {
             dialog.dismiss()
 
             activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.link_facebook_app))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
@@ -119,9 +121,11 @@ class Dialogues (var activity: Activity, var functionsClassLegacy: FunctionsClas
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         layoutParams.dimAmount = 0.57f
 
+        val dialogueMessageBinding = DialogueMessageBinding.inflate(activity.layoutInflater)
+
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialogue_message)
+        dialog.setContentView(dialogueMessageBinding.root)
         dialog.window!!.attributes = layoutParams
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
@@ -130,35 +134,35 @@ class Dialogues (var activity: Activity, var functionsClassLegacy: FunctionsClas
         val dialogueView: View = dialog.findViewById<RelativeLayout>(R.id.dialogueView)
         dialogueView.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)
 
-        dialog.dialogueTitle.text = activity.getString(R.string.whatsnew)
-        dialog.dialogueMessage.text = Html.fromHtml(activity.getString(R.string.changelog))
+        dialogueMessageBinding.dialogueTitle.text = activity.getString(R.string.whatsnew)
+        dialogueMessageBinding.dialogueMessage.text = Html.fromHtml(activity.getString(R.string.changelog))
 
-        dialog.rateIt.setBackgroundColor(if (PublicVariable.themeLightDark) { activity.getColor(R.color.lighter) } else { activity.getColor(R.color.darker) })
-        dialog.followIt.setBackgroundColor(if (PublicVariable.themeLightDark) { activity.getColor(R.color.lighter) } else { activity.getColor(R.color.darker) })
+        dialogueMessageBinding.rateIt.setBackgroundColor(if (PublicVariable.themeLightDark) { activity.getColor(R.color.lighter) } else { activity.getColor(R.color.darker) })
+        dialogueMessageBinding.followIt.setBackgroundColor(if (PublicVariable.themeLightDark) { activity.getColor(R.color.lighter) } else { activity.getColor(R.color.darker) })
 
-        dialog.dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
-        dialog.dialogueMessage.setTextColor(PublicVariable.colorLightDarkOpposite)
+        dialogueMessageBinding.dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
+        dialogueMessageBinding.dialogueMessage.setTextColor(PublicVariable.colorLightDarkOpposite)
 
-        dialog.rateIt.setTextColor(PublicVariable.colorLightDarkOpposite)
-        dialog.followIt.setTextColor(PublicVariable.colorLightDarkOpposite)
+        dialogueMessageBinding.rateIt.setTextColor(PublicVariable.colorLightDarkOpposite)
+        dialogueMessageBinding.followIt.setTextColor(PublicVariable.colorLightDarkOpposite)
 
-        dialog.rateIt.text = if (betaChangeLog.contains(activity.packageName)) {
+        dialogueMessageBinding.rateIt.text = if (betaChangeLog.contains(activity.packageName)) {
             activity.getString(R.string.shareIt)
         } else {
             activity.getString(R.string.betaUpdate)
         }
-        dialog.rateIt.setOnClickListener {
+        dialogueMessageBinding.rateIt.setOnClickListener {
             dialog.dismiss()
 
-            if (dialog.rateIt.text == activity.getString(R.string.shareIt)) {
+            if (dialogueMessageBinding.rateIt.text == activity.getString(R.string.shareIt)) {
                 activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.play_store_link).toString() + activity.getPackageName()))
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            } else if (dialog.rateIt.text == activity.getString(R.string.betaUpdate)) {
+            } else if (dialogueMessageBinding.rateIt.text == activity.getString(R.string.betaUpdate)) {
                 functionsClassLegacy.upcomingChangeLog(activity, betaChangeLog, betaVersionCode)
             }
         }
 
-        dialog.followIt.setOnClickListener {
+        dialogueMessageBinding.followIt.setOnClickListener {
             dialog.dismiss()
 
             activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.link_facebook_app))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))

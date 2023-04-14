@@ -26,7 +26,6 @@ import android.text.Html
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import kotlinx.android.synthetic.main.reallocating.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +36,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataModel
+import net.geekstools.floatshort.PRO.databinding.ReallocatingBinding
 
 class WidgetsReallocationProcess : Activity() {
 
@@ -48,17 +48,20 @@ class WidgetsReallocationProcess : Activity() {
     var REALLOCATION_COUNTER: Int = 0
     val WIDGETS_REALLOCATION_REQUEST: Int = 777
 
+    lateinit var reallocatingBinding: ReallocatingBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.reallocating)
+        reallocatingBinding = ReallocatingBinding.inflate(layoutInflater)
+        setContentView(reallocatingBinding.root)
 
         functionsClassLegacy = FunctionsClassLegacy(applicationContext)
 
         window.statusBarColor = PublicVariable.primaryColor
         window.navigationBarColor = PublicVariable.primaryColor
 
-        fullViewAllocating.setBackgroundColor(PublicVariable.primaryColor)
-        allocatingProgress.setColor(PublicVariable.primaryColorOpposite)
+        reallocatingBinding.fullViewAllocating.setBackgroundColor(PublicVariable.primaryColor)
+        reallocatingBinding.allocatingProgress.setColor(PublicVariable.primaryColorOpposite)
 
         if (getDatabasePath(PublicVariable.WIDGET_DATA_DATABASE_NAME).exists()) {
             appWidgetHost = AppWidgetHost(applicationContext, System.currentTimeMillis().toInt())
@@ -96,7 +99,7 @@ class WidgetsReallocationProcess : Activity() {
                 widgetDataInterface.close()
             }
 
-            widgetInformation.setOnClickListener {
+            reallocatingBinding.widgetInformation.setOnClickListener {
                 startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java),
                         ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
             }
@@ -146,31 +149,31 @@ class WidgetsReallocationProcess : Activity() {
             val widgetId = appWidgetHost.allocateAppWidgetId()
 
 
-            widgetInformation.setBackgroundColor(PublicVariable.colorLightDark)
-            widgetInformation.alpha = 0.77F
+            reallocatingBinding.widgetInformation.setBackgroundColor(PublicVariable.colorLightDark)
+            reallocatingBinding.widgetInformation.alpha = 0.77F
 
             val valueAnimatorScaleWidgetInformation =
                     ValueAnimator.ofInt(
-                            widgetInformation.width,
+                        reallocatingBinding.widgetInformation.width,
                             functionsClassLegacy.DpToInteger(51)
                     )
             valueAnimatorScaleWidgetInformation.duration = 1000
             valueAnimatorScaleWidgetInformation.addUpdateListener { animator ->
-                widgetInformation.layoutParams.width = (animator.animatedValue as Int)
-                widgetInformation.requestLayout()
+                reallocatingBinding.widgetInformation.layoutParams.width = (animator.animatedValue as Int)
+                reallocatingBinding.widgetInformation.requestLayout()
                 if ((animator.animatedValue as Int) < functionsClassLegacy.DpToInteger(300)) {
-                    widgetInformation.text = null
-                    widgetInformation.icon = null
+                    reallocatingBinding.widgetInformation.text = null
+                    reallocatingBinding.widgetInformation.icon = null
 
                     Handler(Looper.getMainLooper()).postDelayed({
 
-                        widgetInformation.icon = functionsClassLegacy.applicationIcon(widgetDataModel.PackageName)
+                        reallocatingBinding.widgetInformation.icon = functionsClassLegacy.applicationIcon(widgetDataModel.PackageName)
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
+                            reallocatingBinding.widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
                                     + widgetDataModel.WidgetLabel + "<br/>"
                                     + "<small>" + getString(R.string.reallocatingWidgets) + "</small>", Html.FROM_HTML_MODE_LEGACY)
                         } else {
-                            widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
+                            reallocatingBinding.widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
                                     + widgetDataModel.WidgetLabel + "<br/>"
                                     + "<small>" + getString(R.string.reallocatingWidgets) + "</small>")
                         }
@@ -191,8 +194,8 @@ class WidgetsReallocationProcess : Activity() {
                             )
                     valueAnimatorScaleWidgetInformationRevert.duration = 500
                     valueAnimatorScaleWidgetInformationRevert.addUpdateListener { animator ->
-                        widgetInformation.layoutParams.width = (animator.animatedValue as Int)
-                        widgetInformation.requestLayout()
+                        reallocatingBinding.widgetInformation.layoutParams.width = (animator.animatedValue as Int)
+                        reallocatingBinding.widgetInformation.requestLayout()
                     }
                     valueAnimatorScaleWidgetInformationRevert.start()
                     valueAnimatorScaleWidgetInformationRevert.addListener(object : Animator.AnimatorListener {
