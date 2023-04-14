@@ -155,8 +155,8 @@
     <string name="createAlias">Erstellen Sie App-Drawer-Verknüpfungen</string>
     <string name="deleteAlias">Entfernen Sie App-Drawer-Verknüpfungen</string>
     <string name="floatingFolders">Schwebende Ordner</string>
-    <string name="floatingWidget">Floating Widgets</string>
-    <string name="folderHint">Floating Folders</string>
+    <string name="floatingWidget">Schwebende Widgets</string>
+    <string name="folderHint">Schwebende Ordner</string>
     <string name="widgetHint">Floating Widgets</string>
     <string name="widgetLabelHint">Type A Widget Label</string>
     <string name="widgetPickerTitle">
@@ -171,7 +171,7 @@
     <string name="recover_widgets">Recover Floating Widgets</string>
     <string name="reallocatingWidgets"> 🔁 Reconfiguring… </string>
     <string name="reconfiguringWidgets"> Reconfiguring… </string>
-    <string name="folderDescription">Enter A Name</string>
+    <string name="folderDescription">Geben Sie einen Namen ein</string>
     <string name="colortext">Farbthema</string>
     <string name="themeTrans">Transparent Theme</string>
     <string name="blurryTitle">Verschwommenes Thema</string>
@@ -212,7 +212,7 @@
     <string name="pin_folder">Pin Folder</string>
     <string name="unpin_folder">Unpin Folder</string>
     <string name="remove_folder">Remove</string>
-    <string name="floatIt">Float It</string>
+    <string name="floatIt">Schwebe es!</string>
     <string name="splitIt">Split It</string>
     <string name="deleteText">Löschen</string>
     <string name="edit_folder">Bearbeiten:</string>
@@ -267,7 +267,7 @@
     <string name="passwordHint">Enter New Pin Password 🔑 </string>
     <string name="passwordHintRepeat">Repeat New Pin Password 🔑 </string>
     <string name="enterCurrentPassword">Geben Sie das aktuelle Passwort ein 🔑</string>
-    <string name="forgetPassword">Forgot Your Password? 🤔 </string>
+    <string name="forgetPassword">"Haben Sie Ihr Passwort vergessen? 🤔 "</string>
     <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 | Open It On This Phone 📱 </string>
     <string name="verifying">Verifying Authentication Data 🔑</string>
     <string name="floatingShortcutsSecurityService">Lassen Sie es schweben | Sicherheitsdienste</string>
