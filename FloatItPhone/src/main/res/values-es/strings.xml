@@ -16,7 +16,7 @@
     <string name="overlayPermission">Turn On Permission, Please!</string>
     <string name="bindDesc">Swipe Down To See More Options</string>
     <string name="dark">Dark</string>
-    <string name="light" translatable="false">Light</string>
+    <string name="light">Light</string>
     <string name="dynamic">Dynamic</string>
     <string name="leftEdge">Left Edge</string>
     <string name="rightEdge">Right Edge</string>
