@@ -10,9 +10,9 @@
 
 <resources>
 
-    <string name="recovery_center">Recovery Center</string>
+    <string name="recovery_center">Erholungszentrum</string>
     <string name="settingTitle">Preferences</string>
-    <string name="recoveryShortcuts">Recover Floating Shortcuts</string>
+    <string name="recoveryShortcuts">Schwimmende Verknüpfungen Wiederherstellen</string>
     <string name="overlayPermission">Berechtigung einschalten, bitte!</string>
     <string name="bindDesc">Streichen Sie nach unten, um weitere Optionen anzuzeigen.</string>
     <string name="dark">Dunkel</string>
@@ -31,7 +31,7 @@
     <string name="updating_info">Updating Applications Information</string>
     <string name="supportCategory">Support Center</string>
     <string name="supportTitle">Help &amp; Feedback</string>
-    <string name="privacyTitle">Privacy Policy</string>
+    <string name="privacyTitle">Datenschutz-Bestimmungen</string>
     <string name="deleteAccount">Konto löschen</string>
     <string name="alphaTitle">Thanks for Joining Beta Program. Always Appreciate your Feedback!</string>
     <string name="signinTitle">Welcome to Geeks Empire!</string>
@@ -39,16 +39,16 @@
     <string name="signinFinished"> ⚡ Become Master Of Multitasking ⚡ </string>
     <string name="permTitle">
         <![CDATA[
-            <b>Permissions Info</b>, Be Patient!
+            Berechtigungsinfo, Geduld!
         ]]>
     </string>
     <string name="permDesc">
         <![CDATA[
-            <b>Hi</b>&#8230; &#9786;<br/>I need your Permission to create <b>Shortcuts in Floating View</b>.
-            Please Grant permission by Enabling the Switch.<br/>
-            Also to make me Smarter Please go to Preferences, Details &amp; Practical Info to Enable <b>Smart Features</b>.<br/>
-            Press Grant to Proceed to Settings.<br/>
-            <b>Thanks!</b>
+            Hallo… ☺
+            Ich brauche Ihre Erlaubnis, um Verknüpfungen in der schwebenden Ansicht zu erstellen. Bitte erteilen Sie die Berechtigung, indem Sie den Schalter aktivieren.
+            Um mich intelligenter zu machen, gehen Sie bitte zu Einstellungen, Details und praktische Informationen, um intelligente Funktionen zu aktivieren.
+            Drücken Sie Erteilen, um mit den Einstellungen fortzufahren.
+            Danke!
         ]]>
     </string>
     <string name="split_service_desc">
@@ -99,13 +99,13 @@
     <string name="grant">Erlaubnis erteilen</string>
     <string name="agree">Einverstanden</string>
     <string name="skipNow">Not Now</string>
-    <string name="read">Read More</string>
+    <string name="read">Weiterlesen</string>
     <string name="grantFreeForm">Done</string>
     <string name="confirm">Bestätigen</string>
     <string name="support">Contact Support</string>
     <string name="ui_app">App Interface</string>
     <string name="ui_floating">Floating Interface</string>
-    <string name="pref_floating">Floating Preferences</string>
+    <string name="pref_floating">Schwebende Vorlieben</string>
     <string name="advance">Erweiterte Funktionen</string>
     <string name="wait">Please, Be Patient!</string>
     <string name="stable">Control Panel</string>
@@ -162,11 +162,11 @@
         ]]>
     </string>
     <string name="floatingHint">Schwebende Verknüpfungen</string>
-    <string name="recover_apps">Recover Floating Shortcuts</string>
-    <string name="recover_folder">Recover Floating Folders</string>
-    <string name="recover_widgets">Recover Floating Widgets</string>
-    <string name="reallocatingWidgets"> 🔁 Reconfiguring… </string>
-    <string name="reconfiguringWidgets"> Reconfiguring… </string>
+    <string name="recover_apps">Schwimmende Verknüpfungen Wiederherstellen</string>
+    <string name="recover_folder">Schwebende Ordner Wiederherstellen</string>
+    <string name="recover_widgets">Schwebende Widgets wiederherstellen</string>
+    <string name="reallocatingWidgets">" 🔁 Neukonfiguration… "</string>
+    <string name="reconfiguringWidgets">" Neukonfiguration… "</string>
     <string name="folderDescription">Geben Sie einen Namen ein</string>
     <string name="colortext">Farbthema</string>
     <string name="themeTrans">Transparent Theme</string>
@@ -194,20 +194,20 @@
     <string name="shortcuts">Floating Shortcuts</string>
     <string name="boot_warning">Alle</string>
     <string name="boot_none">Keiner</string>
-    <string name="remove_all_floatings">REMOVE ALL</string>
-    <string name="remove_all">❌ Remove All</string>
-    <string name="recover_all">✔️ Recover All</string>
+    <string name="remove_all_floatings">Alles entfernen</string>
+    <string name="remove_all">❌ Alles entfernen</string>
+    <string name="recover_all">✔️ Alles wiederherstellen</string>
     <string name="moveEdgeLeft">⬅️️ Zum Rand verschieben</string>
     <string name="moveEdgeRight">➡️️️ Zum Rand verschieben</string>
     <string name="backToScreenLeft">➡️️ Zurück zum Bildschirm</string>
     <string name="backToScreenRight">⬅️️ Zurück zum Bildschirm</string>
-    <string name="pin">Pin Shortcut</string>
+    <string name="pin">Pin-Verknüpfung</string>
     <string name="unpin">Unpin Shortcut</string>
     <string name="close">Minimiere es</string>
-    <string name="remove">Remove Shortcut</string>
-    <string name="pin_folder">Pin Folder</string>
+    <string name="remove">Verknüpfung entfernen</string>
+    <string name="pin_folder">Pin-Ordner</string>
     <string name="unpin_folder">Unpin Folder</string>
-    <string name="remove_folder">Remove</string>
+    <string name="remove_folder">Entfernen</string>
     <string name="floatIt">Schwebe es!</string>
     <string name="splitIt">Split It</string>
     <string name="deleteText">Löschen</string>
@@ -259,7 +259,7 @@
     <string name="fingerprint_not_recognized">Fingerabdruck nicht erkannt.\nversuchen Sie es erneut…</string>
     <string name="lockIt">Verschließe es 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
-    <string name="pinHint">Enter Pin Password 🔑 </string>
+    <string name="pinHint">"Geben Sie das PIN-Passwort ein 🔑 "</string>
     <string name="passwordHint">"Geben Sie das neue PIN-Passwort ein 🔑 "</string>
     <string name="passwordHintRepeat">"Wiederholen Sie das neue PIN-Passwort 🔑 "</string>
     <string name="enterCurrentPassword">Geben Sie das aktuelle Passwort ein 🔑</string>
@@ -271,9 +271,9 @@
     <!-- Finger Print -->
     <!-- Security Options -->
 
-    <string name="purchase"> Purchase 💸 </string>
+    <string name="purchase">" Kaufen 💸 "</string>
     <string name="donate">"Ein Geschenk senden 🎁 "</string>
-    <string name="purchaseFlowDisrupted">Purchase Flow Disrupted</string>
+    <string name="purchaseFlowDisrupted">Kauffluss unterbrochen</string>
 
     <string-array name="ContextMenuLock">
         <item name="1">Small</item>
