@@ -18,16 +18,16 @@
     <string name="dark">Escura</string>
     <string name="light">Light</string>
     <string name="dynamic">Dinâmica</string>
-    <string name="leftEdge">Left Edge</string>
+    <string name="leftEdge">Borda Esquerda</string>
     <string name="rightEdge">Right Edge</string>
     <string name="small">Small</string>
     <string name="medium">Medium</string>
-    <string name="large">Large</string>
+    <string name="large">Grande</string>
     <string name="addRecovery">Adicionar à recuperação.</string>
     <string name="addFolder">Nova pasta</string>
     <string name="removeRecovery">Remove From Recovery</string>
     <string name="index_item">S</string>
-    <string name="not_install">THE APP IS NOT AVAILABLE</string>
+    <string name="not_install">O APLICATIVO NÃO ESTÁ DISPONÍVEL</string>
     <string name="updating_info">Updating Applications Information</string>
     <string name="supportCategory">Support Center</string>
     <string name="supportTitle">Help &amp; Feedback</string>
@@ -102,7 +102,7 @@
     <string name="agree">Acordada</string>
     <string name="skipNow">Not Now</string>
     <string name="read">Read More</string>
-    <string name="grantFreeForm">Done</string>
+    <string name="grantFreeForm">Feita</string>
     <string name="confirm">confirme</string>
     <string name="support">Contact Support</string>
     <string name="ui_app">App Interface</string>
@@ -189,8 +189,8 @@
     <string name="circle">Círculo</string>
     <string name="square">Square</string>
     <string name="squircle">Squircle</string>
-    <string name="noshape">No Shape</string>
-    <string name="iconPack">Packages of Icons</string>
+    <string name="noshape">Sem forma</string>
+    <string name="iconPack">Pacotes de Ícones</string>
     <string name="defaultTheme">Definir tema padrão de ícones</string>
     <string name="customIconTitle">Tema de Ícones</string>
     <string name="shortcuts">Floating Shortcuts</string>
@@ -199,8 +199,8 @@
     <string name="remove_all_floatings">REMOVE ALL</string>
     <string name="remove_all">❌ Remove All</string>
     <string name="recover_all">✔️ Recover All</string>
-    <string name="moveEdgeLeft">⬅️️ Move To Edge</string>
-    <string name="moveEdgeRight">➡️️️ Move To Edge</string>
+    <string name="moveEdgeLeft">⬅️️ Mover para a borda</string>
+    <string name="moveEdgeRight">➡️️️ Mover para a borda</string>
     <string name="backToScreenLeft">➡️️️ Voltar à tela</string>
     <string name="backToScreenRight">⬅️️ Voltar à tela</string>
     <string name="pin">Pin Shortcut</string>
@@ -216,18 +216,18 @@
     <string name="edit_folder">Editar:</string>
     <string name="freeFormTitle">Flutuação Estendida</string>
     <string name="freeFormDesc">Sempre abra todos os aplicativos na visualização flutuante (FreeForm)</string>
-    <string name="liteTitle">Lite Preferences</string>
-    <string name="liteSummary">Set Preferences to Minimum for Better Performance</string>
+    <string name="liteTitle">Preferências Lite</string>
+    <string name="liteSummary">Defina as preferências como mínimo para melhor desempenho</string>
     <string name="liteDesc">
         <![CDATA[
-            Set Preferences to Minimum for Better Performance ⚡ <br/>
-            (<small>Highly Recommended for Mid-Range &amp; Low-End Smartphones</small>)
+            Defina as preferências como mínimo para melhor desempenho ⚡ <br/>
+            (<small>Altamente recomendado para smartphones de gama média e baixa</small>)
         ]]>
     </string>
-    <string name="inAppUpdateDescription">An Update Has Just Been Installed</string>
+    <string name="inAppUpdateDescription">Uma atualização acaba de ser instalada</string>
     <string name="inAppUpdateAction">
         <![CDATA[
-            Complete It!
+            Complete!
         ]]>
     </string>
 
@@ -259,7 +259,7 @@
 
     <!-- Finger Print -->
     <string name="fingerprint_not_recognized">Impressão digital não reconhecida.\ntente novamente…</string>
-    <string name="lockIt">Lock It 🔒</string>
+    <string name="lockIt">Tranque-o 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
     <string name="pinHint">Enter Pin Password 🔑 </string>
     <string name="passwordHint">Enter New Pin Password 🔑 </string>

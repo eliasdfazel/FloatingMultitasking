@@ -18,16 +18,16 @@
     <string name="dark">Dunkel</string>
     <string name="light">Light</string>
     <string name="dynamic">Dynamisch</string>
-    <string name="leftEdge">Left Edge</string>
+    <string name="leftEdge">Linke Ecke</string>
     <string name="rightEdge">Right Edge</string>
     <string name="small">Small</string>
-    <string name="medium">Medium</string>
-    <string name="large">Large</string>
+    <string name="medium">Mittel</string>
+    <string name="large">Groß</string>
     <string name="addRecovery">Zur Wiederherstellung hinzufügen.</string>
     <string name="addFolder">Neuer Ordner</string>
     <string name="removeRecovery">Remove From Recovery</string>
     <string name="index_item">S</string>
-    <string name="not_install">THE APP IS NOT AVAILABLE</string>
+    <string name="not_install">DIE APP IST NICHT VERFÜGBAR</string>
     <string name="updating_info">Updating Applications Information</string>
     <string name="supportCategory">Support Center</string>
     <string name="supportTitle">Help &amp; Feedback</string>
@@ -189,8 +189,8 @@
     <string name="circle">Kreis</string>
     <string name="square">Square</string>
     <string name="squircle">Squircle</string>
-    <string name="noshape">No Shape</string>
-    <string name="iconPack">Packages of Icons</string>
+    <string name="noshape">Keine Form</string>
+    <string name="iconPack">Pakete von Symbolen</string>
     <string name="defaultTheme">Legen Sie das Standarddesign für Symbole fest</string>
     <string name="customIconTitle">Thema Ikonen</string>
     <string name="shortcuts">Floating Shortcuts</string>
@@ -199,8 +199,8 @@
     <string name="remove_all_floatings">REMOVE ALL</string>
     <string name="remove_all">❌ Remove All</string>
     <string name="recover_all">✔️ Recover All</string>
-    <string name="moveEdgeLeft">⬅️️ Move To Edge</string>
-    <string name="moveEdgeRight">➡️️️ Move To Edge</string>
+    <string name="moveEdgeLeft">⬅️️ Zum Rand verschieben</string>
+    <string name="moveEdgeRight">➡️️️ Zum Rand verschieben</string>
     <string name="backToScreenLeft">➡️️ Zurück zum Bildschirm</string>
     <string name="backToScreenRight">⬅️️ Zurück zum Bildschirm</string>
     <string name="pin">Pin Shortcut</string>
@@ -216,18 +216,18 @@
     <string name="edit_folder">Bearbeiten:</string>
     <string name="freeFormTitle">Erweiterter Schwimmer es</string>
     <string name="freeFormDesc">Immer alle Apps in schwebender Ansicht öffnen (FreeForm)</string>
-    <string name="liteTitle">Lite Preferences</string>
-    <string name="liteSummary">Set Preferences to Minimum for Better Performance</string>
+    <string name="liteTitle">Lite-Einstellungen</string>
+    <string name="liteSummary">Setzen Sie die Einstellungen für eine bessere Leistung auf Minimum</string>
     <string name="liteDesc">
         <![CDATA[
-            Set Preferences to Minimum for Better Performance ⚡ <br/>
-            (<small>Highly Recommended for Mid-Range &amp; Low-End Smartphones</small>)
+            Setzen Sie die Einstellungen für eine bessere Leistung auf Minimum ⚡ <br/>
+            (<small>Sehr empfehlenswert für Midrange- und Low-End-Smartphones</small>)
         ]]>
     </string>
-    <string name="inAppUpdateDescription">An Update Has Just Been Installed</string>
+    <string name="inAppUpdateDescription">Ein Update wurde gerade installiert</string>
     <string name="inAppUpdateAction">
         <![CDATA[
-            Complete It!
+            Vervollständige es!
         ]]>
     </string>
 
@@ -259,7 +259,7 @@
 
     <!-- Finger Print -->
     <string name="fingerprint_not_recognized">Fingerabdruck nicht erkannt.\nversuchen Sie es erneut…</string>
-    <string name="lockIt">Lock It 🔒</string>
+    <string name="lockIt">Verschließe es 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
     <string name="pinHint">Enter Pin Password 🔑 </string>
     <string name="passwordHint">Enter New Pin Password 🔑 </string>

@@ -25,7 +25,7 @@
     <string name="app_name" translatable="false">Float It</string>
     <string name="geeksempire" translatable="false">Geeks Empire</string>
 
-    <string name="millis">Millisecond</string>
+    <string name="millis" translatable="false">Millisecond</string>
 
     <string name="shareTitle" translatable="false">
         #FloatIt To Become Master Of Multitasking ⚡
