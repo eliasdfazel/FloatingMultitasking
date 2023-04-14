@@ -17,7 +17,7 @@
     <string name="bindDesc">Streichen Sie nach unten, um weitere Optionen anzuzeigen.</string>
     <string name="dark">Dunkel</string>
     <string name="light">Light</string>
-    <string name="dynamic">Dynamic</string>
+    <string name="dynamic">Dynamisch</string>
     <string name="leftEdge">Left Edge</string>
     <string name="rightEdge">Right Edge</string>
     <string name="small">Small</string>
@@ -115,7 +115,7 @@
     <string name="stable">Control Panel</string>
     <string name="smartCategory">Smart Features</string>
     <string name="smartTitle">Intelligent Services</string>
-    <string name="floatingSearch">Floating Search</string>
+    <string name="floatingSearch">Schwimmende Suche</string>
     <string name="smartSummary">Let Me Know…</string>
     <string name="smartPermission">
         <![CDATA[
@@ -154,7 +154,7 @@
     <string name="createShortcut">Erstellen Sie Verknüpfungen zum Startbildschirm</string>
     <string name="createAlias">Erstellen Sie App-Drawer-Verknüpfungen</string>
     <string name="deleteAlias">Entfernen Sie App-Drawer-Verknüpfungen</string>
-    <string name="floatingFolders">Floating Folders</string>
+    <string name="floatingFolders">Schwebende Ordner</string>
     <string name="floatingWidget">Floating Widgets</string>
     <string name="folderHint">Floating Folders</string>
     <string name="widgetHint">Floating Widgets</string>
@@ -165,7 +165,7 @@
             <big>Press & Hold</big>
         ]]>
     </string>
-    <string name="floatingHint">Floating Shortcuts</string>
+    <string name="floatingHint">Schwebende Verknüpfungen</string>
     <string name="recover_apps">Recover Floating Shortcuts</string>
     <string name="recover_folder">Recover Floating Folders</string>
     <string name="recover_widgets">Recover Floating Widgets</string>
@@ -177,8 +177,8 @@
     <string name="blurryTitle">Verschwommenes Thema</string>
     <string name="autotrans">Schwebende Transparenz</string>
     <string name="delayPressHold">Verzögerung des Popup-Menüs</string>
-    <string name="flingSensitivityTitle">Fling Sensitivity</string>
-    <string name="flingSensitivitySummary">Throw Floating Shortcuts/Folders Around</string>
+    <string name="flingSensitivityTitle">Schling enempfindlichkeit</string>
+    <string name="flingSensitivitySummary">Werfen Sie schwebende Verknüpfungen und Ordner herum</string>
     <string name="delayPressHoldExtraInfo">Halten Sie das Symbol gedrückt, um die Verzögerung zu testen</string>
     <string name="revertDefault">Set Recommended Value</string>
     <string name="splashTitle">Floating Splash</string>
@@ -187,7 +187,7 @@
     <string name="stick">Sticky Edge</string>
     <string name="shapesTitle">Floating Shapes</string>
     <string name="shapedDesc">Set Shape to…</string>
-    <string name="droplet">Droplet</string>
+    <string name="droplet">Tröpfchen</string>
     <string name="circle">Kreis</string>
     <string name="square">Square</string>
     <string name="squircle">Squircle</string>
@@ -215,7 +215,7 @@
     <string name="floatIt">Float It</string>
     <string name="splitIt">Split It</string>
     <string name="deleteText">Löschen</string>
-    <string name="edit_folder">Edit: </string>
+    <string name="edit_folder">Bearbeiten:</string>
     <string name="freeFormTitle">Extended Float It</string>
     <string name="freeFormDesc">Always Open All Apps in Floating View (FreeForm)</string>
     <string name="liteTitle">Lite Preferences</string>
@@ -260,23 +260,23 @@
     </string>
 
     <!-- Finger Print -->
-    <string name="fingerprint_not_recognized">Fingerprint Not Recognized.\nTry Again…</string>
+    <string name="fingerprint_not_recognized">Fingerabdruck nicht erkannt.\nversuchen Sie es erneut…</string>
     <string name="lockIt">Lock It 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
     <string name="pinHint">Enter Pin Password 🔑 </string>
     <string name="passwordHint">Enter New Pin Password 🔑 </string>
     <string name="passwordHintRepeat">Repeat New Pin Password 🔑 </string>
-    <string name="enterCurrentPassword">Enter Current Password 🔑 </string>
+    <string name="enterCurrentPassword">Geben Sie das aktuelle Passwort ein 🔑</string>
     <string name="forgetPassword">Forgot Your Password? 🤔 </string>
     <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 | Open It On This Phone 📱 </string>
     <string name="verifying">Verifying Authentication Data 🔑</string>
-    <string name="floatingShortcutsSecurityService">Float It | Security Services</string>
+    <string name="floatingShortcutsSecurityService">Lassen Sie es schweben | Sicherheitsdienste</string>
     <string name="securityWarningFingerprint"> ⚠ Security Warning | Fingerprint Is Not Set ⚠ </string>
     <!-- Finger Print -->
     <!-- Security Options -->
 
     <string name="purchase"> Purchase 💸 </string>
-    <string name="donate"> Send A Gift 🎁 </string>
+    <string name="donate">"Ein Geschenk senden 🎁 "</string>
     <string name="purchaseFlowDisrupted">Purchase Flow Disrupted</string>
 
     <string-array name="ContextMenuLock">
