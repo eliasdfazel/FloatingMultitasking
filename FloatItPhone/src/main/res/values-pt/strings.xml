@@ -28,9 +28,9 @@
     <string name="removeRecovery">Remover da recuperação</string>
     <string name="index_item">S</string>
     <string name="not_install">O APLICATIVO NÃO ESTÁ DISPONÍVEL</string>
-    <string name="updating_info">Updating Applications Information</string>
-    <string name="supportCategory">Support Center</string>
-    <string name="supportTitle">Help &amp; Feedback</string>
+    <string name="updating_info">Atualizando informações de aplicativos</string>
+    <string name="supportCategory">Centro de Apoio</string>
+    <string name="supportTitle">Ajuda e feedback</string>
     <string name="privacyTitle">Política de Privacidade</string>
     <string name="deleteAccount">Deletar conta</string>
     <string name="alphaTitle">Thanks for Joining Beta Program. Always Appreciate your Feedback!</string>
@@ -52,9 +52,9 @@
         ]]>
     </string>
     <string name="split_service_desc">
-        Split Float It ᴾᴿᴼ | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)\n\n♿ How it Helps People with Disability?\nIt is difficult for people with disability to open an app Or switch between apps. I am using Accessibility Service to enter Multi-Window Mode to open two apps together.
+        Split Float It ᴾᴿᴼ | Esta permissão me dá a capacidade de criar várias janelas e abrir aplicativos em tela dividida simultaneamente (Android 7 e superior)\n\n♿ Como isso ajuda pessoas com deficiência?\nÉ difícil para pessoas com deficiência abrir um aplicativo ou alternar entre aplicativos. Estou usando o serviço de acessibilidade para entrar no modo de várias janelas para abrir dois aplicativos juntos.
     </string>
-    <string name="split_service_summary">Split Float It ᴾᴿᴼ | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)</string>
+    <string name="split_service_summary">Split Float It ᴾᴿᴼ | Esta permissão me dá a capacidade de criar várias janelas e aplicativos. Abra aplicativos em tela dividida simultaneamente (Android 7 e superior)</string>
     <string name="observeDesc">
         <![CDATA[
             Preciso que o serviço de acessibilidade seja ativado porque me permite criar o modo de várias janelas 🗔 para abrir um par de aplicativos na tela dividida simultaneamente.
@@ -102,17 +102,17 @@
     <string name="read">consulte Mais informação</string>
     <string name="grantFreeForm">Feita</string>
     <string name="confirm">confirme</string>
-    <string name="support">Contact Support</string>
-    <string name="ui_app">App Interface</string>
-    <string name="ui_floating">Floating Interface</string>
+    <string name="support">Suporte</string>
+    <string name="ui_app">Interface do aplicativo</string>
+    <string name="ui_floating">Interface flutuante</string>
     <string name="pref_floating">Preferências Flutuantes</string>
     <string name="advance">Características avançadas</string>
-    <string name="wait">Please, Be Patient!</string>
-    <string name="stable">Control Panel</string>
+    <string name="wait">Por favor, seja paciente!</string>
+    <string name="stable">Painel de controle</string>
     <string name="smartCategory">Recursos inteligentes</string>
-    <string name="smartTitle">Intelligent Services</string>
+    <string name="smartTitle">Serviços Inteligentes</string>
     <string name="floatingSearch">Pesquisa flutuante</string>
-    <string name="smartSummary">Let Me Know…</string>
+    <string name="smartSummary">Me avise...</string>
     <string name="smartPermission">
         <![CDATA[
             Esta permissão me permite obter uma lista de aplicativos usados com frequência para definir a barra rápida.
@@ -153,12 +153,12 @@
     <string name="floatingFolders">Pastas Flutuantes</string>
     <string name="floatingWidget">Widgets Flutuantes</string>
     <string name="folderHint">Pastas Flutuantes</string>
-    <string name="widgetHint">Floating Widgets</string>
-    <string name="widgetLabelHint">Type A Widget Label</string>
+    <string name="widgetHint">Widgets Flutuantes</string>
+    <string name="widgetLabelHint">Digite um rótulo de widget</string>
     <string name="widgetPickerTitle">
         <![CDATA[
-            <small>Choose Widgets To Configure</small><br/>
-            <big>Press & Hold</big>
+            <small>Escolha os widgets para configurar</small><br/>
+            <big>Pressione o botão de espera</big>
         ]]>
     </string>
     <string name="floatingHint">Atalhos Flutuantes</string>
@@ -169,7 +169,7 @@
     <string name="reconfiguringWidgets">" Reconfigurando… "</string>
     <string name="folderDescription">Insira o nome</string>
     <string name="colortext">Tema de cores</string>
-    <string name="themeTrans">Transparent Theme</string>
+    <string name="themeTrans">Tema Transparente</string>
     <string name="blurryTitle">Tema embaçado</string>
     <string name="autotrans">Flutuante Transparência</string>
     <string name="delayPressHold">Atraso do menu pop-up</string>
@@ -177,15 +177,15 @@
     <string name="flingSensitivitySummary">Jogue atalhos flutuantes e pastas ao redor</string>
     <string name="delayPressHoldExtraInfo">Pressione e segure o ícone para testar o atraso</string>
     <string name="revertDefault">Definir valor recomendado</string>
-    <string name="splashTitle">Floating Splash</string>
-    <string name="splashDesc">Waiting Screen for Opening Apps</string>
+    <string name="splashTitle">Respingo Flutuante</string>
+    <string name="splashDesc">Tela de espera para abrir aplicativos</string>
     <string name="shortsizepref">Tamanho Flutuante</string>
-    <string name="stick">Sticky Edge</string>
+    <string name="stick">Borda adesiva</string>
     <string name="shapesTitle">Formas Flutuantes</string>
     <string name="shapedDesc">Definir forma para…</string>
     <string name="droplet">Gotícula</string>
     <string name="circle">Círculo</string>
-    <string name="square">Square</string>
+    <string name="square">Quadrada</string>
     <string name="squircle">Squircle</string>
     <string name="noshape">Sem forma</string>
     <string name="iconPack">Pacotes de Ícones</string>
@@ -202,14 +202,14 @@
     <string name="backToScreenLeft">➡️️️ Voltar à tela</string>
     <string name="backToScreenRight">⬅️️ Voltar à tela</string>
     <string name="pin">Pinar Atalho</string>
-    <string name="unpin">Unpin Shortcut</string>
+    <string name="unpin">Soltar atalho</string>
     <string name="close">Minimize</string>
     <string name="remove">Remover Atalho</string>
     <string name="pin_folder">Fixar Pasta</string>
-    <string name="unpin_folder">Unpin Folder</string>
+    <string name="unpin_folder">Liberar Pasta</string>
     <string name="remove_folder">Remover</string>
     <string name="floatIt">Flutue!</string>
-    <string name="splitIt">Split It</string>
+    <string name="splitIt">dividir</string>
     <string name="deleteText">Excluir</string>
     <string name="edit_folder">Editar:</string>
     <string name="freeFormTitle">Flutuação Estendida</string>
@@ -258,14 +258,14 @@
     <!-- Finger Print -->
     <string name="fingerprint_not_recognized">Impressão digital não reconhecida.\ntente novamente…</string>
     <string name="lockIt">Tranque-o 🔒</string>
-    <string name="unLockIt">Unlock It 🔓</string>
+    <string name="unLockIt">Desbloqueie 🔓</string>
     <string name="pinHint">"Insira a senha do pino 🔑 "</string>
     <string name="passwordHint">"Insira a nova senha PIN 🔑 "</string>
     <string name="passwordHintRepeat">"Repita a nova senha PIN 🔑 "</string>
     <string name="enterCurrentPassword">Digite a senha atual 🔑</string>
     <string name="forgetPassword">"Esqueceu sua senha? 🤔 "</string>
     <string name="passwordResetSent">E-mail para redefinir a senha do PIN enviado 📩 | Abra neste telefone 📱</string>
-    <string name="verifying">Verifying Authentication Data 🔑</string>
+    <string name="verifying">Verificando Dados Autenticados 🔑</string>
     <string name="floatingShortcutsSecurityService">Flutue | Serviços de segurança</string>
     <string name="securityWarningFingerprint">⚠ Aviso de Segurança | A impressão digital não está definida ⚠</string>
     <!-- Finger Print -->

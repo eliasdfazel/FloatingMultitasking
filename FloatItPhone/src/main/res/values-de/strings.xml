@@ -28,9 +28,9 @@
     <string name="removeRecovery">Aus Wiederherstellung entfernen</string>
     <string name="index_item">S</string>
     <string name="not_install">DIE APP IST NICHT VERFÜGBAR</string>
-    <string name="updating_info">Updating Applications Information</string>
-    <string name="supportCategory">Support Center</string>
-    <string name="supportTitle">Help &amp; Feedback</string>
+    <string name="updating_info">Aktualisieren von Anwendungsinformationen</string>
+    <string name="supportCategory">Hilfecenter</string>
+    <string name="supportTitle">Hilfe und Feedback</string>
     <string name="privacyTitle">Datenschutz-Bestimmungen</string>
     <string name="deleteAccount">Konto löschen</string>
     <string name="alphaTitle">Thanks for Joining Beta Program. Always Appreciate your Feedback!</string>
@@ -52,9 +52,9 @@
         ]]>
     </string>
     <string name="split_service_desc">
-        Split Float It ᴾᴿᴼ | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)\n\n♿ How it Helps People with Disability?\nIt is difficult for people with disability to open an app Or switch between apps. I am using Accessibility Service to enter Multi-Window Mode to open two apps together.
+        Split Float It ᴾᴿᴼ | Diese Berechtigung gibt mir die Möglichkeit, mehrere Fenster zu erstellen und Apps gleichzeitig im geteilten Bildschirm zu öffnen (Android 7 und höher).\n\n♿ Wie hilft es Menschen mit Behinderungen?\nEs ist schwierig für Menschen mit Behinderungen, eine App zu öffnen oder zu wechseln zwischen Anwendungen. Ich verwende den Accessibility Service, um in den Multi-Window-Modus zu wechseln und zwei Apps zusammen zu öffnen.
     </string>
-    <string name="split_service_summary">Split Float It ᴾᴿᴼ | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)</string>
+    <string name="split_service_summary">Split Float It ᴾᴿᴼ | Diese Berechtigung gibt mir die Möglichkeit, Multi-Window &amp; Apps gleichzeitig im geteilten Bildschirm öffnen (Android 7 und höher)</string>
     <string name="observeDesc">
         <![CDATA[
             Ich muss den Barrierefreiheitsdienst aktivieren, da er mir erlaubt, den Multi-Window-Modus zu erstellen 🗔 Zum gleichzeitigen Öffnen von Anwendungspaaren im geteilten Bildschirm.
@@ -102,17 +102,17 @@
     <string name="read">Weiterlesen</string>
     <string name="grantFreeForm">Done</string>
     <string name="confirm">Bestätigen</string>
-    <string name="support">Contact Support</string>
-    <string name="ui_app">App Interface</string>
-    <string name="ui_floating">Floating Interface</string>
+    <string name="support">Kontaktieren Sie Support</string>
+    <string name="ui_app">App-Schnittstelle</string>
+    <string name="ui_floating">Schwimmende Schnittstelle</string>
     <string name="pref_floating">Schwebende Vorlieben</string>
     <string name="advance">Erweiterte Funktionen</string>
-    <string name="wait">Please, Be Patient!</string>
-    <string name="stable">Control Panel</string>
+    <string name="wait">Bitte haben Sie Geduld!</string>
+    <string name="stable">Schalttafel</string>
     <string name="smartCategory">Intelligente Funktionen</string>
-    <string name="smartTitle">Intelligent Services</string>
+    <string name="smartTitle">Intelligente Dienste</string>
     <string name="floatingSearch">Schwimmende Suche</string>
-    <string name="smartSummary">Let Me Know…</string>
+    <string name="smartSummary">Gib mir Bescheid…</string>
     <string name="smartPermission">
         <![CDATA[
             Diese Berechtigung ermöglicht es mir, eine Liste häufig verwendeter Anwendungen zum Festlegen der Schnellleiste zu erhalten.
@@ -153,12 +153,12 @@
     <string name="floatingFolders">Schwebende Ordner</string>
     <string name="floatingWidget">Schwebende Widgets</string>
     <string name="folderHint">Schwebende Ordner</string>
-    <string name="widgetHint">Floating Widgets</string>
-    <string name="widgetLabelHint">Type A Widget Label</string>
+    <string name="widgetHint">Schwebende Widgets</string>
+    <string name="widgetLabelHint">Geben Sie ein Widget-Label ein</string>
     <string name="widgetPickerTitle">
         <![CDATA[
-            <small>Choose Widgets To Configure</small><br/>
-            <big>Press & Hold</big>
+            <small>Wählen Sie Zu konfigurierende Widgets</small><br/>
+            <big>Drücken und halten</big>
         ]]>
     </string>
     <string name="floatingHint">Schwebende Verknüpfungen</string>
@@ -169,7 +169,7 @@
     <string name="reconfiguringWidgets">" Neukonfiguration… "</string>
     <string name="folderDescription">Geben Sie einen Namen ein</string>
     <string name="colortext">Farbthema</string>
-    <string name="themeTrans">Transparent Theme</string>
+    <string name="themeTrans">Transparentes Thema</string>
     <string name="blurryTitle">Verschwommenes Thema</string>
     <string name="autotrans">Schwebende Transparenz</string>
     <string name="delayPressHold">Verzögerung des Popup-Menüs</string>
@@ -177,15 +177,15 @@
     <string name="flingSensitivitySummary">Werfen Sie schwebende Verknüpfungen und Ordner herum</string>
     <string name="delayPressHoldExtraInfo">Halten Sie das Symbol gedrückt, um die Verzögerung zu testen</string>
     <string name="revertDefault">Empfohlenen Wert festlegen</string>
-    <string name="splashTitle">Floating Splash</string>
-    <string name="splashDesc">Waiting Screen for Opening Apps</string>
+    <string name="splashTitle">Schwimmendes Spritzen</string>
+    <string name="splashDesc">Wartebildschirm zum Öffnen von Apps</string>
     <string name="shortsizepref">Schwebende Größe</string>
-    <string name="stick">Sticky Edge</string>
+    <string name="stick">Klebriger Rand</string>
     <string name="shapesTitle">Schwebende Formen</string>
     <string name="shapedDesc">Form einstellen auf…</string>
     <string name="droplet">Tröpfchen</string>
     <string name="circle">Kreis</string>
-    <string name="square">Square</string>
+    <string name="square">Quadrat</string>
     <string name="squircle">Squircle</string>
     <string name="noshape">Keine Form</string>
     <string name="iconPack">Pakete von Symbolen</string>
@@ -202,14 +202,14 @@
     <string name="backToScreenLeft">➡️️ Zurück zum Bildschirm</string>
     <string name="backToScreenRight">⬅️️ Zurück zum Bildschirm</string>
     <string name="pin">Pin-Verknüpfung</string>
-    <string name="unpin">Unpin Shortcut</string>
+    <string name="unpin">Verknüpfung lösen</string>
     <string name="close">Minimiere es</string>
     <string name="remove">Verknüpfung entfernen</string>
     <string name="pin_folder">Pin-Ordner</string>
-    <string name="unpin_folder">Unpin Folder</string>
+    <string name="unpin_folder">Ordner lösen</string>
     <string name="remove_folder">Entfernen</string>
     <string name="floatIt">Schwebe es!</string>
-    <string name="splitIt">Split It</string>
+    <string name="splitIt">Teile es auf</string>
     <string name="deleteText">Löschen</string>
     <string name="edit_folder">Bearbeiten:</string>
     <string name="freeFormTitle">Erweiterter Schwimmer es</string>
@@ -258,14 +258,14 @@
     <!-- Finger Print -->
     <string name="fingerprint_not_recognized">Fingerabdruck nicht erkannt.\nversuchen Sie es erneut…</string>
     <string name="lockIt">Verschließe es 🔒</string>
-    <string name="unLockIt">Unlock It 🔓</string>
+    <string name="unLockIt">Schalte es frei 🔓</string>
     <string name="pinHint">"Geben Sie das PIN-Passwort ein 🔑 "</string>
     <string name="passwordHint">"Geben Sie das neue PIN-Passwort ein 🔑 "</string>
     <string name="passwordHintRepeat">"Wiederholen Sie das neue PIN-Passwort 🔑 "</string>
     <string name="enterCurrentPassword">Geben Sie das aktuelle Passwort ein 🔑</string>
     <string name="forgetPassword">"Haben Sie Ihr Passwort vergessen? 🤔 "</string>
     <string name="passwordResetSent">"E-Mail zum Zurücksetzen des PIN-Passworts gesendet 📩 | Öffnen Sie es auf diesem Telefon 📱 "</string>
-    <string name="verifying">Verifying Authentication Data 🔑</string>
+    <string name="verifying">Verifizieren authentifizierter Daten 🔑</string>
     <string name="floatingShortcutsSecurityService">Lassen Sie es schweben | Sicherheitsdienste</string>
     <string name="securityWarningFingerprint">⚠ Sicherheitswarnung | Fingerabdruck ist nicht eingestellt ⚠</string>
     <!-- Finger Print -->
