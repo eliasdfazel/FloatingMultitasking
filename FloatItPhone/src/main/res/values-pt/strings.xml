@@ -264,7 +264,7 @@
     <string name="passwordHintRepeat">"Repita a nova senha PIN 🔑 "</string>
     <string name="enterCurrentPassword">Digite a senha atual 🔑</string>
     <string name="forgetPassword">"Esqueceu sua senha? 🤔 "</string>
-    <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 | Open It On This Phone 📱 </string>
+    <string name="passwordResetSent">E-mail para redefinir a senha do PIN enviado 📩 | Abra neste telefone 📱</string>
     <string name="verifying">Verifying Authentication Data 🔑</string>
     <string name="floatingShortcutsSecurityService">Flutue | Serviços de segurança</string>
     <string name="securityWarningFingerprint"> ⚠ Security Warning | Fingerprint Is Not Set ⚠ </string>
