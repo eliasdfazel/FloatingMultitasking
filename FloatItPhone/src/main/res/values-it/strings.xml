@@ -52,7 +52,7 @@
         ]]>
     </string>
     <string name="split_service_desc">
-        Split Float It | Questa autorizzazione mi dà la possibilità di creare Multi-Window &amp; Apri contemporaneamente app in schermo diviso (Android 7 e versioni successive)\n\n♿ In che modo aiuta le persone con disabilità?\nÈ difficile per le persone con disabilità aprire un'app o passare da un'app all'altra. Sto utilizzando il servizio di accessibilità per accedere alla modalità multi-finestra per aprire due app insieme.
+        Split Float It | Questa autorizzazione mi dà la possibilità di creare Multi-Window &amp; Apri contemporaneamente app in schermo diviso (Android 7 e versioni successive)\n\n♿ In che modo aiuta le persone con disabilità?\nÈ difficile per le persone con disabilità aprire un\'app o passare da un\'app all\'altra. Sto utilizzando il servizio di accessibilità per accedere alla modalità multi-finestra per aprire due app insieme.
     </string>
     <string name="split_service_summary">Split Float It | Questa autorizzazione mi dà la possibilità di creare multi-finestra e amp; Apri simultaneamente le app in schermo diviso (Android 7 e versioni successive)</string>
     <string name="observeDesc">
@@ -64,7 +64,7 @@
                 <br/>(<b>È compatibile con Android 7.0 e versioni successive</b>)
                 <br/><br/><br/><br/><br/>
                 ♿ <small><b>Come aiuta le persone con disabilità</b>?<br/>
-                È difficile per le persone con disabilità aprire un'app o passare da un'app all'altra.<br/>
+                È difficile per le persone con disabilità aprire un\'app o passare da un\'app all\'altra.<br/>
                 Quindi, sto utilizzando il servizio di accessibilità per creare la modalità multi-finestra per aprire due app insieme.<br/></small>
         ]]>
     </string>
@@ -184,7 +184,7 @@
     <string name="shortsizepref">Dimensione galleggiante</string>
     <string name="stick">Bordo appiccicoso</string>
     <string name="shapesTitle">Forme fluttuanti</string>
-    <string name="shapedDesc">Imposta Forma su...</string>
+    <string name="shapedDesc">Imposta Forma su…</string>
     <string name="droplet">Gocciolina</string>
     <string name="circle">Cerchio</string>
     <string name="square">Piazza</string>
