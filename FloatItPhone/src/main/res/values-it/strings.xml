@@ -14,10 +14,10 @@
     <string name="settingTitle">Preferences</string>
     <string name="recoveryShortcuts">Recover Floating Shortcuts</string>
     <string name="overlayPermission">Turn On Permission, Please!</string>
-    <string name="bindDesc">Swipe Down To See More Options</string>
-    <string name="dark">Dark</string>
+    <string name="bindDesc">Scorri verso il basso per visualizzare altre opzioni</string>
+    <string name="dark">Buia</string>
     <string name="light" translatable="false">Light</string>
-    <string name="dynamic">Dynamic</string>
+    <string name="dynamic">Dinamica</string>
     <string name="leftEdge">Left Edge</string>
     <string name="rightEdge">Right Edge</string>
     <string name="small">Small</string>
@@ -32,7 +32,7 @@
     <string name="supportCategory">Support Center</string>
     <string name="supportTitle">Help &amp; Feedback</string>
     <string name="privacyTitle">Privacy Policy</string>
-    <string name="deleteAccount">Delete Account</string>
+    <string name="deleteAccount">Eliminare l\'account</string>
     <string name="alphaTitle">Thanks for Joining Beta Program. Always Appreciate your Feedback!</string>
     <string name="signinTitle">Welcome to Geeks Empire!</string>
     <string name="signinMessage">Thanks for Joining to Our #FloatIt 🎈 Community.</string>
@@ -98,12 +98,12 @@
     </string>
     <string name="retry">Retry Now</string>
     <string name="observeSum">Android 7.0 (Nougat) +</string>
-    <string name="grant">Grant Permission</string>
+    <string name="grant">Concedere l\'autorizzazione</string>
     <string name="agree">Concordata</string>
     <string name="skipNow">Not Now</string>
     <string name="read">Read More</string>
-    <string name="grantFreeForm">Done</string>
-    <string name="confirm">Confirm</string>
+    <string name="grantFreeForm">Fatto</string>
+    <string name="confirm">Confermare</string>
     <string name="support">Contact Support</string>
     <string name="ui_app">App Interface</string>
     <string name="ui_floating">Floating Interface</string>
@@ -113,7 +113,7 @@
     <string name="stable">Control Panel</string>
     <string name="smartCategory">Smart Features</string>
     <string name="smartTitle">Intelligent Services</string>
-    <string name="floatingSearch">Floating Search</string>
+    <string name="floatingSearch">Ricerca fluttuante</string>
     <string name="smartSummary">Let Me Know…</string>
     <string name="smartPermission">
         <![CDATA[
@@ -126,14 +126,14 @@
         ]]>
     </string>
     <string name="observeTitle">Interactions Observer</string>
-    <string name="boot">Remote Recovery</string>
+    <string name="boot">Recupero remoto</string>
     <string name="bootPermission">
         <![CDATA[
             <br/>
-            <big>Recover Floating Shortcuts/Folders When</big>…<br/>
-            1. <b>Saying \'🆗 Google Open Float It\'</b><br/>
-            2. <b>Using Popup AppShortcuts</b> | Press & Hold ⏺ on App Shortcut on Home Screen (Android 7.1.1 & Higher)<br/>
-            3. <b>Turning On 🔄 your Device</b><br/>
+            <big>Recupera scorciatoie e cartelle mobili quando</big>…<br/>
+            1. <b>Dire \'🆗 Google Open Float It\'</b><br/>
+            2. <b>Utilizzo delle scorciatoie delle app pop-up</b> | Press and Hold on App Shortcut on Home Screen (Android 7.1.1 & Higher)<br/>
+            3. <b>Accendere il dispositivo</b><br/>
             <br/>
         ]]>
     </string>
@@ -149,12 +149,12 @@
             <br/>
         ]]>
     </string>
-    <string name="createShortcut">Create Home Screen Shortcuts</string>
-    <string name="createAlias">Create App Drawer Shortcuts</string>
-    <string name="deleteAlias">Remove App Drawer Shortcuts</string>
-    <string name="floatingFolders">Floating Folders</string>
-    <string name="floatingWidget">Floating Widgets</string>
-    <string name="folderHint">Floating Folders</string>
+    <string name="createShortcut">Crea scorciatoie per la schermata iniziale</string>
+    <string name="createAlias">Crea collegamenti al cassetto delle app</string>
+    <string name="deleteAlias">Rimuovi le scorciatoie dal cassetto delle app</string>
+    <string name="floatingFolders">Cartelle mobili</string>
+    <string name="floatingWidget">Widget mobili</string>
+    <string name="folderHint">Cartelle mobili</string>
     <string name="widgetHint">Floating Widgets</string>
     <string name="widgetLabelHint">Type A Widget Label</string>
     <string name="widgetPickerTitle">
@@ -163,21 +163,21 @@
             <big>Press & Hold</big>
         ]]>
     </string>
-    <string name="floatingHint">Floating Shortcuts</string>
+    <string name="floatingHint">Scorciatoie fluttuanti</string>
     <string name="recover_apps">Recover Floating Shortcuts</string>
     <string name="recover_folder">Recover Floating Folders</string>
     <string name="recover_widgets">Recover Floating Widgets</string>
     <string name="reallocatingWidgets"> 🔁 Reconfiguring… </string>
     <string name="reconfiguringWidgets"> Reconfiguring… </string>
-    <string name="folderDescription">Enter A Name</string>
-    <string name="colortext">Color Theme</string>
+    <string name="folderDescription">Inserisci un nome</string>
+    <string name="colortext">Tema di colore</string>
     <string name="themeTrans">Transparent Theme</string>
-    <string name="blurryTitle">Blurry Theme</string>
-    <string name="autotrans">Floating Transparency</string>
-    <string name="delayPressHold">Popup Menu Delay</string>
-    <string name="flingSensitivityTitle">Fling Sensitivity</string>
-    <string name="flingSensitivitySummary">Throw Floating Shortcuts/Folders Around</string>
-    <string name="delayPressHoldExtraInfo">Press &amp; Hold on Icon to Test the Delay</string>
+    <string name="blurryTitle">Tema sfocato</string>
+    <string name="autotrans">Trasparenza fluttuante</string>
+    <string name="delayPressHold">Ritardo del menu a comparsa</string>
+    <string name="flingSensitivityTitle">Sensibilità al lancio</string>
+    <string name="flingSensitivitySummary">Getta scorciatoie / cartelle mobili in giro</string>
+    <string name="delayPressHoldExtraInfo">Tenere premuto sull\'icona per testare il ritardo</string>
     <string name="revertDefault">Set Recommended Value</string>
     <string name="splashTitle">Floating Splash</string>
     <string name="splashDesc">Waiting Screen for Opening Apps</string>
@@ -185,37 +185,37 @@
     <string name="stick">Sticky Edge</string>
     <string name="shapesTitle">Floating Shapes</string>
     <string name="shapedDesc">Set Shape to…</string>
-    <string name="droplet">Droplet</string>
-    <string name="circle">Circle</string>
+    <string name="droplet">Gocciolina</string>
+    <string name="circle">Cerchio</string>
     <string name="square">Square</string>
     <string name="squircle">Squircle</string>
     <string name="noshape">No Shape</string>
-    <string name="iconPack">Packages of Icons</string>
-    <string name="defaultTheme">Set Default Theme of Icons</string>
-    <string name="customIconTitle">Theme of Icons</string>
+    <string name="iconPack">Pacchetti di icone</string>
+    <string name="defaultTheme">Imposta il tema predefinito delle icone</string>
+    <string name="customIconTitle">Tema delle icone</string>
     <string name="shortcuts">Floating Shortcuts</string>
-    <string name="boot_warning">All</string>
-    <string name="boot_none">None</string>
+    <string name="boot_warning">Tutto</string>
+    <string name="boot_none">Nessuno</string>
     <string name="remove_all_floatings">REMOVE ALL</string>
     <string name="remove_all">❌ Remove All</string>
     <string name="recover_all">✔️ Recover All</string>
     <string name="moveEdgeLeft">⬅️️ Move To Edge</string>
     <string name="moveEdgeRight">➡️️️ Move To Edge</string>
-    <string name="backToScreenLeft">➡️️️ Back To Screen</string>
-    <string name="backToScreenRight">⬅️️ Back To Screen️</string>
+    <string name="backToScreenLeft">➡️️️ Torna allo schermo</string>
+    <string name="backToScreenRight">⬅️️️️ Torna allo schermo</string>
     <string name="pin">Pin Shortcut</string>
     <string name="unpin">Unpin Shortcut</string>
-    <string name="close">Minimize It</string>
+    <string name="close">Riducilo al minimo</string>
     <string name="remove">Remove Shortcut</string>
     <string name="pin_folder">Pin Folder</string>
     <string name="unpin_folder">Unpin Folder</string>
     <string name="remove_folder">Remove</string>
     <string name="floatIt">Float It</string>
     <string name="splitIt">Split It</string>
-    <string name="deleteText">Delete</string>
-    <string name="edit_folder">Edit: </string>
-    <string name="freeFormTitle">Extended Float It</string>
-    <string name="freeFormDesc">Always Open All Apps in Floating View (FreeForm)</string>
+    <string name="deleteText">Eliminare</string>
+    <string name="edit_folder">Modificare:</string>
+    <string name="freeFormTitle">Float It Esteso</string>
+    <string name="freeFormDesc">Apri sempre tutte le app in visualizzazione mobile (FreeForm)</string>
     <string name="liteTitle">Lite Preferences</string>
     <string name="liteSummary">Set Preferences to Minimum for Better Performance</string>
     <string name="liteDesc">
@@ -227,7 +227,7 @@
     <string name="inAppUpdateDescription">An Update Has Just Been Installed</string>
     <string name="inAppUpdateAction">
         <![CDATA[
-            Complete It!
+            Completalo!
         ]]>
     </string>
 
@@ -246,8 +246,8 @@
 
     <!-- Security Options -->
     <string name="securityServices">Security Services</string>
-    <string name="changePin">Pin Password</string>
-    <string name="changePinSummary">Create Or Edit Pin Password</string>
+    <string name="changePin">Fissa la password</string>
+    <string name="changePinSummary">Crea o modifica la password del pin</string>
     <string name="passwordError">Password Error ⚠</string>
     <string name="authenticationProcessInvoked">
         <![CDATA[
@@ -258,23 +258,23 @@
     </string>
 
     <!-- Finger Print -->
-    <string name="fingerprint_not_recognized">Fingerprint Not Recognized.\nTry Again…</string>
+    <string name="fingerprint_not_recognized">Impronta digitale non riconosciuta.\nRiprova…</string>
     <string name="lockIt">Lock It 🔒</string>
     <string name="unLockIt">Unlock It 🔓</string>
     <string name="pinHint">Enter Pin Password 🔑 </string>
     <string name="passwordHint">Enter New Pin Password 🔑 </string>
     <string name="passwordHintRepeat">Repeat New Pin Password 🔑 </string>
-    <string name="enterCurrentPassword">Enter Current Password 🔑 </string>
-    <string name="forgetPassword">Forgot Your Password? 🤔 </string>
+    <string name="enterCurrentPassword">Inserisci la password attuale 🔑</string>
+    <string name="forgetPassword">"Hai dimenticato la password? 🤔 "</string>
     <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 | Open It On This Phone 📱 </string>
     <string name="verifying">Verifying Authenticated Data 🔑</string>
-    <string name="floatingShortcutsSecurityService">Float It | Security Services</string>
+    <string name="floatingShortcutsSecurityService">Float It | Servizi di sicurezza</string>
     <string name="securityWarningFingerprint"> ⚠ Security Warning | Fingerprint Is Not Set ⚠ </string>
     <!-- Finger Print -->
     <!-- Security Options -->
 
     <string name="purchase"> Purchase 💸 </string>
-    <string name="donate"> Send A Gift 🎁 </string>
+    <string name="donate">"Invia un regalo 🎁 "</string>
     <string name="purchaseFlowDisrupted">Purchase Flow Disrupted</string>
 
     <string-array name="ContextMenuLock">
