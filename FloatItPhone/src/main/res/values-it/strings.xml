@@ -23,8 +23,8 @@
     <string name="small">Small</string>
     <string name="medium">Medium</string>
     <string name="large">Large</string>
-    <string name="addRecovery">Add To Recovery</string>
-    <string name="addFolder">New Folder</string>
+    <string name="addRecovery">Aggiungi al recupero</string>
+    <string name="addFolder">Nuova cartella</string>
     <string name="removeRecovery">Remove From Recovery</string>
     <string name="index_item">S</string>
     <string name="not_install">THE APP IS NOT AVAILABLE</string>
@@ -99,7 +99,7 @@
     <string name="retry">Retry Now</string>
     <string name="observeSum">Android 7.0 (Nougat) +</string>
     <string name="grant">Grant Permission</string>
-    <string name="agree">Agreed</string>
+    <string name="agree">Concordata</string>
     <string name="skipNow">Not Now</string>
     <string name="read">Read More</string>
     <string name="grantFreeForm">Done</string>
@@ -108,7 +108,7 @@
     <string name="ui_app">App Interface</string>
     <string name="ui_floating">Floating Interface</string>
     <string name="pref_floating">Floating Preferences</string>
-    <string name="advance">Advanced Features</string>
+    <string name="advance">Funzionalità avanzate</string>
     <string name="wait">Please, Be Patient!</string>
     <string name="stable">Control Panel</string>
     <string name="smartCategory">Smart Features</string>
@@ -251,9 +251,9 @@
     <string name="passwordError">Password Error ⚠</string>
     <string name="authenticationProcessInvoked">
         <![CDATA[
-            Authentication Process Has Invoked
+            Il processo di autenticazione è stato richiamato
             <br/>
-            First Authenticate <b>%1$s</b>
+            Prima autenticazione <b>%1$s</b>
         ]]>
     </string>
 
