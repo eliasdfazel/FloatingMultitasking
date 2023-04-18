@@ -44,26 +44,26 @@
     </string>
     <string name="permDesc">
         <![CDATA[
-            Hola… ☺
-            Necesito su permiso para crear accesos directos en vista flotante. Conceda permiso habilitando el conmutador.
-            También para hacerme más inteligente, vaya a Preferencias, Detalles e Información práctica para habilitar las funciones inteligentes.
+            Hola… ☺ <br/>
+            Necesito su permiso para crear accesos directos en vista flotante. Conceda permiso habilitando el conmutador.<br/>
+            También para hacerme más inteligente, vaya a Preferencias, Detalles e Información práctica para habilitar las funciones inteligentes.<br/>
             Presione Grant para continuar con la configuración.
             ¡Gracias!
         ]]>
     </string>
     <string name="split_service_desc">
-        Split Float It ᴾᴿᴼ | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)\n\n♿ How it Helps People with Disability?\nIt is difficult for people with disability to open an app Or switch between apps. I am using Accessibility Service to enter Multi-Window Mode to open two apps together.
+        Split Float It | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)\n\n♿ How it Helps People with Disability?\nIt is difficult for people with disability to open an app Or switch between apps. I am using Accessibility Service to enter Multi-Window Mode to open two apps together.
     </string>
     <string name="split_service_summary">Split Float It | Este permiso me da la capacidad de crear múltiples ventanas &amp; Abrir aplicaciones en pantalla dividida simultáneamente (Android 7 y superior)</string>
     <string name="observeDesc">
         <![CDATA[
-            Necesito que el servicio de accesibilidad esté habilitado porque me permite crear un modo de ventana múltiple 🗔 para abrir un par de aplicaciones en pantalla dividida simultáneamente.
-            El propósito principal de solicitar este permiso es abrir dos aplicaciones juntas para aumentar la productividad y la multitarea.
-            ⚠ Sin datos leídos o recopilados ⚠
+            Necesito que el servicio de accesibilidad esté habilitado porque me permite crear un modo de ventana múltiple 🗔 para abrir un par de aplicaciones en pantalla dividida simultáneamente.<br/>
+            El propósito principal de solicitar este permiso es abrir dos aplicaciones juntas para aumentar la productividad y la multitarea.<br/>
+            ⚠ Sin datos leídos o recopilados ⚠<br/>
             (Es compatible con Android 7.0 y superior)
             <br/><br/><br/><br/><br/>
-            ♿ ¿Cómo ayuda a las personas con discapacidad?
-            Es difícil para las personas con discapacidad abrir una aplicación o cambiar entre aplicaciones.
+            ♿ ¿Cómo ayuda a las personas con discapacidad?<br/>
+            Es difícil para las personas con discapacidad abrir una aplicación o cambiar entre aplicaciones.<br/>
             Entonces, estoy usando el servicio de accesibilidad para crear un modo de ventanas múltiples para abrir dos aplicaciones juntas.
         ]]>
     </string>

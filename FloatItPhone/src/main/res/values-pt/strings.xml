@@ -44,26 +44,26 @@
     </string>
     <string name="permDesc">
         <![CDATA[
-            Oi… ☺
-            Preciso da sua permissão para criar atalhos na visualização flutuante. Conceda permissão ativando o switch.
-            Além disso, para me tornar mais inteligente, vá para Preferências, detalhes e informações práticas para ativar os recursos inteligentes.
-            Pressione Conceder para prosseguir para as configurações.
+            Oi… ☺ <br/>
+            Preciso da sua permissão para criar atalhos na visualização flutuante. Conceda permissão ativando o switch.<br/>
+            Além disso, para me tornar mais inteligente, vá para Preferências, detalhes e informações práticas para ativar os recursos inteligentes.<br/>
+            Pressione Conceder para prosseguir para as configurações.<br/>
             Obrigado!
         ]]>
     </string>
     <string name="split_service_desc">
-        Split Float It ᴾᴿᴼ | Esta permissão me dá a capacidade de criar várias janelas e abrir aplicativos em tela dividida simultaneamente (Android 7 e superior)\n\n♿ Como isso ajuda pessoas com deficiência?\nÉ difícil para pessoas com deficiência abrir um aplicativo ou alternar entre aplicativos. Estou usando o serviço de acessibilidade para entrar no modo de várias janelas para abrir dois aplicativos juntos.
+        Split Float It | Esta permissão me dá a capacidade de criar várias janelas e abrir aplicativos em tela dividida simultaneamente (Android 7 e superior)\n\n♿ Como isso ajuda pessoas com deficiência?\nÉ difícil para pessoas com deficiência abrir um aplicativo ou alternar entre aplicativos. Estou usando o serviço de acessibilidade para entrar no modo de várias janelas para abrir dois aplicativos juntos.
     </string>
     <string name="split_service_summary">Split Float It | Esta permissão me dá a capacidade de criar várias janelas e aplicativos. Abra aplicativos em tela dividida simultaneamente (Android 7 e superior)</string>
     <string name="observeDesc">
         <![CDATA[
-            Preciso que o serviço de acessibilidade seja ativado porque me permite criar o modo de várias janelas 🗔 para abrir um par de aplicativos na tela dividida simultaneamente.
-            O principal objetivo de exigir essa permissão é abrir dois aplicativos juntos para aumentar a produtividade e a multitarefa.
-            ⚠ Nenhum dado lido ou coletado ⚠
+            Preciso que o serviço de acessibilidade seja ativado porque me permite criar o modo de várias janelas 🗔 para abrir um par de aplicativos na tela dividida simultaneamente.<br/>
+            O principal objetivo de exigir essa permissão é abrir dois aplicativos juntos para aumentar a produtividade e a multitarefa.<br/>
+            ⚠ Nenhum dado lido ou coletado ⚠<br/>
             (É compatível com Android 7.0 e superior)
             <br/><br/><br/><br/><br/>
-            ♿ Como isso ajuda as pessoas com deficiência?
-            É difícil para pessoas com deficiência abrir um aplicativo ou alternar entre aplicativos.
+            ♿ Como isso ajuda as pessoas com deficiência?<br/>
+            É difícil para pessoas com deficiência abrir um aplicativo ou alternar entre aplicativos.<br/>
             Então, estou usando o serviço de acessibilidade para criar o modo de várias janelas para abrir dois aplicativos juntos.
         ]]>
     </string>
@@ -115,10 +115,10 @@
     <string name="smartPermission">
         <![CDATA[
             Esta permissão me permite obter uma lista de aplicativos usados com frequência para definir a barra rápida.
-
-            Além disso, é essencial para
-            1. 🔄 Recuperação remota de atalhos/pastas flutuantes para reconhecer comandos…
-            2. 🆗 Google! Abrir flutuar
+            <br/>
+            Além disso, é essencial para<br/>
+            1. 🔄 Recuperação remota de atalhos/pastas flutuantes para reconhecer comandos…<br/>
+            2. 🆗 Google! Abrir flutuar<br/>
             3. 🕐 Otimizando Floating Splash
         ]]>
     </string>

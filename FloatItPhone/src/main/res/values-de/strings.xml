@@ -44,26 +44,26 @@
     </string>
     <string name="permDesc">
         <![CDATA[
-            Hallo… ☺
-            Ich brauche Ihre Erlaubnis, um Verknüpfungen in der schwebenden Ansicht zu erstellen. Bitte erteilen Sie die Berechtigung, indem Sie den Schalter aktivieren.
-            Um mich intelligenter zu machen, gehen Sie bitte zu Einstellungen, Details und praktische Informationen, um intelligente Funktionen zu aktivieren.
-            Drücken Sie Erteilen, um mit den Einstellungen fortzufahren.
+            Hallo… ☺ <br/>
+            Ich brauche Ihre Erlaubnis, um Verknüpfungen in der schwebenden Ansicht zu erstellen. Bitte erteilen Sie die Berechtigung, indem Sie den Schalter aktivieren.<br/>
+            Um mich intelligenter zu machen, gehen Sie bitte zu Einstellungen, Details und praktische Informationen, um intelligente Funktionen zu aktivieren.<br/>
+            Drücken Sie Erteilen, um mit den Einstellungen fortzufahren.<br/>
             Danke!
         ]]>
     </string>
     <string name="split_service_desc">
-        Split Float It ᴾᴿᴼ | Diese Berechtigung gibt mir die Möglichkeit, mehrere Fenster zu erstellen und Apps gleichzeitig im geteilten Bildschirm zu öffnen (Android 7 und höher).\n\n♿ Wie hilft es Menschen mit Behinderungen?\nEs ist schwierig für Menschen mit Behinderungen, eine App zu öffnen oder zu wechseln zwischen Anwendungen. Ich verwende den Accessibility Service, um in den Multi-Window-Modus zu wechseln und zwei Apps zusammen zu öffnen.
+        Split Float It | Diese Berechtigung gibt mir die Möglichkeit, mehrere Fenster zu erstellen und Apps gleichzeitig im geteilten Bildschirm zu öffnen (Android 7 und höher).\n\n♿ Wie hilft es Menschen mit Behinderungen?\nEs ist schwierig für Menschen mit Behinderungen, eine App zu öffnen oder zu wechseln zwischen Anwendungen. Ich verwende den Accessibility Service, um in den Multi-Window-Modus zu wechseln und zwei Apps zusammen zu öffnen.
     </string>
     <string name="split_service_summary">Split Float It | Diese Berechtigung gibt mir die Möglichkeit, Multi-Window &amp; Apps gleichzeitig im geteilten Bildschirm öffnen (Android 7 und höher)</string>
     <string name="observeDesc">
         <![CDATA[
-            Ich muss den Barrierefreiheitsdienst aktivieren, da er mir erlaubt, den Multi-Window-Modus zu erstellen 🗔 Zum gleichzeitigen Öffnen von Anwendungspaaren im geteilten Bildschirm.
-            Der Hauptzweck dieser Berechtigung ist das gemeinsame Öffnen von zwei Anwendungen, um die Produktivität und das Multitasking zu steigern.
-            ⚠ Keine Daten lesen oder sammeln ⚠
+            Ich muss den Barrierefreiheitsdienst aktivieren, da er mir erlaubt, den Multi-Window-Modus zu erstellen 🗔 Zum gleichzeitigen Öffnen von Anwendungspaaren im geteilten Bildschirm.<br/>
+            Der Hauptzweck dieser Berechtigung ist das gemeinsame Öffnen von zwei Anwendungen, um die Produktivität und das Multitasking zu steigern.<br/>
+            ⚠ Keine Daten lesen oder sammeln ⚠<br/>
             (Es ist kompatibel mit Android 7.0 und höher)
             <br/><br/><br/><br/><br/>
-            ♿ Wie hilft es Menschen mit Behinderung?
-            Für Menschen mit Behinderungen ist es schwierig, eine App zu öffnen oder zwischen Apps zu wechseln.
+            ♿ Wie hilft es Menschen mit Behinderung?<br/>
+            Für Menschen mit Behinderungen ist es schwierig, eine App zu öffnen oder zwischen Apps zu wechseln.<br/>
             Also verwende ich den Accessibility Service, um den Multi-Window-Modus zu erstellen, um zwei Apps zusammen zu öffnen.
         ]]>
     </string>
@@ -115,10 +115,10 @@
     <string name="smartPermission">
         <![CDATA[
             Diese Berechtigung ermöglicht es mir, eine Liste häufig verwendeter Anwendungen zum Festlegen der Schnellleiste zu erhalten.
-
-            Außerdem ist es wesentlich für
-            1. 🔄 Remote-Wiederherstellung von schwebenden Verknüpfungen/Ordnern zur Erkennung von Befehlen…
-            2. 🆗 Google! Öffnen Sie es
+            <br/>
+            Außerdem ist es wesentlich für<br/>
+            1. 🔄 Remote-Wiederherstellung von schwebenden Verknüpfungen/Ordnern zur Erkennung von Befehlen…<br/>
+            2. 🆗 Google! Öffnen Sie es<br/>
             3. 🕐 Floating Splash optimieren
         ]]>
     </string>
