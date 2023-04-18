@@ -54,7 +54,7 @@
     <string name="split_service_desc">
         Split Float It ᴾᴿᴼ | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)\n\n♿ How it Helps People with Disability?\nIt is difficult for people with disability to open an app Or switch between apps. I am using Accessibility Service to enter Multi-Window Mode to open two apps together.
     </string>
-    <string name="split_service_summary">Split Float It  | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)</string>
+    <string name="split_service_summary">Split Float It | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)</string>
     <string name="observeDesc">
         <![CDATA[
                 <br/>
@@ -71,30 +71,28 @@
     <string name="freeFormInfo">
         <![CDATA[
                 <small>
-                 <font color=#9b000e>
-                ⚠️️ <b>Disclaimer</b>  ⚠️️ <br/>
-                ⚠ Performing this Small Hack is At Your Own Risk<br/>
-                ⚠ Please, Do NOT Enable This Feature If You Are Not Familiar ADB (Android Debug Bridge)<br/>
-                </font>
-                ️<br/><br/>
-                Follow This Instructions to Enable System Settings<br/>
-                1️⃣️ Go to System Setting (<b>About</b> Section) <br/>
-                2️⃣  & Enable <b>Developer Options</b> by Clicking Few Times on <b>Build Number</b><br/>
-                3️⃣  Go to System Setting (Developer Options)<br/>
-                4️⃣  Scroll Down to Find & Enable <b>Force Activities to Be Resizable</b><br/>
-                5️⃣  Now Connect Your Device to Your Computer<br/>
-                6️⃣  Open Terminal (Command Line) & Type these Commands<br/>
-                7️⃣  <b>adb shell</b> <br/>
-                8️⃣️  <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
-                ➡️  If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
-                9️⃣  <b>adb reboot</b><br/>
-                1️⃣0️⃣  Come Back Here ⚙ & <b>Turn ON Float It</b>
-                <br/><br/><br/>
-                <b>ℹ️ <font color=#ffd800>Information</font> ℹ️ </font><br/></b>
-                ⏺ First Create Floating Shortcuts then Clear \'<b>Recent Apps</b>\' List for This Feature to Work Properly (Android Nougat & Oreo)<br/>
-                ⏺ Other Apps/Games Faulty Appearance & Functionality in FreeForm Mode is <b>NOT</b> our Fault<br/>
-                ⏺ You Can <b>Resize Apps Window</b> in FreeForm (Touch Edges of Window & Move It)<br/>
-                ⏺ If You Are Interested in This Feature & Don\'t Know What to Do, Feel Free to Contact Me via <b>Support Center</b> 👍 😉
+                    ⚠️️ Dichiarazione di non responsabilità ⚠️️ <br/>
+                    ⚠ L\'esecuzione di questo piccolo hack è a tuo rischio e pericolo<br/>
+                    ⚠ Per favore, NON abilitare questa funzione se non conosci ADB (Android Debug Bridge)<br/>
+                    ️<br/><br/>
+                    Segui queste istruzioni per abilitare le impostazioni di sistema<br/>
+                    1️⃣️ Vai a Impostazioni di sistema (sezione Informazioni)<br/>
+                    2️⃣ e abilita le opzioni sviluppatore facendo clic poche volte sul numero di build<br/>
+                    3️⃣ Vai a Impostazioni di sistema (Opzioni sviluppatore)<br/>
+                    4️⃣ Scorri verso il basso per trovare e abilitare Forza ridimensionamento delle attività<br/>
+                    5️⃣ Ora collega il tuo dispositivo al computer<br/>
+                    6️⃣ Apri il terminale (riga di comando) e digita questi comandi<br/>
+                    7️⃣  <b>adb shell</b> <br/>
+                    8️⃣️  <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
+                    ➡️  If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
+                    9️⃣  <b>adb reboot</b><br/>
+                    1️⃣0️⃣ Torna qui ⚙ e attiva Float It
+                    <br/>
+                    ℹ️ Informazioni ℹ️<br/>
+                    ⏺ Prima crea scorciatoie mobili, quindi cancella l'elenco "App recenti" affinché questa funzione funzioni correttamente (Android Nougat e Oreo)<br/>
+                    ⏺ Altre app/giochi Aspetto e funzionalità difettosi in modalità FreeForm NON è colpa nostra<br/>
+                    ⏺ Puoi ridimensionare la finestra delle app in FreeForm (tocca i bordi della finestra e spostala)<br/>
+                    ⏺ Se sei interessato a questa funzione e non sai cosa fare, non esitare a contattarmi tramite il Centro assistenza 👍 😉<br/>
                 </small>
         ]]>
     </string>
@@ -180,7 +178,7 @@
     <string name="flingSensitivityTitle">Fling Sensitivity</string>
     <string name="flingSensitivitySummary">Throw Floating Shortcuts/Folders Around</string>
     <string name="delayPressHoldExtraInfo">Press &amp; Hold on Icon to Test the Delay</string>
-    <string name="revertDefault">Set To Recommended Value</string>
+    <string name="revertDefault">Set Recommended Value</string>
     <string name="splashTitle">Floating Splash</string>
     <string name="splashDesc">Waiting Screen for Opening Apps</string>
     <string name="shortsizepref">Floating Size</string>

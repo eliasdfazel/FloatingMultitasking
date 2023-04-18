@@ -54,13 +54,14 @@
     <string name="split_service_desc">
         Split Float It ᴾᴿᴼ | Esta permissão me dá a capacidade de criar várias janelas e abrir aplicativos em tela dividida simultaneamente (Android 7 e superior)\n\n♿ Como isso ajuda pessoas com deficiência?\nÉ difícil para pessoas com deficiência abrir um aplicativo ou alternar entre aplicativos. Estou usando o serviço de acessibilidade para entrar no modo de várias janelas para abrir dois aplicativos juntos.
     </string>
-    <string name="split_service_summary">Split Float It ᴾᴿᴼ | Esta permissão me dá a capacidade de criar várias janelas e aplicativos. Abra aplicativos em tela dividida simultaneamente (Android 7 e superior)</string>
+    <string name="split_service_summary">Split Float It | Esta permissão me dá a capacidade de criar várias janelas e aplicativos. Abra aplicativos em tela dividida simultaneamente (Android 7 e superior)</string>
     <string name="observeDesc">
         <![CDATA[
             Preciso que o serviço de acessibilidade seja ativado porque me permite criar o modo de várias janelas 🗔 para abrir um par de aplicativos na tela dividida simultaneamente.
             O principal objetivo de exigir essa permissão é abrir dois aplicativos juntos para aumentar a produtividade e a multitarefa.
             ⚠ Nenhum dado lido ou coletado ⚠
             (É compatível com Android 7.0 e superior)
+            <br/><br/><br/><br/><br/>
             ♿ Como isso ajuda as pessoas com deficiência?
             É difícil para pessoas com deficiência abrir um aplicativo ou alternar entre aplicativos.
             Então, estou usando o serviço de acessibilidade para criar o modo de várias janelas para abrir dois aplicativos juntos.
@@ -68,29 +69,27 @@
     </string>
     <string name="freeFormInfo">
         <![CDATA[
-            ⚠️️ Isenção de responsabilidade ⚠️️
-            ⚠ Executar este pequeno hack é por sua conta e risco
-            ⚠ Por favor, NÃO habilite este recurso se você não estiver familiarizado com o ADB (Android Debug Bridge)
-            ️
-
-            Siga estas instruções para ativar as configurações do sistema
-            1️⃣️ Vá para Configuração do Sistema (Seção Sobre)
-            2️⃣ & Habilite as opções do desenvolvedor clicando algumas vezes no número da compilação
-            3️⃣ Vá para Configuração do sistema (Opções do desenvolvedor)
-            4️⃣ Role para baixo para localizar e ativar as atividades de força para serem redimensionáveis
-            5️⃣ Agora conecte seu dispositivo ao computador
-            6️⃣ Abra o Terminal (linha de comando) e digite estes comandos
-            7️⃣ shell adb
-            8️⃣️ configurações coloque global enable_freeform_support 1 && exit
-            ➡️Se no Android P: as configurações do adb shell colocam global hidden_api_policy_p_apps 1 && exit
-            9️⃣ reinicialização adb
+            ⚠️️ Isenção de responsabilidade ⚠️️ <br/>
+            ⚠ Executar este pequeno hack é por sua conta e risco<br/>
+            ⚠ Por favor, NÃO habilite este recurso se você não estiver familiarizado com o ADB (Android Debug Bridge)<br/>
+            ️<br/><br/>
+            Siga estas instruções para ativar as configurações do sistema<br/>
+            1️⃣️ Vá para Configuração do Sistema (Seção Sobre)<br/>
+            2️⃣ & Habilite as opções do desenvolvedor clicando algumas vezes no número da compilação<br/>
+            3️⃣ Vá para Configuração do sistema (Opções do desenvolvedor)<br/>
+            4️⃣ Role para baixo para localizar e ativar as atividades de força para serem redimensionáveis<br/>
+            5️⃣ Agora conecte seu dispositivo ao computador<br/>
+            6️⃣ Abra o Terminal (linha de comando) e digite estes comandos<br/>
+            7️⃣  <b>adb shell</b> <br/>
+            8️⃣️  <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
+            ➡️  If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
+            9️⃣  <b>adb reboot</b><br/>
             1️⃣0️⃣ Volte aqui ⚙ e ligue o Float It
-
-
-            ℹ️ Informações ℹ️
-            ⏺ Primeiro, crie atalhos flutuantes e, em seguida, limpe a lista \'Aplicativos recentes\' para que este recurso funcione corretamente (Android Nougat e Oreo)
-            ⏺ Outros aplicativos/jogos Aparência e funcionalidade defeituosas no modo FreeForm NÃO são nossa culpa
-            ⏺ Você pode redimensionar a janela de aplicativos no FreeForm (toque nas bordas da janela e mova-a)
+            <br/>
+            ℹ️ Informações ℹ️<br/>
+            ⏺ Primeiro, crie atalhos flutuantes e, em seguida, limpe a lista \'Aplicativos recentes\' para que este recurso funcione corretamente (Android Nougat e Oreo)<br/>
+            ⏺ Outros aplicativos/jogos Aparência e funcionalidade defeituosas no modo FreeForm NÃO são nossa culpa<br/>
+            ⏺ Você pode redimensionar a janela de aplicativos no FreeForm (toque nas bordas da janela e mova-a)<br/>
             ⏺ Se você estiver interessado neste recurso e não souber o que fazer, sinta-se à vontade para entrar em contato comigo pelo Centro de Suporte 👍 😉
         ]]>
     </string>

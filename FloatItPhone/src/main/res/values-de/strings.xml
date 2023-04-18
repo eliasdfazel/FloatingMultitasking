@@ -54,13 +54,14 @@
     <string name="split_service_desc">
         Split Float It ᴾᴿᴼ | Diese Berechtigung gibt mir die Möglichkeit, mehrere Fenster zu erstellen und Apps gleichzeitig im geteilten Bildschirm zu öffnen (Android 7 und höher).\n\n♿ Wie hilft es Menschen mit Behinderungen?\nEs ist schwierig für Menschen mit Behinderungen, eine App zu öffnen oder zu wechseln zwischen Anwendungen. Ich verwende den Accessibility Service, um in den Multi-Window-Modus zu wechseln und zwei Apps zusammen zu öffnen.
     </string>
-    <string name="split_service_summary">Split Float It ᴾᴿᴼ | Diese Berechtigung gibt mir die Möglichkeit, Multi-Window &amp; Apps gleichzeitig im geteilten Bildschirm öffnen (Android 7 und höher)</string>
+    <string name="split_service_summary">Split Float It | Diese Berechtigung gibt mir die Möglichkeit, Multi-Window &amp; Apps gleichzeitig im geteilten Bildschirm öffnen (Android 7 und höher)</string>
     <string name="observeDesc">
         <![CDATA[
             Ich muss den Barrierefreiheitsdienst aktivieren, da er mir erlaubt, den Multi-Window-Modus zu erstellen 🗔 Zum gleichzeitigen Öffnen von Anwendungspaaren im geteilten Bildschirm.
             Der Hauptzweck dieser Berechtigung ist das gemeinsame Öffnen von zwei Anwendungen, um die Produktivität und das Multitasking zu steigern.
             ⚠ Keine Daten lesen oder sammeln ⚠
             (Es ist kompatibel mit Android 7.0 und höher)
+            <br/><br/><br/><br/><br/>
             ♿ Wie hilft es Menschen mit Behinderung?
             Für Menschen mit Behinderungen ist es schwierig, eine App zu öffnen oder zwischen Apps zu wechseln.
             Also verwende ich den Accessibility Service, um den Multi-Window-Modus zu erstellen, um zwei Apps zusammen zu öffnen.
@@ -68,29 +69,27 @@
     </string>
     <string name="freeFormInfo">
         <![CDATA[
-            ⚠️️Haftungsausschluss ⚠️️
-            ⚠ Die Durchführung dieses kleinen Hacks erfolgt auf eigene Gefahr
-            ⚠ Bitte aktivieren Sie diese Funktion NICHT, wenn Sie nicht mit ADB (Android Debug Bridge) vertraut sind.
-️
-
-            Befolgen Sie diese Anweisungen, um die Systemeinstellungen zu aktivieren
-            1️⃣️ Gehen Sie zu den Systemeinstellungen (Abschnitt „Über“)
-            2️⃣ & Entwickleroptionen aktivieren, indem Sie mehrmals auf die Build-Nummer klicken
-            3️⃣ Gehen Sie zu den Systemeinstellungen (Entwickleroptionen)
-            4️⃣ Scrollen Sie nach unten, um die Größenanpassung von Aktivitäten zu erzwingen und zu aktivieren
-            5️⃣ Verbinden Sie jetzt Ihr Gerät mit Ihrem Computer
-            6️⃣ Öffnen Sie das Terminal (Befehlszeile) und geben Sie diese Befehle ein
-            7️⃣ Adb-Shell
-            8️⃣️ Einstellungen setzen global enable_freeform_support 1 && beenden
-            ➡️Wenn auf Android P: Adb-Shell-Einstellungen setzen globale hidden_api_policy_p_apps 1 && beenden
-            9️⃣ ADB-Neustart
-            1️⃣0️⃣ Komm hierher zurück ⚙ & schalte Float It ein
-
-
-            ℹ️ Informationen ℹ️
-            ⏺ Erstellen Sie zuerst schwebende Verknüpfungen und löschen Sie dann die Liste \'Letzte Apps\', damit diese Funktion ordnungsgemäß funktioniert (Android Nougat & Oreo)
-            ⏺ Das fehlerhafte Aussehen und die fehlerhafte Funktionalität anderer Apps/Spiele im FreeForm-Modus ist NICHT unsere Schuld
-            ⏺ Sie können die Größe des Apps-Fensters in FreeForm ändern (Kanten des Fensters berühren und verschieben)
+            ⚠️️Haftungsausschluss ⚠️️<br/>
+            ⚠ Die Durchführung dieses kleinen Hacks erfolgt auf eigene Gefahr<br/>
+            ⚠ Bitte aktivieren Sie diese Funktion NICHT, wenn Sie nicht mit ADB (Android Debug Bridge) vertraut sind.<br/>
+️            <br/><br/>
+            Befolgen Sie diese Anweisungen, um die Systemeinstellungen zu aktivieren<br/>
+            1️⃣️ Gehen Sie zu den Systemeinstellungen (Abschnitt „Über“)<br/>
+            2️⃣ & Entwickleroptionen aktivieren, indem Sie mehrmals auf die Build-Nummer klicken<br/>
+            3️⃣ Gehen Sie zu den Systemeinstellungen (Entwickleroptionen)<br/>
+            4️⃣ Scrollen Sie nach unten, um die Größenanpassung von Aktivitäten zu erzwingen und zu aktivieren<br/>
+            5️⃣ Verbinden Sie jetzt Ihr Gerät mit Ihrem Computer<br/>
+            6️⃣ Öffnen Sie das Terminal (Befehlszeile) und geben Sie diese Befehle ein<br/>
+            7️⃣  <b>adb shell</b> <br/>
+            8️⃣️  <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
+            ➡️  If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
+            9️⃣  <b>adb reboot</b><br/>
+            1️⃣0️⃣ Komm hierher zurück ⚙ & schalte Float It ein<br/>
+            <br/><br/>
+            ℹ️ Informationen ℹ️<br/>
+            ⏺ Erstellen Sie zuerst schwebende Verknüpfungen und löschen Sie dann die Liste \'Letzte Apps\', damit diese Funktion ordnungsgemäß funktioniert (Android Nougat & Oreo)<br/>
+            ⏺ Das fehlerhafte Aussehen und die fehlerhafte Funktionalität anderer Apps/Spiele im FreeForm-Modus ist NICHT unsere Schuld<br/>
+            ⏺ Sie können die Größe des Apps-Fensters in FreeForm ändern (Kanten des Fensters berühren und verschieben)<br/>
             ⏺ Wenn Sie an dieser Funktion interessiert sind und nicht wissen, was Sie tun sollen, können Sie mich gerne über das Support Center kontaktieren 👍 😉
         ]]>
     </string>

@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright © 2022 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel
+  ~ Last modified 4/16/22, 5:27 AM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<resources>
+
+    <string name="recovery_center">Centro de recuperación</string>
+    <string name="settingTitle">preferencias</string>
+    <string name="recoveryShortcuts">Recuperar atajos flotantes</string>
+    <string name="overlayPermission">¡Active el permiso, por favor!</string>
+    <string name="bindDesc">Deslice hacia abajo para ver más opciones</string>
+    <string name="dark">Oscura</string>
+    <string name="light" translatable="false">Light</string>
+    <string name="dynamic">Dynamic</string>
+    <string name="leftEdge">Borde izquierdo</string>
+    <string name="rightEdge">Borde derecho</string>
+    <string name="small">Pequeña</string>
+    <string name="medium">Medio</string>
+    <string name="large">Grande</string>
+    <string name="addRecovery">Añadir a la recuperación.</string>
+    <string name="addFolder">Nueva carpeta</string>
+    <string name="removeRecovery">Eliminar de la recuperación</string>
+    <string name="index_item">S</string>
+    <string name="not_install">LA APLICACIÓN NO ESTÁ DISPONIBLE</string>
+    <string name="updating_info">Actualización de la información de las aplicaciones</string>
+    <string name="supportCategory">Centro de Apoyo</string>
+    <string name="supportTitle">Ayuda y comentarios</string>
+    <string name="privacyTitle">política de privacidad</string>
+    <string name="deleteAccount">Borrar cuenta</string>
+    <string name="alphaTitle">Thanks for Joining Beta Program. Always Appreciate your Feedback!</string>
+    <string name="signinTitle">Welcome to Geeks Empire!</string>
+    <string name="signinMessage">Thanks for Joining to Our #FloatIt 🎈 Community.</string>
+    <string name="signinFinished"> ⚡ Become Master Of Multitasking ⚡ </string>
+    <string name="permTitle">
+        <![CDATA[
+            <b>Información de permisos</b>, ¡sea paciente!
+        ]]>
+    </string>
+    <string name="permDesc">
+        <![CDATA[
+            Hola… ☺
+            Necesito su permiso para crear accesos directos en vista flotante. Conceda permiso habilitando el conmutador.
+            También para hacerme más inteligente, vaya a Preferencias, Detalles e Información práctica para habilitar las funciones inteligentes.
+            Presione Grant para continuar con la configuración.
+            ¡Gracias!
+        ]]>
+    </string>
+    <string name="split_service_desc">
+        Split Float It ᴾᴿᴼ | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)\n\n♿ How it Helps People with Disability?\nIt is difficult for people with disability to open an app Or switch between apps. I am using Accessibility Service to enter Multi-Window Mode to open two apps together.
+    </string>
+    <string name="split_service_summary">Split Float It | Este permiso me da la capacidad de crear múltiples ventanas &amp; Abrir aplicaciones en pantalla dividida simultáneamente (Android 7 y superior)</string>
+    <string name="observeDesc">
+        <![CDATA[
+            Necesito que el servicio de accesibilidad esté habilitado porque me permite crear un modo de ventana múltiple 🗔 para abrir un par de aplicaciones en pantalla dividida simultáneamente.
+            El propósito principal de solicitar este permiso es abrir dos aplicaciones juntas para aumentar la productividad y la multitarea.
+            ⚠ Sin datos leídos o recopilados ⚠
+            (Es compatible con Android 7.0 y superior)
+            <br/><br/><br/><br/><br/>
+            ♿ ¿Cómo ayuda a las personas con discapacidad?
+            Es difícil para las personas con discapacidad abrir una aplicación o cambiar entre aplicaciones.
+            Entonces, estoy usando el servicio de accesibilidad para crear un modo de ventanas múltiples para abrir dos aplicaciones juntas.
+        ]]>
+    </string>
+    <string name="freeFormInfo">
+        <![CDATA[
+                <small>
+                    ⚠️️ Descargo de responsabilidad ⚠️️ <br/>
+                    ⚠ Realizar este pequeño truco es bajo tu propio riesgo<br/>
+                    ⚠ Por favor, NO habilite esta función si no está familiarizado con ADB (Android Debug Bridge)<br/>
+                    ️<br/><br/>
+                    Siga estas instrucciones para habilitar la configuración del sistema<br/>
+                    1️⃣️ Vaya a Configuración del sistema (Acerca de la sección)<br/>
+                    2️⃣ y habilite las opciones de desarrollador haciendo clic varias veces en el número de compilación<br/>
+                    3️⃣ Vaya a Configuración del sistema (Opciones de desarrollador)<br/>
+                    4️⃣ Desplácese hacia abajo para encontrar y habilitar las actividades forzadas para que sean redimensionables<br/>
+                    5️⃣ Ahora conecte su dispositivo a su computadora<br/>
+                    6️⃣ Abra la terminal (línea de comandos) y escriba estos comandos<br/>
+                    7️⃣  <b>adb shell</b> <br/>
+                    8️⃣️  <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
+                    ➡️  If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
+                    9️⃣  <b>adb reboot</b><br/>
+                    1️⃣0️⃣ Vuelve aquí ⚙ y ENCIENDE Float It<br/>
+                    <br/>
+                    ℹ️ Información ℹ️<br/>
+                    ⏺ Primero cree accesos directos flotantes y luego borre la lista de \'Aplicaciones recientes\' para que esta característica funcione correctamente (Android Nougat y Oreo)<br/>
+                    ⏺ Otras aplicaciones/juegos La apariencia y la funcionalidad defectuosas en el modo FreeForm NO son culpa nuestra<br/>
+                    ⏺ Puede cambiar el tamaño de la ventana de aplicaciones en FreeForm (toque los bordes de la ventana y muévalos)<br/>
+                    ⏺ Si está interesado en esta función y no sabe qué hacer, no dude en ponerse en contacto conmigo a través del Centro de soporte 👍 😉
+                </small>
+        ]]>
+    </string>
+    <string name="retry">Reintentar ahora</string>
+    <string name="observeSum">Android 7.0 (Nougat) +</string>
+    <string name="grant">Conceder permiso</string>
+    <string name="agree">Acordada</string>
+    <string name="skipNow">Ahora no</string>
+    <string name="read">Leer más</string>
+    <string name="grantFreeForm">Hecho</string>
+    <string name="confirm">Confirmar</string>
+    <string name="support">Soporte de contacto</string>
+    <string name="ui_app">Interfaz de la aplicación</string>
+    <string name="ui_floating">Interfaz flotante</string>
+    <string name="pref_floating">Preferencias flotantes</string>
+    <string name="advance">Características avanzadas</string>
+    <string name="wait">¡Por favor sea paciente!</string>
+    <string name="stable">Panel de control</string>
+    <string name="smartCategory">Funciones inteligentes</string>
+    <string name="smartTitle">Servicios Inteligentes</string>
+    <string name="floatingSearch">Búsqueda flotante</string>
+    <string name="smartSummary">Hágamelo saber…</string>
+    <string name="smartPermission">
+        <![CDATA[
+            <br/>
+            Este permiso me permite obtener una lista de aplicaciones de uso frecuente para configurar la barra rápida.
+            <br/><br/>
+            Además, es esencial para<br/>
+            1. 🔄 Recuperación remota de accesos directos/carpetas flotantes para reconocer el comando…<br/>
+            2. 🆗 ¡Google! Abrir flotar<br/>
+            3. 🕐 Optimización de la salpicadura flotante
+        ]]>
+    </string>
+    <string name="observeTitle">Observador de interacciones</string>
+    <string name="boot">Recuperación remota</string>
+    <string name="bootPermission">
+        <![CDATA[
+            <br/>
+            <big>Recupera accesos directos y carpetas flotantes cuando</big>…<br/>
+            1. <b>Decir \'🆗 Google Open Float It\'</b><br/>
+            2. <b>Uso de accesos directos de aplicaciones emergentes</b> | Mantenga presionado el acceso directo de la aplicación en la pantalla de inicio<br/>
+            3. <b>Encendido de su dispositivo</b><br/>
+            <br/>
+        ]]>
+    </string>
+    <string name="notificationEmoji">🔔</string>
+    <string name="notificationTitle">Notificación flotante</string>
+    <string name="notificationSummary">Punto de notificación en accesos directos/carpetas flotantes</string>
+    <string name="notificationDesc">
+        <![CDATA[
+            <br/>
+            Este permiso me permite obtener el contenido de la notificación no leída 🔔<br/>
+            1️⃣ para agregar un punto de notificación en accesos directos y carpetas flotantes<br/>
+            2️⃣ & Mostrar contenido de notificación de accesos directos y carpetas flotantes.
+            <br/>
+        ]]>
+    </string>
+    <string name="createShortcut">Crear accesos directos a la pantalla de inicio</string>
+    <string name="createAlias">Crear accesos directos al cajón de aplicaciones</string>
+    <string name="deleteAlias">Eliminar accesos directos del cajón de aplicaciones</string>
+    <string name="floatingFolders">Carpetas flotantes</string>
+    <string name="floatingWidget">Widgets Flotantes</string>
+    <string name="folderHint">Carpetas flotantes</string>
+    <string name="widgetHint">Widgets flotantes</string>
+    <string name="widgetLabelHint">Escriba una etiqueta de widget</string>
+    <string name="widgetPickerTitle">
+        <![CDATA[
+            <small>Elija widgets para configurar</small><br/>
+            <big>Presione y mantenga</big>
+        ]]>
+    </string>
+    <string name="floatingHint">Atajos flotantes</string>
+    <string name="recover_apps">Recuperar atajos flotantes</string>
+    <string name="recover_folder">Recuperar carpetas flotantes</string>
+    <string name="recover_widgets">Recuperar widgets flotantes</string>
+    <string name="reallocatingWidgets">" 🔁 reconfigurando… "</string>
+    <string name="reconfiguringWidgets">" reconfigurando… "</string>
+    <string name="folderDescription">Ingresa un nombre</string>
+    <string name="colortext">Tema de color</string>
+    <string name="themeTrans">Tema transparente</string>
+    <string name="blurryTitle">Tema borroso</string>
+    <string name="autotrans">Transparencia Flotante</string>
+    <string name="delayPressHold">Retraso del menú emergente</string>
+    <string name="flingSensitivityTitle">Sensibilidad al lanzamiento</string>
+    <string name="flingSensitivitySummary">Lanza accesos directos y carpetas flotantes</string>
+    <string name="delayPressHoldExtraInfo">Mantenga presionado el ícono para probar el retraso</string>
+    <string name="revertDefault">Establecer el valor recomendado</string>
+    <string name="splashTitle">Salpicadura flotante</string>
+    <string name="splashDesc">Pantalla de espera para abrir aplicaciones</string>
+    <string name="shortsizepref">Tamaño flotante</string>
+    <string name="stick">borde pegajoso</string>
+    <string name="shapesTitle">Formas flotantes</string>
+    <string name="shapedDesc">Establecer forma en…</string>
+    <string name="droplet">Droplet</string>
+    <string name="circle">Círculo</string>
+    <string name="square">Cuadrada</string>
+    <string name="squircle">Squircle</string>
+    <string name="noshape">sin forma</string>
+    <string name="iconPack">Paquetes de Iconos</string>
+    <string name="defaultTheme">Establecer tema predeterminado de iconos</string>
+    <string name="customIconTitle">Tema de iconos</string>
+    <string name="shortcuts">Atajos flotantes</string>
+    <string name="boot_warning">Toda</string>
+    <string name="boot_none">Ninguna</string>
+    <string name="remove_all_floatings">Eliminar todo</string>
+    <string name="remove_all">❌ Eliminar todo</string>
+    <string name="recover_all">✔️ recuperar todo</string>
+    <string name="moveEdgeLeft">⬅️️ Mover al borde</string>
+    <string name="moveEdgeRight">➡️️️ Mover al borde</string>
+    <string name="backToScreenLeft">➡️️️ Volver a la pantalla</string>
+    <string name="backToScreenRight">⬅️️ Volver a la pantalla</string>
+    <string name="pin">Atajo de PIN</string>
+    <string name="unpin">Desanclar acceso directo</string>
+    <string name="close">minimizarlo</string>
+    <string name="remove">Eliminar acceso directo</string>
+    <string name="pin_folder">Carpeta de pines</string>
+    <string name="unpin_folder">Desanclar carpeta</string>
+    <string name="remove_folder">Eliminar</string>
+    <string name="floatIt">Float It</string>
+    <string name="splitIt">Dividirlo</string>
+    <string name="deleteText">Borrar</string>
+    <string name="edit_folder">Editar:</string>
+    <string name="freeFormTitle">Flotador Extendido</string>
+    <string name="freeFormDesc">Abra siempre todas las aplicaciones en vista flotante (FreeForm)</string>
+    <string name="liteTitle">Preferencias ligeras</string>
+    <string name="liteSummary">Establecer preferencias al mínimo para un mejor rendimiento</string>
+    <string name="liteDesc">
+        <![CDATA[
+            Establecer preferencias al mínimo para un mejor rendimiento ⚡ <br/>
+            (<small>Altamente recomendada para teléfonos inteligentes de gama media y baja</small>)
+        ]]>
+    </string>
+    <string name="inAppUpdateDescription">Se acaba de instalar una actualización</string>
+    <string name="inAppUpdateAction">
+        <![CDATA[
+            Completalo!
+        ]]>
+    </string>
+
+    <!-- Search Engine -->
+    <string name="searchHint">Escribe para buscar</string>
+    <string name="searchFolderHint">
+        <![CDATA[
+            <small>| Carpeta</small>
+        ]]>
+    </string>
+    <string name="searchWidgetHint">
+        <![CDATA[
+            <small>| Widget</small>
+        ]]>
+    </string>
+
+    <!-- Security Options -->
+    <string name="securityServices">Servicios de seguridad</string>
+    <string name="changePin">PIN Contraseña</string>
+    <string name="changePinSummary">Crear o editar contraseña de PIN</string>
+    <string name="passwordError">Error de contraseña ⚠</string>
+    <string name="authenticationProcessInvoked">
+        <![CDATA[
+            Se ha invocado el proceso de autenticación.
+            <br/>
+            Primera autenticación <b>%1$s</b>
+        ]]>
+    </string>
+
+    <!-- Finger Print -->
+    <string name="fingerprint_not_recognized">Huella digital no reconocida.\nIntentar otra vez…</string>
+    <string name="lockIt">¡Ciérralo! 🔒</string>
+    <string name="unLockIt">Desbloquearlo 🔓</string>
+    <string name="pinHint">"Ingrese la contraseña del PIN 🔑 "</string>
+    <string name="passwordHint">"Ingrese la nueva contraseña de PIN 🔑 "</string>
+    <string name="passwordHintRepeat">"Repita la nueva contraseña de PIN 🔑 "</string>
+    <string name="enterCurrentPassword">"Introducir la contraseña actual 🔑 "</string>
+    <string name="forgetPassword">"¿Olvidaste tu contraseña? 🤔 "</string>
+    <string name="passwordResetSent">Correo electrónico para restablecer la contraseña del pin enviado 📩 | Ábrelo en este teléfono 📱</string>
+    <string name="verifying">Verificación de datos autenticados 🔑</string>
+    <string name="floatingShortcutsSecurityService">Float It | Servicios de seguridad</string>
+    <string name="securityWarningFingerprint">⚠ Advertencia de seguridad | La huella digital no está configurada ⚠</string>
+    <!-- Finger Print -->
+    <!-- Security Options -->
+
+    <string name="purchase">" Compra 💸 "</string>
+    <string name="donate">" Enviar un regalo 🎁 "</string>
+    <string name="purchaseFlowDisrupted">Flujo de compra interrumpido</string>
+
+    <string-array name="ContextMenuLock">
+        <item name="1">Small</item>
+        <item name="2">Medium</item>
+        <item name="3">Large</item>
+        <item name="4">Lock It 🔒 </item>
+        <item name="5">Create Home Screen Shortcut</item>
+    </string-array>
+    <string-array name="ContextMenuUnlock">
+        <item name="1">Small</item>
+        <item name="2">Medium</item>
+        <item name="3">Large</item>
+        <item name="4">Unlock It 🔓 </item>
+        <item name="5">Create Home Screen Shortcut</item>
+    </string-array>
+
+    <string-array name="ContextMenuCategory">
+        <item name="1">@string/small</item>
+        <item name="2">@string/medium</item>
+        <item name="3">@string/large</item>
+        <item name="4">@string/addRecovery</item>
+        <item name="5">@string/deleteText</item>
+    </string-array>
+    <string-array name="ContextMenuCategoryRemove">
+        <item name="1">@string/small</item>
+        <item name="2">@string/medium</item>
+        <item name="3">@string/large</item>
+        <item name="4">@string/removeRecovery</item>
+        <item name="5">@string/deleteText</item>
+    </string-array>
+
+    <string-array name="ContextMenuWidget">
+        <item name="1">@string/deleteText</item>
+        <item name="2">@string/addRecovery</item>
+        <item name="3">@string/createShortcut</item>
+    </string-array>
+    <string-array name="ContextMenuWidgetRemove">
+        <item name="1">@string/deleteText</item>
+        <item name="2">@string/removeRecovery</item>
+        <item name="3">@string/createShortcut</item>
+    </string-array>
+
+    <string-array name="STICK">
+        <item name="1">@string/leftEdge</item>
+        <item name="2">@string/rightEdge</item>
+    </string-array>
+    <string-array name="STICKValues">
+        <item name="1">1</item>
+        <item name="2">2</item>
+    </string-array>
+
+    <string-array name="Boot">
+        <item name="1">@string/boot_none</item>
+        <item name="2">@string/shortcuts</item>
+        <item name="3">@string/floatingFolders</item>
+        <item name="4">@string/boot_warning</item>
+    </string-array>
+
+    <string-array name="AppThemes">
+        <item name="1">@string/light</item>
+        <item name="2">@string/dark</item>
+        <item name="3">@string/dynamic</item>
+    </string-array>
+    <string-array name="AppThemesValues">
+        <item name="1">1</item>
+        <item name="2">2</item>
+        <item name="3">3</item>
+    </string-array>
+</resources>
