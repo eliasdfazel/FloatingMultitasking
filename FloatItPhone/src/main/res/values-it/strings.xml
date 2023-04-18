@@ -18,11 +18,11 @@
     <string name="dark">Buia</string>
     <string name="light" translatable="false">Light</string>
     <string name="dynamic">Dinamica</string>
-    <string name="leftEdge">Left Edge</string>
+    <string name="leftEdge">Bordo sinistro</string>
     <string name="rightEdge">Right Edge</string>
     <string name="small">Small</string>
     <string name="medium">Medium</string>
-    <string name="large">Large</string>
+    <string name="large">Grande</string>
     <string name="addRecovery">Aggiungi al recupero</string>
     <string name="addFolder">Nuova cartella</string>
     <string name="removeRecovery">Remove From Recovery</string>
@@ -224,7 +224,7 @@
             (<small>Highly Recommended for Mid-Range &amp; Low-End Smartphones</small>)
         ]]>
     </string>
-    <string name="inAppUpdateDescription">An Update Has Just Been Installed</string>
+    <string name="inAppUpdateDescription">È appena stato installato un aggiornamento</string>
     <string name="inAppUpdateAction">
         <![CDATA[
             Completalo!
