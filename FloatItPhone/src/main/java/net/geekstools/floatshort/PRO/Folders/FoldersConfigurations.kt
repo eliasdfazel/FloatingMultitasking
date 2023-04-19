@@ -77,7 +77,6 @@ import net.geekstools.floatshort.PRO.Utils.InAppUpdate.InAppUpdateProcess
 import net.geekstools.floatshort.PRO.Utils.RemoteProcess.CloudMessageHandler
 import net.geekstools.floatshort.PRO.Utils.RemoteProcess.LicenseValidator
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
-import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryWidgets
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
@@ -172,17 +171,6 @@ class FoldersConfigurations : AppCompatActivity(),
         foldersConfigurationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
         foldersConfigurationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
 
-        val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
-        val backRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
-        backRecoverFloatingCategories?.setTint(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-
-        val drawRecoverFloatingWidgets = getDrawable(R.drawable.draw_recovery_widgets)?.mutate() as LayerDrawable?
-        val backRecoverFloatingWidgets = drawRecoverFloatingWidgets?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
-        backRecoverFloatingWidgets?.setTint(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-
-        foldersConfigurationViewBinding.recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories)
-        foldersConfigurationViewBinding.recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
-
         foldersConfigurationViewBinding.actionButton.setOnClickListener { preferencesView ->
             foldersConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(33)
 
@@ -246,76 +234,6 @@ class FoldersConfigurations : AppCompatActivity(),
             }
 
         }
-        foldersConfigurationViewBinding.recoverFloatingApps.setOnClickListener {
-            Intent(applicationContext, RecoveryShortcuts::class.java).apply {
-                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(this)
-                } else {
-                    startService(this)
-                }
-            }
-
-            if (PublicVariable.allFloatingCounter == 1) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(Intent(applicationContext, BindServices::class.java))
-                } else {
-                    startService(Intent(applicationContext, BindServices::class.java))
-                }
-            }
-
-            val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-            foldersConfigurationViewBinding.recoverFloatingApps.startAnimation(animation)
-            animation.setAnimationListener(object : Animation.AnimationListener {
-
-                override fun onAnimationStart(animation: Animation) {
-
-                }
-
-                override fun onAnimationEnd(animation: Animation) {
-                    foldersConfigurationViewBinding.recoverFloatingApps.visibility = View.INVISIBLE
-                }
-
-                override fun onAnimationRepeat(animation: Animation) {
-
-                }
-            })
-        }
-        foldersConfigurationViewBinding.recoverFloatingWidgets.setOnClickListener {
-            Intent(applicationContext, RecoveryWidgets::class.java).apply {
-                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(this)
-                } else {
-                    startService(this)
-                }
-            }
-
-            if (PublicVariable.allFloatingCounter == 1) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(Intent(applicationContext, BindServices::class.java))
-                } else {
-                    startService(Intent(applicationContext, BindServices::class.java))
-                }
-            }
-
-            val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-            foldersConfigurationViewBinding.recoverFloatingWidgets.startAnimation(animation)
-            animation.setAnimationListener(object : Animation.AnimationListener {
-
-                override fun onAnimationStart(animation: Animation) {
-
-                }
-
-                override fun onAnimationEnd(animation: Animation) {
-                    foldersConfigurationViewBinding.recoverFloatingWidgets.visibility = View.INVISIBLE
-                }
-
-                override fun onAnimationRepeat(animation: Animation) {
-
-                }
-            })
-        }
 
         foldersConfigurationViewBinding.actionButton.setOnLongClickListener {
 
@@ -333,81 +251,10 @@ class FoldersConfigurations : AppCompatActivity(),
         }
         foldersConfigurationViewBinding.switchApps.setOnLongClickListener {
 
-            if (!foldersConfigurationViewBinding.recoverFloatingApps.isShown) {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
-                foldersConfigurationViewBinding.recoverFloatingApps.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animation) {
-                        foldersConfigurationViewBinding.recoverFloatingApps.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            } else {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-                foldersConfigurationViewBinding.recoverFloatingApps.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animation) {
-                        foldersConfigurationViewBinding.recoverFloatingApps.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            }
-
             true
         }
         foldersConfigurationViewBinding.switchWidgets.setOnLongClickListener {
 
-            if (!foldersConfigurationViewBinding.recoverFloatingWidgets.isShown) {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
-                foldersConfigurationViewBinding.recoverFloatingWidgets.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animation) {
-                        foldersConfigurationViewBinding.recoverFloatingWidgets.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            } else {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-                foldersConfigurationViewBinding.recoverFloatingWidgets.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animation) {
-                        foldersConfigurationViewBinding.recoverFloatingWidgets.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            }
             true
         }
 

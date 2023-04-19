@@ -57,8 +57,19 @@ import com.google.firebase.inappmessaging.model.InAppMessage
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.withIndex
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
@@ -83,9 +94,7 @@ import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.Purcha
 import net.geekstools.floatshort.PRO.Utils.InAppUpdate.InAppUpdateProcess
 import net.geekstools.floatshort.PRO.Utils.RemoteProcess.CloudMessageHandler
 import net.geekstools.floatshort.PRO.Utils.RemoteProcess.LicenseValidator
-import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
-import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryWidgets
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
@@ -97,7 +106,8 @@ import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.I
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFastScroller
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.HybridApplicationViewBinding
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 class ApplicationsViewPhone : AppCompatActivity(),
         View.OnClickListener, View.OnLongClickListener,
@@ -193,17 +203,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
         hybridApplicationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
         hybridApplicationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
 
-        val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
-        val backRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
-        backRecoverFloatingCategories?.setTint(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-
-        val drawRecoverFloatingWidgets = getDrawable(R.drawable.draw_recovery_widgets)?.mutate() as LayerDrawable?
-        val backRecoverFloatingWidgets = drawRecoverFloatingWidgets?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
-        backRecoverFloatingWidgets?.setTint(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-
-        hybridApplicationViewBinding.recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories)
-        hybridApplicationViewBinding.recoverFloatingWidgets.setImageDrawable(drawRecoverFloatingWidgets)
-
         hybridApplicationViewBinding.actionButton.setOnClickListener { preferencesView ->
             applicationsViewPhoneDependencyInjection.functionsClassLegacy.doVibrate(33)
 
@@ -275,76 +274,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
             }
 
         }
-        hybridApplicationViewBinding.recoverFloatingCategories.setOnClickListener {
-            Intent(applicationContext, RecoveryFolders::class.java).let {
-                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(it)
-                }  else {
-                    startService(it)
-                }
-            }
-
-            if (PublicVariable.allFloatingCounter == 1) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(Intent(applicationContext, BindServices::class.java))
-                } else {
-                    startService(Intent(applicationContext, BindServices::class.java))
-                }
-            }
-
-            val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-            hybridApplicationViewBinding.recoverFloatingCategories.startAnimation(animation)
-            animation.setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationRepeat(animation: Animation?) {
-
-                }
-
-                override fun onAnimationEnd(animation: Animation?) {
-                    hybridApplicationViewBinding.recoverFloatingCategories.visibility = View.INVISIBLE
-                }
-
-                override fun onAnimationStart(animation: Animation?) {
-
-                }
-
-            })
-        }
-        hybridApplicationViewBinding.recoverFloatingWidgets.setOnClickListener {
-            Intent(applicationContext, RecoveryWidgets::class.java).let {
-                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(it)
-                } else {
-                    startService(it)
-                }
-            }
-
-            if (PublicVariable.allFloatingCounter == 1) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(Intent(applicationContext, BindServices::class.java))
-                } else {
-                    startService(Intent(applicationContext, BindServices::class.java))
-                }
-            }
-
-            val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-            hybridApplicationViewBinding.recoverFloatingWidgets.startAnimation(animation)
-            animation.setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationRepeat(animation: Animation?) {
-
-                }
-
-                override fun onAnimationEnd(animation: Animation?) {
-                    hybridApplicationViewBinding.recoverFloatingWidgets.visibility = View.INVISIBLE
-                }
-
-                override fun onAnimationStart(animation: Animation?) {
-
-                }
-
-            })
-        }
 
         hybridApplicationViewBinding.actionButton.setOnLongClickListener {
 
@@ -362,75 +291,10 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         hybridApplicationViewBinding.switchCategories.setOnLongClickListener {
-            if (!hybridApplicationViewBinding.recoverFloatingCategories.isShown) {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
-                hybridApplicationViewBinding.recoverFloatingCategories.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animation) {
-                        hybridApplicationViewBinding.recoverFloatingCategories.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            } else {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-                hybridApplicationViewBinding.recoverFloatingCategories.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-                    override fun onAnimationEnd(animation: Animation) {
-                        hybridApplicationViewBinding.recoverFloatingCategories.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            }
 
             true
         }
         hybridApplicationViewBinding.switchWidgets.setOnLongClickListener {
-            if (!hybridApplicationViewBinding.recoverFloatingWidgets.isShown) {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
-                hybridApplicationViewBinding.recoverFloatingWidgets.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animation) {
-                        hybridApplicationViewBinding.recoverFloatingWidgets.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            } else {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-                hybridApplicationViewBinding.recoverFloatingWidgets.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animation) {
-                        hybridApplicationViewBinding.recoverFloatingWidgets.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            }
 
             true
         }

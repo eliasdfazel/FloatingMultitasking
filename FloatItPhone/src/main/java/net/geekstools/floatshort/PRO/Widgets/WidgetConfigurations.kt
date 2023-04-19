@@ -80,8 +80,6 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
-import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
-import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryWidgets
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
@@ -245,8 +243,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
         val backgroundRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
         backgroundRecoverFloatingCategories?.setTint(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        widgetConfigurationsViewsBinding.recoverFloatingCategories.setImageDrawable(drawRecoverFloatingCategories)
-        widgetConfigurationsViewsBinding.recoverFloatingApps.setImageDrawable(drawRecoverFloatingCategories)
 
         widgetConfigurationsViewsBinding.actionButton.setOnClickListener {
             widgetConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(33)
@@ -427,72 +423,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             }
 
         }
-        widgetConfigurationsViewsBinding.recoverFloatingCategories.setOnClickListener {
-
-            Intent(applicationContext, RecoveryFolders::class.java).apply {
-                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(this)
-                } else {
-                    startService(this)
-                }
-            }
-
-            if (PublicVariable.allFloatingCounter == 1) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(Intent(applicationContext, BindServices::class.java))
-                } else {
-                    startService(Intent(applicationContext, BindServices::class.java))
-                }
-            }
-
-            val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-            widgetConfigurationsViewsBinding.recoverFloatingCategories.startAnimation(animation)
-            animation.setAnimationListener(object : Animation.AnimationListener {
-
-                override fun onAnimationStart(animation: Animation) {
-
-                }
-
-                override fun onAnimationEnd(animation: Animation) {
-                    widgetConfigurationsViewsBinding.recoverFloatingCategories.setVisibility(View.INVISIBLE)
-                }
-
-                override fun onAnimationRepeat(animation: Animation) {
-
-                }
-            })
-        }
-        widgetConfigurationsViewsBinding.recoverFloatingApps.setOnClickListener {
-
-            Intent(applicationContext, RecoveryShortcuts::class.java).apply {
-                this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(this)
-                }  else {
-                    startService(this)
-                }
-            }
-
-            if (PublicVariable.allFloatingCounter == 1) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(Intent(applicationContext, BindServices::class.java))
-                } else {
-                    startService(Intent(applicationContext, BindServices::class.java))
-                }
-            }
-
-            val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-            widgetConfigurationsViewsBinding.recoverFloatingApps.startAnimation(animation)
-            animation.setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationStart(animation: Animation) {}
-                override fun onAnimationEnd(animation: Animation) {
-                    widgetConfigurationsViewsBinding.recoverFloatingApps.visibility = View.INVISIBLE
-                }
-
-                override fun onAnimationRepeat(animation: Animation) {}
-            })
-        }
 
         widgetConfigurationsViewsBinding.actionButton.setOnLongClickListener {
 
@@ -507,81 +437,9 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         }
         widgetConfigurationsViewsBinding.switchCategories.setOnLongClickListener {
 
-            if (!widgetConfigurationsViewsBinding.recoverFloatingCategories.isShown) {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
-                widgetConfigurationsViewsBinding.recoverFloatingCategories.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animation) {
-                        widgetConfigurationsViewsBinding.recoverFloatingCategories.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            } else {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-                widgetConfigurationsViewsBinding.recoverFloatingCategories.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animation) {
-                        widgetConfigurationsViewsBinding.recoverFloatingCategories.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            }
-
             true
         }
         widgetConfigurationsViewsBinding.switchApps.setOnLongClickListener {
-
-            if (!widgetConfigurationsViewsBinding.recoverFloatingApps.isShown) {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_show)
-                widgetConfigurationsViewsBinding.recoverFloatingApps.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animation) {
-                        widgetConfigurationsViewsBinding.recoverFloatingApps.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            } else {
-                val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.recovery_actions_hide)
-                widgetConfigurationsViewsBinding.recoverFloatingApps.startAnimation(animation)
-                animation.setAnimationListener(object : Animation.AnimationListener {
-
-                    override fun onAnimationStart(animation: Animation) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animation) {
-                        widgetConfigurationsViewsBinding.recoverFloatingApps.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animation) {
-
-                    }
-                })
-            }
 
             true
         }

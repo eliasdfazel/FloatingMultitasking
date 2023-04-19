@@ -81,34 +81,6 @@
         </RelativeLayout>
     </ScrollView>
 
-    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
-        apps:shape="light_bulb"
-        android:id="@+id/recoverFloatingCategories"
-        android:layout_width="47dp"
-        android:layout_height="47dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="43dp"
-        android:layout_marginEnd="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/draw_recovery"
-        android:visibility="invisible"
-        android:contentDescription="@string/recover_folder" />
-
-    <net.geekstools.imageview.customshapes.ShapesImage xmlns:apps="http://schemas.android.com/apk/res-auto"
-        apps:shape="light_bulb"
-        android:id="@+id/recoverFloatingWidgets"
-        android:layout_width="47dp"
-        android:layout_height="47dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="43dp"
-        android:layout_marginStart="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/draw_recovery_widgets"
-        android:visibility="invisible"
-        android:contentDescription="@string/recover_widgets" />
-
     <LinearLayout
         android:id="@+id/switchFloating"
         android:layout_width="match_parent"
