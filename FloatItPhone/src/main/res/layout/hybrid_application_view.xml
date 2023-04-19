@@ -133,7 +133,7 @@
             android:textAllCaps="false"
             android:text="@string/widgetHint"
             android:textSize="19sp"
-            android:fontFamily="@font/upcil"
+            android:fontFamily="@font/ubuntu"
             apps:elevation="7dp"
             apps:cornerRadius="7dp"
             apps:backgroundTint="@color/default_color" />
@@ -151,7 +151,7 @@
             android:textAllCaps="false"
             android:text="@string/folderHint"
             android:textSize="19sp"
-            android:fontFamily="@font/upcil"
+            android:fontFamily="@font/ubuntu"
             apps:elevation="7dp"
             apps:cornerRadius="7dp"
             apps:backgroundTint="@color/default_color" />
@@ -173,7 +173,7 @@
         android:textAllCaps="false"
         android:textColor="@color/light"
         android:textSize="19sp"
-        android:fontFamily="@font/upcil"
+        android:fontFamily="@font/ubuntu"
         apps:elevation="3dp"
         apps:backgroundTint="@color/default_color"
         apps:rippleColor="@color/light"

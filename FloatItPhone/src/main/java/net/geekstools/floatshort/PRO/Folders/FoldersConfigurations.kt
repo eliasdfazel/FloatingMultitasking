@@ -88,7 +88,7 @@ import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveD
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.FoldersConfigurationViewBinding
 import java.nio.charset.Charset
-import java.util.*
+import java.util.Calendar
 
 class FoldersConfigurations : AppCompatActivity(),
         View.OnClickListener, View.OnLongClickListener,
@@ -716,7 +716,7 @@ class FoldersConfigurations : AppCompatActivity(),
             foldersConfigurationViewBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
         }
 
-        val typeface = Typeface.createFromAsset(assets, "upcil.ttf")
+        val typeface = Typeface.createFromAsset(assets, "ubuntu.ttf")
         foldersConfigurationViewBinding.loadingText.typeface = typeface
 
         if (PublicVariable.themeLightDark) {

@@ -22,7 +22,7 @@
     android:textSize="27sp"
     android:textColor="@color/light"
     android:textStyle="normal"
-    android:fontFamily="@font/play"
+    android:fontFamily="@font/ubuntu"
 
     apps:layout_constraintTop_toTopOf="parent"
     apps:layout_constraintStart_toStartOf="parent"

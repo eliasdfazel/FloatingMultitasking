@@ -118,7 +118,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textSize="23sp"
-        android:fontFamily="@font/upcil"
+        android:fontFamily="@font/ubuntu"
         android:textColor="@color/light"
         android:textStyle="bold"
         android:visibility="visible"

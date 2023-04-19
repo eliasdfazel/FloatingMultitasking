@@ -97,7 +97,7 @@ class AppSelectionList : AppCompatActivity(),
         recyclerViewLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
         advanceAppSelectionListBinding.recyclerListView.layoutManager = recyclerViewLayoutManager
 
-        val typeface = Typeface.createFromAsset(assets, "upcil.ttf")
+        val typeface = Typeface.createFromAsset(assets, "ubuntu.ttf")
         advanceAppSelectionListBinding.loadingDescription.typeface = typeface
         advanceAppSelectionListBinding.loadingDescription.setTextColor(PublicVariable.colorLightDarkOpposite)
         advanceAppSelectionListBinding.loadingDescription.text = PublicVariable.folderName

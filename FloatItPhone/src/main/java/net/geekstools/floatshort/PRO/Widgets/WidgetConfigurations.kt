@@ -32,7 +32,12 @@ import android.os.Bundle
 import android.text.Html
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.*
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewAnimationUtils
+import android.view.ViewGroup
+import android.view.ViewPropertyAnimator
+import android.view.WindowManager
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -49,11 +54,16 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.withIndex
+import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity
@@ -87,7 +97,7 @@ import net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter.InstalledWidgetsAdap
 import net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter.WidgetSectionedConfiguredAdapter
 import net.geekstools.floatshort.PRO.Widgets.WidgetsAdapter.WidgetSectionedInstalledAdapter
 import net.geekstools.floatshort.PRO.databinding.WidgetConfigurationsViewsBinding
-import java.util.*
+import java.util.Locale
 import kotlin.math.hypot
 import kotlin.math.roundToInt
 
@@ -190,7 +200,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
             }
 
-            val typeface = Typeface.createFromAsset(assets, "upcil.ttf")
+            val typeface = Typeface.createFromAsset(assets, "ubuntu.ttf")
             widgetConfigurationsViewsBinding.loadingText.setTypeface(typeface)
 
             if (PublicVariable.themeLightDark) {
@@ -1084,7 +1094,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
         }
 
-        val typeface = Typeface.createFromAsset(assets, "upcil.ttf")
+        val typeface = Typeface.createFromAsset(assets, "ubuntu.ttf")
         widgetConfigurationsViewsBinding.loadingText.typeface = typeface
 
         if (PublicVariable.themeLightDark) {
