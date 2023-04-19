@@ -132,7 +132,7 @@
 
     <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
         android:id="@+id/recoveryAction"
-        android:layout_width="247dp"
+        android:layout_width="253dp"
         android:layout_height="49dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -144,15 +144,12 @@
         android:text="@string/recoveryShortcuts"
         android:textAllCaps="false"
         android:textColor="@color/light"
-        android:textSize="19sp"
+        android:textSize="15sp"
         android:fontFamily="@font/ubuntu"
         apps:elevation="3dp"
         apps:backgroundTint="@color/default_color"
         apps:rippleColor="@color/light"
         apps:cornerRadius="57dp"
-        apps:icon="@drawable/w_recovery"
-        apps:iconGravity="start"
-        apps:iconSize="29dp"
         apps:iconPadding="1dp" />
 
     <!-- Indexed Popup Fast Scroller  -->
