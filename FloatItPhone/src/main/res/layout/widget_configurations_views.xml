@@ -274,7 +274,7 @@
             android:layout_width="170dp"
             android:layout_height="170dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/draw_floating_widgets" />
+            android:src="@drawable/ic_launcher_layer" />
 
         <ProgressBar
             android:id="@+id/loadingProgress"

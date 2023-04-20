@@ -13,7 +13,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/ic_launcher_back_layer"
+        android:id="@+id/backgroundTemporary"
         android:drawable="@drawable/ic_launcher_balloon"/>
     <item
         android:drawable="@drawable/ic_launcher_dots"/>

@@ -172,6 +172,11 @@ class ApplicationsViewPhone : AppCompatActivity(),
         recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, applicationsViewPhoneDependencyInjection.functionsClassLegacy.columnCount(105), OrientationHelper.VERTICAL, false)
         hybridApplicationViewBinding.applicationsListView.layoutManager = recyclerViewLayoutManager
 
+        val drawFloatingLogo = getDrawable(R.drawable.ic_launcher_layer) as LayerDrawable?
+        val backFloatingLogo = drawFloatingLogo?.findDrawableByLayerId(R.id.backgroundTemporary)
+        backFloatingLogo?.setTint(PublicVariable.primaryColor)
+        hybridApplicationViewBinding.loadingLogo.setImageDrawable(drawFloatingLogo)
+
         /*All Loading Process*/
         initiateLoadingProcessAll()
         /*All Loading Process*/
@@ -608,7 +613,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
 
         val layerDrawableLoadLogo: LayerDrawable = getDrawable(R.drawable.ic_launcher_layer) as LayerDrawable
-        val gradientDrawableLoadLogo: BitmapDrawable = layerDrawableLoadLogo!!.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
+        val gradientDrawableLoadLogo: BitmapDrawable = layerDrawableLoadLogo!!.findDrawableByLayerId(R.id.backgroundTemporary) as BitmapDrawable
         gradientDrawableLoadLogo.setTint(PublicVariable.primaryColor)
         hybridApplicationViewBinding.loadingLogo.setImageDrawable(layerDrawableLoadLogo)
 

@@ -303,9 +303,9 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             true
         }
 
-        val drawFloatingLogo = getDrawable(R.drawable.draw_floating_widgets) as LayerDrawable
+        val drawFloatingLogo = getDrawable(R.drawable.ic_launcher_layer) as LayerDrawable
         val backFloatingLogo = drawFloatingLogo.findDrawableByLayerId(R.id.backgroundTemporary)
-        backFloatingLogo.setTint(PublicVariable.primaryColorOpposite)
+        backFloatingLogo.setTint(PublicVariable.primaryColor)
         widgetConfigurationsViewsBinding.loadingLogo.setImageDrawable(drawFloatingLogo)
 
         firebaseAuth = FirebaseAuth.getInstance()

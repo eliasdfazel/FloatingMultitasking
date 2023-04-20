@@ -138,9 +138,9 @@ class FoldersConfigurations : AppCompatActivity(),
         val recyclerViewLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
         foldersConfigurationViewBinding.foldersList.layoutManager = recyclerViewLayoutManager
 
-        val drawFloatingLogo = getDrawable(R.drawable.draw_floating_logo) as LayerDrawable?
+        val drawFloatingLogo = getDrawable(R.drawable.ic_launcher_layer) as LayerDrawable?
         val backFloatingLogo = drawFloatingLogo?.findDrawableByLayerId(R.id.backgroundTemporary)
-        backFloatingLogo?.setTint(PublicVariable.primaryColorOpposite)
+        backFloatingLogo?.setTint(PublicVariable.primaryColor)
         foldersConfigurationViewBinding.loadingLogo.setImageDrawable(drawFloatingLogo)
 
         loadFolders()
