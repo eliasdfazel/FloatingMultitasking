@@ -37,23 +37,7 @@
     <string name="buy" translatable="false">Purchase</string>
     <string name="free" translatable="false">Free Edition</string>
     <string name="contact" translatable="false">Contact me</string>
-    <string name="license_info_desc" translatable="false">Retrieving License Information from Google Play Store</string>
-    <string name="license_title" translatable="false">
-        <![CDATA[
-            <b>License Validating Issue</b>
-        ]]>
-    </string>
-    <string name="license_msg" translatable="false">
-        <![CDATA[
-            <br/>
-            <b>Hi</b>&#8230; &#9786;<br/>
-            <small>Float It ᴾᴿᴼ has been Installed Illegally & It can Cause Security Risk ⚠️<br/><br/>
-            <b>Please, Consider Following Solutions</b>&#8230;<br/>
-            1. Purchase Float It ᴾᴿᴼ from Google Play Store <big>💳</big><br/>
-            2. Install Free Edition from Google Play Store <big>🆓</big><br/>
-            3. Always Ready to Help, Contact me! <big>📧</big></small>
-        ]]>
-    </string>
+
     <string name="license" translatable="false">LICENSE</string>
     <string name="error" translatable="false">Error Occurred</string>
     <string name="internetError" translatable="false">⚠ Internet Connection Problem ⚠</string>
@@ -69,12 +53,12 @@
             &bull; Motivate & Help Us <br/>
             <br/>
             <br/>
-            🔵 Home Screen Shortcuts!<br/>
+            🔵 <b>Home Screen Shortcuts</b>!<br/>
             &bull; Open Applications In Floating Windows (FreeForm) Directly From Home Screen<br/>
             &bull; Press & Hold On Applications Icon<br/>
             &bull; then Click on \'Create Home Screen Shortcut\'<br/>
-            🔵 <b>Search Engine Widget</b><br/>
-            &bull; Run All Floating Shortcuts/Folders/Widgets Directly From Home Screen<br/>
+            🔵 <b>Graphical User Interface</b> 🎨<br/>
+            &bull; Minor Optimization for User Interface<br/>
             <br/>
             <br/>
             <b>Explore More Options in Preferences  ⚙️  </b> <br/>
