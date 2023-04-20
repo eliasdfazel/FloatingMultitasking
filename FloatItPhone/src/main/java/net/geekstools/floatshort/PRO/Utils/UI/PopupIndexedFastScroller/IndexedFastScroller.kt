@@ -12,6 +12,7 @@ package net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.util.TypedValue
@@ -72,8 +73,11 @@ class IndexedFastScroller(private val context: Context,
 
         fastScrollerIndexViewBinding.indexView.removeAllViews()
 
+        fastScrollerIndexViewBinding.indexView.backgroundTintList = ColorStateList.valueOf(indexedFastScrollerFactory.popupBackgroundTint)
+
         //Root View
         val rootLayoutParams = fastScrollerIndexViewBinding.root.layoutParams as RelativeLayout.LayoutParams
+        rootLayoutParams.marginEnd = 19
         rootLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_END, rootView.id)
 
         fastScrollerIndexViewBinding.root.layoutParams = rootLayoutParams

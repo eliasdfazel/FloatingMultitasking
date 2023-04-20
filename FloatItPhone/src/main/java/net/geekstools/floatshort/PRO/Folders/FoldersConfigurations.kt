@@ -427,7 +427,7 @@ class FoldersConfigurations : AppCompatActivity(),
                             if (foldersConfigurationsDependencyInjection.functionsClassLegacy.floatingWidgetsPurchased()) {
 
                                 foldersConfigurationsDependencyInjection.functionsClassLegacy.navigateToClass(this@FoldersConfigurations, WidgetConfigurations::class.java,
-                                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+                                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
 
                             } else {
 
