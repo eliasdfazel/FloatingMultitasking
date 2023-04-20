@@ -380,10 +380,6 @@ class FoldersConfigurations : AppCompatActivity(),
     override fun onPause() {
         super.onPause()
 
-        if (PublicVariable.actionCenter) {
-            foldersConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@FoldersConfigurations, foldersConfigurationViewBinding.fullActionViews, foldersConfigurationViewBinding.actionButton)
-        }
-
         foldersConfigurationsDependencyInjection.preferencesIO.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
 
         billingClient?.endConnection()

@@ -96,7 +96,7 @@
             android:textSize="19sp"
             android:fontFamily="@font/ubuntu"
             apps:elevation="7dp"
-            apps:cornerRadius="7dp"
+            apps:cornerRadius="13dp"
             apps:backgroundTint="@color/default_color" />
 
         <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
@@ -114,7 +114,7 @@
             android:textSize="19sp"
             android:fontFamily="@font/ubuntu"
             apps:elevation="7dp"
-            apps:cornerRadius="7dp"
+            apps:cornerRadius="13dp"
             apps:backgroundTint="@color/default_color" />
 
     </LinearLayout>
@@ -140,24 +140,6 @@
         apps:rippleColor="@color/light"
         apps:cornerRadius="57dp"
         apps:iconPadding="1dp" />
-
-    <RelativeLayout
-        android:id="@+id/fullActionViews"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/transparent_light"
-        android:visibility="invisible">
-
-        <ImageView
-            android:id="@+id/preferences"
-            android:layout_width="87dp"
-            android:layout_height="87dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/draw_pref_action"
-            android:background="@android:color/transparent"
-            android:visibility="invisible" />
-
-    </RelativeLayout>
 
     <ImageView
         android:id="@+id/actionButton"

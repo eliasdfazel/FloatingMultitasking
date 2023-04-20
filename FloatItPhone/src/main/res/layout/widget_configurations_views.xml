@@ -79,7 +79,7 @@
             android:textSize="19sp"
             android:fontFamily="@font/ubuntu"
             apps:elevation="7dp"
-            apps:cornerRadius="7dp"
+            apps:cornerRadius="13dp"
             apps:backgroundTint="@color/default_color" />
 
         <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
@@ -97,7 +97,7 @@
             android:textSize="19sp"
             android:fontFamily="@font/ubuntu"
             apps:elevation="7dp"
-            apps:cornerRadius="7dp"
+            apps:cornerRadius="13dp"
             apps:backgroundTint="@color/default_color" />
 
     </LinearLayout>

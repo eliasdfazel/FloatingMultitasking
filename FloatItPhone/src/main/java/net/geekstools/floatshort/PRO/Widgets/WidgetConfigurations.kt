@@ -353,10 +353,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
                 })
 
-                widgetConfigurationsDependencyInjection.functionsClassLegacy.openActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
-                        widgetConfigurationsViewsBinding.actionButton,
-                        widgetConfigurationsViewsBinding.fullActionViews.isShown)
-
             } else {
                 widgetConfigurationsViewsBinding.recoveryAction.visibility = View.VISIBLE
 
@@ -386,9 +382,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                     }
                 })
-
-                widgetConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
-                        widgetConfigurationsViewsBinding.actionButton)
             }
         }
         widgetConfigurationsViewsBinding.switchCategories.setOnClickListener {
@@ -543,38 +536,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     colorAnimation.start()
                 }
             } else {
-                if (PublicVariable.actionCenter) {
-                    widgetConfigurationsViewsBinding.recoveryAction.visibility = View.VISIBLE
-
-                    val finalRadius = hypot(widgetConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), widgetConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
-                    val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.recoveryAction,
-                            widgetConfigurationsViewsBinding.actionButton.x.roundToInt(),
-                            widgetConfigurationsViewsBinding.actionButton.y.roundToInt(),
-                            widgetConfigurationsDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat(), finalRadius.toFloat())
-                    circularReveal.duration = 1300
-                    circularReveal.interpolator = AccelerateInterpolator()
-                    circularReveal.start()
-                    circularReveal.addListener(object : Animator.AnimatorListener {
-
-                        override fun onAnimationStart(animation: Animator) {
-
-                        }
-
-                        override fun onAnimationEnd(animation: Animator) {
-                            widgetConfigurationsViewsBinding.recoveryAction.visibility = View.VISIBLE
-                        }
-
-                        override fun onAnimationCancel(animation: Animator) {
-
-                        }
-
-                        override fun onAnimationRepeat(animation: Animator) {
-
-                        }
-                    })
-                    widgetConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews, widgetConfigurationsViewsBinding.actionButton)
-                }
-
                 loadInstalledWidgets()
             }
         }
@@ -668,11 +629,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
     override fun onPause() {
         super.onPause()
-
-        if (PublicVariable.actionCenter) {
-            widgetConfigurationsDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@WidgetConfigurations, widgetConfigurationsViewsBinding.fullActionViews,
-                    widgetConfigurationsViewsBinding.actionButton)
-        }
     }
 
     override fun onBackPressed() {

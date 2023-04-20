@@ -418,9 +418,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
         applicationsViewPhoneDependencyInjection.popupApplicationShortcuts.addPopupApplicationShortcuts()
 
         applicationsViewPhoneDependencyInjection.preferencesIO.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition())
-        if (PublicVariable.actionCenter) {
-            applicationsViewPhoneDependencyInjection.functionsClassLegacy.closeActionMenuOption(this@ApplicationsViewPhone, hybridApplicationViewBinding.fullActionViews, hybridApplicationViewBinding.actionButton)
-        }
 
         applicationsViewPhoneDependencyInjection.preferencesIO.savePreference("OpenMode", "openClassName", this.javaClass.simpleName)
 

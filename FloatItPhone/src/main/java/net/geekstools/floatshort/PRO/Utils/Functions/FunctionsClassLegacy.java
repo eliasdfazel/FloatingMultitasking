@@ -14,7 +14,6 @@ import static android.content.Context.ACCESSIBILITY_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
 
 import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -81,15 +80,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
-import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
@@ -99,7 +92,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
@@ -117,7 +109,6 @@ import net.geekstools.floatshort.PRO.Folders.PopupDialogue.PopupOptionsFloatingF
 import net.geekstools.floatshort.PRO.HomeScreen.HomeScreenShortcuts;
 import net.geekstools.floatshort.PRO.Notifications.NotificationListener;
 import net.geekstools.floatshort.PRO.Notifications.PopupAdapter.PopupShortcutsNotification;
-import net.geekstools.floatshort.PRO.Preferences.PreferencesActivity;
 import net.geekstools.floatshort.PRO.R;
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions.UserInterfaceExtraData;
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Fingerprint.AuthenticationFingerprint;
@@ -136,7 +127,6 @@ import net.geekstools.floatshort.PRO.Utils.RemoteTask.RemoteController;
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons;
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash;
 import net.geekstools.floatshort.PRO.Widgets.FloatingServices.WidgetUnlimitedFloating;
-import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations;
 import net.geekstools.imageview.customshapes.ShapesImage;
 
 import org.lsposed.hiddenapibypass.HiddenApiBypass;
@@ -3469,65 +3459,6 @@ public class FunctionsClassLegacy {
         }
     }
 
-    public void circularRevealSplashScreenClose(final String packageName, final View view, final View childView,
-                                                final int xPosition, final int yPosition) {
-        WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
-        BitmapDrawable wallpaper = (BitmapDrawable) wallpaperManager.getDrawable();
-
-        Bitmap bitmapWallpaper = wallpaper.getBitmap();
-        Bitmap inputBitmap = Bitmap.createBitmap(
-                bitmapWallpaper,
-                (bitmapWallpaper.getWidth() / 2) - (displayX() / 2),
-                (bitmapWallpaper.getHeight() / 2) - (displayY() / 2),
-                displayX(),
-                displayY()
-        );
-        view.setBackground(bitmapToDrawable(inputBitmap));
-
-        int startRadius = 0;
-        int endRadius = (int) Math.hypot(displayX(), displayY());
-        Animator animator = ViewAnimationUtils.createCircularReveal(
-                view,
-                (xPosition + (childView.getWidth() / 2)),
-                (yPosition + (childView.getHeight() / 2)),
-                startRadius,
-                endRadius
-        );
-        animator.setInterpolator(new FastOutLinearInInterpolator());
-        animator.setDuration(333);
-        animator.start();
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (UsageStatsEnabled()) {
-                    try {
-                        Intent homeScreen = new Intent(Intent.ACTION_MAIN);
-                        homeScreen.addCategory(Intent.CATEGORY_HOME);
-                        homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(homeScreen,
-                                ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        new HeartBeatClose(packageName, childView);
-                    }
-                }
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-        });
-    }
-
     public boolean splashReveal() {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean("floatingSplash", false);
@@ -3597,7 +3528,7 @@ public class FunctionsClassLegacy {
     public int extractVibrantColor(Drawable drawable) {
         int VibrantColor = context.getColor(R.color.default_color);
         Bitmap bitmap;
-        if (returnAPI() >= 26) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (drawable instanceof VectorDrawable) {
                 bitmap = drawableToBitmap(drawable);
             } else if (drawable instanceof AdaptiveIconDrawable) {
@@ -3643,7 +3574,7 @@ public class FunctionsClassLegacy {
     public int extractDominantColor(Drawable drawable) {
         int DominanctColor = context.getColor(R.color.default_color);
         Bitmap bitmap;
-        if (returnAPI() >= 26) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (drawable instanceof VectorDrawable) {
                 bitmap = drawableToBitmap(drawable);
             } else if (drawable instanceof AdaptiveIconDrawable) {
@@ -3851,283 +3782,6 @@ public class FunctionsClassLegacy {
     }
 
     /*Action Center*/
-    public void Preferences(Activity instanceOfActivity, boolean visibility) {
-        final ImageView preferencesView = instanceOfActivity.findViewById(R.id.preferences);
-        if (visibility == true && !preferencesView.isShown()) {
-            LayerDrawable drawPrefAction = (LayerDrawable) context.getDrawable(R.drawable.draw_pref_action);
-            Drawable backPrefAction = drawPrefAction.findDrawableByLayerId(R.id.backgroundTemporary);
-            backPrefAction.setTint(PublicVariable.primaryColorOpposite);
-            preferencesView.setBackground(drawPrefAction);
-
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
-            preferencesView.startAnimation(animation);
-            preferencesView.setVisibility(View.VISIBLE);
-        } else if (visibility == false) {
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
-            preferencesView.startAnimation(animation);
-            preferencesView.setVisibility(View.INVISIBLE);
-        }
-        preferencesView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PublicVariable.actionCenter = false;
-                PublicVariable.recoveryCenter = false;
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ActivityOptionsCompat options = ActivityOptionsCompat.
-                                makeSceneTransitionAnimation(instanceOfActivity, preferencesView, "transition");
-
-                        Intent intent = new Intent();
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setClass(instanceOfActivity, PreferencesActivity.class);
-                        if (instanceOfActivity != null) {
-                            if (instanceOfActivity.getClass().getSimpleName().equals(WidgetConfigurations.class.getSimpleName())) {
-                                intent.putExtra("FromWidgetsConfigurations", true);
-                            }
-                        }
-                        instanceOfActivity.startActivity(intent, options.toBundle());
-                    }
-                }, 113);
-            }
-        });
-        preferencesView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-
-                context.startActivity(new Intent(context, InitializeInAppBilling.class)
-                                .putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
-                                .putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemDonation)
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                        ActivityOptions.makeCustomAnimation(context, R.anim.down_up, android.R.anim.fade_out).toBundle());
-
-                return false;
-            }
-        });
-    }
-
-    public void openActionMenuOption(Activity instanceOfActivity, final View fullActionElements, View actionButton, boolean startAnimation) {
-        if (startAnimation == false) {
-            int xPosition = (int) (actionButton.getX() + (actionButton.getWidth() / 2));
-            int yPosition = (int) (actionButton.getY() + (actionButton.getHeight() / 2));
-
-            int startRadius = 0;
-            int endRadius = (int) Math.hypot(displayX(), displayY());
-
-            Animator animator = ViewAnimationUtils.createCircularReveal(fullActionElements, xPosition, yPosition, startRadius, endRadius);
-            animator.setDuration(555);
-            animator.start();
-        }
-
-        fullActionElements.setVisibility(View.VISIBLE);
-        fullActionElements.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                instanceOfActivity.findViewById(R.id.recoveryAction).setVisibility(View.VISIBLE);
-
-                int finalRadius = (int) Math.hypot(displayX(), displayY());
-                Animator circularReveal = ViewAnimationUtils.createCircularReveal(instanceOfActivity.findViewById(R.id.recoveryAction), (int) actionButton.getX(), (int) actionButton.getY(), DpToInteger(13), finalRadius);
-                circularReveal.setDuration(1300);
-                circularReveal.setInterpolator(new AccelerateInterpolator());
-                circularReveal.start();
-                circularReveal.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        instanceOfActivity.findViewById(R.id.recoveryAction).setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
-
-                closeActionMenuOption(instanceOfActivity, fullActionElements, actionButton);
-            }
-        });
-
-        LayerDrawable drawFloating = (LayerDrawable) context.getDrawable(R.drawable.draw_floating);
-        Drawable backFloating = drawFloating.findDrawableByLayerId(R.id.backgroundTemporary);
-        backFloating.setTint(PublicVariable.primaryColor);
-
-
-        if (appThemeTransparent() == true) {
-            if (PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getColor(R.color.transparent_light)));
-
-                final Window window = instanceOfActivity.getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                if (PublicVariable.themeLightDark) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    if (Build.VERSION.SDK_INT > 25) {
-                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                    }
-                }
-                ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(instanceOfActivity.getWindow().getNavigationBarColor(), context.getColor(R.color.fifty_light_twice));
-                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        window.setStatusBarColor((Integer) animator.getAnimatedValue());
-                        window.setNavigationBarColor((Integer) animator.getAnimatedValue());
-                    }
-                });
-                colorAnimation.start();
-            } else if (!PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getColor(R.color.dark_transparent)));
-
-                final Window window = instanceOfActivity.getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-                ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(instanceOfActivity.getWindow().getNavigationBarColor(), context.getColor(R.color.transparent_dark_high_twice));
-                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        window.setStatusBarColor((Integer) animator.getAnimatedValue());
-                        window.setNavigationBarColor((Integer) animator.getAnimatedValue());
-                    }
-                });
-                colorAnimation.start();
-            }
-        } else {
-            if (PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getColor(R.color.transparent_light)));
-                if (PublicVariable.themeLightDark) {
-                    if (Build.VERSION.SDK_INT > 25) {
-                        instanceOfActivity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                    }
-                }
-
-                ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(instanceOfActivity.getWindow().getNavigationBarColor(), mixColors(context.getColor(R.color.light), instanceOfActivity.getWindow().getNavigationBarColor(), 0.70f));
-                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        instanceOfActivity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
-                        instanceOfActivity.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
-                    }
-                });
-                colorAnimation.start();
-            } else if (!PublicVariable.themeLightDark) {
-                fullActionElements.setBackground(new ColorDrawable(context.getColor(R.color.dark_transparent)));
-
-                ValueAnimator colorAnimation = ValueAnimator
-                        .ofArgb(instanceOfActivity.getWindow().getNavigationBarColor(), mixColors(context.getColor(R.color.dark), instanceOfActivity.getWindow().getNavigationBarColor(), 0.70f));
-                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        instanceOfActivity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
-                        instanceOfActivity.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
-                    }
-                });
-                colorAnimation.start();
-            }
-        }
-
-        Animation elementsAnim = AnimationUtils.loadAnimation(context, R.anim.up_down);
-        LayoutAnimationController itemController = new LayoutAnimationController(elementsAnim, 0.777f);
-
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Preferences(instanceOfActivity, true);
-            }
-        }, 222);
-        PublicVariable.actionCenter = true;
-    }
-
-    public void closeActionMenuOption(Activity instanceOfActivity, final View fullActionElements, View actionButton) {
-        if (appThemeTransparent() == true) {
-            final Window window = instanceOfActivity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (PublicVariable.themeLightDark) {
-                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                if (Build.VERSION.SDK_INT > 25) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                }
-            }
-
-            ValueAnimator valueAnimator = ValueAnimator
-                    .ofArgb(instanceOfActivity.getWindow().getNavigationBarColor(), setColorAlpha(mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180));
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    window.setStatusBarColor((Integer) animator.getAnimatedValue());
-                    window.setNavigationBarColor((Integer) animator.getAnimatedValue());
-                }
-            });
-            valueAnimator.start();
-        } else {
-            if (PublicVariable.themeLightDark) {
-                final Window window = instanceOfActivity.getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                if (PublicVariable.themeLightDark) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    if (Build.VERSION.SDK_INT > 25) {
-                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                    }
-                }
-            }
-
-            ValueAnimator colorAnimation = ValueAnimator
-                    .ofArgb(instanceOfActivity.getWindow().getNavigationBarColor(), PublicVariable.colorLightDark);
-            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    instanceOfActivity.getWindow().setNavigationBarColor((Integer) animator.getAnimatedValue());
-                    instanceOfActivity.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
-                }
-            });
-            colorAnimation.start();
-        }
-
-        int xPosition = (int) (actionButton.getX() + (actionButton.getWidth() / 2));
-        int yPosition = (int) (actionButton.getY() + (actionButton.getHeight() / 2));
-
-        int startRadius = (int) Math.hypot(displayX(), displayY());
-        int endRadius = 0;
-
-        Animator animator = ViewAnimationUtils.createCircularReveal(fullActionElements, xPosition, yPosition, startRadius, endRadius);
-        animator.setDuration(555);
-        animator.start();
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                fullActionElements.setVisibility(View.INVISIBLE);
-                Preferences(instanceOfActivity, false);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-        });
-
-        PublicVariable.actionCenter = false;
-    }
-
     public Notification notificationCreator(String titleText, String contentText, int notificationId) {
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
