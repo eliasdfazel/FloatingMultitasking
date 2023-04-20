@@ -23,7 +23,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
@@ -38,7 +37,6 @@ import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
 import android.view.WindowManager
-import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
@@ -198,15 +196,10 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
             }
 
-            val typeface = Typeface.createFromAsset(assets, "ubuntu.ttf")
-            widgetConfigurationsViewsBinding.loadingText.setTypeface(typeface)
-
             if (PublicVariable.themeLightDark) {
                 widgetConfigurationsViewsBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.darkMutedColor)
-                widgetConfigurationsViewsBinding.loadingText.setTextColor(getColor(R.color.dark))
             } else if (!PublicVariable.themeLightDark) {
                 widgetConfigurationsViewsBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.vibrantColor)
-                widgetConfigurationsViewsBinding.loadingText.setTextColor(getColor(R.color.light))
             }
 
             widgetConfigurationsViewsBinding.switchFloating.bringToFront()
@@ -215,13 +208,13 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         val drawAddWidget = getDrawable(R.drawable.draw_pref_add_widget) as LayerDrawable
         val backAddWidget = drawAddWidget.findDrawableByLayerId(R.id.backgroundTemporary)
         val frontAddWidget = drawAddWidget.findDrawableByLayerId(R.id.frontTemporary).mutate()
-        backAddWidget.setTint(getColor(R.color.default_color_game))
+        backAddWidget.setTint(getColor(R.color.default_color))
         frontAddWidget.setTint(getColor(R.color.light))
         widgetConfigurationsViewsBinding.addWidget.setImageDrawable(drawAddWidget)
 
         val drawPreferenceAction = getDrawable(R.drawable.draw_pref_action) as LayerDrawable
         val backPreferenceAction = drawPreferenceAction.findDrawableByLayerId(R.id.backgroundTemporary)
-        backPreferenceAction.setTint(PublicVariable.primaryColorOpposite)
+        backPreferenceAction.setTint(PublicVariable.primaryColor)
         widgetConfigurationsViewsBinding.actionButton.setImageDrawable(drawPreferenceAction)
 
         widgetConfigurationsViewsBinding.switchApps.setTextColor(getColor(R.color.light))
@@ -237,152 +230,25 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         widgetConfigurationsViewsBinding.switchApps.setBackgroundColor(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
         widgetConfigurationsViewsBinding.switchApps.rippleColor = ColorStateList.valueOf(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
-        widgetConfigurationsViewsBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
-        widgetConfigurationsViewsBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
+        widgetConfigurationsViewsBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColor)
+        widgetConfigurationsViewsBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
 
         val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
         val backgroundRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
         backgroundRecoverFloatingCategories?.setTint(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
 
-        widgetConfigurationsViewsBinding.actionButton.setOnClickListener {
+        widgetConfigurationsViewsBinding.actionButton.setOnClickListener { preferencesView ->
             widgetConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(33)
 
-            if (!PublicVariable.actionCenter) {
-                if (widgetConfigurationsViewsBinding.installedNestedScrollView.isShown) {
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this@WidgetConfigurations,
+                preferencesView,
+                "transition"
+            )
 
-                    widgetConfigurationsViewsBinding.fastScrollerIndexIncludeInstalled.nestedIndexScrollView.visibility = View.INVISIBLE
-
-                    if (!configuredWidgetAvailable) {
-                        widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
-                    }
-
-                    ViewCompat.animate(widgetConfigurationsViewsBinding.addWidget)
-                            .rotation(0.0f)
-                            .withLayer()
-                            .setDuration(300L)
-                            .setInterpolator(OvershootInterpolator(3.0f))
-                            .start()
-
-                    val startRadius = 0
-                    val endRadius = hypot(widgetConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), widgetConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
-
-                    val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.installedNestedScrollView,
-                            ((widgetConfigurationsViewsBinding.addWidget.x + widgetConfigurationsViewsBinding.addWidget.width / 2).roundToInt()),
-                            ((widgetConfigurationsViewsBinding.addWidget.y + widgetConfigurationsViewsBinding.addWidget.height / 2).roundToInt()),
-                            endRadius.toFloat(), startRadius.toFloat())
-                    circularReveal.duration = 864
-                    circularReveal.start()
-                    circularReveal.addListener(object : Animator.AnimatorListener {
-
-                        override fun onAnimationStart(animator: Animator) {
-
-                        }
-
-                        override fun onAnimationEnd(animator: Animator) {
-                            widgetConfigurationsViewsBinding.installedNestedScrollView.visibility = View.INVISIBLE
-                        }
-
-                        override fun onAnimationCancel(animator: Animator) {
-
-                        }
-
-                        override fun onAnimationRepeat(animator: Animator) {
-
-                        }
-                    })
-
-                    if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
-                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                        if (PublicVariable.themeLightDark) {
-                            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                            }
-                        }
-                        val valueAnimator = ValueAnimator
-                                .ofArgb(window.navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
-                        valueAnimator.addUpdateListener { animator ->
-                            window.statusBarColor = (animator.animatedValue) as Int
-                            window.navigationBarColor = (animator.animatedValue) as Int
-                        }
-                        valueAnimator.start()
-                    } else {
-                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                        if (PublicVariable.themeLightDark) {
-                            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                            }
-                        }
-                        val colorAnimation = ValueAnimator
-                                .ofArgb(getWindow().navigationBarColor, PublicVariable.colorLightDark)
-                        colorAnimation.addUpdateListener { animator ->
-                            window.navigationBarColor = (animator.animatedValue) as Int
-                            window.statusBarColor = (animator.animatedValue) as Int
-                        }
-                        colorAnimation.start()
-                    }
-                }
-
-                val finalRadius = hypot(widgetConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), widgetConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.recoveryAction,
-                        widgetConfigurationsViewsBinding.actionButton.x.roundToInt(),
-                        widgetConfigurationsViewsBinding.actionButton.y.roundToInt(),
-                        finalRadius.toFloat(), widgetConfigurationsDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat())
-                circularReveal.duration = 777
-                circularReveal.interpolator = AccelerateInterpolator()
-                circularReveal.start()
-                circularReveal.addListener(object : Animator.AnimatorListener {
-
-                    override fun onAnimationStart(animation: Animator) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animator) {
-                        widgetConfigurationsViewsBinding.recoveryAction.setVisibility(View.INVISIBLE)
-                    }
-
-                    override fun onAnimationCancel(animation: Animator) {
-
-                    }
-
-                    override fun onAnimationRepeat(animation: Animator) {
-
-                    }
-                })
-
-            } else {
-                widgetConfigurationsViewsBinding.recoveryAction.visibility = View.VISIBLE
-
-                val finalRadius = hypot(widgetConfigurationsDependencyInjection.functionsClassLegacy.displayX().toDouble(), widgetConfigurationsDependencyInjection.functionsClassLegacy.displayY().toDouble()).toInt()
-                val circularReveal = ViewAnimationUtils.createCircularReveal(widgetConfigurationsViewsBinding.recoveryAction,
-                        widgetConfigurationsViewsBinding.actionButton.x.roundToInt(),
-                        widgetConfigurationsViewsBinding.actionButton.y.roundToInt(),
-                        widgetConfigurationsDependencyInjection.functionsClassLegacy.DpToInteger(13).toFloat(), finalRadius.toFloat())
-                circularReveal.duration = 1300
-                circularReveal.interpolator = AccelerateInterpolator()
-                circularReveal.start()
-                circularReveal.addListener(object : Animator.AnimatorListener {
-
-                    override fun onAnimationStart(animation: Animator) {
-
-                    }
-
-                    override fun onAnimationEnd(animation: Animator) {
-                        widgetConfigurationsViewsBinding.recoveryAction.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationCancel(animation: Animator) {
-
-                    }
-
-                    override fun onAnimationRepeat(animation: Animator) {
-
-                    }
-                })
-            }
+            val intent = Intent(this@WidgetConfigurations, PreferencesActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent, options.toBundle())
         }
         widgetConfigurationsViewsBinding.switchCategories.setOnClickListener {
 
@@ -908,20 +774,15 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
         }
 
-        val typeface = Typeface.createFromAsset(assets, "ubuntu.ttf")
-        widgetConfigurationsViewsBinding.loadingText.typeface = typeface
-
         if (PublicVariable.themeLightDark) {
 
             widgetConfigurationsViewsBinding.loadingProgress
                     .indeterminateDrawable.setTint(PublicVariable.darkMutedColor)
-            widgetConfigurationsViewsBinding.loadingText.setTextColor(getColor(R.color.dark))
 
         } else if (!PublicVariable.themeLightDark) {
 
             widgetConfigurationsViewsBinding.loadingProgress
                     .indeterminateDrawable.setTint(PublicVariable.vibrantColor)
-            widgetConfigurationsViewsBinding.loadingText.setTextColor(getColor(R.color.light))
 
         }
 

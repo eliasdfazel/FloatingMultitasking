@@ -285,21 +285,6 @@
             android:layout_marginTop="-15dp"
             android:indeterminate="true"
             android:indeterminateBehavior="cycle"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/loadingText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="79dp"
-            android:fontFamily="@font/ubuntu"
-            android:gravity="center"
-            android:padding="7dp"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="25"
-            android:text="@string/floatingWidget"
-            android:textColor="@color/default_color"
-            android:textSize="37sp" />
     </RelativeLayout>
 
 </RelativeLayout>

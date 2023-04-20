@@ -16,7 +16,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
@@ -148,7 +147,7 @@ class FoldersConfigurations : AppCompatActivity(),
 
         val drawPreferenceAction = getDrawable(R.drawable.draw_pref_action) as LayerDrawable?
         val backgroundTemporary = drawPreferenceAction?.findDrawableByLayerId(R.id.backgroundTemporary)
-        backgroundTemporary?.setTint(PublicVariable.primaryColorOpposite)
+        backgroundTemporary?.setTint(PublicVariable.primaryColor)
         foldersConfigurationViewBinding.actionButton.setImageDrawable(drawPreferenceAction)
 
         foldersConfigurationViewBinding.switchWidgets.setTextColor(getColor(R.color.light))
@@ -164,8 +163,8 @@ class FoldersConfigurations : AppCompatActivity(),
         foldersConfigurationViewBinding.switchWidgets.setBackgroundColor(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
         foldersConfigurationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
-        foldersConfigurationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
-        foldersConfigurationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
+        foldersConfigurationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColor)
+        foldersConfigurationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
 
         foldersConfigurationViewBinding.actionButton.setOnClickListener { preferencesView ->
             foldersConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(33)
@@ -530,15 +529,10 @@ class FoldersConfigurations : AppCompatActivity(),
             foldersConfigurationViewBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
         }
 
-        val typeface = Typeface.createFromAsset(assets, "ubuntu.ttf")
-        foldersConfigurationViewBinding.loadingText.typeface = typeface
-
         if (PublicVariable.themeLightDark) {
             foldersConfigurationViewBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.darkMutedColor)
-            foldersConfigurationViewBinding.loadingText.setTextColor(getColor(R.color.dark))
         } else {
             foldersConfigurationViewBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.vibrantColor)
-            foldersConfigurationViewBinding.loadingText.setTextColor(getColor(R.color.light))
         }
 
         if (!getFileStreamPath(".categoryInfo").exists()) {

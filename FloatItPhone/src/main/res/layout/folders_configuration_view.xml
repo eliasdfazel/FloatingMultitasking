@@ -55,16 +55,19 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addNewFolder"
-                android:layout_width="153dp"
+                android:layout_width="match_parent"
                 android:layout_height="49dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="7dp"
                 android:layout_marginBottom="37dp"
                 android:text="@string/addFolder"
                 android:textAllCaps="false"
 
                 apps:cornerRadius="51dp"
                 apps:iconSize="19dp"
+                apps:iconGravity="textStart"
+                apps:iconPadding="13dp"
                 apps:icon="@drawable/add_quick_app"/>
 
         </RelativeLayout>
@@ -206,21 +209,6 @@
             android:layout_marginTop="-15dp"
             android:indeterminate="true"
             android:indeterminateBehavior="cycle"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/loadingText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="33dp"
-            android:fontFamily="@font/ubuntu"
-            android:gravity="center"
-            android:padding="7dp"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="25"
-            android:text="@string/floatingFolders"
-            android:textColor="@color/default_color"
-            android:textSize="37sp"/>
     </RelativeLayout>
 
 </RelativeLayout>

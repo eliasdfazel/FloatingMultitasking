@@ -178,7 +178,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         val drawPreferenceAction: LayerDrawable = getDrawable(R.drawable.draw_pref_action) as LayerDrawable
         val backPreferenceAction: Drawable = drawPreferenceAction.findDrawableByLayerId(R.id.backgroundTemporary)
-        backPreferenceAction.setTint(PublicVariable.primaryColorOpposite)
+        backPreferenceAction.setTint(PublicVariable.primaryColor)
         hybridApplicationViewBinding.actionButton.setImageDrawable(drawPreferenceAction)
 
         hybridApplicationViewBinding.switchWidgets.setTextColor(getColor(R.color.light))
@@ -196,8 +196,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         hybridApplicationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
 
-        hybridApplicationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColorOpposite)
-        hybridApplicationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColor)
+        hybridApplicationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColor)
+        hybridApplicationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
 
         hybridApplicationViewBinding.actionButton.setOnClickListener { preferencesView ->
             applicationsViewPhoneDependencyInjection.functionsClassLegacy.doVibrate(33)
