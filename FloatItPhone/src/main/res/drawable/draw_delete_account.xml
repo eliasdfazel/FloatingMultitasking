@@ -19,10 +19,10 @@
     </item>
 
     <item
-        android:top="31dp"
-        android:bottom="31dp"
-        android:start="31dp"
-        android:end="31dp"
+        android:top="37dp"
+        android:bottom="37dp"
+        android:start="37dp"
+        android:end="37dp"
         android:drawable="@drawable/delete_account">
     </item>
 </layer-list>

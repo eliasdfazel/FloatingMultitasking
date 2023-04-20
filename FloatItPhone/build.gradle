@@ -62,12 +62,12 @@ android {
         productionConfiguration {
             dimension "FloatIt"
 
-            versionNameSuffix '[PRO][Android][Phone]'
+            versionNameSuffix ''
         }
         betaConfiguration {
             dimension "FloatIt"
 
-            versionNameSuffix '[PRO][Android][Phone][BETA]'
+            versionNameSuffix '[BETA]'
         }
     }
     namespace 'net.geekstools.floatshort.PRO'

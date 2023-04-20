@@ -43,7 +43,11 @@ import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
-import androidx.preference.*
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreference
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -53,8 +57,14 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.PinPasswordConfigurations
-import net.geekstools.floatshort.PRO.Utils.Functions.*
+import net.geekstools.floatshort.PRO.Utils.Functions.ApplicationThemeController
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.Dialogues
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
+import net.geekstools.floatshort.PRO.Utils.Functions.PopupApplicationShortcuts
+import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
@@ -279,7 +289,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         super.onStart()
 
         val layerDrawableLoadLogo = context?.getDrawable(R.drawable.ic_launcher_layer) as LayerDrawable
-        val gradientDrawableLoadLogo = layerDrawableLoadLogo.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
+        val gradientDrawableLoadLogo = layerDrawableLoadLogo.findDrawableByLayerId(R.id.backgroundTemporary) as BitmapDrawable
         gradientDrawableLoadLogo.setTint(PublicVariable.primaryColorOpposite)
         whatsnew.icon = layerDrawableLoadLogo
         whatsnew.setOnPreferenceClickListener {
