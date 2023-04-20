@@ -300,7 +300,7 @@
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="-15dp"
+            android:layout_marginTop="-17dp"
             android:indeterminate="true"
             android:indeterminateBehavior="cycle"/>
     </RelativeLayout>
