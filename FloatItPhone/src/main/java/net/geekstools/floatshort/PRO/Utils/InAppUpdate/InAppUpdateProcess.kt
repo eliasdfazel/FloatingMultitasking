@@ -36,7 +36,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.InAppUpdateViewBinding
-import java.util.*
+import java.util.Calendar
 
 class InAppUpdateProcess : AppCompatActivity() {
 
@@ -71,7 +71,7 @@ class InAppUpdateProcess : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             inAppUpdateViewBinding.changeLog.setText(Html.fromHtml(intent.getStringExtra("UPDATE_CHANGE_LOG"), Html.FROM_HTML_MODE_LEGACY))
         } else {
-            inAppUpdateViewBinding.changeLog.setText(Html.fromHtml(intent.getStringExtra("UPDATE_CHANGE_LOG")))
+            inAppUpdateViewBinding.changeLog.setText(Html.fromHtml(intent.getStringExtra("UPDATE_CHANGE_LOG"), Html.FROM_HTML_MODE_COMPACT))
         }
 
         installStateUpdatedListener = InstallStateUpdatedListener {
@@ -274,7 +274,7 @@ class InAppUpdateProcess : AppCompatActivity() {
         snackbar.setBackgroundTint(PublicVariable.colorLightDark)
         snackbar.setTextColor(PublicVariable.colorLightDarkOpposite)
         snackbar.setActionTextColor(PublicVariable.primaryColor)
-        snackbar.setAction(Html.fromHtml(getString(R.string.inAppUpdateAction))) { view ->
+        snackbar.setAction(Html.fromHtml(getString(R.string.inAppUpdateAction), Html.FROM_HTML_MODE_COMPACT)) { view ->
             appUpdateManager.completeUpdate().addOnSuccessListener {
                 Debug.PrintDebug("*** Complete Update Success Listener ***")
 

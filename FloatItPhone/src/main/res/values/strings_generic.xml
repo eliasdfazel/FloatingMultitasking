@@ -49,24 +49,25 @@
     <string name="whatsnew" translatable="false">What\'s New…</string>
     <string name="changelog" translatable="false">
         <![CDATA[
-            🔵 <b><big>Rate 🌟🌟🌟🌟🌟 & Write Review</big></b> <br/>
-            &bull; Motivate & Help Us <br/>
             <br/>
+            🔵 Please, <b>Rate 🌟🌟🌟🌟🌟 & Write Review</b> <br/>
+            &bull; Motivate & Help Us <br/>
             <br/>
             🔵 <b>Home Screen Shortcuts</b>!<br/>
             &bull; Open Applications In Floating Windows (FreeForm) Directly From Home Screen<br/>
             &bull; Press & Hold On Applications Icon<br/>
             &bull; then Click on \'Create Home Screen Shortcut\'<br/>
+            <br/>
             🔵 <b>Graphical User Interface</b> 🎨<br/>
             &bull; Minor Optimization for User Interface<br/>
             <br/>
             <br/>
             <b>Explore More Options in Preferences  ⚙️  </b> <br/>
-            <b>Please, Go to App Page for More Details</b> ⭐👍
+            <b>Follow Us For More Information &amp; Support</b> ⭐👍
         ]]>
     </string>
 
-    <string name="followIt" translatable="false">Follow App Page</string>
+    <string name="followIt" translatable="false">Follow Us</string>
     <string name="shareIt" translatable="false">Rate &amp; Share</string>
     <string name="newUpdate" translatable="false">Install Update</string>
     <string name="updateAvailable" translatable="false">New Update Available | Click Here to Install…!</string>

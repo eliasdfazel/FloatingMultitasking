@@ -134,9 +134,9 @@ class Checkpoint : Activity() {
 
         val alertDialog = AlertDialog.Builder(this, R.style.GeeksEmpire_Dialogue_Light)
         alertDialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.vibrantColor.toString() + "'>" +
-                resources.getString(R.string.permTitle) + "</font>"))
+                resources.getString(R.string.permTitle) + "</font>", Html.FROM_HTML_MODE_COMPACT))
         alertDialog.setMessage(Html.fromHtml("<font color='" + PublicVariable.darkMutedColorString.toString() + "'>" +
-                        resources.getString(R.string.permDesc) + "</font>"))
+                        resources.getString(R.string.permDesc) + "</font>", Html.FROM_HTML_MODE_COMPACT))
         alertDialog.setIcon(getDrawable(R.drawable.ic_launcher))
         alertDialog.setCancelable(true)
 

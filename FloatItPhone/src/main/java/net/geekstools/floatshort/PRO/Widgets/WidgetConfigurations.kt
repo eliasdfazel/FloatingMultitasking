@@ -162,7 +162,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
             return
         }
 
-        widgetConfigurationsViewsBinding.widgetPickerTitle.text = Html.fromHtml(getString(net.geekstools.floatshort.PRO.R.string.widgetPickerTitle))
+        widgetConfigurationsViewsBinding.widgetPickerTitle.text = Html.fromHtml(getString(net.geekstools.floatshort.PRO.R.string.widgetPickerTitle), Html.FROM_HTML_MODE_COMPACT)
         widgetConfigurationsViewsBinding.widgetPickerTitle.setTextColor(if (PublicVariable.themeLightDark) getColor(R.color.dark) else getColor(net.geekstools.floatshort.PRO.R.color.light))
 
         installedWidgetsRecyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, widgetConfigurationsDependencyInjection.functionsClassLegacy.columnCount(190), OrientationHelper.VERTICAL, false)

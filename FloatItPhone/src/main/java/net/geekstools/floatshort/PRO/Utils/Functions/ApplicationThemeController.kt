@@ -99,8 +99,8 @@ class ApplicationThemeController (private val context: Context) {
             rootView.setBackgroundColor(PublicVariable.colorLightDark)
 
             preferencesToolbar.setBackgroundColor(PublicVariable.primaryColor)
-            (preferencesToolbar.findViewById(R.id.titlePreferences) as TextView).text = Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>")
-            (preferencesToolbar.findViewById(R.id.summaryPreferences) as TextView).text = Html.fromHtml("<small><font color='" + context.getColor(R.color.light) + "'>" + subTitle + "</font></small>")
+            (preferencesToolbar.findViewById(R.id.titlePreferences) as TextView).text = Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>", Html.FROM_HTML_MODE_COMPACT)
+            (preferencesToolbar.findViewById(R.id.summaryPreferences) as TextView).text = Html.fromHtml("<small><font color='" + context.getColor(R.color.light) + "'>" + subTitle + "</font></small>", Html.FROM_HTML_MODE_COMPACT)
 
             instanceOfActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             instanceOfActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)

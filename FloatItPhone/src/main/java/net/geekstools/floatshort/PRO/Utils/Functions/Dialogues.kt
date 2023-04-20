@@ -135,7 +135,7 @@ class Dialogues (var activity: Activity, var functionsClassLegacy: FunctionsClas
         dialogueView.backgroundTintList = ColorStateList.valueOf(PublicVariable.colorLightDark)
 
         dialogueMessageBinding.dialogueTitle.text = activity.getString(R.string.whatsnew)
-        dialogueMessageBinding.dialogueMessage.text = Html.fromHtml(activity.getString(R.string.changelog))
+        dialogueMessageBinding.dialogueMessage.text = Html.fromHtml(activity.getString(R.string.changelog), Html.FROM_HTML_MODE_COMPACT)
 
         dialogueMessageBinding.rateIt.setBackgroundColor(if (PublicVariable.themeLightDark) { activity.getColor(R.color.lighter) } else { activity.getColor(R.color.darker) })
         dialogueMessageBinding.followIt.setBackgroundColor(if (PublicVariable.themeLightDark) { activity.getColor(R.color.lighter) } else { activity.getColor(R.color.darker) })

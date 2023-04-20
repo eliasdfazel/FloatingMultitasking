@@ -21,7 +21,11 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.BaseAdapter
+import android.widget.Filter
+import android.widget.Filterable
+import android.widget.RelativeLayout
+import android.widget.TextView
 import com.google.firebase.analytics.FirebaseAnalytics
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchListFilter
@@ -33,7 +37,6 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.imageview.customshapes.ShapesImage
-import java.util.*
 
 class SearchEngineAdapter (val context: Context, val allSearchData: ArrayList<AdapterItemsSearchEngine>) : BaseAdapter(), Filterable {
 
@@ -129,7 +132,7 @@ class SearchEngineAdapter (val context: Context, val allSearchData: ArrayList<Ad
 
                 viewHolder.itemAppName?.text = Html.fromHtml(allSearchResults[position].folderName
                         + " "
-                        + context.getString(R.string.searchFolderHint))
+                        + context.getString(R.string.searchFolderHint), Html.FROM_HTML_MODE_COMPACT)
 
                 viewHolder.itemInitialLetter?.text = allSearchResults[position].folderName!![0].toString().toUpperCase()
                 viewHolder.itemInitialLetter?.setTextColor(PublicVariable.colorLightDarkOpposite)
@@ -153,7 +156,7 @@ class SearchEngineAdapter (val context: Context, val allSearchData: ArrayList<Ad
 
                 viewHolder.itemAppName?.text = Html.fromHtml(allSearchResults[position].widgetLabel
                         + " "
-                        + context.getString(R.string.searchWidgetHint))
+                        + context.getString(R.string.searchWidgetHint), Html.FROM_HTML_MODE_COMPACT)
 
 
                 viewHolder.itemInitialLetter?.text = ""

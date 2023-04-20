@@ -48,7 +48,6 @@ import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppB
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.FloatingWidgetHomeScreenShortcuts
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
-import java.util.*
 
 class FunctionsClassWidgets (private val context: Context) {
 
@@ -153,7 +152,7 @@ class FunctionsClassWidgets (private val context: Context) {
         for (itemId in menuItems.indices) {
 
             popupMenu.menu
-                    .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>"))
+                    .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>", Html.FROM_HTML_MODE_COMPACT))
                     .icon = popupItemIcon
 
         }
@@ -163,13 +162,13 @@ class FunctionsClassWidgets (private val context: Context) {
         if (securityFunctions.isAppLocked(packageName + providerClassName)) {
 
             popupMenu.menu
-                    .add(Menu.NONE, menuItems.size, menuItems.size, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.unLockIt) + "</font>"))
+                    .add(Menu.NONE, menuItems.size, menuItems.size, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.unLockIt) + "</font>", Html.FROM_HTML_MODE_COMPACT))
                     .icon = popupItemIcon
 
         } else {
 
             popupMenu.menu
-                    .add(Menu.NONE, menuItems.size, menuItems.size, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.lockIt) + "</font>"))
+                    .add(Menu.NONE, menuItems.size, menuItems.size, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.lockIt) + "</font>", Html.FROM_HTML_MODE_COMPACT))
                     .icon = popupItemIcon
 
         }

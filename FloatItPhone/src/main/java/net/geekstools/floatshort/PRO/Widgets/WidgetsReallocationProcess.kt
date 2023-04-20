@@ -175,7 +175,7 @@ class WidgetsReallocationProcess : Activity() {
                         } else {
                             reallocatingBinding.widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
                                     + widgetDataModel.WidgetLabel + "<br/>"
-                                    + "<small>" + getString(R.string.reallocatingWidgets) + "</small>")
+                                    + "<small>" + getString(R.string.reallocatingWidgets) + "</small>", Html.FROM_HTML_MODE_COMPACT)
                         }
                     }, 577)
                 }

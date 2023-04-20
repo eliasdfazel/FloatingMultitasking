@@ -583,8 +583,8 @@ public class FunctionsClassLegacy {
         } else if (PublicVariable.themeLightDark == false) {
             alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
         }
-        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.notificationTitle)));
-        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.notificationDesc)));
+        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.notificationTitle), Html.FROM_HTML_MODE_COMPACT));
+        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.notificationDesc), Html.FROM_HTML_MODE_COMPACT));
         alertDialog.setIcon(context.getDrawable(R.drawable.ic_launcher));
         alertDialog.setCancelable(true);
         alertDialog.setPositiveButton(context.getString(R.string.grant), new DialogInterface.OnClickListener() {
@@ -625,8 +625,8 @@ public class FunctionsClassLegacy {
         } else if (PublicVariable.themeLightDark == false) {
             alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
         }
-        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.observeTitle)));
-        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.observeDesc)));
+        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.observeTitle), Html.FROM_HTML_MODE_COMPACT));
+        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.observeDesc), Html.FROM_HTML_MODE_COMPACT));
         alertDialog.setIcon(context.getDrawable(R.drawable.ic_launcher));
         alertDialog.setCancelable(true);
         alertDialog.setPositiveButton(context.getString(R.string.agree), new DialogInterface.OnClickListener() {
@@ -666,8 +666,8 @@ public class FunctionsClassLegacy {
         } else if (PublicVariable.themeLightDark == false) {
             alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
         }
-        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.observeTitle)));
-        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.observeDesc)));
+        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.observeTitle), Html.FROM_HTML_MODE_COMPACT));
+        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.observeDesc), Html.FROM_HTML_MODE_COMPACT));
         alertDialog.setIcon(context.getDrawable(R.drawable.ic_launcher));
         alertDialog.setCancelable(true);
         alertDialog.setPositiveButton(context.getString(R.string.agree), new DialogInterface.OnClickListener() {
@@ -712,7 +712,7 @@ public class FunctionsClassLegacy {
             alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
         }
         alertDialog.setTitle(context.getString(R.string.smartTitle));
-        alertDialog.setMessage(Html.fromHtml(context.getString(R.string.smartPermission)));
+        alertDialog.setMessage(Html.fromHtml(context.getString(R.string.smartPermission), Html.FROM_HTML_MODE_COMPACT));
         alertDialog.setIcon(context.getDrawable(R.drawable.ic_launcher));
         alertDialog.setCancelable(true);
         alertDialog.setPositiveButton(context.getString(R.string.grant), new DialogInterface.OnClickListener() {
@@ -744,8 +744,8 @@ public class FunctionsClassLegacy {
         } else if (PublicVariable.themeLightDark == false) {
             alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
         }
-        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.boot)));
-        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.bootPermission)));
+        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.boot), Html.FROM_HTML_MODE_COMPACT));
+        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.bootPermission), Html.FROM_HTML_MODE_COMPACT));
         alertDialog.setIcon(R.drawable.ic_launcher);
         alertDialog.setCancelable(true);
         alertDialog.setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
@@ -777,8 +777,8 @@ public class FunctionsClassLegacy {
         } else if (PublicVariable.themeLightDark == false) {
             alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
         }
-        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.freeFormTitle)));
-        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.freeFormInfo)));
+        alertDialog.setTitle(Html.fromHtml(context.getResources().getString(R.string.freeFormTitle), Html.FROM_HTML_MODE_COMPACT));
+        alertDialog.setMessage(Html.fromHtml(context.getResources().getString(R.string.freeFormInfo), Html.FROM_HTML_MODE_COMPACT));
         alertDialog.setIcon(context.getDrawable(R.drawable.ic_launcher));
         alertDialog.setCancelable(true);
         alertDialog.setPositiveButton(context.getString(R.string.grantFreeForm), new DialogInterface.OnClickListener() {
@@ -817,8 +817,8 @@ public class FunctionsClassLegacy {
         } else if (PublicVariable.themeLightDark == false) {
             alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
         }
-        alertDialog.setTitle(Html.fromHtml("<small>" + context.getString(R.string.whatsnew) + " | " + versionCode + "</small>"));
-        alertDialog.setMessage(Html.fromHtml(updateInfo));
+        alertDialog.setTitle(Html.fromHtml("<small>" + context.getString(R.string.whatsnew) + " | " + versionCode + "</small>", Html.FROM_HTML_MODE_COMPACT));
+        alertDialog.setMessage(Html.fromHtml(updateInfo, Html.FROM_HTML_MODE_COMPACT));
 
         LayerDrawable layerDrawableNewUpdate = (LayerDrawable) context.getDrawable(R.drawable.ic_update);
         BitmapDrawable gradientDrawableNewUpdate = (BitmapDrawable) layerDrawableNewUpdate.findDrawableByLayerId(R.id.ic_launcher_back_layer);
@@ -856,7 +856,6 @@ public class FunctionsClassLegacy {
                 "Send an Email",
                 "Send a Message",
                 "Contact via Forum",
-                "Join Beta Program",
                 "Rate & Write Review"};
         AlertDialog.Builder builder = null;
         if (PublicVariable.themeLightDark == true) {
@@ -893,12 +892,6 @@ public class FunctionsClassLegacy {
                     a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(a);
                 } else if (selectedPosition == 3) {
-                    Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_alpha) + context.getPackageName()));
-                    a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    activity.startActivity(a);
-
-                    Toast(context.getResources().getString(R.string.alphaTitle), Gravity.BOTTOM);
-                } else if (selectedPosition == 4) {
                     Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()));
                     a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(a);
@@ -922,8 +915,8 @@ public class FunctionsClassLegacy {
         } else if (PublicVariable.themeLightDark == false) {
             alertDialog = new AlertDialog.Builder(instanceOfActivity, R.style.GeeksEmpire_Dialogue_Dark);
         }
-        alertDialog.setTitle(Html.fromHtml("<small>" + context.getString(R.string.liteTitle) + "</small>"));
-        alertDialog.setMessage(Html.fromHtml(context.getString(R.string.liteDesc)));
+        alertDialog.setTitle(Html.fromHtml("<small>" + context.getString(R.string.liteTitle) + "</small>", Html.FROM_HTML_MODE_COMPACT));
+        alertDialog.setMessage(Html.fromHtml(context.getString(R.string.liteDesc), Html.FROM_HTML_MODE_COMPACT));
 
         LayerDrawable drawPrefLite = (LayerDrawable) context.getDrawable(R.drawable.draw_pref).mutate();
         Drawable backPrefLite = drawPrefLite.findDrawableByLayerId(R.id.backgroundTemporary).mutate();
@@ -2383,7 +2376,7 @@ public class FunctionsClassLegacy {
                 });
         for (int itemId = 0; itemId < menuItems.length; itemId++) {
             popupMenu.getMenu()
-                    .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>"))
+                    .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>", Html.FROM_HTML_MODE_COMPACT))
                     .setIcon(popupItemIcon);
         }
 
@@ -2515,18 +2508,18 @@ public class FunctionsClassLegacy {
 
         for (int itemId = 0; itemId < menuItems.length; itemId++) {
             popupMenu.getMenu()
-                    .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>"))
+                    .add(Menu.NONE, itemId, itemId, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + menuItems[itemId] + "</font>", Html.FROM_HTML_MODE_COMPACT))
                     .setIcon(popupItemIcon);
         }
 
         SecurityFunctions securityFunctions = new SecurityFunctions(context);
         if (securityFunctions.isAppLocked(folderName)) {
             popupMenu.getMenu()
-                    .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.unLockIt) + "</font>"))
+                    .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.unLockIt) + "</font>", Html.FROM_HTML_MODE_COMPACT))
                     .setIcon(popupItemIcon);
         } else {
             popupMenu.getMenu()
-                    .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.lockIt) + "</font>"))
+                    .add(Menu.NONE, menuItems.length, menuItems.length, Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + context.getString(R.string.lockIt) + "</font>", Html.FROM_HTML_MODE_COMPACT))
                     .setIcon(popupItemIcon);
         }
 
@@ -2700,7 +2693,7 @@ public class FunctionsClassLegacy {
         Drawable backToast = drawToast.findDrawableByLayerId(R.id.backgroundTemporary);
 
         TextView textView = layout.findViewById(R.id.toastText);
-        textView.setText(Html.fromHtml("<small>" + toastContent + "</small>"));
+        textView.setText(Html.fromHtml("<small>" + toastContent + "</small>", Html.FROM_HTML_MODE_COMPACT));
         if (appThemeTransparent() == true) {
             if (PublicVariable.themeLightDark) {
                 backToast.setTint(context.getColor(R.color.light_transparent));
@@ -2740,7 +2733,7 @@ public class FunctionsClassLegacy {
         backToast.setTint(toastColor);
 
         TextView textView = layout.findViewById(R.id.toastText);
-        textView.setText(Html.fromHtml("<small>" + toastContent + "</small>"));
+        textView.setText(Html.fromHtml("<small>" + toastContent + "</small>", Html.FROM_HTML_MODE_COMPACT));
         if (appThemeTransparent() == true) {
             if (PublicVariable.themeLightDark) {
                 textView.setBackground(drawToast);
@@ -2909,7 +2902,7 @@ public class FunctionsClassLegacy {
         }
         String[] shortcutOption = new String[]{context.getString(R.string.createShortcut), aliasButton};
         alertDialog.setSingleChoiceItems(shortcutOption, 0, null);
-        alertDialog.setTitle(Html.fromHtml("<small>" + shortcutName + "</small>"));
+        alertDialog.setTitle(Html.fromHtml("<small>" + shortcutName + "</small>", Html.FROM_HTML_MODE_COMPACT));
         alertDialog.setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
@@ -3660,8 +3653,8 @@ public class FunctionsClassLegacy {
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification.Builder notificationBuilder = new Notification.Builder(context);
-        notificationBuilder.setContentTitle(Html.fromHtml("<b><font color='" + PublicVariable.primaryColorOpposite + "'>" + titleText + "</font></b>"));
-        notificationBuilder.setContentText(Html.fromHtml("<font color='" + PublicVariable.primaryColor + "'>" + contentText + "</font>"));
+        notificationBuilder.setContentTitle(Html.fromHtml("<b><font color='" + PublicVariable.primaryColorOpposite + "'>" + titleText + "</font></b>", Html.FROM_HTML_MODE_COMPACT));
+        notificationBuilder.setContentText(Html.fromHtml("<font color='" + PublicVariable.primaryColor + "'>" + contentText + "</font>", Html.FROM_HTML_MODE_COMPACT));
         notificationBuilder.setTicker(context.getResources().getString(R.string.app_name));
         notificationBuilder.setSmallIcon(R.drawable.ic_notification);
         notificationBuilder.setAutoCancel(true);
@@ -3742,8 +3735,8 @@ public class FunctionsClassLegacy {
         remoteNotification.setOnClickPendingIntent(R.id.moveEdge, pendingSticky_Edge);
         remoteNotification.setOnClickPendingIntent(R.id.backEdge, pendingSticky_Edge_No);
 
-        notificationBuilder.setContentTitle(Html.fromHtml("<b><font color='" + PublicVariable.primaryColor + "'>" + context.getResources().getString(R.string.app_name) + "</font></b>"));
-        notificationBuilder.setContentText(Html.fromHtml("<font color='" + PublicVariable.primaryColor + "'>" + context.getResources().getString(R.string.bindDesc) + "</font>"));
+        notificationBuilder.setContentTitle(Html.fromHtml("<b><font color='" + PublicVariable.primaryColor + "'>" + context.getResources().getString(R.string.app_name) + "</font></b>", Html.FROM_HTML_MODE_COMPACT));
+        notificationBuilder.setContentText(Html.fromHtml("<font color='" + PublicVariable.primaryColor + "'>" + context.getResources().getString(R.string.bindDesc) + "</font>", Html.FROM_HTML_MODE_COMPACT));
         notificationBuilder.setTicker(context.getResources().getString(R.string.app_name));
         notificationBuilder.setSmallIcon(R.drawable.ic_notification);
         notificationBuilder.setAutoCancel(false);

@@ -679,7 +679,7 @@ class FloatingShortcutsForTime : Service() {
                             } else {
 
                                 Toast.makeText(applicationContext,
-                                        Html.fromHtml(getString(R.string.authenticationProcessInvoked, AuthenticationProcess.authenticationProcessInvokedName)),
+                                        Html.fromHtml(getString(R.string.authenticationProcessInvoked, AuthenticationProcess.authenticationProcessInvokedName), Html.FROM_HTML_MODE_COMPACT),
                                         Toast.LENGTH_LONG)
                                         .show()
                             }
@@ -879,7 +879,7 @@ class FloatingShortcutsForTime : Service() {
                                 } else {
 
                                     Toast.makeText(applicationContext,
-                                            Html.fromHtml(getString(R.string.authenticationProcessInvoked, AuthenticationProcess.authenticationProcessInvokedName)),
+                                            Html.fromHtml(getString(R.string.authenticationProcessInvoked, AuthenticationProcess.authenticationProcessInvokedName), Html.FROM_HTML_MODE_COMPACT),
                                             Toast.LENGTH_LONG)
                                             .show()
                                 }

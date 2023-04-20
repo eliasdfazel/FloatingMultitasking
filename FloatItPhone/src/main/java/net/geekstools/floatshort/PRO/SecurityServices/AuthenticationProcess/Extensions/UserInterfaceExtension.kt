@@ -90,5 +90,5 @@ fun AuthenticationPinPassword.setupAuthenticationPinPasswordUI() {
             +
             AuthenticationPinPassword.ExtraInformation.dialogueTitle + " 🔒 "
             +
-            "</font></big>")
+            "</font></big>", Html.FROM_HTML_MODE_COMPACT)
 }

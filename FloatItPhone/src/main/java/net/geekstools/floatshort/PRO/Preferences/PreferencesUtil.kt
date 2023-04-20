@@ -20,10 +20,20 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.text.Html
 import android.util.TypedValue
-import android.view.*
+import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
-import android.widget.*
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.ScrollView
+import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
 import androidx.dynamicanimation.animation.DynamicAnimation
 import androidx.dynamicanimation.animation.FlingAnimation
 import androidx.fragment.app.FragmentActivity
@@ -87,7 +97,7 @@ fun setupShapes(preferencesDataUtilShape: PreferencesDataUtilShape) {
 
 
     val dialogueTitle = dialog.findViewById<View>(R.id.dialogueTitle) as TextView
-    dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + preferencesDataUtilShape.activity.getString(R.string.shapedDesc) + "</font>")
+    dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + preferencesDataUtilShape.activity.getString(R.string.shapedDesc) + "</font>", Html.FROM_HTML_MODE_COMPACT)
     dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
 
     val dialogueView: View = dialog.findViewById<ScrollView>(R.id.dialogueView)
@@ -246,7 +256,7 @@ fun listCustomIconsPackage(preferencesDataUtilShape: PreferencesDataUtilShape) {
     val defaultTheme = dialog.findViewById<TextView>(R.id.setDefault)
     val customIconList = dialog.findViewById<RecyclerView>(R.id.customIconList)
 
-    dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + preferencesDataUtilShape.activity.getString(R.string.customIconTitle) + "</font>")
+    dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + preferencesDataUtilShape.activity.getString(R.string.customIconTitle) + "</font>", Html.FROM_HTML_MODE_COMPACT)
     dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
     defaultTheme.setTextColor(PublicVariable.colorLightDarkOpposite)
 
@@ -372,7 +382,7 @@ fun setupFlingSensitivity(preferencesDataUtilFling: PreferencesDataUtilFling) {
     flingingIcon.layoutParams = layoutParamsIcon
     flingingIcon.setImageDrawable(layerDrawableLoadLogo)
 
-    dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + preferencesDataUtilFling.activity.getString(R.string.flingSensitivityTitle) + "</font>")
+    dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + preferencesDataUtilFling.activity.getString(R.string.flingSensitivityTitle) + "</font>", Html.FROM_HTML_MODE_COMPACT)
     dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
     revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite)
 

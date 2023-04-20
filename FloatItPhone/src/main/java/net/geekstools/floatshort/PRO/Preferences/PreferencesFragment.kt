@@ -302,8 +302,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         val gradientDrawableAdApp = layerDrawableAdApp.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
         gradientDrawableAdApp.setTint(PublicVariable.primaryColorOpposite)
         adApp.icon = layerDrawableAdApp
-        adApp.title = Html.fromHtml(getString(R.string.adApp))
-        adApp.summary = Html.fromHtml(getString(R.string.adAppSummary))
+        adApp.title = Html.fromHtml(getString(R.string.adApp), Html.FROM_HTML_MODE_COMPACT)
+        adApp.summary = Html.fromHtml(getString(R.string.adAppSummary), Html.FROM_HTML_MODE_COMPACT)
         adApp.setOnPreferenceClickListener {
 
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_ad_app)))
@@ -483,7 +483,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             transparentIcon.imageAlpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255)
             transparentIcon.setImageDrawable(layerDrawableLoadLogo)
 
-            dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.autotrans) + "</font>")
+            dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.autotrans) + "</font>", Html.FROM_HTML_MODE_COMPACT)
             dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
             revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite)
 
@@ -586,7 +586,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             transparentIcon.layoutParams = layoutParamsIcon
             transparentIcon.setImageDrawable(layerDrawableLoadLogo)
 
-            dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.shortsizepref) + "</font>")
+            dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.shortsizepref) + "</font>", Html.FROM_HTML_MODE_COMPACT)
             dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
             revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite)
 
@@ -692,7 +692,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
             delayIcon.setImageDrawable(layerDrawableLoadLogo)
 
-            dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.delayPressHold) + "</font>")
+            dialogueTitle.text = Html.fromHtml("<font color='" + PublicVariable.colorLightDarkOpposite + "'>" + getString(R.string.delayPressHold) + "</font>", Html.FROM_HTML_MODE_COMPACT)
             dialogueTitle.setTextColor(PublicVariable.colorLightDarkOpposite)
             revertDefault.setTextColor(PublicVariable.colorLightDarkOpposite)
 
@@ -819,8 +819,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                                         return false
                                     }
                                 }).submit()
-                        adApp.title = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle)))
-                        adApp.summary = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries)))
+                        adApp.title = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle)), Html.FROM_HTML_MODE_COMPACT)
+                        adApp.summary = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries)), Html.FROM_HTML_MODE_COMPACT)
 
                         adApp.setOnPreferenceClickListener {
 
