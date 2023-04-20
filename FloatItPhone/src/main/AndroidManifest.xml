@@ -526,9 +526,6 @@
             android:name=".Utils.RemoteTask.RemoteController"
             android:theme="@android:style/Theme.NoDisplay"/>
         <service
-            android:name=".Utils.RemoteProcess.LicenseValidator"
-            android:foregroundServiceType="dataSync"/>
-        <service
             android:name=".Notifications.NotificationListener"
             android:label="@string/app_name"
             android:exported="false"

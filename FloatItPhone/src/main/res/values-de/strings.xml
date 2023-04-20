@@ -151,8 +151,8 @@
     <string name="deleteAlias">Entfernen Sie App-Drawer-Verknüpfungen</string>
     <string name="floatingFolders">Schwebende Ordner</string>
     <string name="floatingWidget">Schwebende Widgets</string>
-    <string name="folderHint">Schwebende Ordner</string>
-    <string name="widgetHint">Schwebende Widgets</string>
+    <string name="folderHint">Ordner</string>
+    <string name="widgetHint">Widgets</string>
     <string name="widgetLabelHint">Geben Sie ein Widget-Label ein</string>
     <string name="widgetPickerTitle">
         <![CDATA[
@@ -160,7 +160,7 @@
             <big>Drücken und halten</big>
         ]]>
     </string>
-    <string name="floatingHint">Schwebende Verknüpfungen</string>
+    <string name="floatingHint">Verknüpfungen</string>
     <string name="recover_apps">Schwimmende Verknüpfungen Wiederherstellen</string>
     <string name="recover_folder">Schwebende Ordner Wiederherstellen</string>
     <string name="recover_widgets">Schwebende Widgets wiederherstellen</string>

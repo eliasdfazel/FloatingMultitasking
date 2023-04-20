@@ -12,10 +12,7 @@ package net.geekstools.floatshort.PRO.Shortcuts
 
 import android.app.ActivityOptions
 import android.app.Dialog
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.content.res.ColorStateList
@@ -93,7 +90,6 @@ import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppB
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchasesCheckpoint
 import net.geekstools.floatshort.PRO.Utils.InAppUpdate.InAppUpdateProcess
 import net.geekstools.floatshort.PRO.Utils.RemoteProcess.CloudMessageHandler
-import net.geekstools.floatshort.PRO.Utils.RemoteProcess.LicenseValidator
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryShortcuts
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
@@ -319,34 +315,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
     override fun onStart() {
         super.onStart()
-
-        if (!getFileStreamPath(".License").exists()
-                && applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection()
-                && !BuildConfig.DEBUG) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(Intent(applicationContext, LicenseValidator::class.java))
-            } else {
-                startService(Intent(applicationContext, LicenseValidator::class.java))
-            }
-
-            val intentFilter = IntentFilter()
-            intentFilter.addAction(getString(R.string.license))
-            val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-                override fun onReceive(context: Context, intent: Intent) {
-                    if (intent.action == getString(R.string.license)) {
-                        applicationsViewPhoneDependencyInjection.functionsClassLegacy.dialogueLicense(this@ApplicationsViewPhone)
-
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            stopService(Intent(applicationContext, LicenseValidator::class.java))
-                        }, 1000)
-
-                        unregisterReceiver(this)
-                    }
-                }
-            }
-            registerReceiver(broadcastReceiver, intentFilter)
-        }
 
         if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection()
                 && applicationsViewPhoneDependencyInjection.preferencesIO.readPreference(".UserInformation", "userEmail", null) == null) {

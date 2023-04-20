@@ -154,8 +154,8 @@
     <string name="deleteAlias">Eliminar accesos directos del cajón de aplicaciones</string>
     <string name="floatingFolders">Carpetas flotantes</string>
     <string name="floatingWidget">Widgets Flotantes</string>
-    <string name="folderHint">Carpetas flotantes</string>
-    <string name="widgetHint">Widgets flotantes</string>
+    <string name="folderHint">Carpetas</string>
+    <string name="widgetHint">Widgets</string>
     <string name="widgetLabelHint">Escriba una etiqueta de widget</string>
     <string name="widgetPickerTitle">
         <![CDATA[
@@ -163,7 +163,7 @@
             <big>Presione y mantenga</big>
         ]]>
     </string>
-    <string name="floatingHint">Atajos flotantes</string>
+    <string name="floatingHint">Atajos</string>
     <string name="recover_apps">Recuperar atajos flotantes</string>
     <string name="recover_folder">Recuperar carpetas flotantes</string>
     <string name="recover_widgets">Recuperar widgets flotantes</string>

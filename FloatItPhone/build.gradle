@@ -92,7 +92,6 @@ static def getDateDay() {
 }
 
 dependencies {
-    implementation project(':LicenseLibrary')
 
     implementation project(':LoadingSpin')
     implementation project(':ShapesCustomImageViewLibrary')

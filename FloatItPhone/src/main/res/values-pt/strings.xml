@@ -151,8 +151,8 @@
     <string name="deleteAlias">Remover atalhos da gaveta de aplicativos</string>
     <string name="floatingFolders">Pastas Flutuantes</string>
     <string name="floatingWidget">Widgets Flutuantes</string>
-    <string name="folderHint">Pastas Flutuantes</string>
-    <string name="widgetHint">Widgets Flutuantes</string>
+    <string name="folderHint">Pastas</string>
+    <string name="widgetHint">Widgets</string>
     <string name="widgetLabelHint">Digite um rótulo de widget</string>
     <string name="widgetPickerTitle">
         <![CDATA[
@@ -160,7 +160,7 @@
             <big>Pressione o botão de espera</big>
         ]]>
     </string>
-    <string name="floatingHint">Atalhos Flutuantes</string>
+    <string name="floatingHint">Atalhos</string>
     <string name="recover_apps">Recuperar Atalhos Flutuantes</string>
     <string name="recover_folder">Recuperar Pastas Flutuantes</string>
     <string name="recover_widgets">Recuperar widgets flutuantes</string>

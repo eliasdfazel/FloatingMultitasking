@@ -154,8 +154,8 @@
     <string name="deleteAlias">Rimuovi le scorciatoie dal cassetto delle app</string>
     <string name="floatingFolders">Cartelle mobili</string>
     <string name="floatingWidget">Widget mobili</string>
-    <string name="folderHint">Cartelle mobili</string>
-    <string name="widgetHint">Widget mobili</string>
+    <string name="folderHint">Cartelle</string>
+    <string name="widgetHint">Widgets</string>
     <string name="widgetLabelHint">Digitare un\'etichetta widget</string>
     <string name="widgetPickerTitle">
         <![CDATA[
@@ -163,7 +163,7 @@
             <big>Tieni premuto</big>
         ]]>
     </string>
-    <string name="floatingHint">Scorciatoie fluttuanti</string>
+    <string name="floatingHint">Scorciatoie</string>
     <string name="recover_apps">Recupera scorciatoie mobili</string>
     <string name="recover_folder">Recupera cartelle mobili</string>
     <string name="recover_widgets">Recupera i widget mobili</string>

@@ -156,8 +156,8 @@
     <string name="deleteAlias">Remove App Drawer Shortcuts</string>
     <string name="floatingFolders">Floating Folders</string>
     <string name="floatingWidget">Floating Widgets</string>
-    <string name="folderHint">Floating Folders</string>
-    <string name="widgetHint">Floating Widgets</string>
+    <string name="folderHint">Folders</string>
+    <string name="widgetHint">Widgets</string>
     <string name="widgetLabelHint">Type A Widget Label</string>
     <string name="widgetPickerTitle">
         <![CDATA[
@@ -165,7 +165,7 @@
             <big>Press & Hold</big>
         ]]>
     </string>
-    <string name="floatingHint">Floating Shortcuts</string>
+    <string name="floatingHint">Shortcuts</string>
     <string name="recover_apps">Recover Floating Shortcuts</string>
     <string name="recover_folder">Recover Floating Folders</string>
     <string name="recover_widgets">Recover Floating Widgets</string>
