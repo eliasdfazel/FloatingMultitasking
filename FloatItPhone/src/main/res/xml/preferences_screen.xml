@@ -11,7 +11,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/securityServices">
+    <PreferenceCategory android:title="@string/securityServices" android:summary=" ">
         <Preference
             android:key="pinPassword"
             android:icon="@drawable/draw_security_preferences"
@@ -19,7 +19,9 @@
             android:summary="@string/changePinSummary" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/smartCategory">
+    <PreferenceCategory android:summary="" />
+
+    <PreferenceCategory android:title="@string/smartCategory" android:summary=" ">
         <SwitchPreference
             android:defaultValue="false"
             android:icon="@drawable/draw_smart"
@@ -37,7 +39,9 @@
             android:title="@string/boot"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_floating">
+    <PreferenceCategory android:summary="" />
+
+    <PreferenceCategory android:title="@string/pref_floating" android:summary=" ">
         <ListPreference
             android:defaultValue="1"
             android:entries="@array/STICK"
@@ -64,7 +68,9 @@
             android:title="@string/notificationTitle"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/ui_floating">
+    <PreferenceCategory android:summary="" />
+
+    <PreferenceCategory android:title="@string/ui_floating" android:summary=" ">
         <Preference
             android:icon="@drawable/draw_pref"
             android:key="shapes"
@@ -86,7 +92,9 @@
             android:title="@string/splashTitle"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/ui_app">
+    <PreferenceCategory android:summary="" />
+
+    <PreferenceCategory android:title="@string/ui_app" android:summary=" ">
         <ListPreference
             android:defaultValue="2"
             android:entries="@array/AppThemes"
@@ -96,9 +104,11 @@
             android:title="@string/colortext"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:summary="" />
+
     <PreferenceCategory
         android:key="advanced"
-        android:title="@string/advance">
+        android:title="@string/advance" android:summary=" ">
         <SwitchPreference
             android:defaultValue="false"
             android:icon="@drawable/draw_floatit"
@@ -117,7 +127,9 @@
             android:title="@string/liteTitle"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/supportCategory">
+    <PreferenceCategory android:summary="" />
+
+    <PreferenceCategory android:title="@string/supportCategory" android:summary=" ">
         <Preference
             android:icon="@drawable/ic_launcher_layer"
             android:key="whatsnew"
@@ -132,7 +144,9 @@
             android:title="@string/privacyTitle"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/geeksempire">
+    <PreferenceCategory android:summary="" />
+
+    <PreferenceCategory android:title="@string/geeksempire" android:summary=" ">
         <Preference
             android:icon="@drawable/ic_ad_app_layer"
             android:key="app"
