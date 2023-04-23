@@ -12,9 +12,15 @@ package net.geekstools.floatshort.PRO.Utils.RemoteTask.Remove
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.*
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFolders
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForBluetooth
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForGps
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForNfc
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForTime
+import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForWifi
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.*
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForApplications
+import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForFrequentlyApplications
 import net.geekstools.floatshort.PRO.Shortcuts.PopupDialogue.PopupOptionsFloatingShortcuts
 import net.geekstools.floatshort.PRO.Widgets.FloatingServices.WidgetUnlimitedFloating
 
@@ -29,36 +35,6 @@ class RemoveAll : Service() {
 
         /*Applications*/
         Intent(applicationContext, FloatingShortcutsForApplications::class.java).apply {
-            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
-
-            startService(this@apply)
-        }
-
-        Intent(applicationContext, FloatingShortcutsForWifi::class.java).apply {
-            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
-
-            startService(this@apply)
-        }
-
-        Intent(applicationContext, FloatingShortcutsForBluetooth::class.java).apply {
-            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
-
-            startService(this@apply)
-        }
-
-        Intent(applicationContext, FloatingShortcutsForGps::class.java).apply {
-            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
-
-            startService(this@apply)
-        }
-
-        Intent(applicationContext, FloatingShortcutsForNfc::class.java).apply {
-            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
-
-            startService(this@apply)
-        }
-
-        Intent(applicationContext, FloatingShortcutsForTime::class.java).apply {
             putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
 
             startService(this@apply)
@@ -96,13 +72,6 @@ class RemoveAll : Service() {
         }
 
         Intent(applicationContext, FloatingFoldersForTime::class.java).apply {
-            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
-
-            startService(this@apply)
-        }
-
-        /*HIS*/
-        Intent(applicationContext, FloatingShortcutsForHIS::class.java).apply {
             putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
 
             startService(this@apply)

@@ -146,6 +146,8 @@ class FloatingShortcutsForApplications : Service() {
 
     private val floatingShortcutsBinding: ArrayList<FloatingShortcutsBinding> = ArrayList<FloatingShortcutsBinding>()
 
+    var broadcastReceiver: BroadcastReceiver? = null
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -777,7 +779,7 @@ class FloatingShortcutsForApplications : Service() {
                 intentFilter.addAction("Sticky_Edge_No")
                 intentFilter.addAction("Notification_Dot")
                 intentFilter.addAction("Notification_Dot_No")
-                val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+                broadcastReceiver = object : BroadcastReceiver() {
 
                     override fun onReceive(context: Context, intent: Intent) {
 
@@ -1080,4 +1082,14 @@ class FloatingShortcutsForApplications : Service() {
 
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        broadcastReceiver?.let {
+            unregisterReceiver(it)
+        }
+
+    }
+
 }

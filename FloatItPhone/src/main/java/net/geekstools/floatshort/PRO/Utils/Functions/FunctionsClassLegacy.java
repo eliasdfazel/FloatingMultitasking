@@ -116,7 +116,6 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions;
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder;
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone;
-import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForHIS;
 import net.geekstools.floatshort.PRO.Shortcuts.PopupDialogue.PopupOptionsFloatingShortcuts;
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems;
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling;
@@ -220,30 +219,6 @@ public class FunctionsClassLegacy {
             }
         }
 
-    }
-
-    public void runUnlimitedShortcutsServiceHIS(String packageName, String className) {
-        if (!Settings.canDrawOverlays(context)) {
-            context.startActivity(new Intent(context, Checkpoint.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-
-            return;
-        }
-
-        PublicVariable.allFloatingCounter++;
-
-        Intent u = new Intent(context, FloatingShortcutsForHIS.class);
-        u.putExtra("PackageName", packageName);
-        u.putExtra("ClassName", className);
-        u.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(u);
-
-        if (PublicVariable.allFloatingCounter == 1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, BindServices.class));
-            } else {
-                context.startService(new Intent(context, BindServices.class));
-            }
-        }
     }
 
     public void PopupOptionShortcuts(View anchorView, final String packageName, String classNameCommand, int startId, int X, int Y) {

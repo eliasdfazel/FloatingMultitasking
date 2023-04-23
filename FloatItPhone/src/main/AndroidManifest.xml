@@ -279,18 +279,6 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/Transparent"/>
         <activity
-            android:name=".Utils.RemoteTask.Create.CreateFloatingShortcuts"
-            android:exported="true"
-            android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:theme="@style/Transparent">
-            <intent-filter>
-                <action android:name="Create_Floating_Shortcuts"/>
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".Utils.RemoteTask.Create.FloatIt"
             android:exported="true"
             android:excludeFromRecents="true"
@@ -474,17 +462,6 @@
             android:name=".Shortcuts.FloatingServices.FloatingShortcutsForFrequentlyApplications"/>
 
         <service
-            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForWifi"/>
-        <service
-            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForBluetooth"/>
-        <service
-            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForGps"/>
-        <service
-            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForNfc"/>
-        <service
-            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForTime"/>
-
-        <service
             android:name=".Folders.FloatingServices.FloatingFolders" />
         <service
             android:name=".Folders.FloatingServices.FloatingFoldersForWifi" />
@@ -499,8 +476,6 @@
 
         <service android:name=".Widgets.FloatingServices.WidgetUnlimitedFloating" />
 
-        <service
-            android:name=".Shortcuts.FloatingServices.FloatingShortcutsForHIS"/>
         <!-- Float It -->
 
         <service

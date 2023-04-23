@@ -21,7 +21,7 @@
     </item>
 
     <item
-        android:bottom="57dp">
+        android:bottom="73dp">
         <bitmap
             android:gravity="bottom"
             android:src="@drawable/float_it_icon_text" />
