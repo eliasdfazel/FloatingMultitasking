@@ -579,10 +579,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                 }
                             }.addOnFailureListener { exception ->
 
-                                println(">>> >> > " + exception)
-                                println(">>> >> > " + exception.message)
-                                println(">>> >> > " + exception.printStackTrace())
-
                                 waitingDialogueLiveData.run {
                                     this.dialogueTitle.value = getString(R.string.error)
                                     this.dialogueMessage.value = exception.message
