@@ -3337,25 +3337,24 @@ public class FunctionsClassLegacy {
 
         int dominantColor = context.getColor(R.color.default_color);
 
-        try {
+        WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
 
-            WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O_MR1) {
 
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O_MR1) {
+            WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
 
-                WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-
+            try {
                 vibrantColor = wallpaperColors.getSecondaryColor().toArgb();
-                darkMutedColor = wallpaperColors.getTertiaryColor().toArgb();
-                dominantColor = wallpaperColors.getPrimaryColor().toArgb();
+            } catch (Exception e) {}
 
+            try {
+                vibrantColor = wallpaperColors.getSecondaryColor().toArgb();
+            } catch (Exception e) {}
+
+            try {
                 darkMutedColorString = String.valueOf(darkMutedColor);
+            } catch (Exception e) {}
 
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(".themeColor", Context.MODE_PRIVATE);
