@@ -14,12 +14,14 @@ import android.app.AppOpsManager
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.os.Process
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
-import java.util.*
 
 interface SmartFeaturesResult {
     fun frequentlyUsedApplicationsReady(frequentlyUsedApplications: List<String>?) {}
@@ -72,7 +74,11 @@ class SmartFeatures {
                             frequentlyUsedApps.add(it)
                         }
 
-                smartFeaturesResult.frequentlyUsedApplicationsReady(frequentlyUsedApps.distinct())
+                smartFeaturesResult.frequentlyUsedApplicationsReady(if (frequentlyUsedApps.size > maxValue) {
+                    frequentlyUsedApps.distinct().subList(0, maxValue)
+                } else {
+                    frequentlyUsedApps.distinct()
+                })
 
                 frequentlyUsedApps.distinct()
             }

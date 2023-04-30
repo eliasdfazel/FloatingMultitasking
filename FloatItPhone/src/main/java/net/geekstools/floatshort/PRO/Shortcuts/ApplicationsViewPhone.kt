@@ -796,7 +796,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         /*Indexed Popup Fast Scroller*/
         val indexedFastScroller: IndexedFastScroller = IndexedFastScroller(
-                context = applicationContext,
+                context = this@ApplicationsViewPhone,
                 layoutInflater = layoutInflater,
                 rootView = hybridApplicationViewBinding.MainView,
                 nestedScrollView = hybridApplicationViewBinding.nestedScrollView,
@@ -806,7 +806,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     popupEnable = !applicationsViewPhoneDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
                     popupBackgroundTint = PublicVariable.primaryColor,
                     popupTextColor = PublicVariable.colorLightDarkOpposite,
-                    indexItemTextColor = PublicVariable.colorLightDarkOpposite)
+                    indexItemTextColor = PublicVariable.colorLightDarkOpposite,
+                    popupVerticalOffset = (77/2).toFloat()
+                )
         )
         indexedFastScroller.initializeIndexView().await()
                 .loadIndexData(listOfNewCharOfItemsForIndex = listOfNewCharOfItemsForIndex).await()

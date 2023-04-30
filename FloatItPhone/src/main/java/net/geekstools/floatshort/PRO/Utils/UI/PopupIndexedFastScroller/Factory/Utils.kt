@@ -13,6 +13,7 @@ package net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory
 import android.content.Context
 import android.content.res.Resources
 import android.util.TypedValue
+import androidx.appcompat.app.AppCompatActivity
 
 fun Float.convertToDp(context: Context) : Int {
 
@@ -21,15 +22,15 @@ fun Float.convertToDp(context: Context) : Int {
             context.resources.displayMetrics).toInt()
 }
 
-fun calculateStatusBarHeight(resources: Resources) : Int {
-    var navigationBarHeight = 0
+fun calculateStatusBarHeight(context: AppCompatActivity) : Int {
+    var statusBarHeight = 0
 
-    val resourceIdNavigationBar: Int = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+    val resourceIdNavigationBar: Int = context.resources.getIdentifier("navigation_bar_height", "dimen", "android")
     if (resourceIdNavigationBar > 0) {
-        navigationBarHeight = resources.getDimensionPixelSize(resourceIdNavigationBar)
+        statusBarHeight = context.resources.getDimensionPixelSize(resourceIdNavigationBar)
     }
 
-    return navigationBarHeight
+    return statusBarHeight
 }
 
 

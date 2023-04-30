@@ -11,7 +11,6 @@
 package net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -24,6 +23,7 @@ import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import net.geekstools.floatshort.PRO.R
@@ -50,7 +50,7 @@ import java.util.*
  *
  * @param indexedFastScrollerFactory Change Default Value Or Just Pass IndexedFastScrollerFactory()
  **/
-class IndexedFastScroller(private val context: Context,
+class IndexedFastScroller(private val context: AppCompatActivity,
                           private val layoutInflater: LayoutInflater,
                           private val rootView: ViewGroup,
                           private val nestedScrollView: ScrollView,
@@ -58,7 +58,7 @@ class IndexedFastScroller(private val context: Context,
                           private val fastScrollerIndexViewBinding: FastScrollerIndexViewBinding,
                           private val indexedFastScrollerFactory: IndexedFastScrollerFactory) {
 
-    private val statusBarHeight = calculateStatusBarHeight(context.resources)
+    private val statusBarHeight = calculateStatusBarHeight(context)
     private val navigationBarBarHeight = calculateNavigationBarHeight(context.resources)
 
     private val finalPopupVerticalOffset: Int = indexedFastScrollerFactory.popupVerticalOffset.convertToDp(context)
@@ -135,7 +135,7 @@ class IndexedFastScroller(private val context: Context,
 
         mapIndexFirstItem.keys.forEach { indexText ->
             sideIndexItem = layoutInflater.inflate(R.layout.fast_scroller_side_index_item, null) as TextView
-            sideIndexItem.text = indexText.toUpperCase(Locale.getDefault())
+            sideIndexItem.text = indexText.uppercase(Locale.getDefault())
             sideIndexItem.setTextColor(indexedFastScrollerFactory.indexItemTextColor)
             sideIndexItem.typeface = indexedFastScrollerFactory.indexItemFont
             sideIndexItem.setTextSize(TypedValue.COMPLEX_UNIT_SP, indexedFastScrollerFactory.indexItemSize)
@@ -180,7 +180,8 @@ class IndexedFastScroller(private val context: Context,
         val popupIndexOffsetY = (
                 statusBarHeight
                         + navigationBarBarHeight
-                        + finalPopupVerticalOffset).toFloat()
+                        + finalPopupVerticalOffset
+                ).toFloat()
 
         fastScrollerIndexViewBinding.nestedIndexScrollView.setOnTouchListener { view, motionEvent ->
 

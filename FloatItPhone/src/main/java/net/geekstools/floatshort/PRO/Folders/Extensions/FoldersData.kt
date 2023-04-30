@@ -14,14 +14,19 @@ import android.content.pm.ApplicationInfo
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.geekstools.floatshort.PRO.Folders.FoldersApplicationsSelectionProcess.Adapter.AppSelectionListAdapter
 import net.geekstools.floatshort.PRO.Folders.FoldersApplicationsSelectionProcess.AppSelectionList
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.IndexedFastScrollerFactory
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFastScroller
-import java.util.*
+import java.util.Collections
+import java.util.Locale
 
 fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
     installedAppsListItem.clear()
@@ -98,7 +103,7 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
 
     /*Indexed Popup Fast Scroller*/
     val indexedFastScroller: IndexedFastScroller = IndexedFastScroller(
-            context = applicationContext,
+            context = this@loadInstalledAppsData,
             layoutInflater = layoutInflater,
             rootView = advanceAppSelectionListBinding.MainView,
             nestedScrollView = advanceAppSelectionListBinding.nestedScrollView,
@@ -108,7 +113,9 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
                 popupEnable = !functionsClassLegacy.litePreferencesEnabled(),
                 popupBackgroundTint = PublicVariable.primaryColor,
                 popupTextColor = PublicVariable.colorLightDark,
-                indexItemTextColor = PublicVariable.colorLightDarkOpposite)
+                indexItemTextColor = PublicVariable.colorLightDarkOpposite,
+                popupVerticalOffset = (77/2).toFloat()
+            )
     )
     indexedFastScroller.initializeIndexView().await()
             .loadIndexData(listOfNewCharOfItemsForIndex = listOfNewCharOfItemsForIndex).await()

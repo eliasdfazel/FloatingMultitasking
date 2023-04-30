@@ -168,7 +168,7 @@ class Configurations : AppCompatActivity() {
 
         val smartFeatures: SmartFeatures = SmartFeatures()
 
-        smartFeatures.letMeKnow(this@Configurations, 25, (86400000 * 7).toLong(), System.currentTimeMillis(),
+        smartFeatures.letMeKnow(this@Configurations, 13, (86400000 * 7).toLong(), System.currentTimeMillis(),
                 object : SmartFeaturesResult {
 
                     override fun frequentlyUsedApplicationsReady(frequentlyUsedApplications: List<String>?) {

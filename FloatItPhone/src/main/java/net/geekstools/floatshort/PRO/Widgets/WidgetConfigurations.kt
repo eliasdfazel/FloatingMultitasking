@@ -1199,16 +1199,18 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     private fun loadWidgetsIndexConfigured() = CoroutineScope(SupervisorJob() + Dispatchers.IO).async {
         /*Indexed Popup Fast Scroller*/
         val indexedFastScroller: IndexedFastScroller = IndexedFastScroller(
-                context = applicationContext,
+                context = this@WidgetConfigurations,
                 layoutInflater = layoutInflater,
                 rootView = widgetConfigurationsViewsBinding.MainView,
                 nestedScrollView = widgetConfigurationsViewsBinding.configuredWidgetNestedScrollView,
                 recyclerView = widgetConfigurationsViewsBinding.configuredWidgetList,
                 fastScrollerIndexViewBinding = widgetConfigurationsViewsBinding.fastScrollerIndexIncludeConfigured,
                 indexedFastScrollerFactory = IndexedFastScrollerFactory(
-                        popupEnable = !widgetConfigurationsDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
-                        popupTextColor = PublicVariable.colorLightDarkOpposite,
-                        indexItemTextColor = PublicVariable.colorLightDarkOpposite)
+                    popupEnable = !widgetConfigurationsDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
+                    popupTextColor = PublicVariable.colorLightDarkOpposite,
+                    indexItemTextColor = PublicVariable.colorLightDarkOpposite,
+                    popupVerticalOffset = (77/2).toFloat()
+                )
         )
         indexedFastScroller.initializeIndexView().await()
                 .loadIndexData(listOfNewCharOfItemsForIndex = indexListConfigured).await()
@@ -1218,16 +1220,18 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     private fun loadWidgetsIndexInstalled() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
         /*Indexed Popup Fast Scroller*/
         val indexedFastScroller: IndexedFastScroller = IndexedFastScroller(
-                context = applicationContext,
+                context = this@WidgetConfigurations,
                 layoutInflater = layoutInflater,
                 rootView = widgetConfigurationsViewsBinding.MainView,
                 nestedScrollView = widgetConfigurationsViewsBinding.installedNestedScrollView,
                 recyclerView = widgetConfigurationsViewsBinding.installedWidgetList,
                 fastScrollerIndexViewBinding = widgetConfigurationsViewsBinding.fastScrollerIndexIncludeInstalled,
                 indexedFastScrollerFactory = IndexedFastScrollerFactory(
-                        popupEnable = !widgetConfigurationsDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
-                        popupTextColor = PublicVariable.colorLightDarkOpposite,
-                        indexItemTextColor = PublicVariable.colorLightDarkOpposite)
+                    popupEnable = !widgetConfigurationsDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
+                    popupTextColor = PublicVariable.colorLightDarkOpposite,
+                    indexItemTextColor = PublicVariable.colorLightDarkOpposite,
+                    popupVerticalOffset = (77/2).toFloat()
+                )
         )
         indexedFastScroller.initializeIndexView().await()
                 .loadIndexData(listOfNewCharOfItemsForIndex = indexListInstalled).await()
