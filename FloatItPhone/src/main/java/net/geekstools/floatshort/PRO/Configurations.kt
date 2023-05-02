@@ -156,7 +156,7 @@ class Configurations : AppCompatActivity() {
         checkUserInformation()
         initializeParameterUI()
 
-        functionsClassLegacy.updateRecoverShortcuts()
+        RuntimeIO(applicationContext).updateRecoverShortcuts()
 
     }
 

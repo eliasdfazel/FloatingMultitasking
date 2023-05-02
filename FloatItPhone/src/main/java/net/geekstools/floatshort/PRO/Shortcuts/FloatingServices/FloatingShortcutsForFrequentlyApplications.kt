@@ -46,6 +46,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.Functions.RuntimeIO
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.databinding.FloatingShortcutsBinding
@@ -264,7 +265,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
             /*Update Floating Shortcuts Database*/
             functionsClassLegacy.saveUnlimitedShortcutsService(packageNames[startId])
-            functionsClassLegacy.updateRecoverShortcuts()
+            RuntimeIO(applicationContext).updateRecoverShortcuts()
             /*Update Floating Shortcuts Database*/
 
             appIcons.add(startId, functionsClassLegacy.shapedAppIcon(packageNames[startId]))

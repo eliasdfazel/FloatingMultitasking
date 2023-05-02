@@ -130,10 +130,7 @@ import net.geekstools.imageview.customshapes.ShapesImage;
 
 import org.lsposed.hiddenapibypass.HiddenApiBypass;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -2450,7 +2447,9 @@ public class FunctionsClassLegacy {
                             FunctionsClassLegacy.this
                     );
                 }
-                updateRecoverShortcuts();
+
+                new RuntimeIO(context).updateRecoverShortcuts();
+
                 return true;
             }
         });
@@ -2730,29 +2729,6 @@ public class FunctionsClassLegacy {
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
-    }
-
-    public void updateRecoverShortcuts() {
-        try {
-            if (context.getFileStreamPath(".uFile").exists()) {
-                PublicVariable.recoveryFloatingShortcuts = new ArrayList<String>();
-
-                FileInputStream fileInputStream = new FileInputStream(context.getFileStreamPath(".uFile"));
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-
-                String line = "";
-                int u = 0;
-                while ((line = bufferedReader.readLine()) != null) {
-                    PublicVariable.recoveryFloatingShortcuts.add(u, line);
-                    u++;
-                }
-
-                fileInputStream.close();
-                bufferedReader.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public boolean loadRecoveryIndicator(String packageName) {

@@ -29,6 +29,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.Functions.RuntimeIO
 import net.geekstools.imageview.customshapes.ShapesImage
 
 class ApplicationsViewItemsAdapter(private val context: Context,
@@ -134,7 +135,7 @@ class ApplicationsViewItemsAdapter(private val context: Context,
             viewHolderBinder.recoveryIndicator.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
             viewHolderBinder.recoveryIndicator.visibility = View.INVISIBLE
 
-            functionsClassLegacy.updateRecoverShortcuts()
+            RuntimeIO(context).updateRecoverShortcuts()
         }
     }
 
