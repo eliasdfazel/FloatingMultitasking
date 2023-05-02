@@ -11,11 +11,21 @@
 package net.geekstools.floatshort.PRO.Utils.Functions
 
 import android.app.Activity
-import android.app.WallpaperManager
 import android.content.Context
 import android.content.pm.ActivityInfo
-import android.graphics.*
-import android.graphics.drawable.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.LightingColorFilter
+import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.drawable.AdaptiveIconDrawable
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
@@ -55,43 +65,6 @@ class BitmapExtractor(private val context: Context) {
             PublicVariable.colorLightDarkOpposite = context.getColor(R.color.light)
         }
         PublicVariable.dominantColor = sharedPreferences.getInt("dominantColor", context.getColor(R.color.default_color))
-    }
-
-    fun extractWallpaperColor() {
-        var vibrantColor: Int
-        var darkMutedColor: Int
-        var dominantColor: Int
-        var darkMutedColorString: String
-        val currentColor: Palette
-        try {
-            val wallpaperManager = WallpaperManager.getInstance(context)
-            val currentWallpaper = wallpaperManager.drawable
-            val bitmap = (currentWallpaper as BitmapDrawable).bitmap
-            currentColor = if (bitmap != null && !bitmap.isRecycled) {
-                Palette.from(bitmap).generate()
-            } else {
-                val bitmapTemp = BitmapFactory.decodeResource(context.resources, R.drawable.brilliant)
-                Palette.from(bitmapTemp).generate()
-            }
-            val defaultColor = context.getColor(R.color.default_color)
-            vibrantColor = currentColor.getVibrantColor(defaultColor)
-            darkMutedColor = currentColor.getDarkMutedColor(defaultColor)
-            darkMutedColorString = "#" + Integer.toHexString(currentColor.getDarkMutedColor(defaultColor)).substring(2)
-            dominantColor = currentColor.getDominantColor(defaultColor)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            vibrantColor = context.getColor(R.color.default_color)
-            darkMutedColor = context.getColor(R.color.default_color)
-            darkMutedColorString = "" + context.getColor(R.color.default_color)
-            dominantColor = context.getColor(R.color.default_color)
-        }
-        val sharedPreferences = context.getSharedPreferences(".themeColor", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putInt("vibrantColor", vibrantColor)
-        editor.putInt("darkMutedColor", darkMutedColor)
-        editor.putString("darkMutedColorString", darkMutedColorString)
-        editor.putInt("dominantColor", dominantColor)
-        editor.apply()
     }
 
     fun extractVibrantColor(drawable: Drawable?): Int {
@@ -139,7 +112,7 @@ class BitmapExtractor(private val context: Context) {
     }
 
     fun extractDominantColor(drawable: Drawable?): Int {
-        var DominanctColor = context.getColor(R.color.default_color)
+        var dominantColor = if (PublicVariable.themeLightDark) context.getColor(R.color.light) else context.getColor(R.color.dark)
         var bitmap: Bitmap?
         if (Build.VERSION.SDK_INT >= 26) {
             if (drawable is VectorDrawable) {
@@ -165,7 +138,7 @@ class BitmapExtractor(private val context: Context) {
             if (bitmap != null && !bitmap.isRecycled) {
                 currentColor = Palette.from(bitmap).generate()
                 val defaultColor = context.getColor(R.color.default_color)
-                DominanctColor = currentColor.getDominantColor(defaultColor)
+                dominantColor = currentColor.getDominantColor(defaultColor)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -173,13 +146,13 @@ class BitmapExtractor(private val context: Context) {
                 if (bitmap != null && !bitmap.isRecycled) {
                     currentColor = Palette.from(bitmap).generate()
                     val defaultColor = context.getColor(R.color.default_color)
-                    DominanctColor = currentColor.getMutedColor(defaultColor)
+                    dominantColor = currentColor.getMutedColor(defaultColor)
                 }
             } catch (e1: Exception) {
                 e1.printStackTrace()
             }
         }
-        return DominanctColor
+        return dominantColor
     }
 
     fun brightenBitmap(bitmap: Bitmap?): Bitmap? {

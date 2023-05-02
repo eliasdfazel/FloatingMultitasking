@@ -66,6 +66,7 @@ public class PublicVariable {
 
     public static boolean inMemory = false;
     public static boolean hearBeatCheckPoint = false;
+
     /**
      * True -> Light
      * False -> Dark

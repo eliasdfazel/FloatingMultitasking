@@ -13,6 +13,7 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.Utils.OpenActions
+import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -46,10 +47,15 @@ class FloatIt : AppCompatActivity() {
         } catch (e: NullPointerException) {
             intent.getStringExtra("packageName")!!
         }
+
         val aClassName = try {
             intent.getStringExtra("ClassName")!!
         } catch (e: NullPointerException) {
-            intent.getStringExtra("packageName")!!
+            try {
+                intent.getStringExtra("PackageName")!!
+            } catch (e: NullPointerException) {
+                intent.getStringExtra("packageName")!!
+            }
         }
 
         val sharedPreferencesPosition = getSharedPreferences(aClassName, Context.MODE_PRIVATE)
@@ -66,9 +72,19 @@ class FloatIt : AppCompatActivity() {
             } else {
 
                 if (aPackageName == aClassName) {
+
+                    FloatingServices(applicationContext)
+                        .runUnlimitedShortcutsServicePackage(aPackageName)
+
                     openActions.startProcess(aPackageName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+
                 } else {
+
+                    FloatingServices(applicationContext)
+                        .runUnlimitedShortcutsService(aPackageName, aClassName)
+
                     openActions.startProcess(aPackageName, aClassName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+
                 }
 
             }

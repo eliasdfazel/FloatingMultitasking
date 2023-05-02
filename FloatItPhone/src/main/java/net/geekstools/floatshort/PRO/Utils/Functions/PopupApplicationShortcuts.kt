@@ -40,8 +40,8 @@ class PopupApplicationShortcuts (private val context: Context) {
             val shortcutManager: ShortcutManager = context.getSystemService(ShortcutManager::class.java)
             shortcutManager.removeAllDynamicShortcuts()
 
-            val shortcutInfos: MutableList<ShortcutInfo> = ArrayList()
-            shortcutInfos.clear()
+            val shortcutsInfo: MutableList<ShortcutInfo> = ArrayList()
+            shortcutsInfo.clear()
 
             val intent = Intent()
             intent.setClass(context, FloatIt::class.java)
@@ -65,7 +65,7 @@ class PopupApplicationShortcuts (private val context: Context) {
                                 .setIntent(intent)
                                 .setRank(i)
                                 .build()
-                        shortcutInfos.add(shortcutInfo)
+                        shortcutsInfo.add(shortcutInfo)
 
                     }
 
@@ -92,7 +92,7 @@ class PopupApplicationShortcuts (private val context: Context) {
                                     .setIntent(intent)
                                     .setRank(i)
                                     .build()
-                            shortcutInfos.add(shortcutInfo)
+                            shortcutsInfo.add(shortcutInfo)
 
                         }
 
@@ -103,7 +103,7 @@ class PopupApplicationShortcuts (private val context: Context) {
             try {
                 var dynamicLabel: String? = null
                 if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1") == "0") {
-                    shortcutManager.addDynamicShortcuts(shortcutInfos)
+                    shortcutManager.addDynamicShortcuts(shortcutsInfo)
                     return
                 } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1") == "1") {
                     intent.action = "Remote_Recover_Shortcuts"
@@ -143,12 +143,12 @@ class PopupApplicationShortcuts (private val context: Context) {
                         .setIntent(intent)
                         .setRank(5)
                         .build()
-                shortcutInfos.add(shortcutInfo)
+                shortcutsInfo.add(shortcutInfo)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
 
-            shortcutManager.addDynamicShortcuts(shortcutInfos)
+            shortcutManager.addDynamicShortcuts(shortcutsInfo)
 
         }
     }
