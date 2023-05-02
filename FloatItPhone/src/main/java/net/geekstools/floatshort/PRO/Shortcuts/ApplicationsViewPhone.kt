@@ -807,7 +807,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     popupBackgroundTint = PublicVariable.primaryColor,
                     popupTextColor = PublicVariable.colorLightDarkOpposite,
                     indexItemTextColor = PublicVariable.colorLightDarkOpposite,
-                    popupVerticalOffset = (77/2).toFloat()
+                    popupVerticalOffset = (77/3).toFloat()
                 )
         )
         indexedFastScroller.initializeIndexView().await()

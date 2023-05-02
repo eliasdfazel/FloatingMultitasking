@@ -1209,7 +1209,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     popupEnable = !widgetConfigurationsDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
                     popupTextColor = PublicVariable.colorLightDarkOpposite,
                     indexItemTextColor = PublicVariable.colorLightDarkOpposite,
-                    popupVerticalOffset = (77/2).toFloat()
+                    popupVerticalOffset = (77/3).toFloat()
                 )
         )
         indexedFastScroller.initializeIndexView().await()
@@ -1230,7 +1230,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     popupEnable = !widgetConfigurationsDependencyInjection.functionsClassLegacy.litePreferencesEnabled(),
                     popupTextColor = PublicVariable.colorLightDarkOpposite,
                     indexItemTextColor = PublicVariable.colorLightDarkOpposite,
-                    popupVerticalOffset = (77/2).toFloat()
+                    popupVerticalOffset = (77/3).toFloat()
                 )
         )
         indexedFastScroller.initializeIndexView().await()

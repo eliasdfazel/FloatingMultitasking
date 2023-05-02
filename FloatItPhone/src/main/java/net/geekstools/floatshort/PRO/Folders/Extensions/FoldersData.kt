@@ -114,7 +114,7 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
                 popupBackgroundTint = PublicVariable.primaryColor,
                 popupTextColor = PublicVariable.colorLightDark,
                 indexItemTextColor = PublicVariable.colorLightDarkOpposite,
-                popupVerticalOffset = (77/2).toFloat()
+                popupVerticalOffset = (77/3).toFloat()
             )
     )
     indexedFastScroller.initializeIndexView().await()
