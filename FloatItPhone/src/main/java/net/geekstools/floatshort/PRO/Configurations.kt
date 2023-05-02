@@ -156,6 +156,8 @@ class Configurations : AppCompatActivity() {
         checkUserInformation()
         initializeParameterUI()
 
+        functionsClassLegacy.updateRecoverShortcuts()
+
     }
 
     override fun onDestroy() {

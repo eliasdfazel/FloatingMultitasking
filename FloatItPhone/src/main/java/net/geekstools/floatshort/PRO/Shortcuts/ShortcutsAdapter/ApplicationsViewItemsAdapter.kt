@@ -14,12 +14,11 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.RippleDrawable
-import android.os.Handler
-import android.os.Looper
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -31,7 +30,6 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FloatingServices
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.imageview.customshapes.ShapesImage
-import java.util.*
 
 class ApplicationsViewItemsAdapter(private val context: Context,
                                    private val adapterItemsApplications: ArrayList<AdapterItemsApplications>) : RecyclerView.Adapter<ApplicationsViewItemsAdapter.ViewHolder>() {
@@ -111,10 +109,10 @@ class ApplicationsViewItemsAdapter(private val context: Context,
             floatingServices
                     .runUnlimitedShortcutsService(packageName, className)
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                viewHolderBinder.recoveryIndicator.background = recoveryIndicatorDrawable
-                viewHolderBinder.recoveryIndicator.visibility = View.VISIBLE
-            }, 300)
+            viewHolderBinder.recoveryIndicator.background = recoveryIndicatorDrawable
+            viewHolderBinder.recoveryIndicator.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
+            viewHolderBinder.recoveryIndicator.visibility = View.VISIBLE
+
         }
 
         viewHolderBinder.fullItemView.setOnLongClickListener { view ->
@@ -133,6 +131,7 @@ class ApplicationsViewItemsAdapter(private val context: Context,
         viewHolderBinder.recoveryIndicator.setOnClickListener {
             fileIO.removeLine(".uFile", adapterItemsApplications[position].PackageName)
 
+            viewHolderBinder.recoveryIndicator.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
             viewHolderBinder.recoveryIndicator.visibility = View.INVISIBLE
 
             functionsClassLegacy.updateRecoverShortcuts()
