@@ -10,9 +10,9 @@
 
 <resources>
 
-    <string name="recovery_center">Recovery Center</string>
-    <string name="settingTitle">Preferences</string>
-    <string name="recoveryShortcuts">Recover Floating Shortcuts</string>
+    <string name="recovery_center">Sentro ng pagbawi</string>
+    <string name="settingTitle">Mga Kagustuhan</string>
+    <string name="recoveryShortcuts">I-recover ang Mga Lumulutang na Shortcut</string>
     <string name="overlayPermission">I-on ang Pahintulot, Pakiusap!</string>
     <string name="bindDesc">Mag-swipe pababa para makakita ng higit pang mga opsyon</string>
     <string name="dark">Madilim</string>
@@ -25,13 +25,13 @@
     <string name="large">Malaki</string>
     <string name="addRecovery">Idagdag sa Pagbawi</string>
     <string name="addFolder">Bagong folder</string>
-    <string name="removeRecovery">Remove From Recovery</string>
+    <string name="removeRecovery">Alisin Mula sa Pagbawi</string>
     <string name="index_item">S</string>
-    <string name="not_install">HINDI AVAILABLE ANG APP</string>
-    <string name="updating_info">Updating Applications Information</string>
+    <string name="not_install">HINDI MAGAGAMIT</string>
+    <string name="updating_info">Pag-update ng Impormasyon ng Mga Aplikasyon</string>
     <string name="supportCategory">Support Center</string>
-    <string name="supportTitle">Help &amp; Feedback</string>
-    <string name="privacyTitle">Privacy Policy</string>
+    <string name="supportTitle">Tulong at puna</string>
+    <string name="privacyTitle">Patakaran sa Privacy</string>
     <string name="deleteAccount">Tanggalin ang iyong account</string>
     <string name="alphaTitle">Thanks for Joining Beta Program. Always Appreciate your Feedback!</string>
     <string name="signinTitle">Welcome to Geeks Empire!</string>
@@ -39,12 +39,12 @@
     <string name="signinFinished"> ⚡ Become Master Of Multitasking ⚡ </string>
     <string name="permTitle">
         <![CDATA[
-            <b>Permissions Info</b>, Be Patient!
+            <b>Impormasyon sa Pahintulot</b>, Maging Mapagpasensya!
         ]]>
     </string>
     <string name="permDesc">
         <![CDATA[
-            <b>Hi</b>&#8230; &#9786;<br/>Kailangan ko ang iyong Pahintulot upang lumikha ng <b>Mga Shortcut sa Floating View</b>.
+            <b>Hi</b>&#8230; &#9786;<br/>Kailangan ko ang iyong Pahintulot upang lumikha ng <b>Mga Shortcut sa Lumulutang View</b>.
             Mangyaring Magbigay ng pahintulot sa pamamagitan ng Pag-enable sa Switch.<br/>
             Para din akong maging Mas Matalino Mangyaring pumunta sa Mga Kagustuhan, Mga Detalye &amp; Praktikal na Impormasyon para Paganahin ang Mga Matalinong Tampok<br/>
             Pindutin ang grant upang magpatuloy sa mga setting.<br/>
@@ -54,7 +54,7 @@
     <string name="split_service_desc">
         Split Float It | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)\n\n♿ How it Helps People with Disability?\nIt is difficult for people with disability to open an app Or switch between apps. I am using Accessibility Service to enter Multi-Window Mode to open two apps together.
     </string>
-    <string name="split_service_summary">Split Float It  | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)</string>
+    <string name="split_service_summary">Split Float It | Ang Pahintulot na ito ay Nagbibigay sa akin ng Kakayahang Gumawa ng Multi-Window &amp; Buksan ang Apps sa Split Screen Sabay-sabay (Android 7 &amp; Higher)</string>
     <string name="observeDesc">
         <![CDATA[
                 <br/>
@@ -98,33 +98,33 @@
                 </small>
         ]]>
     </string>
-    <string name="retry">Retry Now</string>
+    <string name="retry">Subukan muli Ngayon</string>
     <string name="observeSum">Android 7.0 (Nougat) +</string>
     <string name="grant">Pinayagang pahintulot</string>
     <string name="agree">Sumang-ayon</string>
-    <string name="skipNow">Not Now</string>
-    <string name="read">Read More</string>
+    <string name="skipNow">Hindi ngayon</string>
+    <string name="read">Magbasa pa</string>
     <string name="grantFreeForm">Tapos na</string>
     <string name="confirm">Kumpirmahin</string>
-    <string name="support">Contact Support</string>
-    <string name="ui_app">App Interface</string>
-    <string name="ui_floating">Floating Interface</string>
-    <string name="pref_floating">Floating Preferences</string>
+    <string name="support">Makipag-ugnayan sa Suporta</string>
+    <string name="ui_app">Interface ng App</string>
+    <string name="ui_floating">Lumulutang na Interface</string>
+    <string name="pref_floating">Mga Lumulutang na Kagustuhan</string>
     <string name="advance">Mga advanced na tampok</string>
-    <string name="wait">Please, Be Patient!</string>
+    <string name="wait">Mangyaring, Maging Mapagpasensya!</string>
     <string name="stable">Control Panel</string>
-    <string name="smartCategory">Smart Features</string>
-    <string name="smartTitle">Intelligent Services</string>
+    <string name="smartCategory">Mga Matalinong Tampok</string>
+    <string name="smartTitle">Mga Serbisyong Matalinong</string>
     <string name="floatingSearch">Lumulutang na Paghahanap</string>
-    <string name="smartSummary">Let Me Know…</string>
+    <string name="smartSummary">Ipaalam sa Akin…</string>
     <string name="smartPermission">
         <![CDATA[
             <br/>
-            This Permission Allows Me to Get List of <b>Frequently Used Application</b> to Set Quick Bar.<br/><br/>
-            Also, It is Essential for<br/>
-            1. <b>🔄 Remote Recovery of Floating Shortcuts/Folders</b> to Recognize Command…<br/>
+            Ang Pahintulot na Ito ay Nagbibigay-daan sa Akin na Kumuha ng Listahan ng Madalas Gamitin na Application para Magtakda ng Quick Bar.<br/><br/>
+            Gayundin, Ito ay Mahalaga para sa<br/>
+            1. <b>🔄 Malayong Pagbawi ng Mga Lumulutang na Shortcut/Folder</b> para Makilala ang Command…<br/>
             2. <b>🆗 Google! Open Float It</b><br/>
-            3. <b>🕐 Optimizing Floating Splash</b><br/>
+            3. <b>🕐 Pag-optimize ng Lumulutang Splash</b><br/>
         ]]>
     </string>
     <string name="observeTitle">Interaksyon Tagamasid</string>
@@ -140,7 +140,7 @@
         ]]>
     </string>
     <string name="notificationEmoji">🔔</string>
-    <string name="notificationTitle">Lumulutang na abiso</string>
+    <string name="notificationTitle">Lumulutang Notification</string>
     <string name="notificationSummary">Notification dot sa mga lumulutang na shortcut at folder</string>
     <string name="notificationDesc">
         <![CDATA[
@@ -154,68 +154,68 @@
     <string name="createShortcut">Lumikha ng Mga Shortcut sa Home Screen</string>
     <string name="deleteAlias">Alisin ang Mga Shortcut ng App Drawer</string>
     <string name="floatingFolders">Mga lumulutang na folder</string>
-    <string name="floatingWidget">Floating Widgets</string>
+    <string name="floatingWidget">Lumulutang Widgets</string>
     <string name="folderHint">Folders</string>
     <string name="widgetHint">Widgets</string>
-    <string name="widgetLabelHint">Type A Widget Label</string>
+    <string name="widgetLabelHint">Mag-type ng Label ng Widget</string>
     <string name="widgetPickerTitle">
         <![CDATA[
-            <small>Choose Widgets To Configure</small><br/>
-            <big>Press & Hold</big>
+            <small>Pumili ng Mga Widget na I-configure</small><br/>
+            <big>Pindutin nang matagal</big>
         ]]>
     </string>
     <string name="floatingHint">Shortcuts</string>
-    <string name="recover_apps">Recover Floating Shortcuts</string>
-    <string name="recover_folder">Recover Floating Folders</string>
-    <string name="recover_widgets">Recover Floating Widgets</string>
-    <string name="reallocatingWidgets"> 🔁 Reconfiguring… </string>
-    <string name="reconfiguringWidgets"> Reconfiguring… </string>
+    <string name="recover_apps">I-recover ang Mga Lumulutang na Shortcut</string>
+    <string name="recover_folder">I-recover ang mga Lumulutang na Folder</string>
+    <string name="recover_widgets">I-recover ang Mga Lumulutang na Widget</string>
+    <string name="reallocatingWidgets">" 🔁 Muling pag-configure… "</string>
+    <string name="reconfiguringWidgets">" Muling pag-configure… "</string>
     <string name="folderDescription">Maglagay ng Pangalan</string>
     <string name="colortext">Tema ng Kulay</string>
-    <string name="themeTrans">Transparent Theme</string>
+    <string name="themeTrans">Transparent na Tema</string>
     <string name="autotrans">Lumulutang na transparency</string>
     <string name="delayPressHold">Pagkaantala ng pop up menu</string>
     <string name="flingSensitivityTitle">Sensitivity ng Fling</string>
     <string name="flingSensitivitySummary">Magtapon ng mga lumulutang na shortcut at folder sa Paikot</string>
     <string name="delayPressHoldExtraInfo">Pindutin nang matagal ang icon upang subukan ang pagkaantala</string>
-    <string name="revertDefault">Set To Recommended Value</string>
-    <string name="splashTitle">Floating Splash</string>
-    <string name="splashDesc">Waiting Screen for Opening Apps</string>
-    <string name="shortsizepref">Floating Size</string>
-    <string name="stick">Sticky Edge</string>
-    <string name="shapesTitle">Floating Shapes</string>
-    <string name="shapedDesc">Set Shape to…</string>
+    <string name="revertDefault">Itakda Sa Inirerekomendang Halaga</string>
+    <string name="splashTitle">Lumulutang Splash</string>
+    <string name="splashDesc">Naghihintay na Screen para sa Pagbubukas ng Mga App</string>
+    <string name="shortsizepref">Lumulutang na Sukat</string>
+    <string name="stick">Malagkit na Gilid</string>
+    <string name="shapesTitle">Mga Lumulutang na Hugis</string>
+    <string name="shapedDesc">Itakda ang Hugis sa…</string>
     <string name="droplet">Droplet</string>
     <string name="circle">Bilog</string>
-    <string name="square">Square</string>
+    <string name="square">Parisukat</string>
     <string name="squircle">Squircle</string>
     <string name="noshape">Walang Hugis</string>
     <string name="iconPack">Mga Pakete ng Icon</string>
     <string name="defaultTheme">Itakda ang default na Tema ng Mga Icon</string>
     <string name="customIconTitle">Tema ng mga icon</string>
-    <string name="shortcuts">Floating Shortcuts</string>
+    <string name="shortcuts">Mga Lumulutang na Shortcut</string>
     <string name="boot_warning">Lahat</string>
     <string name="boot_none">Wala</string>
-    <string name="remove_all_floatings">REMOVE ALL</string>
-    <string name="remove_all">❌ Remove All</string>
-    <string name="recover_all">✔️ Recover All</string>
+    <string name="remove_all_floatings">Alisin lahat</string>
+    <string name="remove_all">❌ Alisin lahat</string>
+    <string name="recover_all">✔️ Bawiin Lahat</string>
     <string name="moveEdgeLeft">⬅️️ Ilipat sa Edge</string>
     <string name="moveEdgeRight">➡️️ Ilipat sa Edge</string>
     <string name="backToScreenLeft">➡️️️ Bumalik sa screen</string>
     <string name="backToScreenRight">⬅️️ Bumalik sa screen</string>
     <string name="pin">Pin Shortcut</string>
-    <string name="unpin">Unpin Shortcut</string>
+    <string name="unpin">I-unpin ang Shortcut</string>
     <string name="close">I-minimize Ito</string>
-    <string name="remove">Remove Shortcut</string>
+    <string name="remove">Alisin ang Shortcut</string>
     <string name="pin_folder">Pin Folder</string>
-    <string name="unpin_folder">Unpin Folder</string>
-    <string name="remove_folder">Remove</string>
+    <string name="unpin_folder">I-unpin ang Folder</string>
+    <string name="remove_folder">Alisin</string>
     <string name="floatIt">Float It</string>
-    <string name="splitIt">Split It</string>
+    <string name="splitIt">Hatiin Ito</string>
     <string name="deleteText">Tanggalin</string>
     <string name="edit_folder">"I-edit: "</string>
     <string name="freeFormTitle">Extended Float It</string>
-    <string name="freeFormDesc">Palaging Buksan ang Lahat ng Apps sa Floating View (FreeForm)</string>
+    <string name="freeFormDesc">Palaging Buksan ang Lahat ng Apps sa Lumulutang View (FreeForm)</string>
     <string name="liteTitle">lite na mga kagustuhan</string>
     <string name="liteSummary">Itakda ang Mga Kagustuhan sa Minimum para sa Mas Mahusay na Pagganap</string>
     <string name="liteDesc">
@@ -232,7 +232,7 @@
     </string>
 
     <!-- Search Engine -->
-    <string name="searchHint">Type To Search</string>
+    <string name="searchHint">I-type Upang Maghanap</string>
     <string name="searchFolderHint">
         <![CDATA[
             <small>| Folder</small>
@@ -245,10 +245,10 @@
     </string>
 
     <!-- Security Options -->
-    <string name="securityServices">Security Services</string>
+    <string name="securityServices">Mga serbisyo ng seguridad</string>
     <string name="changePin">I-pin ang password</string>
     <string name="changePinSummary">Gumawa O I-edit ang Pin Password</string>
-    <string name="passwordError">Error sa Password ⚠</string>
+    <string name="passwordError">Pagkakamali sa Password ⚠</string>
     <string name="authenticationProcessInvoked">
         <![CDATA[
             Ang proseso ng pagpapatunay ay na-invoke
@@ -260,22 +260,22 @@
     <!-- Finger Print -->
     <string name="fingerprint_not_recognized">Hindi nakilala ang fingerprint..\nSubukan Muli…</string>
     <string name="lockIt">I-lock Ito 🔒</string>
-    <string name="unLockIt">Unlock It 🔓</string>
-    <string name="pinHint">Enter Pin Password 🔑 </string>
+    <string name="unLockIt">I-unlock Ito 🔓</string>
+    <string name="pinHint">"Ilagay ang Pin Password 🔑 "</string>
     <string name="passwordHint">"Ipasok ang Bagong Pin Password 🔑 "</string>
     <string name="passwordHintRepeat">"Ulitin ang Bagong Pin Password 🔑 "</string>
     <string name="enterCurrentPassword">"Ipasok ang kasalukuyang password 🔑 "</string>
     <string name="forgetPassword">"Nakalimutan ang Iyong Password? 🤔 "</string>
     <string name="passwordResetSent">Email Para I-reset ang Pin Password Naipadala 📩 | Buksan Ito Sa Teleponong Ito 📱</string>
-    <string name="verifying">Verifying Authenticated Data 🔑</string>
+    <string name="verifying">Pag-verify ng napatotohanang data 🔑</string>
     <string name="floatingShortcutsSecurityService">Float It | Mga serbisyo ng seguridad</string>
-    <string name="securityWarningFingerprint"> ⚠ Security Warning | Fingerprint Is Not Set ⚠ </string>
+    <string name="securityWarningFingerprint">" ⚠ Babala sa Seguridad | Hindi Nakatakda ang Fingerprint ⚠ "</string>
     <!-- Finger Print -->
     <!-- Security Options -->
 
-    <string name="purchase"> Purchase 💸 </string>
+    <string name="purchase">" Bumili 💸 "</string>
     <string name="donate">"Magpadala ng Regalo 🎁 "</string>
-    <string name="purchaseFlowDisrupted">Purchase Flow Disrupted</string>
+    <string name="purchaseFlowDisrupted">Naantala ang Daloy ng Pagbili</string>
 
     <string-array name="ContextMenuLock">
         <item name="1">Small</item>
