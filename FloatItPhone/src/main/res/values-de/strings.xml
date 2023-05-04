@@ -69,7 +69,7 @@
     </string>
     <string name="freeFormInfo">
         <![CDATA[
-            ⚠️️Haftungsausschluss ⚠️️<br/>
+            ⚠️️ Haftungsausschluss ⚠️️<br/>
             ⚠ Die Durchführung dieses kleinen Hacks erfolgt auf eigene Gefahr<br/>
             ⚠ Bitte aktivieren Sie diese Funktion NICHT, wenn Sie nicht mit ADB (Android Debug Bridge) vertraut sind.<br/>
 ️            <br/><br/>
@@ -80,10 +80,10 @@
             4️⃣ Scrollen Sie nach unten, um die Größenanpassung von Aktivitäten zu erzwingen und zu aktivieren<br/>
             5️⃣ Verbinden Sie jetzt Ihr Gerät mit Ihrem Computer<br/>
             6️⃣ Öffnen Sie das Terminal (Befehlszeile) und geben Sie diese Befehle ein<br/>
-            7️⃣  <b>adb shell</b> <br/>
-            8️⃣️  <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
-            ➡️  If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
-            9️⃣  <b>adb reboot</b><br/>
+            7️⃣ <b>adb shell</b> <br/>
+            8️⃣️ <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
+            ➡️ If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
+            9️⃣ <b>adb reboot</b><br/>
             1️⃣0️⃣ Komm hierher zurück ⚙ & schalte Float It ein<br/>
             <br/><br/>
             ℹ️ Informationen ℹ️<br/>
@@ -147,7 +147,6 @@
         ]]>
     </string>
     <string name="createShortcut">Erstellen Sie Verknüpfungen zum Startbildschirm</string>
-    <string name="createAlias">Erstellen Sie App-Drawer-Verknüpfungen</string>
     <string name="deleteAlias">Entfernen Sie App-Drawer-Verknüpfungen</string>
     <string name="floatingFolders">Schwebende Ordner</string>
     <string name="floatingWidget">Schwebende Widgets</string>
@@ -169,7 +168,6 @@
     <string name="folderDescription">Geben Sie einen Namen ein</string>
     <string name="colortext">Farbthema</string>
     <string name="themeTrans">Transparentes Thema</string>
-    <string name="blurryTitle">Verschwommenes Thema</string>
     <string name="autotrans">Schwebende Transparenz</string>
     <string name="delayPressHold">Verzögerung des Popup-Menüs</string>
     <string name="flingSensitivityTitle">Schling enempfindlichkeit</string>

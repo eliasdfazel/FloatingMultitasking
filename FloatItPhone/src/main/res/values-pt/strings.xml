@@ -80,10 +80,10 @@
             4️⃣ Role para baixo para localizar e ativar as atividades de força para serem redimensionáveis<br/>
             5️⃣ Agora conecte seu dispositivo ao computador<br/>
             6️⃣ Abra o Terminal (linha de comando) e digite estes comandos<br/>
-            7️⃣  <b>adb shell</b> <br/>
-            8️⃣️  <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
-            ➡️  If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
-            9️⃣  <b>adb reboot</b><br/>
+            7️⃣ <b>adb shell</b> <br/>
+            8️⃣️ <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
+            ➡️ If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
+            9️⃣ <b>adb reboot</b><br/>
             1️⃣0️⃣ Volte aqui ⚙ e ligue o Float It
             <br/>
             ℹ️ Informações ℹ️<br/>
@@ -147,7 +147,6 @@
         ]]>
     </string>
     <string name="createShortcut">Criar atalhos na tela inicial</string>
-    <string name="createAlias">Criar atalhos da gaveta de aplicativos</string>
     <string name="deleteAlias">Remover atalhos da gaveta de aplicativos</string>
     <string name="floatingFolders">Pastas Flutuantes</string>
     <string name="floatingWidget">Widgets Flutuantes</string>
@@ -169,7 +168,6 @@
     <string name="folderDescription">Insira o nome</string>
     <string name="colortext">Tema de cores</string>
     <string name="themeTrans">Tema Transparente</string>
-    <string name="blurryTitle">Tema embaçado</string>
     <string name="autotrans">Flutuante Transparência</string>
     <string name="delayPressHold">Atraso do menu pop-up</string>
     <string name="flingSensitivityTitle">Sensibilidade de Arremessar</string>

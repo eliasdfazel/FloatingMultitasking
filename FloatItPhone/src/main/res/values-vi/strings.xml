@@ -79,16 +79,16 @@
                 ️<br/><br/>
                 Follow This Instructions to Enable System Settings<br/>
                 1️⃣️ Go to System Setting (<b>About</b> Section) <br/>
-                2️⃣  & Enable <b>Developer Options</b> by Clicking Few Times on <b>Build Number</b><br/>
-                3️⃣  Go to System Setting (Developer Options)<br/>
-                4️⃣  Scroll Down to Find & Enable <b>Force Activities to Be Resizable</b><br/>
-                5️⃣  Now Connect Your Device to Your Computer<br/>
-                6️⃣  Open Terminal (Command Line) & Type these Commands<br/>
-                7️⃣  <b>adb shell</b> <br/>
-                8️⃣️  <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
-                ➡️  If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
-                9️⃣  <b>adb reboot</b><br/>
-                1️⃣0️⃣  Come Back Here ⚙ & <b>Turn ON Float It</b>
+                2️⃣ & Enable <b>Developer Options</b> by Clicking Few Times on <b>Build Number</b><br/>
+                3️⃣ Go to System Setting (Developer Options)<br/>
+                4️⃣ Scroll Down to Find & Enable <b>Force Activities to Be Resizable</b><br/>
+                5️⃣ Now Connect Your Device to Your Computer<br/>
+                6️⃣ Open Terminal (Command Line) & Type these Commands<br/>
+                7️⃣ <b>adb shell</b> <br/>
+                8️⃣️ <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
+                ➡️ If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
+                9️⃣ <b>adb reboot</b><br/>
+                1️⃣0️⃣ Come Back Here ⚙ & <b>Turn ON Float It</b>
                 <br/><br/><br/>
                 <b>ℹ️ <font color=#ffd800>Information</font> ℹ️ </font><br/></b>
                 ⏺ First Create Floating Shortcuts then Clear \'<b>Recent Apps</b>\' List for This Feature to Work Properly (Android Nougat & Oreo)<br/>
@@ -152,7 +152,6 @@
         ]]>
     </string>
     <string name="createShortcut">Create Home Screen Shortcuts</string>
-    <string name="createAlias">Create App Drawer Shortcuts</string>
     <string name="deleteAlias">Remove App Drawer Shortcuts</string>
     <string name="floatingFolders">Floating Folders</string>
     <string name="floatingWidget">Floating Widgets</string>
@@ -174,7 +173,6 @@
     <string name="folderDescription">Enter A Name</string>
     <string name="colortext">Color Theme</string>
     <string name="themeTrans">Transparent Theme</string>
-    <string name="blurryTitle">Blurry Theme</string>
     <string name="autotrans">Floating Transparency</string>
     <string name="delayPressHold">Popup Menu Delay</string>
     <string name="flingSensitivityTitle">Fling Sensitivity</string>

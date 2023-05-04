@@ -82,10 +82,10 @@
                     4️⃣ Scorri verso il basso per trovare e abilitare Forza ridimensionamento delle attività<br/>
                     5️⃣ Ora collega il tuo dispositivo al computer<br/>
                     6️⃣ Apri il terminale (riga di comando) e digita questi comandi<br/>
-                    7️⃣  <b>adb shell</b> <br/>
-                    8️⃣️  <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
-                    ➡️  If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
-                    9️⃣  <b>adb reboot</b><br/>
+                    7️⃣ <b>adb shell</b> <br/>
+                    8️⃣️ <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
+                    ➡️ If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
+                    9️⃣ <b>adb reboot</b><br/>
                     1️⃣0️⃣ Torna qui ⚙ e attiva Float It
                     <br/>
                     ℹ️ Informazioni ℹ️<br/>
@@ -150,7 +150,6 @@
         ]]>
     </string>
     <string name="createShortcut">Crea scorciatoie per la schermata iniziale</string>
-    <string name="createAlias">Crea collegamenti al cassetto delle app</string>
     <string name="deleteAlias">Rimuovi le scorciatoie dal cassetto delle app</string>
     <string name="floatingFolders">Cartelle mobili</string>
     <string name="floatingWidget">Widget mobili</string>
@@ -172,7 +171,6 @@
     <string name="folderDescription">Inserisci un nome</string>
     <string name="colortext">Tema di colore</string>
     <string name="themeTrans">Tema trasparente</string>
-    <string name="blurryTitle">Tema sfocato</string>
     <string name="autotrans">Trasparenza fluttuante</string>
     <string name="delayPressHold">Ritardo del menu a comparsa</string>
     <string name="flingSensitivityTitle">Sensibilità al lancio</string>

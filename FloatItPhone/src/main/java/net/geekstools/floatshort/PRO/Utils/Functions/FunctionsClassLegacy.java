@@ -2836,67 +2836,6 @@ public class FunctionsClassLegacy {
         }
     }
 
-    public void ShortcutsDialogue(Activity instanceOfActivity, final Class className, final String activityAlias, final String shortcutName, final int drawableId) {
-        AlertDialog.Builder alertDialog = null;
-        if (PublicVariable.themeLightDark == true) {
-            alertDialog = new AlertDialog.Builder(instanceOfActivity, R.style.GeeksEmpire_Dialogue_Light);
-        } else if (PublicVariable.themeLightDark == false) {
-            alertDialog = new AlertDialog.Builder(instanceOfActivity, R.style.GeeksEmpire_Dialogue_Dark);
-        }
-        alertDialog.setCancelable(true);
-
-        final String aliasButton;
-        if (ComponentEnabled(context.getPackageManager(), context.getPackageName(), context.getPackageName() + activityAlias)) {
-            aliasButton = context.getString(R.string.deleteAlias);
-        } else {
-            aliasButton = context.getString(R.string.createAlias);
-        }
-        String[] shortcutOption = new String[]{context.getString(R.string.createShortcut), aliasButton};
-        alertDialog.setSingleChoiceItems(shortcutOption, 0, null);
-        alertDialog.setTitle(Html.fromHtml("<small>" + shortcutName + "</small>", Html.FROM_HTML_MODE_COMPACT));
-        alertDialog.setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                switch (selectedPosition) {
-                    case 0:
-                        //appToDesktop(className, shortcutName, drawableId);
-                        break;
-                    case 1:
-                        if (aliasButton.equals(context.getString(R.string.deleteAlias))) {
-                            context.getPackageManager().setComponentEnabledSetting(
-                                    new ComponentName(context.getPackageName(), context.getPackageName() + activityAlias),
-                                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-                        } else if (aliasButton.equals(context.getString(R.string.createAlias))) {
-                            context.getPackageManager().setComponentEnabledSetting(
-                                    new ComponentName(context.getPackageName(), context.getPackageName() + activityAlias),
-                                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                        }
-                        break;
-                }
-                dialog.dismiss();
-            }
-        });
-
-        alertDialog.setNegativeButton(context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-
-                dialog.dismiss();
-            }
-        });
-        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                dialog.dismiss();
-            }
-        });
-        try {
-            alertDialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public boolean checkStickyEdge() {
         boolean stickyEdge = true;
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
