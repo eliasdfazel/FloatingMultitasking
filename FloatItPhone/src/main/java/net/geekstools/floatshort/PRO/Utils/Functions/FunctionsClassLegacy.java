@@ -3230,15 +3230,25 @@ public class FunctionsClassLegacy {
         PublicVariable.darkMutedColorString = sharedPreferences.getString("darkMutedColorString", String.valueOf((context.getColor(R.color.default_color))));
 
         if (PublicVariable.themeLightDark) {
+
             PublicVariable.primaryColor = sharedPreferences.getInt("vibrantColor", context.getColor(R.color.default_color));//getVibrantColor
-            PublicVariable.primaryColorOpposite = sharedPreferences.getInt("darkMutedColor", context.getColor(R.color.default_color));//getDarkMutedColor
+
+            PublicVariable.primaryColorOpposite = sharedPreferences.getInt("darkMutedColor", context.getColor(R.color.default_color_game));//getDarkMutedColor
+
             PublicVariable.colorLightDark = context.getColor(R.color.light);
+
             PublicVariable.colorLightDarkOpposite = context.getColor(R.color.dark);
+
         } else if (!PublicVariable.themeLightDark) {
+
             PublicVariable.primaryColor = sharedPreferences.getInt("darkMutedColor", context.getColor(R.color.default_color));//getDarkMutedColor
-            PublicVariable.primaryColorOpposite = sharedPreferences.getInt("vibrantColor", context.getColor(R.color.default_color));//getVibrantColor
+
+            PublicVariable.primaryColorOpposite = sharedPreferences.getInt("vibrantColor", context.getColor(R.color.default_color_game));//getVibrantColor
+
             PublicVariable.colorLightDark = context.getColor(R.color.dark);
+
             PublicVariable.colorLightDarkOpposite = context.getColor(R.color.light);
+
         }
 
         PublicVariable.dominantColor = sharedPreferences.getInt("dominantColor", context.getColor(R.color.default_color));
