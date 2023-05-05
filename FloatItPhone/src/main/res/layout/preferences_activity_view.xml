@@ -9,7 +9,9 @@
   ~ https://opensource.org/licenses/MIT
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fullPreferencesActivity">
@@ -17,35 +19,37 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/preferencesToolbar"
         android:layout_width="match_parent"
-        android:layout_height="57dp"
-        android:layout_alignParentTop="true">
+        android:layout_height="73dp"
+
+        apps:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="57dp"
             android:layout_alignParentTop="true"
             android:gravity="center_vertical"
             android:background="@android:color/transparent">
 
-            <ImageView
-                android:id="@+id/giftIcon"
-                android:layout_width="51dp"
-                android:layout_height="51dp"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/branding"
+                android:layout_width="57dp"
+                android:layout_height="57dp"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="0dp"
+                android:layout_marginStart="7dp"
                 android:layout_marginEnd="3dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:paddingEnd="5dp"
                 android:paddingStart="0dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/draw_gift"
+                android:src="@drawable/ic_launcher"
                 android:background="@android:color/transparent"/>
-            <TextView
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/titlePreferences"
-                android:layout_width="wrap_content"
-                android:layout_height="31dp"
-                android:layout_toEndOf="@id/giftIcon"
+                android:layout_width="157dp"
+                android:layout_height="57dp"
+                android:layout_toEndOf="@id/branding"
                 android:paddingStart="1dp"
                 android:paddingEnd="13dp"
                 android:gravity="center_vertical"
@@ -53,23 +57,11 @@
                 android:textSize="25sp"
                 android:textColor="@color/default_color_darker"
                 android:background="@android:color/transparent"/>
-            <TextView
-                android:id="@+id/summaryPreferences"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_below="@id/titlePreferences"
-                android:layout_toEndOf="@id/giftIcon"
-                android:paddingStart="2dp"
-                android:paddingEnd="13dp"
-                android:gravity="center_vertical"
-                android:text="@string/settingTitle"
-                android:textSize="12sp"
-                android:textColor="@color/dark"
-                android:background="@android:color/transparent"/>
-            <ImageView
+
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/facebookIcon"
-                android:layout_width="51dp"
-                android:layout_height="51dp"
+                android:layout_width="57dp"
+                android:layout_height="57dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="7dp"
@@ -80,10 +72,11 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/draw_facebook"
                 android:background="@android:color/transparent"/>
-            <ImageView
+
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/deleteAccount"
-                android:layout_width="51dp"
-                android:layout_height="51dp"
+                android:layout_width="57dp"
+                android:layout_height="57dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="53dp"
@@ -95,13 +88,36 @@
                 android:src="@drawable/draw_delete_account"
                 android:visibility="invisible"
                 android:background="@android:color/transparent"/>
+
         </RelativeLayout>
+
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/containerPreferencesFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/preferencesToolbar"/>
 
-</RelativeLayout>
+        apps:layout_constraintTop_toTopOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/gift"
+        android:layout_width="151dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="13dp"
+        android:layout_marginEnd="7dp"
+        android:textAllCaps="false"
+        android:text="@string/donate"
+        android:textSize="13sp"
+        android:fontFamily="@font/ubuntu"
+
+        apps:cornerRadius="51dp"
+        apps:icon="@drawable/draw_gift"
+        apps:iconSize="37dp"
+        apps:iconTintMode="multiply"
+        apps:backgroundTint="@color/default_color"
+
+        apps:layout_constraintBottom_toBottomOf="parent"
+        apps:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

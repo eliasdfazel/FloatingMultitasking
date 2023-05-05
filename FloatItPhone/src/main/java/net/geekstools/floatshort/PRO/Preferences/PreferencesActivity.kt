@@ -123,7 +123,7 @@ class PreferencesActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        preferencesActivityViewBinding.giftIcon.setOnClickListener {
+        preferencesActivityViewBinding.gift.setOnClickListener {
 
             startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
                 putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
