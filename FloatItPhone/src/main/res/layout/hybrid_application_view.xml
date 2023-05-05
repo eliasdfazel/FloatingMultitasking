@@ -60,8 +60,8 @@
             android:id="@+id/scrollRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="37dp"
-            android:paddingBottom="47dp">
+            android:paddingTop="73dp"
+            android:paddingBottom="73dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/applicationsListView"
@@ -162,7 +162,7 @@
         android:text="@string/recoveryShortcuts"
         android:textAllCaps="false"
         android:textColor="@color/light"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:fontFamily="@font/ubuntu"
         apps:elevation="3dp"
         apps:backgroundTint="@color/default_color"

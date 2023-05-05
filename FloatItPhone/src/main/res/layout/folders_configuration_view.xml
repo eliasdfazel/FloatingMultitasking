@@ -154,7 +154,7 @@
         android:text="@string/recover_folder"
         android:textAllCaps="false"
         android:textColor="@color/light"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:fontFamily="@font/ubuntu"
         apps:elevation="3dp"
         apps:backgroundTint="@color/default_color"

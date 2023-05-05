@@ -766,7 +766,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 layoutParams.addRule(RelativeLayout.ABOVE, R.id.freqList)
                 hybridApplicationViewBinding.nestedScrollView.layoutParams = layoutParams
 
-                hybridApplicationViewBinding.scrollRelativeLayout.setPadding(0, hybridApplicationViewBinding.scrollRelativeLayout.paddingTop, 0, 0)
+                hybridApplicationViewBinding.scrollRelativeLayout.setPadding(0, hybridApplicationViewBinding.scrollRelativeLayout.paddingTop, 0,
+                    applicationsViewPhoneDependencyInjection.functionsClassLegacy.DpToInteger(19))
             } else {
                 hybridApplicationViewBinding.MainView.removeView(hybridApplicationViewBinding.freqList)
 

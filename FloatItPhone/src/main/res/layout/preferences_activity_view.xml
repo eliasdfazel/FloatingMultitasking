@@ -16,6 +16,13 @@
     android:layout_height="match_parent"
     android:id="@+id/fullPreferencesActivity">
 
+    <FrameLayout
+        android:id="@+id/containerPreferencesFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        apps:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/preferencesToolbar"
         android:layout_width="match_parent"
@@ -93,13 +100,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <FrameLayout
-        android:id="@+id/containerPreferencesFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        apps:layout_constraintTop_toTopOf="parent"/>
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/gift"
         android:layout_width="151dp"
@@ -111,6 +111,7 @@
         android:textSize="13sp"
         android:fontFamily="@font/ubuntu"
 
+        apps:rippleColor="@color/default_color_game_transparent"
         apps:cornerRadius="51dp"
         apps:icon="@drawable/draw_gift"
         apps:iconSize="37dp"

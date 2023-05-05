@@ -134,7 +134,7 @@
         android:text="@string/recover_widgets"
         android:textColor="@color/light"
         android:textAllCaps="false"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:fontFamily="@font/ubuntu"
         apps:elevation="3dp"
         apps:backgroundTint="@color/default_color"
