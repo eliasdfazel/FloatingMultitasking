@@ -13,13 +13,18 @@ package net.geekstools.floatshort.PRO.Utils.Functions
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 
 class ApplicationsData(var context: Context) {
 
     fun appIsInstalled(packageName: String): Boolean {
         val packageManager: PackageManager = context.packageManager
         return try {
-            packageManager.getPackageInfo(packageName, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
+            } else {
+                packageManager.getPackageInfo(packageName, 0)
+            }
             true
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
@@ -50,7 +55,11 @@ class ApplicationsData(var context: Context) {
     fun isDefaultLauncher(packageName: String): Boolean {
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_HOME)
-        val defaultLauncher = context.packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+        val defaultLauncher = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.packageManager.resolveActivity(intent, PackageManager.ResolveInfoFlags.of(0))
+        } else {
+            context.packageManager.resolveActivity(intent, 0)
+        }
         val defaultLauncherPackageName = defaultLauncher?.activityInfo?.packageName
         return (defaultLauncherPackageName == packageName)
     }

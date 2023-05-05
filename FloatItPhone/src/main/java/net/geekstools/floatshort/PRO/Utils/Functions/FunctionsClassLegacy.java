@@ -3246,8 +3246,8 @@ public class FunctionsClassLegacy {
 
     public void extractWallpaperColor() {
 
-        int vibrantColor = context.getColor(R.color.default_color);
-        int darkMutedColor = context.getColor(R.color.default_color);
+        int vibrantColor = context.getColor(R.color.default_color_light);
+        int darkMutedColor = context.getColor(R.color.default_color_darker);
         String darkMutedColorString = "" + context.getColor(R.color.default_color);
 
         int dominantColor = context.getColor(R.color.default_color);

@@ -83,6 +83,13 @@ class Configurations : AppCompatActivity() {
 
         systemInformation.checkDeviceInformation()
 
+        checkUserInformation()
+        initializeParameterUI()
+
+        functionsClassLegacy.loadSavedColor()
+
+        RuntimeIO(applicationContext).updateRecoverShortcuts()
+
         if (sharedPreferences.getBoolean("stable", true)) {
             PublicVariable.Stable = true
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -152,11 +159,6 @@ class Configurations : AppCompatActivity() {
                 deleteFile("Frequently")
             }
         }
-
-        checkUserInformation()
-        initializeParameterUI()
-
-        RuntimeIO(applicationContext).updateRecoverShortcuts()
 
     }
 
