@@ -70,6 +70,8 @@ class Configurations : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(applicationContext)
 
+        initializeParameterUI()
+
         /* Start - Temporarily */
         val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val defaultSharedPreferencesEditor = defaultSharedPreferences.edit()
@@ -84,9 +86,6 @@ class Configurations : AppCompatActivity() {
         systemInformation.checkDeviceInformation()
 
         checkUserInformation()
-        initializeParameterUI()
-
-        functionsClassLegacy.loadSavedColor()
 
         RuntimeIO(applicationContext).updateRecoverShortcuts()
 

@@ -3260,15 +3260,21 @@ public class FunctionsClassLegacy {
 
             try {
                 vibrantColor = wallpaperColors.getSecondaryColor().toArgb();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             try {
-                vibrantColor = wallpaperColors.getSecondaryColor().toArgb();
-            } catch (Exception e) {}
+                darkMutedColor = wallpaperColors.getSecondaryColor().toArgb();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             try {
                 darkMutedColorString = String.valueOf(darkMutedColor);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
 
