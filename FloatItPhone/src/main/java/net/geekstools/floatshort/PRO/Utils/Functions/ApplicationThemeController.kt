@@ -17,7 +17,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
 import net.geekstools.floatshort.PRO.R
 
@@ -64,7 +64,7 @@ class ApplicationThemeController (private val context: Context) {
         }
     }
 
-    fun setThemeColorPreferences(instanceOfActivity: FragmentActivity, rootView: View, preferencesToolbar: Toolbar, applyTransparency: Boolean, title: String, subTitle: String) {
+    fun setThemeColorPreferences(instanceOfActivity: FragmentActivity, rootView: View, preferencesToolbar: ConstraintLayout, applyTransparency: Boolean, title: String, subTitle: String) {
 
         if (applyTransparency) {
 
