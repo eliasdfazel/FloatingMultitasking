@@ -125,11 +125,11 @@
     <string name="smartPermission">
         <![CDATA[
             <br/>
-            This Permission Allows Me to Get List of <b>Frequently Used Application</b> to Set Quick Bar.<br/><br/>
-            Also, It is Essential for<br/>
-            1. <b>🔄 Remote Recovery of Floating Shortcuts/Folders</b> to Recognize Command…<br/>
+            To uprawnienie pozwala mi uzyskać listę <b>Często używanych aplikacji</b> w celu ustawienia szybkiego paska.<br/><br/>
+            Jest również niezbędny dla<br/>
+            1. 🔄 Zdalne odzyskiwanie pływających skrótów i folderów w celu rozpoznania polecenia…<br/>
             2. <b>🆗 Google! Open Float It</b><br/>
-            3. <b>🕐 Optimizing Floating Splash</b><br/>
+            3. <b>🕐 Optymalizacja pływającego plusku</b><br/>
         ]]>
     </string>
     <string name="observeTitle">Obserwator interakcji</string>
@@ -137,99 +137,98 @@
     <string name="bootPermission">
         <![CDATA[
             <br/>
-            <big>Recover Floating Shortcuts/Folders When</big>…<br/>
-            1. <b>Saying \'🆗 Google Open Float It\'</b><br/>
-            2. <b>Using Popup AppShortcuts</b> | Press & Hold ⏺ on App Shortcut on Home Screen (Android 7.1.1 & Higher)<br/>
-            3. <b>Turning On 🔄 your Device</b><br/>
+            <big>Odzyskaj pływające skróty i foldery, kiedy</big>…<br/>
+            1. <b>Powiedzenie \'🆗 Google Open Float It\'</b><br/>
+            2. <b>Używanie wyskakujących skrótów do aplikacji</b> | Naciśnij i przytrzymaj ⏺ na skrótach do aplikacji na ekranie głównym (Android 7.1.1 & Higher)<br/>
             <br/>
         ]]>
     </string>
     <string name="notificationEmoji">🔔</string>
-    <string name="notificationTitle">Floating Notification</string>
-    <string name="notificationSummary">Notification Dot on Floating Shortcuts/Folders</string>
+    <string name="notificationTitle">Pływające powiadomienie</string>
+    <string name="notificationSummary">Kropka powiadomienia na ruchomych skrótach/folderach</string>
     <string name="notificationDesc">
         <![CDATA[
             <br/>
-            This Permission Allows Me to Get Content of <b>Unread Notification</b> 🔔<br/>
-            1️⃣ to Add a <b>Notification Dot</b> on Floating Shortcuts/Folders<br/>
-            2️⃣ & Show <b>Notification Content</b> from Floating Shortcuts/Folders.
+            To uprawnienie pozwala mi uzyskać zawartość <b>nieprzeczytanego powiadomienia</b> 🔔<br/>
+            1️⃣ dodać <b>kropkę powiadomienia</b> do ruchomych skrótów/folderów<br/>
+            2️⃣ & Pokaż <b>Zawartość powiadomień</b> z pływających skrótów/folderów.
             <br/>
         ]]>
     </string>
-    <string name="createShortcut">Create Home Screen Shortcuts</string>
-    <string name="deleteAlias">Remove App Drawer Shortcuts</string>
-    <string name="floatingFolders">Floating Folders</string>
-    <string name="floatingWidget">Floating Widgets</string>
-    <string name="folderHint">Folders</string>
-    <string name="widgetHint">Widgets</string>
-    <string name="widgetLabelHint">Type A Widget Label</string>
+    <string name="createShortcut">Twórz skróty do ekranu głównego</string>
+    <string name="deleteAlias">Usuń skróty szuflady aplikacji</string>
+    <string name="floatingFolders">Pływające foldery</string>
+    <string name="floatingWidget">Widżety pływające</string>
+    <string name="folderHint">Teczka</string>
+    <string name="widgetHint">Widżety</string>
+    <string name="widgetLabelHint">Wpisz etykietę widżetu</string>
     <string name="widgetPickerTitle">
         <![CDATA[
-            <small>Choose Widgets To Configure</small><br/>
-            <big>Press & Hold</big>
+            <small>Wybierz Widżety do skonfigurowania</small><br/>
+            <big>Naciśnij i przytrzymaj</big>
         ]]>
     </string>
-    <string name="floatingHint">Shortcuts</string>
-    <string name="recover_apps">Recover Floating Shortcuts</string>
-    <string name="recover_folder">Recover Floating Folders</string>
-    <string name="recover_widgets">Recover Floating Widgets</string>
-    <string name="reallocatingWidgets"> 🔁 Reconfiguring… </string>
-    <string name="reconfiguringWidgets"> Reconfiguring… </string>
-    <string name="folderDescription">Enter A Name</string>
-    <string name="colortext">Color Theme</string>
-    <string name="themeTrans">Transparent Theme</string>
-    <string name="autotrans">Floating Transparency</string>
-    <string name="delayPressHold">Popup Menu Delay</string>
-    <string name="flingSensitivityTitle">Fling Sensitivity</string>
-    <string name="flingSensitivitySummary">Throw Floating Shortcuts/Folders Around</string>
-    <string name="delayPressHoldExtraInfo">Press &amp; Hold on Icon to Test the Delay</string>
-    <string name="revertDefault">Set To Recommended Value</string>
-    <string name="splashTitle">Floating Splash</string>
-    <string name="splashDesc">Waiting Screen for Opening Apps</string>
-    <string name="shortsizepref">Floating Size</string>
-    <string name="stick">Sticky Edge</string>
-    <string name="shapesTitle">Floating Shapes</string>
-    <string name="shapedDesc">Set Shape to…</string>
-    <string name="droplet">Droplet</string>
-    <string name="circle">Circle</string>
-    <string name="square">Square</string>
+    <string name="floatingHint">Skróty</string>
+    <string name="recover_apps">Odzyskaj pływające skróty</string>
+    <string name="recover_folder">Odzyskaj pływające foldery</string>
+    <string name="recover_widgets">Odzyskaj pływające widżety</string>
+    <string name="reallocatingWidgets">" 🔁 Rekonfiguracja… "</string>
+    <string name="reconfiguringWidgets">" Rekonfiguracja… "</string>
+    <string name="folderDescription">Wpisz imię</string>
+    <string name="colortext">Motyw kolorystyczny</string>
+    <string name="themeTrans">Przejrzysty motyw</string>
+    <string name="autotrans">Pływająca przezroczystość</string>
+    <string name="delayPressHold">Opóźnienie menu wyskakującego</string>
+    <string name="flingSensitivityTitle">Czułość rzutu</string>
+    <string name="flingSensitivitySummary">Rzucaj pływające skróty/foldery</string>
+    <string name="delayPressHoldExtraInfo">Naciśnij i przytrzymaj ikonę, aby przetestować opóźnienie</string>
+    <string name="revertDefault">Ustaw zalecaną wartość</string>
+    <string name="splashTitle">Pływający plusk</string>
+    <string name="splashDesc">Ekran oczekiwania na otwieranie aplikacji</string>
+    <string name="shortsizepref">Pływający rozmiar</string>
+    <string name="stick">Lepka krawędź</string>
+    <string name="shapesTitle">Pływające kształty</string>
+    <string name="shapedDesc">Ustaw kształt na…</string>
+    <string name="droplet">Kropelka</string>
+    <string name="circle">Koło</string>
+    <string name="square">Kwadrat</string>
     <string name="squircle">Squircle</string>
-    <string name="noshape">No Shape</string>
-    <string name="iconPack">Packages of Icons</string>
-    <string name="defaultTheme">Set Default Theme of Icons</string>
-    <string name="customIconTitle">Theme of Icons</string>
-    <string name="shortcuts">Floating Shortcuts</string>
-    <string name="boot_warning">All</string>
-    <string name="boot_none">None</string>
-    <string name="remove_all_floatings">REMOVE ALL</string>
-    <string name="remove_all">❌ Remove All</string>
-    <string name="recover_all">✔️ Recover All</string>
-    <string name="moveEdgeLeft">⬅️️ Move To Edge</string>
-    <string name="moveEdgeRight">➡️️️ Move To Edge</string>
-    <string name="backToScreenLeft">➡️️️ Back To Screen</string>
-    <string name="backToScreenRight">⬅️️ Back To Screen️</string>
-    <string name="pin">Pin Shortcut</string>
-    <string name="unpin">Unpin Shortcut</string>
-    <string name="close">Minimize It</string>
-    <string name="remove">Remove Shortcut</string>
-    <string name="pin_folder">Pin Folder</string>
-    <string name="unpin_folder">Unpin Folder</string>
-    <string name="remove_folder">Remove</string>
+    <string name="noshape">Bez kształtu</string>
+    <string name="iconPack">Pakiety ikon</string>
+    <string name="defaultTheme">Ustaw domyślny motyw ikon</string>
+    <string name="customIconTitle">Ustaw domyślny motyw ikon</string>
+    <string name="shortcuts">Pływające skróty</string>
+    <string name="boot_warning">Wszystko</string>
+    <string name="boot_none">Nic</string>
+    <string name="remove_all_floatings">USUŃ WSZYSTKO</string>
+    <string name="remove_all">❌ USUŃ WSZYSTKO</string>
+    <string name="recover_all">✔️ Odzyskaj wszystko</string>
+    <string name="moveEdgeLeft">⬅️ ️Przejdź do krawędzi</string>
+    <string name="moveEdgeRight">➡️️️ Przejdź do krawędzi</string>
+    <string name="backToScreenLeft">➡️️️ Powrót do ekranu</string>
+    <string name="backToScreenRight">⬅️️ Powrót do ekranu ️</string>
+    <string name="pin">Przypnij skrót</string>
+    <string name="unpin">Odepnij skrót</string>
+    <string name="close">Zminimalizuj to</string>
+    <string name="remove">Usuń skrót</string>
+    <string name="pin_folder">Przypnij Folder</string>
+    <string name="unpin_folder">Odepnij folder</string>
+    <string name="remove_folder">Usunąć</string>
     <string name="floatIt">Float It</string>
-    <string name="splitIt">Split It</string>
-    <string name="deleteText">Delete</string>
-    <string name="edit_folder">Edit: </string>
-    <string name="freeFormTitle">Extended Float It</string>
-    <string name="freeFormDesc">Always Open All Apps in Floating View (FreeForm)</string>
-    <string name="liteTitle">Lite Preferences</string>
-    <string name="liteSummary">Set Preferences to Minimum for Better Performance</string>
+    <string name="splitIt">Podziel To</string>
+    <string name="deleteText">Usuwać</string>
+    <string name="edit_folder">"Edytować: "</string>
+    <string name="freeFormTitle">Rozszerzone pływanie</string>
+    <string name="freeFormDesc">Zawsze otwieraj wszystkie aplikacje w widoku pływającym (FreeForm)</string>
+    <string name="liteTitle">Preferencje Lite</string>
+    <string name="liteSummary">Ustaw preferencje na minimum, aby uzyskać lepszą wydajność</string>
     <string name="liteDesc">
         <![CDATA[
-            Set Preferences to Minimum for Better Performance ⚡ <br/>
-            (<small>Highly Recommended for Mid-Range &amp; Low-End Smartphones</small>)
+            Ustaw preferencje na minimum, aby uzyskać lepszą wydajność ⚡ <br/>
+            (<small>Wysoce zalecane dla średniego zasięgu i Smartfony z niższej półki</small>)
         ]]>
     </string>
-    <string name="inAppUpdateDescription">An Update Has Just Been Installed</string>
+    <string name="inAppUpdateDescription">Właśnie zainstalowano aktualizację</string>
     <string name="inAppUpdateAction">
         <![CDATA[
             Complete It!
@@ -237,28 +236,28 @@
     </string>
 
     <!-- Search Engine -->
-    <string name="searchHint">Type To Search</string>
+    <string name="searchHint">Wpisz aby wyszukać</string>
     <string name="searchFolderHint">
         <![CDATA[
-            <small>| Folder</small>
+            <small>| Teczka</small>
         ]]>
     </string>
     <string name="searchWidgetHint">
         <![CDATA[
-            <small>| Widget</small>
+            <small>| Widżet</small>
         ]]>
     </string>
 
     <!-- Security Options -->
-    <string name="securityServices">Security Services</string>
-    <string name="changePin">Pin Password</string>
+    <string name="securityServices">Służby Bezpieczeństwa</string>
+    <string name="changePin">Przypnij hasło</string>
     <string name="changePinSummary">Create Or Edit Pin Password</string>
-    <string name="passwordError">Password Error ⚠</string>
+    <string name="passwordError">Błąd hasła ⚠</string>
     <string name="authenticationProcessInvoked">
         <![CDATA[
-            Authentication Process Has Invoked
+            Wywołano proces uwierzytelniania
             <br/>
-            First Authenticate <b>%1$s</b>
+            Najpierw uwierzytelnij <b>%1$s</b>
         ]]>
     </string>
 
