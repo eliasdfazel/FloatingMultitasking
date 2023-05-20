@@ -39,75 +39,80 @@
     <string name="signinFinished"> ⚡ Become Master Of Multitasking ⚡ </string>
     <string name="permTitle">
         <![CDATA[
-            <b>Permissions Info</b>, Be Patient!
+            <b>Informacje o uprawnieniach</b>, bądź cierpliwy!
         ]]>
     </string>
     <string name="permDesc">
         <![CDATA[
-            <b>Hi</b>&#8230; &#9786;<br/>I need your Permission to create <b>Shortcuts in Floating View</b>.
-            Please Grant permission by Enabling the Switch.<br/>
-            Also to make me Smarter Please go to Preferences, Details &amp; Practical Info to Enable <b>Smart Features</b>.<br/>
-            Press Grant to Proceed to Settings.<br/>
+            <b>Hi</b>&#8230; &#9786;<br/>Potrzebuję Twojej zgody na tworzenie <b>skrótów w ruchomym widoku</b>.
+            Udziel pozwolenia, włączając przełącznik.<br/>
+            Również aby uczynić mnie mądrzejszym Przejdź do Preferencji, Szczegóły &amp; Praktyczne informacje dotyczące włączania inteligentnych funkcji.<br/>
+            Naciśnij przycisk Grant, aby przejść do ustawień.<br/>
             <b>Thanks!</b>
         ]]>
     </string>
     <string name="split_service_desc">
-        Split Float It | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)\n\n♿ How it Helps People with Disability?\nIt is difficult for people with disability to open an app Or switch between apps. I am using Accessibility Service to enter Multi-Window Mode to open two apps together.
+        Podział Float It | To uprawnienie daje mi możliwość tworzenia wielu okien &amp; Otwórz aplikacje na podzielonym ekranie jednocześnie (Android 7 &amp; Higher)
+        \n
+        \n
+        ♿ Jak pomaga osobom niepełnosprawnym?
+        \n
+        Osobom niepełnosprawnym trudno jest otworzyć aplikację lub przełączać się między aplikacjami. Korzystam z usługi ułatwień dostępu, aby przejść do trybu wielu okien i otworzyć dwie aplikacje jednocześnie.
     </string>
-    <string name="split_service_summary">Split Float It  | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)</string>
+    <string name="split_service_summary">Podział Float It | To uprawnienie daje mi możliwość tworzenia wielu okien &amp; Jednoczesne otwieranie aplikacji na podzielonym ekranie (Android 7 i nowsze)</string>
     <string name="observeDesc">
         <![CDATA[
                 <br/>
-                I Need Accessibility Service To Be Enabled Because It Allows Me to Create Multi-Window Mode 🗔 To Open Pair of Applications in Split Screen Simultaneously.
-                <br/>The Core Purpose Of Requiring This Permission Is Opening Two Applications Together To Increase Productivity and Multitasking.
-                <br/>⚠ No Data Read Or Collect ⚠
-                <br/>(<b>It is Compatible with Android 7.0 & Higher</b>)
+                Potrzebuję włączenia usługi ułatwień dostępu, ponieważ umożliwia mi tworzenie trybu wielu okien 🗔 jednoczesne otwieranie pary aplikacji na podzielonym ekranie.
+                <br/>Głównym celem wymagania tego pozwolenia jest jednoczesne otwarcie dwóch aplikacji w celu zwiększenia produktywności i wielozadaniowości.
+                <br/>⚠ Brak odczytu lub zbierania danych ⚠
+                <br/>(<b>Jest kompatybilny z Android 7.0 & Higher</b>)
                 <br/><br/><br/><br/><br/>
-                ♿ <small><b>How it Helps People with Disability</b>?<br/>
-                It is Difficult for People with Disability to Open an App Or Switch Between Apps.<br/>
-                So, I am Using Accessibility Service to Create Multi-Window Mode to Open Two Apps Together.<br/></small>
+                ♿ <small><b>Jak pomaga osobom niepełnosprawnym?</b>?<br/>
+                Osobom niepełnosprawnym trudno jest otworzyć aplikację lub przełączać się między aplikacjami.<br/>
+                Korzystam więc z usługi ułatwień dostępu, aby utworzyć tryb wielu okien, aby razem otwierać dwie aplikacje.<br/></small>
         ]]>
     </string>
     <string name="freeFormInfo">
         <![CDATA[
                 <small>
                  <font color=#9b000e>
-                ⚠️️ <b>Disclaimer</b>  ⚠️️ <br/>
-                ⚠ Performing this Small Hack is At Your Own Risk<br/>
-                ⚠ Please, Do NOT Enable This Feature If You Are Not Familiar ADB (Android Debug Bridge)<br/>
+                ⚠️️ <b>Zastrzeżenie</b>  ⚠️️ <br/>
+                ⚠ Wykonanie tego małego hacka odbywa się na własne ryzyko<br/>
+                ⚠ Proszę NIE włączać tej funkcji, jeśli nie jesteś zaznajomiony ADB (Android Debug Bridge)<br/>
                 </font>
                 ️<br/><br/>
-                Follow This Instructions to Enable System Settings<br/>
-                1️⃣️ Go to System Setting (<b>About</b> Section) <br/>
-                2️⃣ & Enable <b>Developer Options</b> by Clicking Few Times on <b>Build Number</b><br/>
-                3️⃣ Go to System Setting (Developer Options)<br/>
-                4️⃣ Scroll Down to Find & Enable <b>Force Activities to Be Resizable</b><br/>
-                5️⃣ Now Connect Your Device to Your Computer<br/>
-                6️⃣ Open Terminal (Command Line) & Type these Commands<br/>
+                Postępuj zgodnie z tymi instrukcjami, aby włączyć ustawienia systemowe<br/>
+                1️⃣️ Przejdź do ustawień systemowych (Sekcja <b>Informacje</b>) <br/>
+                2️⃣ & Włącz <b>Opcje programisty</b>, klikając kilka razy <b>Numer kompilacji</b><br/>
+                3️⃣ Przejdź do Ustawień systemu (Opcje programisty)<br/>
+                4️⃣ Przewiń w dół, aby znaleźć i włączyć opcję <b>Wymuś zmianę rozmiaru działań</b><br/>
+                5️⃣ Teraz podłącz swoje urządzenie do komputera<br/>
+                6️⃣ Otwórz terminal (wiersz poleceń) i wpisz te polecenia<br/>
                 7️⃣ <b>adb shell</b> <br/>
                 8️⃣️ <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
-                ➡️ If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
+                ➡️ Jeśli na Androidzie P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
                 9️⃣ <b>adb reboot</b><br/>
-                1️⃣0️⃣ Come Back Here ⚙ & <b>Turn ON Float It</b>
+                1️⃣0️⃣ Wróć tutaj ⚙ & <b>Włączyć coś Float It</b>
                 <br/><br/><br/>
-                <b>ℹ️ <font color=#ffd800>Information</font> ℹ️ </font><br/></b>
-                ⏺ First Create Floating Shortcuts then Clear \'<b>Recent Apps</b>\' List for This Feature to Work Properly (Android Nougat & Oreo)<br/>
-                ⏺ Other Apps/Games Faulty Appearance & Functionality in FreeForm Mode is <b>NOT</b> our Fault<br/>
-                ⏺ You Can <b>Resize Apps Window</b> in FreeForm (Touch Edges of Window & Move It)<br/>
-                ⏺ If You Are Interested in This Feature & Don\'t Know What to Do, Feel Free to Contact Me via <b>Support Center</b> 👍 😉
+                <b>ℹ️ <font color=#ffd800>Informacja</font> ℹ️ </font><br/></b>
+                ⏺ Najpierw utwórz pływające skróty, a następnie wyczyść \'<b>Ostatnie aplikacje</b>\' Lista, aby ta funkcja działała poprawnie (Android Nougat & Oreo)<br/>
+                ⏺ Inne aplikacje/gry Wadliwy wygląd i działanie w trybie FreeForm to <b>NIE</b> nasza wina<br/>
+                ⏺ Możesz <b>zmienić rozmiar okna aplikacji</b> w trybie FreeForm (dotknij krawędzi okna i przesuń je)<br/>
+                ⏺ Jeśli interesuje Cię ta funkcja i nie wiesz, co zrobić, skontaktuj się ze mną za pośrednictwem <b>Centrum pomocy</b> 👍 😉
                 </small>
         ]]>
     </string>
-    <string name="retry">Retry Now</string>
+    <string name="retry">Spróbuj ponownie teraz</string>
     <string name="observeSum">Android 7.0 (Nougat) +</string>
-    <string name="grant">Grant Permission</string>
-    <string name="agree">Agreed</string>
-    <string name="skipNow">Not Now</string>
-    <string name="read">Read More</string>
-    <string name="grantFreeForm">Done</string>
-    <string name="confirm">Confirm</string>
-    <string name="support">Contact Support</string>
-    <string name="ui_app">App Interface</string>
+    <string name="grant">Dać pozwolenie</string>
+    <string name="agree">Dać pozwolenie</string>
+    <string name="skipNow">Nie teraz</string>
+    <string name="read">Czytaj więcej</string>
+    <string name="grantFreeForm">Zrobione</string>
+    <string name="confirm">Potwierdzać</string>
+    <string name="support">Skontaktuj się z pomocą techniczną</string>
+    <string name="ui_app">Interfejs aplikacji</string>
     <string name="ui_floating">Floating Interface</string>
     <string name="pref_floating">Floating Preferences</string>
     <string name="advance">Advanced Features</string>

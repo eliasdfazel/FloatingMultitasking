@@ -52,7 +52,12 @@
         ]]>
     </string>
     <string name="split_service_desc">
-        Split Float It | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)\n\n♿ How it Helps People with Disability?\nIt is difficult for people with disability to open an app Or switch between apps. I am using Accessibility Service to enter Multi-Window Mode to open two apps together.
+        Split Float It | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)
+        \n
+        \n
+        ♿ How it Helps People with Disability?
+        \n
+        It is difficult for people with disability to open an app Or switch between apps. I am using Accessibility Service to enter Multi-Window Mode to open two apps together.
     </string>
     <string name="split_service_summary">Split Float It  | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)</string>
     <string name="observeDesc">
