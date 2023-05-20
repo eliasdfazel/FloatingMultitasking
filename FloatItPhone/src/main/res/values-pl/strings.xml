@@ -113,15 +113,15 @@
     <string name="confirm">Potwierdzać</string>
     <string name="support">Skontaktuj się z pomocą techniczną</string>
     <string name="ui_app">Interfejs aplikacji</string>
-    <string name="ui_floating">Floating Interface</string>
-    <string name="pref_floating">Floating Preferences</string>
-    <string name="advance">Advanced Features</string>
-    <string name="wait">Please, Be Patient!</string>
-    <string name="stable">Control Panel</string>
-    <string name="smartCategory">Smart Features</string>
-    <string name="smartTitle">Intelligent Services</string>
-    <string name="floatingSearch">Floating Search</string>
-    <string name="smartSummary">Let Me Know…</string>
+    <string name="ui_floating">Pływający interfejs</string>
+    <string name="pref_floating">Pływające preferencje</string>
+    <string name="advance">Zaawansowane funkcje</string>
+    <string name="wait">Proszę być cierpliwym!</string>
+    <string name="stable">Panel sterowania</string>
+    <string name="smartCategory">Inteligentne funkcje</string>
+    <string name="smartTitle">Inteligentne usługi</string>
+    <string name="floatingSearch">Inteligentne usługi</string>
+    <string name="smartSummary">Daj mi znać…</string>
     <string name="smartPermission">
         <![CDATA[
             <br/>
@@ -132,8 +132,8 @@
             3. <b>🕐 Optimizing Floating Splash</b><br/>
         ]]>
     </string>
-    <string name="observeTitle">Interactions Observer</string>
-    <string name="boot">Remote Recovery</string>
+    <string name="observeTitle">Obserwator interakcji</string>
+    <string name="boot">Zdalne odzyskiwanie</string>
     <string name="bootPermission">
         <![CDATA[
             <br/>
