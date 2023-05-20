@@ -262,24 +262,24 @@
     </string>
 
     <!-- Finger Print -->
-    <string name="fingerprint_not_recognized">Fingerprint Not Recognized.\nTry Again…</string>
-    <string name="lockIt">Lock It 🔒</string>
-    <string name="unLockIt">Unlock It 🔓</string>
-    <string name="pinHint">Enter Pin Password 🔑 </string>
-    <string name="passwordHint">Enter New Pin Password 🔑 </string>
-    <string name="passwordHintRepeat">Repeat New Pin Password 🔑 </string>
-    <string name="enterCurrentPassword">Enter Current Password 🔑 </string>
-    <string name="forgetPassword">Forgot Your Password? 🤔 </string>
-    <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 | Open It On This Phone 📱 </string>
-    <string name="verifying">Verifying Authenticated Data 🔑</string>
-    <string name="floatingShortcutsSecurityService">Float It | Security Services</string>
-    <string name="securityWarningFingerprint"> ⚠ Security Warning | Fingerprint Is Not Set ⚠ </string>
+    <string name="fingerprint_not_recognized">Odcisk palca nie został rozpoznany.\nSpróbuj ponownie…</string>
+    <string name="lockIt">Zablokuj to 🔒</string>
+    <string name="unLockIt">Odblokuj to 🔓</string>
+    <string name="pinHint">Wprowadź hasło PIN 🔑</string>
+    <string name="passwordHint">Wprowadź nowe hasło PIN 🔑</string>
+    <string name="passwordHintRepeat">Powtórz nowe hasło PIN 🔑</string>
+    <string name="enterCurrentPassword">Wprowadź aktualne hasło 🔑</string>
+    <string name="forgetPassword">Zapomniałeś hasła? 🤔</string>
+    <string name="passwordResetSent">E-mail, aby zresetować hasło PIN Wysłano 📩 | Otwórz na tym telefonie 📱</string>
+    <string name="verifying">Weryfikacja uwierzytelnionych danych 🔑</string>
+    <string name="floatingShortcutsSecurityService">Float It | Służby Bezpieczeństwa</string>
+    <string name="securityWarningFingerprint">⚠ Ostrzeżenie o bezpieczeństwie | Odcisk palca nie jest ustawiony ⚠</string>
     <!-- Finger Print -->
     <!-- Security Options -->
 
-    <string name="purchase"> Purchase 💸 </string>
-    <string name="donate"> Send A Gift 🎁 </string>
-    <string name="purchaseFlowDisrupted">Purchase Flow Disrupted</string>
+    <string name="purchase">" Zakup 💸 "</string>
+    <string name="donate">"Wyślij prezent 🎁 "</string>
+    <string name="purchaseFlowDisrupted">Zakłócony przepływ zakupów</string>
 
     <string-array name="ContextMenuLock">
         <item name="1">Small</item>
