@@ -827,8 +827,8 @@ public class FunctionsClassLegacy {
         String[] contactOption = new String[]{
                 "Send an Email",
                 "Send a Message",
-                "Contact via Forum",
-                "Rate & Write Review"};
+                "Rate & Write Review"
+        };
         AlertDialog.Builder builder = null;
         if (PublicVariable.themeLightDark == true) {
             builder = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
@@ -860,10 +860,6 @@ public class FunctionsClassLegacy {
                     a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(a);
                 } else if (selectedPosition == 2) {
-                    Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_xda)));
-                    a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    activity.startActivity(a);
-                } else if (selectedPosition == 3) {
                     Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()));
                     a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(a);
