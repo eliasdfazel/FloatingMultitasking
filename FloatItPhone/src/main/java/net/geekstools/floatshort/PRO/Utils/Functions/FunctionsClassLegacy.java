@@ -824,56 +824,11 @@ public class FunctionsClassLegacy {
     }
 
     public void ContactSupport(final Activity activity) {
-        String[] contactOption = new String[]{
-                "Send an Email",
-                "Send a Message",
-                "Rate & Write Review"
-        };
-        AlertDialog.Builder builder = null;
-        if (PublicVariable.themeLightDark == true) {
-            builder = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
-        } else if (PublicVariable.themeLightDark == false) {
-            builder = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
-        }
-        LayerDrawable drawSupport = (LayerDrawable) context.getDrawable(R.drawable.draw_support);
-        Drawable backSupport = drawSupport.findDrawableByLayerId(R.id.backgroundTemporary);
-        backSupport.setTint(PublicVariable.darkMutedColor);
-        builder.setIcon(drawSupport);
-        builder.setTitle(context.getString(R.string.supportCategory));
-        builder.setSingleChoiceItems(contactOption, 0, null);
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                if (selectedPosition == 0) {
-                    String textMsg = "\n\n\n\n\n"
-                            + "[Essential Information]" + "\n"
-                            + getDeviceName() + " | " + "API " + Build.VERSION.SDK_INT + " | " + getCountryIso().toUpperCase();
-                    Intent email = new Intent(Intent.ACTION_SEND);
-                    email.putExtra(Intent.EXTRA_EMAIL, new String[]{context.getString(R.string.supportEmail)});
-                    email.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.feedback_tag) + " [" + applicationVersionName(context.getPackageName()) + "] ");
-                    email.putExtra(Intent.EXTRA_TEXT, textMsg);
-                    email.setType("text/*");
-                    email.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    activity.startActivity(Intent.createChooser(email, context.getString(R.string.feedback_tag)));
-                } else if (selectedPosition == 1) {
-                    Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_facebook_app)));
-                    a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    activity.startActivity(a);
-                } else if (selectedPosition == 2) {
-                    Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()));
-                    a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    activity.startActivity(a);
 
-                    Toast(context.getResources().getString(R.string.alphaTitle), Gravity.BOTTOM);
-                }
-            }
-        });
-        builder.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
+        Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_contacts)));
+        a.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(a);
 
-            }
-        });
-        builder.show();
     }
 
     public void litePreferenceConfirm(Activity instanceOfActivity) {

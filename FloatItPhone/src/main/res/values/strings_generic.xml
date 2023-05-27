@@ -82,7 +82,9 @@
     <string name="feedback_tag" translatable="false">Float It ᴾᴿᴼ Direct Help | Feedback</string>
 
     <string name="link_ad_app" translatable="false">https://play.google.com/store/apps/details?id=net.geekstools.supershortcuts.PRO</string>
-    <string name="link_alpha" translatable="false">https://play.google.com/apps/testing/</string>
+
+    <string name="link_contacts" translatable="false">https://www.GeeksEmpire.co/Contacts/</string>
+
     <string name="link_facebook_app" translatable="false">https://www.facebook.com/FloatIt.Android/</string>
     <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="privacyPolicy" translatable="false">https://GeeksEmpire.co/PrivacyPolicy</string>
