@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright © 2022 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel
+  ~ Last modified 4/16/22, 5:27 AM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<resources>
+
+    <string name="recovery_center">Pusat Pemulihan</string>
+    <string name="settingTitle">Keutamaan</string>
+    <string name="recoveryShortcuts">Pulihkan Pintasan Terapung</string>
+    <string name="overlayPermission">Hidupkan Kebenaran, Tolong!</string>
+    <string name="bindDesc">Leret ke Bawah Untuk Melihat Lebih Banyak Pilihan</string>
+    <string name="dark">Gelap</string>
+    <string name="light">Light</string>
+    <string name="dynamic">Dinamik</string>
+    <string name="leftEdge">Tepi Kiri</string>
+    <string name="rightEdge">Tepi Kanan</string>
+    <string name="small">Kecil</string>
+    <string name="medium">Sederhana</string>
+    <string name="large">Besar</string>
+    <string name="addRecovery">Tambahkan Pada Pemulihan</string>
+    <string name="addFolder">Fail baharu</string>
+    <string name="removeRecovery">Alih Keluar Daripada Pemulihan</string>
+    <string name="index_item">S</string>
+    <string name="not_install">APP TIDAK TERSEDIA</string>
+    <string name="updating_info">Mengemaskini Maklumat Aplikasi</string>
+    <string name="supportCategory">Pusat Sokongan</string>
+    <string name="supportTitle">Bantuan dan Maklum Balas</string>
+    <string name="privacyTitle">Dasar Privasi</string>
+    <string name="deleteAccount">Padam Akaun</string>
+    <string name="alphaTitle">Thanks for Joining Beta Program. Always Appreciate your Feedback!</string>
+    <string name="signinTitle">Welcome to Geeks Empire!</string>
+    <string name="signinMessage">Thanks for Joining to Our #FloatIt 🎈 Community.</string>
+    <string name="signinFinished"> ⚡ Become Master Of Multitasking ⚡ </string>
+    <string name="permTitle">
+        <![CDATA[
+            <b>Maklumat Kebenaran</b>, Bersabar!
+        ]]>
+    </string>
+    <string name="permDesc">
+        <![CDATA[
+            <b>Hi</b>&#8230; &#9786;<br/>Saya memerlukan Kebenaran anda untuk mencipta <b>Pintasan dalam Paparan Terapung</b>.
+            Sila Berikan kebenaran dengan Mendayakan Suis.<br/>
+            Juga untuk menjadikan saya Lebih Bijak Sila pergi ke Keutamaan, Butiran &amp; Maklumat Praktikal untuk Mendayakan Ciri Pintar.<br/>
+            Tekan Grant untuk Teruskan ke Tetapan.<br/>
+            <b>Terima kasih!!</b>
+        ]]>
+    </string>
+    <string name="split_service_desc">
+        Berpisah Float It | Kebenaran ini memberi saya keupayaan untuk mencipta Berbilang Tetingkap &amp; Buka Apl dalam Skrin Pisah Serentak (Android 7 &amp; Higher)
+        \n
+        \n
+        ♿ Bagaimana ia Membantu Orang Kurang Upaya?
+        \n
+        Sukar bagi orang kurang upaya untuk membuka apl Atau bertukar antara apl. Saya menggunakan Perkhidmatan Kebolehcapaian untuk memasuki Mod Berbilang Tetingkap untuk membuka dua apl bersama-sama.
+    </string>
+    <string name="split_service_summary">Berpisah Float It | Kebenaran Ini Memberi Saya Keupayaan untuk Mencipta Berbilang Tetingkap &amp; Buka Apl dalam Skrin Pisah Serentak (Android 7 &amp; Higher)</string>
+    <string name="observeDesc">
+        <![CDATA[
+                <br/>
+                Saya Memerlukan Perkhidmatan Kebolehcapaian Untuk Didayakan Kerana Ia Membenarkan Saya Mencipta Mod Berbilang Tetingkap 🗔 Untuk Membuka Sepasang Aplikasi dalam Skrin Pisah Serentak.
+                <br/>Tujuan Teras Memerlukan Kebenaran Ini Adalah Membuka Dua Aplikasi Bersama Untuk Meningkatkan Produktiviti dan Multitasking.
+                <br/>⚠ Tiada Data Baca Atau Kumpul ⚠
+                <br/>(<b>It is Compatible with Android 7.0 & Higher</b>)
+                <br/><br/><br/><br/><br/>
+                ♿ <small><b>Bagaimana ia Membantu Orang Kurang Upaya</b>?<br/>
+                Sukar untuk Orang Kurang Upaya Membuka Apl Atau Beralih Antara Apl.<br/>
+                Jadi, saya menggunakan Perkhidmatan Kebolehcapaian untuk Mencipta Mod Berbilang Tetingkap untuk Membuka Dua Apl Bersama.<br/></small>
+        ]]>
+    </string>
+    <string name="freeFormInfo">
+        <![CDATA[
+                <small>
+                 <font color=#9b000e>
+                ⚠️️ <b>Disclaimer</b>  ⚠️️ <br/>
+                ⚠ Performing this Small Hack is At Your Own Risk<br/>
+                ⚠ Please, Do NOT Enable This Feature If You Are Not Familiar ADB (Android Debug Bridge)<br/>
+                </font>
+                ️<br/><br/>
+                Follow This Instructions to Enable System Settings<br/>
+                1️⃣️ Go to System Setting (<b>About</b> Section) <br/>
+                2️⃣ & Enable <b>Developer Options</b> by Clicking Few Times on <b>Build Number</b><br/>
+                3️⃣ Go to System Setting (Developer Options)<br/>
+                4️⃣ Scroll Down to Find & Enable <b>Force Activities to Be Resizable</b><br/>
+                5️⃣ Now Connect Your Device to Your Computer<br/>
+                6️⃣ Open Terminal (Command Line) & Type these Commands<br/>
+                7️⃣ <b>adb shell</b> <br/>
+                8️⃣️ <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
+                ➡️ If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
+                9️⃣ <b>adb reboot</b><br/>
+                1️⃣0️⃣ Come Back Here ⚙ & <b>Turn ON Float It</b>
+                <br/><br/><br/>
+                <b>ℹ️ <font color=#ffd800>Information</font> ℹ️ </font><br/></b>
+                ⏺ First Create Floating Shortcuts then Clear \'<b>Recent Apps</b>\' List for This Feature to Work Properly (Android Nougat & Oreo)<br/>
+                ⏺ Other Apps/Games Faulty Appearance & Functionality in FreeForm Mode is <b>NOT</b> our Fault<br/>
+                ⏺ You Can <b>Resize Apps Window</b> in FreeForm (Touch Edges of Window & Move It)<br/>
+                ⏺ If You Are Interested in This Feature & Don\'t Know What to Do, Feel Free to Contact Me via <b>Support Center</b> 👍 😉
+                </small>
+        ]]>
+    </string>
+    <string name="retry">Cuba semula Sekarang</string>
+    <string name="observeSum">Android 7.0 (Nougat) +</string>
+    <string name="grant">Berikan Kebenaran</string>
+    <string name="agree">Bersetuju</string>
+    <string name="skipNow">Bukan sekarang</string>
+    <string name="read">Baca Lagi</string>
+    <string name="grantFreeForm">Selesai</string>
+    <string name="confirm">Sahkan</string>
+    <string name="support">Hubungi Sokongan</string>
+    <string name="ui_app">Antara Muka Apl</string>
+    <string name="ui_floating">Antara Muka Terapung</string>
+    <string name="pref_floating">Keutamaan Terapung</string>
+    <string name="advance">Ciri Lanjutan</string>
+    <string name="wait">Sila bersabar!</string>
+    <string name="stable">Panel kawalan</string>
+    <string name="smartCategory">Ciri Pintar</string>
+    <string name="smartTitle">Perkhidmatan Pintar</string>
+    <string name="floatingSearch">Carian Terapung</string>
+    <string name="smartSummary">Beritahu saya…</string>
+    <string name="smartPermission">
+        <![CDATA[
+            <br/>
+            Kebenaran Ini Membenarkan Saya Mendapatkan Senarai Aplikasi Yang Lazim Digunakan untuk Menetapkan Bar Pantas.<br/><br/>
+            Juga, Ia adalah Penting untuk<br/>
+            1. <b>🔄 Pemulihan Jauh Pintasan/Folder Terapung</b> untuk Mengecam Perintah…<br/>
+            2. <b>🆗 Google! Open Float It</b><br/>
+            3. <b>🕐 Mengoptimumkan Percikan Terapung</b><br/>
+        ]]>
+    </string>
+    <string name="observeTitle">Interaksi Pemerhati</string>
+    <string name="boot">Pemulihan Jauh</string>
+    <string name="bootPermission">
+        <![CDATA[
+            <br/>
+            <big>Pulihkan Pintasan/Folder Terapung Apabila</big>…<br/>
+            1. <b>berkata \'🆗 Google Open Float It\'</b><br/>
+            2. <b>Menggunakan Pintasan Apl Pop Up</b> | Tekan & Tahan ⏺ pada Pintasan Apl pada Skrin Utama (Android 7.1.1 & Higher)<br/>
+            <br/>
+        ]]>
+    </string>
+    <string name="notificationEmoji">🔔</string>
+    <string name="notificationTitle">Pemberitahuan Terapung</string>
+    <string name="notificationSummary">Titik Pemberitahuan pada Pintasan/Folder Terapung</string>
+    <string name="notificationDesc">
+        <![CDATA[
+            <br/>
+            Kebenaran Ini Membenarkan Saya Mendapatkan Kandungan <b>Pemberitahuan Belum Dibaca</b>🔔<br/>
+            1️⃣ untuk Menambah <b>Titik Pemberitahuan</b> pada Pintasan/Folder Terapung<br/>
+            2️⃣ & Tunjukkan <b>Kandungan Pemberitahuan</b> daripada Pintasan/Folder Terapung.
+            <br/>
+        ]]>
+    </string>
+    <string name="createShortcut">Cipta Pintasan Skrin Utama</string>
+    <string name="deleteAlias">Alih keluar Pintasan Laci Apl</string>
+    <string name="floatingFolders">Folder Terapung</string>
+    <string name="floatingWidget">Widget Terapung</string>
+    <string name="folderHint">Folders</string>
+    <string name="widgetHint">Widgets</string>
+    <string name="widgetLabelHint">Taip Label Widget</string>
+    <string name="widgetPickerTitle">
+        <![CDATA[
+            <small>Pilih Widget Untuk Dikonfigurasikan</small><br/>
+            <big>Tekan & Tahan</big>
+        ]]>
+    </string>
+    <string name="floatingHint">Shortcuts</string>
+    <string name="recover_apps">Pulihkan Pintasan Terapung</string>
+    <string name="recover_folder">Pulihkan Folder Terapung</string>
+    <string name="recover_widgets">Pulihkan Widget Terapung</string>
+    <string name="reallocatingWidgets">" 🔁 Mengkonfigurasi semula… "</string>
+    <string name="reconfiguringWidgets">" Mengkonfigurasi semula… "</string>
+    <string name="folderDescription">Masukkan Nama</string>
+    <string name="colortext">Tema Warna</string>
+    <string name="themeTrans">Tema Telus</string>
+    <string name="autotrans">Ketelusan Terapung</string>
+    <string name="delayPressHold">Kelewatan Menu Pop Timbul</string>
+    <string name="flingSensitivityTitle">Sensitiviti Melempar</string>
+    <string name="flingSensitivitySummary">Baling Pintasan/Folder Terapung Di Sekitar</string>
+    <string name="delayPressHoldExtraInfo">Tekan dan Tahan Ikon untuk Menguji Kelewatan</string>
+    <string name="revertDefault">Tetapkan Kepada Nilai Disyorkan</string>
+    <string name="splashTitle">Percikan Terapung</string>
+    <string name="splashDesc">Skrin Menunggu untuk Membuka Apl</string>
+    <string name="shortsizepref">Saiz Terapung</string>
+    <string name="stick">Tepi Melekit</string>
+    <string name="shapesTitle">Bentuk Terapung</string>
+    <string name="shapedDesc">Tetapkan Bentuk kepada…</string>
+    <string name="droplet">Titisan</string>
+    <string name="circle">Bulatan</string>
+    <string name="square">Segi empat</string>
+    <string name="squircle">Squircle</string>
+    <string name="noshape">Tiada Bentuk</string>
+    <string name="iconPack">Pakej Ikon</string>
+    <string name="defaultTheme">Tetapkan Tema Lalai Ikon</string>
+    <string name="customIconTitle">Tema Ikon</string>
+    <string name="shortcuts">Pintasan Terapung</string>
+    <string name="boot_warning">Semua</string>
+    <string name="boot_none">Tiada</string>
+    <string name="remove_all_floatings">KELUARKAN SEMUA</string>
+    <string name="remove_all">❌ KELUARKAN SEMUA</string>
+    <string name="recover_all">✔️ Pulihkan Semua</string>
+    <string name="moveEdgeLeft">⬅️️ Bergerak Ke Tepi</string>
+    <string name="moveEdgeRight">➡️️Bergerak Ke Tepi</string>
+    <string name="backToScreenLeft">➡️ ️Bergerak Ke Tepi</string>
+    <string name="backToScreenRight">⬅️️ Bergerak Ke Tepi</string>
+    <string name="pin">Pin Pintasan</string>
+    <string name="unpin">Unpin Pintasan</string>
+    <string name="close">Minimumkannya</string>
+    <string name="remove">Alih Keluar Pintasan</string>
+    <string name="pin_folder">Pin Folder</string>
+    <string name="unpin_folder">Unpin Folder</string>
+    <string name="remove_folder">Alih keluar</string>
+    <string name="floatIt">Float It</string>
+    <string name="splitIt">Berpisah It</string>
+    <string name="deleteText">Padam</string>
+    <string name="edit_folder">"Sunting: "</string>
+    <string name="freeFormTitle">Extended Float It</string>
+    <string name="freeFormDesc">Sentiasa Buka Semua Apl dalam Paparan Terapung (FreeForm)</string>
+    <string name="liteTitle">Keutamaan Lite</string>
+    <string name="liteSummary">Tetapkan Keutamaan kepada Minimum untuk Prestasi Lebih Baik</string>
+    <string name="liteDesc">
+        <![CDATA[
+            Tetapkan Keutamaan kepada Minimum untuk Prestasi Lebih Baik ⚡ <br/>
+            (<small>Sangat Disyorkan untuk Julat Pertengahan &amp; Telefon Pintar Rendah</small>)
+        ]]>
+    </string>
+    <string name="inAppUpdateDescription">Kemas Kini Baru Dipasang</string>
+    <string name="inAppUpdateAction">
+        <![CDATA[
+            Lengkapkan Ia!
+        ]]>
+    </string>
+
+    <!-- Search Engine -->
+    <string name="searchHint">Taip Untuk Cari</string>
+    <string name="searchFolderHint">
+        <![CDATA[
+            <small>| Folder</small>
+        ]]>
+    </string>
+    <string name="searchWidgetHint">
+        <![CDATA[
+            <small>| Widget</small>
+        ]]>
+    </string>
+
+    <!-- Security Options -->
+    <string name="securityServices">Perkhidmatan Keselamatan</string>
+    <string name="changePin">Pin Kata Laluan</string>
+    <string name="changePinSummary">Buat Atau Edit Kata Laluan Pin</string>
+    <string name="passwordError">Ralat Kata Laluan ⚠</string>
+    <string name="authenticationProcessInvoked">
+        <![CDATA[
+            Proses Pengesahan Telah Dikenakan
+            <br/>
+            Sahkan Pertama <b>%1$s</b>
+        ]]>
+    </string>
+
+    <!-- Finger Print -->
+    <string name="fingerprint_not_recognized">Cap Jari Tidak Dikenali.\nCuba lagi…</string>
+    <string name="lockIt">Kunci Ia 🔒</string>
+    <string name="unLockIt">Buka Kuncinya 🔓</string>
+    <string name="pinHint">Masukkan Kata Laluan Pin 🔑</string>
+    <string name="passwordHint">Masukkan Kata Laluan Pin Baharu 🔑</string>
+    <string name="passwordHintRepeat">Ulang Kata Laluan Pin Baharu 🔑</string>
+    <string name="enterCurrentPassword">Masukkan Kata Laluan Semasa 🔑</string>
+    <string name="forgetPassword">Lupa Kata Laluan Anda? 🤔</string>
+    <string name="passwordResetSent">E-mel Untuk Tetapkan Semula Kata Laluan Pin Dihantar 📩 | Buka Pada Telefon Ini 📱</string>
+    <string name="verifying">Mengesahkan Data Disahkan 🔑</string>
+    <string name="floatingShortcutsSecurityService">Float It | Perkhidmatan Keselamatan</string>
+    <string name="securityWarningFingerprint">⚠ Amaran Keselamatan | Cap Jari Tidak Ditetapkan ⚠</string>
+    <!-- Finger Print -->
+    <!-- Security Options -->
+
+    <string name="purchase">" Belian 💸 "</string>
+    <string name="donate">Hantar Hadiah 🎁</string>
+    <string name="purchaseFlowDisrupted">Aliran Pembelian Terganggu</string>
+
+    <string-array name="ContextMenuLock">
+        <item name="1">Small</item>
+        <item name="2">Medium</item>
+        <item name="3">Large</item>
+        <item name="4">Lock It 🔒 </item>
+        <item name="5">Create Home Screen Shortcut</item>
+    </string-array>
+    <string-array name="ContextMenuUnlock">
+        <item name="1">Small</item>
+        <item name="2">Medium</item>
+        <item name="3">Large</item>
+        <item name="4">Unlock It 🔓 </item>
+        <item name="5">Create Home Screen Shortcut</item>
+    </string-array>
+
+    <string-array name="ContextMenuCategory">
+        <item name="1">@string/small</item>
+        <item name="2">@string/medium</item>
+        <item name="3">@string/large</item>
+        <item name="4">@string/addRecovery</item>
+        <item name="5">@string/deleteText</item>
+    </string-array>
+    <string-array name="ContextMenuCategoryRemove">
+        <item name="1">@string/small</item>
+        <item name="2">@string/medium</item>
+        <item name="3">@string/large</item>
+        <item name="4">@string/removeRecovery</item>
+        <item name="5">@string/deleteText</item>
+    </string-array>
+
+    <string-array name="ContextMenuWidget">
+        <item name="1">@string/deleteText</item>
+        <item name="2">@string/addRecovery</item>
+        <item name="3">@string/createShortcut</item>
+    </string-array>
+    <string-array name="ContextMenuWidgetRemove">
+        <item name="1">@string/deleteText</item>
+        <item name="2">@string/removeRecovery</item>
+        <item name="3">@string/createShortcut</item>
+    </string-array>
+
+    <string-array name="STICK">
+        <item name="1">@string/leftEdge</item>
+        <item name="2">@string/rightEdge</item>
+    </string-array>
+    <string-array name="STICKValues">
+        <item name="1">1</item>
+        <item name="2">2</item>
+    </string-array>
+
+    <string-array name="Boot">
+        <item name="1">@string/boot_none</item>
+        <item name="2">@string/shortcuts</item>
+        <item name="3">@string/floatingFolders</item>
+        <item name="4">@string/boot_warning</item>
+    </string-array>
+
+    <string-array name="AppThemes">
+        <item name="1">@string/light</item>
+        <item name="2">@string/dark</item>
+        <item name="3">@string/dynamic</item>
+    </string-array>
+    <string-array name="AppThemesValues">
+        <item name="1">1</item>
+        <item name="2">2</item>
+        <item name="3">3</item>
+    </string-array>
+</resources>
