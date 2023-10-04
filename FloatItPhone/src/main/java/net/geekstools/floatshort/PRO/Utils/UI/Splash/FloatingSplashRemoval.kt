@@ -11,7 +11,11 @@
 package net.geekstools.floatshort.PRO.Utils.UI.Splash
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
@@ -38,15 +42,15 @@ class FloatingSplashRemoval: AppCompatImageView, FloatingSplashInterface {
 
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        canvas?.let {
+        canvas.let {
 
 
-            canvas.drawPaint(paint)
+            it.drawPaint(paint)
 
-            canvas.drawCircle(functionsClassLegacy.displayX().toFloat(),
+            it.drawCircle(functionsClassLegacy.displayX().toFloat(),
                     functionsClassLegacy.displayY().toFloat(),
                     functionsClassLegacy.displayY() * 2.toFloat(),
                     paint)

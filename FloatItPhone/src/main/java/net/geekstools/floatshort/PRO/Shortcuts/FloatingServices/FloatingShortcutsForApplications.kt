@@ -319,7 +319,7 @@ class FloatingShortcutsForApplications : Service() {
 
                 simpleOnGestureListener.add(startId, object : SimpleOnGestureListener() {
 
-                    override fun onFling(motionEventFirst: MotionEvent, motionEventLast: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+                    override fun onFling(motionEventFirst: MotionEvent?, motionEventLast: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
 
                         if (movePermit[startId]) {
                             flingAnimationX[startId].setStartVelocity(velocityX)

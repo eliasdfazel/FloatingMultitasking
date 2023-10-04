@@ -402,7 +402,7 @@ fun setupFlingSensitivity(preferencesDataUtilFling: PreferencesDataUtilFling) {
             return true
         }
 
-        override fun onFling(motionEventFirst: MotionEvent, motionEventLast: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+        override fun onFling(motionEventFirst: MotionEvent?, motionEventLast: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
 
             flingAnimationX.setStartVelocity(velocityX)
             flingAnimationY.setStartVelocity(velocityY)
