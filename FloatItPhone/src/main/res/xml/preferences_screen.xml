@@ -11,7 +11,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:summary="" />
+    <PreferenceCategory android:summary=" " />
 
     <PreferenceCategory android:title="@string/securityServices" android:summary=" ">
         <Preference
@@ -21,8 +21,8 @@
             android:summary="@string/changePinSummary" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:summary="" />
-    <PreferenceCategory android:summary="" />
+    <PreferenceCategory android:summary=" " />
+    <PreferenceCategory android:summary=" " />
 
     <PreferenceCategory android:title="@string/smartCategory" android:summary=" ">
         <SwitchPreference
@@ -42,8 +42,8 @@
             android:title="@string/boot"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:summary="" />
-    <PreferenceCategory android:summary="" />
+    <PreferenceCategory android:summary=" " />
+    <PreferenceCategory android:summary=" " />
 
     <PreferenceCategory android:title="@string/pref_floating" android:summary=" ">
         <ListPreference
@@ -72,8 +72,8 @@
             android:title="@string/notificationTitle"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:summary="" />
-    <PreferenceCategory android:summary="" />
+    <PreferenceCategory android:summary=" " />
+    <PreferenceCategory android:summary=" " />
 
     <PreferenceCategory android:title="@string/ui_floating" android:summary=" ">
         <Preference
@@ -97,8 +97,8 @@
             android:title="@string/splashTitle"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:summary="" />
-    <PreferenceCategory android:summary="" />
+    <PreferenceCategory android:summary=" " />
+    <PreferenceCategory android:summary=" " />
 
     <PreferenceCategory android:title="@string/ui_app" android:summary=" ">
         <ListPreference
@@ -110,8 +110,8 @@
             android:title="@string/colortext"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:summary="" />
-    <PreferenceCategory android:summary="" />
+    <PreferenceCategory android:summary=" " />
+    <PreferenceCategory android:summary=" " />
 
     <PreferenceCategory
         android:key="advanced"
@@ -134,8 +134,8 @@
             android:title="@string/liteTitle"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:summary="" />
-    <PreferenceCategory android:summary="" />
+    <PreferenceCategory android:summary=" " />
+    <PreferenceCategory android:summary=" " />
 
     <PreferenceCategory android:title="@string/supportCategory" android:summary=" ">
         <Preference
@@ -152,8 +152,8 @@
             android:title="@string/privacyTitle"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:summary="" />
-    <PreferenceCategory android:summary="" />
+    <PreferenceCategory android:summary=" " />
+    <PreferenceCategory android:summary=" " />
 
     <PreferenceCategory android:title="@string/geeksempire" android:summary=" ">
         <Preference
@@ -163,16 +163,8 @@
             android:title="@string/adApp"/>
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title=""
-        android:summary="" />
-
-    <PreferenceCategory
-        android:title=""
-        android:summary="" />
-
-    <PreferenceCategory
-        android:title=""
-        android:summary="" />
+    <PreferenceCategory android:summary=" " />
+    <PreferenceCategory android:summary=" " />
+    <PreferenceCategory android:summary=" " />
 
 </PreferenceScreen>
