@@ -12,6 +12,8 @@ package net.geekstools.floatshort.PRO
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.os.Build
 import android.os.IBinder
 import android.util.TypedValue
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
@@ -61,7 +63,11 @@ class BindServices : Service() {
         functionsClassLegacy.loadSavedColor()
         functionsClassLegacy.checkLightDarkTheme()
 
-        startForeground(333, functionsClassLegacy.bindServiceNotification())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(333, functionsClassLegacy.bindServiceNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+        } else {
+            startForeground(333, functionsClassLegacy.bindServiceNotification())
+        }
 
     }
 
