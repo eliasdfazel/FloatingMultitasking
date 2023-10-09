@@ -761,10 +761,10 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                 intentFilter.addAction("Unpin_App_$floatingShortcutClassInCommand")
                 intentFilter.addAction("Float_It_$floatingShortcutClassInCommand")
                 intentFilter.addAction("Remove_App_$floatingShortcutClassInCommand")
-                intentFilter.addAction("Sticky_Edge")
-                intentFilter.addAction("Sticky_Edge_No")
-                intentFilter.addAction("Notification_Dot")
-                intentFilter.addAction("Notification_Dot_No")
+                intentFilter.addAction("Sticky_Edge${applicationContext.packageName}")
+                intentFilter.addAction("Sticky_Edge_No${applicationContext.packageName}")
+                intentFilter.addAction("Notification_Dot${applicationContext.packageName}")
+                intentFilter.addAction("Notification_Dot_No${applicationContext.packageName}")
                 val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
                     override fun onReceive(context: Context, intent: Intent) {
@@ -924,7 +924,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                     }
                                 }
                             }
-                        } else if (intent.action == "Sticky_Edge") {
+                        } else if (intent.action == "Sticky_Edge${applicationContext.packageName}") {
 
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
 
@@ -947,7 +947,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                 }
                             }
 
-                        } else if (intent.action == "Sticky_Edge_No") {
+                        } else if (intent.action == "Sticky_Edge_No${applicationContext.packageName}") {
 
                             for (stickyCounter in 0 until floatingShortcutsBinding.size) {
 
@@ -972,7 +972,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                 }
                             }
 
-                        } else if (intent.action == "Notification_Dot") {
+                        } else if (intent.action == "Notification_Dot${applicationContext.packageName}") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
 
@@ -1017,7 +1017,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                             }
 
 
-                        } else if (intent.action == "Notification_Dot_No") {
+                        } else if (intent.action == "Notification_Dot_No${applicationContext.packageName}") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
 

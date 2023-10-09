@@ -718,11 +718,10 @@ class FloatingFoldersForWifi : Service() {
                 intentFilter.addAction("Pin_App_$floatingFolderClassInCommand")
                 intentFilter.addAction("Unpin_App_$floatingFolderClassInCommand")
                 intentFilter.addAction("Remove_Category_$floatingFolderClassInCommand")
-                intentFilter.addAction("Sticky_Edge")
-                intentFilter.addAction("Sticky_Edge_No")
-                intentFilter.addAction("Notification_Dot")
-                intentFilter.addAction("Notification_Dot_No")
-
+                intentFilter.addAction("Sticky_Edge${applicationContext.packageName}")
+                intentFilter.addAction("Sticky_Edge_No${applicationContext.packageName}")
+                intentFilter.addAction("Notification_Dot${applicationContext.packageName}")
+                intentFilter.addAction("Notification_Dot_No${applicationContext.packageName}")
                 val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
                     override fun onReceive(context: Context, intent: Intent) {
@@ -887,7 +886,7 @@ class FloatingFoldersForWifi : Service() {
                                     stopService(Intent(applicationContext, BindServices::class.java))
                                 }
                             }
-                        } else if (intent.action == "Sticky_Edge") {
+                        } else if (intent.action == "Sticky_Edge${applicationContext.packageName}") {
 
                             for (stickyCounter in 0 until floatingView.size) {
 
@@ -910,7 +909,7 @@ class FloatingFoldersForWifi : Service() {
                                 }
                             }
 
-                        } else if (intent.action == "Sticky_Edge_No") {
+                        } else if (intent.action == "Sticky_Edge_No${applicationContext.packageName}") {
 
                             for (stickyCounter in 0 until floatingView.size) {
 
@@ -935,7 +934,7 @@ class FloatingFoldersForWifi : Service() {
                                 }
                             }
 
-                        } else if (intent.action == "Notification_Dot") {
+                        } else if (intent.action == "Notification_Dot${applicationContext.packageName}") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
 
@@ -959,7 +958,7 @@ class FloatingFoldersForWifi : Service() {
                                 }
                             }
 
-                        } else if (intent.action == "Notification_Dot_No") {
+                        } else if (intent.action == "Notification_Dot_No${applicationContext.packageName}") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
 
