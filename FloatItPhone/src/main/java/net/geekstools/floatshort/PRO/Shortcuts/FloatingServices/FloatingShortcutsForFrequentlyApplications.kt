@@ -21,6 +21,7 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
@@ -412,7 +413,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
                                     functionsClassLegacy.doVibrate(100)
 
-                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
+                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
 
                                     getBackRunnable = Runnable {
                                         if (removePermit[startId]) {
@@ -565,7 +566,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                 if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
                                         || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
-                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
+                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
 
                                     openPermit[startId] = false
                                     touchingDelay[startId] = false
@@ -591,7 +592,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                     if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
                                             || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
-                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
+                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
 
                                         openPermit[startId] = false
                                         touchingDelay[startId] = false
@@ -1033,7 +1034,11 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                         }
                     }
                 }
-                registerReceiver(broadcastReceiver, intentFilter)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    registerReceiver(broadcastReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
+                } else {
+                    registerReceiver(broadcastReceiver, intentFilter)
+                }
             }
 
             if (getFileStreamPath(packageNames.get(startId) + "_" + "Notification" + "Package").exists()) {

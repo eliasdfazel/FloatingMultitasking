@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -36,18 +37,22 @@ public class SplitTransparentPair extends Activity {
         window.setStatusBarColor(Color.TRANSPARENT);
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
 
-        sendBroadcast(new Intent("perform_split_pair"));
+        sendBroadcast(new Intent("perform_split_pair" + getApplicationContext().getPackageName()));
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("split_pair_finish");
+        intentFilter.addAction("split_pair_finish" + getApplicationContext().getPackageName());
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals("split_pair_finish")) {
+                if (intent.getAction().equals("split_pair_finish" + getApplicationContext().getPackageName())) {
                     SplitTransparentPair.this.finish();
                 }
             }
         };
-        registerReceiver(broadcastReceiver, intentFilter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(broadcastReceiver, intentFilter, RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(broadcastReceiver, intentFilter);
+        }
     }
 
     @Override

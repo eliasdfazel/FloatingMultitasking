@@ -36,7 +36,6 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsFloating
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
-import java.util.*
 
 class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
 
@@ -250,7 +249,7 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
 
             }
 
-            context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
+            context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + context.getPackageName()))
         }
 
         return convertView

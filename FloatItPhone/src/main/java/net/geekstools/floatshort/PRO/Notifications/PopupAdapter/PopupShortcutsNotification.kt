@@ -37,7 +37,6 @@ import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash
 import net.geekstools.imageview.customshapes.ShapesImage
-import java.util.*
 import kotlin.math.abs
 
 class PopupShortcutsNotification(private val context: Context,
@@ -202,7 +201,7 @@ class PopupShortcutsNotification(private val context: Context,
                     }
                 }
             }
-            context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts_Notification"))
+            context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts_Notification" + context.getPackageName()))
         }
 
         convertView?.setOnTouchListener(object : OnTouchListener {
@@ -251,10 +250,10 @@ class PopupShortcutsNotification(private val context: Context,
                                     e.printStackTrace()
                                 }
 
-                                context.sendBroadcast(Intent("Remove_Notification_Key")
+                                context.sendBroadcast(Intent("Remove_Notification_Key" + context.getPackageName())
                                         .putExtra("notification_key", adapterItems[position].notificationId)
                                 )
-                                context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts_Notification"))
+                                context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts_Notification" + context.getPackageName()))
                             }
                         } else {
                             if (abs(minus) > X) {
@@ -288,10 +287,10 @@ class PopupShortcutsNotification(private val context: Context,
                                     e.printStackTrace()
                                 }
 
-                                context.sendBroadcast(Intent("Remove_Notification_Key")
+                                context.sendBroadcast(Intent("Remove_Notification_Key" + context.getPackageName())
                                         .putExtra("notification_key", adapterItems[position].notificationId)
                                 )
-                                context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts_Notification"))
+                                context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts_Notification" + context.getPackageName()))
                             }
                         }
                     }

@@ -18,6 +18,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
@@ -628,7 +629,7 @@ class FloatingFoldersForBluetooth : Service() {
                                     if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
                                             || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
-                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
+                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
 
                                         openPermit[startId] = false
                                         touchingDelay[startId] = false
@@ -778,7 +779,7 @@ class FloatingFoldersForBluetooth : Service() {
                                         PublicVariable.splitScreen = true
 
                                         Handler(Looper.getMainLooper()).postDelayed({
-                                            sendBroadcast(Intent("split_pair_finish"))
+                                            sendBroadcast(Intent("split_pair_finish" + getApplicationContext().getPackageName()))
                                         }, 700)
 
                                     }, 200)
@@ -805,7 +806,7 @@ class FloatingFoldersForBluetooth : Service() {
 
                                     PublicVariable.splitScreen = true
 
-                                    Handler(Looper.getMainLooper()).postDelayed({ sendBroadcast(Intent("split_single_finish")) }, 500)
+                                    Handler(Looper.getMainLooper()).postDelayed({ sendBroadcast(Intent("split_single_finish" + getApplicationContext().getPackageName())) }, 500)
 
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()
@@ -975,7 +976,11 @@ class FloatingFoldersForBluetooth : Service() {
                         }
                     }
                 }
-                registerReceiver(broadcastReceiver, intentFilter)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    registerReceiver(broadcastReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
+                } else {
+                    registerReceiver(broadcastReceiver, intentFilter)
+                }
             }
 
             if (showNotificationDot) {

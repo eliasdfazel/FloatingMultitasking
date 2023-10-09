@@ -41,7 +41,6 @@ import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserv
 import net.geekstools.floatshort.PRO.Utils.UI.CustomIconManager.LoadCustomIcons
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash
 import net.geekstools.imageview.customshapes.ShapesImage
-import java.util.*
 
 class PopupFolderOptionAdapter : BaseAdapter {
 
@@ -384,7 +383,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
                 e.printStackTrace()
             }
 
-            context.sendBroadcast(Intent("Hide_PopupListView_Category"))
+            context.sendBroadcast(Intent("Hide_PopupListView_Category" + context.getPackageName()))
         }
         convertView?.setOnLongClickListener { view ->
             if (functionsClassLegacy.returnAPI() >= 24) {
@@ -406,7 +405,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
                     }
                 }
             }
-            context.sendBroadcast(Intent("Hide_PopupListView_Category"))
+            context.sendBroadcast(Intent("Hide_PopupListView_Category" + context.getPackageName()))
             true
         }
         return convertView

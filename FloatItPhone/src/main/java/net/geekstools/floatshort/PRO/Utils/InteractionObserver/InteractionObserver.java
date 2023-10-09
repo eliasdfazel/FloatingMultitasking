@@ -15,6 +15,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.view.accessibility.AccessibilityEvent;
 
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
@@ -49,7 +50,7 @@ public class InteractionObserver extends AccessibilityService {
                     }
 
                     IntentFilter intentFilterTest = new IntentFilter();
-                    intentFilterTest.addAction("perform_split_pair");
+                    intentFilterTest.addAction("perform_split_pair" + getApplicationContext().getPackageName());
                     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
                         @Override
                         public void onReceive(Context context, Intent intent) {
@@ -61,7 +62,11 @@ public class InteractionObserver extends AccessibilityService {
                         }
                     };
                     try {
-                        registerReceiver(broadcastReceiver, intentFilterTest);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            registerReceiver(broadcastReceiver, intentFilterTest, RECEIVER_NOT_EXPORTED);
+                        } else {
+                            registerReceiver(broadcastReceiver, intentFilterTest);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -75,11 +80,11 @@ public class InteractionObserver extends AccessibilityService {
                     }
 
                     IntentFilter intentFilterTest = new IntentFilter();
-                    intentFilterTest.addAction("perform_split_single");
+                    intentFilterTest.addAction("perform_split_single" + getApplicationContext().getPackageName());
                     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
                         @Override
                         public void onReceive(Context context, Intent intent) {
-                            if (intent.getAction().equals("perform_split_single") && doSplitSingle == true) {
+                            if (intent.getAction().equals("perform_split_single" + getApplicationContext().getPackageName()) && doSplitSingle == true) {
                                 doSplitSingle = false;
                                 performGlobalAction(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
 
@@ -88,7 +93,11 @@ public class InteractionObserver extends AccessibilityService {
                         }
                     };
                     try {
-                        registerReceiver(broadcastReceiver, intentFilterTest);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            registerReceiver(broadcastReceiver, intentFilterTest, RECEIVER_NOT_EXPORTED);
+                        } else {
+                            registerReceiver(broadcastReceiver, intentFilterTest);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

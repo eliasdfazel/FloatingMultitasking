@@ -22,8 +22,12 @@ import android.os.Handler
 import android.os.Looper
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import net.geekstools.floatshort.PRO.Utils.Functions.*
+import net.geekstools.floatshort.PRO.Utils.Functions.BitmapExtractor
+import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
+import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class NotificationListener : NotificationListenerService() {
 
@@ -164,14 +168,14 @@ class NotificationListener : NotificationListenerService() {
 
 
                 val intentFilter = IntentFilter()
-                intentFilter.addAction("Remove_Notification_Key")
+                intentFilter.addAction("Remove_Notification_Key" + getApplicationContext().getPackageName())
                 broadcastReceiver = object : BroadcastReceiver() {
 
                     override fun onReceive(context: Context, intent: Intent?) {
 
                         intent?.let {
 
-                            if (intent.action == "Remove_Notification_Key") {
+                            if (intent.action == "Remove_Notification_Key" + getApplicationContext().getPackageName()) {
 
                                 this@NotificationListener
                                         .cancelNotification(intent.getStringExtra("notification_key"))
@@ -181,7 +185,11 @@ class NotificationListener : NotificationListenerService() {
                 }
 
                 try {
-                    registerReceiver(broadcastReceiver, intentFilter)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        registerReceiver(broadcastReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
+                    } else {
+                        registerReceiver(broadcastReceiver, intentFilter)
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

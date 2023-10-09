@@ -421,7 +421,7 @@ class FloatingShortcutsForApplications : Service() {
                                     
                                     functionsClassLegacy.doVibrate(100)
                                     
-                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
+                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
                                     
                                     getBackRunnable = Runnable {
                                         if (removePermit[startId]) {
@@ -575,7 +575,7 @@ class FloatingShortcutsForApplications : Service() {
                                 if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
                                         || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
-                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
+                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
 
                                     openPermit[startId] = false
                                     touchingDelay[startId] = false
@@ -601,7 +601,7 @@ class FloatingShortcutsForApplications : Service() {
                                     if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
                                             || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
-                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts"))
+                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
 
                                         openPermit[startId] = false
                                         touchingDelay[startId] = false

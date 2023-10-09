@@ -11,6 +11,7 @@
 package net.geekstools.floatshort.PRO.Utils.Functions;
 
 import static android.content.Context.ACCESSIBILITY_SERVICE;
+import static android.content.Context.RECEIVER_NOT_EXPORTED;
 import static android.content.Context.VIBRATOR_SERVICE;
 
 import android.animation.Animator;
@@ -230,16 +231,20 @@ public class FunctionsClassLegacy {
             context.startService(popupOptionsShortcuts);
 
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction("Hide_PopupListView_Shortcuts");
+            intentFilter.addAction("Hide_PopupListView_Shortcuts" + context.getPackageName());
             final BroadcastReceiver counterReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    if (intent.getAction().equals("Hide_PopupListView_Shortcuts")) {
+                    if (intent.getAction().equals("Hide_PopupListView_Shortcuts" + context.getPackageName())) {
                         context.stopService(new Intent(context, PopupOptionsFloatingShortcuts.class));
                     }
                 }
             };
-            context.registerReceiver(counterReceiver, intentFilter);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.registerReceiver(counterReceiver, intentFilter, RECEIVER_NOT_EXPORTED);
+            } else {
+                context.registerReceiver(counterReceiver, intentFilter);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -260,11 +265,11 @@ public class FunctionsClassLegacy {
             context.startService(popupOptionsShortcuts);
 
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction("Hide_PopupListView_Shortcuts");
+            intentFilter.addAction("Hide_PopupListView_Shortcuts" + context.getPackageName());
             final BroadcastReceiver counterReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    if (intent.getAction().equals("Hide_PopupListView_Shortcuts")) {
+                    if (intent.getAction().equals("Hide_PopupListView_Shortcuts" + context.getPackageName())) {
                         context.stopService(new Intent(context, PopupOptionsFloatingShortcuts.class));
                     }
                 }
@@ -275,7 +280,11 @@ public class FunctionsClassLegacy {
                 e.printStackTrace();
             }
             try {
-                context.registerReceiver(counterReceiver, intentFilter);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.registerReceiver(counterReceiver, intentFilter, RECEIVER_NOT_EXPORTED);
+                } else {
+                    context.registerReceiver(counterReceiver, intentFilter);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -339,11 +348,11 @@ public class FunctionsClassLegacy {
             context.startService(popupOptionsFloatingCategory);
 
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction("Hide_PopupListView_Category");
+            intentFilter.addAction("Hide_PopupListView_Category" + context.getPackageName());
             final BroadcastReceiver counterReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    if (intent.getAction().equals("Hide_PopupListView_Category")) {
+                    if (intent.getAction().equals("Hide_PopupListView_Category" + context.getPackageName())) {
                         context.stopService(new Intent(context, PopupOptionsFloatingFolders.class));
                     }
                 }
@@ -354,7 +363,11 @@ public class FunctionsClassLegacy {
                 e.printStackTrace();
             }
             try {
-                context.registerReceiver(counterReceiver, intentFilter);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.registerReceiver(counterReceiver, intentFilter, RECEIVER_NOT_EXPORTED);
+                } else {
+                    context.registerReceiver(counterReceiver, intentFilter);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -380,11 +393,11 @@ public class FunctionsClassLegacy {
             context.startService(popupOptionsFloatingCategory);
 
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction("Hide_PopupListView_Category");
+            intentFilter.addAction("Hide_PopupListView_Category" + context.getPackageName());
             final BroadcastReceiver counterReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    if (intent.getAction().equals("Hide_PopupListView_Category")) {
+                    if (intent.getAction().equals("Hide_PopupListView_Category" + context.getPackageName())) {
                         context.stopService(new Intent(context, PopupOptionsFloatingFolders.class));
                     }
                 }
@@ -395,7 +408,11 @@ public class FunctionsClassLegacy {
                 e.printStackTrace();
             }
             try {
-                context.registerReceiver(counterReceiver, intentFilter);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.registerReceiver(counterReceiver, intentFilter, RECEIVER_NOT_EXPORTED);
+                } else {
+                    context.registerReceiver(counterReceiver, intentFilter);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -508,12 +525,12 @@ public class FunctionsClassLegacy {
             }
 
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction("Hide_PopupListView_Shortcuts_Notification");
+            intentFilter.addAction("Hide_PopupListView_Shortcuts_Notification" + context.getPackageName());
             final ListPopupWindow finalListPopupWindow = listPopupWindow;
             final BroadcastReceiver counterReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    if (intent.getAction().equals("Hide_PopupListView_Shortcuts_Notification")) {
+                    if (intent.getAction().equals("Hide_PopupListView_Shortcuts_Notification" + context.getPackageName())) {
                         if (finalListPopupWindow.isShowing()) {
                             finalListPopupWindow.dismiss();
                         }
@@ -521,7 +538,11 @@ public class FunctionsClassLegacy {
                 }
             };
             try {
-                context.registerReceiver(counterReceiver, intentFilter);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.registerReceiver(counterReceiver, intentFilter, RECEIVER_NOT_EXPORTED);
+                } else {
+                    context.registerReceiver(counterReceiver, intentFilter);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
