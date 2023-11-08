@@ -423,38 +423,46 @@
         <service
             android:name=".BindServices"
             android:foregroundServiceType="specialUse">
-
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="For this new innovative productivity/multitasking application, we are using foreground service to create overlay windows to add shortcuts, folders, widgets at ease of access. Foreground Service is used to create stable overlay layer to display a windows over other apps also known as Overlay Windows, for multitasking, personalization."/>
-
-
         </service>
         <service
             android:name=".Utils.RemoteTask.Create.RecoveryShortcuts"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay"
-            android:foregroundServiceType="dataSync">
+            android:foregroundServiceType="specialUse">
             <intent-filter>
                 <action android:name="net.geekstools.floatshort.pro.LAUNCH_BACKGROUND"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="For this new innovative productivity/multitasking application, we are using foreground service to create overlay windows to add shortcuts, folders, widgets at ease of access. Foreground Service is used to create stable overlay layer to display a windows over other apps also known as Overlay Windows, for multitasking, personalization."/>
         </service>
         <service
             android:name=".Utils.RemoteTask.Create.RecoveryFolders"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay"
-            android:foregroundServiceType="dataSync"/>
+            android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="For this new innovative productivity/multitasking application, we are using foreground service to create overlay windows to add shortcuts, folders, widgets at ease of access. Foreground Service is used to create stable overlay layer to display a windows over other apps also known as Overlay Windows, for multitasking, personalization."/>
+        </service>
         <service
             android:name=".Utils.RemoteTask.Create.RecoveryWidgets"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay"
-            android:foregroundServiceType="dataSync"/>
+            android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="For this new innovative productivity/multitasking application, we are using foreground service to create overlay windows to add shortcuts, folders, widgets at ease of access. Foreground Service is used to create stable overlay layer to display a windows over other apps also known as Overlay Windows, for multitasking, personalization."/>
+        </service>
         <service
             android:name=".Utils.RemoteTask.Create.RecoveryAll"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay"
-            android:foregroundServiceType="dataSync"/>
+            android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="For this new innovative productivity/multitasking application, we are using foreground service to create overlay windows to add shortcuts, folders, widgets at ease of access. Foreground Service is used to create stable overlay layer to display a windows over other apps also known as Overlay Windows, for multitasking, personalization."/>
+        </service>
         <service
             android:name=".Utils.RemoteTask.Remove.RemoveAll"
             android:exported="true"

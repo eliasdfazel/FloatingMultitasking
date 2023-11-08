@@ -71,7 +71,7 @@ public class PublicVariable {
      * True -> Light
      * False -> Dark
      **/
-    public static boolean themeLightDark = true;
+    public static boolean themeLightDark = false;
     public static boolean Stable = false;
     public static boolean actionCenter = false;
     public static boolean recoveryCenter = false;
