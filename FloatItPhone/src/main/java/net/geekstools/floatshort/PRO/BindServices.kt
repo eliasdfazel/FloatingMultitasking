@@ -64,7 +64,6 @@ class BindServices : Service() {
         functionsClassLegacy.checkLightDarkTheme()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> done")
             startForeground(333, functionsClassLegacy.bindServiceNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         } else {
             startForeground(333, functionsClassLegacy.bindServiceNotification())
