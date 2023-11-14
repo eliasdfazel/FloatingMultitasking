@@ -149,8 +149,8 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="www.geeksempire.net"
-                    android:pathPrefix="/createshortcuts.html"
+                    android:host="geeksempire.co"
+                    android:pathPrefix="/2023/10/09/lifestyle/productivity/float-it-multitasking-master-floating-multitasking/"
                     android:scheme="https"/>
                 <!-- adb shell am start -W -a android.intent.action.VIEW -d "https//...." net.geekstools.floatshort.PRO -->
             </intent-filter>
@@ -168,8 +168,8 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="www.geeksempire.net"
-                    android:pathPrefix="/createcategory.html"
+                    android:host="geeksempire.net"
+                    android:pathPrefix="/2023/10/09/lifestyle/productivity/float-it-multitasking-master-floating-multitasking/"
                     android:scheme="https"/>
                 <!-- adb shell am start -W -a android.intent.action.VIEW -d "https//...." net.geekstools.floatshort.PRO -->
             </intent-filter>
