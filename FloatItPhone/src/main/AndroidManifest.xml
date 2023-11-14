@@ -168,7 +168,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="geeksempire.net"
+                    android:host="geeksempire.co"
                     android:pathPrefix="/2023/10/09/lifestyle/productivity/float-it-multitasking-master-floating-multitasking/"
                     android:scheme="https"/>
                 <!-- adb shell am start -W -a android.intent.action.VIEW -d "https//...." net.geekstools.floatshort.PRO -->
