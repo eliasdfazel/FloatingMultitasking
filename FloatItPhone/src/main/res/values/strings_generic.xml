@@ -22,7 +22,7 @@
         ]]>
     </string>
 
-    <string name="app_name" translatable="false">Float It</string>
+    <string name="app_name" translatable="false">Floating Multitasking</string>
     <string name="geeksempire" translatable="false">Geeks Empire</string>
 
     <string name="millis" translatable="false">Millisecond</string>
@@ -81,7 +81,7 @@
 
     <string name="link_contacts" translatable="false">https://www.GeeksEmpire.co/Contacts/</string>
 
-    <string name="link_facebook_app" translatable="false">https://www.facebook.com/FloatIt.Android/</string>
+    <string name="link_facebook_app" translatable="false">https://www.facebook.com/FloatingMultitasking/</string>
     <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="privacyPolicy" translatable="false">https://GeeksEmpire.co/PrivacyPolicy</string>
 

@@ -639,7 +639,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
         listOfNewCharOfItemsForIndex.clear()
 
         applicationInfoListSorted.asFlow()
-//                .flowOn(Dispatchers.IO)
                 .filter {
 
                     (packageManager.getLaunchIntentForPackage(it.activityInfo.packageName) != null)
