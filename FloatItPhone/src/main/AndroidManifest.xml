@@ -181,7 +181,7 @@
             android:noHistory="true"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
-            android:theme="@style/Transparent"/>
+            android:theme="@android:style/Theme.Material.Wallpaper.NoTitleBar"/>
         <activity
             android:name=".Utils.InteractionObserver.SplitTransparentSingle"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
@@ -189,7 +189,7 @@
             android:noHistory="true"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
-            android:theme="@style/Transparent"/>
+            android:theme="@android:style/Theme.Material.Wallpaper.NoTitleBar"/>
         <activity
             android:name=".Utils.RemoteTask.Create.RecoveryAllActivity"
             android:exported="true"
