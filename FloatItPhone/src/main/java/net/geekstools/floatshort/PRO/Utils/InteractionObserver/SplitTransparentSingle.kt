@@ -33,6 +33,7 @@ class SplitTransparentSingle : Activity() {
         getWindow().navigationBarColor = Color.TRANSPARENT
 
         val accessibilityManager = getSystemService(ACCESSIBILITY_SERVICE) as AccessibilityManager
+
         val accessibilityEvent = AccessibilityEvent.obtain()
         accessibilityEvent.setSource(Button(applicationContext))
         accessibilityEvent.eventType = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED

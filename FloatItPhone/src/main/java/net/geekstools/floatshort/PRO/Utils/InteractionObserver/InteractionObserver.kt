@@ -7,100 +7,69 @@
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
+package net.geekstools.floatshort.PRO.Utils.InteractionObserver
 
-package net.geekstools.floatshort.PRO.Utils.InteractionObserver;
+import android.accessibilityservice.AccessibilityService
+import android.content.Intent
+import android.view.accessibility.AccessibilityEvent
+import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
+import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
-import android.accessibilityservice.AccessibilityService;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Build;
-import android.view.accessibility.AccessibilityEvent;
+class InteractionObserver : AccessibilityService() {
 
-import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
+    var functionsClassLegacy: FunctionsClassLegacy? = null
 
-public class InteractionObserver extends AccessibilityService {
+    var classNameCommand: String? = "Default"
 
-    FunctionsClassLegacy functionsClassLegacy;
-
-    boolean doSplitPair = false;
-    boolean doSplitSingle = false;
-
-    String classNameCommand = "Default";
-
-    @Override
-    protected void onServiceConnected() {
-        functionsClassLegacy = new FunctionsClassLegacy(getApplicationContext());
+    override fun onServiceConnected() {
+        functionsClassLegacy = FunctionsClassLegacy(applicationContext)
     }
 
-    @Override
-    public void onAccessibilityEvent(final AccessibilityEvent accessibilityEvent) {
-        functionsClassLegacy = new FunctionsClassLegacy(getApplicationContext());
+    override fun onAccessibilityEvent(accessibilityEvent: AccessibilityEvent) {
 
-        switch (accessibilityEvent.getEventType()) {
-            case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
-                if (accessibilityEvent.getAction() == 10296) {
-                    classNameCommand = (String) accessibilityEvent.getClassName();
+        functionsClassLegacy = FunctionsClassLegacy(applicationContext)
 
-                    if (doSplitPair == false) {
-                        doSplitPair = true;
-                        startActivity(new Intent(getApplicationContext(), SplitTransparentPair.class)
-                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                    }
+        when (accessibilityEvent.eventType) {
+            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> if (accessibilityEvent.action == 10296) {
 
-                    IntentFilter intentFilterTest = new IntentFilter();
-                    intentFilterTest.addAction("perform_split_pair" + getApplicationContext().getPackageName());
-                    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-                        @Override
-                        public void onReceive(Context context, Intent intent) {
-                            if (intent.getAction().equals("perform_split_pair") && doSplitPair == true) {
-                                doSplitPair = false;
-                                performGlobalAction(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
-                                sendBroadcast(new Intent("Split_Apps_Pair_" + classNameCommand));
-                            }
-                        }
-                    };
-                    try {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            registerReceiver(broadcastReceiver, intentFilterTest, RECEIVER_NOT_EXPORTED);
-                        } else {
-                            registerReceiver(broadcastReceiver, intentFilterTest);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                classNameCommand = accessibilityEvent.className as String?
+                performGlobalAction(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
+                val splitIntent =
+                    packageManager.getLaunchIntentForPackage(SplitTransparentPair.packageNameSplitTwo)
+                splitIntent!!.addFlags(
+                    Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT or
+                            Intent.FLAG_ACTIVITY_NEW_TASK
+                )
+                startActivity(splitIntent)
+                PublicVariable.splitScreen = true
 
-                } else if (accessibilityEvent.getAction() == 69201) {
+            } else if (accessibilityEvent.action == 69201) {
 
-                    classNameCommand = (String) accessibilityEvent.getClassName();
+                classNameCommand = accessibilityEvent.className as String?
 
-                    performGlobalAction(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
+                performGlobalAction(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
 
-                } else if (accessibilityEvent.getAction() == 66666) {
-                    performGlobalAction(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS);
-                }
-                break;
+            } else if (accessibilityEvent.action == 66666) {
+
+                performGlobalAction(GLOBAL_ACTION_NOTIFICATIONS)
+
+            }
         }
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, final int startId) {
-        return START_STICKY;
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        return START_STICKY
     }
 
-    @Override
-    public void onInterrupt() {
-        startService(new Intent(getApplicationContext(), InteractionObserver.class));
+    override fun onInterrupt() {
+        startService(Intent(applicationContext, InteractionObserver::class.java))
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    override fun onCreate() {
+        super.onCreate()
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

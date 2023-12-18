@@ -790,6 +790,7 @@ class FloatingFolders : Service() {
                                     e.printStackTrace()
                                 }
                             }, 700)
+
                         } else if (intent.action == "Split_Apps_Single_$floatingFolderClassInCommand" && PublicVariable.splitScreen) {
                             PublicVariable.splitScreen = false
 
