@@ -10,7 +10,6 @@
 package net.geekstools.floatshort.PRO
 
 import android.app.Service
-import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
@@ -26,19 +25,12 @@ class BindServices : Service() {
     lateinit var functionsClassLegacy: FunctionsClassLegacy
     lateinit var fileIO: FileIO
 
-    var broadcastReceiverAction: BroadcastReceiver? = null
-
     private companion object {
         var triggerWifiBroadcast = false
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
-        broadcastReceiverAction?.let {
-            unregisterReceiver(it)
-        }
-
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

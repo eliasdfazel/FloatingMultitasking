@@ -477,18 +477,9 @@
 
         <service
             android:name=".Folders.FloatingServices.FloatingFolders" />
-        <service
-            android:name=".Folders.FloatingServices.FloatingFoldersForWifi" />
-        <service
-            android:name=".Folders.FloatingServices.FloatingFoldersForBluetooth" />
-        <service
-            android:name=".Folders.FloatingServices.FloatingFoldersForGps" />
-        <service
-            android:name=".Folders.FloatingServices.FloatingFoldersForNfc" />
-        <service
-            android:name=".Folders.FloatingServices.FloatingFoldersForTime" />
 
-        <service android:name=".Widgets.FloatingServices.WidgetUnlimitedFloating" />
+        <service
+            android:name=".Widgets.FloatingServices.WidgetUnlimitedFloating" />
 
         <!-- Float It -->
 

@@ -64,4 +64,12 @@ public class SplitTransparentPair extends Activity {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        SplitTransparentPair.this.finish();
+
+    }
 }

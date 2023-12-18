@@ -13,11 +13,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFolders
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForBluetooth
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForGps
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForNfc
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForTime
-import net.geekstools.floatshort.PRO.Folders.FloatingServices.FloatingFoldersForWifi
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForApplications
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.FloatingShortcutsForFrequentlyApplications
@@ -37,36 +32,6 @@ class RemoveAllActivity : Activity() {
 
         /*Folders*/
         Intent(applicationContext, FloatingFolders::class.java).apply {
-            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
-
-            startService(this@apply)
-        }
-
-        Intent(applicationContext, FloatingFoldersForWifi::class.java).apply {
-            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
-
-            startService(this@apply)
-        }
-
-        Intent(applicationContext, FloatingFoldersForBluetooth::class.java).apply {
-            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
-
-            startService(this@apply)
-        }
-
-        Intent(applicationContext, FloatingFoldersForGps::class.java).apply {
-            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
-
-            startService(this@apply)
-        }
-
-        Intent(applicationContext, FloatingFoldersForNfc::class.java).apply {
-            putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
-
-            startService(this@apply)
-        }
-
-        Intent(applicationContext, FloatingFoldersForTime::class.java).apply {
             putExtra(getString(R.string.remove_all_floatings), getString(R.string.remove_all_floatings))
 
             startService(this@apply)
