@@ -36,6 +36,7 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsFloating
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
+import net.geekstools.floatshort.PRO.Utils.InteractionObserver.SplitTransparentSingle
 
 class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
 
@@ -194,16 +195,9 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
                         PublicVariable.splitSinglePackage = packageName
                         PublicVariable.splitSingleClassName = className
 
-                        val accessibilityManager = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+                        context.startActivity(Intent(context, SplitTransparentSingle::class.java)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 
-                        val accessibilityEvent = AccessibilityEvent.obtain()
-                        accessibilityEvent.setSource(view)
-                        accessibilityEvent.eventType = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
-                        accessibilityEvent.action = 69201
-                        accessibilityEvent.className = classNameCommand
-                        accessibilityEvent.text.add(context.packageName)
-
-                        accessibilityManager.sendAccessibilityEvent(accessibilityEvent)
                     }
                 }
             } else if (adapterItems[position].optionItemTitle == context.getString(R.string.pin)) {

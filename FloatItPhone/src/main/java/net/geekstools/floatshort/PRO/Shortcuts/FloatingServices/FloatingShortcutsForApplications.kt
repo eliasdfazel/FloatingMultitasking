@@ -798,8 +798,7 @@ class FloatingShortcutsForApplications : Service() {
                                     splitSingle = packageManager.getLaunchIntentForPackage(PublicVariable.splitSinglePackage)
                                 }
                                 splitSingle?.flags = Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT or
-                                        Intent.FLAG_ACTIVITY_NEW_TASK or
-                                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+                                        Intent.FLAG_ACTIVITY_NEW_TASK
                                 startActivity(splitSingle)
 
                                 PublicVariable.splitScreen = true

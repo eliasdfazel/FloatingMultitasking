@@ -70,37 +70,13 @@ public class InteractionObserver extends AccessibilityService {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                 } else if (accessibilityEvent.getAction() == 69201) {
+
                     classNameCommand = (String) accessibilityEvent.getClassName();
 
-                    if (doSplitSingle == false) {
-                        doSplitSingle = true;
-                        startActivity(new Intent(getApplicationContext(), SplitTransparentSingle.class)
-                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                    }
+                    performGlobalAction(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
 
-                    IntentFilter intentFilterTest = new IntentFilter();
-                    intentFilterTest.addAction("perform_split_single" + getApplicationContext().getPackageName());
-                    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-                        @Override
-                        public void onReceive(Context context, Intent intent) {
-                            if (intent.getAction().equals("perform_split_single" + getApplicationContext().getPackageName()) && doSplitSingle == true) {
-                                doSplitSingle = false;
-                                performGlobalAction(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
-
-                                sendBroadcast(new Intent("Split_Apps_Single_" + classNameCommand));
-                            }
-                        }
-                    };
-                    try {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            registerReceiver(broadcastReceiver, intentFilterTest, RECEIVER_NOT_EXPORTED);
-                        } else {
-                            registerReceiver(broadcastReceiver, intentFilterTest);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                 } else if (accessibilityEvent.getAction() == 66666) {
                     performGlobalAction(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS);
                 }
