@@ -181,11 +181,11 @@ class WidgetUnlimitedFloating : Service() {
                 appWidgetHosts[startId].startListening()
 
                 if (PublicVariable.themeLightDark) {
-                    wholeViewWidget[startId].backgroundTintList = ColorStateList.valueOf(if (functionsClassLegacy.appThemeTransparent()) getColor(R.color.light_transparent) else getColor(R.color.light))
+                    wholeViewWidget[startId].backgroundTintList = ColorStateList.valueOf(getColor(R.color.light))
                     widgetLabel[startId].setBackgroundColor(getColor(R.color.light_transparent_high))
                     widgetLabel[startId].setTextColor(getColor(R.color.dark))
                 } else {
-                    wholeViewWidget[startId].backgroundTintList = ColorStateList.valueOf(if (functionsClassLegacy.appThemeTransparent()) getColor(R.color.dark_transparent) else getColor(R.color.dark))
+                    wholeViewWidget[startId].backgroundTintList = ColorStateList.valueOf(getColor(R.color.dark))
                     widgetLabel[startId].setBackgroundColor(getColor(R.color.dark_transparent_high))
                     widgetLabel[startId].setTextColor(getColor(R.color.light))
                 }

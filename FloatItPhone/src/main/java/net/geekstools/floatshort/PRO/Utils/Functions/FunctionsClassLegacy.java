@@ -2038,12 +2038,6 @@ public class FunctionsClassLegacy {
     }
 
     /*App GUI Functions*/
-    public boolean appThemeTransparent() {
-
-        return PreferenceManager.
-                getDefaultSharedPreferences(context).getBoolean("transparent", false);
-    }
-
     public void checkLightDarkTheme() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String LightDark = sharedPreferences.getString("themeColor", "2");
@@ -2640,24 +2634,10 @@ public class FunctionsClassLegacy {
 
         TextView textView = layout.findViewById(R.id.toastText);
         textView.setText(Html.fromHtml("<small>" + toastContent + "</small>", Html.FROM_HTML_MODE_COMPACT));
-        if (appThemeTransparent() == true) {
-            if (PublicVariable.themeLightDark) {
-                backToast.setTint(context.getColor(R.color.light_transparent));
-                textView.setBackground(drawToast);
-                textView.setTextColor(context.getColor(R.color.dark));
-                textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
-            } else if (!PublicVariable.themeLightDark) {
-                backToast.setTint(context.getColor(R.color.dark_transparent));
-                textView.setBackground(drawToast);
-                textView.setTextColor(context.getColor(R.color.light));
-                textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.light_transparent_high));
-            }
-        } else {
-            backToast.setTint(context.getColor(R.color.light_transparent));
-            textView.setBackground(drawToast);
-            textView.setTextColor(context.getColor(R.color.dark));
-            textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
-        }
+        backToast.setTint(context.getColor(R.color.light_transparent));
+        textView.setBackground(drawToast);
+        textView.setTextColor(context.getColor(R.color.dark));
+        textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.FILL_HORIZONTAL | toastGravity, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
@@ -2680,22 +2660,10 @@ public class FunctionsClassLegacy {
 
         TextView textView = layout.findViewById(R.id.toastText);
         textView.setText(Html.fromHtml("<small>" + toastContent + "</small>", Html.FROM_HTML_MODE_COMPACT));
-        if (appThemeTransparent() == true) {
-            if (PublicVariable.themeLightDark) {
-                textView.setBackground(drawToast);
-                textView.setTextColor(context.getColor(R.color.dark));
-                textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
-            } else if (!PublicVariable.themeLightDark) {
-                textView.setBackground(drawToast);
-                textView.setTextColor(context.getColor(R.color.light));
-                textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.light_transparent_high));
-            }
-        } else {
-            backToast.setTint(context.getColor(R.color.light_transparent));
-            textView.setBackground(drawToast);
-            textView.setTextColor(context.getColor(R.color.dark));
-            textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
-        }
+        backToast.setTint(context.getColor(R.color.light_transparent));
+        textView.setBackground(drawToast);
+        textView.setTextColor(context.getColor(R.color.dark));
+        textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.FILL_HORIZONTAL | toastGravity, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
@@ -3660,12 +3628,6 @@ public class FunctionsClassLegacy {
 
         /*Dark App Theme*/
         defaultSharedPreferencesEditor.putString(".themeColor", "2");
-
-        /*OFF Blurry Theme*/
-        defaultSharedPreferencesEditor.putBoolean("blur", false);
-
-        /*OFF Transparent Theme*/
-        defaultSharedPreferencesEditor.putBoolean("transparent", false);
 
         /*OFF Floating Splash*/
         defaultSharedPreferencesEditor.putBoolean("floatingSplash", false);

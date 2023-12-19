@@ -127,13 +127,6 @@ class PreferencesIO (private val context: Context) {
             /*Dark App Theme*/
             defaultSharedPreferencesEditor.putString(".themeColor", "2")
 
-
-            /*OFF Blurry Theme*/
-            defaultSharedPreferencesEditor.putBoolean("blur", false)
-
-            /*OFF Transparent Theme*/
-            defaultSharedPreferencesEditor.putBoolean("transparent", false)
-
             /*OFF Floating Splash*/
             defaultSharedPreferencesEditor.putBoolean("floatingSplash", false)
 
@@ -159,13 +152,6 @@ class PreferencesIO (private val context: Context) {
 
             /*Dark App Theme*/
             defaultSharedPreferencesEditor.putString(".themeColor", "2")
-
-
-            /*OFF Blurry Theme*/
-            defaultSharedPreferencesEditor.putBoolean("blur", true)
-
-            /*OFF Transparent Theme*/
-            defaultSharedPreferencesEditor.putBoolean("transparent", true)
 
             /*OFF Floating Splash*/
             defaultSharedPreferencesEditor.putBoolean("floatingSplash", true)

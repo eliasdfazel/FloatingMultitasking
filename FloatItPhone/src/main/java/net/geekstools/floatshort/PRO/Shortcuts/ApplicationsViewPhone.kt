@@ -16,7 +16,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.BitmapDrawable
@@ -166,7 +165,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         applicationsViewPhoneDependencyInjection.functionsClassLegacy.loadSavedColor()
         applicationsViewPhoneDependencyInjection.functionsClassLegacy.checkLightDarkTheme()
 
-        applicationsViewPhoneDependencyInjection.applicationThemeController.setThemeColorFloating(this, hybridApplicationViewBinding.MainView, applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent())
+        applicationsViewPhoneDependencyInjection.applicationThemeController.setThemeColorFloating(this, hybridApplicationViewBinding.MainView)
         dialogues.changeLog()
 
         recyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, applicationsViewPhoneDependencyInjection.functionsClassLegacy.columnCount(105), OrientationHelper.VERTICAL, false)
@@ -188,18 +187,19 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         hybridApplicationViewBinding.switchWidgets.setTextColor(getColor(R.color.light))
         hybridApplicationViewBinding.switchCategories.setTextColor(getColor(R.color.light))
-        if (PublicVariable.themeLightDark /*light*/ && applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent() /*transparent*/) {
+
+        if (PublicVariable.themeLightDark /*light*/) {
             hybridApplicationViewBinding.switchWidgets.setTextColor(getColor(R.color.dark))
             hybridApplicationViewBinding.switchCategories.setTextColor(getColor(R.color.dark))
         }
 
-        hybridApplicationViewBinding.switchCategories.setBackgroundColor(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        hybridApplicationViewBinding.switchCategories.setBackgroundColor(PublicVariable.primaryColor)
 
-        hybridApplicationViewBinding.switchCategories.rippleColor = ColorStateList.valueOf(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        hybridApplicationViewBinding.switchCategories.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
 
-        hybridApplicationViewBinding.switchWidgets.setBackgroundColor(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        hybridApplicationViewBinding.switchWidgets.setBackgroundColor(PublicVariable.primaryColor)
 
-        hybridApplicationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) applicationsViewPhoneDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        hybridApplicationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
 
         hybridApplicationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColor)
         hybridApplicationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
@@ -445,6 +445,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
         startActivity(homeScreen, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
         applicationsViewPhoneDependencyInjection.functionsClassLegacy.CheckSystemRAM(this@ApplicationsViewPhone)
+
+        super.onBackPressed()
     }
 
     override fun onClick(view: View?) {
@@ -601,11 +603,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
     }
 
     private fun initiateLoadingProcessAll() {
-        if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
-            hybridApplicationViewBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
-        } else {
-            hybridApplicationViewBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
-        }
+
+        hybridApplicationViewBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
 
         if (PublicVariable.themeLightDark) {
             hybridApplicationViewBinding.loadingProgress.indeterminateDrawable.colorFilter = PorterDuffColorFilter(PublicVariable.darkMutedColor, PorterDuff.Mode.MULTIPLY)

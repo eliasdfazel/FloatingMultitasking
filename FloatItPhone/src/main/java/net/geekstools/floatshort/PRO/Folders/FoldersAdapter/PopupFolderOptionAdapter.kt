@@ -222,11 +222,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
         viewHolder.imgIcon!!.imageAlpha = preferencesIO.readDefaultPreference("autoTrans", 255)
         viewHolder.textAppName!!.alpha = if (preferencesIO.readDefaultPreference("autoTrans", 255) < 130) 0.70f else 1.0f
 
-        val itemsListColor: Int = if (functionsClassLegacy.appThemeTransparent() == true) {
-            functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, 77f)
-        } else {
-            PublicVariable.colorLightDark
-        }
+        val itemsListColor: Int = PublicVariable.colorLightDark
 
         val drawPopupShortcut = context.getDrawable(R.drawable.popup_shortcut_whole) as LayerDrawable?
         val backPopupShortcut = drawPopupShortcut!!.findDrawableByLayerId(R.id.backgroundTemporary)

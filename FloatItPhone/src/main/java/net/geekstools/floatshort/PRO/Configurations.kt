@@ -26,6 +26,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.BootRecovery
@@ -72,16 +73,7 @@ class Configurations : AppCompatActivity() {
 
         initializeParameterUI()
 
-        /* Start - Temporarily */
-        val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        val defaultSharedPreferencesEditor = defaultSharedPreferences.edit()
-        /*OFF Blurry Theme*/
-        defaultSharedPreferencesEditor.putBoolean("blur", false)
-
-        /*OFF Transparent Theme*/
-        defaultSharedPreferencesEditor.putBoolean("transparent", false)
-        defaultSharedPreferencesEditor.apply()
-        /* End - Temporarily */
+        freeformCheckpoint()
 
         systemInformation.checkDeviceInformation()
 
@@ -251,4 +243,18 @@ class Configurations : AppCompatActivity() {
             return usageStatsRight.lastTimeUsed.compareTo(usageStatsLeft.lastTimeUsed)
         }
     }
+
+    private fun freeformCheckpoint() = CoroutineScope(Dispatchers.IO + SupervisorJob()).async {
+
+        if (functionsClassLegacy.freeFormSupport(applicationContext)) {
+
+            PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                .edit()
+                .putBoolean("freeForm", true)
+                .apply()
+
+        }
+
+    }
+
 }

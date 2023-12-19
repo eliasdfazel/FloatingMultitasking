@@ -121,11 +121,7 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
         viewHolder.iconViewItem!!.setImageDrawable(adapterItems[position].optionItemIcon)
         viewHolder.titleViewItem!!.text = adapterItems[position].optionItemTitle
 
-        val itemsListColor = if (functionsClassLegacy.appThemeTransparent()) {
-            functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, 50f)
-        } else {
-            PublicVariable.colorLightDark
-        }
+        val itemsListColor = PublicVariable.colorLightDark
 
         val drawPopupShortcut = context.getDrawable(R.drawable.popup_shortcut_whole) as LayerDrawable?
         val backgroundTemporary = drawPopupShortcut!!.findDrawableByLayerId(R.id.backgroundTemporary)

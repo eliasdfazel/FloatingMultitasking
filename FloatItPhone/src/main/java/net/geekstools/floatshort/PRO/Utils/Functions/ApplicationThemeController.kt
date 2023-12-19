@@ -25,94 +25,45 @@ class ApplicationThemeController (private val context: Context) {
 
     private val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(context)
 
-    fun setThemeColorFloating(instanceOfActivity: AppCompatActivity, rootView: View, applyTransparency: Boolean) {
+    fun setThemeColorFloating(instanceOfActivity: AppCompatActivity, rootView: View) {
 
-        if (applyTransparency) {
 
-            rootView.setBackgroundColor(functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
+        rootView.setBackgroundColor(PublicVariable.colorLightDark)
 
-            instanceOfActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            instanceOfActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        instanceOfActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        instanceOfActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
-            if (PublicVariable.themeLightDark) {
-                instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                if (Build.VERSION.SDK_INT > 25) {
-                    instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                }
+        if (PublicVariable.themeLightDark) {
+            instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            if (Build.VERSION.SDK_INT > 25) {
+                instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
             }
-
-            instanceOfActivity.window.statusBarColor = functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f)
-            instanceOfActivity.window.navigationBarColor = functionsClassLegacy.setColorAlpha(functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f)
-
-        } else {
-
-            rootView.setBackgroundColor(PublicVariable.colorLightDark)
-
-            instanceOfActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            instanceOfActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
-            if (PublicVariable.themeLightDark) {
-                instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                if (Build.VERSION.SDK_INT > 25) {
-                    instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                }
-            }
-
-            instanceOfActivity.window.statusBarColor = PublicVariable.colorLightDark
-            instanceOfActivity.window.navigationBarColor = PublicVariable.colorLightDark
-
         }
+
+        instanceOfActivity.window.statusBarColor = PublicVariable.colorLightDark
+        instanceOfActivity.window.navigationBarColor = PublicVariable.colorLightDark
+
     }
 
-    fun setThemeColorPreferences(instanceOfActivity: FragmentActivity, rootView: View, preferencesToolbar: ConstraintLayout, applyTransparency: Boolean, title: String, subTitle: String) {
+    fun setThemeColorPreferences(instanceOfActivity: FragmentActivity, rootView: View, preferencesToolbar: ConstraintLayout, title: String, subTitle: String) {
 
-        if (applyTransparency) {
+        rootView.setBackgroundColor(PublicVariable.colorLightDark)
 
-            rootView.setBackgroundColor(functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, 80.toFloat()))
+        preferencesToolbar.setBackgroundColor(PublicVariable.primaryColor)
+        (preferencesToolbar.findViewById(R.id.titlePreferences) as TextView).text = Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>", Html.FROM_HTML_MODE_COMPACT)
 
-            preferencesToolbar.setBackgroundColor(PublicVariable.primaryColor)
-            if (PublicVariable.themeLightDark) {
-                (preferencesToolbar.findViewById(R.id.titlePreferences) as TextView).setTextColor(context.getColor(R.color.dark))
-            } else {
-                (preferencesToolbar.findViewById(R.id.titlePreferences) as TextView).setTextColor(context.getColor(R.color.light))
+        instanceOfActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        instanceOfActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+        if (PublicVariable.themeLightDark) {
+            instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            if (Build.VERSION.SDK_INT > 25) {
+                instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
             }
-
-            (preferencesToolbar.findViewById(R.id.titlePreferences) as TextView).setText(title)
-
-            instanceOfActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            instanceOfActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
-            if (PublicVariable.themeLightDark) {
-                instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                if (Build.VERSION.SDK_INT > 25) {
-                    instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                }
-            }
-
-            instanceOfActivity.window.statusBarColor = PublicVariable.primaryColor
-            instanceOfActivity.window.navigationBarColor = functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, 80.toFloat())
-
-        } else {
-
-            rootView.setBackgroundColor(PublicVariable.colorLightDark)
-
-            preferencesToolbar.setBackgroundColor(PublicVariable.primaryColor)
-            (preferencesToolbar.findViewById(R.id.titlePreferences) as TextView).text = Html.fromHtml("<font color='" + context.getColor(R.color.light) + "'>" + title + "</font>", Html.FROM_HTML_MODE_COMPACT)
-
-            instanceOfActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            instanceOfActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
-            if (PublicVariable.themeLightDark) {
-                instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                if (Build.VERSION.SDK_INT > 25) {
-                    instanceOfActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                }
-            }
-
-            instanceOfActivity.window.statusBarColor = PublicVariable.primaryColor
-            instanceOfActivity.window.navigationBarColor = PublicVariable.colorLightDark
-
         }
+
+        instanceOfActivity.window.statusBarColor = PublicVariable.primaryColor
+        instanceOfActivity.window.navigationBarColor = PublicVariable.colorLightDark
 
     }
 

@@ -99,11 +99,7 @@ class PopupShortcutsNotification(private val context: Context,
             viewHolder = convertView.tag as ViewHolder
         }
 
-        val itemBackground: Int = if (functionsClassLegacy.appThemeTransparent() == true) {
-            functionsClassLegacy.setColorAlpha(PublicVariable.colorLightDark, 50f)
-        } else {
-            PublicVariable.colorLightDark
-        }
+        val itemBackground: Int = PublicVariable.colorLightDark
 
         val drawPopupShortcut = context.getDrawable(R.drawable.popup_shortcut_whole) as LayerDrawable?
         val backgroundTemporary = drawPopupShortcut!!.findDrawableByLayerId(R.id.backgroundTemporary)

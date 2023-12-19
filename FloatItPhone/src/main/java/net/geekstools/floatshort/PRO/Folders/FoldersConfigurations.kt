@@ -15,7 +15,6 @@ import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
@@ -132,7 +131,7 @@ class FoldersConfigurations : AppCompatActivity(),
         foldersConfigurationsDependencyInjection.functionsClassLegacy.loadSavedColor()
         foldersConfigurationsDependencyInjection.functionsClassLegacy.checkLightDarkTheme()
 
-        foldersConfigurationsDependencyInjection.applicationThemeController.setThemeColorFloating(this@FoldersConfigurations, foldersConfigurationViewBinding.wholeCategory, foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent())
+        foldersConfigurationsDependencyInjection.applicationThemeController.setThemeColorFloating(this@FoldersConfigurations, foldersConfigurationViewBinding.wholeCategory)
         dialogues.changeLog()
 
         val recyclerViewLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
@@ -152,16 +151,16 @@ class FoldersConfigurations : AppCompatActivity(),
 
         foldersConfigurationViewBinding.switchWidgets.setTextColor(getColor(R.color.light))
         foldersConfigurationViewBinding.switchApps.setTextColor(getColor(R.color.light))
-        if (PublicVariable.themeLightDark /*light*/ && foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent() /*transparent*/) {
+        if (PublicVariable.themeLightDark /*light*/) {
             foldersConfigurationViewBinding.switchWidgets.setTextColor(getColor(R.color.dark))
             foldersConfigurationViewBinding.switchApps.setTextColor(getColor(R.color.dark))
         }
 
-        foldersConfigurationViewBinding.switchApps.setBackgroundColor(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        foldersConfigurationViewBinding.switchApps.rippleColor = ColorStateList.valueOf(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        foldersConfigurationViewBinding.switchApps.setBackgroundColor(PublicVariable.primaryColor)
+        foldersConfigurationViewBinding.switchApps.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
 
-        foldersConfigurationViewBinding.switchWidgets.setBackgroundColor(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        foldersConfigurationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) foldersConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        foldersConfigurationViewBinding.switchWidgets.setBackgroundColor(PublicVariable.primaryColor)
+        foldersConfigurationViewBinding.switchWidgets.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
 
         foldersConfigurationViewBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColor)
         foldersConfigurationViewBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
@@ -398,6 +397,8 @@ class FoldersConfigurations : AppCompatActivity(),
         startActivity(homeScreen, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
         foldersConfigurationsDependencyInjection.functionsClassLegacy.CheckSystemRAM(this@FoldersConfigurations)
+
+        super.onBackPressed()
     }
 
     override fun onClick(view: View?) {
@@ -523,11 +524,7 @@ class FoldersConfigurations : AppCompatActivity(),
 
     fun loadFolders() = CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
 
-        if (foldersConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
-            foldersConfigurationViewBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
-        } else {
-            foldersConfigurationViewBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
-        }
+        foldersConfigurationViewBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
 
         if (PublicVariable.themeLightDark) {
             foldersConfigurationViewBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.darkMutedColor)

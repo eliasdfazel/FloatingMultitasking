@@ -92,7 +92,7 @@ class AppSelectionList : AppCompatActivity(),
         functionsClassLegacy.initShapesImage(advanceAppSelectionListBinding.firstSplitIcon)
         functionsClassLegacy.initShapesImage(advanceAppSelectionListBinding.secondSplitIcon)
 
-        applicationThemeController.setThemeColorFloating(this@AppSelectionList, advanceAppSelectionListBinding.root, functionsClassLegacy.appThemeTransparent())
+        applicationThemeController.setThemeColorFloating(this@AppSelectionList, advanceAppSelectionListBinding.root)
 
         recyclerViewLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
         advanceAppSelectionListBinding.recyclerListView.layoutManager = recyclerViewLayoutManager
@@ -121,7 +121,7 @@ class AppSelectionList : AppCompatActivity(),
 
         }
 
-        advanceAppSelectionListBinding.folderNameBackground.setBackgroundColor(if (functionsClassLegacy.appThemeTransparent()) functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        advanceAppSelectionListBinding.folderNameBackground.setBackgroundColor(PublicVariable.primaryColor)
 
         advanceAppSelectionListBinding.folderNameView.setTextColor(PublicVariable.colorLightDarkOpposite)
         advanceAppSelectionListBinding.folderNameView.setHintTextColor(PublicVariable.colorLightDarkOpposite)

@@ -22,7 +22,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
@@ -171,7 +170,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         configuredWidgetsRecyclerViewLayoutManager = RecycleViewSmoothLayoutGrid(applicationContext, widgetConfigurationsDependencyInjection.functionsClassLegacy.columnCount(190), OrientationHelper.VERTICAL, false)
         widgetConfigurationsViewsBinding.configuredWidgetList.layoutManager = configuredWidgetsRecyclerViewLayoutManager
 
-        widgetConfigurationsDependencyInjection.applicationThemeController.setThemeColorFloating(this, widgetConfigurationsViewsBinding.MainView, widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent())
+        widgetConfigurationsDependencyInjection.applicationThemeController.setThemeColorFloating(this, widgetConfigurationsViewsBinding.MainView)
 
         appWidgetManager = AppWidgetManager.getInstance(applicationContext)
         appWidgetHost = AppWidgetHost(applicationContext, System.currentTimeMillis().toInt())
@@ -190,11 +189,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
             widgetConfigurationsViewsBinding.addWidget.animate().scaleXBy(0.23f).scaleYBy(0.23f).setDuration(223).setListener(scaleUpListener)
 
-            if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
-                widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
-            } else {
-                widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
-            }
+            widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
 
             if (PublicVariable.themeLightDark) {
                 widgetConfigurationsViewsBinding.loadingProgress.indeterminateDrawable.setTint(PublicVariable.darkMutedColor)
@@ -219,23 +214,23 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         widgetConfigurationsViewsBinding.switchApps.setTextColor(getColor(R.color.light))
         widgetConfigurationsViewsBinding.switchCategories.setTextColor(getColor(R.color.light))
-        if (PublicVariable.themeLightDark /*light*/ && widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent() /*transparent*/) {
+        if (PublicVariable.themeLightDark /*light*/) {
             widgetConfigurationsViewsBinding.switchApps.setTextColor(getColor(R.color.dark))
             widgetConfigurationsViewsBinding.switchCategories.setTextColor(getColor(R.color.dark))
         }
 
-        widgetConfigurationsViewsBinding.switchCategories.setBackgroundColor(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        widgetConfigurationsViewsBinding.switchCategories.setRippleColor(ColorStateList.valueOf(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite))
+        widgetConfigurationsViewsBinding.switchCategories.setBackgroundColor(PublicVariable.primaryColor)
+        widgetConfigurationsViewsBinding.switchCategories.setRippleColor(ColorStateList.valueOf(PublicVariable.primaryColorOpposite))
 
-        widgetConfigurationsViewsBinding.switchApps.setBackgroundColor(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
-        widgetConfigurationsViewsBinding.switchApps.rippleColor = ColorStateList.valueOf(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColorOpposite, 51f) else PublicVariable.primaryColorOpposite)
+        widgetConfigurationsViewsBinding.switchApps.setBackgroundColor(PublicVariable.primaryColor)
+        widgetConfigurationsViewsBinding.switchApps.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
 
         widgetConfigurationsViewsBinding.recoveryAction.setBackgroundColor(PublicVariable.primaryColor)
         widgetConfigurationsViewsBinding.recoveryAction.rippleColor = ColorStateList.valueOf(PublicVariable.primaryColorOpposite)
 
         val drawRecoverFloatingCategories = getDrawable(R.drawable.draw_recovery)?.mutate() as LayerDrawable?
         val backgroundRecoverFloatingCategories = drawRecoverFloatingCategories?.findDrawableByLayerId(R.id.backgroundTemporary)?.mutate()
-        backgroundRecoverFloatingCategories?.setTint(if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(PublicVariable.primaryColor, 51f) else PublicVariable.primaryColor)
+        backgroundRecoverFloatingCategories?.setTint(PublicVariable.primaryColor)
 
         widgetConfigurationsViewsBinding.actionButton.setOnClickListener { preferencesView ->
             widgetConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(33)
@@ -368,39 +363,21 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                     }
                 })
 
-                if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
-                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    if (PublicVariable.themeLightDark) {
-                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                        }
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                if (PublicVariable.themeLightDark) {
+                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                     }
-                    val valueAnimator = ValueAnimator
-                            .ofArgb(window.navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
-                    valueAnimator.addUpdateListener { animator ->
-                        window.statusBarColor = (animator.animatedValue) as Int
-                        window.navigationBarColor = (animator.animatedValue) as Int
-                    }
-                    valueAnimator.start()
-                } else {
-                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    if (PublicVariable.themeLightDark) {
-                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                        }
-                    }
-                    val colorAnimation = ValueAnimator
-                            .ofArgb(window.navigationBarColor, PublicVariable.colorLightDark)
-                    colorAnimation.addUpdateListener { animator ->
-                        window.navigationBarColor = (animator.animatedValue) as Int
-                        window.statusBarColor = (animator.animatedValue) as Int
-                    }
-                    colorAnimation.start()
                 }
+                val colorAnimation = ValueAnimator
+                    .ofArgb(window.navigationBarColor, PublicVariable.colorLightDark)
+                colorAnimation.addUpdateListener { animator ->
+                    window.navigationBarColor = (animator.animatedValue) as Int
+                    window.statusBarColor = (animator.animatedValue) as Int
+                }
+                colorAnimation.start()
             } else {
                 loadInstalledWidgets()
             }
@@ -541,40 +518,21 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                 }
             })
 
-            if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                if (PublicVariable.themeLightDark) {
-                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                    }
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            if (PublicVariable.themeLightDark) {
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                 }
-
-                val valueAnimator = ValueAnimator
-                        .ofArgb(window.navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.setColorAlpha(widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(PublicVariable.primaryColor, PublicVariable.colorLightDark, 0.03f), 180f))
-                valueAnimator.addUpdateListener { animator ->
-                    window.statusBarColor = (animator.animatedValue) as Int
-                    window.navigationBarColor = (animator.animatedValue) as Int
-                }
-                valueAnimator.start()
-            } else {
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                if (PublicVariable.themeLightDark) {
-                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                    }
-                }
-                val colorAnimation = ValueAnimator
-                        .ofArgb(window.navigationBarColor, PublicVariable.colorLightDark)
-                colorAnimation.addUpdateListener { animator ->
-                    window.navigationBarColor = (animator.animatedValue) as Int
-                    window.statusBarColor = (animator.animatedValue) as Int
-                }
-                colorAnimation.start()
             }
+            val colorAnimation = ValueAnimator
+                .ofArgb(window.navigationBarColor, PublicVariable.colorLightDark)
+            colorAnimation.addUpdateListener { animator ->
+                window.navigationBarColor = (animator.animatedValue) as Int
+                window.statusBarColor = (animator.animatedValue) as Int
+            }
+            colorAnimation.start()
         } else {
 
             widgetConfigurationsDependencyInjection.functionsClassLegacy.overrideBackPressToMain(this@WidgetConfigurations, this@WidgetConfigurations)
@@ -768,11 +726,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         configuredWidgetsSections.clear()
         widgetConfigurationsViewsBinding.configuredWidgetList.removeAllViews()
 
-        if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
-            widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(Color.TRANSPARENT)
-        } else {
-            widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
-        }
+        widgetConfigurationsViewsBinding.loadingSplash.setBackgroundColor(window.navigationBarColor)
 
         if (PublicVariable.themeLightDark) {
 
@@ -1126,39 +1080,29 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appThemeTransparent()) {
+                if (PublicVariable.themeLightDark) {
+                    widgetConfigurationsViewsBinding.installedNestedScrollView.setBackground(ColorDrawable(getColor(R.color.transparent_light)))
+                    if (PublicVariable.themeLightDark) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                        }
+                    }
                     val colorAnimation = ValueAnimator
-                            .ofArgb(window.navigationBarColor, if (PublicVariable.themeLightDark) getColor(R.color.fifty_light_twice) else getColor(R.color.transparent_dark_high_twice))
+                        .ofArgb(window.navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(getColor(R.color.light), getWindow().navigationBarColor, 0.70f))
                     colorAnimation.addUpdateListener { animator ->
-                        window.statusBarColor = (animator.animatedValue) as Int
                         window.navigationBarColor = (animator.animatedValue) as Int
+                        window.statusBarColor = (animator.animatedValue) as Int
                     }
                     colorAnimation.start()
-                } else {
-                    if (PublicVariable.themeLightDark) {
-                        widgetConfigurationsViewsBinding.installedNestedScrollView.setBackground(ColorDrawable(getColor(R.color.transparent_light)))
-                        if (PublicVariable.themeLightDark) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                            }
-                        }
-                        val colorAnimation = ValueAnimator
-                                .ofArgb(window.navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(getColor(R.color.light), getWindow().navigationBarColor, 0.70f))
-                        colorAnimation.addUpdateListener { animator ->
-                            window.navigationBarColor = (animator.animatedValue) as Int
-                            window.statusBarColor = (animator.animatedValue) as Int
-                        }
-                        colorAnimation.start()
-                    } else if (!PublicVariable.themeLightDark) {
-                        widgetConfigurationsViewsBinding.installedNestedScrollView.setBackground(ColorDrawable(getColor(R.color.dark_transparent)))
-                        val colorAnimation = ValueAnimator
-                                .ofArgb(getWindow().navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(getColor(R.color.dark), getWindow().navigationBarColor, 0.70f))
-                        colorAnimation.addUpdateListener { animator ->
-                            window.navigationBarColor = (animator.animatedValue) as Int
-                            window.statusBarColor = (animator.animatedValue) as Int
-                        }
-                        colorAnimation.start()
+                } else if (!PublicVariable.themeLightDark) {
+                    widgetConfigurationsViewsBinding.installedNestedScrollView.setBackground(ColorDrawable(getColor(R.color.dark_transparent)))
+                    val colorAnimation = ValueAnimator
+                        .ofArgb(getWindow().navigationBarColor, widgetConfigurationsDependencyInjection.functionsClassLegacy.mixColors(getColor(R.color.dark), getWindow().navigationBarColor, 0.70f))
+                    colorAnimation.addUpdateListener { animator ->
+                        window.navigationBarColor = (animator.animatedValue) as Int
+                        window.statusBarColor = (animator.animatedValue) as Int
                     }
+                    colorAnimation.start()
                 }
             }
 
