@@ -38,6 +38,7 @@ class FloatIt : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(this@FloatIt.javaClass.simpleName, "Extended Float It")
 
         PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), resources.displayMetrics).toInt()
@@ -63,53 +64,42 @@ class FloatIt : AppCompatActivity() {
         val xPosition = sharedPreferencesPosition.getInt("X", 137)
         val yPosition = sharedPreferencesPosition.getInt("Y", 137)
 
-        if (functionsClassLegacy.FreeForm()) {
+        Log.d(this@FloatIt.javaClass.simpleName, "Extended Float It: ${functionsClassLegacy.FreeForm()}")
+        openingCheckpoint(aPackageName, aClassName, xPosition, yPosition)
 
-            if (securityFunctions.isAppLocked(aPackageName)) {
-
-                invokeSecurityServices()
-
-            } else {
-
-                if (aPackageName == aClassName) {
-
-                    FloatingServices(applicationContext)
-                        .runUnlimitedShortcutsServicePackage(aPackageName)
-
-                    openActions.startProcess(aPackageName, xPosition, yPosition, PublicVariable.floatingViewsHW)
-
-                } else {
-
-                    FloatingServices(applicationContext)
-                        .runUnlimitedShortcutsService(aPackageName, aClassName)
-
-                    openActions.startProcess(aPackageName, aClassName, xPosition, yPosition, PublicVariable.floatingViewsHW)
-
-                }
-
-            }
-
-        } else {
+        if (!functionsClassLegacy.FreeForm()) {
 
             Toast.makeText(applicationContext, "Enable Extended Float It In Preferences ⚙️", Toast.LENGTH_LONG).show()
 
-            if (securityFunctions.isAppLocked(aPackageName)) {
+        }
 
-                invokeSecurityServices()
+    }
+
+    private fun openingCheckpoint(aPackageName: String, aClassName: String, xPosition: Int, yPosition: Int) {
+
+        if (securityFunctions.isAppLocked(aPackageName)) {
+
+            invokeSecurityServices()
+
+        } else {
+
+            if (aPackageName == aClassName) {
+
+                FloatingServices(applicationContext)
+                    .runUnlimitedShortcutsServicePackage(aPackageName)
+
+                openActions.startProcess(aPackageName, xPosition, yPosition, PublicVariable.floatingViewsHW)
 
             } else {
 
-                if (aPackageName == aClassName) {
-                    openActions.startProcess(aPackageName, xPosition, yPosition, PublicVariable.floatingViewsHW)
-                } else {
-                    openActions.startProcess(aPackageName, aClassName, xPosition, yPosition, PublicVariable.floatingViewsHW)
-                }
+                FloatingServices(applicationContext)
+                    .runUnlimitedShortcutsService(aPackageName, aClassName)
+
+                openActions.startProcess(aPackageName, aClassName, xPosition, yPosition, PublicVariable.floatingViewsHW)
 
             }
 
         }
-
-        this@FloatIt.finish()
 
     }
 

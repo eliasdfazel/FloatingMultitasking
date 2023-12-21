@@ -181,7 +181,7 @@
 
     <!-- IAP -->
 
-    <style name="Transparent" parent="@android:style/Theme.DeviceDefault.Light.Dialog.NoActionBar">
+    <style name="Transparent" parent="@style/GeeksEmpire.Material">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
