@@ -135,7 +135,7 @@ class ApplicationsViewItemsAdapter(private val context: Context,
             viewHolderBinder.recoveryIndicator.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
             viewHolderBinder.recoveryIndicator.visibility = View.INVISIBLE
 
-            RuntimeIO(context).updateRecoverShortcuts()
+            RuntimeIO(context, functionsClassLegacy).updateRecoverShortcuts()
         }
     }
 

@@ -12,6 +12,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:summary=" " />
+    <PreferenceCategory android:summary=" " />
 
     <PreferenceCategory android:title="@string/securityServices" android:summary=" ">
         <Preference

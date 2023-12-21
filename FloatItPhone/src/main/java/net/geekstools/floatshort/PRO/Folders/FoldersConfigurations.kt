@@ -65,6 +65,7 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.Dialogues
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.Functions.RuntimeIO
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchasesCheckpoint
@@ -127,6 +128,10 @@ class FoldersConfigurations : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         foldersConfigurationViewBinding = FoldersConfigurationViewBinding.inflate(layoutInflater)
         setContentView(foldersConfigurationViewBinding.root)
+
+        RuntimeIO(applicationContext, foldersConfigurationsDependencyInjection.functionsClassLegacy).apply{
+            freeformCheckpoint()
+        }
 
         foldersConfigurationsDependencyInjection.functionsClassLegacy.loadSavedColor()
         foldersConfigurationsDependencyInjection.functionsClassLegacy.checkLightDarkTheme()

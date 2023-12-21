@@ -11,6 +11,7 @@
 package net.geekstools.floatshort.PRO
 
 import android.content.Intent
+import android.util.Log
 import android.util.TypedValue
 import net.geekstools.floatshort.PRO.Folders.FoldersConfigurations
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone
@@ -52,6 +53,7 @@ fun Configurations.initializeParameterUI() {
 }
 
 fun Configurations.triggerOpenProcess() {
+    Log.d(this@triggerOpenProcess.javaClass.simpleName, "Trigger Open Process")
 
     if (preferencesIO.readPreference("OpenMode", "openClassName", ApplicationsViewPhone::class.java.simpleName) == FoldersConfigurations::class.java.simpleName) {//Floating Folder
 

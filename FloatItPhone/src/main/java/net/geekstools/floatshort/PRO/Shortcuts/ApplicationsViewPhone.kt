@@ -84,6 +84,7 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplicat
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.Dialogues
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.floatshort.PRO.Utils.Functions.RuntimeIO
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchasesCheckpoint
@@ -161,6 +162,10 @@ class ApplicationsViewPhone : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         hybridApplicationViewBinding = HybridApplicationViewBinding.inflate(layoutInflater)
         setContentView(hybridApplicationViewBinding.root)
+
+        RuntimeIO(applicationContext, applicationsViewPhoneDependencyInjection.functionsClassLegacy).apply{
+            freeformCheckpoint()
+        }
 
         applicationsViewPhoneDependencyInjection.functionsClassLegacy.loadSavedColor()
         applicationsViewPhoneDependencyInjection.functionsClassLegacy.checkLightDarkTheme()

@@ -2414,7 +2414,7 @@ public class FunctionsClassLegacy {
                     );
                 }
 
-                new RuntimeIO(context).updateRecoverShortcuts();
+                new RuntimeIO(context, FunctionsClassLegacy.this).updateRecoverShortcuts();
 
                 return true;
             }

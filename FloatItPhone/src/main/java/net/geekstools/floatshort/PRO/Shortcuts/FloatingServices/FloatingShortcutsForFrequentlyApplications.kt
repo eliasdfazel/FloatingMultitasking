@@ -266,7 +266,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
             /*Update Floating Shortcuts Database*/
             functionsClassLegacy.saveUnlimitedShortcutsService(packageNames[startId])
-            RuntimeIO(applicationContext).updateRecoverShortcuts()
+            RuntimeIO(applicationContext, functionsClassLegacy).updateRecoverShortcuts()
             /*Update Floating Shortcuts Database*/
 
             appIcons.add(startId, functionsClassLegacy.shapedAppIcon(packageNames[startId]))

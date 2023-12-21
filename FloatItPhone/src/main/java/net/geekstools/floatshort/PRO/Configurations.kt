@@ -26,7 +26,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import net.geekstools.floatshort.PRO.Utils.Functions.*
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.BootRecovery
@@ -61,7 +60,7 @@ class Configurations : AppCompatActivity() {
         FirebaseAnalytics.getInstance(applicationContext)
     }
 
-    val smartFeatures: SmartFeatures = SmartFeatures()
+    private val smartFeatures: SmartFeatures = SmartFeatures()
 
     private val sharedPreferences: SharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(applicationContext)
@@ -73,13 +72,14 @@ class Configurations : AppCompatActivity() {
 
         initializeParameterUI()
 
-        freeformCheckpoint()
-
         systemInformation.checkDeviceInformation()
 
         checkUserInformation()
 
-        RuntimeIO(applicationContext).updateRecoverShortcuts()
+        RuntimeIO(applicationContext, functionsClassLegacy).apply{
+            updateRecoverShortcuts()
+            freeformCheckpoint()
+        }
 
         if (sharedPreferences.getBoolean("stable", true)) {
             PublicVariable.Stable = true
@@ -242,19 +242,6 @@ class Configurations : AppCompatActivity() {
 
             return usageStatsRight.lastTimeUsed.compareTo(usageStatsLeft.lastTimeUsed)
         }
-    }
-
-    private fun freeformCheckpoint() = CoroutineScope(Dispatchers.IO + SupervisorJob()).async {
-
-        if (functionsClassLegacy.freeFormSupport(applicationContext)) {
-
-            PreferenceManager.getDefaultSharedPreferences(applicationContext)
-                .edit()
-                .putBoolean("freeForm", true)
-                .apply()
-
-        }
-
     }
 
 }
