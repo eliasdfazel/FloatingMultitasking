@@ -73,6 +73,7 @@ class FloatIt : AppCompatActivity() {
 
         }
 
+        this@FloatIt.finish()
     }
 
     private fun openingCheckpoint(aPackageName: String, aClassName: String, xPosition: Int, yPosition: Int) {
