@@ -3542,6 +3542,11 @@ public class FunctionsClassLegacy {
         RemoteViews remoteNotification = new RemoteViews(context.getPackageName(), notification_controller);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
+        remoteNotification.setTextColor(R.id.recoverAll, PublicVariable.colorLightDarkOpposite);
+        remoteNotification.setTextColor(R.id.removeAll, PublicVariable.colorLightDarkOpposite);
+        remoteNotification.setTextColor(R.id.moveEdge, PublicVariable.colorLightDarkOpposite);
+        remoteNotification.setTextColor(R.id.backEdge, PublicVariable.colorLightDarkOpposite);
+
         String sticky = sharedPreferences.getString("stick", "1");
         if (sticky.equals("1")) {
             remoteNotification.setTextViewText(R.id.moveEdge, context.getString(R.string.moveEdgeLeft));
@@ -3582,6 +3587,7 @@ public class FunctionsClassLegacy {
         notificationBuilder.setSmallIcon(R.drawable.ic_notification);
         notificationBuilder.setAutoCancel(false);
         notificationBuilder.setColor(PublicVariable.primaryColor);
+        notificationBuilder.setColorized(true);
         notificationBuilder.setPriority(Notification.PRIORITY_MIN);
 
         Intent ListGrid = new Intent(context, Configurations.class);

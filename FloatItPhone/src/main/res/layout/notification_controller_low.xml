@@ -16,22 +16,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/remoteAppIcon"
-        android:layout_width="31dp"
-        android:layout_height="31dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="3dp"
-        android:padding="5dp"
-        android:src="@drawable/ic_notification"/>
-
     <LinearLayout
         android:id="@+id/RemoveRecover"
         android:layout_width="match_parent"
         android:layout_height="31dp"
-        android:layout_marginBottom="1dp"
-        android:layout_toEndOf="@id/remoteAppIcon">
+        android:layout_marginBottom="1dp">
 
         <TextView
             android:id="@+id/recoverAll"
@@ -62,8 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="31dp"
         android:layout_below="@id/RemoveRecover"
-        android:layout_marginBottom="1dp"
-        android:layout_toEndOf="@id/remoteAppIcon">
+        android:layout_marginBottom="1dp">
 
         <TextView
             android:id="@+id/moveEdge"
