@@ -19,6 +19,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.google.firebase.FirebaseApp
@@ -97,33 +98,55 @@ class Configurations : AppCompatActivity() {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
             if (!Settings.canDrawOverlays(applicationContext)
-                || !getSharedPreferences(".Configuration", Context.MODE_PRIVATE).getBoolean("Permissions", false)
                 || checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
 
                 startActivity(Intent(applicationContext, Checkpoint::class.java))
 
-                finish()
-                return
+            } else {
+
+                triggerCheckpoint()
+
             }
+
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (!Settings.canDrawOverlays(applicationContext)
-                || !getSharedPreferences(".Configuration", Context.MODE_PRIVATE).getBoolean("Permissions", false)) {
 
-                startActivity(Intent(applicationContext, Checkpoint::class.java))
-
-                finish()
-                return
-            }
-        } else {
             if (!Settings.canDrawOverlays(applicationContext)) {
 
                 startActivity(Intent(applicationContext, Checkpoint::class.java))
 
-                finish()
-                return
+            } else {
+
+                triggerCheckpoint()
+
             }
+
+        } else {
+
+            if (!Settings.canDrawOverlays(applicationContext)) {
+
+                startActivity(Intent(applicationContext, Checkpoint::class.java))
+
+            } else {
+
+                triggerCheckpoint()
+
+            }
+
         }
+
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
+    private fun triggerCheckpoint() {
+        Log.d(this@Configurations.javaClass.simpleName, "Trigger Checkpoint")
 
         if (smartFeatures.usageStatsEnabled(applicationContext)) {
 
@@ -150,11 +173,6 @@ class Configurations : AppCompatActivity() {
                 deleteFile("Frequently")
             }
         }
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
 
     }
 

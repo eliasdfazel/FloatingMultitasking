@@ -72,10 +72,6 @@ class Checkpoint : Activity() {
         checkPointBinding = CheckPointBinding.inflate(layoutInflater)
         setContentView(checkPointBinding.root)
 
-        Toast.makeText(applicationContext,
-                getString(R.string.wait),
-                Toast.LENGTH_LONG).show()
-
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
