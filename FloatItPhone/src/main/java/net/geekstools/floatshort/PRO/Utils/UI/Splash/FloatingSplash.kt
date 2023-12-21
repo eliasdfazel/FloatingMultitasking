@@ -166,10 +166,30 @@ class FloatingSplash : Service() {
                 } catch (e: Exception) {
                     e.printStackTrace()
 
-                    if (appClassName != null) {
-                        functionsClassLegacy.appsLaunchPad(appPackageName, appClassName)
+
+
+                    if (functionsClassLegacy.FreeForm()) {
+
+                        functionsClassLegacy.openApplicationFreeForm(
+                            packageName,
+                            appClassName,
+                            layoutParams.x,
+                            functionsClassLegacy.displayX() / 2,
+                            layoutParams.y,
+                            functionsClassLegacy.displayY() / 2
+                        )
                     } else {
-                        functionsClassLegacy.appsLaunchPad(appPackageName)
+
+                        if (appClassName != null) {
+
+                            functionsClassLegacy.appsLaunchPad(appPackageName, appClassName)
+
+                        } else {
+
+                            functionsClassLegacy.appsLaunchPad(appPackageName)
+
+                        }
+
                     }
                 }
 
