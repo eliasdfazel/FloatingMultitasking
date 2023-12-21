@@ -3541,11 +3541,7 @@ public class FunctionsClassLegacy {
         }
         RemoteViews remoteNotification = new RemoteViews(context.getPackageName(), notification_controller);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (PublicVariable.themeLightDark) {
-            remoteNotification.setInt(R.id.bindShortcutView, "setBackgroundColor", PublicVariable.primaryColor);
-        } else if (!PublicVariable.themeLightDark) {
-            remoteNotification.setInt(R.id.bindShortcutView, "setBackgroundColor", PublicVariable.primaryColor);
-        }
+
         String sticky = sharedPreferences.getString("stick", "1");
         if (sticky.equals("1")) {
             remoteNotification.setTextViewText(R.id.moveEdge, context.getString(R.string.moveEdgeLeft));

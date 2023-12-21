@@ -14,7 +14,6 @@
     android:id="@+id/bindShortcutView"
     android:layout_width="match_parent"
     android:layout_height="99dp"
-    android:background="@color/dark"
     android:orientation="vertical">
 
     <ImageView

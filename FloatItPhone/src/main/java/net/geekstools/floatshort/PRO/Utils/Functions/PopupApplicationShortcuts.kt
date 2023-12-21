@@ -50,25 +50,28 @@ class PopupApplicationShortcuts (private val context: Context) {
 
                 val appShortcuts = (fileIO.readFileLinesAsArray("Frequently"))
 
-                for (i in 0..3) {
+                if (appShortcuts != null
+                    && appShortcuts.size > 3) {
+                    for (i in 0..3) {
 
-                    appShortcuts?.let {
+                        appShortcuts?.let {
 
-                        intent.action = "Float_It"
-                        intent.addCategory(Intent.CATEGORY_DEFAULT)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        intent.putExtra("packageName", appShortcuts[i])
-                        val shortcutInfo = ShortcutInfo.Builder(context, appShortcuts[i])
+                            intent.action = "Float_It"
+                            intent.addCategory(Intent.CATEGORY_DEFAULT)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            intent.putExtra("packageName", appShortcuts[i])
+                            val shortcutInfo = ShortcutInfo.Builder(context, appShortcuts[i])
                                 .setShortLabel(installedApplicationInformation.applicatioName(appShortcuts[i]))
                                 .setLongLabel(installedApplicationInformation.applicatioName(appShortcuts[i]))
                                 .setIcon(Icon.createWithBitmap(bitmapExtractor.getAppIconBitmapCustomIcon(appShortcuts[i])))
                                 .setIntent(intent)
                                 .setRank(i)
                                 .build()
-                        shortcutsInfo.add(shortcutInfo)
+                            shortcutsInfo.add(shortcutInfo)
+
+                        }
 
                     }
-
                 }
             } else if (context.getFileStreamPath(".uFile").exists()) {
                 if (fileIO.fileLinesCounter(".uFile") > 0) {

@@ -21,6 +21,8 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
     fun startProcess(packageName: String, className: String,
                      layoutParams: WindowManager.LayoutParams) {
 
+        println(">>> 1")
+
         if (functionsClassLegacy.splashReveal()) {
 
             val splashReveal = Intent(context, FloatingSplash::class.java).apply {
@@ -37,7 +39,11 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
 
         } else {
 
+            println(">>> 2")
+
             if (functionsClassLegacy.FreeForm()) {
+
+                println(">>> 23")
 
                 functionsClassLegacy.openApplicationFreeForm(
                         packageName,
@@ -48,6 +54,8 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
                         functionsClassLegacy.displayY() / 2
                 )
             } else {
+
+                println(">>> 24")
 
                 functionsClassLegacy
                         .appsLaunchPad(packageName, className)
