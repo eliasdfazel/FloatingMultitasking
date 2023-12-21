@@ -132,7 +132,7 @@ class Checkpoint : Activity() {
 
     private fun canOverlyPermission() {
 
-        val alertDialog = AlertDialog.Builder(this, R.style.GeeksEmpire_Dialogue_Light)
+        val alertDialog = AlertDialog.Builder(this, R.style.GeeksEmpire_Dialogue_Dark)
         alertDialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.vibrantColor.toString() + "'>" +
                 resources.getString(R.string.permTitle) + "</font>", Html.FROM_HTML_MODE_COMPACT))
         alertDialog.setMessage(Html.fromHtml("<font color='" + PublicVariable.darkMutedColorString.toString() + "'>" +
