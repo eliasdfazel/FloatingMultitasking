@@ -345,10 +345,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Utils.InAppUpdate.InAppUpdateProcess"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/TransparentInAppUpdate" />
-        <activity
             android:name=".Utils.InAppStore.DigitalAssets.InitializeInAppBilling"
             android:exported="false"
             android:theme="@style/GeeksEmpire.Material.IAP.DARK">

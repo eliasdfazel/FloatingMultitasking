@@ -28,10 +28,10 @@
     <string name="millis" translatable="false">Millisecond</string>
 
     <string name="shareTitle" translatable="false">
-        #FloatIt To Become Master Of Multitasking ⚡
+        #FloatingMultitasking⚡
     </string>
     <string name="shareSummary" translatable="false">
-        Only One Click to Switch Apps by Floating Shortcuts, Floating Folders &amp; Floating Widgets | By @GeeksEmpire
+        Multitasking By Opening All Apps In Floating Windows From Floating Shortcuts - By @GeeksEmpire https://www.youtube.com/watch?v=2y0YII8WRs4
     </string>
 
     <string name="buy" translatable="false">Purchase</string>
@@ -65,7 +65,7 @@
     </string>
 
     <string name="followIt" translatable="false">Follow Us</string>
-    <string name="shareIt" translatable="false">Rate &amp; Share</string>
+    <string name="shareIt" translatable="false">Share</string>
     <string name="newUpdate" translatable="false">Install Update</string>
     <string name="updateAvailable" translatable="false">New Update Available | Click Here to Install…!</string>
     <string name="inAppUpdateAvailable" translatable="false">Loading New Update | Version </string>
@@ -75,7 +75,7 @@
     <string name="rate" translatable="false">Rate Me Five Star</string>
     <string name="rateReview" translatable="false">Please Rate &amp; Write Review</string>
     <string name="supportEmail" translatable="false">Support@GeeksEmpire.co</string>
-    <string name="feedback_tag" translatable="false">Float It ᴾᴿᴼ Direct Help | Feedback</string>
+    <string name="feedback_tag" translatable="false">Floating Multitasking Direct Help | Feedback</string>
 
     <string name="link_ad_app" translatable="false">https://play.google.com/store/apps/details?id=net.geekstools.supershortcuts.PRO</string>
 

@@ -102,7 +102,6 @@ import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.I
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFastScroller
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.HybridApplicationViewBinding
-import java.util.Calendar
 import java.util.Locale
 
 class ApplicationsViewPhone : AppCompatActivity(),
@@ -151,6 +150,11 @@ class ApplicationsViewPhone : AppCompatActivity(),
     }
 
     private var billingClient: BillingClient? = null
+
+    val inAppUpdateProcess: InAppUpdateProcess by lazy {
+        InAppUpdateProcess(this@ApplicationsViewPhone, hybridApplicationViewBinding.root)
+    }
+
 
     private lateinit var hybridApplicationViewBinding: HybridApplicationViewBinding
 
@@ -318,8 +322,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
             }
         }
 
-
-
+        inAppUpdateProcess.onCreate()
 
     }
 
@@ -398,28 +401,12 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                         firebaseRemoteConfig.getString(applicationsViewPhoneDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
                             }
 
-                            applicationsViewPhoneDependencyInjection.functionsClassLegacy.notificationCreator(
-                                    getString(R.string.updateAvailable),
-                                    firebaseRemoteConfig.getString(applicationsViewPhoneDependencyInjection.functionsClassLegacy.upcomingChangeLogSummaryConfigKey()),
-                                    firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toInt()
-                            )
-
-                            val inAppUpdateTriggeredTime =
-                                    (Calendar.getInstance()[Calendar.YEAR].toString() + Calendar.getInstance()[Calendar.MONTH].toString() + Calendar.getInstance()[Calendar.DATE].toString())
-                                            .toInt()
-
-                            if (firebaseAuth.currentUser != null
-                                    && applicationsViewPhoneDependencyInjection.preferencesIO.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
-
-                                startActivity(Intent(applicationContext, InAppUpdateProcess::class.java)
-                                        .putExtra("UPDATE_CHANGE_LOG", firebaseRemoteConfig.getString(applicationsViewPhoneDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()))
-                                        .putExtra("UPDATE_VERSION", firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
-                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                        ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
-                            }
                         }
                     }
                 }
+
+        inAppUpdateProcess.onResume()
+
     }
 
     override fun onPause() {

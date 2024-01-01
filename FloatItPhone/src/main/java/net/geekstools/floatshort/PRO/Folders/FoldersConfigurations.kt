@@ -82,7 +82,6 @@ import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveD
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.FoldersConfigurationViewBinding
 import java.nio.charset.Charset
-import java.util.Calendar
 
 class FoldersConfigurations : AppCompatActivity(),
         View.OnClickListener, View.OnLongClickListener,
@@ -117,6 +116,10 @@ class FoldersConfigurations : AppCompatActivity(),
     private lateinit var waitingDialogueLiveData: WaitingDialogueLiveData
 
     private var billingClient: BillingClient? = null
+
+    val inAppUpdateProcess: InAppUpdateProcess by lazy {
+        InAppUpdateProcess(this@FoldersConfigurations, foldersConfigurationViewBinding.root)
+    }
 
     private lateinit var foldersConfigurationViewBinding: FoldersConfigurationViewBinding
 
@@ -278,6 +281,9 @@ class FoldersConfigurations : AppCompatActivity(),
 
                     }
         }
+
+        inAppUpdateProcess.onCreate()
+
     }
 
     override fun onStart() {
@@ -354,30 +360,14 @@ class FoldersConfigurations : AppCompatActivity(),
                                         firebaseRemoteConfig.getString(foldersConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(foldersConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
                             }
 
-                            foldersConfigurationsDependencyInjection.functionsClassLegacy.notificationCreator(
-                                    getString(R.string.updateAvailable),
-                                    firebaseRemoteConfig.getString(foldersConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLogSummaryConfigKey()),
-                                    firebaseRemoteConfig.getLong(foldersConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toInt()
-                            )
-
-                            val inAppUpdateTriggeredTime =
-                                    (Calendar.getInstance()[Calendar.YEAR].toString() + Calendar.getInstance()[Calendar.MONTH].toString() + Calendar.getInstance()[Calendar.DATE].toString())
-                                            .toInt()
-
-                            if (firebaseAuth.currentUser != null
-                                    && foldersConfigurationsDependencyInjection.preferencesIO.readPreference("InAppUpdate", "TriggeredDate", 0) < inAppUpdateTriggeredTime) {
-
-                                startActivity(Intent(applicationContext, InAppUpdateProcess::class.java)
-                                        .putExtra("UPDATE_CHANGE_LOG", firebaseRemoteConfig.getString(foldersConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()))
-                                        .putExtra("UPDATE_VERSION", firebaseRemoteConfig.getLong(foldersConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
-                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                        ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
-                            }
                         }
                     }
                 }
 
         foldersConfigurationsDependencyInjection.popupApplicationShortcuts.addPopupApplicationShortcuts()
+
+        inAppUpdateProcess.onResume()
+
     }
 
     override fun onPause() {
