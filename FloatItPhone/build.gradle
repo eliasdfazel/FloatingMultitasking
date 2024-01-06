@@ -29,7 +29,7 @@ android {
         minSdkVersion 25
         targetSdkVersion 34
 
-        versionCode 860
+        versionCode 861
         versionName "${majorVersion}." + getDateMonth() + "." + getDateDay() + "." + getDateYear() + ".${versionCode}"
 
     }
@@ -100,7 +100,7 @@ dependencies {
     implementation project(':BlurryEffectLibrary')
 
 
-    implementation 'com.android.billingclient:billing-ktx:6.0.1'
+    implementation 'com.android.billingclient:billing-ktx:6.1.0'
 
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -135,10 +135,10 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
 
-    implementation 'com.google.android.material:material:1.11.0-alpha03'
+    implementation 'com.google.android.material:material:1.11.0'
 
 
-    implementation platform('com.google.firebase:firebase-bom:31.5.0')
+    implementation platform('com.google.firebase:firebase-bom:32.7.0')
 
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics'
@@ -155,7 +155,7 @@ dependencies {
 
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
 
 
     implementation 'com.github.bumptech.glide:glide:4.13.2'
