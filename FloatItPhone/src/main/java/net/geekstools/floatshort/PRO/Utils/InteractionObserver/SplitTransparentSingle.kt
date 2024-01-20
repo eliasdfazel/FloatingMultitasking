@@ -23,9 +23,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
-import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.ApplicationsViewItemsAdapter
+import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.SplitAdapter
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -37,6 +39,10 @@ class SplitTransparentSingle : Activity() {
 
     private val functionsClassLegacy by lazy {
         FunctionsClassLegacy(applicationContext)
+    }
+
+    private val applicationsViewItemsAdapter by lazy {
+        SplitAdapter(this@SplitTransparentSingle, allApplications)
     }
 
     private val loadCustomIcons: LoadCustomIcons by lazy {
@@ -58,7 +64,6 @@ class SplitTransparentSingle : Activity() {
         val gridLayoutManager = GridLayoutManager(applicationContext, functionsClassLegacy.columnCount(105))
         splitItBinding.applicationsGirdView.layoutManager = gridLayoutManager
 
-        val applicationsViewItemsAdapter = ApplicationsViewItemsAdapter(this@SplitTransparentSingle, allApplications)
         splitItBinding.applicationsGirdView.adapter = applicationsViewItemsAdapter
 
         val accessibilityManager = getSystemService(ACCESSIBILITY_SERVICE) as AccessibilityManager
@@ -114,6 +119,8 @@ class SplitTransparentSingle : Activity() {
 
         val applicationInfoListSorted = applicationInfoList.sortedWith(ResolveInfo.DisplayNameComparator(packageManager))
 
+        delay(666)
+
         applicationInfoListSorted.forEach {
 
             allApplications.add(AdapterItemsApplications(it.loadLabel(packageManager).toString(),
@@ -126,6 +133,12 @@ class SplitTransparentSingle : Activity() {
                 },
                 functionsClassLegacy.extractDominantColor(it.activityInfo.loadIcon(packageManager)),
                 SearchResultType.SearchShortcuts))
+
+        }
+
+        withContext(Dispatchers.Main) {
+
+            applicationsViewItemsAdapter.notifyDataSetChanged()
 
         }
 

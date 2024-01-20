@@ -9,17 +9,32 @@
   ~ https://opensource.org/licenses/MIT
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
     android:id="@+id/entry"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark">
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/splitNotice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="19dp"
+        android:paddingTop="37dp"
+        android:paddingBottom="19dp"
+        android:text="@string/splitItNotice"
+        android:textColor="@color/light"
+        android:textSize="19sp"
+
+        apps:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/applicationsGirdView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="19dp"/>
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="19dp"
+
+        apps:layout_constraintTop_toBottomOf="@id/splitNotice"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

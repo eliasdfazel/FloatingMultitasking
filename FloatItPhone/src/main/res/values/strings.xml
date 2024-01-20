@@ -49,6 +49,8 @@
             <b>Thanks!</b>
         ]]>
     </string>
+
+    <!-- Split It -->
     <string name="split_service_desc">
         Split It | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously
         \n
@@ -58,6 +60,9 @@
     <string name="split_service_summary">
         Split It | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously
     </string>
+    <string name="splitIt">Split It</string>
+    <string name="splitItNotice">Select An Application To Continue…</string>
+
     <string name="observeDesc">
         <![CDATA[
                 <br/>
@@ -210,7 +215,6 @@
     <string name="unpin_folder">Unpin Folder</string>
     <string name="remove_folder">Remove</string>
     <string name="floatIt">Float It</string>
-    <string name="splitIt">Split It</string>
     <string name="deleteText">Delete</string>
     <string name="edit_folder">Edit: </string>
     <string name="freeFormTitle">Extended Float It</string>
