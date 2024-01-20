@@ -44,33 +44,28 @@
     </string>
     <string name="permDesc">
         <![CDATA[
-            <b>Hi</b>&#8230; &#9786;<br/>I need your Permission to create <b>Shortcuts in Floating View</b>.
+            <b>Hi</b>&#8230; &#9786;<br/>I need your Permission to create <b>Floating Applications</b>.
             Please Grant permission by Enabling the Switch.<br/>
-            Also to make me Smarter Please go to Preferences, Details &amp; Practical Info to Enable <b>Smart Features</b>.<br/>
-            Press Grant to Proceed to Settings.<br/>
             <b>Thanks!</b>
         ]]>
     </string>
     <string name="split_service_desc">
-        Split Float It | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)
+        Split It | This permission gives me the ability to create Multi-Window &amp; Open Apps in Split Screen Simultaneously
         \n
         \n
-        ♿ How it Helps People with Disability?
-        \n
-        It is difficult for people with disability to open an app Or switch between apps. I am using Accessibility Service to enter Multi-Window Mode to open two apps together.
+        ℹ️ Accessibility Service Permission Have Used To Create Multi-Windows and Open Applications in Split Screen Simultaneously to Increase Productivity and Multitasking.
     </string>
-    <string name="split_service_summary">Split Float It  | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously (Android 7 &amp; Higher)</string>
+    <string name="split_service_summary">
+        Split It | This Permission Gives me the Ability to Create Multi-Window &amp; Open Apps in Split Screen Simultaneously
+    </string>
     <string name="observeDesc">
         <![CDATA[
                 <br/>
-                I Need Accessibility Service To Be Enabled Because It Allows Me to Create Multi-Window Mode 🗔 To Open Pair of Applications in Split Screen Simultaneously.
-                <br/>The Core Purpose Of Requiring This Permission Is Opening Two Applications Together To Increase Productivity and Multitasking.
+                I need Accessibility Service to create Multi-Window Mode 🗔 to open pair of applications in Split Screen.
+                <small><br/>The Core Purpose Of Requiring This Permission Is Opening Two Applications Together To Increase Productivity and Multitasking.
                 <br/>⚠ No Data Read Or Collect ⚠
-                <br/>(<b>It is Compatible with Android 7.0 & Higher</b>)
-                <br/><br/><br/><br/><br/>
-                ♿ <small><b>How it Helps People with Disability</b>?<br/>
-                It is Difficult for People with Disability to Open an App Or Switch Between Apps.<br/>
-                So, I am Using Accessibility Service to Create Multi-Window Mode to Open Two Apps Together.<br/></small>
+                <br/><br/>
+                ℹ️ Accessibility Service Permission Have Used To Create Multi-Windows & Open Applications in Split Screen Simultaneously to Increase Productivity & Multitasking.</small>
         ]]>
     </string>
     <string name="freeFormInfo">
