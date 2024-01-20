@@ -618,10 +618,21 @@ class ApplicationsViewPhone : AppCompatActivity(),
             loadCustomIcons.load()
         }
 
-        val applicationInfoList = packageManager.queryIntentActivities(Intent().apply {
-            action = Intent.ACTION_MAIN
-            addCategory(Intent.CATEGORY_LAUNCHER)
-        }, PackageManager.MATCH_ALL)
+        val applicationInfoList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+            packageManager.queryIntentActivities(Intent().apply {
+                action = Intent.ACTION_MAIN
+                addCategory(Intent.CATEGORY_LAUNCHER)
+            }, PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL.toLong()))
+
+        } else {
+
+            packageManager.queryIntentActivities(Intent().apply {
+                action = Intent.ACTION_MAIN
+                addCategory(Intent.CATEGORY_LAUNCHER)
+            }, PackageManager.MATCH_ALL)
+
+        }
         val applicationInfoListSorted = applicationInfoList.sortedWith(ResolveInfo.DisplayNameComparator(packageManager))
 
         var newChar: String = "A"
