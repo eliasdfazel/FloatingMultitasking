@@ -33,7 +33,9 @@ class InteractionObserver : AccessibilityService() {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> if (accessibilityEvent.action == 10296) {
 
                 classNameCommand = accessibilityEvent.className as String?
+
                 performGlobalAction(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
+
                 val splitIntent =
                     packageManager.getLaunchIntentForPackage(SplitTransparentPair.packageNameSplitTwo)
                 splitIntent!!.addFlags(

@@ -76,7 +76,7 @@ class SplitTransparentSingle : Activity() {
         accessibilityEvent.setSource(Button(applicationContext))
         accessibilityEvent.eventType = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
         accessibilityEvent.action = 69201
-        accessibilityEvent.className = SplitTransparentPair::class.java.simpleName
+        accessibilityEvent.className = SplitTransparentSingle::class.java.simpleName
         accessibilityEvent.text.add(packageName)
 
         accessibilityManager.sendAccessibilityEvent(accessibilityEvent)

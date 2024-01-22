@@ -12,6 +12,7 @@ package net.geekstools.floatshort.PRO.Utils.InteractionObserver
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -21,6 +22,7 @@ import android.widget.Button
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
+@Suppress("DEPRECATION")
 public class SplitTransparentPair : Activity() {
 
     private val fileIO: FileIO by lazy {
@@ -65,7 +67,15 @@ public class SplitTransparentPair : Activity() {
 
         val accessibilityManager = getSystemService(ACCESSIBILITY_SERVICE) as AccessibilityManager
 
-        val accessibilityEvent = AccessibilityEvent.obtain()
+        val accessibilityEvent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+            AccessibilityEvent()
+
+        } else {
+
+            AccessibilityEvent.obtain()
+
+        }
         accessibilityEvent.setSource(Button(applicationContext))
         accessibilityEvent.eventType = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
         accessibilityEvent.action = 10296
@@ -75,8 +85,16 @@ public class SplitTransparentPair : Activity() {
         accessibilityManager.sendAccessibilityEvent(accessibilityEvent)
 
         val splitOne = packageManager.getLaunchIntentForPackage(packageNameSplitOne)
-        splitOne?.flags = Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT or
-                Intent.FLAG_ACTIVITY_NEW_TASK
+        splitOne?.flags = if (android.os.Build.MANUFACTURER.uppercase() == "Samsung".uppercase()) {
+
+            Intent.FLAG_ACTIVITY_NEW_TASK
+
+        } else {
+
+            Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT or
+                    Intent.FLAG_ACTIVITY_NEW_TASK
+
+        }
 
 
         splitOne?.let {

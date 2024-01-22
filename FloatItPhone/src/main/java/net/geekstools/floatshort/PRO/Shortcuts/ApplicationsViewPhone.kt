@@ -167,6 +167,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
         hybridApplicationViewBinding = HybridApplicationViewBinding.inflate(layoutInflater)
         setContentView(hybridApplicationViewBinding.root)
 
+        println(">>> >> > " + android.os.Build.MANUFACTURER.uppercase())
+
         RuntimeIO(applicationContext, applicationsViewPhoneDependencyInjection.functionsClassLegacy).apply{
             freeformCheckpoint()
         }
