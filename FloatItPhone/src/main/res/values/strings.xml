@@ -76,12 +76,6 @@
     <string name="freeFormInfo">
         <![CDATA[
                 <small>
-                 <font color=#9b000e>
-                ⚠️️ <b>Disclaimer</b>  ⚠️️ <br/>
-                ⚠ Performing this Small Hack is At Your Own Risk<br/>
-                ⚠ Please, Do NOT Enable This Feature If You Are Not Familiar ADB (Android Debug Bridge)<br/>
-                </font>
-                ️<br/><br/>
                 Follow This Instructions to Enable System Settings<br/>
                 1️⃣️ Go to System Setting (<b>About</b> Section) <br/>
                 2️⃣ & Enable <b>Developer Options</b> by Clicking Few Times on <b>Build Number</b><br/>
@@ -94,10 +88,8 @@
                 ➡️ If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
                 9️⃣ <b>adb reboot</b><br/>
                 1️⃣0️⃣ Come Back Here ⚙ & <b>Turn ON Float It</b>
-                <br/><br/><br/>
-                <b>ℹ️ <font color=#ffd800>Information</font> ℹ️ </font><br/></b>
-                ⏺ First Create Floating Shortcuts then Clear \'<b>Recent Apps</b>\' List for This Feature to Work Properly (Android Nougat & Oreo)<br/>
-                ⏺ Other Apps/Games Faulty Appearance & Functionality in FreeForm Mode is <b>NOT</b> our Fault<br/>
+                <br/><br/>
+                <b>ℹ️ <font color=#c3ffa6>Information</font> ℹ️ </font><br/></b>
                 ⏺ You Can <b>Resize Apps Window</b> in FreeForm (Touch Edges of Window & Move It)<br/>
                 ⏺ If You Are Interested in This Feature & Don\'t Know What to Do, Feel Free to Contact Me via <b>Support Center</b> 👍 😉
                 </small>
