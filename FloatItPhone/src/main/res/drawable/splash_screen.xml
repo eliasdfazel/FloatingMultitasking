@@ -20,11 +20,4 @@
             android:src="@drawable/ic_launcher" />
     </item>
 
-    <item
-        android:bottom="73dp">
-        <bitmap
-            android:gravity="bottom"
-            android:src="@drawable/float_it_icon_text" />
-    </item>
-
 </layer-list>
