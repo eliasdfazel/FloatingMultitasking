@@ -25,7 +25,6 @@ import android.widget.Toast
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
-import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.databinding.CheckPointBinding
 
 class Checkpoint : Activity() {
@@ -129,10 +128,8 @@ class Checkpoint : Activity() {
     private fun canOverlyPermission() {
 
         val alertDialog = AlertDialog.Builder(this, R.style.GeeksEmpire_Dialogue_Dark)
-        alertDialog.setTitle(Html.fromHtml("<font color='" + PublicVariable.vibrantColor.toString() + "'>" +
-                resources.getString(R.string.permTitle) + "</font>", Html.FROM_HTML_MODE_COMPACT))
-        alertDialog.setMessage(Html.fromHtml("<font color='" + PublicVariable.darkMutedColorString.toString() + "'>" +
-                        resources.getString(R.string.permDesc) + "</font>", Html.FROM_HTML_MODE_COMPACT))
+        alertDialog.setTitle(getString(R.string.app_name))
+        alertDialog.setMessage(Html.fromHtml(resources.getString(R.string.permDesc), Html.FROM_HTML_MODE_COMPACT))
         alertDialog.setIcon(getDrawable(R.drawable.ic_launcher))
         alertDialog.setCancelable(true)
 

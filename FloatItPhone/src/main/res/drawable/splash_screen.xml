@@ -15,9 +15,10 @@
         android:drawable="@color/default_color" />
 
     <item
-        >
+        android:height="301dp"
+        android:width="301dp"
+        android:gravity="center">
         <bitmap
-            android:gravity="center"
             android:src="@drawable/ic_launcher" />
     </item>
 
