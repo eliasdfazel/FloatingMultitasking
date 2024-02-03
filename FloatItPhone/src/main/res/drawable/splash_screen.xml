@@ -14,7 +14,8 @@
     <item
         android:drawable="@color/default_color" />
 
-    <item>
+    <item
+        >
         <bitmap
             android:gravity="center"
             android:src="@drawable/ic_launcher" />
