@@ -156,7 +156,7 @@ class SecurityFunctions (var context: Context) {
 
         val lockedAppsFile = File("/data/data/" + context.packageName + "/shared_prefs/.LockedApps.xml")
         val urilockedAppsFile = Uri.fromFile(lockedAppsFile)
-        val storageReferenceLockedApps = firebaseStorage.getReference("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
+        val storageReferenceLockedApps = firebaseStorage.getReference("FloatingMultitasking/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
         val uploadTaskLockedApps = storageReferenceLockedApps.putFile(urilockedAppsFile)
         uploadTaskLockedApps.addOnSuccessListener {
 
@@ -166,7 +166,7 @@ class SecurityFunctions (var context: Context) {
 
         val pinPasswordFile = File("/data/data/" + context.packageName + "/shared_prefs/.Password.xml")
         val uriPinPasswordFile = Uri.fromFile(pinPasswordFile)
-        val storageReferencePinPassword = firebaseStorage.getReference("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".Password.xml")
+        val storageReferencePinPassword = firebaseStorage.getReference("FloatingMultitasking/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".Password.xml")
         val uploadTaskPinPassword = storageReferencePinPassword.putFile(uriPinPasswordFile)
         uploadTaskPinPassword.addOnSuccessListener {
 

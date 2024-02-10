@@ -21,7 +21,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.PurchasesUpdatedListener
+import com.android.billingclient.api.QueryProductDetailsParams
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.DataSource
@@ -46,7 +51,7 @@ import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTim
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.OneTimePurchase.Extensions.setupOneTimePurchaseUI
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Utils.PurchaseFlowController
 import net.geekstools.floatshort.PRO.databinding.InAppBillingOneTimePurchaseViewBinding
-import java.util.*
+import java.util.TreeMap
 
 class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListener {
 
@@ -230,7 +235,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                                         val firebaseStorage = FirebaseStorage.getInstance()
                                         val firebaseStorageReference = firebaseStorage.reference
                                         firebaseStorageReference
-                                                .child("Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}/IAP.Demo/")
+                                                .child("FloatingMultitasking/Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}/")
                                                 .listAll()
                                                 .addOnSuccessListener { itemsStorageReference ->
 
