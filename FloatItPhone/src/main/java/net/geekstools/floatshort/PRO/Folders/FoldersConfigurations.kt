@@ -493,6 +493,8 @@ class FoldersConfigurations : AppCompatActivity(),
                                     }
                                 }
 
+                        }.addOnFailureListener {
+                            it.printStackTrace()
                         }
 
                     }

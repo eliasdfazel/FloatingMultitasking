@@ -583,9 +583,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                             }
 
                     }.addOnFailureListener {
-
-                        println(it.message)
-
+                        it.printStackTrace()
                     }
 
                 }
