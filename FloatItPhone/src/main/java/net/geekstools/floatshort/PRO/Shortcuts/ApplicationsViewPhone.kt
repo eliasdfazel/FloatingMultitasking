@@ -554,9 +554,15 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
                 data?.let {
 
+                    GoogleSignIn.getSignedInAccountFromIntent(data).addOnCompleteListener {
+
+                        println(it.result)
+
+                    }
                     GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { googleSignInAccountTask ->
 
                         val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask.idToken, null)
+
                         firebaseAuth.signInWithCredential(authCredential)
                             .addOnSuccessListener {
                                 val firebaseUser = firebaseAuth.currentUser
@@ -579,6 +585,10 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                 }
 
                             }
+
+                    }.addOnFailureListener {
+
+                        println(it.message)
 
                     }
 

@@ -1,66 +1,79 @@
 {
   "project_info": {
-    "project_number": "517247283133",
-    "firebase_url": "https://floating-shortcuts-pro.firebaseio.com",
-    "project_id": "floating-shortcuts-pro",
-    "storage_bucket": "floating-shortcuts-pro.appspot.com"
+    "project_number": "1002127527001",
+    "firebase_url": "https://arwen-multitasking-default-rtdb.firebaseio.com",
+    "project_id": "arwen-multitasking",
+    "storage_bucket": "arwen-multitasking.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:517247283133:android:5eb5648d36b6e631",
+        "mobilesdk_app_id": "1:1002127527001:android:0ad22c8a9be94746783548",
         "android_client_info": {
-          "package_name": "net.geekstools.floatshort.PRO"
+          "package_name": "co.geeksempire.arwen.ai"
         }
       },
       "oauth_client": [
         {
-          "client_id": "517247283133-ereu2msnnucqc6ddefie1mttj7fqccta.apps.googleusercontent.com",
+          "client_id": "1002127527001-0hsjcnibqfv2t5seg0oc6h8le2er63ca.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "net.geekstools.floatshort.PRO",
-            "certificate_hash": "c4d2b4f6c04ad6f8cde9eb435ab76f618dab230a"
-          }
-        },
-        {
-          "client_id": "517247283133-j6jo6uak93lr9ob1de1qkvb5qb1ope1u.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "net.geekstools.floatshort.PRO",
-            "certificate_hash": "a4919f5b41e0ea24cf4aaa9fc316ac9e97ca07a4"
-          }
-        },
-        {
-          "client_id": "517247283133-n8538nbs7n1d7rjue5n4nt9a88u0o0lj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "net.geekstools.floatshort.PRO",
+            "package_name": "co.geeksempire.arwen.ai",
             "certificate_hash": "6fa2d23f54167ebdfcb1ce7cb183c0f709f8934e"
           }
         },
         {
-          "client_id": "517247283133-tj5qot0lhfir4e41sglvdg0399rnm3a2.apps.googleusercontent.com",
+          "client_id": "1002127527001-iv545ks51k864j2iq519ohi3hvjpef8m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "net.geekstools.floatshort.PRO",
-            "certificate_hash": "1d15eb4e4e7fc488f568267af689e34209fc705f"
+            "package_name": "co.geeksempire.arwen.ai",
+            "certificate_hash": "3fc01af11b50337cbaa4be4b75231cebf8437a4c"
           }
         },
         {
-          "client_id": "517247283133-7nnl7jtfc6ocg64eopqsjqbpnmc0iqq0.apps.googleusercontent.com",
+          "client_id": "1002127527001-0av7rp61um15mj4nr5ft31134mi0cm0j.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCNceqAtXMNJD3mSlXcwrN9P7pChQxA0uE"
+          "current_key": "AIzaSyBJ83bzHdcfenK_C7fOLe55e4EwxnZlfV4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "517247283133-7nnl7jtfc6ocg64eopqsjqbpnmc0iqq0.apps.googleusercontent.com",
+              "client_id": "1002127527001-0av7rp61um15mj4nr5ft31134mi0cm0j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002127527001:android:583e45570db017d8783548",
+        "android_client_info": {
+          "package_name": "net.geekstools.floatshort.PRO"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002127527001-0av7rp61um15mj4nr5ft31134mi0cm0j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJ83bzHdcfenK_C7fOLe55e4EwxnZlfV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002127527001-0av7rp61um15mj4nr5ft31134mi0cm0j.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
