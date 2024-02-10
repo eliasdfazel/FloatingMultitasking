@@ -68,6 +68,14 @@
           }
         },
         {
+          "client_id": "1002127527001-vcho155evgpao1jajunjmkvj1jehgbfc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.geekstools.floatshort.PRO",
+            "certificate_hash": "50e9ffb043ccee0481bdc6d471ee9d01ce8dc34f"
+          }
+        },
+        {
           "client_id": "1002127527001-0av7rp61um15mj4nr5ft31134mi0cm0j.apps.googleusercontent.com",
           "client_type": 3
         }
