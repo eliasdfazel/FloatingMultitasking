@@ -180,7 +180,7 @@ class SecurityFunctions (var context: Context) {
         val firebaseStorage = FirebaseStorage.getInstance()
         val firebaseStorageReference = firebaseStorage.reference
 
-        val uploadLockedAppsFileXml = firebaseStorageReference.child("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
+        val uploadLockedAppsFileXml = firebaseStorageReference.child("FloatingMultitasking/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
         uploadLockedAppsFileXml.getFile(File("/data/data/" + context.packageName + "/shared_prefs/" + ".LockedApps.xml"))
                 .addOnSuccessListener {
 
@@ -188,7 +188,7 @@ class SecurityFunctions (var context: Context) {
 
                 }
 
-        val pinPasswordFileXml = firebaseStorageReference.child("/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".Password.xml")
+        val pinPasswordFileXml = firebaseStorageReference.child("FloatingMultitasking/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".Password.xml")
         pinPasswordFileXml.getFile(File("/data/data/" + context.packageName + "/shared_prefs/" + ".Password.xml"))
                 .addOnSuccessListener {
 
