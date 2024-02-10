@@ -554,11 +554,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
                 data?.let {
 
-                    GoogleSignIn.getSignedInAccountFromIntent(data).addOnCompleteListener {
-
-                        println(it.result)
-
-                    }
                     GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { googleSignInAccountTask ->
 
                         val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask.idToken, null)
@@ -578,6 +573,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                     waitingDialogue.dismiss()
                                 }
                             }.addOnFailureListener { exception ->
+                                exception.printStackTrace()
 
                                 waitingDialogueLiveData.run {
                                     this.dialogueTitle.value = getString(R.string.error)
