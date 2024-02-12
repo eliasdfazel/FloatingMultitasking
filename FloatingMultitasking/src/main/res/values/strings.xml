@@ -86,7 +86,7 @@
                 8️⃣️ <b>settings put global enable_freeform_support 1</b> && <b>exit</b><br/>
                 ➡️ If On Android P: <b>adb shell settings put global hidden_api_policy_p_apps 1</b> && <b>exit</b><br/>
                 9️⃣ <b>adb reboot</b><br/>
-                1️⃣0️⃣ Come Back Here ⚙ & <b>Turn ON Float It</b>
+                1️⃣0️⃣ Come Back Here ⚙ & <b>Turn ON Floating Multitasking</b>
                 <br/><br/>
                 <b>ℹ️ <font color=#c3ffa6>Information</font> ℹ️ </font><br/></b>
                 ⏺ You Can <b>Resize Apps Window</b> in FreeForm (Touch Edges of Window & Move It)<br/>
@@ -119,7 +119,7 @@
             This Permission Allows Me to Get List of <b>Frequently Used Application</b> to Set Quick Bar.<br/><br/>
             Also, It is Essential for<br/>
             1. <b>🔄 Remote Recovery of Floating Shortcuts/Folders</b> to Recognize Command…<br/>
-            2. <b>🆗 Google! Open Float It</b><br/>
+            2. <b>🆗 Google! Open Floating Multitasking</b><br/>
             3. <b>🕐 Optimizing Floating Splash</b><br/>
         ]]>
     </string>
@@ -129,7 +129,7 @@
         <![CDATA[
             <br/>
             <big>Recover Floating Shortcuts/Folders When</big>…<br/>
-            1. <b>Saying \'🆗 Google Open Float It\'</b><br/>
+            1. <b>Saying \'🆗 Google Open Floating Multitasking\'</b><br/>
             2. <b>Using Popup AppShortcuts</b> | Press & Hold ⏺ on App Shortcut on Home Screen (Android 7.1.1 & Higher)<br/>
             <br/>
         ]]>
@@ -205,10 +205,10 @@
     <string name="pin_folder">Pin Folder</string>
     <string name="unpin_folder">Unpin Folder</string>
     <string name="remove_folder">Remove</string>
-    <string name="floatIt">Float It</string>
+    <string name="floatIt">Floating Multitasking</string>
     <string name="deleteText">Delete</string>
     <string name="edit_folder">Edit: </string>
-    <string name="freeFormTitle">Extended Float It</string>
+    <string name="freeFormTitle">Float It</string>
     <string name="freeFormDesc">Always Open All Apps in Floating View (FreeForm)</string>
     <string name="liteTitle">Lite Preferences</string>
     <string name="liteSummary">Set Preferences to Minimum for Better Performance</string>
@@ -262,7 +262,7 @@
     <string name="forgetPassword">Forgot Your Password? 🤔 </string>
     <string name="passwordResetSent"> Email To Reset Pin Password Sent 📩 | Open It On This Phone 📱 </string>
     <string name="verifying">Verifying Authenticated Data 🔑</string>
-    <string name="floatingShortcutsSecurityService">Float It | Security Services</string>
+    <string name="floatingShortcutsSecurityService">Floating Multitasking | Security Services</string>
     <string name="securityWarningFingerprint"> ⚠ Security Warning | Fingerprint Is Not Set ⚠ </string>
     <!-- Finger Print -->
     <!-- Security Options -->
