@@ -47,8 +47,9 @@ import com.android.billingclient.api.BillingClient
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.identity.SignInCredential
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -574,18 +575,21 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
     private val googleSignInResult = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
 
-        when (it.resultCode) {
-            Activity.RESULT_OK -> {
+        it.data?.let { intentResult ->
 
-                GoogleSignIn.getSignedInAccountFromIntent(it.data).addOnSuccessListener { googleSignInAccountTask ->
+            when (it.resultCode) {
+                Activity.RESULT_OK -> {
 
-                    val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask.idToken, null)
+                    val signInCredential: SignInCredential = googleSignInClient.getSignInCredentialFromIntent(intentResult)
 
-                    firebaseAuth.signInWithCredential(authCredential)
+                    val authenticationCredential: AuthCredential = GoogleAuthProvider.getCredential(signInCredential.googleIdToken, null)
+
+                    firebaseAuth.signInWithCredential(authenticationCredential)
                         .addOnSuccessListener {
+
                             val firebaseUser = firebaseAuth.currentUser
+
                             if (firebaseUser != null) {
-                                PrintDebug("Firebase Activities Done Successfully")
 
                                 applicationsViewPhoneDependencyInjection.preferencesIO.savePreference(".UserInformation", "userEmail", firebaseUser.email)
 
@@ -594,7 +598,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
                                 applicationsViewPhoneDependencyInjection.securityFunctions.downloadLockedAppsData()
 
                                 waitingDialogue.dismiss()
+
                             }
+
                         }.addOnFailureListener { exception ->
                             exception.printStackTrace()
 
@@ -605,11 +611,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
                         }
 
-                }.addOnFailureListener {
-                    it.printStackTrace()
                 }
-
             }
+
         }
 
     }
