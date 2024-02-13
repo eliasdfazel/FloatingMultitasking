@@ -10,6 +10,7 @@
 
 package net.geekstools.floatshort.PRO.Shortcuts
 
+import android.app.Activity
 import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.Intent
@@ -34,6 +35,8 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -41,8 +44,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.BillingClient
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -160,6 +165,10 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
     private object Google {
         const val SignInRequest: Int = 666
+    }
+
+    private val googleSignInClient: SignInClient by lazy {
+        Identity.getSignInClient(this@ApplicationsViewPhone)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -332,15 +341,32 @@ class ApplicationsViewPhone : AppCompatActivity(),
         if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection()
                 && applicationsViewPhoneDependencyInjection.preferencesIO.readPreference(".UserInformation", "userEmail", null) == null) {
 
-            val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.webClientId))
-                    .requestEmail()
-                    .build()
+            val googleIdTokenRequestOptions = BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                .setSupported(true)
+                .setServerClientId(getString(R.string.webClientId))
+                .setFilterByAuthorizedAccounts(false)
+                .build()
 
-            val googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
-            googleSignInClient.signInIntent.run {
-                startActivityForResult(this, Google.SignInRequest)
-            }
+            val beginSignInRequest = BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(googleIdTokenRequestOptions)
+                .setAutoSelectEnabled(true)
+                .build()
+
+            googleSignInClient.beginSignIn(beginSignInRequest)
+                .addOnSuccessListener(this@ApplicationsViewPhone) { result ->
+
+                    try {
+
+                        googleSignInResult.launch(IntentSenderRequest.Builder(result.pendingIntent.intentSender).build())
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+
+                    }
+
+                }.addOnFailureListener(this@ApplicationsViewPhone) { e ->
+                    e.printStackTrace()
+                }
 
             waitingDialogueLiveData = ViewModelProvider(this@ApplicationsViewPhone).get(WaitingDialogueLiveData::class.java)
             waitingDialogueLiveData.run {
@@ -546,50 +572,46 @@ class ApplicationsViewPhone : AppCompatActivity(),
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private val googleSignInResult = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
 
-        when (requestCode) {
-            Google.SignInRequest -> {
+        when (it.resultCode) {
+            Activity.RESULT_OK -> {
 
-                data?.let {
+                GoogleSignIn.getSignedInAccountFromIntent(it.data).addOnSuccessListener { googleSignInAccountTask ->
 
-                    GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { googleSignInAccountTask ->
+                    val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask.idToken, null)
 
-                        val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask.idToken, null)
+                    firebaseAuth.signInWithCredential(authCredential)
+                        .addOnSuccessListener {
+                            val firebaseUser = firebaseAuth.currentUser
+                            if (firebaseUser != null) {
+                                PrintDebug("Firebase Activities Done Successfully")
 
-                        firebaseAuth.signInWithCredential(authCredential)
-                            .addOnSuccessListener {
-                                val firebaseUser = firebaseAuth.currentUser
-                                if (firebaseUser != null) {
-                                    PrintDebug("Firebase Activities Done Successfully")
+                                applicationsViewPhoneDependencyInjection.preferencesIO.savePreference(".UserInformation", "userEmail", firebaseUser.email)
 
-                                    applicationsViewPhoneDependencyInjection.preferencesIO.savePreference(".UserInformation", "userEmail", firebaseUser.email)
+                                applicationsViewPhoneDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
 
-                                    applicationsViewPhoneDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
+                                applicationsViewPhoneDependencyInjection.securityFunctions.downloadLockedAppsData()
 
-                                    applicationsViewPhoneDependencyInjection.securityFunctions.downloadLockedAppsData()
+                                waitingDialogue.dismiss()
+                            }
+                        }.addOnFailureListener { exception ->
+                            exception.printStackTrace()
 
-                                    waitingDialogue.dismiss()
-                                }
-                            }.addOnFailureListener { exception ->
-                                exception.printStackTrace()
-
-                                waitingDialogueLiveData.run {
-                                    this.dialogueTitle.value = getString(R.string.error)
-                                    this.dialogueMessage.value = exception.message
-                                }
-
+                            waitingDialogueLiveData.run {
+                                this.dialogueTitle.value = getString(R.string.error)
+                                this.dialogueMessage.value = exception.message
                             }
 
-                    }.addOnFailureListener {
-                        it.printStackTrace()
-                    }
+                        }
 
+                }.addOnFailureListener {
+                    it.printStackTrace()
                 }
 
             }
         }
+
     }
 
     override fun messageClicked(inAppMessage: InAppMessage, action: Action) {

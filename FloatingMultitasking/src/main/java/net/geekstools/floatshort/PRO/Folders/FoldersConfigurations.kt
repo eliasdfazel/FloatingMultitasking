@@ -10,7 +10,6 @@
 
 package net.geekstools.floatshort.PRO.Folders
 
-import android.app.Activity
 import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.Intent
@@ -21,7 +20,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
@@ -29,15 +27,11 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.BillingClient
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.inappmessaging.FirebaseInAppMessagingClickListener
 import com.google.firebase.inappmessaging.model.Action
@@ -77,7 +71,6 @@ import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SwipeGestureListener
-import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogue
 import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveData
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.FoldersConfigurationViewBinding
@@ -122,10 +115,6 @@ class FoldersConfigurations : AppCompatActivity(),
     }
 
     private lateinit var foldersConfigurationViewBinding: FoldersConfigurationViewBinding
-
-    private object Google {
-        const val SignInRequest: Int = 666
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -289,28 +278,6 @@ class FoldersConfigurations : AppCompatActivity(),
     override fun onStart() {
         super.onStart()
 
-        if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection()
-                && foldersConfigurationsDependencyInjection.preferencesIO.readPreference(".UserInformation", "userEmail", null) == null) {
-
-            val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.webClientId))
-                    .requestEmail()
-                    .build()
-
-            val googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
-            googleSignInClient.signInIntent.run {
-                startActivityForResult(this, Google.SignInRequest)
-            }
-
-            waitingDialogueLiveData = ViewModelProvider(this@FoldersConfigurations).get(WaitingDialogueLiveData::class.java)
-            waitingDialogueLiveData.run {
-                this.dialogueTitle.value = getString(R.string.signinTitle)
-                this.dialogueMessage.value = getString(R.string.signinMessage)
-
-                waitingDialogue = WaitingDialogue().initShow(this@FoldersConfigurations)
-            }
-        }
-
         val drawableShare: LayerDrawable? = getDrawable(R.drawable.draw_share) as LayerDrawable
         val backgroundShare = drawableShare!!.findDrawableByLayerId(R.id.backgroundTemporary)
         backgroundShare.setTint(PublicVariable.primaryColor)
@@ -456,61 +423,6 @@ class FoldersConfigurations : AppCompatActivity(),
         }
 
         return super.dispatchTouchEvent(motionEvent)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            Google.SignInRequest -> {
-
-                if (resultCode == Activity.RESULT_OK) {
-
-                    data?.let {
-
-                        GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { googleSignInAccountTask ->
-
-                            val authCredential = GoogleAuthProvider.getCredential(googleSignInAccountTask?.idToken, null)
-                            firebaseAuth.signInWithCredential(authCredential)
-                                .addOnSuccessListener {
-                                    val firebaseUser = firebaseAuth.currentUser
-                                    if (firebaseUser != null) {
-                                        Debug.PrintDebug("Firebase Activities Done Successfully")
-
-                                        foldersConfigurationsDependencyInjection.preferencesIO.savePreference(".UserInformation", "userEmail", firebaseUser.email)
-
-                                        foldersConfigurationsDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
-
-                                        foldersConfigurationsDependencyInjection.securityFunctions.downloadLockedAppsData()
-
-                                        waitingDialogue.dismiss()
-                                    }
-                                }.addOnFailureListener { exception ->
-
-                                    waitingDialogueLiveData.run {
-                                        this.dialogueTitle.value = getString(R.string.error)
-                                        this.dialogueMessage.value = exception.message
-                                    }
-                                }
-
-                        }.addOnFailureListener {
-                            it.printStackTrace()
-                        }
-
-                    }
-
-                } else {
-
-                    waitingDialogueLiveData.run {
-                        this.dialogueTitle.value = getString(R.string.error)
-                        this.dialogueMessage.value = Activity.RESULT_CANCELED.toString()
-                    }
-
-                }
-
-            }
-        }
-
     }
 
     override fun messageClicked(inAppMessage: InAppMessage, action: Action) {
