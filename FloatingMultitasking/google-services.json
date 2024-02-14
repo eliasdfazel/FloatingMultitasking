@@ -68,11 +68,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "1002127527001-4s5a16scs76m9f0114jsrfdnspmsfur3.apps.googleusercontent.com",
+          "client_id": "1002127527001-b6gkllcnoe8mmdpfdpn5mdp26av5bc2q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "net.geekstools.floatshort.PRO",
             "certificate_hash": "d2579b234a8ad0a4b81bbe1eb04d4a878ec87f3b"
+          }
+        },
+        {
+          "client_id": "1002127527001-hp7t7lqpu3vsrtltpllfgbcnianab8nq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.geekstools.floatshort.PRO",
+            "certificate_hash": "50e9ffb043ccee0481bdc6d471ee9d01ce8dc34f"
           }
         },
         {
@@ -81,14 +89,6 @@
           "android_info": {
             "package_name": "net.geekstools.floatshort.PRO",
             "certificate_hash": "6fa2d23f54167ebdfcb1ce7cb183c0f709f8934e"
-          }
-        },
-        {
-          "client_id": "1002127527001-vcho155evgpao1jajunjmkvj1jehgbfc.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "net.geekstools.floatshort.PRO",
-            "certificate_hash": "50e9ffb043ccee0481bdc6d471ee9d01ce8dc34f"
           }
         },
         {
