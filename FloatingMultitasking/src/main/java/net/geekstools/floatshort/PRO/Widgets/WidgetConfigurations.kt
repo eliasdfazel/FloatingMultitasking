@@ -398,27 +398,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
     override fun onResume() {
         super.onResume()
 
-        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
-        firebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        firebaseRemoteConfig.activate().addOnSuccessListener {
-                            if (firebaseRemoteConfig.getLong(widgetConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()) > widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationVersionCode(packageName)) {
-                                widgetConfigurationsDependencyInjection.functionsClassLegacy.notificationCreator(
-                                        getString(R.string.updateAvailable),
-                                        firebaseRemoteConfig.getString(widgetConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLogSummaryConfigKey()),
-                                        firebaseRemoteConfig.getLong(widgetConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toInt()
-                                )
-                            } else {
-
-                            }
-                        }
-                    } else {
-
-                    }
-                }
-
         if (widgetConfigurationsDependencyInjection.functionsClassLegacy.readPreference(".Password", "Pin", "0") == "0" && widgetConfigurationsDependencyInjection.functionsClassLegacy.securityServicesSubscribed()) {
 
             startActivity(Intent(applicationContext, PinPasswordConfigurations::class.java)

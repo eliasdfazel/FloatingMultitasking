@@ -782,7 +782,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
 
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
         firebaseRemoteConfig.fetch(0).addOnSuccessListener {
 
             firebaseRemoteConfig.activate().addOnSuccessListener {
@@ -800,43 +799,34 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                         betaVersionCode = firebaseRemoteConfig.getString(getString(R.string.BETAintegerVersionCodeNewUpdatePhone))
                     }
 
-                    if (firebaseRemoteConfig.getBoolean(getString(R.string.adAppForceLoad))) {
+                    Glide.with(requireContext())
+                        .load(firebaseRemoteConfig.getString(getString(R.string.adAppIconLink)))
+                        .addListener(object : RequestListener<Drawable?> {
+                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
 
-                        Glide.with(requireContext())
-                                .load(firebaseRemoteConfig.getString(getString(R.string.adAppIconLink)))
-                                .addListener(object : RequestListener<Drawable?> {
-                                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
+                                return false
+                            }
 
-                                        return false
-                                    }
+                            override fun onResourceReady(resource: Drawable?, model: Any, target: Target<Drawable?>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
 
-                                    override fun onResourceReady(resource: Drawable?, model: Any, target: Target<Drawable?>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                                requireActivity().runOnUiThread {
+                                    adApp.icon = resource
+                                }
 
-                                        requireActivity().runOnUiThread {
-                                            adApp.icon = resource
-                                        }
+                                return false
+                            }
+                        }).submit()
+                    adApp.title = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle)), Html.FROM_HTML_MODE_COMPACT)
+                    adApp.summary = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries)), Html.FROM_HTML_MODE_COMPACT)
 
-                                        return false
-                                    }
-                                }).submit()
-                        adApp.title = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle)), Html.FROM_HTML_MODE_COMPACT)
-                        adApp.summary = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries)), Html.FROM_HTML_MODE_COMPACT)
+                    adApp.setOnPreferenceClickListener {
 
-                        adApp.setOnPreferenceClickListener {
+                        startActivity(Intent(Intent.ACTION_VIEW,
+                            Uri.parse(firebaseRemoteConfig.getString(getString(R.string.adAppLink)))))
 
-                            startActivity(Intent(Intent.ACTION_VIEW,
-                                    Uri.parse(firebaseRemoteConfig.getString(getString(R.string.adAppLink)))))
-
-                            true
-                        }
-
-                        PrintDebug("*** " + firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) + " ***")
-                        if (firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)) > preferencesIO.readPreference(".AdApp", "FetchTime", java.lang.Long.valueOf(0))) {
-                            this@PreferencesFragment.scrollToPreference("app")
-
-                            preferencesIO.savePreference(".AdApp", "FetchTime", firebaseRemoteConfig.getLong(getString(R.string.adAppForceTime)))
-                        }
+                        true
                     }
+
                 }
 
             }

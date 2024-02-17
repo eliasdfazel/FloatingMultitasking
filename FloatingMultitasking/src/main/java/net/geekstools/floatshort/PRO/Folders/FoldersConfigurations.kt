@@ -13,7 +13,6 @@ package net.geekstools.floatshort.PRO.Folders
 import android.app.ActivityOptions
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
@@ -276,30 +275,6 @@ class FoldersConfigurations : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         PublicVariable.inMemory = true
-
-        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
-        firebaseRemoteConfig.fetch(0)
-                .addOnSuccessListener {
-                    firebaseRemoteConfig.activate().addOnSuccessListener {
-
-                        if (firebaseRemoteConfig.getLong(foldersConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()) > foldersConfigurationsDependencyInjection.functionsClassLegacy.applicationVersionCode(packageName)) {
-
-                            val layerDrawableNewUpdate = getDrawable(R.drawable.ic_update) as LayerDrawable?
-                            val gradientDrawableNewUpdate = layerDrawableNewUpdate?.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable?
-                            gradientDrawableNewUpdate?.setTint(PublicVariable.primaryColor)
-
-                            foldersConfigurationViewBinding.newUpdate.setImageDrawable(layerDrawableNewUpdate)
-                            foldersConfigurationViewBinding.newUpdate.visibility = View.VISIBLE
-
-                            foldersConfigurationViewBinding.newUpdate.setOnClickListener {
-                                foldersConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLog(
-                                        this@FoldersConfigurations,
-                                        firebaseRemoteConfig.getString(foldersConfigurationsDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(foldersConfigurationsDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
-                            }
-
-                        }
-                    }
-                }
 
         foldersConfigurationsDependencyInjection.popupApplicationShortcuts.addPopupApplicationShortcuts()
 

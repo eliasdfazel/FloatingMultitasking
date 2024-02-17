@@ -202,7 +202,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                                     inAppBillingOneTimePurchaseViewBinding.itemTitleView.visibility = View.GONE
                                     inAppBillingOneTimePurchaseViewBinding.itemDescriptionView.text =
                                             Html.fromHtml("<br/>" +
-                                                    "<big>${productsDetailsListInApp[0].title}</big>" +
+                                                    "<b>${productsDetailsListInApp[0].title}</b>" +
                                                     "<br/>" +
                                                     "<br/>" +
                                                     productsDetailsListInApp[0].description +
@@ -221,8 +221,9 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
 
                                     val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
                                     firebaseRemoteConfig.setConfigSettingsAsync(FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build())
-                                    firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
                                     firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
+
+                                        println(">>> " + firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigDescriptionKey()))
 
                                         inAppBillingOneTimePurchaseViewBinding
                                                 .itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigDescriptionKey()), Html.FROM_HTML_MODE_COMPACT)

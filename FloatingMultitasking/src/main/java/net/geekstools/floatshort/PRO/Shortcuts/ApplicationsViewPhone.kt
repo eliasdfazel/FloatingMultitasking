@@ -312,29 +312,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
         super.onResume()
         PublicVariable.inMemory = true
 
-        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
-        firebaseRemoteConfig.fetch(0)
-                .addOnSuccessListener {
-
-                    firebaseRemoteConfig.activate().addOnSuccessListener {
-                        if (firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()) > applicationsViewPhoneDependencyInjection.functionsClassLegacy.applicationVersionCode(packageName)) {
-
-                            val layerDrawableNewUpdate = getDrawable(R.drawable.ic_update) as LayerDrawable?
-                            val gradientDrawableNewUpdate = layerDrawableNewUpdate?.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable?
-                            gradientDrawableNewUpdate?.setTint(PublicVariable.primaryColor)
-
-                            hybridApplicationViewBinding.newUpdate.setImageDrawable(layerDrawableNewUpdate)
-                            hybridApplicationViewBinding.newUpdate.visibility = View.VISIBLE
-
-                            hybridApplicationViewBinding.newUpdate.setOnClickListener {
-                                applicationsViewPhoneDependencyInjection.functionsClassLegacy.upcomingChangeLog(
-                                        this@ApplicationsViewPhone,
-                                        firebaseRemoteConfig.getString(applicationsViewPhoneDependencyInjection.functionsClassLegacy.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(applicationsViewPhoneDependencyInjection.functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
-                            }
-
-                        }
-                    }
-                }
+        applicationsViewPhoneDependencyInjection.popupApplicationShortcuts.addPopupApplicationShortcuts()
 
         inAppUpdateProcess.onResume()
 
@@ -342,8 +320,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
     override fun onPause() {
         super.onPause()
-
-        applicationsViewPhoneDependencyInjection.popupApplicationShortcuts.addPopupApplicationShortcuts()
 
         applicationsViewPhoneDependencyInjection.preferencesIO.savePreference("LoadView", "LoadViewPosition", recyclerViewLayoutManager.findFirstVisibleItemPosition())
 

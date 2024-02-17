@@ -95,11 +95,9 @@
     <string name="BETAstringUpcomingChangeLogPhone" translatable="false">beta_string_upcoming_change_log_phone</string>
     <string name="BETAstringUpcomingChangeLogSummaryPhone" translatable="false">beta_string_upcoming_change_log_summary_phone</string>
 
-    <string name="adAppForceLoad" translatable="false">ad_app_force_load</string>
-    <string name="adAppForceTime" translatable="false">ad_app_force_time</string>
-    <string name="adAppTitle" translatable="false">ad_app_title</string>
-    <string name="adAppSummaries" translatable="false">ad_app_summaries</string>
-    <string name="adAppLink" translatable="false">ad_app_link</string>
-    <string name="adAppIconLink" translatable="false">ad_app_icon_link</string>
+    <string name="adAppTitle" translatable="false">ad_title</string>
+    <string name="adAppSummaries" translatable="false">ad_summaries</string>
+    <string name="adAppLink" translatable="false">ad_link</string>
+    <string name="adAppIconLink" translatable="false">ad_icon_link</string>
 
 </resources>
