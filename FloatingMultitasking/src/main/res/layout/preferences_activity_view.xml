@@ -74,21 +74,6 @@
             apps:layout_constraintBottom_toBottomOf="parent"
             apps:layout_constraintEnd_toEndOf="parent"/>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/deleteAccount"
-            android:layout_width="57dp"
-            android:layout_height="57dp"
-            android:padding="7dp"
-
-            android:scaleType="fitCenter"
-            android:src="@drawable/draw_delete_account"
-            android:background="@android:color/transparent"
-            android:visibility="invisible"
-
-            apps:layout_constraintTop_toTopOf="parent"
-            apps:layout_constraintBottom_toBottomOf="parent"
-            apps:layout_constraintEnd_toStartOf="@id/facebookIcon"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton

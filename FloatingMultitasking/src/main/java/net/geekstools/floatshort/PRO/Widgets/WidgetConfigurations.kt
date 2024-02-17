@@ -49,7 +49,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -136,8 +135,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
     private var installedWidgetsLoaded: Boolean = false
     private var configuredWidgetAvailable: Boolean = false
-
-    private lateinit var firebaseAuth: FirebaseAuth
 
     companion object {
         var alreadyAuthenticatedWidgets = false
@@ -303,7 +300,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         backFloatingLogo.setTint(PublicVariable.primaryColor)
         widgetConfigurationsViewsBinding.loadingLogo.setImageDrawable(drawFloatingLogo)
 
-        firebaseAuth = FirebaseAuth.getInstance()
     }
 
     override fun onStart() {
@@ -779,8 +775,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                 functionsClassLegacy = widgetConfigurationsDependencyInjection.functionsClassLegacy,
                                 fileIO = widgetConfigurationsDependencyInjection.fileIO,
                                 floatingServices = widgetConfigurationsDependencyInjection.floatingServices,
-                                customIcons = loadCustomIcons,
-                                firebaseAuth = firebaseAuth).apply {
+                                customIcons = loadCustomIcons).apply {
 
                             this.initializeSearchEngineData()
                         }

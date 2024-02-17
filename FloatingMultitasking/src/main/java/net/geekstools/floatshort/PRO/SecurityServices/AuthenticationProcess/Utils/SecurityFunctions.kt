@@ -13,14 +13,10 @@ package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Uti
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Base64
 import androidx.biometric.BiometricManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.PinPasswordConfigurations
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
-import java.io.File
 import java.nio.charset.Charset
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
@@ -60,14 +56,14 @@ class SecurityFunctions (var context: Context) {
     fun saveEncryptedPinPassword(plainTextPassword: String) {
         val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(context)
 
-        val passwordToSave = encryptEncodedData(plainTextPassword, FirebaseAuth.getInstance().currentUser!!.uid).asList().toString()
+        val passwordToSave = encryptEncodedData(plainTextPassword, "1337").asList().toString()
         functionsClassLegacy.savePreference(".Password", "Pin", passwordToSave)
     }
 
     fun isEncryptedPinPasswordEqual(plainTextPassword: String): Boolean {
         var passwordEqual = false
 
-        val encryptedPassword = encryptEncodedData(plainTextPassword, FirebaseAuth.getInstance().currentUser!!.uid).asList().toString()
+        val encryptedPassword = encryptEncodedData(plainTextPassword, "1337").asList().toString()
         val currentPassword = FunctionsClassLegacy(context).readPreference(".Password", "Pin", "0")
 
         passwordEqual = (encryptedPassword == currentPassword)
@@ -149,51 +145,4 @@ class SecurityFunctions (var context: Context) {
         return resultByteArray
     }
 
-    /*Upload/Download Functions .LockedApps*/
-    fun uploadLockedAppsData() {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
-        val firebaseStorage = FirebaseStorage.getInstance()
-
-        val lockedAppsFile = File("/data/data/" + context.packageName + "/shared_prefs/.LockedApps.xml")
-        val urilockedAppsFile = Uri.fromFile(lockedAppsFile)
-        val storageReferenceLockedApps = firebaseStorage.getReference("FloatingMultitasking/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
-        val uploadTaskLockedApps = storageReferenceLockedApps.putFile(urilockedAppsFile)
-        uploadTaskLockedApps.addOnSuccessListener {
-
-        }.addOnFailureListener {
-
-        }
-
-        val pinPasswordFile = File("/data/data/" + context.packageName + "/shared_prefs/.Password.xml")
-        val uriPinPasswordFile = Uri.fromFile(pinPasswordFile)
-        val storageReferencePinPassword = firebaseStorage.getReference("FloatingMultitasking/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".Password.xml")
-        val uploadTaskPinPassword = storageReferencePinPassword.putFile(uriPinPasswordFile)
-        uploadTaskPinPassword.addOnSuccessListener {
-
-        }.addOnFailureListener {
-
-        }
-    }
-
-    fun downloadLockedAppsData() {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
-        val firebaseStorage = FirebaseStorage.getInstance()
-        val firebaseStorageReference = firebaseStorage.reference
-
-        val uploadLockedAppsFileXml = firebaseStorageReference.child("FloatingMultitasking/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".LockedApps.xml")
-        uploadLockedAppsFileXml.getFile(File("/data/data/" + context.packageName + "/shared_prefs/" + ".LockedApps.xml"))
-                .addOnSuccessListener {
-
-                }.addOnFailureListener {
-
-                }
-
-        val pinPasswordFileXml = firebaseStorageReference.child("FloatingMultitasking/Security/" + "Services" + "/" + firebaseUser!!.email + "/" + firebaseUser.uid + "/" + ".Password.xml")
-        pinPasswordFileXml.getFile(File("/data/data/" + context.packageName + "/shared_prefs/" + ".Password.xml"))
-                .addOnSuccessListener {
-
-                }.addOnFailureListener {
-
-                }
-    }
 }

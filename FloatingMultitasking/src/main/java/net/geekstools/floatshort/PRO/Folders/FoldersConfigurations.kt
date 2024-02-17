@@ -11,7 +11,6 @@
 package net.geekstools.floatshort.PRO.Folders
 
 import android.app.ActivityOptions
-import android.app.Dialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.BitmapDrawable
@@ -24,19 +23,14 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.BillingClient
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.inappmessaging.FirebaseInAppMessagingClickListener
 import com.google.firebase.inappmessaging.model.Action
 import com.google.firebase.inappmessaging.model.InAppMessage
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.coroutines.CoroutineScope
@@ -71,7 +65,6 @@ import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SwipeGestureListener
-import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveData
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
 import net.geekstools.floatshort.PRO.databinding.FoldersConfigurationViewBinding
 import java.nio.charset.Charset
@@ -101,12 +94,6 @@ class FoldersConfigurations : AppCompatActivity(),
     }
 
     private val firebaseRemoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-
-    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-
-    private lateinit var waitingDialogue: Dialog
-
-    private lateinit var waitingDialogueLiveData: WaitingDialogueLiveData
 
     private var billingClient: BillingClient? = null
 
@@ -182,27 +169,22 @@ class FoldersConfigurations : AppCompatActivity(),
                     ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
         }
         foldersConfigurationViewBinding.switchWidgets.setOnClickListener {
-            if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
-                if (foldersConfigurationsDependencyInjection.functionsClassLegacy.floatingWidgetsPurchased()) {
-                    foldersConfigurationsDependencyInjection.functionsClassLegacy.navigateToClass(this@FoldersConfigurations, WidgetConfigurations::class.java,
-                            ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
-                } else {
 
-                    startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
-                        putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
-                        putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemFloatingWidgets)
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
+            if (foldersConfigurationsDependencyInjection.functionsClassLegacy.floatingWidgetsPurchased()) {
 
-                }
+                foldersConfigurationsDependencyInjection.functionsClassLegacy.navigateToClass(this@FoldersConfigurations, WidgetConfigurations::class.java,
+                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+
             } else {
-                if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection()) {
-                    Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
-                }
-                if (firebaseAuth.currentUser == null) {
-                    Toast.makeText(applicationContext, getString(R.string.authError), Toast.LENGTH_LONG).show()
-                }
+
+                startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
+                    putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
+                    putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemFloatingWidgets)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
+
             }
+
         }
 
         foldersConfigurationViewBinding.recoveryAction.setOnClickListener {
@@ -237,14 +219,6 @@ class FoldersConfigurations : AppCompatActivity(),
                     ActivityOptions.makeCustomAnimation(this@FoldersConfigurations, R.anim.down_up, android.R.anim.fade_out).toBundle())
 
             }, 113)
-
-            true
-        }
-        foldersConfigurationViewBinding.switchApps.setOnLongClickListener {
-
-            true
-        }
-        foldersConfigurationViewBinding.switchWidgets.setOnLongClickListener {
 
             true
         }
@@ -284,10 +258,6 @@ class FoldersConfigurations : AppCompatActivity(),
 
         foldersConfigurationViewBinding.shareIt.setImageDrawable(drawableShare)
         foldersConfigurationViewBinding.shareIt.setOnClickListener {
-
-            Firebase.analytics.logEvent("ShareIt", Bundle().apply {
-                putString("Email Address", Firebase.auth.currentUser?.email)
-            })
 
             foldersConfigurationsDependencyInjection.functionsClassLegacy.doVibrate(50)
 
@@ -385,31 +355,8 @@ class FoldersConfigurations : AppCompatActivity(),
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
 
-                        if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
+                        foldersConfigurationViewBinding.switchWidgets.performClick()
 
-                            if (foldersConfigurationsDependencyInjection.functionsClassLegacy.floatingWidgetsPurchased()) {
-
-                                foldersConfigurationsDependencyInjection.functionsClassLegacy.navigateToClass(this@FoldersConfigurations, WidgetConfigurations::class.java,
-                                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_right, R.anim.slide_to_left))
-
-                            } else {
-
-                                startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
-                                    putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
-                                    putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemFloatingWidgets)
-                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
-
-                            }
-                        } else {
-                            if (foldersConfigurationsDependencyInjection.networkCheckpoint.networkConnection()) {
-                                Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
-                            }
-
-                            if (firebaseAuth.currentUser == null) {
-                                Toast.makeText(applicationContext, getString(R.string.authError), Toast.LENGTH_LONG).show()
-                            }
-                        }
                     }
                 }
             }
@@ -467,8 +414,7 @@ class FoldersConfigurations : AppCompatActivity(),
                                 functionsClassLegacy = foldersConfigurationsDependencyInjection.functionsClassLegacy,
                                 fileIO = foldersConfigurationsDependencyInjection.fileIO,
                                 floatingServices = foldersConfigurationsDependencyInjection.floatingServices,
-                                customIcons = loadCustomIcons,
-                                firebaseAuth = firebaseAuth).apply {
+                                customIcons = loadCustomIcons).apply {
 
                             this.initializeSearchEngineData()
                         }

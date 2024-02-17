@@ -10,9 +10,7 @@
 
 package net.geekstools.floatshort.PRO.Shortcuts
 
-import android.app.Activity
 import android.app.ActivityOptions
-import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -27,36 +25,21 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.Toast
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.BillingClient
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.android.gms.auth.api.identity.SignInCredential
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.inappmessaging.FirebaseInAppMessagingClickListener
 import com.google.firebase.inappmessaging.model.Action
 import com.google.firebase.inappmessaging.model.InAppMessage
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.coroutines.CoroutineScope
@@ -102,8 +85,6 @@ import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerConstants
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.GestureListenerInterface
 import net.geekstools.floatshort.PRO.Utils.UI.Gesture.SwipeGestureListener
-import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogue
-import net.geekstools.floatshort.PRO.Utils.UI.PopupDialogue.WaitingDialogueLiveData
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.IndexedFastScrollerFactory
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.IndexedFastScroller
 import net.geekstools.floatshort.PRO.Widgets.WidgetConfigurations
@@ -145,12 +126,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
     private val firebaseRemoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
 
 
-    private lateinit var firebaseAuth: FirebaseAuth
-
-    private lateinit var waitingDialogue: Dialog
-
-    private lateinit var waitingDialogueLiveData: WaitingDialogueLiveData
-
     private val loadCustomIcons: LoadCustomIcons by lazy {
         LoadCustomIcons(applicationContext, applicationsViewPhoneDependencyInjection.functionsClassLegacy.customIconPackageName())
     }
@@ -163,14 +138,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
 
     private lateinit var hybridApplicationViewBinding: HybridApplicationViewBinding
-
-    private object Google {
-        const val SignInRequest: Int = 666
-    }
-
-    private val googleSignInClient: SignInClient by lazy {
-        Identity.getSignInClient(this@ApplicationsViewPhone)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -247,31 +214,22 @@ class ApplicationsViewPhone : AppCompatActivity(),
             }
         }
         hybridApplicationViewBinding.switchWidgets.setOnClickListener {
-            if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
 
-                if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.floatingWidgetsPurchased()) {
+            if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.floatingWidgetsPurchased()) {
 
-                    applicationsViewPhoneDependencyInjection.functionsClassLegacy.navigateToClass(this@ApplicationsViewPhone, WidgetConfigurations::class.java,
-                            ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
+                applicationsViewPhoneDependencyInjection.functionsClassLegacy.navigateToClass(this@ApplicationsViewPhone, WidgetConfigurations::class.java,
+                    ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
 
-                } else {
-
-                    startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
-                        putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
-                        putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemFloatingWidgets)
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
-
-                }
             } else {
-                if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection()) {
-                    Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
-                }
 
-                if (firebaseAuth.currentUser == null) {
-                    Toast.makeText(applicationContext, getString(R.string.authError), Toast.LENGTH_LONG).show()
-                }
+                startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
+                    putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
+                    putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemFloatingWidgets)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
+
             }
+
         }
 
         hybridApplicationViewBinding.recoveryAction.setOnClickListener {
@@ -310,19 +268,8 @@ class ApplicationsViewPhone : AppCompatActivity(),
             true
         }
 
-        hybridApplicationViewBinding.switchCategories.setOnLongClickListener {
-
-            true
-        }
-        hybridApplicationViewBinding.switchWidgets.setOnLongClickListener {
-
-            true
-        }
-
         //In-App Billing
         billingClient = PurchasesCheckpoint(this@ApplicationsViewPhone).trigger()
-
-        firebaseAuth = FirebaseAuth.getInstance()
 
         if (BuildConfig.VERSION_NAME.contains("[BETA]") && !applicationsViewPhoneDependencyInjection.preferencesIO.readPreference(".UserInformation", "SubscribeToBeta", false)) {
             FirebaseMessaging.getInstance().subscribeToTopic("BETA").addOnSuccessListener {
@@ -339,55 +286,12 @@ class ApplicationsViewPhone : AppCompatActivity(),
     override fun onStart() {
         super.onStart()
 
-        if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection()
-                && applicationsViewPhoneDependencyInjection.preferencesIO.readPreference(".UserInformation", "userEmail", null) == null) {
-
-            val googleIdTokenRequestOptions = BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                .setSupported(true)
-                .setServerClientId(getString(R.string.webClientId))
-                .setFilterByAuthorizedAccounts(false)
-                .build()
-
-            val beginSignInRequest = BeginSignInRequest.builder()
-                .setGoogleIdTokenRequestOptions(googleIdTokenRequestOptions)
-                .setAutoSelectEnabled(true)
-                .build()
-
-            googleSignInClient.beginSignIn(beginSignInRequest)
-                .addOnSuccessListener(this@ApplicationsViewPhone) { result ->
-
-                    try {
-
-                        googleSignInResult.launch(IntentSenderRequest.Builder(result.pendingIntent.intentSender).build())
-
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-
-                    }
-
-                }.addOnFailureListener(this@ApplicationsViewPhone) { e ->
-                    e.printStackTrace()
-                }
-
-            waitingDialogueLiveData = ViewModelProvider(this@ApplicationsViewPhone).get(WaitingDialogueLiveData::class.java)
-            waitingDialogueLiveData.run {
-                this.dialogueTitle.value = getString(R.string.signinTitle)
-                this.dialogueMessage.value = getString(R.string.signinMessage)
-
-                waitingDialogue = WaitingDialogue().initShow(this@ApplicationsViewPhone)
-            }
-        }
-
         val drawableShare: LayerDrawable? = getDrawable(R.drawable.draw_share) as LayerDrawable
         val backgroundShare = drawableShare!!.findDrawableByLayerId(R.id.backgroundTemporary)
         backgroundShare.setTint(PublicVariable.primaryColor)
 
         hybridApplicationViewBinding.shareIt.setImageDrawable(drawableShare)
         hybridApplicationViewBinding.shareIt.setOnClickListener {
-
-            Firebase.analytics.logEvent("ShareIt", Bundle().apply {
-                putString("Email Address", Firebase.auth.currentUser?.email)
-            })
 
             applicationsViewPhoneDependencyInjection.functionsClassLegacy.doVibrate(50)
 
@@ -526,30 +430,9 @@ class ApplicationsViewPhone : AppCompatActivity(),
             is GestureConstants.SwipeHorizontal -> {
                 when (gestureConstants.horizontalDirection) {
                     GestureListenerConstants.SWIPE_RIGHT -> {
-                        if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection() && firebaseAuth.currentUser != null) {
 
-                            if (applicationsViewPhoneDependencyInjection.functionsClassLegacy.floatingWidgetsPurchased()) {
+                        hybridApplicationViewBinding.switchWidgets.performClick()
 
-                                applicationsViewPhoneDependencyInjection.functionsClassLegacy.navigateToClass(this@ApplicationsViewPhone, WidgetConfigurations::class.java,
-                                        ActivityOptions.makeCustomAnimation(applicationContext, R.anim.slide_from_left, R.anim.slide_to_right))
-
-                            } else {
-
-                                startActivity(Intent(applicationContext, InitializeInAppBilling::class.java).apply {
-                                    putExtra(InitializeInAppBilling.Entry.PurchaseType, InitializeInAppBilling.Entry.OneTimePurchase)
-                                    putExtra(InitializeInAppBilling.Entry.ItemToPurchase, InAppBillingData.SKU.InAppItemFloatingWidgets)
-                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                }, ActivityOptions.makeCustomAnimation(applicationContext, R.anim.down_up, android.R.anim.fade_out).toBundle())
-                            }
-                        } else {
-                            if (applicationsViewPhoneDependencyInjection.networkCheckpoint.networkConnection()) {
-                                Toast.makeText(applicationContext, getString(R.string.internetError), Toast.LENGTH_LONG).show()
-                            }
-
-                            if (firebaseAuth.currentUser == null) {
-                                Toast.makeText(applicationContext, getString(R.string.authError), Toast.LENGTH_LONG).show()
-                            }
-                        }
                     }
                     GestureListenerConstants.SWIPE_LEFT -> {
                         applicationsViewPhoneDependencyInjection.functionsClassLegacy.navigateToClass(this@ApplicationsViewPhone, FoldersConfigurations::class.java,
@@ -571,51 +454,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
         } else {
             false
         }
-    }
-
-    private val googleSignInResult = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
-
-        it.data?.let { intentResult ->
-
-            when (it.resultCode) {
-                Activity.RESULT_OK -> {
-
-                    val signInCredential: SignInCredential = googleSignInClient.getSignInCredentialFromIntent(intentResult)
-
-                    val authenticationCredential: AuthCredential = GoogleAuthProvider.getCredential(signInCredential.googleIdToken, null)
-
-                    firebaseAuth.signInWithCredential(authenticationCredential)
-                        .addOnSuccessListener {
-
-                            val firebaseUser = firebaseAuth.currentUser
-
-                            if (firebaseUser != null) {
-
-                                applicationsViewPhoneDependencyInjection.preferencesIO.savePreference(".UserInformation", "userEmail", firebaseUser.email)
-
-                                applicationsViewPhoneDependencyInjection.functionsClassLegacy.Toast(getString(R.string.signinFinished), Gravity.TOP)
-
-                                applicationsViewPhoneDependencyInjection.securityFunctions.downloadLockedAppsData()
-
-                                waitingDialogue.dismiss()
-
-                            }
-
-                        }.addOnFailureListener { exception ->
-                            exception.printStackTrace()
-
-                            waitingDialogueLiveData.run {
-                                this.dialogueTitle.value = getString(R.string.error)
-                                this.dialogueMessage.value = exception.message
-                            }
-
-                        }
-
-                }
-            }
-
-        }
-
     }
 
     override fun messageClicked(inAppMessage: InAppMessage, action: Action) {
@@ -770,8 +608,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                             functionsClassLegacy = applicationsViewPhoneDependencyInjection.functionsClassLegacy,
                             fileIO = applicationsViewPhoneDependencyInjection.fileIO,
                             floatingServices = applicationsViewPhoneDependencyInjection.floatingServices,
-                            customIcons = loadCustomIcons,
-                            firebaseAuth = firebaseAuth).apply {
+                            customIcons = loadCustomIcons).apply {
 
                         this.initializeSearchEngineData()
                     }

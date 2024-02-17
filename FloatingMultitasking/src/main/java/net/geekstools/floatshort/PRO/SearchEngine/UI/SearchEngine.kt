@@ -43,7 +43,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -77,7 +76,6 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                    private val fileIO: FileIO,
                    private val floatingServices: FloatingServices,
                    private val customIcons: LoadCustomIcons?,
-                   private val firebaseAuth: FirebaseAuth,
                    private val requestFocus: Boolean = false) {
 
     private val inputMethodManager: InputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -286,7 +284,6 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
         searchEngineViewBinding.searchIcon.setOnClickListener {
 
             val bundleSearchEngineUsed = Bundle()
-            bundleSearchEngineUsed.putParcelable("USER_USED_SEARCH_ENGINE", firebaseAuth.currentUser)
             bundleSearchEngineUsed.putInt("TYPE_USED_SEARCH_ENGINE", SearchResultType.SearchFolders)
 
             val firebaseAnalytics = FirebaseAnalytics.getInstance(context)

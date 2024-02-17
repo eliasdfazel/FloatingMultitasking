@@ -278,7 +278,6 @@ class FunctionsClassWidgets (private val context: Context) {
                         if (functionsClassLegacy.securityServicesSubscribed()) {
 
                             securityFunctions.doLockApps(packageName + providerClassName)
-                            securityFunctions.uploadLockedAppsData()
 
                         } else {
 

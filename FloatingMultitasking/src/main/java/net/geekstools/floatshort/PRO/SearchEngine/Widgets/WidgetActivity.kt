@@ -13,8 +13,6 @@ package net.geekstools.floatshort.PRO.SearchEngine.Widgets
 import android.os.Bundle
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.SearchEngine.Widgets.Extensions.setupWidgetActivityUserInterface
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
@@ -60,7 +58,6 @@ class WidgetActivity : AppCompatActivity() {
                 fileIO = FileIO(applicationContext),
                 floatingServices = FloatingServices(applicationContext),
                 customIcons = loadCustomIcons,
-                firebaseAuth = Firebase.auth,
                 requestFocus = true).apply {
 
             initializeSearchEngineData()

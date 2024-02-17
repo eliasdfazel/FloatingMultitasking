@@ -2382,7 +2382,6 @@ public class FunctionsClassLegacy {
 
                                 securityFunctions.doUnlockApps(PackageName);
 
-                                securityFunctions.uploadLockedAppsData();
                             }
                         };
 
@@ -2396,7 +2395,6 @@ public class FunctionsClassLegacy {
                         if (securityServicesSubscribed()) {
                             securityFunctions.doLockApps(PackageName);
 
-                            securityFunctions.uploadLockedAppsData();
                         } else {
 
                             context.startActivity(new Intent(context, InitializeInAppBilling.class)
@@ -2570,7 +2568,6 @@ public class FunctionsClassLegacy {
                                     }
 
                                     securityFunctions.doUnlockApps(folderName);
-                                    securityFunctions.uploadLockedAppsData();
                                 }
                             }
                         };
@@ -2592,7 +2589,6 @@ public class FunctionsClassLegacy {
                                     securityFunctions.doLockApps(packageName);
                                 }
 
-                                securityFunctions.uploadLockedAppsData();
                             }
                         } else {
 

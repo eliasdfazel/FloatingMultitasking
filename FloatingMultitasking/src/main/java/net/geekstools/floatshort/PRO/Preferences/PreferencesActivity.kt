@@ -24,8 +24,6 @@ import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import net.geekstools.floatshort.PRO.BuildConfig
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.ApplicationThemeController
@@ -134,27 +132,6 @@ class PreferencesActivity : AppCompatActivity() {
         preferencesActivityViewBinding.facebookIcon.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_facebook_app)))
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-        }
-
-        preferencesActivityViewBinding.deleteAccount.setOnClickListener {
-
-            Firebase.auth.currentUser?.delete()?.addOnSuccessListener {
-
-                preferencesActivityViewBinding.deleteAccount.visibility = View.INVISIBLE
-
-            }
-
-        }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        Firebase.auth.currentUser?.let {
-
-            preferencesActivityViewBinding.deleteAccount.visibility = View.VISIBLE
-
         }
 
     }
