@@ -43,9 +43,7 @@ import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToItemTitle
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToRemoteConfigDescriptionKey
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToRemoteConfigPriceInformation
-import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToRemoteConfigScreenshotNumberKey
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToStorageScreenshotsDirectory
-import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToStorageScreenshotsFileName
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.InitializeInAppBilling
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.InAppBillingData
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Items.SubscriptionPurchase.Extensions.setScreenshots
@@ -236,44 +234,49 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
                                                 (inAppBillingSubscriptionPurchaseViewBinding
                                                         .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigPriceInformation())
 
-                                                screenshotsNumber = firebaseRemoteConfig.getLong(productsDetailsListInApp.first().productId.convertToRemoteConfigScreenshotNumberKey()).toInt()
+                                                val firebaseStorage = FirebaseStorage.getInstance()
+                                                    .reference
+                                                    .child("FloatingMultitasking/Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}/")
+                                                    .listAll().addOnSuccessListener { itemsStorageReference ->
 
-                                                for (i in 1..screenshotsNumber) {
-                                                    val firebaseStorage = FirebaseStorage.getInstance()
-                                                    val firebaseStorageReference = firebaseStorage.reference
-                                                    val storageReference = firebaseStorageReference
-                                                            .child("FloatingMultitasking/Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsFileName(i)}")
-                                                    storageReference.downloadUrl.addOnSuccessListener { screenshotLink ->
+                                                        screenshotsNumber = itemsStorageReference.items.size
 
-                                                        requestManager
-                                                                .load(screenshotLink)
-                                                                .diskCacheStrategy(DiskCacheStrategy.DATA)
-                                                                .addListener(object : RequestListener<Drawable> {
-                                                                    override fun onLoadFailed(glideException: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                                        itemsStorageReference.items.forEachIndexed { index, storageReference ->
 
-                                                                        return false
-                                                                    }
+                                                            storageReference.downloadUrl.addOnSuccessListener { screenshotLink ->
 
-                                                                    override fun onResourceReady(resource: Drawable, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                                                                        glideLoadCounter++
+                                                                requestManager
+                                                                    .load(screenshotLink)
+                                                                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                                                                    .addListener(object : RequestListener<Drawable> {
+                                                                        override fun onLoadFailed(glideException: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
 
-                                                                        val beforeToken: String = screenshotLink.toString().split("?alt=media&token=")[0]
-                                                                        val drawableIndex = beforeToken[beforeToken.length - 5].toString().toInt()
-
-                                                                        mapIndexDrawable[drawableIndex] = resource
-                                                                        mapIndexURI[drawableIndex] = screenshotLink
-
-                                                                        if (glideLoadCounter == screenshotsNumber) {
-
-                                                                            setScreenshots()
+                                                                            return false
                                                                         }
 
-                                                                        return false
-                                                                    }
+                                                                        override fun onResourceReady(resource: Drawable, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                                                                            glideLoadCounter++
 
-                                                                }).submit()
+                                                                            val beforeToken: String = screenshotLink.toString().split("?alt=media&token=")[0]
+                                                                            val drawableIndex = beforeToken[beforeToken.length - 5].toString().toInt()
+
+                                                                            mapIndexDrawable[drawableIndex] = resource
+                                                                            mapIndexURI[drawableIndex] = screenshotLink
+
+                                                                            if (glideLoadCounter == screenshotsNumber) {
+
+                                                                                setScreenshots()
+                                                                            }
+
+                                                                            return false
+                                                                        }
+
+                                                                    }).submit()
+                                                            }
+
+                                                        }
+
                                                     }
-                                                }
 
                                             }.addOnFailureListener {
 

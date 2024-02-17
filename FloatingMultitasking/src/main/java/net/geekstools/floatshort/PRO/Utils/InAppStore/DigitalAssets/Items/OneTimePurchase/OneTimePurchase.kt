@@ -233,8 +233,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                                                 .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigPriceInformation())
 
                                         val firebaseStorage = FirebaseStorage.getInstance()
-                                        val firebaseStorageReference = firebaseStorage.reference
-                                        firebaseStorageReference
+                                            .reference
                                                 .child("FloatingMultitasking/Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}/")
                                                 .listAll()
                                                 .addOnSuccessListener { itemsStorageReference ->
