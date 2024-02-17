@@ -38,7 +38,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.storage.FirebaseStorage
-import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToItemTitle
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToRemoteConfigDescriptionKey
@@ -201,21 +200,7 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
 
                                         if (listOfItems[0] == queriedProduct) {
 
-                                            inAppBillingSubscriptionPurchaseViewBinding.itemTitleView.visibility = View.GONE
-                                            inAppBillingSubscriptionPurchaseViewBinding.itemDescriptionView.text =
-                                                    Html.fromHtml("<br/>" +
-                                                            "<big>${productsDetailsListInApp[0].title}</big>" +
-                                                            "<br/>" +
-                                                            "<br/>" +
-                                                            productsDetailsListInApp[0].description +
-                                                            "<br/>", Html.FROM_HTML_MODE_COMPACT)
-
-                                            (inAppBillingSubscriptionPurchaseViewBinding
-                                                    .centerPurchaseButton.root as MaterialButton).text = getString(R.string.donate)
-                                            (inAppBillingSubscriptionPurchaseViewBinding
-                                                    .bottomPurchaseButton.root as MaterialButton).visibility = View.INVISIBLE
-
-                                            inAppBillingSubscriptionPurchaseViewBinding.itemScreenshotsView.visibility = View.GONE
+                                            requireActivity().finish()
 
                                         } else {
 
@@ -233,9 +218,12 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
                                                 (inAppBillingSubscriptionPurchaseViewBinding
                                                         .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigPriceInformation())
 
-                                                val firebaseStorage = FirebaseStorage.getInstance()
+                                                val storagePath = "/FloatingMultitasking/Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}"
+                                                Log.d(this@SubscriptionPurchase.javaClass.simpleName, "Storage Path: ${storagePath}")
+
+                                                FirebaseStorage.getInstance()
                                                     .reference
-                                                    .child("FloatingMultitasking/Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}/")
+                                                    .child(storagePath)
                                                     .listAll().addOnSuccessListener { itemsStorageReference ->
 
                                                         screenshotsNumber = itemsStorageReference.items.size

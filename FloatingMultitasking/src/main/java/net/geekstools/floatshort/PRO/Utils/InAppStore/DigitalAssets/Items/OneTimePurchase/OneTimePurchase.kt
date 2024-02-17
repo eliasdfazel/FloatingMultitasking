@@ -198,7 +198,6 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                                     .build()
 
                                 if (itemToPurchase == queriedProduct || productsDetailsListInApp.first().productId == InAppBillingData.SKU.InAppItemDonation) {
-                                    println(">>>>>>>>>>>000000000000")
 
                                     (inAppBillingOneTimePurchaseViewBinding
                                         .centerPurchaseButton.root as MaterialButton).text = getString(R.string.donate)
@@ -227,9 +226,12 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                                         (inAppBillingOneTimePurchaseViewBinding
                                             .bottomPurchaseButton.root as MaterialButton).text = firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigPriceInformation())
 
-                                        val firebaseStorage = FirebaseStorage.getInstance()
+                                        val storagePath = "/FloatingMultitasking/Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}"
+                                        Log.d(this@OneTimePurchase.javaClass.simpleName, "Storage Path: ${storagePath}")
+
+                                        FirebaseStorage.getInstance()
                                             .reference
-                                            .child("FloatingMultitasking/Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}/")
+                                            .child(storagePath)
                                             .listAll()
                                             .addOnSuccessListener { itemsStorageReference ->
 
@@ -249,6 +251,7 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                                                                 }
 
                                                                 override fun onResourceReady(resource: Drawable, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+
                                                                     glideLoadCounter++
 
                                                                     val beforeToken: String = screenshotLink.toString().split("?alt=media&token=")[0]
