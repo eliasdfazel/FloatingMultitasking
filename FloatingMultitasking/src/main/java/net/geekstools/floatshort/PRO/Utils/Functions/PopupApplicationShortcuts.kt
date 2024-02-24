@@ -59,7 +59,7 @@ class PopupApplicationShortcuts (private val context: Context) {
                             intent.action = "Float_It"
                             intent.addCategory(Intent.CATEGORY_DEFAULT)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.putExtra("packageName", appShortcuts[i])
+                            intent.putExtra("PackageName", appShortcuts[i])
                             val shortcutInfo = ShortcutInfo.Builder(context, appShortcuts[i])
                                 .setShortLabel(installedApplicationInformation.applicatioName(appShortcuts[i]))
                                 .setLongLabel(installedApplicationInformation.applicatioName(appShortcuts[i]))
@@ -87,7 +87,7 @@ class PopupApplicationShortcuts (private val context: Context) {
                             intent.action = "Float_It"
                             intent.addCategory(Intent.CATEGORY_DEFAULT)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.putExtra("packageName", appShortcuts[i])
+                            intent.putExtra("PackageName", appShortcuts[i])
                             val shortcutInfo = ShortcutInfo.Builder(context, appShortcuts[i])
                                     .setShortLabel(installedApplicationInformation.applicatioName(appShortcuts[i]))
                                     .setLongLabel(installedApplicationInformation.applicatioName(appShortcuts[i])) //.setIcon(Icon.createWithBitmap(appIconBitmap(appShortcuts.get(i))))

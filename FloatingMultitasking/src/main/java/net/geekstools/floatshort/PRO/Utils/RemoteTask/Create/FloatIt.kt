@@ -43,21 +43,9 @@ class FloatIt : AppCompatActivity() {
         PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), resources.displayMetrics).toInt()
 
-        val aPackageName = try {
-            intent.getStringExtra("PackageName")!!
-        } catch (e: NullPointerException) {
-            intent.getStringExtra("packageName")!!
-        }
+        val aPackageName = intent.getStringExtra("PackageName")!!
 
-        val aClassName = try {
-            intent.getStringExtra("ClassName")!!
-        } catch (e: NullPointerException) {
-            try {
-                intent.getStringExtra("PackageName")!!
-            } catch (e: NullPointerException) {
-                intent.getStringExtra("packageName")!!
-            }
-        }
+        val aClassName = intent.getStringExtra("ClassName")
 
         val sharedPreferencesPosition = getSharedPreferences(aClassName, Context.MODE_PRIVATE)
 
@@ -76,7 +64,7 @@ class FloatIt : AppCompatActivity() {
         this@FloatIt.finish()
     }
 
-    private fun openingCheckpoint(aPackageName: String, aClassName: String, xPosition: Int, yPosition: Int) {
+    private fun openingCheckpoint(aPackageName: String, aClassName: String?, xPosition: Int, yPosition: Int) {
 
         if (securityFunctions.isAppLocked(aPackageName)) {
 
@@ -84,7 +72,7 @@ class FloatIt : AppCompatActivity() {
 
         } else {
 
-            if (aPackageName == aClassName) {
+            if (aClassName == null) {
 
                 FloatingServices(applicationContext)
                     .runUnlimitedShortcutsServicePackage(aPackageName)
