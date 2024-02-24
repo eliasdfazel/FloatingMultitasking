@@ -52,6 +52,7 @@ import androidx.preference.SwitchPreference
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -789,20 +790,10 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             firebaseRemoteConfig.activate().addOnSuccessListener {
 
                 if (!this@PreferencesFragment.isRemoving) {
-                    if (firebaseRemoteConfig.getLong(functionsClassLegacy.versionCodeRemoteConfigKey()) > functionsClassLegacy.applicationVersionCode(requireContext().packageName)) {
-                        functionsClassLegacy.upcomingChangeLog(
-                                requireActivity(),
-                                firebaseRemoteConfig.getString(functionsClassLegacy.upcomingChangeLogRemoteConfigKey()), firebaseRemoteConfig.getLong(functionsClassLegacy.versionCodeRemoteConfigKey()).toString())
-                    }
-
-                    if (firebaseRemoteConfig.getLong(getString(R.string.BETAintegerVersionCodeNewUpdatePhone)) > functionsClassLegacy.applicationVersionCode(requireContext().packageName)) {
-                        whatsnew.summary = getString(R.string.betaUpdateAvailable)
-                        betaChangeLog = firebaseRemoteConfig.getString(getString(R.string.BETAstringUpcomingChangeLogPhone))
-                        betaVersionCode = firebaseRemoteConfig.getString(getString(R.string.BETAintegerVersionCodeNewUpdatePhone))
-                    }
 
                     Glide.with(requireContext())
                         .load(firebaseRemoteConfig.getString(getString(R.string.adAppIconLink)))
+                        .transform(RoundedCorners(functionsClassLegacy.DpToInteger(99)))
                         .addListener(object : RequestListener<Drawable?> {
                             override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
 
