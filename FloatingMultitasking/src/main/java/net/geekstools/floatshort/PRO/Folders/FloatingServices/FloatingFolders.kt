@@ -477,7 +477,7 @@ class FloatingFolders : Service() {
                                 }
                             }
 
-                            handlerPressHold.postDelayed(runnablePressHold, functionsClassLegacy.readDefaultPreference("delayPressHold", 333).toLong())
+                            handlerPressHold.postDelayed(runnablePressHold, functionsClassLegacy.readDefaultPreference("delayPressHold", 555).toLong())
 
                         }
                         MotionEvent.ACTION_UP -> {

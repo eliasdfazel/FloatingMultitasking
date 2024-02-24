@@ -421,10 +421,10 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                             controlIcons[startId].setImageDrawable(null)
                                         }
                                     }
-                                    getBackHandler.postDelayed(getBackRunnable, 3333 + functionsClassLegacy.readDefaultPreference("delayPressHold", 333).toLong())
+                                    getBackHandler.postDelayed(getBackRunnable, 3333 + functionsClassLegacy.readDefaultPreference("delayPressHold", 555).toLong())
                                 }
                             }
-                            delayHandler.postDelayed(delayRunnable, 3333 + functionsClassLegacy.readDefaultPreference("delayPressHold", 333).toLong())
+                            delayHandler.postDelayed(delayRunnable, 3333 + functionsClassLegacy.readDefaultPreference("delayPressHold", 555).toLong())
 
                             runnablePressHold = Runnable {
                                 if (touchingDelay[startId]) {
@@ -440,7 +440,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                 }
                             }
 
-                            handlerPressHold.postDelayed(runnablePressHold, functionsClassLegacy.readDefaultPreference("delayPressHold", 333).toLong())
+                            handlerPressHold.postDelayed(runnablePressHold, functionsClassLegacy.readDefaultPreference("delayPressHold", 555).toLong())
                         }
                         MotionEvent.ACTION_UP -> {
                             touchingDelay[startId] = false

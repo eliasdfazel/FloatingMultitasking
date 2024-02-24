@@ -11,6 +11,7 @@
 package net.geekstools.floatshort.PRO.Preferences
 
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.ActivityOptions
 import android.app.AlertDialog
@@ -195,7 +196,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             themeColor.summary = getString(R.string.dynamic)
         }
 
-        delayPressHold.summary = functionsClassLegacy.readDefaultPreference("delayPressHold", 333).toString() + " " + getString(R.string.millis)
+        delayPressHold.summary = functionsClassLegacy.readDefaultPreference("delayPressHold", 555).toString() + " " + getString(R.string.millis)
 
         stable.setOnPreferenceClickListener {
             if (sharedPreferences.getBoolean("stable", true)) {
@@ -285,6 +286,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onStart() {
         super.onStart()
 
@@ -674,7 +676,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             seekBarPreferences.progressTintMode = PorterDuff.Mode.SRC_IN
 
             seekBarPreferences.max = 1000
-            seekBarPreferences.progress = functionsClassLegacy.readDefaultPreference("delayPressHoldProgress", 0)
+            seekBarPreferences.progress = functionsClassLegacy.readDefaultPreference("delayPressHold", 555)
 
             var layerDrawableLoadLogo: Drawable?
             try {
@@ -699,6 +701,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             delayIcon.setOnClickListener { }
             delayIcon.onFocusChangeListener = OnFocusChangeListener { view, hasFocus -> }
             delayIcon.setOnTouchListener { view, motionEvent ->
+
                 when (motionEvent.action) {
                     MotionEvent.ACTION_DOWN -> {
                         touchingDelay = true
@@ -706,12 +709,11 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                             if (touchingDelay) {
                                 val vibrator = requireContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                                 vibrator.vibrate(333)
-                                /*
-                                                                         *
-                                                                         */PrintDebug("*** millis delay ::: " + functionsClassLegacy.readDefaultPreference("delayPressHold", 333))
+
+                                PrintDebug("*** millis delay ::: " + functionsClassLegacy.readDefaultPreference("delayPressHold", 555))
                             }
                         }
-                        handlerPressHold.postDelayed(runnablePressHold, functionsClassLegacy.readDefaultPreference("delayPressHold", 333).toLong())
+                        handlerPressHold.postDelayed(runnablePressHold, functionsClassLegacy.readDefaultPreference("delayPressHold", 555).toLong())
                     }
                     MotionEvent.ACTION_UP -> {
                         touchingDelay = false
@@ -734,13 +736,13 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             })
 
             revertDefault.setOnClickListener {
-                functionsClassLegacy.saveDefaultPreference("delayPressHold", 333)
+                functionsClassLegacy.saveDefaultPreference("delayPressHold", 555)
                 functionsClassLegacy.saveDefaultPreference("delayPressHoldProgress", 0)
                 seekBarPreferences.progress = 0
             }
 
             dialog.setOnDismissListener {
-                delayPressHold.summary = functionsClassLegacy.readDefaultPreference("delayPressHold", 333).toString() + " " + getString(R.string.millis)
+                delayPressHold.summary = functionsClassLegacy.readDefaultPreference("delayPressHold", 555).toString() + " " + getString(R.string.millis)
                 PublicVariable.forceReload = false
                 dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             }
