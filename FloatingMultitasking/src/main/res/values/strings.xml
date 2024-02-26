@@ -160,9 +160,9 @@
         ]]>
     </string>
     <string name="floatingHint">Shortcuts</string>
-    <string name="recover_apps">Recover Floating Shortcuts</string>
-    <string name="recover_folder">Recover Floating Folders</string>
-    <string name="recover_widgets">Recover Floating Widgets</string>
+    <string name="recover_apps">Floating Shortcuts</string>
+    <string name="recover_folder">Floating Folders</string>
+    <string name="recover_widgets">Floating Widgets</string>
     <string name="reallocatingWidgets"> 🔁 Reconfiguring… </string>
     <string name="reconfiguringWidgets"> Reconfiguring… </string>
     <string name="folderDescription">Enter A Name</string>
