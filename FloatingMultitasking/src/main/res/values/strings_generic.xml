@@ -85,16 +85,6 @@
     <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="privacyPolicy" translatable="false">https://GeeksEmpire.co/PrivacyPolicy</string>
 
-    <string name="integerVersionCodeNewUpdatePhone" translatable="false">integer_version_code_new_update_phone</string>
-    <string name="stringVersionNameNewUpdatePhone" translatable="false">string_version_name_new_update_phone</string>
-    <string name="stringUpcomingChangeLogPhone" translatable="false">string_upcoming_change_log_phone</string>
-    <string name="stringUpcomingChangeLogSummaryPhone" translatable="false">string_upcoming_change_log_summary_phone</string>
-
-    <string name="BETAintegerVersionCodeNewUpdatePhone" translatable="false">beta_integer_version_code_new_update_phone</string>
-    <string name="BETAstringVersionNameNewUpdatePhone" translatable="false">beta_string_version_name_new_update_phone</string>
-    <string name="BETAstringUpcomingChangeLogPhone" translatable="false">beta_string_upcoming_change_log_phone</string>
-    <string name="BETAstringUpcomingChangeLogSummaryPhone" translatable="false">beta_string_upcoming_change_log_summary_phone</string>
-
     <string name="adAppTitle" translatable="false">ad_title</string>
     <string name="adAppSummaries" translatable="false">ad_summaries</string>
     <string name="adAppLink" translatable="false">ad_link</string>
