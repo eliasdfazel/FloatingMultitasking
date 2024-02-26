@@ -201,18 +201,6 @@
         android:scaleType="fitCenter"
         android:src="@drawable/draw_share" />
 
-    <ImageView
-        android:id="@+id/newUpdate"
-        android:layout_width="41dp"
-        android:layout_height="41dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="11dp"
-        android:layout_marginStart="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_update"
-        android:visibility="invisible" />
-
     <!-- Search Engine -->
     <include
         layout="@layout/search_engine_view"

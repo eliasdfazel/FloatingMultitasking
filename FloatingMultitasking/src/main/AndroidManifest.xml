@@ -311,7 +311,7 @@
         <activity-alias
             android:name=".Alias.FoldersConfigurations"
             android:enabled="false"
-            android:icon="@drawable/alias_categories"
+            android:icon="@drawable/alias_categories_recovery"
             android:label="@string/floatingFolders"
             android:exported="true"
             android:targetActivity=".Folders.FoldersConfigurations">

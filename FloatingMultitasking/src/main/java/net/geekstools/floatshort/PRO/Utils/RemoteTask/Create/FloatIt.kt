@@ -20,25 +20,17 @@ import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class FloatIt : AppCompatActivity() {
 
-    val functionsClassLegacy by lazy {
-        FunctionsClassLegacy(applicationContext)
-    }
-
-    val preferencesIO: PreferencesIO by lazy {
-        PreferencesIO(applicationContext)
-    }
-
-    val securityFunctions by lazy {
-        SecurityFunctions(applicationContext)
-    }
-
-    val openActions by lazy {
-        OpenActions(applicationContext, functionsClassLegacy)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(this@FloatIt.javaClass.simpleName, "Extended Float It")
+
+        val functionsClassLegacy = FunctionsClassLegacy(applicationContext)
+
+        val preferencesIO = PreferencesIO(applicationContext)
+
+        val securityFunctions = SecurityFunctions(applicationContext)
+
+        val openActions = OpenActions(applicationContext, functionsClassLegacy)
 
         PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), resources.displayMetrics).toInt()
@@ -53,7 +45,8 @@ class FloatIt : AppCompatActivity() {
         val yPosition = sharedPreferencesPosition.getInt("Y", 137)
 
         Log.d(this@FloatIt.javaClass.simpleName, "Extended Float It: ${functionsClassLegacy.FreeForm()}")
-        openingCheckpoint(aPackageName, aClassName, xPosition, yPosition)
+        openingCheckpoint(functionsClassLegacy, securityFunctions, openActions,
+            aPackageName, aClassName, xPosition, yPosition)
 
         if (!functionsClassLegacy.FreeForm()) {
 
@@ -64,11 +57,12 @@ class FloatIt : AppCompatActivity() {
         this@FloatIt.finish()
     }
 
-    private fun openingCheckpoint(aPackageName: String, aClassName: String?, xPosition: Int, yPosition: Int) {
+    private fun openingCheckpoint(functionsClassLegacy: FunctionsClassLegacy, securityFunctions: SecurityFunctions, openActions: OpenActions,
+        aPackageName: String, aClassName: String?, xPosition: Int, yPosition: Int) {
 
         if (securityFunctions.isAppLocked(aPackageName)) {
 
-            invokeSecurityServices()
+            invokeSecurityServices(functionsClassLegacy, openActions)
 
         } else {
 
@@ -92,7 +86,7 @@ class FloatIt : AppCompatActivity() {
 
     }
 
-    private fun invokeSecurityServices() {
+    private fun invokeSecurityServices(functionsClassLegacy: FunctionsClassLegacy, openActions: OpenActions) {
 
         val aPackageName = try {
             intent.getStringExtra("PackageName")!!

@@ -803,47 +803,6 @@ public class FunctionsClassLegacy {
         });
         alertDialog.show();
     }
-    public void upcomingChangeLog(Activity activity, String updateInfo, String versionCode) {
-        AlertDialog.Builder alertDialog = null;
-        if (PublicVariable.themeLightDark == true) {
-            alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Light);
-        } else if (PublicVariable.themeLightDark == false) {
-            alertDialog = new AlertDialog.Builder(activity, R.style.GeeksEmpire_Dialogue_Dark);
-        }
-        alertDialog.setTitle(Html.fromHtml("<small>" + context.getString(R.string.whatsnew) + " | " + versionCode + "</small>", Html.FROM_HTML_MODE_COMPACT));
-        alertDialog.setMessage(Html.fromHtml(updateInfo, Html.FROM_HTML_MODE_COMPACT));
-
-        LayerDrawable layerDrawableNewUpdate = (LayerDrawable) context.getDrawable(R.drawable.ic_update);
-        BitmapDrawable gradientDrawableNewUpdate = (BitmapDrawable) layerDrawableNewUpdate.findDrawableByLayerId(R.id.ic_launcher_back_layer);
-        gradientDrawableNewUpdate.setTint(PublicVariable.primaryColor);
-
-        alertDialog.setIcon(layerDrawableNewUpdate);
-        alertDialog.setCancelable(true);
-        alertDialog.setPositiveButton(context.getString(R.string.followIt), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_facebook_app)))
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-            }
-        });
-        alertDialog.setNeutralButton(context.getString(R.string.newUpdate), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                dialog.dismiss();
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.play_store_link) + context.getPackageName()))
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                Toast(context.getString(R.string.rateReview), Gravity.BOTTOM);
-            }
-        });
-        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                dialog.dismiss();
-            }
-        });
-        alertDialog.show();
-    }
-
     public void ContactSupport(final Activity activity) {
 
         Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.link_contacts)));
