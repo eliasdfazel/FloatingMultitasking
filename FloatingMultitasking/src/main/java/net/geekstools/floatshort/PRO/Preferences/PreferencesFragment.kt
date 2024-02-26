@@ -679,17 +679,22 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             seekBarPreferences.max = 1000
             seekBarPreferences.progress = functionsClassLegacy.readDefaultPreference("delayPressHold", 555)
 
-            var layerDrawableLoadLogo: Drawable?
-            try {
+            val layerDrawableLoadLogo: Drawable? = try {
                 val backgroundDot = functionsClassLegacy.shapesDrawables().mutate()
                 backgroundDot.setTint(PublicVariable.primaryColorOpposite)
-                layerDrawableLoadLogo = LayerDrawable(arrayOf(
+
+                LayerDrawable(arrayOf(
                         backgroundDot,
                         requireContext().getDrawable(R.drawable.ic_launcher_dots)
                 ))
+
+                layerDrawableLoadLogo
+
             } catch (e: java.lang.NullPointerException) {
                 e.printStackTrace()
-                layerDrawableLoadLogo = requireContext().getDrawable(R.drawable.ic_launcher)
+
+                requireContext().getDrawable(R.drawable.ic_launcher)
+
             }
 
 
@@ -739,7 +744,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             revertDefault.setOnClickListener {
                 functionsClassLegacy.saveDefaultPreference("delayPressHold", 555)
                 functionsClassLegacy.saveDefaultPreference("delayPressHoldProgress", 0)
-                seekBarPreferences.progress = 0
+                seekBarPreferences.progress = 555
             }
 
             dialog.setOnDismissListener {
