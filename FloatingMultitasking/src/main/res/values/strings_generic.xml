@@ -34,17 +34,7 @@
         Multitasking By Opening All Apps In Floating Windows From Floating Shortcuts - By @GeeksEmpire https://www.youtube.com/watch?v=2y0YII8WRs4
     </string>
 
-    <string name="buy" translatable="false">Purchase</string>
-    <string name="free" translatable="false">Free Edition</string>
-    <string name="contact" translatable="false">Contact me</string>
 
-    <string name="license" translatable="false">LICENSE</string>
-    <string name="error" translatable="false">Error Occurred</string>
-    <string name="internetError" translatable="false">⚠ Internet Connection Problem ⚠</string>
-    <string name="authError" translatable="false">⚠ Authentication Required | Enable Internet &amp; Reopen ⚠</string>
-
-    <string name="betaUpdateAvailable" translatable="false">Update Available in βeta Stage</string>
-    <string name="betaUpdate" translatable="false">βeta Change Log</string>
 
     <string name="whatsnew" translatable="false">What\'s New…</string>
     <string name="changelog" translatable="false">
@@ -66,12 +56,8 @@
 
     <string name="followIt" translatable="false">Follow Us</string>
     <string name="shareIt" translatable="false">Share</string>
-    <string name="newUpdate" translatable="false">Install Update</string>
-    <string name="updateAvailable" translatable="false">New Update Available | Click Here to Install…!</string>
-    <string name="inAppUpdateAvailable" translatable="false">Loading New Update | Version </string>
 
     <string name="share" translatable="false">Share With Friends</string>
-    <string name="facebook" translatable="false">Like Me on…</string>
     <string name="rate" translatable="false">Rate Me Five Star</string>
     <string name="rateReview" translatable="false">Please Rate &amp; Write Review</string>
     <string name="supportEmail" translatable="false">Support@GeeksEmpire.co</string>
