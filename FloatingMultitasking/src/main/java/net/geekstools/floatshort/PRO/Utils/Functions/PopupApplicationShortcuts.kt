@@ -14,16 +14,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
-import android.graphics.drawable.LayerDrawable
 import android.os.Build
-import androidx.preference.PreferenceManager
-import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.FloatIt
 
 class PopupApplicationShortcuts (private val context: Context) {
@@ -76,8 +68,8 @@ class PopupApplicationShortcuts (private val context: Context) {
             } else if (context.getFileStreamPath(".uFile").exists()) {
                 if (fileIO.fileLinesCounter(".uFile") > 0) {
                     val appShortcuts = (fileIO.readFileLinesAsArray(".uFile"))
-                    var countAppShortcut = 4
-                    if (fileIO.fileLinesCounter(".uFile") < 4) {
+                    var countAppShortcut = 5
+                    if (fileIO.fileLinesCounter(".uFile") < 5) {
                         countAppShortcut = fileIO.fileLinesCounter(".uFile")
                     }
                     for (i in 0 until countAppShortcut) {
@@ -101,54 +93,6 @@ class PopupApplicationShortcuts (private val context: Context) {
 
                     }
                 }
-            }
-
-            try {
-                var dynamicLabel: String? = null
-                if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1") == "0") {
-                    shortcutManager.addDynamicShortcuts(shortcutsInfo)
-                    return
-                } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1") == "1") {
-                    intent.action = "Remote_Recover_Shortcuts"
-                    dynamicLabel = context.getString(R.string.shortcuts)
-                } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1") == "2") {
-                    intent.action = "Remote_Recover_Categories"
-                    dynamicLabel = context.getString(R.string.floatingFolders)
-                } else if (PreferenceManager.getDefaultSharedPreferences(context).getString("boot", "1") == "3") {
-                    intent.action = "Remote_Recover_All"
-                    dynamicLabel = context.getString(R.string.recover_all)
-                }
-                intent.addCategory(Intent.CATEGORY_DEFAULT)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                val drawCategory = context.getDrawable(R.drawable.draw_recovery_popup) as LayerDrawable
-                var shapeTempDrawable = bitmapExtractor.shapesDrawables()
-                if (shapeTempDrawable != null) {
-                    val frontDrawable: Drawable? = context.getDrawable(R.drawable.w_recovery_popup)?.mutate()
-                    frontDrawable?.setTint(Color.WHITE)
-                    shapeTempDrawable.setTint(PublicVariable.primaryColor)
-                    drawCategory.setDrawableByLayerId(R.id.backgroundTemporary, shapeTempDrawable)
-                    drawCategory.setDrawableByLayerId(R.id.fronttemp, frontDrawable)
-                } else {
-                    shapeTempDrawable = ColorDrawable(Color.TRANSPARENT)
-                    val frontDrawable: Drawable? = context.getDrawable(R.drawable.w_recovery_popup)?.mutate()
-                    frontDrawable?.setTint(context.getColor(R.color.default_color))
-                    shapeTempDrawable.setTint(PublicVariable.primaryColor)
-                    drawCategory.setDrawableByLayerId(R.id.backgroundTemporary, shapeTempDrawable)
-                    drawCategory.setDrawableByLayerId(R.id.fronttemp, frontDrawable)
-                }
-                val recoveryBitmap = Bitmap.createBitmap(drawCategory.intrinsicWidth, drawCategory.intrinsicHeight, Bitmap.Config.ARGB_8888)
-                drawCategory.setBounds(0, 0, drawCategory.intrinsicWidth, drawCategory.intrinsicHeight)
-                drawCategory.draw(Canvas(recoveryBitmap))
-                val shortcutInfo = ShortcutInfo.Builder(context, dynamicLabel)
-                        .setShortLabel(dynamicLabel!!)
-                        .setLongLabel(dynamicLabel)
-                        .setIcon(Icon.createWithBitmap(recoveryBitmap))
-                        .setIntent(intent)
-                        .setRank(5)
-                        .build()
-                shortcutsInfo.add(shortcutInfo)
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
 
             shortcutManager.addDynamicShortcuts(shortcutsInfo)

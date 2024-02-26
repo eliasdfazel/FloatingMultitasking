@@ -154,68 +154,8 @@
             android:supportsPictureInPicture="true"
             android:theme="@android:style/Theme.Material.Wallpaper.NoTitleBar"/>
         <activity
-            android:name=".Utils.RemoteTask.Create.RecoveryAllActivity"
-            android:exported="true"
-            android:icon="@drawable/draw_recovery"
-            android:label="@string/recover_all"
-            android:noHistory="true"
-            android:excludeFromRecents="true"
-            android:theme="@style/Transparent">
-            <intent-filter>
-                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
-                <action android:name="Remote_Recover_All"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".Utils.RemoteTask.Remove.RemoveAllActivity"
             android:exported="true">
-        </activity>
-        <activity
-            android:name=".Utils.RemoteTask.Create.RecoveryShortcutsActivity"
-            android:exported="true"
-            android:icon="@drawable/draw_widget_shortcuts"
-            android:label="@string/shortcuts"
-            android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:theme="@style/Transparent">
-            <intent-filter>
-                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
-                <action android:name="Remote_Recover_Shortcuts"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Utils.RemoteTask.Create.RecoveryFoldersActivity"
-            android:exported="true"
-            android:icon="@drawable/draw_widget_folders"
-            android:excludeFromRecents="true"
-            android:label="@string/floatingFolders"
-            android:noHistory="true"
-            android:theme="@style/Transparent">
-            <intent-filter>
-                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
-                <action android:name="Remote_Recover_Categories"/>
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Utils.RemoteTask.Create.RecoveryWidgetActivity"
-            android:exported="true"
-            android:icon="@drawable/draw_widget_widgets"
-            android:excludeFromRecents="true"
-            android:label="@string/floatingWidget"
-            android:noHistory="true"
-            android:theme="@style/Transparent">
-            <intent-filter>
-                <action android:name="android.intent.action.CREATE_SHORTCUT" />
-                <action android:name="Remote_Recover_Widgets" />
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".Widgets.WidgetsReallocationProcess"
@@ -307,59 +247,6 @@
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/SearchEngineWidget"/>
-
-        <activity-alias
-            android:name=".Alias.FoldersConfigurations"
-            android:enabled="false"
-            android:icon="@drawable/alias_categories_recovery"
-            android:label="@string/floatingFolders"
-            android:exported="true"
-            android:targetActivity=".Folders.FoldersConfigurations">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity-alias>
-        <activity-alias
-            android:name=".Alias.WidgetConfigurations"
-            android:enabled="false"
-            android:icon="@drawable/alias_widgets"
-            android:label="@string/floatingWidget"
-            android:exported="true"
-            android:targetActivity=".Widgets.WidgetConfigurations">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity-alias>
-        <activity-alias
-            android:name=".Alias.Recover.Shortcuts"
-            android:enabled="false"
-            android:icon="@drawable/alias_shortcuts_recovery"
-            android:label="@string/recoveryShortcuts"
-            android:exported="true"
-            android:targetActivity=".Utils.RemoteTask.Create.RecoveryShortcutsActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity-alias>
-        <activity-alias
-            android:name=".Alias.Recover.Categories"
-            android:enabled="false"
-            android:icon="@drawable/alias_categories_recovery"
-            android:label="@string/recover_folder"
-            android:exported="true"
-            android:targetActivity=".Utils.RemoteTask.Create.RecoveryFoldersActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity-alias>
 
         <service
             android:name=".BindServices"

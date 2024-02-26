@@ -25,10 +25,6 @@ class BindServices : Service() {
     lateinit var functionsClassLegacy: FunctionsClassLegacy
     lateinit var fileIO: FileIO
 
-    private companion object {
-        var triggerWifiBroadcast = false
-    }
-
     override fun onDestroy() {
         super.onDestroy()
     }

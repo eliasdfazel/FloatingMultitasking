@@ -56,8 +56,8 @@
 
     <item
         android:gravity="center"
-        android:height="159dp"
-        android:width="159dp"
+        android:height="137dp"
+        android:width="137dp"
         android:drawable="@drawable/search_engine_icon">
     </item>
 
