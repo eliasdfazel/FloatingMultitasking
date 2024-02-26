@@ -14,10 +14,8 @@ import android.content.Intent
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
-import androidx.annotation.RequiresApi
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryFolders
 
-@RequiresApi(Build.VERSION_CODES.N)
 class RecoveryFoldersTile : TileService() {
 
     override fun onClick() {
@@ -25,9 +23,15 @@ class RecoveryFoldersTile : TileService() {
 
         qsTile.state = Tile.STATE_ACTIVE
 
-        startService(Intent(applicationContext, RecoveryFolders::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        })
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(Intent(applicationContext, RecoveryFolders::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+        }  else {
+            startService(Intent(applicationContext, RecoveryFolders::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+        }
 
     }
 
