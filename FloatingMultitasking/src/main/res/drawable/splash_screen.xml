@@ -11,12 +11,24 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:drawable="@color/default_color" />
+    <item>
+
+        <shape android:shape="rectangle">
+
+            <gradient
+                android:type="sweep"
+                android:startColor="@color/default_color_darker"
+                android:endColor="@color/default_color"
+                android:centerY="0.0"
+                android:centerX="0.0" />
+
+        </shape>
+
+    </item>
 
     <item
-        android:height="301dp"
-        android:width="301dp"
+        android:height="273dp"
+        android:width="273dp"
         android:gravity="center">
         <bitmap
             android:src="@drawable/ic_launcher" />
