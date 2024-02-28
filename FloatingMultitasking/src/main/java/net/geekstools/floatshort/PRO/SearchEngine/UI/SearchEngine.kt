@@ -252,7 +252,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
             functionsClassLegacy.manipulateColor(PublicVariable.primaryColor, 3.00f)
         })
 
-        layerDrawableSearchIcon?.setLayerInset(2, functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13), functionsClassLegacy.DpToInteger(13))
+        layerDrawableSearchIcon?.setLayerInset(2, functionsClassLegacy.DpToInteger(31), functionsClassLegacy.DpToInteger(31), functionsClassLegacy.DpToInteger(31), functionsClassLegacy.DpToInteger(31))
 
         searchEngineViewBinding.root.visibility = View.VISIBLE
 

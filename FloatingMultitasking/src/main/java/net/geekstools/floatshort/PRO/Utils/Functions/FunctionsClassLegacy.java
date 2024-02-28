@@ -3630,7 +3630,7 @@ public class FunctionsClassLegacy {
 
     public boolean searchEngineSubscribed() {
 
-        return (BuildConfig.DEBUG) ? false :
+        return (BuildConfig.DEBUG) ? true :
                 readPreference(".SubscribedItem", InAppBillingData.SKU.InAppItemSearchEngines, false);
     }
 

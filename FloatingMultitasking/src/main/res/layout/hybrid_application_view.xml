@@ -108,7 +108,7 @@
             android:fontFamily="@font/ubuntu"
             apps:elevation="7dp"
             apps:cornerRadius="13dp"
-            apps:backgroundTint="@color/default_color_light" />
+            apps:backgroundTint="@color/default_color" />
 
         <com.google.android.material.button.MaterialButton xmlns:apps="http://schemas.android.com/apk/res-auto"
             android:id="@+id/switchCategories"

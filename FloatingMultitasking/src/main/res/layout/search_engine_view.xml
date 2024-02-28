@@ -51,8 +51,6 @@
             android:textSize="17sp"
             android:textColor="@color/light"
             android:cursorVisible="true"
-            android:drawableEnd="@drawable/search_engine_icon"
-            android:drawableTint="@color/default_color_light"
             android:drawablePadding="3dp"
             android:dropDownAnchor="@id/searchView" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -63,7 +61,7 @@
         android:layout_height="51dp"
         android:layout_centerHorizontal="true"
         android:visibility="invisible"
-        android:background="@drawable/search_icon" />
+        android:src="@drawable/search_icon" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/searchFloatIt"

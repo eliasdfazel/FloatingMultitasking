@@ -10,7 +10,7 @@
   -->
 
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:interpolator="@android:anim/bounce_interpolator"
+    android:interpolator="@android:anim/accelerate_interpolator"
     android:duration="777">
     <alpha
         android:duration="555"
@@ -19,9 +19,9 @@
 
     <scale
         android:duration="1777"
-        android:fromXScale="0.3"
+        android:fromXScale="0.5"
         android:toXScale="1.0"
-        android:fromYScale="0.3"
+        android:fromYScale="0.5"
         android:toYScale="1.0"
         android:pivotX="50%"
         android:pivotY="50%" />
