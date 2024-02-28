@@ -10,15 +10,6 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="GeeksEmpire" parent="@android:style/Theme.DeviceDefault.Light">
-        <item name="android:colorPrimary">@color/default_color</item>
-        <item name="android:colorPrimaryDark">@color/default_color_darker</item>
-        <item name="android:colorAccent">@color/default_color_light</item>
-
-        <item name="android:statusBarColor">@color/default_color</item>
-        <item name="android:navigationBarColor">@color/default_color</item>
-    </style>
-
     <style name="Splash.GeeksEmpire" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:colorPrimary">@color/default_color</item>
         <item name="android:colorPrimaryDark">@color/default_color</item>
@@ -194,14 +185,6 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="TransparentInAppUpdate" parent="@style/GeeksEmpire.Material">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-
-        <item name="android:statusBarColor">@color/default_color</item>
-        <item name="android:navigationBarColor">@color/default_color</item>
-    </style>
-
     <style name="AuthenticationTransparent" parent="@style/GeeksEmpire.Material">
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -222,7 +205,7 @@
         <item name="colorPrimary">@color/default_color</item>
         <item name="colorPrimaryDark">@color/default_color_darker</item>
         <item name="colorAccent">@color/default_color_light</item>
-        <item name="colorSecondary" tools:targetApi="n_mr1">@color/default_color_light</item>
+        <item name="colorSecondary" >@color/default_color_light</item>
         <item name="colorControlNormal">@color/default_color_light</item>
         <item name="colorControlActivated">@color/default_color_light</item>
     </style>

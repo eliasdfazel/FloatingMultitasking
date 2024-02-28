@@ -60,8 +60,6 @@
     <string name="share" translatable="false">Share With Friends</string>
     <string name="rate" translatable="false">Rate Me Five Star</string>
     <string name="rateReview" translatable="false">Please Rate &amp; Write Review</string>
-    <string name="supportEmail" translatable="false">Support@GeeksEmpire.co</string>
-    <string name="feedback_tag" translatable="false">Floating Multitasking Direct Help | Feedback</string>
 
     <string name="link_ad_app" translatable="false">https://play.google.com/store/apps/details?id=net.geekstools.supershortcuts.PRO</string>
 

@@ -29,7 +29,7 @@ android {
         minSdkVersion 25
         targetSdkVersion 34
 
-        versionCode 877
+        versionCode 878
         versionName "${majorVersion}." + getDateMonth() + "." + getDateDay() + "." + getDateYear() + ".${versionCode}"
 
     }
@@ -97,7 +97,6 @@ dependencies {
 
     implementation project(':LoadingSpin')
     implementation project(':ShapesCustomImageViewLibrary')
-    implementation project(':BlurryEffectLibrary')
 
 
     implementation 'com.android.billingclient:billing-ktx:6.1.0'

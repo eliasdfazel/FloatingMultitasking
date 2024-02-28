@@ -23,15 +23,8 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/search_engine_activity_widget_background" />
-
-    <net.geeksempire.blurry.effect.view.RealtimeBlurView
-        android:id="@+id/blurViewWidget"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        apps:realtimeBlurRadius="7dp"
-        apps:realtimeOverlayColor="@color/default_color_transparent" />
+        android:alpha="0.73"
+        android:background="@color/default_color_darker" />
 
     <!-- Search Engine -->
     <include

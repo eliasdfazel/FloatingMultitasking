@@ -7,8 +7,6 @@
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
  */
-include ':BlurryEffectLibrary'
-
 include ':FloatingMultitasking'
 include ':LoadingSpin'
 include ':ShapesCustomImageViewLibrary'
