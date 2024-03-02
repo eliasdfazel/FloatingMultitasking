@@ -28,7 +28,12 @@ import android.os.IBinder
 import android.os.Looper
 import android.text.Html
 import android.util.Log
-import android.view.*
+import android.view.GestureDetector
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
 import androidx.dynamicanimation.animation.FlingAnimation
@@ -851,7 +856,9 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                             super.authenticatedFloatIt(extraInformation)
                                             Log.d(this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                                            openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)],
+                                            try {
+
+                                                openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)],
                                                     if (moveDetection != null) {
                                                         (moveDetection!!)
                                                         (moveDetection!!)
@@ -860,7 +867,10 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                                         (layoutParams[intent.getIntExtra("startId", 1)])
                                                     })
 
-                                            AuthenticationProcess.authenticationProcessInvoked = false
+                                                AuthenticationProcess.authenticationProcessInvoked = false
+
+                                            } catch (e: IndexOutOfBoundsException) {}
+
                                         }
 
                                         override fun failedAuthenticated() {
@@ -893,7 +903,9 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                 }
                             } else {
 
-                                openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)],
+                                try {
+
+                                    openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)],
                                         if (moveDetection != null) {
                                             (moveDetection!!)
                                             (moveDetection!!)
@@ -901,6 +913,9 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                             (layoutParams[intent.getIntExtra("startId", 1)])
                                             (layoutParams[intent.getIntExtra("startId", 1)])
                                         })
+
+                                } catch (e: IndexOutOfBoundsException) {}
+
                             }
                         } else if (intent.action == "Remove_App_$floatingShortcutClassInCommand") {
                             if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)) == null) {
