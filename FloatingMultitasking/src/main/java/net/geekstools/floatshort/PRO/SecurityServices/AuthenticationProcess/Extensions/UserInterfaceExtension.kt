@@ -10,8 +10,6 @@
 
 package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions
 
-import android.content.ComponentName
-import android.content.pm.ActivityInfo
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.Html
@@ -52,10 +50,8 @@ fun AuthenticationFingerprint.setupAuthenticationUIText() : String {
             && intent.hasExtra(UserInterfaceExtraData.ClassName)) {
 
         val packageName = intent.getStringExtra(UserInterfaceExtraData.PackageName)!!
-        val className = intent.getStringExtra(UserInterfaceExtraData.ClassName)!!
 
-        val activityInformation: ActivityInfo? = packageManager.getActivityInfo(ComponentName(packageName, className),0)
-        dialogueTitle = functionsClassLegacy.activityLabel(activityInformation)
+        dialogueTitle = functionsClassLegacy.applicationName(packageName)
 
     } else if (intent.hasExtra(UserInterfaceExtraData.OtherTitle)) {
 

@@ -37,7 +37,15 @@ class FloatIt : AppCompatActivity() {
 
         val aPackageName = intent.getStringExtra("PackageName")!!
 
-        val aClassName = intent.getStringExtra("ClassName")
+        val aClassName = if (intent.hasCategory("ClassName")) {
+
+            intent.getStringExtra("ClassName")
+
+        } else {
+
+            null
+
+        }
 
         val sharedPreferencesPosition = getSharedPreferences(aClassName, Context.MODE_PRIVATE)
 
@@ -54,7 +62,6 @@ class FloatIt : AppCompatActivity() {
 
         }
 
-        this@FloatIt.finish()
     }
 
     private fun openingCheckpoint(functionsClassLegacy: FunctionsClassLegacy, securityFunctions: SecurityFunctions, openActions: OpenActions,
@@ -82,21 +89,24 @@ class FloatIt : AppCompatActivity() {
 
             }
 
+            this@FloatIt.finish()
+
         }
 
     }
 
     private fun invokeSecurityServices(functionsClassLegacy: FunctionsClassLegacy, openActions: OpenActions) {
 
-        val aPackageName = try {
-            intent.getStringExtra("PackageName")!!
-        } catch (e: NullPointerException) {
-            intent.getStringExtra("packageName")!!
-        }
-        val aClassName = try {
-            intent.getStringExtra("ClassName")!!
-        } catch (e: NullPointerException) {
-            intent.getStringExtra("packageName")!!
+        val aPackageName = intent.getStringExtra("PackageName")!!
+
+        val aClassName = if (intent.hasCategory("ClassName")) {
+
+            intent.getStringExtra("ClassName")
+
+        } else {
+
+            null
+
         }
 
         val sharedPreferencesPosition = getSharedPreferences(aClassName, Context.MODE_PRIVATE)
@@ -110,11 +120,17 @@ class FloatIt : AppCompatActivity() {
                 super.authenticatedFloatIt(extraInformation)
                 Log.d(this@FloatIt.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                if (aPackageName == aClassName) {
+                if (aClassName == null) {
+
                     openActions.startProcess(aPackageName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+
                 } else {
+
                     openActions.startProcess(aPackageName, aClassName, xPosition, yPosition, PublicVariable.floatingViewsHW)
+
                 }
+
+                this@FloatIt.finish()
 
             }
 
@@ -127,6 +143,7 @@ class FloatIt : AppCompatActivity() {
                 super.invokedPinPassword()
                 Log.d(this@FloatIt.javaClass.simpleName, "InvokedPinPassword")
             }
+
         }
 
         startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
