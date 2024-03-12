@@ -35,30 +35,38 @@ class FloatIt : AppCompatActivity() {
         PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), resources.displayMetrics).toInt()
 
-        val aPackageName = intent.getStringExtra("PackageName")!!
+        if (intent.hasCategory("PackageName")) {
 
-        val aClassName = if (intent.hasCategory("ClassName")) {
+            val aPackageName = intent.getStringExtra("PackageName")!!
 
-            intent.getStringExtra("ClassName")
+            val aClassName = if (intent.hasCategory("ClassName")) {
+
+                intent.getStringExtra("ClassName")
+
+            } else {
+
+                null
+
+            }
+
+            val sharedPreferencesPosition = getSharedPreferences(aClassName, Context.MODE_PRIVATE)
+
+            val xPosition = sharedPreferencesPosition.getInt("X", 137)
+            val yPosition = sharedPreferencesPosition.getInt("Y", 137)
+
+            Log.d(this@FloatIt.javaClass.simpleName, "Extended Float It: ${functionsClassLegacy.FreeForm()}")
+            openingCheckpoint(functionsClassLegacy, securityFunctions, openActions,
+                aPackageName, aClassName, xPosition, yPosition)
+
+            if (!functionsClassLegacy.FreeForm()) {
+
+                Toast.makeText(applicationContext, "Enable Extended Float It In Preferences ⚙️", Toast.LENGTH_LONG).show()
+
+            }
 
         } else {
 
-            null
-
-        }
-
-        val sharedPreferencesPosition = getSharedPreferences(aClassName, Context.MODE_PRIVATE)
-
-        val xPosition = sharedPreferencesPosition.getInt("X", 137)
-        val yPosition = sharedPreferencesPosition.getInt("Y", 137)
-
-        Log.d(this@FloatIt.javaClass.simpleName, "Extended Float It: ${functionsClassLegacy.FreeForm()}")
-        openingCheckpoint(functionsClassLegacy, securityFunctions, openActions,
-            aPackageName, aClassName, xPosition, yPosition)
-
-        if (!functionsClassLegacy.FreeForm()) {
-
-            Toast.makeText(applicationContext, "Enable Extended Float It In Preferences ⚙️", Toast.LENGTH_LONG).show()
+            this@FloatIt.finish()
 
         }
 
@@ -136,12 +144,18 @@ class FloatIt : AppCompatActivity() {
 
             override fun failedAuthenticated() {
                 super.failedAuthenticated()
-                Log.d(this@FloatIt.javaClass.simpleName, "FailedAuthenticated")
+                Log.d(this@FloatIt.javaClass.simpleName, "Failed Authenticated")
+
+                this@FloatIt.finish()
+
             }
 
             override fun invokedPinPassword() {
                 super.invokedPinPassword()
-                Log.d(this@FloatIt.javaClass.simpleName, "InvokedPinPassword")
+                Log.d(this@FloatIt.javaClass.simpleName, "Invoked Pin Password")
+
+                this@FloatIt.finish()
+
             }
 
         }

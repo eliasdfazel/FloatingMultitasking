@@ -6,17 +6,17 @@ import android.util.Log
 interface AuthenticationCallback {
 
     fun authenticatedFloatIt(extraInformation: Bundle?) {
-        Log.d(this@AuthenticationCallback.javaClass.simpleName, "AuthenticatedFloatIt")
+        Log.d(this@AuthenticationCallback.javaClass.simpleName, "Authenticated FloatIt")
 
     }
 
     fun failedAuthenticated() {
-        Log.d(this@AuthenticationCallback.javaClass.simpleName, "FailedAuthenticated")
+        Log.d(this@AuthenticationCallback.javaClass.simpleName, "Failed Authenticated")
 
     }
 
     fun invokedPinPassword() {
-        Log.d(this@AuthenticationCallback.javaClass.simpleName, "InvokedPinPassword")
+        Log.d(this@AuthenticationCallback.javaClass.simpleName, "Invoked Pin Password")
 
     }
 }
