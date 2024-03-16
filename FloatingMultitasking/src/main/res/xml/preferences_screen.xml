@@ -149,7 +149,7 @@
 
     <PreferenceCategory android:summary=" " />
 
-    <PreferenceCategory android:title="@string/geeksempire" android:summary=" ">
+    <PreferenceCategory android:key="adTitle" android:title="@string/geeksempire" android:summary=" ">
         <Preference
             android:icon="@drawable/ic_ad_app_layer"
             android:key="app"

@@ -46,6 +46,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.preference.ListPreference
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
@@ -158,6 +159,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         themeColor = findPreference("themeColor")!!
         stick = findPreference("stick")!!
+
+        findPreference<PreferenceCategory>("adTitle")?.setTitle(Html.fromHtml("<span style='color: #BB00C8;'>Geeks Empire</span>", Html.FROM_HTML_MODE_COMPACT))
 
         val sticky = sharedPreferences.getString("stick", "1")
         if (sticky == "1") {
