@@ -818,115 +818,123 @@ class FloatingShortcutsForApplications : Service() {
 
                         } else if (intent.action == "Pin_App_$floatingShortcutClassInCommand") {
 
-                            movePermit[intent.getIntExtra("startId", 1)] = false
-                            var pinDrawable: Drawable = functionsClassLegacy.applicationIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
+                            try {
 
-                            if (functionsClassLegacy.customIconsEnable()) {
+                                movePermit[intent.getIntExtra("startId", 1)] = false
+                                var pinDrawable: Drawable = functionsClassLegacy.applicationIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
 
-                                pinDrawable = functionsClassLegacy.getAppIconDrawableCustomIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
+                                if (functionsClassLegacy.customIconsEnable()) {
 
-                            } else {
-                                when (functionsClassLegacy.shapesImageId()) {
-                                    1 -> {
-                                        pinDrawable = getDrawable(R.drawable.pin_droplet_icon) as Drawable
-                                        controlIcons[intent.getIntExtra("startId", 1)].setPadding(-3, -3, -3, -3)
-                                    }
-                                    2 -> {
-                                        pinDrawable = getDrawable(R.drawable.pin_circle_icon) as Drawable
-                                    }
-                                    3 -> {
-                                        pinDrawable = getDrawable(R.drawable.pin_square_icon) as Drawable
-                                    }
-                                    4 -> {
-                                        pinDrawable = getDrawable(R.drawable.pin_squircle_icon) as Drawable
-                                    }
-                                    0 -> {
-                                        pinDrawable = functionsClassLegacy.applicationIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
+                                    pinDrawable = functionsClassLegacy.getAppIconDrawableCustomIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
+
+                                } else {
+                                    when (functionsClassLegacy.shapesImageId()) {
+                                        1 -> {
+                                            pinDrawable = getDrawable(R.drawable.pin_droplet_icon) as Drawable
+                                            controlIcons[intent.getIntExtra("startId", 1)].setPadding(-3, -3, -3, -3)
+                                        }
+                                        2 -> {
+                                            pinDrawable = getDrawable(R.drawable.pin_circle_icon) as Drawable
+                                        }
+                                        3 -> {
+                                            pinDrawable = getDrawable(R.drawable.pin_square_icon) as Drawable
+                                        }
+                                        4 -> {
+                                            pinDrawable = getDrawable(R.drawable.pin_squircle_icon) as Drawable
+                                        }
+                                        0 -> {
+                                            pinDrawable = functionsClassLegacy.applicationIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
+                                        }
                                     }
                                 }
-                            }
-                            pinDrawable.setTint(functionsClassLegacy.setColorAlpha(Color.RED, 175f))
+                                pinDrawable.setTint(functionsClassLegacy.setColorAlpha(Color.RED, 175f))
 
-                            if (functionsClassLegacy.returnAPI() >= 26) {
-                                pinDrawable.alpha = 175
-                                pinDrawable.setTint(Color.RED)
+                                if (functionsClassLegacy.returnAPI() >= 26) {
+                                    pinDrawable.alpha = 175
+                                    pinDrawable.setTint(Color.RED)
 
-                                controlIcons[intent.getIntExtra("startId", 1)].alpha = 0.50f
-                            }
+                                    controlIcons[intent.getIntExtra("startId", 1)].alpha = 0.50f
+                                }
 
-                            controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable)
+                                controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(pinDrawable)
+
+                            } catch (_: IndexOutOfBoundsException) {}
 
                         } else if (intent.action == "Unpin_App_$floatingShortcutClassInCommand") {
 
-                            movePermit[intent.getIntExtra("startId", 1)] = true
-                            controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(null)
+                            try {
+
+                                movePermit[intent.getIntExtra("startId", 1)] = true
+                                controlIcons[intent.getIntExtra("startId", 1)].setImageDrawable(null)
+
+                            } catch (_: IndexOutOfBoundsException) {}
 
                         } else if (intent.action == "Float_It_$floatingShortcutClassInCommand") {
 
-                            if (securityFunctions.isAppLocked(packageNames[intent.getIntExtra("startId", 1)])) {
+                            try {
 
-                                if (!AuthenticationProcess.authenticationProcessInvoked) {
+                                if (securityFunctions.isAppLocked(packageNames[intent.getIntExtra("startId", 1)])) {
 
-                                    AuthenticationProcess.authenticationProcessInvoked = true
-                                    AuthenticationProcess.authenticationProcessInvokedName = functionsClassLegacy.activityLabel(
+                                    if (!AuthenticationProcess.authenticationProcessInvoked) {
+
+                                        AuthenticationProcess.authenticationProcessInvoked = true
+                                        AuthenticationProcess.authenticationProcessInvokedName = functionsClassLegacy.activityLabel(
                                             packageManager.getActivityInfo(ComponentName.createRelative(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)]), 0)
-                                    )
+                                        )
 
-                                    SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
+                                        SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                                        override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                                            super.authenticatedFloatIt(extraInformation)
-                                            Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
+                                            override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                                                super.authenticatedFloatIt(extraInformation)
+                                                Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                                            try {
+                                                try {
 
-                                                openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)],
-                                                    if (moveDetection != null) {
-                                                        (moveDetection!!)
-                                                        (moveDetection!!)
-                                                    } else {
-                                                        (layoutParams[intent.getIntExtra("startId", 1)])
-                                                        (layoutParams[intent.getIntExtra("startId", 1)])
-                                                    })
+                                                    openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)],
+                                                        if (moveDetection != null) {
+                                                            (moveDetection!!)
+                                                            (moveDetection!!)
+                                                        } else {
+                                                            (layoutParams[intent.getIntExtra("startId", 1)])
+                                                            (layoutParams[intent.getIntExtra("startId", 1)])
+                                                        })
+
+                                                    AuthenticationProcess.authenticationProcessInvoked = false
+
+                                                } catch (e: IndexOutOfBoundsException) {}
+                                            }
+
+                                            override fun failedAuthenticated() {
+                                                super.failedAuthenticated()
+                                                Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "FailedAuthenticated")
 
                                                 AuthenticationProcess.authenticationProcessInvoked = false
+                                            }
 
-                                            } catch (e: IndexOutOfBoundsException) {}
+                                            override fun invokedPinPassword() {
+                                                super.invokedPinPassword()
+                                                Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "InvokedPinPassword")
+
+                                                AuthenticationProcess.authenticationProcessInvoked = false
+                                            }
                                         }
 
-                                        override fun failedAuthenticated() {
-                                            super.failedAuthenticated()
-                                            Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "FailedAuthenticated")
+                                        startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
+                                            putExtra("PackageName", packageNames[intent.getIntExtra("startId", 1)])
+                                            putExtra("ClassName", classNames[intent.getIntExtra("startId", 1)])
+                                            putExtra("PrimaryColor", iconColors[intent.getIntExtra("startId", 1)])
+                                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 
-                                            AuthenticationProcess.authenticationProcessInvoked = false
-                                        }
+                                    } else {
 
-                                        override fun invokedPinPassword() {
-                                            super.invokedPinPassword()
-                                            Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "InvokedPinPassword")
-
-                                            AuthenticationProcess.authenticationProcessInvoked = false
-                                        }
-                                    }
-
-                                    startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
-                                        putExtra("PackageName", packageNames[intent.getIntExtra("startId", 1)])
-                                        putExtra("ClassName", classNames[intent.getIntExtra("startId", 1)])
-                                        putExtra("PrimaryColor", iconColors[intent.getIntExtra("startId", 1)])
-                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
-
-                                } else {
-
-                                    Toast.makeText(applicationContext,
+                                        Toast.makeText(applicationContext,
                                             Html.fromHtml(getString(R.string.authenticationProcessInvoked, AuthenticationProcess.authenticationProcessInvokedName), Html.FROM_HTML_MODE_COMPACT),
                                             Toast.LENGTH_LONG)
                                             .show()
-                                }
+                                    }
 
-                            } else {
-
-                                try {
+                                } else {
 
                                     openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)],
                                         if (moveDetection != null) {
@@ -937,40 +945,44 @@ class FloatingShortcutsForApplications : Service() {
                                             (layoutParams[intent.getIntExtra("startId", 1)])
                                         })
 
-                                } catch (e: IndexOutOfBoundsException) {}
+                                }
 
-                            }
+                            } catch (_: IndexOutOfBoundsException) {}
 
                         } else if (intent.action == "Remove_App_$floatingShortcutClassInCommand") {
 
-                            if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)) == null) {
-                                return
-                            }
+                            try {
 
-                            if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root.isShown) {
-                                try {
+                                if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)) == null) {
+                                    return
+                                }
 
-                                    windowManager.removeView(floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root)
+                                if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root.isShown) {
+                                    try {
 
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
+                                        windowManager.removeView(floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root)
 
-                                } finally {
-                                    PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
 
-                                    PublicVariable.floatingShortcutsList.remove(packageNames[intent.getIntExtra("startId", 1)])
-                                    PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter - 1
+                                    } finally {
+                                        PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
 
-                                    if (PublicVariable.allFloatingCounter == 0) {
-                                        if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
+                                        PublicVariable.floatingShortcutsList.remove(packageNames[intent.getIntExtra("startId", 1)])
+                                        PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter - 1
 
-                                            stopService(Intent(applicationContext, BindServices::class.java))
+                                        if (PublicVariable.allFloatingCounter == 0) {
+                                            if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
+
+                                                stopService(Intent(applicationContext, BindServices::class.java))
+                                            }
+
+                                            stopSelf()
                                         }
-
-                                        stopSelf()
                                     }
                                 }
-                            }
+
+                            } catch (_: IndexOutOfBoundsException) {}
 
                         } else if (intent.action == "Sticky_Edge${applicationContext.packageName}") {
 
@@ -981,13 +993,13 @@ class FloatingShortcutsForApplications : Service() {
                                 stickyEdgeParams.add(stickyCounter, functionsClassLegacy.moveToEdge(this@FloatingShortcutsForApplications.classNames.get(stickyCounter), layoutParams[stickyCounter].height))
 
                                 if (floatingShortcutsBinding[stickyCounter].root.isShown
-                                        && floatingShortcutsBinding[stickyCounter] != null) {
+                                    && floatingShortcutsBinding[stickyCounter] != null) {
 
                                     try {
 
                                         windowManager
-                                                .updateViewLayout(floatingShortcutsBinding[stickyCounter].root,
-                                                        stickyEdgeParams[stickyCounter])
+                                            .updateViewLayout(floatingShortcutsBinding[stickyCounter].root,
+                                                stickyEdgeParams[stickyCounter])
 
                                     } catch (e: WindowManager.BadTokenException) {
                                         e.printStackTrace()
