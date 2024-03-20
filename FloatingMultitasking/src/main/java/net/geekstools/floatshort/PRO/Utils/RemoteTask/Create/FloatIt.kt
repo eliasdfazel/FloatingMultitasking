@@ -37,8 +37,6 @@ class FloatIt : AppCompatActivity() {
 
         val aPackageName = intent.getStringExtra("PackageName")!!
 
-        println(">>> " + intent.hasExtra("PackageName") + " --- " + aPackageName)
-
         if (intent.hasExtra("PackageName")) {
 
             val aPackageName = intent.getStringExtra("PackageName")!!

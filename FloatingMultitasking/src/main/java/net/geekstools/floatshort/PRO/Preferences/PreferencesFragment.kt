@@ -61,7 +61,6 @@ import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.PinPasswordConfigurations
 import net.geekstools.floatshort.PRO.Utils.Functions.ApplicationThemeController
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.Dialogues
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
@@ -718,8 +717,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                             if (touchingDelay) {
                                 val vibrator = requireContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                                 vibrator.vibrate(333)
-
-                                PrintDebug("*** millis delay ::: " + functionsClassLegacy.readDefaultPreference("delayPressHold", 555))
                             }
                         }
                         handlerPressHold.postDelayed(runnablePressHold, functionsClassLegacy.readDefaultPreference("delayPressHold", 555).toLong())

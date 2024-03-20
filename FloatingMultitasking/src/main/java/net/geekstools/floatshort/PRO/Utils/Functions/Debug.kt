@@ -12,7 +12,6 @@ package net.geekstools.floatshort.PRO.Utils.Functions
 
 import android.app.Activity
 import android.content.Context
-import net.geekstools.floatshort.PRO.BuildConfig
 
 class Debug {
 
@@ -33,12 +32,6 @@ class Debug {
     }
 
     companion object {
-        fun PrintDebug(debugMessage: Any?) {
-            if (BuildConfig.DEBUG) {
-                println(debugMessage)
-            }
-        }
-
         const val REMOTE_TASK_OK_GOOGLE: String = "REMOTE_TASK_OK_GOOGLE_OPEN_FLOAT_IT"
     }
 }

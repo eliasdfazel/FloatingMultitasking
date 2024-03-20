@@ -23,8 +23,14 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.util.TypedValue
-import android.view.*
+import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.WindowManager.BadTokenException
 import android.view.accessibility.AccessibilityEvent
 import androidx.dynamicanimation.animation.FlingAnimation
@@ -36,7 +42,6 @@ import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Utils.FloatingFoldersUtils
 import net.geekstools.floatshort.PRO.Folders.FloatingServices.Utils.FloatingFoldersUtils.FloatingFoldersCounterType.floatingFoldersCounterType
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -157,7 +162,6 @@ class FloatingFolders : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
         super.onStartCommand(intent, flags, serviceStartId)
-        Debug.PrintDebug(this@FloatingFolders.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
         intent?.run {
 
@@ -628,7 +632,7 @@ class FloatingFolders : Service() {
                                     if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
                                             || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
-                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
+                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()).setPackage(packageName))
 
                                         openPermit[startId] = false
                                         touchingDelay[startId] = false
@@ -717,10 +721,10 @@ class FloatingFolders : Service() {
                 intentFilter.addAction("Pin_App_$floatingFolderClassInCommand")
                 intentFilter.addAction("Unpin_App_$floatingFolderClassInCommand")
                 intentFilter.addAction("Remove_Category_$floatingFolderClassInCommand")
-                intentFilter.addAction("Sticky_Edge${applicationContext.packageName}")
-                intentFilter.addAction("Sticky_Edge_No${applicationContext.packageName}")
-                intentFilter.addAction("Notification_Dot${applicationContext.packageName}")
-                intentFilter.addAction("Notification_Dot_No${applicationContext.packageName}")
+                intentFilter.addAction("Sticky_Edge_${applicationContext.packageName}")
+                intentFilter.addAction("Sticky_Edge_No_${applicationContext.packageName}")
+                intentFilter.addAction("Notification_Dot_${applicationContext.packageName}")
+                intentFilter.addAction("Notification_Dot_No_${applicationContext.packageName}")
                 val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
                     override fun onReceive(context: Context, intent: Intent) {
@@ -778,7 +782,7 @@ class FloatingFolders : Service() {
                                         PublicVariable.splitScreen = true
 
                                         Handler(Looper.getMainLooper()).postDelayed({
-                                            sendBroadcast(Intent("split_pair_finish" + getApplicationContext().getPackageName()))
+                                            sendBroadcast(Intent("split_pair_finish" + getApplicationContext().getPackageName()).setPackage(packageName))
                                         }, 700)
 
                                     }, 200)
@@ -806,7 +810,7 @@ class FloatingFolders : Service() {
 
                                     PublicVariable.splitScreen = true
 
-                                    Handler(Looper.getMainLooper()).postDelayed({ sendBroadcast(Intent("split_single_finish" + getApplicationContext().getPackageName())) }, 500)
+                                    Handler(Looper.getMainLooper()).postDelayed({ sendBroadcast(Intent("split_single_finish" + getApplicationContext().getPackageName()).setPackage(packageName)) }, 500)
 
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()
@@ -934,7 +938,7 @@ class FloatingFolders : Service() {
                                 }
                             }
 
-                        } else if (intent.action == "Notification_Dot${applicationContext.packageName}") {
+                        } else if (intent.action == "Notification_Dot_${applicationContext.packageName}") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
 
@@ -958,7 +962,7 @@ class FloatingFolders : Service() {
                                 }
                             }
 
-                        } else if (intent.action == "Notification_Dot_No${applicationContext.packageName}") {
+                        } else if (intent.action == "Notification_Dot_No_${applicationContext.packageName}") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
 
@@ -985,8 +989,8 @@ class FloatingFolders : Service() {
 
             if (showNotificationDot) {
 
-                sendBroadcast(Intent("Notification_Dot")
-                        .putExtra("NotificationPackage", alreadyNotificationPackage))
+                sendBroadcast(Intent("Notification_Dot_$packageName")
+                        .putExtra("NotificationPackage", alreadyNotificationPackage).setPackage(packageName))
             }
         }
 

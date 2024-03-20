@@ -216,11 +216,6 @@ class BitmapExtractor(private val context: Context) {
             val dominantColor = sharedPreferences.getInt("dominantColor", context.getColor(R.color.default_color))
             val initMix = mixColors(vibrantColor, darkMutedColor, 0.50f)
             val finalMix = mixColors(dominantColor, initMix, 0.50f)
-            Debug.PrintDebug("*** Vibrant ::: " + vibrantColor + " >>> " + ColorUtils.calculateLuminance(vibrantColor))
-            Debug.PrintDebug("*** Dark ::: " + darkMutedColor + " >>> " + ColorUtils.calculateLuminance(darkMutedColor))
-            Debug.PrintDebug("*** Dominant ::: " + dominantColor + " >>> " + ColorUtils.calculateLuminance(dominantColor))
-            Debug.PrintDebug("*** initMix ::: " + initMix + " >>> " + ColorUtils.calculateLuminance(initMix))
-            Debug.PrintDebug("*** finalMix ::: " + finalMix + " >>> " + ColorUtils.calculateLuminance(finalMix))
             val calculateLuminance = ColorUtils.calculateLuminance(dominantColor)
             if (calculateLuminance > 0.50) { //light
                 LightDark = true

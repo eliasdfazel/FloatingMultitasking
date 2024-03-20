@@ -49,7 +49,6 @@ import net.geekstools.floatshort.PRO.SearchEngine.Data.Filter.SearchResultType
 import net.geekstools.floatshort.PRO.SearchEngine.UI.SearchEngine
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.Dialogues
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.Functions.RuntimeIO
@@ -371,7 +370,6 @@ class FoldersConfigurations : AppCompatActivity(),
 
         if (foldersConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) {
             loadCustomIcons.load()
-            Debug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }
 
         if (getFileStreamPath(".categoryInfo").exists()) {
@@ -445,7 +443,6 @@ class FoldersConfigurations : AppCompatActivity(),
 
         PublicVariable.customIconsPackages.clear()
         for (resolveInfo in resolveInfos) {
-            Debug.PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
             PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
         }
     }

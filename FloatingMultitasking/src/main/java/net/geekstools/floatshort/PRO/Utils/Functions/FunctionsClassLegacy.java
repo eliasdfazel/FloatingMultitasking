@@ -1302,7 +1302,6 @@ public class FunctionsClassLegacy {
                 }
                 switch (displaySection(leftPositionX, topPositionY)) {
                     case DisplaySection.TopLeft: {
-                        Debug.Companion.PrintDebug("***** DisplaySection.TopLeft");
                         activityOptions.setLaunchBounds(
                                 new Rect(
                                         leftPositionX,
@@ -1313,7 +1312,6 @@ public class FunctionsClassLegacy {
                         break;
                     }
                     case DisplaySection.TopRight: {
-                        Debug.Companion.PrintDebug("***** DisplaySection.TopRight");
                         activityOptions.setLaunchBounds(
                                 new Rect(
                                         leftPositionX - (displayX() / 2),
@@ -1324,7 +1322,6 @@ public class FunctionsClassLegacy {
                         break;
                     }
                     case DisplaySection.BottomRight: {
-                        Debug.Companion.PrintDebug("***** DisplaySection.BottomRight");
                         activityOptions.setLaunchBounds(
                                 new Rect(
                                         leftPositionX - (displayX() / 2),
@@ -1335,7 +1332,6 @@ public class FunctionsClassLegacy {
                         break;
                     }
                     case DisplaySection.BottomLeft: {
-                        Debug.Companion.PrintDebug("***** DisplaySection.BottomLeft");
                         activityOptions.setLaunchBounds(
                                 new Rect(
                                         leftPositionX,
@@ -1346,7 +1342,6 @@ public class FunctionsClassLegacy {
                         break;
                     }
                     default: {
-                        Debug.Companion.PrintDebug("***** DisplaySection.Not.Supported");
                         activityOptions.setLaunchBounds(
                                 new Rect(
                                         displayX() / 4,
@@ -1392,7 +1387,6 @@ public class FunctionsClassLegacy {
         }
         switch (displaySection(leftPositionX, topPositionY)) {
             case DisplaySection.TopLeft -> {
-                Debug.Companion.PrintDebug("***** DisplaySection.TopLeft");
                 activityOptions.setLaunchBounds(
                         new Rect(
                                 leftPositionX,
@@ -1402,7 +1396,6 @@ public class FunctionsClassLegacy {
                 );
             }
             case DisplaySection.TopRight -> {
-                Debug.Companion.PrintDebug("***** DisplaySection.TopRight");
                 activityOptions.setLaunchBounds(
                         new Rect(
                                 leftPositionX - (displayX() / 2),
@@ -1412,7 +1405,6 @@ public class FunctionsClassLegacy {
                 );
             }
             case DisplaySection.BottomRight -> {
-                Debug.Companion.PrintDebug("***** DisplaySection.BottomRight");
                 activityOptions.setLaunchBounds(
                         new Rect(
                                 leftPositionX - (displayX() / 2),
@@ -1422,7 +1414,6 @@ public class FunctionsClassLegacy {
                 );
             }
             case DisplaySection.BottomLeft -> {
-                Debug.Companion.PrintDebug("***** DisplaySection.BottomLeft");
                 activityOptions.setLaunchBounds(
                         new Rect(
                                 leftPositionX,
@@ -1432,7 +1423,6 @@ public class FunctionsClassLegacy {
                 );
             }
             default -> {
-                Debug.Companion.PrintDebug("***** DisplaySection.Not.Supported");
                 activityOptions.setLaunchBounds(
                         new Rect(
                                 displayX() / 4,
@@ -2154,8 +2144,6 @@ public class FunctionsClassLegacy {
                     PixelFormat.TRANSLUCENT);
         }
 
-        Debug.Companion.PrintDebug(packageName);
-
         SharedPreferences sharedPrefPosition = context.getSharedPreferences(packageName, Context.MODE_PRIVATE);
 
         layoutParams.gravity = Gravity.TOP | Gravity.START;
@@ -2188,8 +2176,6 @@ public class FunctionsClassLegacy {
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
         }
-
-        Debug.Companion.PrintDebug(packageName);
 
         SharedPreferences sharedPrefPosition = context.getSharedPreferences(packageName, Context.MODE_PRIVATE);
 
@@ -2722,7 +2708,7 @@ public class FunctionsClassLegacy {
                     .build();
             context.getSystemService(ShortcutManager.class).requestPinShortcut(shortcutInfo, null);
         } else {
-            Intent addIntent = new Intent();
+            Intent addIntent = new Intent().setPackage(context.getPackageName());
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent);
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName);
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, genericDrawableToBitmap(drawableIcon));
@@ -3347,13 +3333,6 @@ public class FunctionsClassLegacy {
 
             int initMix = mixColors(vibrantColor, darkMutedColor, 0.50f);
             int finalMix = mixColors(dominantColor, initMix, 0.50f);
-
-            Debug.Companion.PrintDebug("*** Vibrant ::: " + vibrantColor + " >>> " + ColorUtils.calculateLuminance(vibrantColor));
-            Debug.Companion.PrintDebug("*** Dark ::: " + darkMutedColor + " >>> " + ColorUtils.calculateLuminance(darkMutedColor));
-            Debug.Companion.PrintDebug("*** Dominant ::: " + dominantColor + " >>> " + ColorUtils.calculateLuminance(dominantColor));
-
-            Debug.Companion.PrintDebug("*** initMix ::: " + initMix + " >>> " + ColorUtils.calculateLuminance(initMix));
-            Debug.Companion.PrintDebug("*** finalMix ::: " + finalMix + " >>> " + ColorUtils.calculateLuminance(finalMix));
 
             double calculateLuminance = ColorUtils.calculateLuminance(dominantColor);
             if (calculateLuminance > 0.50) {//light

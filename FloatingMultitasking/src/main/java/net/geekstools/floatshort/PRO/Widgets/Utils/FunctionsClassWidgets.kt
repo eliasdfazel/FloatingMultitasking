@@ -346,7 +346,7 @@ class FunctionsClassWidgets (private val context: Context) {
 
         } else {
 
-            val addIntent = Intent()
+            val addIntent = Intent().setPackage(context.packageName)
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent)
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName)
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, functionsClassLegacy.layerDrawableToBitmap(widgetShortcutIcon))
@@ -376,7 +376,7 @@ class FunctionsClassWidgets (private val context: Context) {
 
         } else {
 
-            val removeIntent = Intent()
+            val removeIntent = Intent().setPackage(context.packageName)
             removeIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent)
             removeIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, shortcutName)
             removeIntent.putExtra("duplicate", true)

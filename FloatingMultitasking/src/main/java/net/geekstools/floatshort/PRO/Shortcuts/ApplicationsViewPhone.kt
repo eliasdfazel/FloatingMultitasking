@@ -70,7 +70,6 @@ import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.ApplicationsView
 import net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter.HybridSectionedGridRecyclerViewAdapter
 import net.geekstools.floatshort.PRO.Utils.AdapterDataItem.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItemsApplications
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.Dialogues
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.Functions.RuntimeIO
@@ -721,7 +720,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
         PublicVariable.customIconsPackages.clear()
         for (resolveInfo in resolveInfos) {
-            PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
             PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
         }
     }

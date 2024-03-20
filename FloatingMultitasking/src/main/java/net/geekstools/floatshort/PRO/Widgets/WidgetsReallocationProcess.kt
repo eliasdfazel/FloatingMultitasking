@@ -31,7 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Widgets.RoomDatabase.WidgetDataInterface
@@ -123,7 +122,6 @@ class WidgetsReallocationProcess : Activity() {
 
             when (requestCode) {
                 WIDGETS_REALLOCATION_REQUEST -> {
-                    Debug.PrintDebug("*** WIDGETS_REALLOCATION_REQUEST | ${REALLOCATION_COUNTER} ***")
 
                     if (REALLOCATION_COUNTER < widgetDataModelsReallocation.size) {
 
@@ -227,7 +225,6 @@ class WidgetsReallocationProcess : Activity() {
             })
 
             val provider = ComponentName.createRelative(widgetDataModel.PackageName, widgetDataModel.ClassNameProvider)
-            Debug.PrintDebug("*** ${widgetId}. Provider Widget = ${provider} ***")
 
             val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND)
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
@@ -236,7 +233,6 @@ class WidgetsReallocationProcess : Activity() {
 
             if (widgetDataModel.ConfigClassName != null) {
                 val configure = ComponentName.createRelative(widgetDataModel.PackageName, widgetDataModel.ConfigClassName!!)
-                Debug.PrintDebug("*** Configure Widget = $configure")
 
                 val intentWidgetConfiguration = Intent()
                 intentWidgetConfiguration.action = AppWidgetManager.ACTION_APPWIDGET_CONFIGURE

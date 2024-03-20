@@ -73,7 +73,6 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.Shortcuts.ApplicationsViewPhone
 import net.geekstools.floatshort.PRO.Utils.AdapterDataItem.RecycleViewSmoothLayoutGrid
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.RecoveryWidgets
@@ -722,7 +721,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         if (widgetConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) {
             loadCustomIcons.load()
-            Debug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }
 
         val widgetDataInterface = Room.databaseBuilder(applicationContext, WidgetDataInterface::class.java, PublicVariable.WIDGET_DATA_DATABASE_NAME)
@@ -769,8 +767,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                         val packageName: String = widgetDataModel.value.PackageName
                         val className: String = widgetDataModel.value.ClassNameProvider
                         val configClassName: String? = widgetDataModel.value.ConfigClassName
-
-                        Debug.PrintDebug("*** $appWidgetId *** PackageName: $packageName - ClassName: $className - Configure: $configClassName ***")
 
                         if (widgetConfigurationsDependencyInjection.functionsClassLegacy.appIsInstalled(packageName)) {
                             val appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId)
@@ -872,7 +868,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         if (widgetConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) {
             loadCustomIcons.load()
-            Debug.PrintDebug("*** Total Custom Icon ::: " + loadCustomIcons.totalIconsNumber)
         }
 
         var oldAppName = ""
@@ -880,7 +875,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         widgetProviderInfoList.asFlow()
                 .onEach {
-                    Debug.PrintDebug("*** Provider = " + it.provider + " | Config = " + it.configure + " ***")
                 }
                 .onCompletion {
 
@@ -1167,7 +1161,6 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
         PublicVariable.customIconsPackages.clear()
         for (resolveInfo in resolveInfos) {
-            Debug.PrintDebug("CustomIconPackages ::: " + resolveInfo.activityInfo.packageName)
             PublicVariable.customIconsPackages.add(resolveInfo.activityInfo.packageName)
         }
     }

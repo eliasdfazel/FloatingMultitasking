@@ -28,7 +28,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.NetworkCheckpoint
 import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
@@ -71,7 +70,6 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
                                 billingClient.queryPurchasesAsync(queryPurchasesParams).purchasesList.let { purchases ->
 
                                     for (purchase in purchases) {
-                                        PrintDebug("*** Purchased Item: $purchase ***")
 
                                         preferencesIO.savePreference(".PurchasedItem", purchase.products.first(), true)
 
@@ -81,7 +79,6 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
 
                                             val consumeResponseListener = ConsumeResponseListener { billingResult, purchaseToken ->
                                                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                                                    PrintDebug("*** Consumed Item: $purchaseToken ***")
 
                                                     preferencesIO.savePreference(".PurchasedItem", purchase.products.first(), false)
                                                 }
@@ -126,7 +123,6 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
                                 billingClient.queryPurchasesAsync(queryPurchasesParams).purchasesList.let { purchases ->
 
                                     for (purchase in purchases) {
-                                        PrintDebug("*** Subscribed Item: $purchase ***")
 
                                         preferencesIO.savePreference(".SubscribedItem", purchase.products.first(), true)
 
@@ -174,7 +170,6 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
         fun purchaseAcknowledgeProcess(billingClient: BillingClient, purchase: Purchase, purchaseType: String) = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
 
             if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                PrintDebug("*** ${purchase.products.first()} Purchase Acknowledged: ${purchase.isAcknowledged} ***")
 
                 if (!purchase.isAcknowledged) {
 
@@ -183,7 +178,6 @@ class PurchasesCheckpoint(var appCompatActivity: AppCompatActivity) : PurchasesU
 
                     val aPurchaseResult: BillingResult = billingClient.acknowledgePurchase(acknowledgePurchaseParams.build())
 
-                    PrintDebug("*** Purchased Acknowledged Result: ${purchase.products.first()} -> ${aPurchaseResult.debugMessage} ***")
                 }
             }
         }

@@ -22,7 +22,6 @@ import android.provider.Settings
 import android.text.Html
 import android.view.WindowManager
 import android.widget.Toast
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.databinding.CheckPointBinding
@@ -113,7 +112,6 @@ class Checkpoint : Activity() {
             PermissionRequestCodeIntent -> {
 
                 if (Settings.canDrawOverlays(applicationContext)) {
-                    PrintDebug("*** Overlay Permission Granted ***")
 
                     startActivity(Intent(applicationContext, Configurations::class.java),
                             ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())

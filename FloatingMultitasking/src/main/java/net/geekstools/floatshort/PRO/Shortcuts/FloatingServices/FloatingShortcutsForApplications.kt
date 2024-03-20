@@ -52,7 +52,6 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.Utils.OpenActions
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.Functions.RuntimeIO
@@ -203,8 +202,6 @@ class FloatingShortcutsForApplications : Service() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
-        Debug.PrintDebug(this@FloatingShortcutsForApplications.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
-
 
         intent?.run {
 
@@ -430,7 +427,7 @@ class FloatingShortcutsForApplications : Service() {
                                     
                                     functionsClassLegacy.doVibrate(100)
                                     
-                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
+                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()).setPackage(packageName))
                                     
                                     getBackRunnable = Runnable {
                                         if (removePermit[startId]) {
@@ -446,7 +443,7 @@ class FloatingShortcutsForApplications : Service() {
                             runnablePressHold = Runnable {
                                 if (touchingDelay[startId]) {
                                     functionsClassLegacy.PopupOptionShortcuts(
-                                            floatingShortcutsBinding.get(startId).root,
+                                            floatingShortcutsBinding[startId].root,
                                             packageNames[startId],
                                             classNames[startId],
                                             this@FloatingShortcutsForApplications.javaClass.simpleName,
@@ -584,7 +581,7 @@ class FloatingShortcutsForApplications : Service() {
                                 if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
                                         || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
-                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
+                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()).setPackage(packageName))
 
                                     openPermit[startId] = false
                                     touchingDelay[startId] = false
@@ -610,7 +607,7 @@ class FloatingShortcutsForApplications : Service() {
                                     if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
                                             || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
-                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
+                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()).setPackage(packageName))
 
                                         openPermit[startId] = false
                                         touchingDelay[startId] = false
@@ -786,10 +783,10 @@ class FloatingShortcutsForApplications : Service() {
                 intentFilter.addAction("Unpin_App_$floatingShortcutClassInCommand")
                 intentFilter.addAction("Float_It_$floatingShortcutClassInCommand")
                 intentFilter.addAction("Remove_App_$floatingShortcutClassInCommand")
-                intentFilter.addAction("Sticky_Edge${applicationContext.packageName}")
-                intentFilter.addAction("Sticky_Edge_No${applicationContext.packageName}")
-                intentFilter.addAction("Notification_Dot${applicationContext.packageName}")
-                intentFilter.addAction("Notification_Dot_No${applicationContext.packageName}")
+                intentFilter.addAction("Sticky_Edge_${applicationContext.packageName}")
+                intentFilter.addAction("Sticky_Edge_No_${applicationContext.packageName}")
+                intentFilter.addAction("Notification_Dot_${applicationContext.packageName}")
+                intentFilter.addAction("Notification_Dot_No_${applicationContext.packageName}")
                 broadcastReceiver = object : BroadcastReceiver() {
 
                     override fun onReceive(context: Context, intent: Intent) {
@@ -953,14 +950,10 @@ class FloatingShortcutsForApplications : Service() {
 
                             try {
 
-                                if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)) == null) {
-                                    return
-                                }
-
-                                if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root.isShown) {
+                                if (floatingShortcutsBinding[intent.getIntExtra("startId", 1)].root.isShown) {
                                     try {
 
-                                        windowManager.removeView(floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root)
+                                        windowManager.removeView(floatingShortcutsBinding[intent.getIntExtra("startId", 1)].root)
 
                                     } catch (e: Exception) {
                                         e.printStackTrace()
@@ -1032,7 +1025,7 @@ class FloatingShortcutsForApplications : Service() {
                                 }
                             }
 
-                        } else if (intent.action == "Notification_Dot${applicationContext.packageName}") {
+                        } else if (intent.action == "Notification_Dot_${applicationContext.packageName}") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
 
@@ -1077,7 +1070,7 @@ class FloatingShortcutsForApplications : Service() {
                             }
 
 
-                        } else if (intent.action == "Notification_Dot_No${applicationContext.packageName}") {
+                        } else if (intent.action == "Notification_Dot_No_${applicationContext.packageName}") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
 
@@ -1102,8 +1095,8 @@ class FloatingShortcutsForApplications : Service() {
 
             if (getFileStreamPath(packageNames[startId] + "_" + "Notification" + "Package").exists()) {
 
-                sendBroadcast(Intent("Notification_Dot")
-                        .putExtra("NotificationPackage", packageNames[startId]))
+                sendBroadcast(Intent("Notification_Dot_$packageName")
+                        .putExtra("NotificationPackage", packageNames[startId]).setPackage(packageName))
             }
         }
 

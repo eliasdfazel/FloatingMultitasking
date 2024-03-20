@@ -20,7 +20,6 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Exte
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Extensions.setupAuthenticationUIWindow
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.AuthenticationPinPassword
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 
 class AuthenticationFingerprint : FragmentActivity() {
@@ -51,11 +50,9 @@ class AuthenticationFingerprint : FragmentActivity() {
 
                 override fun onAuthenticationError(errorCode: Int, errorString: CharSequence) {
                     super.onAuthenticationError(errorCode, errorString)
-                    Debug.PrintDebug("*** ${errorCode}. ${errorString} ***")
 
                     when (errorCode) {
                         BiometricPrompt.ERROR_USER_CANCELED -> {
-                            Debug.PrintDebug("*** ERROR USER CANCELED ***")
 
                             SecurityInterfaceHolder.authenticationCallback
                                     .failedAuthenticated()
@@ -63,7 +60,6 @@ class AuthenticationFingerprint : FragmentActivity() {
                             this@AuthenticationFingerprint.finish()
                         }
                         BiometricPrompt.ERROR_CANCELED -> {
-                            Debug.PrintDebug("*** ERROR CANCELED ***")
 
                             SecurityInterfaceHolder.authenticationCallback
                                     .failedAuthenticated()
@@ -71,7 +67,6 @@ class AuthenticationFingerprint : FragmentActivity() {
                             this@AuthenticationFingerprint.finish()
                         }
                         BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> {
-                            Debug.PrintDebug("*** ERROR LOCKOUT PERMANENT ***")
 
                             SecurityInterfaceHolder.authenticationCallback
                                     .failedAuthenticated()
@@ -79,27 +74,22 @@ class AuthenticationFingerprint : FragmentActivity() {
                             this@AuthenticationFingerprint.finish()
                         }
                         BiometricPrompt.ERROR_HW_NOT_PRESENT -> {
-                            Debug.PrintDebug("*** ERROR HW NOT PRESENT ***")
 
                             triggerPinPasswordFragment(dialogueTitle)
                         }
                         BiometricPrompt.ERROR_HW_UNAVAILABLE -> {
-                            Debug.PrintDebug("*** ERROR HW UNAVAILABLE ***")
 
                             triggerPinPasswordFragment(dialogueTitle)
                         }
                         BiometricPrompt.ERROR_LOCKOUT -> {
-                            Debug.PrintDebug("*** ERROR LOCKOUT ***")
 
                             triggerPinPasswordFragment(dialogueTitle)
                         }
                         BiometricPrompt.ERROR_TIMEOUT -> {
-                            Debug.PrintDebug("*** ERROR TIMEOUT ***")
 
                             triggerPinPasswordFragment(dialogueTitle)
                         }
                         else -> {
-                            Debug.PrintDebug("*** ERROR UNKNOWN ***")
 
                             triggerPinPasswordFragment(dialogueTitle)
                         }
@@ -108,7 +98,6 @@ class AuthenticationFingerprint : FragmentActivity() {
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    Debug.PrintDebug("*** Authentication Failed ***")
 
                     SecurityInterfaceHolder.authenticationCallback
                             .failedAuthenticated()
@@ -122,7 +111,6 @@ class AuthenticationFingerprint : FragmentActivity() {
 
                 override fun onAuthenticationSucceeded(authenticationResult: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(authenticationResult)
-                    Debug.PrintDebug("*** Authentication Succeeded ***")
 
                     SecurityInterfaceHolder.authenticationCallback
                             .authenticatedFloatIt(null)

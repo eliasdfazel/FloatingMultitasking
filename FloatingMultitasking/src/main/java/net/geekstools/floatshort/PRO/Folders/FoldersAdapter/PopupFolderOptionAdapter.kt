@@ -235,11 +235,11 @@ class PopupFolderOptionAdapter : BaseAdapter {
                     context.startActivity(Intent(context, FoldersConfigurations::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 } else if (adapterItems[position].appName.contains(context.getString(R.string.remove_folder))) {
-                    context.sendBroadcast(Intent("Remove_Category_$classNameCommand").putExtra("startId", startId))
+                    context.sendBroadcast(Intent("Remove_Category_$classNameCommand").putExtra("startId", startId).setPackage(context.packageName))
                 } else if (adapterItems[position].appName.contains(context.getString(R.string.unpin_folder))) {
-                    context.sendBroadcast(Intent("Unpin_App_$classNameCommand").putExtra("startId", startId))
+                    context.sendBroadcast(Intent("Unpin_App_$classNameCommand").putExtra("startId", startId).setPackage(context.packageName))
                 } else if (adapterItems[position].appName.contains(context.getString(R.string.pin_folder))) {
-                    context.sendBroadcast(Intent("Pin_App_$classNameCommand").putExtra("startId", startId))
+                    context.sendBroadcast(Intent("Pin_App_$classNameCommand").putExtra("startId", startId).setPackage(context.packageName))
                 } else if (adapterItems[position].appName.contains(context.getString(R.string.splitIt))) {
                     if (functionsClassLegacy.securityServicesSubscribed()) {
 
@@ -379,7 +379,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
                 e.printStackTrace()
             }
 
-            context.sendBroadcast(Intent("Hide_PopupListView_Category" + context.getPackageName()))
+            context.sendBroadcast(Intent("Hide_PopupListView_Category" + context.getPackageName()).setPackage(context.packageName))
         }
         convertView?.setOnLongClickListener { view ->
             if (functionsClassLegacy.returnAPI() >= 24) {
@@ -401,7 +401,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
                     }
                 }
             }
-            context.sendBroadcast(Intent("Hide_PopupListView_Category" + context.getPackageName()))
+            context.sendBroadcast(Intent("Hide_PopupListView_Category" + context.getPackageName()).setPackage(context.packageName))
             true
         }
         return convertView

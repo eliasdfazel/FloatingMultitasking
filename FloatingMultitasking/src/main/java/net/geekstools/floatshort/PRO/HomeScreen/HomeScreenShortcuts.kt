@@ -41,7 +41,7 @@ class HomeScreenShortcuts (private val context: Context) {
 
         } else {
 
-            val addIntent = Intent()
+            val addIntent = Intent().setPackage(context.packageName)
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent)
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, functionsClassLegacy.applicationName(packageName))
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, functionsClassLegacy.drawableToBitmap(functionsClassLegacy.getAppIconDrawableCustomIcon(packageName)))

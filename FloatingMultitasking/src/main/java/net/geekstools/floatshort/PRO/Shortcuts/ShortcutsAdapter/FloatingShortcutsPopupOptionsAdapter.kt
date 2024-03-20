@@ -198,15 +198,15 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
                 }
             } else if (adapterItems[position].optionItemTitle == context.getString(R.string.pin)) {
 
-                context.sendBroadcast(Intent("Pin_App_$classNameCommand").putExtra("startId", startId))
+                context.sendBroadcast(Intent("Pin_App_$classNameCommand").putExtra("startId", startId).setPackage(context.packageName))
 
             } else if (adapterItems[position].optionItemTitle == context.getString(R.string.unpin)) {
 
-                context.sendBroadcast(Intent("Unpin_App_$classNameCommand").putExtra("startId", startId))
+                context.sendBroadcast(Intent("Unpin_App_$classNameCommand").putExtra("startId", startId).setPackage(context.packageName))
 
             } else if (adapterItems[position].optionItemTitle == context.getString(R.string.floatIt)) {
 
-                context.sendBroadcast(Intent("Float_It_$classNameCommand").putExtra("startId", startId))
+                context.sendBroadcast(Intent("Float_It_$classNameCommand").putExtra("startId", startId).setPackage(context.packageName))
 
             } else if (adapterItems[position].optionItemTitle == context.getString(R.string.close)) {
 
@@ -235,11 +235,11 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
                 }
             } else if (adapterItems[position].optionItemTitle == context.getString(R.string.remove)) {
 
-                context.sendBroadcast(Intent("Remove_App_$classNameCommand").putExtra("startId", startId))
+                context.sendBroadcast(Intent("Remove_App_$classNameCommand").putExtra("startId", startId).setPackage(context.packageName))
 
             }
 
-            context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + context.getPackageName()))
+            context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + context.getPackageName()).setPackage(context.packageName))
         }
 
         return convertView

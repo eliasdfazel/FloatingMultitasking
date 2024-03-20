@@ -48,7 +48,6 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.Utils.OpenActions
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -198,7 +197,6 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
         super.onStartCommand(intent, flags, serviceStartId)
-        Debug.PrintDebug(this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName + " ::: StartId ::: " + serviceStartId)
 
         intent?.run {
 
@@ -418,7 +416,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
                                     functionsClassLegacy.doVibrate(100)
 
-                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
+                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()).setPackage(packageName))
 
                                     getBackRunnable = Runnable {
                                         if (removePermit[startId]) {
@@ -571,7 +569,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                 if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
                                         || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
-                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
+                                    sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()).setPackage(packageName))
 
                                     openPermit[startId] = false
                                     touchingDelay[startId] = false
@@ -597,7 +595,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                     if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
                                             || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
-                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()))
+                                        sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()).setPackage(packageName))
 
                                         openPermit[startId] = false
                                         touchingDelay[startId] = false
@@ -767,15 +765,14 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                 intentFilter.addAction("Unpin_App_$floatingShortcutClassInCommand")
                 intentFilter.addAction("Float_It_$floatingShortcutClassInCommand")
                 intentFilter.addAction("Remove_App_$floatingShortcutClassInCommand")
-                intentFilter.addAction("Sticky_Edge${applicationContext.packageName}")
-                intentFilter.addAction("Sticky_Edge_No${applicationContext.packageName}")
-                intentFilter.addAction("Notification_Dot${applicationContext.packageName}")
-                intentFilter.addAction("Notification_Dot_No${applicationContext.packageName}")
+                intentFilter.addAction("Sticky_Edge_${applicationContext.packageName}")
+                intentFilter.addAction("Sticky_Edge_No_${applicationContext.packageName}")
+                intentFilter.addAction("Notification_Dot_${applicationContext.packageName}")
+                intentFilter.addAction("Notification_Dot_No_${applicationContext.packageName}")
                 val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
                     override fun onReceive(context: Context, intent: Intent) {
                         if (intent.action == "Split_Apps_Single_$floatingShortcutClassInCommand" && PublicVariable.splitScreen) {
-                            Debug.PrintDebug("Split Apps Single")
 
                             PublicVariable.splitScreen = false
                             Handler(Looper.getMainLooper()).postDelayed({
@@ -1004,7 +1001,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                 }
                             }
 
-                        } else if (intent.action == "Notification_Dot${applicationContext.packageName}") {
+                        } else if (intent.action == "Notification_Dot_${applicationContext.packageName}") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
 
@@ -1049,7 +1046,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                             }
 
 
-                        } else if (intent.action == "Notification_Dot_No${applicationContext.packageName}") {
+                        } else if (intent.action == "Notification_Dot_No_${applicationContext.packageName}") {
 
                             intent.getStringExtra("NotificationPackage")?.let {
 
@@ -1073,7 +1070,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
             }
 
             if (getFileStreamPath(packageNames.get(startId) + "_" + "Notification" + "Package").exists()) {
-                sendBroadcast(Intent("Notification_Dot").putExtra("NotificationPackage", packageNames.get(startId)))
+                sendBroadcast(Intent("Notification_Dot_$packageName").putExtra("NotificationPackage", packageNames.get(startId)).setPackage(packageName))
             }
         }
 

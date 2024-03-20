@@ -47,13 +47,11 @@ class SystemInformation (private val context: Context) {
     }
 
     fun getCpuModel() : String {
-        Debug.PrintDebug("*** ${Build.HARDWARE} ***")
 
         return Build.HARDWARE
     }
 
     fun getDeviceManufacturer() : String {
-        Debug.PrintDebug("*** ${Build.MANUFACTURER} ***")
 
         return Build.MANUFACTURER
     }

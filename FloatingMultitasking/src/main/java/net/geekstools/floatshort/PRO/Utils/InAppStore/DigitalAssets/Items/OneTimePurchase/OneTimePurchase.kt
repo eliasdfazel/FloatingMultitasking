@@ -39,7 +39,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.storage.FirebaseStorage
 import net.geekstools.floatshort.PRO.R
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToItemTitle
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToRemoteConfigDescriptionKey
 import net.geekstools.floatshort.PRO.Utils.InAppStore.DigitalAssets.Extensions.convertToRemoteConfigPriceInformation
@@ -146,7 +145,6 @@ class OneTimePurchase : Fragment(), View.OnClickListener, PurchasesUpdatedListen
                     .build()
 
                 billingClient.queryProductDetailsAsync(queryProductDetailsParams) { queryBillingResult, productsDetailsListInApp ->
-                    Debug.PrintDebug("Billing Result: ${queryBillingResult.debugMessage} | Sku Details List In App Purchase: $productsDetailsListInApp")
 
                     when (queryBillingResult.responseCode) {
                         BillingClient.BillingResponseCode.ERROR -> {

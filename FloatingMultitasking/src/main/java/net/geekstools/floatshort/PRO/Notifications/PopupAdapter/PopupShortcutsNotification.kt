@@ -31,7 +31,6 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityFunctions
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -197,7 +196,7 @@ class PopupShortcutsNotification(private val context: Context,
                     }
                 }
             }
-            context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts_Notification" + context.getPackageName()))
+            context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts_Notification" + context.getPackageName()).setPackage(context.packageName))
         }
 
         convertView?.setOnTouchListener(object : OnTouchListener {
@@ -222,10 +221,6 @@ class PopupShortcutsNotification(private val context: Context,
                                     val notificationPackage: String = adapterItems[position].notificationPackage
                                     val notificationTime: String = adapterItems[position].notificationTime
 
-                                    PrintDebug("::: Remove Package ::: $notificationPackage")
-                                    PrintDebug("::: Remove Time ::: $notificationTime")
-                                    PrintDebug("::: Broadcast Remove Key ::: " + adapterItems[position].notificationId)
-
                                     context.deleteFile(notificationTime + "_" + "Notification" + "Key")
                                     context.deleteFile(notificationTime + "_" + "Notification" + "Title")
                                     context.deleteFile(notificationTime + "_" + "Notification" + "Text")
@@ -235,7 +230,7 @@ class PopupShortcutsNotification(private val context: Context,
                                     if (fileIO.fileLinesCounter(notificationPackage + "_" + "Notification" + "Package") == 0) {
                                         context.deleteFile(notificationPackage + "_" + "Notification" + "Package")
 
-                                        context.sendBroadcast(Intent("Notification_Dot_No").putExtra("NotificationPackage", notificationPackage))
+                                        context.sendBroadcast(Intent("Notification_Dot_No_$packageName").putExtra("NotificationPackage", notificationPackage).setPackage(context.packageName))
 
                                         PublicVariable.notificationIntent.clear()
                                     }
@@ -247,9 +242,9 @@ class PopupShortcutsNotification(private val context: Context,
                                 }
 
                                 context.sendBroadcast(Intent("Remove_Notification_Key" + context.getPackageName())
-                                        .putExtra("notification_key", adapterItems[position].notificationId)
+                                        .putExtra("notification_key", adapterItems[position].notificationId).setPackage(context.packageName)
                                 )
-                                context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts_Notification" + context.getPackageName()))
+                                context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts_Notification" + context.getPackageName()).setPackage(context.packageName))
                             }
                         } else {
                             if (abs(minus) > X) {
@@ -259,10 +254,6 @@ class PopupShortcutsNotification(private val context: Context,
                                     val notificationPackage: String = adapterItems[position].notificationPackage
                                     val notificationTime: String = adapterItems[position].notificationTime
 
-                                    PrintDebug("::: Remove Package ::: $notificationPackage")
-                                    PrintDebug("::: Remove Time ::: $notificationTime")
-                                    PrintDebug("::: Broadcast Remove Key ::: " + adapterItems[position].notificationId)
-
                                     context.deleteFile(notificationTime + "_" + "Notification" + "Key")
                                     context.deleteFile(notificationTime + "_" + "Notification" + "Title")
                                     context.deleteFile(notificationTime + "_" + "Notification" + "Text")
@@ -272,7 +263,7 @@ class PopupShortcutsNotification(private val context: Context,
                                     if (fileIO.fileLinesCounter(notificationPackage + "_" + "Notification" + "Package") == 0) {
                                         context.deleteFile(notificationPackage + "_" + "Notification" + "Package")
 
-                                        context.sendBroadcast(Intent("Notification_Dot_No").putExtra("NotificationPackage", notificationPackage))
+                                        context.sendBroadcast(Intent("Notification_Dot_No_$packageName").putExtra("NotificationPackage", notificationPackage).setPackage(context.packageName))
 
                                         PublicVariable.notificationIntent.clear()
                                     }
@@ -284,7 +275,7 @@ class PopupShortcutsNotification(private val context: Context,
                                 }
 
                                 context.sendBroadcast(Intent("Remove_Notification_Key" + context.getPackageName())
-                                        .putExtra("notification_key", adapterItems[position].notificationId)
+                                        .putExtra("notification_key", adapterItems[position].notificationId).setPackage(context.packageName)
                                 )
                                 context.sendBroadcast(Intent("Hide_PopupListView_Shortcuts_Notification" + context.getPackageName()))
                             }

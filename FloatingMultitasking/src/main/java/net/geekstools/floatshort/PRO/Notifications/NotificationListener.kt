@@ -23,8 +23,6 @@ import android.os.Looper
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import net.geekstools.floatshort.PRO.Utils.Functions.BitmapExtractor
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug
-import net.geekstools.floatshort.PRO.Utils.Functions.Debug.Companion.PrintDebug
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
@@ -60,7 +58,6 @@ class NotificationListener : NotificationListenerService() {
     }
 
     override fun onListenerConnected() {
-        PrintDebug("Notification Listener Connected")
     }
 
     override fun onNotificationPosted(statusBarNotification: StatusBarNotification?) {
@@ -150,12 +147,6 @@ class NotificationListener : NotificationListenerService() {
 
                 }
 
-                Debug.PrintDebug("::: Package ::: $notificationPackage")
-                Debug.PrintDebug("::: Key ::: $notificationId")
-                Debug.PrintDebug("::: Title ::: $notificationTitle")
-                Debug.PrintDebug("::: Text ::: $notificationText")
-                Debug.PrintDebug("::: Time ::: $notificationTime")
-
                 /*Save Temp Notification Files*/
                 fileIO.saveFileAppendLine(notificationPackage + "_" + "Notification" + "Package", notificationTime)
                 fileIO.saveFile(notificationTime + "_" + "Notification" + "Key", notificationId)
@@ -194,8 +185,8 @@ class NotificationListener : NotificationListenerService() {
                     e.printStackTrace()
                 }
 
-                sendBroadcast(Intent("Notification_Dot")
-                        .putExtra("NotificationPackage", notificationPackage))
+                sendBroadcast(Intent("Notification_Dot_$packageName")
+                        .putExtra("NotificationPackage", notificationPackage).setPackage(packageName))
 
             }
 
@@ -226,9 +217,6 @@ class NotificationListener : NotificationListenerService() {
                 val notificationPackage = statusBarNotification.packageName
                 val notificationTime = statusBarNotification.postTime.toString()
 
-                Debug.PrintDebug("::: Remove Package ::: $notificationPackage")
-                Debug.PrintDebug("::: Remove Time ::: $notificationTime")
-
                 deleteFile(notificationTime + "_" + "Notification" + "Key")
                 deleteFile(notificationTime + "_" + "Notification" + "Title")
                 deleteFile(notificationTime + "_" + "Notification" + "Text")
@@ -240,7 +228,7 @@ class NotificationListener : NotificationListenerService() {
 
                     deleteFile(notificationPackage + "_" + "Notification" + "Package")
 
-                    sendBroadcast(Intent("Notification_Dot_No").putExtra("NotificationPackage", notificationPackage))
+                    sendBroadcast(Intent("Notification_Dot_No_$packageName").putExtra("NotificationPackage", notificationPackage).setPackage(packageName))
 
                     PublicVariable.notificationIntent.clear()
                 }

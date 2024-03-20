@@ -59,12 +59,12 @@ class RemoteController : Service() {
                 }
                 RemoteController.COMMANDS.Sticky_Edge -> {
 
-                    sendBroadcast(Intent("Sticky_Edge"))
+                    sendBroadcast(Intent("Sticky_Edge_$packageName").setPackage(packageName))
 
                 }
                 RemoteController.COMMANDS.Sticky_Edge_No -> {
 
-                    sendBroadcast(Intent("Sticky_Edge_No"))
+                    sendBroadcast(Intent("Sticky_Edge_No_$packageName").setPackage(packageName))
 
                 }
                 else -> {
