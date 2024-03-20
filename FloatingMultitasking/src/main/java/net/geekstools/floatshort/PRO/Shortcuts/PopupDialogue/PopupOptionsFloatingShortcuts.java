@@ -74,7 +74,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
 
         startIdCommand = intent.getIntExtra("startIdCommand", 0);
         classNameCommand = intent.getStringExtra("classNameCommand");
-        packageName = intent.getStringExtra("packageName");
+        packageName = intent.getStringExtra("PackageName");
         HW = intent.getIntExtra("HW", 0);
         xPosition = intent.getIntExtra("X", 0);
         yPosition = intent.getIntExtra("Y", 0);

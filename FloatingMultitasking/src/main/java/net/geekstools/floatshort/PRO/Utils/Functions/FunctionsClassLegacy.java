@@ -222,7 +222,7 @@ public class FunctionsClassLegacy {
     public void PopupOptionShortcuts(View anchorView, final String packageName, String classNameCommand, int startId, int X, int Y) {
         try {
             Intent popupOptionsShortcuts = new Intent(context, PopupOptionsFloatingShortcuts.class);
-            popupOptionsShortcuts.putExtra("packageName", packageName);
+            popupOptionsShortcuts.putExtra("PackageName", packageName);
             popupOptionsShortcuts.putExtra("classNameCommand", classNameCommand);
             popupOptionsShortcuts.putExtra("startIdCommand", startId);
             popupOptionsShortcuts.putExtra("X", X);
@@ -255,8 +255,8 @@ public class FunctionsClassLegacy {
                                      int X, int Y) {
         try {
             Intent popupOptionsShortcuts = new Intent(context, PopupOptionsFloatingShortcuts.class);
-            popupOptionsShortcuts.putExtra("packageName", packageName);
-            popupOptionsShortcuts.putExtra("className", className);
+            popupOptionsShortcuts.putExtra("PackageName", packageName);
+            popupOptionsShortcuts.putExtra("ClassName", className);
             popupOptionsShortcuts.putExtra("classNameCommand", classNameCommand);
             popupOptionsShortcuts.putExtra("startIdCommand", startId);
             popupOptionsShortcuts.putExtra("X", X);
@@ -1456,15 +1456,15 @@ public class FunctionsClassLegacy {
     public void appsLaunchPad(String packageName) {
         Intent intent = new Intent(context, OpenApplicationsLaunchPad.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("packageName", packageName);
+        intent.putExtra("PackageName", packageName);
         context.startActivity(intent);
     }
 
     public void appsLaunchPad(String packageName, String className) {
         Intent intent = new Intent(context, OpenApplicationsLaunchPad.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("packageName", packageName);
-        intent.putExtra("className", className);
+        intent.putExtra("PackageName", packageName);
+        intent.putExtra("ClassName", className);
         context.startActivity(intent);
     }
 

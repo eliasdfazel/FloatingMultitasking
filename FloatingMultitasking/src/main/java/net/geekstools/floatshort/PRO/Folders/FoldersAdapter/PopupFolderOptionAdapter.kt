@@ -315,7 +315,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
 
                                 if (functionsClassLegacy.splashReveal()) {
                                     val splashReveal = Intent(context, FloatingSplash::class.java)
-                                    splashReveal.putExtra("packageName", adapterItems[position].packageName)
+                                    splashReveal.putExtra("PackageName", adapterItems[position].packageName)
                                     splashReveal.putExtra("X", xPosition)
                                     splashReveal.putExtra("Y", yPosition)
                                     splashReveal.putExtra("HW", HW)
@@ -356,7 +356,7 @@ class PopupFolderOptionAdapter : BaseAdapter {
                     } else {
                         if (functionsClassLegacy.splashReveal()) {
                             val splashReveal = Intent(context, FloatingSplash::class.java)
-                            splashReveal.putExtra("packageName", adapterItems[position].packageName)
+                            splashReveal.putExtra("PackageName", adapterItems[position].packageName)
                             splashReveal.putExtra("X", xPosition)
                             splashReveal.putExtra("Y", yPosition)
                             splashReveal.putExtra("HW", HW)

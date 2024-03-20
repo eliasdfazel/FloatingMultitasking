@@ -101,12 +101,12 @@ class FloatingSplash : Service() {
                 statusBarHeight = resources.getDimensionPixelSize(resourceIdStatus)
             }
 
-            appPackageName = intent.getStringExtra("packageName")!!
+            appPackageName = intent.getStringExtra("PackageName")!!
             var appIcon = getDrawable(R.drawable.ic_launcher_balloon)
 
-            if (intent.hasExtra("className")) {
+            if (intent.hasExtra("ClassName")) {
 
-                appClassName = intent.getStringExtra("className")
+                appClassName = intent.getStringExtra("ClassName")
 
                 appIcon = if (functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageManager.getActivityInfo(ComponentName(appPackageName, appClassName!!), 0), functionsClassLegacy.shapedAppIcon(appPackageName).mutate()) else functionsClassLegacy.shapedAppIcon(appPackageName).mutate()
 

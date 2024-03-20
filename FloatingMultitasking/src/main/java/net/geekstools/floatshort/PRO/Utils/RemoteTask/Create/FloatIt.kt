@@ -35,11 +35,15 @@ class FloatIt : AppCompatActivity() {
         PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), resources.displayMetrics).toInt()
 
-        if (intent.hasCategory("PackageName")) {
+        val aPackageName = intent.getStringExtra("PackageName")!!
+
+        println(">>> " + intent.hasExtra("PackageName") + " --- " + aPackageName)
+
+        if (intent.hasExtra("PackageName")) {
 
             val aPackageName = intent.getStringExtra("PackageName")!!
 
-            val aClassName = if (intent.hasCategory("ClassName")) {
+            val aClassName = if (intent.hasExtra("ClassName")) {
 
                 intent.getStringExtra("ClassName")
 
@@ -107,7 +111,7 @@ class FloatIt : AppCompatActivity() {
 
         val aPackageName = intent.getStringExtra("PackageName")!!
 
-        val aClassName = if (intent.hasCategory("ClassName")) {
+        val aClassName = if (intent.hasExtra("ClassName")) {
 
             intent.getStringExtra("ClassName")
 

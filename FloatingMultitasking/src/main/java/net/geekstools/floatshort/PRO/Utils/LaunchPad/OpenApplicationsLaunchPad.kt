@@ -19,14 +19,14 @@ class OpenApplicationsLaunchPad : Activity() {
 
         val functionsClass = FunctionsClassLegacy(applicationContext)
 
-        val appPackageName: String? = intent.getStringExtra("packageName")
+        val appPackageName: String? = intent.getStringExtra("PackageName")
 
         appPackageName?.let {
 
             try {
-                if (intent.hasExtra("className")) {
+                if (intent.hasExtra("ClassName")) {
 
-                    val appClassName = intent.getStringExtra("className")
+                    val appClassName = intent.getStringExtra("ClassName")
 
                     functionsClass.openApplicationFromActivity(this@OpenApplicationsLaunchPad,
                             appPackageName,

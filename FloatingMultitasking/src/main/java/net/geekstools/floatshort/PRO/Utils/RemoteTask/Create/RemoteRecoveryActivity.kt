@@ -21,7 +21,7 @@ class RemoteRecoveryActivity : Activity() {
     override fun onCreate(Saved: Bundle?) {
         super.onCreate(Saved)
 
-        intent.getStringExtra("packageName")?.let { packageName ->
+        intent.getStringExtra("PackageName")?.let { packageName ->
 
             val functionsClass = FunctionsClassLegacy(applicationContext)
             val functionsClassRunServices = FloatingServices(applicationContext)

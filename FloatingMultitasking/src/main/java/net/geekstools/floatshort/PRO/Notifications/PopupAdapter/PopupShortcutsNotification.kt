@@ -133,7 +133,7 @@ class PopupShortcutsNotification(private val context: Context,
 
                         if (functionsClassLegacy.splashReveal()) {
                             val splashReveal = Intent(context, FloatingSplash::class.java)
-                            splashReveal.putExtra("packageName", packageName)
+                            splashReveal.putExtra("PackageName", packageName)
                             splashReveal.putExtra("X", xPosition)
                             splashReveal.putExtra("Y", yPosition)
                             splashReveal.putExtra("HW", HW)
@@ -177,7 +177,7 @@ class PopupShortcutsNotification(private val context: Context,
 
                 if (functionsClassLegacy.splashReveal()) {
                     val splashReveal = Intent(context, FloatingSplash::class.java)
-                    splashReveal.putExtra("packageName", packageName)
+                    splashReveal.putExtra("PackageName", packageName)
                     splashReveal.putExtra("X", xPosition)
                     splashReveal.putExtra("Y", yPosition)
                     splashReveal.putExtra("HW", HW)

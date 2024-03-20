@@ -24,8 +24,8 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
         if (functionsClassLegacy.splashReveal()) {
 
             val splashReveal = Intent(context, FloatingSplash::class.java).apply {
-                putExtra("packageName", packageName)
-                putExtra("className", className)
+                putExtra("PackageName", packageName)
+                putExtra("ClassName", className)
 
                 putExtra("X", layoutParams.x)
                 putExtra("Y", layoutParams.y)
@@ -61,7 +61,7 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
         if (functionsClassLegacy.splashReveal()) {
 
             val splashReveal = Intent(context, FloatingSplash::class.java).apply {
-                putExtra("packageName", packageName)
+                putExtra("PackageName", packageName)
 
                 putExtra("X", layoutParams.x)
                 putExtra("Y", layoutParams.y)
@@ -96,8 +96,8 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
         if (functionsClassLegacy.splashReveal()) {
 
             val splashReveal = Intent(context, FloatingSplash::class.java).apply {
-                putExtra("packageName", packageName)
-                putExtra("className", className)
+                putExtra("PackageName", packageName)
+                putExtra("ClassName", className)
 
                 putExtra("X", xPosition)
                 putExtra("Y", yPosition)
@@ -134,7 +134,7 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
         if (functionsClassLegacy.splashReveal()) {
 
             val splashReveal = Intent(context, FloatingSplash::class.java).apply {
-                putExtra("packageName", packageName)
+                putExtra("PackageName", packageName)
 
                 putExtra("X", xPosition)
                 putExtra("Y", yPosition)
