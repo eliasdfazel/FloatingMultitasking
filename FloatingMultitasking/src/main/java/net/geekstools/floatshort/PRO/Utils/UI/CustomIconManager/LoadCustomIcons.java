@@ -20,6 +20,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 
+import net.geekstools.floatshort.PRO.Utils.Functions.BitmapExtractor;
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -38,6 +39,8 @@ public class LoadCustomIcons {
     private Context context;
 
     private FunctionsClassLegacy functionsClassLegacy;
+
+    private BitmapExtractor bitmapExtractor;
 
     private String packageNameIconPack;
 
@@ -60,6 +63,8 @@ public class LoadCustomIcons {
         this.packageNameIconPack = iconsPackageName;
 
         functionsClassLegacy = new FunctionsClassLegacy(context);
+
+        bitmapExtractor = new BitmapExtractor(context);
     }
 
     public void load() {
@@ -161,7 +166,7 @@ public class LoadCustomIcons {
             if (bitmap instanceof BitmapDrawable) {
                 return ((BitmapDrawable) bitmap).getBitmap();
             } else {
-                return functionsClassLegacy.drawableToBitmap(bitmap);
+                return bitmapExtractor.drawableToBitmap(bitmap);
             }
         }
         return null;
@@ -174,7 +179,7 @@ public class LoadCustomIcons {
             if (bitmap instanceof BitmapDrawable) {
                 return ((BitmapDrawable) bitmap).getBitmap();
             } else {
-                return functionsClassLegacy.drawableToBitmap(bitmap);
+                return bitmapExtractor.drawableToBitmap(bitmap);
             }
         } else {
             try {
@@ -186,11 +191,11 @@ public class LoadCustomIcons {
                 });
                 layerDrawableIcon.setLayerInset(1, 77, 77, 77, 77);
 
-                return functionsClassLegacy.drawableToBitmap(layerDrawableIcon);
+                return bitmapExtractor.drawableToBitmap(layerDrawableIcon);
             } catch (Exception e) {
                 e.printStackTrace();
 
-                return functionsClassLegacy.drawableToBitmap(functionsClassLegacy.shapedAppIcon(appPackageName));
+                return bitmapExtractor.drawableToBitmap(functionsClassLegacy.shapedAppIcon(appPackageName));
             }
         }
     }

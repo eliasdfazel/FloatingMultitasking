@@ -7,14 +7,16 @@ import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.os.Build
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Utils.Functions.BitmapExtractor
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.RemoteTask.Create.FloatIt
 
 class HomeScreenShortcuts (private val context: Context) {
 
+    private val bitmapExtractor = BitmapExtractor(context)
+
     fun create(packageName: String, className: String,
                functionsClassLegacy: FunctionsClassLegacy) {
-
 
         val differentIntent = Intent()
         differentIntent.setClass(context, FloatIt::class.java)
@@ -32,7 +34,7 @@ class HomeScreenShortcuts (private val context: Context) {
             val shortcutInfo = ShortcutInfo.Builder(context, packageName)
                 .setShortLabel(functionsClassLegacy.applicationName(packageName)!!)
                 .setLongLabel(functionsClassLegacy.applicationName(packageName))
-                .setIcon(Icon.createWithBitmap(functionsClassLegacy.drawableToBitmap(functionsClassLegacy.getAppIconDrawableCustomIcon(packageName))))
+                .setIcon(Icon.createWithBitmap(bitmapExtractor.drawableToBitmap(functionsClassLegacy.getAppIconDrawableCustomIcon(packageName))))
                 .setIntent(differentIntent)
                 .build()
 
@@ -44,7 +46,7 @@ class HomeScreenShortcuts (private val context: Context) {
             val addIntent = Intent().setPackage(context.packageName)
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, differentIntent)
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, functionsClassLegacy.applicationName(packageName))
-            addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, functionsClassLegacy.drawableToBitmap(functionsClassLegacy.getAppIconDrawableCustomIcon(packageName)))
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmapExtractor.drawableToBitmap(functionsClassLegacy.getAppIconDrawableCustomIcon(packageName)))
             addIntent.putExtra("duplicate", true)
             addIntent.action = "com.android.launcher.action.INSTALL_SHORTCUT"
 
