@@ -142,10 +142,15 @@ import java.util.Set;
 
 public class FunctionsClassLegacy {
 
+    BitmapExtractor bitmapExtractor;
     Context context;
 
     public FunctionsClassLegacy(@NonNull Context context) {
+
         this.context = context;
+
+        bitmapExtractor = new BitmapExtractor(context);
+
     }
 
     public static boolean ComponentEnabled(PackageManager packageManager, String packageName, String className) {
@@ -1881,47 +1886,6 @@ public class FunctionsClassLegacy {
         return appIconDrawable;
     }
 
-    /**/
-    public Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap bitmap = null;
-        if (drawable instanceof VectorDrawable) {
-            VectorDrawable vectorDrawable = (VectorDrawable) drawable;
-            bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            vectorDrawable.draw(canvas);
-        } else if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if (bitmapDrawable.getBitmap() != null) {
-                bitmap = bitmapDrawable.getBitmap();
-            }
-        } else if (drawable instanceof LayerDrawable) {
-            LayerDrawable layerDrawable = (LayerDrawable) drawable;
-
-            bitmap = Bitmap.createBitmap(layerDrawable.getIntrinsicWidth(), layerDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            layerDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            layerDrawable.draw(canvas);
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
-        }
-        return bitmap;
-    }
-
-    public Bitmap drawableToBitmapMute(Drawable drawable) {
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Bitmap bitmapCopy = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-
-        Canvas canvas = new Canvas(bitmapCopy);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-
-        return bitmapCopy;
-    }
-
     public Bitmap genericDrawableToBitmap(Drawable drawable) {
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth() / 2, drawable.getIntrinsicHeight() / 2, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -3184,7 +3148,7 @@ public class FunctionsClassLegacy {
         Bitmap bitmap;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (drawable instanceof VectorDrawable) {
-                bitmap = drawableToBitmap(drawable);
+                bitmap = bitmapExtractor.drawableToBitmap(drawable);
             } else if (drawable instanceof AdaptiveIconDrawable) {
                 try {
                     bitmap = ((BitmapDrawable) ((AdaptiveIconDrawable) drawable).getBackground()).getBitmap();
@@ -3192,14 +3156,14 @@ public class FunctionsClassLegacy {
                     try {
                         bitmap = ((BitmapDrawable) ((AdaptiveIconDrawable) drawable).getForeground()).getBitmap();
                     } catch (Exception e1) {
-                        bitmap = drawableToBitmap(drawable);
+                        bitmap = bitmapExtractor.drawableToBitmap(drawable);
                     }
                 }
             } else {
-                bitmap = drawableToBitmap(drawable);
+                bitmap = bitmapExtractor.drawableToBitmap(drawable);
             }
         } else {
-            bitmap = drawableToBitmap(drawable);
+            bitmap = bitmapExtractor.drawableToBitmap(drawable);
         }
         Palette currentColor;
         try {
@@ -3230,7 +3194,7 @@ public class FunctionsClassLegacy {
         Bitmap bitmap;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (drawable instanceof VectorDrawable) {
-                bitmap = drawableToBitmap(drawable);
+                bitmap = bitmapExtractor.drawableToBitmap(drawable);
             } else if (drawable instanceof AdaptiveIconDrawable) {
                 try {
                     bitmap = ((BitmapDrawable) ((AdaptiveIconDrawable) drawable).getBackground()).getBitmap();
@@ -3238,14 +3202,14 @@ public class FunctionsClassLegacy {
                     try {
                         bitmap = ((BitmapDrawable) ((AdaptiveIconDrawable) drawable).getForeground()).getBitmap();
                     } catch (Exception e1) {
-                        bitmap = drawableToBitmap(drawable);
+                        bitmap = bitmapExtractor.drawableToBitmap(drawable);
                     }
                 }
             } else {
-                bitmap = drawableToBitmap(drawable);
+                bitmap = bitmapExtractor.drawableToBitmap(drawable);
             }
         } else {
-            bitmap = drawableToBitmap(drawable);
+            bitmap = bitmapExtractor.drawableToBitmap(drawable);
         }
         Palette currentColor;
         try {
@@ -3370,25 +3334,6 @@ public class FunctionsClassLegacy {
                 vibrator.vibrate(millisecondVibrate);
             }
         }
-    }
-
-    public BitmapDrawable writeOnDrawable(int drawableId, String textToRender, int textColor,
-                                          float xPosition, float yPosition){
-
-        Drawable backgroundDrawable = context.getDrawable(drawableId).mutate();
-        backgroundDrawable.setTint(PublicVariable.colorLightDarkOpposite);
-        Bitmap bitmap = drawableToBitmapMute(backgroundDrawable);
-
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(textColor);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(191f);
-
-        Canvas canvas = new Canvas(bitmap);
-        canvas.drawText(textToRender, xPosition, yPosition, paint);
-
-        return new BitmapDrawable(bitmap);
     }
 
     /*Custom Icons*/
