@@ -18,6 +18,9 @@
         <item name="android:statusBarColor">@color/default_color</item>
         <item name="android:navigationBarColor">@color/default_color</item>
         <item name="android:windowBackground">@drawable/splash_screen</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="GeeksEmpire.AppCompat" parent="Theme.AppCompat.Light.NoActionBar">
