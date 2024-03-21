@@ -31,7 +31,7 @@ class SearchListFilter(private val searchEngineAdapter: SearchEngineAdapter) : F
                     when (dataItem.searchResultType) {
                         SearchResultType.SearchShortcuts -> {
 
-                            if (dataItem.AppName!!.toLowerCase(Locale.getDefault()).contains(searchStrLowerCase)) {
+                            if (dataItem.appName!!.toLowerCase(Locale.getDefault()).contains(searchStrLowerCase)) {
                                 matchValues.add(dataItem)
                             }
                         }

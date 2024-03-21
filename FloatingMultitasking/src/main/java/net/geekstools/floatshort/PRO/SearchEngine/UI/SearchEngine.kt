@@ -401,7 +401,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                     SearchEngine.allSearchResults.forEach { searchResultItem ->
                         when (searchResultItem.searchResultType) {
                             SearchResultType.SearchShortcuts -> {
-                                floatingServices.runUnlimitedShortcutsService(searchResultItem.PackageName!!, searchResultItem.ClassName!!)
+                                floatingServices.runUnlimitedShortcutsService(searchResultItem.packageName!!, searchResultItem.className!!)
                             }
                             SearchResultType.SearchFolders -> {
                                 searchResultItem.folderName?.let { it -> floatingServices.runUnlimitedFoldersService(it) }
@@ -435,7 +435,7 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
                     if (SearchEngine.allSearchResults.size == 1 && searchEngineViewBinding.searchView.text.toString().isNotEmpty() && searchEngineViewBinding.searchView.text.toString().length >= 2) {
                         when (SearchEngine.allSearchResults[0].searchResultType) {
                             SearchResultType.SearchShortcuts -> {
-                                floatingServices.runUnlimitedShortcutsService(SearchEngine.allSearchResults[0].PackageName!!, SearchEngine.allSearchResults[0].ClassName!!)
+                                floatingServices.runUnlimitedShortcutsService(SearchEngine.allSearchResults[0].packageName!!, SearchEngine.allSearchResults[0].className!!)
                             }
                             SearchResultType.SearchFolders -> {
                                 SearchEngine.allSearchResults[0].folderName?.let { floatingServices.runUnlimitedFoldersService(it) }

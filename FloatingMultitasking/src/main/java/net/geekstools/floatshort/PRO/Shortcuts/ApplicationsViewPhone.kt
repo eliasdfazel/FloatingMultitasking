@@ -504,18 +504,18 @@ class ApplicationsViewPhone : AppCompatActivity(),
                 }
                 .withIndex().collect {
 
-                    val installedPackageName = it.value.activityInfo.packageName
-                    val installedClassName = it.value.activityInfo.name
-                    val installedAppName: String? = applicationsViewPhoneDependencyInjection.functionsClassLegacy.activityLabel(it.value.activityInfo)
+                    val installedPackageName: String = it.value.activityInfo.packageName
+                    val installedClassName: String = it.value.activityInfo.name
+                    val installedAppName: String = applicationsViewPhoneDependencyInjection.functionsClassLegacy.activityLabel(it.value.activityInfo)
 
                     newChar = try {
 
-                        installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
+                        installedAppName.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"#"
 
                     } catch (e: StringIndexOutOfBoundsException) {
                         e.printStackTrace()
 
-                        "Z"
+                        "#"
                     }
 
                     if (it.index == 0) {
@@ -536,7 +536,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
                     }
 
                     applicationsAdapterItems.add(AdapterItemsApplications(installedAppName?:"Unknown",
-                            installedPackageName!!, installedClassName!!,
+                            installedPackageName, installedClassName,
                             installedAppIcon!!,
                             applicationsViewPhoneDependencyInjection.functionsClassLegacy.extractDominantColor(installedAppIcon),
                             SearchResultType.SearchShortcuts))

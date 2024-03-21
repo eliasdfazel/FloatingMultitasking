@@ -35,9 +35,8 @@ class FloatIt : AppCompatActivity() {
         PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
         PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), resources.displayMetrics).toInt()
 
-        val aPackageName = intent.getStringExtra("PackageName")!!
-
-        if (intent.hasExtra("PackageName")) {
+        if (intent.hasExtra("PackageName")
+            && functionsClassLegacy.appIsInstalled(intent.getStringExtra("PackageName")!!)) {
 
             val aPackageName = intent.getStringExtra("PackageName")!!
 
@@ -51,7 +50,7 @@ class FloatIt : AppCompatActivity() {
 
             }
 
-            val sharedPreferencesPosition = getSharedPreferences(aClassName, Context.MODE_PRIVATE)
+            val sharedPreferencesPosition = getSharedPreferences(aPackageName, Context.MODE_PRIVATE)
 
             val xPosition = sharedPreferencesPosition.getInt("X", 137)
             val yPosition = sharedPreferencesPosition.getInt("Y", 137)
@@ -83,7 +82,7 @@ class FloatIt : AppCompatActivity() {
 
         } else {
 
-            if (aClassName == null) {
+            if (aClassName.isNullOrEmpty()) {
 
                 FloatingServices(applicationContext)
                     .runUnlimitedShortcutsServicePackage(aPackageName)
@@ -155,9 +154,6 @@ class FloatIt : AppCompatActivity() {
             override fun invokedPinPassword() {
                 super.invokedPinPassword()
                 Log.d(this@FloatIt.javaClass.simpleName, "Invoked Pin Password")
-
-                this@FloatIt.finish()
-
             }
 
         }

@@ -118,10 +118,10 @@ class SearchEngineAdapter (val context: Context, val allSearchData: ArrayList<Ad
         when (allSearchResults[position].searchResultType) {
             SearchResultType.SearchShortcuts -> {
 
-                dominantColor = functionsClassLegacy.extractDominantColor(allSearchResults[position].AppIcon)
+                dominantColor = functionsClassLegacy.extractDominantColor(allSearchResults[position].appIcon)
 
-                viewHolder.itemAppIcon?.setImageDrawable(allSearchResults[position].AppIcon)
-                viewHolder.itemAppName?.text = allSearchResults[position].AppName
+                viewHolder.itemAppIcon?.setImageDrawable(allSearchResults[position].appIcon)
+                viewHolder.itemAppName?.text = allSearchResults[position].appName
 
                 viewHolder.itemInitialLetter?.text = ""
 
@@ -183,9 +183,13 @@ class SearchEngineAdapter (val context: Context, val allSearchData: ArrayList<Ad
             val bundleSearchEngineQuery = Bundle()
             when (allSearchResults[position].searchResultType) {
                 SearchResultType.SearchShortcuts -> {
-                    floatingServices
-                            .runUnlimitedShortcutsService(allSearchResults[position].PackageName!!, allSearchResults[position].ClassName!!)
-                    bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", allSearchResults[position].PackageName)
+                    allSearchResults[position].className?.let { className ->
+                        floatingServices
+                            .runUnlimitedShortcutsService(allSearchResults[position].packageName!!,
+                                className
+                            )
+                    }
+                    bundleSearchEngineQuery.putString("QUERY_USED_SEARCH_ENGINE", allSearchResults[position].packageName)
                 }
                 SearchResultType.SearchFolders -> {
                     floatingServices

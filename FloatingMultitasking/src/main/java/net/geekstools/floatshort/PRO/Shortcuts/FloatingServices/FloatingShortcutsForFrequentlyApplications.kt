@@ -195,6 +195,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
         return null
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
         super.onStartCommand(intent, flags, serviceStartId)
 
