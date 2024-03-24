@@ -29,7 +29,7 @@ class RecoveryAll : Service() {
         FunctionsClassLegacy(applicationContext)
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (functionsClassLegacy.securityServicesSubscribed()) {
 
             SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {

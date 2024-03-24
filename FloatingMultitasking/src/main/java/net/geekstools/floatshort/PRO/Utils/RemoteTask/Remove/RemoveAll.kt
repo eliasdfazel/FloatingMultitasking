@@ -26,7 +26,7 @@ class RemoveAll : Service() {
         return null
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         /*Applications*/
         Intent(applicationContext, FloatingShortcutsForApplications::class.java).apply {
