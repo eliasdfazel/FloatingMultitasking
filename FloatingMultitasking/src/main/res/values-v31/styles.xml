@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Splash.GeeksEmpire" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:colorPrimary">@color/default_color</item>
+        <item name="android:colorPrimaryDark">@color/default_color</item>
+        <item name="android:colorAccent">@color/default_color</item>
+
+        <item name="android:statusBarColor">@color/default_color</item>
+        <item name="android:navigationBarColor">@color/default_color</item>
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+        <item name="android:windowSplashScreenBackground">@color/default_color_darker</item>
+    </style>
+</resources>
