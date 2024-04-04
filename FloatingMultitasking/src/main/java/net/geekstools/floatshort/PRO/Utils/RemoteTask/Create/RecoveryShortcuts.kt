@@ -15,7 +15,6 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import android.util.TypedValue
 import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.BindServices
@@ -60,7 +59,6 @@ class RecoveryShortcuts : Service() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 stopForeground(STOP_FOREGROUND_REMOVE)
-                stopForeground(true)
             }
 
             this@RecoveryShortcuts.stopSelf()
@@ -82,26 +80,23 @@ class RecoveryShortcuts : Service() {
 
                             override fun authenticatedFloatIt() {
                                 super.authenticatedFloatIt()
-                                Log.d(this@RecoveryShortcuts.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                                 floatingShortcutsRecoveryProcess(applicationsDataLines)
                             }
 
                             override fun failedAuthenticated() {
                                 super.failedAuthenticated()
-                                Log.d(this@RecoveryShortcuts.javaClass.simpleName, "FailedAuthenticated")
 
                                 this@RecoveryShortcuts.stopSelf()
                             }
 
                             override fun invokedPinPassword() {
                                 super.invokedPinPassword()
-                                Log.d(this@RecoveryShortcuts.javaClass.simpleName, "InvokedPinPassword")
                             }
                         }
 
                         startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
-                            putExtra(UserInterfaceExtraData.OtherTitle, getString(R.string.floatingFolders))
+                            putExtra(UserInterfaceExtraData.OtherTitle, getString(R.string.floatingsShortcuts))
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
 

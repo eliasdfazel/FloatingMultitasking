@@ -134,6 +134,7 @@
         ]]>
     </string>
     <string name="createShortcut">Create Home Screen Shortcuts</string>
+    <string name="floatingsShortcuts">Floating Shortcuts</string>
     <string name="floatingFolders">Floating Folders</string>
     <string name="floatingWidget">Floating Widgets</string>
     <string name="folderHint">Folders</string>

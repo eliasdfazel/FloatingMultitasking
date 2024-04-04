@@ -127,7 +127,6 @@ class FloatIt : AppCompatActivity() {
 
             override fun authenticatedFloatIt() {
                 super.authenticatedFloatIt()
-                Log.d(this@FloatIt.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                 if (aClassName == null) {
 
@@ -145,7 +144,6 @@ class FloatIt : AppCompatActivity() {
 
             override fun failedAuthenticated() {
                 super.failedAuthenticated()
-                Log.d(this@FloatIt.javaClass.simpleName, "Failed Authenticated")
 
                 this@FloatIt.finish()
 
@@ -153,7 +151,6 @@ class FloatIt : AppCompatActivity() {
 
             override fun invokedPinPassword() {
                 super.invokedPinPassword()
-                Log.d(this@FloatIt.javaClass.simpleName, "Invoked Pin Password")
             }
 
         }

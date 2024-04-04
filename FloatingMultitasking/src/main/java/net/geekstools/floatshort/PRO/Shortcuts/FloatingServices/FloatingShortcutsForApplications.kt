@@ -667,7 +667,6 @@ class FloatingShortcutsForApplications : Service() {
 
                                     override fun authenticatedFloatIt() {
                                         super.authenticatedFloatIt()
-                                        Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                                         openActions.startProcess(packageNames[startId], classNames[startId],
                                                 if (moveDetection != null) {
@@ -683,14 +682,12 @@ class FloatingShortcutsForApplications : Service() {
 
                                     override fun failedAuthenticated() {
                                         super.failedAuthenticated()
-                                        Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "FailedAuthenticated")
 
                                         AuthenticationProcess.authenticationProcessInvoked = false
                                     }
 
                                     override fun invokedPinPassword() {
                                         super.invokedPinPassword()
-                                        Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "InvokedPinPassword")
 
                                         AuthenticationProcess.authenticationProcessInvoked = false
                                     }
@@ -902,7 +899,6 @@ class FloatingShortcutsForApplications : Service() {
 
                                             override fun failedAuthenticated() {
                                                 super.failedAuthenticated()
-                                                Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "FailedAuthenticated")
 
                                                 AuthenticationProcess.authenticationProcessInvoked = false
                                             }

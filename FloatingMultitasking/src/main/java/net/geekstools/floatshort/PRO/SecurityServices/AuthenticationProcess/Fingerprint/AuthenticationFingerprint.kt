@@ -48,53 +48,53 @@ class AuthenticationFingerprint : FragmentActivity() {
 
             val biometricCallback = object: BiometricPrompt.AuthenticationCallback() {
 
-                override fun onAuthenticationError(errorCode: Int, errorString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errorString)
-
-                    when (errorCode) {
-                        BiometricPrompt.ERROR_USER_CANCELED -> {
-
-                            SecurityInterfaceHolder.authenticationCallback
-                                    .failedAuthenticated()
-
-                            this@AuthenticationFingerprint.finish()
-                        }
-                        BiometricPrompt.ERROR_CANCELED -> {
-
-                            SecurityInterfaceHolder.authenticationCallback
-                                    .failedAuthenticated()
-
-                            this@AuthenticationFingerprint.finish()
-                        }
-                        BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> {
-
-                            SecurityInterfaceHolder.authenticationCallback
-                                    .failedAuthenticated()
-
-                            this@AuthenticationFingerprint.finish()
-                        }
-                        BiometricPrompt.ERROR_HW_NOT_PRESENT -> {
-
-                            triggerPinPasswordFragment(dialogueTitle)
-                        }
-                        BiometricPrompt.ERROR_HW_UNAVAILABLE -> {
-
-                            triggerPinPasswordFragment(dialogueTitle)
-                        }
-                        BiometricPrompt.ERROR_LOCKOUT -> {
-
-                            triggerPinPasswordFragment(dialogueTitle)
-                        }
-                        BiometricPrompt.ERROR_TIMEOUT -> {
-
-                            triggerPinPasswordFragment(dialogueTitle)
-                        }
-                        else -> {
-
-                            triggerPinPasswordFragment(dialogueTitle)
-                        }
-                    }
-                }
+//                override fun onAuthenticationError(errorCode: Int, errorString: CharSequence) {
+//                    super.onAuthenticationError(errorCode, errorString)
+//
+//                    when (errorCode) {
+//                        BiometricPrompt.ERROR_USER_CANCELED -> {
+//
+//                            SecurityInterfaceHolder.authenticationCallback
+//                                    .failedAuthenticated()
+//
+//                            this@AuthenticationFingerprint.finish()
+//                        }
+//                        BiometricPrompt.ERROR_CANCELED -> {
+//
+//                            SecurityInterfaceHolder.authenticationCallback
+//                                    .failedAuthenticated()
+//
+//                            this@AuthenticationFingerprint.finish()
+//                        }
+//                        BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> {
+//
+//                            SecurityInterfaceHolder.authenticationCallback
+//                                    .failedAuthenticated()
+//
+//                            this@AuthenticationFingerprint.finish()
+//                        }
+//                        BiometricPrompt.ERROR_HW_NOT_PRESENT -> {
+//
+//                            triggerPinPasswordFragment(dialogueTitle)
+//                        }
+//                        BiometricPrompt.ERROR_HW_UNAVAILABLE -> {
+//
+//                            triggerPinPasswordFragment(dialogueTitle)
+//                        }
+//                        BiometricPrompt.ERROR_LOCKOUT -> {
+//
+//                            triggerPinPasswordFragment(dialogueTitle)
+//                        }
+//                        BiometricPrompt.ERROR_TIMEOUT -> {
+//
+//                            triggerPinPasswordFragment(dialogueTitle)
+//                        }
+//                        else -> {
+//
+//                            triggerPinPasswordFragment(dialogueTitle)
+//                        }
+//                    }
+//                }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
@@ -107,6 +107,9 @@ class AuthenticationFingerprint : FragmentActivity() {
 
                         triggerPinPasswordFragment(dialogueTitle)
                     }
+
+                    this@AuthenticationFingerprint.finish()
+
                 }
 
                 override fun onAuthenticationSucceeded(authenticationResult: BiometricPrompt.AuthenticationResult) {
