@@ -14,7 +14,6 @@ import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
-import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import net.geekstools.floatshort.PRO.R
@@ -34,8 +33,8 @@ class RecoveryAll : Service() {
 
             SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                    super.authenticatedFloatIt(extraInformation)
+                override fun authenticatedFloatIt() {
+                    super.authenticatedFloatIt()
                     Log.d(this@RecoveryAll.javaClass.simpleName, "AuthenticatedFloatIt")
 
                     startService(Intent(applicationContext, RecoveryShortcuts::class.java).putExtra("AuthenticatedFloatIt", true))

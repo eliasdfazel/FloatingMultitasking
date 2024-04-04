@@ -125,8 +125,8 @@ class FloatIt : AppCompatActivity() {
 
         SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-            override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                super.authenticatedFloatIt(extraInformation)
+            override fun authenticatedFloatIt() {
+                super.authenticatedFloatIt()
                 Log.d(this@FloatIt.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                 if (aClassName == null) {

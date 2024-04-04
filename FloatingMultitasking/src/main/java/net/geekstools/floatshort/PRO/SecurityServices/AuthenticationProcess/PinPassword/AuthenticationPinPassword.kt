@@ -106,7 +106,7 @@ class AuthenticationPinPassword : DialogFragment() {
                         authDialogContentBinding.textInputPinPassword.isErrorEnabled = false
 
                         SecurityInterfaceHolder.authenticationCallback
-                                .authenticatedFloatIt(null)
+                                .authenticatedFloatIt()
 
                         requireActivity().finish()
 

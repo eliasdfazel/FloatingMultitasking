@@ -14,7 +14,6 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -126,8 +125,8 @@ class PopupShortcutsNotification(private val context: Context,
 
                 SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                    override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                        super.authenticatedFloatIt(extraInformation)
+                    override fun authenticatedFloatIt() {
+                        super.authenticatedFloatIt()
                         Log.d(this@PopupShortcutsNotification.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                         if (functionsClassLegacy.splashReveal()) {

@@ -1,11 +1,10 @@
 package net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils
 
-import android.os.Bundle
 import android.util.Log
 
 interface AuthenticationCallback {
 
-    fun authenticatedFloatIt(extraInformation: Bundle?) {
+    fun authenticatedFloatIt() {
         Log.d(this@AuthenticationCallback.javaClass.simpleName, "Authenticated FloatIt")
 
     }

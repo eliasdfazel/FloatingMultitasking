@@ -301,8 +301,8 @@ class SearchEngine(private val activity: AppCompatActivity, private val context:
 
                             SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                                override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                                    super.authenticatedFloatIt(extraInformation)
+                                override fun authenticatedFloatIt() {
+                                    super.authenticatedFloatIt()
                                     Log.d(this@SearchEngine.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                                     performSearchEngine(backgroundTemporaryInput)

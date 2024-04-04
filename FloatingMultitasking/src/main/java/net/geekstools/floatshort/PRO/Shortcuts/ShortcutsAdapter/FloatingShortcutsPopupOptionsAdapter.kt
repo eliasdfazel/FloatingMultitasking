@@ -15,7 +15,6 @@ import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -138,8 +137,8 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
 
                     SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                        override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                            super.authenticatedFloatIt(extraInformation)
+                        override fun authenticatedFloatIt() {
+                            super.authenticatedFloatIt()
                             Log.d(this@FloatingShortcutsPopupOptionsAdapter.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                             if (!functionsClassLegacy.AccessibilityServiceEnabled() && !functionsClassLegacy.SettingServiceRunning(InteractionObserver::class.java)) {

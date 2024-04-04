@@ -89,8 +89,8 @@ class FloatingWidgetHomeScreenShortcuts : Activity() {
 
                             SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                                override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                                    super.authenticatedFloatIt(extraInformation)
+                                override fun authenticatedFloatIt() {
+                                    super.authenticatedFloatIt()
                                     Log.d(this@FloatingWidgetHomeScreenShortcuts.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                                     functionsClassLegacy

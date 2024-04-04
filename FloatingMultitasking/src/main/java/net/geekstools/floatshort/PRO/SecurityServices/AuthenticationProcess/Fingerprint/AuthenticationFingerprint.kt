@@ -113,7 +113,7 @@ class AuthenticationFingerprint : FragmentActivity() {
                     super.onAuthenticationSucceeded(authenticationResult)
 
                     SecurityInterfaceHolder.authenticationCallback
-                            .authenticatedFloatIt(null)
+                            .authenticatedFloatIt()
 
                     attemptCounter = 0
                     this@AuthenticationFingerprint.finish()

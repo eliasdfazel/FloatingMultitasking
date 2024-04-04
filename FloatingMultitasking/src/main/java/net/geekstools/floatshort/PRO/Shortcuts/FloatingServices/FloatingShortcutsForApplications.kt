@@ -24,7 +24,6 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
@@ -666,8 +665,8 @@ class FloatingShortcutsForApplications : Service() {
 
                                 SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                                    override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                                        super.authenticatedFloatIt(extraInformation)
+                                    override fun authenticatedFloatIt() {
+                                        super.authenticatedFloatIt()
                                         Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                                         openActions.startProcess(packageNames[startId], classNames[startId],
@@ -881,8 +880,8 @@ class FloatingShortcutsForApplications : Service() {
 
                                         SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
-                                            override fun authenticatedFloatIt(extraInformation: Bundle?) {
-                                                super.authenticatedFloatIt(extraInformation)
+                                            override fun authenticatedFloatIt() {
+                                                super.authenticatedFloatIt()
                                                 Log.d(this@FloatingShortcutsForApplications.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
                                                 try {
