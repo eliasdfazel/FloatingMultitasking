@@ -1229,7 +1229,7 @@ public class FunctionsClassLegacy {
     }
 
     public void openApplicationFromActivity(Activity instanceOfActivity, String packageName) {
-        if (appIsInstalled(packageName) == true) {
+        if (appIsInstalled(packageName)) {
             try {
                 Toast(applicationName(packageName), Gravity.BOTTOM);
 
@@ -1448,8 +1448,8 @@ public class FunctionsClassLegacy {
 
     public void appsLaunchPad(String packageName) {
         Intent intent = new Intent(context, OpenApplicationsLaunchPad.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("PackageName", packageName);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 

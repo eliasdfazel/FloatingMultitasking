@@ -9,13 +9,14 @@
  */
 package net.geekstools.floatshort.PRO.Utils.LaunchPad
 
-import android.app.Activity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 
-class OpenApplicationsLaunchPad : Activity() {
-    override fun onCreate(Saved: Bundle?) {
-        super.onCreate(Saved)
+class OpenApplicationsLaunchPad : AppCompatActivity() {
+
+    override fun onCreate(saved: Bundle?) {
+        super.onCreate(saved)
 
         val functionsClass = FunctionsClassLegacy(applicationContext)
 
@@ -50,4 +51,5 @@ class OpenApplicationsLaunchPad : Activity() {
 
         this@OpenApplicationsLaunchPad.finish()
     }
+
 }
