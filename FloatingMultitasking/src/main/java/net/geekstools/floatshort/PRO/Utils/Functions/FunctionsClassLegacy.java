@@ -63,7 +63,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.VibrationEffect;
@@ -92,7 +91,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
@@ -2287,7 +2285,7 @@ public class FunctionsClassLegacy {
                             }
 
                             @Override
-                            public void authenticatedFloatIt(@Nullable Bundle extraInformation) {
+                            public void authenticatedFloatIt() {
 
                                 securityFunctions.doUnlockApps(PackageName);
 
@@ -2467,7 +2465,7 @@ public class FunctionsClassLegacy {
                             }
 
                             @Override
-                            public void authenticatedFloatIt(@Nullable Bundle extraInformation) {
+                            public void authenticatedFloatIt() {
 
                                 if (context.getFileStreamPath(folderName).exists() && context.getFileStreamPath(folderName).isFile()) {
                                     String[] packageNames = fileIO.readFileLinesAsArray(folderName);
