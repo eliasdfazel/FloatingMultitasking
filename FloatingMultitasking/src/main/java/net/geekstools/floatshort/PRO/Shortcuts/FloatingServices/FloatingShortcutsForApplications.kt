@@ -659,7 +659,7 @@ class FloatingShortcutsForApplications : Service() {
 
                                 AuthenticationProcess.authenticationProcessInvoked = true
                                 AuthenticationProcess.authenticationProcessInvokedName = functionsClassLegacy.activityLabel(
-                                        packageManager.getActivityInfo(ComponentName.createRelative(packageNames[startId], classNames[startId]), 1)
+                                        packageManager.getActivityInfo(ComponentName.createRelative(packageNames[startId], classNames[startId]), 0)
                                 )
 
                                 SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
