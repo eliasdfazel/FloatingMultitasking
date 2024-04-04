@@ -21,7 +21,6 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
-import android.os.Bundle
 import android.text.Html
 import android.util.TypedValue
 import android.view.Gravity
@@ -261,7 +260,7 @@ class FunctionsClassWidgets (private val context: Context) {
 
                             }
 
-                            override fun authenticatedFloatIt(extraInformation: Bundle?) {
+                            override fun authenticatedFloatIt() {
 
                                 securityFunctions.doUnlockApps(packageName + providerClassName)
                             }
