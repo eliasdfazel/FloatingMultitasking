@@ -256,7 +256,7 @@ class FloatingShortcutsForApplications : Service() {
             }
 
             classNames.add(startId, this@run.getStringExtra("ClassName")!!)
-            activityInformation.add(startId, packageManager.getActivityInfo(ComponentName(packageNames[startId], classNames[startId]), 0))
+            activityInformation.add(startId, packageManager.getActivityInfo(ComponentName(packageNames[startId], classNames[startId]), 1))
 
             floatingShortcutsBinding.add(startId, FloatingShortcutsBinding.inflate(layoutInflater))
 
@@ -660,7 +660,7 @@ class FloatingShortcutsForApplications : Service() {
 
                                 AuthenticationProcess.authenticationProcessInvoked = true
                                 AuthenticationProcess.authenticationProcessInvokedName = functionsClassLegacy.activityLabel(
-                                        packageManager.getActivityInfo(ComponentName.createRelative(packageNames[startId], classNames[startId]), 0)
+                                        packageManager.getActivityInfo(ComponentName.createRelative(packageNames[startId], classNames[startId]), 1)
                                 )
 
                                 SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
