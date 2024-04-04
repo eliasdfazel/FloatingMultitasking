@@ -1237,15 +1237,12 @@ public class FunctionsClassLegacy {
                 launchIntentForPackage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 instanceOfActivity.startActivity(launchIntentForPackage);
             } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
                 Intent playStore = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(context.getString(R.string.play_store_link) + packageName));
                 playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 instanceOfActivity.startActivity(playStore);
             }
         } else {
-            Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
             Intent playStore = new Intent(Intent.ACTION_VIEW,
                     Uri.parse(context.getString(R.string.play_store_link) + packageName));
             playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1254,7 +1251,7 @@ public class FunctionsClassLegacy {
     }
 
     public void openApplicationFromActivity(Activity instanceOfActivity, String packageName, String className) {
-        if (appIsInstalled(packageName) == true) {
+        if (appIsInstalled(packageName)) {
             try {
                 Toast(String.valueOf(context.getPackageManager().getActivityInfo(new ComponentName(packageName, className), 0).loadLabel(context.getPackageManager())), Gravity.BOTTOM);
 
@@ -1263,15 +1260,12 @@ public class FunctionsClassLegacy {
                 openAlias.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 instanceOfActivity.startActivity(openAlias);
             } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
                 Intent playStore = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(context.getString(R.string.play_store_link) + packageName));
                 playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 instanceOfActivity.startActivity(playStore);
             }
         } else {
-            Toast.makeText(context, context.getString(R.string.not_install), Toast.LENGTH_LONG).show();
             Intent playStore = new Intent(Intent.ACTION_VIEW,
                     Uri.parse(context.getString(R.string.play_store_link) + packageName));
             playStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1283,7 +1277,7 @@ public class FunctionsClassLegacy {
         //Enable Developer Option & Turn ON 'Force Activities to be Resizable'
         //adb shell settings put global enable_freeform_support 1
         //adb shell settings put global force_resizable_activities 1
-        if (returnAPI() < 28) {
+        if (Build.VERSION.SDK_INT < 28) {
             Intent homeScreen = new Intent(Intent.ACTION_MAIN);
             homeScreen.addCategory(Intent.CATEGORY_HOME);
             homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1300,9 +1294,7 @@ public class FunctionsClassLegacy {
                     Method method = ActivityOptions.class.getMethod(getWindowingModeMethodName(), int.class);
                     method.invoke(activityOptions, getFreeformWindowModeId());
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                } catch (Exception e) {}
                 switch (displaySection(leftPositionX, topPositionY)) {
                     case DisplaySection.TopLeft: {
                         activityOptions.setLaunchBounds(
@@ -1369,7 +1361,7 @@ public class FunctionsClassLegacy {
     }
 
     public void openApplicationFreeForm(String PackageName, String ClassName, int leftPositionX/*X*/, int rightPositionX, int topPositionY/*Y*/, int bottomPositionY) {
-        if (returnAPI() < 28) {
+        if (Build.VERSION.SDK_INT < 28) {
             Intent homeScreen = new Intent(Intent.ACTION_MAIN);
             homeScreen.addCategory(Intent.CATEGORY_HOME);
             homeScreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1385,9 +1377,7 @@ public class FunctionsClassLegacy {
 
             Method method = ActivityOptions.class.getMethod(getWindowingModeMethodName(), int.class);
             method.invoke(activityOptions, getFreeformWindowModeId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
         switch (displaySection(leftPositionX, topPositionY)) {
             case DisplaySection.TopLeft -> {
                 activityOptions.setLaunchBounds(

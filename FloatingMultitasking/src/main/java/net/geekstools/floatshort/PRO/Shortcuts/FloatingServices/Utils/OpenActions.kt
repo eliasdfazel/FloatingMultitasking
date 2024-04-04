@@ -39,6 +39,8 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
 
             if (functionsClassLegacy.FreeForm()) {
 
+                println(">>> >> > 1")
+
                 functionsClassLegacy.openApplicationFreeForm(
                         packageName,
                         className,
@@ -48,6 +50,8 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
                         functionsClassLegacy.displayY() / 2
                 )
             } else {
+
+                println(">>> >> > 2")
 
                 functionsClassLegacy
                         .appsLaunchPad(packageName, className)
