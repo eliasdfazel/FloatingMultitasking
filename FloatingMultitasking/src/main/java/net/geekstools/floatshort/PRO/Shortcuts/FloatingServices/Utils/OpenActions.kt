@@ -12,6 +12,7 @@ package net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.Utils
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.WindowManager
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.UI.Splash.FloatingSplash
@@ -38,8 +39,7 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
         } else {
 
             if (functionsClassLegacy.FreeForm()) {
-
-                println(">>> >> > 1")
+                Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Free Form")
 
                 functionsClassLegacy.openApplicationFreeForm(
                         packageName,
@@ -50,11 +50,50 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
                         functionsClassLegacy.displayY() / 2
                 )
             } else {
-
-                println(">>> >> > 2")
+                Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Normal")
 
                 functionsClassLegacy
                         .appsLaunchPad(packageName, className)
+            }
+        }
+    }
+
+    fun startProcess(packageName: String, className: String, freeform: Boolean,
+                     layoutParams: WindowManager.LayoutParams) {
+
+        if (functionsClassLegacy.splashReveal()) {
+
+            val splashReveal = Intent(context, FloatingSplash::class.java).apply {
+                putExtra("PackageName", packageName)
+                putExtra("ClassName", className)
+
+                putExtra("X", layoutParams.x)
+                putExtra("Y", layoutParams.y)
+
+                putExtra("HW", layoutParams.width)
+            }
+
+            context.startService(splashReveal)
+
+        } else {
+
+            if (functionsClassLegacy.FreeForm()
+                || freeform) {
+                Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Free Form")
+
+                functionsClassLegacy.openApplicationFreeForm(
+                    packageName,
+                    className,
+                    layoutParams.x,
+                    functionsClassLegacy.displayX() / 2,
+                    layoutParams.y,
+                    functionsClassLegacy.displayY() / 2
+                )
+            } else {
+                Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Normal")
+
+                functionsClassLegacy
+                    .appsLaunchPad(packageName, className)
             }
         }
     }

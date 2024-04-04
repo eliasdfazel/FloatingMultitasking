@@ -31,7 +31,6 @@ import android.text.Html
 import android.util.Log
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -805,7 +804,7 @@ class FloatingShortcutsForApplications : Service() {
 
                                 PublicVariable.splitScreen = true
 
-                                functionsClassLegacy.Toast(functionsClassLegacy.applicationName(PublicVariable.splitSinglePackage), Gravity.TOP)
+                                functionsClassLegacy.Toast(functionsClassLegacy.applicationName(PublicVariable.splitSinglePackage))
 
                             }, 200)
 
@@ -883,7 +882,7 @@ class FloatingShortcutsForApplications : Service() {
 
                                                 try {
 
-                                                    openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)],
+                                                    openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)], true,
                                                         if (moveDetection != null) {
                                                             (moveDetection!!)
                                                             (moveDetection!!)
@@ -928,7 +927,7 @@ class FloatingShortcutsForApplications : Service() {
 
                                 } else {
 
-                                    openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)],
+                                    openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)], true,
                                         if (moveDetection != null) {
                                             (moveDetection!!)
                                             (moveDetection!!)

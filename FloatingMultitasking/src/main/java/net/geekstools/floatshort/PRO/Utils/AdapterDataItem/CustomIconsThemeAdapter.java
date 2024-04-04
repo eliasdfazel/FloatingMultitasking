@@ -12,7 +12,6 @@ package net.geekstools.floatshort.PRO.Utils.AdapterDataItem;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +91,7 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
                     loadCustomIcons.load();
 
 
-                    functionsClassLegacy.Toast(String.valueOf(loadCustomIcons.getTotalIconsNumber()), Gravity.BOTTOM, PublicVariable.primaryColor);
+                    functionsClassLegacy.Toast(String.valueOf(loadCustomIcons.getTotalIconsNumber()), PublicVariable.primaryColor);
                 }
 
                 return true;

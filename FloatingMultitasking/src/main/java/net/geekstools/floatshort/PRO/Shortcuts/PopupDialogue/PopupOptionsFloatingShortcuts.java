@@ -92,8 +92,8 @@ public class PopupOptionsFloatingShortcuts extends Service {
         }
 
         try {
-            ArrayList<AdapterItemsFloatingShortcutsPopuiOptions> navDrawerItemsSaved = new ArrayList<AdapterItemsFloatingShortcutsPopuiOptions>();
-            navDrawerItemsSaved.clear();
+            ArrayList<AdapterItemsFloatingShortcutsPopuiOptions> menuItems = new ArrayList<AdapterItemsFloatingShortcutsPopuiOptions>();
+            menuItems.clear();
 
             List<String> popupItems = new ArrayList<String>();
             popupItems.clear();
@@ -231,7 +231,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
             }
 
             for (int i = 0; i < popupItems.size(); i++) {
-                navDrawerItemsSaved.add(new AdapterItemsFloatingShortcutsPopuiOptions(
+                menuItems.add(new AdapterItemsFloatingShortcutsPopuiOptions(
                         popupItems.get(i),
                         popupItemsIcon));
             }
@@ -239,11 +239,11 @@ public class PopupOptionsFloatingShortcuts extends Service {
 
             if (className != null) {
                 floatingShortcutsPopupOptionsAdapter =
-                        new FloatingShortcutsPopupOptionsAdapter(getApplicationContext(), navDrawerItemsSaved,
+                        new FloatingShortcutsPopupOptionsAdapter(getApplicationContext(), menuItems,
                                 classNameCommand, packageName, className, startIdCommand);
             } else {
                 floatingShortcutsPopupOptionsAdapter =
-                        new FloatingShortcutsPopupOptionsAdapter(getApplicationContext(), navDrawerItemsSaved,
+                        new FloatingShortcutsPopupOptionsAdapter(getApplicationContext(), menuItems,
                                 classNameCommand, packageName, startIdCommand);
             }
 

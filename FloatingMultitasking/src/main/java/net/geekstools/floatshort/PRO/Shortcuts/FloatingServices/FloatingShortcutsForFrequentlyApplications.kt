@@ -28,7 +28,6 @@ import android.os.Looper
 import android.text.Html
 import android.util.Log
 import android.view.GestureDetector
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -790,7 +789,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
                                     PublicVariable.splitScreen = true
 
-                                    functionsClassLegacy.Toast(functionsClassLegacy.applicationName(PublicVariable.splitSinglePackage), Gravity.TOP)
+                                    functionsClassLegacy.Toast(functionsClassLegacy.applicationName(PublicVariable.splitSinglePackage))
 
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()

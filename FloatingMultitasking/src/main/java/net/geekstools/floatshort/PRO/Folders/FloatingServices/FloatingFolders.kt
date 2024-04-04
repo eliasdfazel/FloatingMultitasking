@@ -25,7 +25,6 @@ import android.os.Looper
 import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -787,8 +786,8 @@ class FloatingFolders : Service() {
 
                                     }, 200)
 
-                                    functionsClassLegacy.Toast(functionsClassLegacy.applicationName(packageNameSplitOne), Gravity.TOP)
-                                    functionsClassLegacy.Toast(functionsClassLegacy.applicationName(packageNameSplitTwo), Gravity.BOTTOM)
+                                    functionsClassLegacy.Toast(functionsClassLegacy.applicationName(packageNameSplitOne))
+                                    functionsClassLegacy.Toast(functionsClassLegacy.applicationName(packageNameSplitTwo))
 
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()

@@ -1231,7 +1231,7 @@ public class FunctionsClassLegacy {
     public void openApplicationFromActivity(Activity instanceOfActivity, String packageName) {
         if (appIsInstalled(packageName)) {
             try {
-                Toast(applicationName(packageName), Gravity.BOTTOM);
+                Toast(applicationName(packageName));
 
                 Intent launchIntentForPackage = context.getPackageManager().getLaunchIntentForPackage(packageName);
                 launchIntentForPackage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1352,8 +1352,7 @@ public class FunctionsClassLegacy {
                 if (openAlias != null) {
                     openAlias.setFlags(
                             Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
-                                    Intent.FLAG_ACTIVITY_NEW_TASK |
-                                    Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
                 context.startActivity(openAlias, activityOptions.toBundle());
             }
@@ -1431,8 +1430,7 @@ public class FunctionsClassLegacy {
         openAlias.addCategory(Intent.CATEGORY_LAUNCHER);
         openAlias.setFlags(
                 Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
-                        Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(openAlias, activityOptions.toBundle());
     }
 
@@ -2514,16 +2512,12 @@ public class FunctionsClassLegacy {
         }, 555);
     }
 
-    public void Toast(String toastContent, int toastGravity/*, int toastColor*/) {
+    public void Toast(String toastContent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.toast_view, null/*(ViewGroup) activity.findViewById(R.id.toastView)*/);
 
-        LayerDrawable drawToast = null;
-        if (toastGravity == Gravity.TOP) {
-            drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_top);
-        } else if (toastGravity == Gravity.BOTTOM) {
-            drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_bottom);
-        }
+        LayerDrawable drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_bottom);;
+
         Drawable backToast = drawToast.findDrawableByLayerId(R.id.backgroundTemporary);
 
         TextView textView = layout.findViewById(R.id.toastText);
@@ -2533,22 +2527,17 @@ public class FunctionsClassLegacy {
         textView.setTextColor(context.getColor(R.color.dark));
         textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
         Toast toast = new Toast(context);
-        toast.setGravity(Gravity.FILL_HORIZONTAL | toastGravity, 0, 0);
+        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
     }
 
-    public void Toast(String toastContent, int toastGravity, int toastColor) {
+    public void Toast(String toastContent, int toastColor) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.toast_view, null/*(ViewGroup) activity.findViewById(R.id.toastView)*/);
 
-        LayerDrawable drawToast = null;
-        if (toastGravity == Gravity.TOP) {
-            drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_top);
-        } else if (toastGravity == Gravity.BOTTOM) {
-            drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_bottom);
-        }
+        LayerDrawable drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_bottom);;
         Drawable backToast = drawToast.findDrawableByLayerId(R.id.backgroundTemporary);
         backToast.setTint(toastColor);
 
@@ -2559,7 +2548,7 @@ public class FunctionsClassLegacy {
         textView.setTextColor(context.getColor(R.color.dark));
         textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
         Toast toast = new Toast(context);
-        toast.setGravity(Gravity.FILL_HORIZONTAL | toastGravity, 0, 0);
+        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
