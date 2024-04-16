@@ -89,9 +89,6 @@ public class CustomIconsThemeAdapter extends RecyclerView.Adapter<CustomIconsThe
                 if (functionsClassLegacy.customIconsEnable()) {
                     LoadCustomIcons loadCustomIcons = new LoadCustomIcons(context, adapterItems.get(position).getPackageName());
                     loadCustomIcons.load();
-
-
-                    functionsClassLegacy.Toast(String.valueOf(loadCustomIcons.getTotalIconsNumber()), PublicVariable.primaryColor);
                 }
 
                 return true;

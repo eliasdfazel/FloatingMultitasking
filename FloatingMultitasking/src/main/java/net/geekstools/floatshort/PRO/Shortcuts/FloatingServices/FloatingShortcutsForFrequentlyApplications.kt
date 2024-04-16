@@ -211,7 +211,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                     e.printStackTrace()
 
                                 } finally {
-                                    PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
+                                    PublicVariable.allFloatingCounter -= 1
 
                                     if (PublicVariable.allFloatingCounter == 0) {
                                         if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
@@ -624,7 +624,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                             e.printStackTrace()
 
                         } finally {
-                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
+                            PublicVariable.allFloatingCounter -= 1
 
                             if (PublicVariable.allFloatingCounter == 0) {
                                 if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
@@ -789,8 +789,6 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
                                     PublicVariable.splitScreen = true
 
-                                    functionsClassLegacy.Toast(functionsClassLegacy.applicationName(PublicVariable.splitSinglePackage))
-
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()
                                 }
@@ -937,7 +935,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                     } catch (e: Exception) {
                                         e.printStackTrace()
                                     } finally {
-                                        PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
+                                        PublicVariable.allFloatingCounter -= 1
 
                                         if (PublicVariable.allFloatingCounter == 0) {
                                             if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {

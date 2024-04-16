@@ -74,7 +74,6 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,7 +87,6 @@ import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RemoteViews;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationManagerCompat;
@@ -1231,7 +1229,6 @@ public class FunctionsClassLegacy {
     public void openApplicationFromActivity(Activity instanceOfActivity, String packageName) {
         if (appIsInstalled(packageName)) {
             try {
-                Toast(applicationName(packageName));
 
                 Intent launchIntentForPackage = context.getPackageManager().getLaunchIntentForPackage(packageName);
                 launchIntentForPackage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1253,7 +1250,6 @@ public class FunctionsClassLegacy {
     public void openApplicationFromActivity(Activity instanceOfActivity, String packageName, String className) {
         if (appIsInstalled(packageName)) {
             try {
-                Toast(String.valueOf(context.getPackageManager().getActivityInfo(new ComponentName(packageName, className), 0).loadLabel(context.getPackageManager())), Gravity.BOTTOM);
 
                 Intent openAlias = new Intent();
                 openAlias.setClassName(packageName, className);
@@ -2510,48 +2506,6 @@ public class FunctionsClassLegacy {
                 PublicVariable.floatingViewsHW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber, context.getResources().getDisplayMetrics());
             }
         }, 555);
-    }
-
-    public void Toast(String toastContent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.toast_view, null/*(ViewGroup) activity.findViewById(R.id.toastView)*/);
-
-        LayerDrawable drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_bottom);;
-
-        Drawable backToast = drawToast.findDrawableByLayerId(R.id.backgroundTemporary);
-
-        TextView textView = layout.findViewById(R.id.toastText);
-        textView.setText(Html.fromHtml("<small>" + toastContent + "</small>", Html.FROM_HTML_MODE_COMPACT));
-        backToast.setTint(context.getColor(R.color.light_transparent));
-        textView.setBackground(drawToast);
-        textView.setTextColor(context.getColor(R.color.dark));
-        textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
-        Toast toast = new Toast(context);
-        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
-    }
-
-    public void Toast(String toastContent, int toastColor) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.toast_view, null/*(ViewGroup) activity.findViewById(R.id.toastView)*/);
-
-        LayerDrawable drawToast = (LayerDrawable) context.getDrawable(R.drawable.toast_background_bottom);;
-        Drawable backToast = drawToast.findDrawableByLayerId(R.id.backgroundTemporary);
-        backToast.setTint(toastColor);
-
-        TextView textView = layout.findViewById(R.id.toastText);
-        textView.setText(Html.fromHtml("<small>" + toastContent + "</small>", Html.FROM_HTML_MODE_COMPACT));
-        backToast.setTint(context.getColor(R.color.light_transparent));
-        textView.setBackground(drawToast);
-        textView.setTextColor(context.getColor(R.color.dark));
-        textView.setShadowLayer(0.02f, 2, 2, context.getColor(R.color.dark_transparent_high));
-        Toast toast = new Toast(context);
-        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
     }
 
     public boolean loadRecoveryIndicator(String packageName) {

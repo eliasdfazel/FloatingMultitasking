@@ -635,10 +635,10 @@ class FloatingShortcutsForApplications : Service() {
                             e.printStackTrace()
 
                         } finally {
-                            PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
+                            PublicVariable.allFloatingCounter -= 1
 
                             PublicVariable.floatingShortcutsList.remove(packageNames[startId])
-                            PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter - 1
+                            PublicVariable.floatingShortcutsCounter -= 1
 
                             if (PublicVariable.allFloatingCounter == 0) {
                                 if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
@@ -803,8 +803,6 @@ class FloatingShortcutsForApplications : Service() {
                                 startActivity(splitSingle)
 
                                 PublicVariable.splitScreen = true
-
-                                functionsClassLegacy.Toast(functionsClassLegacy.applicationName(PublicVariable.splitSinglePackage))
 
                             }, 200)
 

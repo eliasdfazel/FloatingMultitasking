@@ -786,9 +786,6 @@ class FloatingFolders : Service() {
 
                                     }, 200)
 
-                                    functionsClassLegacy.Toast(functionsClassLegacy.applicationName(packageNameSplitOne))
-                                    functionsClassLegacy.Toast(functionsClassLegacy.applicationName(packageNameSplitTwo))
-
                                 } catch (e: NullPointerException) {
                                     e.printStackTrace()
                                 }
