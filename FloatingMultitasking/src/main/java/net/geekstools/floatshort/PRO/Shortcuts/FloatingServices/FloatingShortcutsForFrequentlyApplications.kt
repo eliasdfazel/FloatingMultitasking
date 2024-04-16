@@ -298,7 +298,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
             XY.xMove = XY.xPosition
             XY.yMove = XY.yPosition
 
-            shapedIcons[startId].imageAlpha = preferencesIO.readDefaultPreference("autoTrans", 255)
+            try { shapedIcons[startId].imageAlpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255) } catch (e: Exception) { }
 
             if (!functionsClassLegacy.litePreferencesEnabled()) {
 
