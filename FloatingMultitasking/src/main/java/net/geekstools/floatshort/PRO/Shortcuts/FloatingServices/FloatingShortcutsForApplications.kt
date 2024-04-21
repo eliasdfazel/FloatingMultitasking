@@ -308,9 +308,9 @@ class FloatingShortcutsForApplications : Service() {
             XY.xMove = XY.xPosition
             XY.yMove = XY.yPosition
 
-            if (shapedIcons[startId] != null) {
+            try {
                 shapedIcons[startId].imageAlpha = functionsClassLegacy.readDefaultPreference("autoTrans", 255)
-            }
+            } catch (e: IndexOutOfBoundsException ) { }
 
             if (!functionsClassLegacy.litePreferencesEnabled()) {
 
