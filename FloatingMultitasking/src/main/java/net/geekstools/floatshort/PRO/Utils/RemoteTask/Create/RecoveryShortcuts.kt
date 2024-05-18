@@ -57,9 +57,7 @@ class RecoveryShortcuts : Service() {
 
         if (!applicationContext.getFileStreamPath(".uFile").exists()) {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                stopForeground(STOP_FOREGROUND_REMOVE)
-            }
+            stopForeground(STOP_FOREGROUND_REMOVE)
 
             this@RecoveryShortcuts.stopSelf()
 
@@ -128,7 +126,7 @@ class RecoveryShortcuts : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             startForeground(333, functionsClassLegacy.bindServiceNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         } else {
             startForeground(333, functionsClassLegacy.bindServiceNotification())
@@ -139,10 +137,8 @@ class RecoveryShortcuts : Service() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            stopForeground(STOP_FOREGROUND_REMOVE)
-            stopForeground(true)
-        }
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopForeground(true)
 
         this@RecoveryShortcuts.stopSelf()
     }
@@ -172,10 +168,8 @@ class RecoveryShortcuts : Service() {
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            stopForeground(STOP_FOREGROUND_REMOVE)
-            stopForeground(true)
-        }
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopForeground(true)
 
         this@RecoveryShortcuts.stopSelf()
     }

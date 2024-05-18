@@ -49,7 +49,7 @@ class BindServices : Service() {
         functionsClassLegacy.loadSavedColor()
         functionsClassLegacy.checkLightDarkTheme()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             startForeground(333, functionsClassLegacy.bindServiceNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         } else {
             startForeground(333, functionsClassLegacy.bindServiceNotification())

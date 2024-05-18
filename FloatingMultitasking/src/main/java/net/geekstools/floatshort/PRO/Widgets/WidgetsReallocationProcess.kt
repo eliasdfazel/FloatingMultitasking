@@ -18,7 +18,6 @@ import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -166,15 +165,9 @@ class WidgetsReallocationProcess : Activity() {
                     Handler(Looper.getMainLooper()).postDelayed({
 
                         reallocatingBinding.widgetInformation.icon = functionsClassLegacy.applicationIcon(widgetDataModel.PackageName)
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            reallocatingBinding.widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
-                                    + widgetDataModel.WidgetLabel + "<br/>"
-                                    + "<small>" + getString(R.string.reallocatingWidgets) + "</small>", Html.FROM_HTML_MODE_LEGACY)
-                        } else {
-                            reallocatingBinding.widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
-                                    + widgetDataModel.WidgetLabel + "<br/>"
-                                    + "<small>" + getString(R.string.reallocatingWidgets) + "</small>", Html.FROM_HTML_MODE_COMPACT)
-                        }
+                        reallocatingBinding.widgetInformation.text = Html.fromHtml("<big><b>" + widgetDataModel.AppName + "</b></big><br/>"
+                                + widgetDataModel.WidgetLabel + "<br/>"
+                                + "<small>" + getString(R.string.reallocatingWidgets) + "</small>", Html.FROM_HTML_MODE_LEGACY)
                     }, 577)
                 }
             }

@@ -57,10 +57,8 @@ class RecoveryWidgets : Service() {
             startActivity(Intent(applicationContext, WidgetsReallocationProcess::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                     ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                stopForeground(Service.STOP_FOREGROUND_REMOVE)
-                stopForeground(true)
-            }
+            stopForeground(Service.STOP_FOREGROUND_REMOVE)
+            stopForeground(true)
 
             this@RecoveryWidgets.stopSelf()
 
@@ -113,7 +111,7 @@ class RecoveryWidgets : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             startForeground(333, functionsClassLegacy.bindServiceNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         } else {
             startForeground(333, functionsClassLegacy.bindServiceNotification())
@@ -129,10 +127,8 @@ class RecoveryWidgets : Service() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            stopForeground(Service.STOP_FOREGROUND_REMOVE)
-            stopForeground(true)
-        }
+        stopForeground(Service.STOP_FOREGROUND_REMOVE)
+        stopForeground(true)
 
         stopSelf()
     }
@@ -178,18 +174,14 @@ class RecoveryWidgets : Service() {
 
             widgetDataInterface.close()
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                stopForeground(Service.STOP_FOREGROUND_REMOVE)
-                stopForeground(true)
-            }
+            stopForeground(Service.STOP_FOREGROUND_REMOVE)
+            stopForeground(true)
 
             this@RecoveryWidgets.stopSelf()
         } else {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                stopForeground(Service.STOP_FOREGROUND_REMOVE)
-                stopForeground(true)
-            }
+            stopForeground(Service.STOP_FOREGROUND_REMOVE)
+            stopForeground(true)
 
             this@RecoveryWidgets.stopSelf()
         }

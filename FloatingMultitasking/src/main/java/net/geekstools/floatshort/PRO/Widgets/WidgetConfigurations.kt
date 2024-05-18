@@ -857,14 +857,12 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
         installedWidgetsSections.clear()
 
         widgetProviderInfoList = appWidgetManager.installedProviders as ArrayList<AppWidgetProviderInfo>
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 
-            widgetProviderInfoList.sortWith(Comparator { appWidgetProviderInfoLeft, appWidgetProviderInfoRight ->
+        widgetProviderInfoList.sortWith(Comparator { appWidgetProviderInfoLeft, appWidgetProviderInfoRight ->
 
-                widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfoLeft.provider.packageName)
-                        .compareTo(widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfoRight.provider.packageName))
-            })
-        }
+            widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfoLeft.provider.packageName)
+                    .compareTo(widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfoRight.provider.packageName))
+        })
 
         if (widgetConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) {
             loadCustomIcons.load()

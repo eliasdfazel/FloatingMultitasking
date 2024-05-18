@@ -215,10 +215,8 @@ class FunctionsClassWidgets (private val context: Context) {
                         widgetDataInterface.initDataAccessObject().deleteByWidgetClassNameProviderWidgetSuspend(packageName, providerClassName)
                         widgetDataInterface.close()
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            context.deleteSharedPreferences(providerClassName + packageName)
-                            context.deleteSharedPreferences(widgetId.toString() + packageName)
-                        }
+                        context.deleteSharedPreferences(providerClassName + packageName)
+                        context.deleteSharedPreferences(widgetId.toString() + packageName)
                     }
 
                 }

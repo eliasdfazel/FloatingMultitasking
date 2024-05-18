@@ -56,10 +56,8 @@ class RecoveryFolders : Service() {
 
         if (!applicationContext.getFileStreamPath(".uCategory").exists()) {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                stopForeground(STOP_FOREGROUND_REMOVE)
-                stopForeground(true)
-            }
+            stopForeground(STOP_FOREGROUND_REMOVE)
+            stopForeground(true)
 
             this@RecoveryFolders.stopSelf()
 
@@ -125,7 +123,7 @@ class RecoveryFolders : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             startForeground(333, functionsClassLegacy.bindServiceNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         } else {
             startForeground(333, functionsClassLegacy.bindServiceNotification())
@@ -141,10 +139,8 @@ class RecoveryFolders : Service() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            stopForeground(STOP_FOREGROUND_REMOVE)
-            stopForeground(true)
-        }
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopForeground(true)
 
         this@RecoveryFolders.stopSelf()
     }
@@ -174,10 +170,8 @@ class RecoveryFolders : Service() {
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            stopForeground(STOP_FOREGROUND_REMOVE)
-            stopForeground(true)
-        }
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopForeground(true)
 
         this@RecoveryFolders.stopSelf()
     }
