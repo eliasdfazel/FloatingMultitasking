@@ -30,6 +30,7 @@ import net.geekstools.floatshort.PRO.Utils.AdapterItemsData.AdapterItems
 import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
+import net.geekstools.imageview.customshapes.ShapesImage
 
 class SavedAppsListPopupAdapter(private val context: Context,
                                 private val functionsClassLegacy: FunctionsClassLegacy,
@@ -86,7 +87,7 @@ class SavedAppsListPopupAdapter(private val context: Context,
             savedAppsListPopupAdapterViewHolder = ViewHolder()
 
             savedAppsListPopupAdapterViewHolder.items = convertView.findViewById<View>(R.id.items) as RelativeLayout
-            savedAppsListPopupAdapterViewHolder.imgIcon = convertView.findViewById<View>(R.id.iconViewItem) as ImageView
+            savedAppsListPopupAdapterViewHolder.imgIcon = convertView.findViewById<ShapesImage>(R.id.iconViewItem)
             savedAppsListPopupAdapterViewHolder.textAppName = convertView.findViewById<View>(R.id.titleViewItem) as TextView
             savedAppsListPopupAdapterViewHolder.deleteItem = convertView.findViewById<View>(R.id.deleteItem) as Button
             savedAppsListPopupAdapterViewHolder.confirmItem = convertView.findViewById<View>(R.id.confirmItem) as Button

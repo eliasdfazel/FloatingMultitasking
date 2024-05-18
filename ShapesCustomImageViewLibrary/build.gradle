@@ -28,3 +28,9 @@ android {
     }
     namespace 'net.geekstools.imageview.customshapes'
 }
+
+dependencies {
+
+    implementation 'androidx.annotation:annotation:1.8.0'
+
+}

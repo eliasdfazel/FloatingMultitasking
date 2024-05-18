@@ -24,11 +24,13 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import androidx.annotation.Keep;
+
 
 /**
  * An {@link ImageView} that draws its contents inside a mask.
  */
-
+@Keep
 public class ShapesImage extends ImageView {
     public static final int CUSTOM = 0;
     public static final int CIRCLE = 1;

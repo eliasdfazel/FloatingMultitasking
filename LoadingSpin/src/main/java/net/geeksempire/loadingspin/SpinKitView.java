@@ -20,11 +20,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.annotation.Keep;
+
 import net.geeksempire.loadingspin.sprite.Sprite;
 
 /**
  * Created by ybq.
  */
+@Keep
 public class SpinKitView extends ProgressBar {
 
     private Style mStyle;

@@ -28,3 +28,9 @@ android {
     }
     namespace 'net.geeksempire.loadingspin'
 }
+
+dependencies {
+
+    implementation 'androidx.annotation:annotation:1.8.0'
+
+}
