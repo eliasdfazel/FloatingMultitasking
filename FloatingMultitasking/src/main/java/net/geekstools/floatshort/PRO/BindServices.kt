@@ -15,14 +15,11 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import android.util.TypedValue
-import net.geekstools.floatshort.PRO.Utils.Functions.FileIO
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
+import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 
 class BindServices : Service() {
-
-    lateinit var functionsClassLegacy: FunctionsClassLegacy
-    lateinit var fileIO: FileIO
 
     override fun onDestroy() {
         super.onDestroy()
@@ -32,7 +29,9 @@ class BindServices : Service() {
 
         if (startId == 1) {
 
-            PublicVariable.floatingSizeNumber = functionsClassLegacy.readDefaultPreference("floatingSize", 39)
+            val preferencesIO = PreferencesIO(applicationContext)
+
+            PublicVariable.floatingSizeNumber = preferencesIO.readDefaultPreference("floatingSize", 39)
             PublicVariable.floatingViewsHW = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PublicVariable.floatingSizeNumber.toFloat(), applicationContext.resources.displayMetrics).toInt()
 
         }
@@ -43,16 +42,15 @@ class BindServices : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        functionsClassLegacy = FunctionsClassLegacy(applicationContext)
-        fileIO = FileIO(applicationContext)
+        val functionsClass = FunctionsClassLegacy(applicationContext)
 
-        functionsClassLegacy.loadSavedColor()
-        functionsClassLegacy.checkLightDarkTheme()
+        functionsClass.loadSavedColor()
+        functionsClass.checkLightDarkTheme()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            startForeground(333, functionsClassLegacy.bindServiceNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+            startForeground(333, functionsClass.bindServiceNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         } else {
-            startForeground(333, functionsClassLegacy.bindServiceNotification())
+            startForeground(333, functionsClass.bindServiceNotification())
         }
 
     }
