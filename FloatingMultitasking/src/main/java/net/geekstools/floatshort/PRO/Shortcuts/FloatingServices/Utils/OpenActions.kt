@@ -22,189 +22,214 @@ class OpenActions(private val context: Context, private val functionsClassLegacy
     fun startProcess(packageName: String, className: String,
                      layoutParams: WindowManager.LayoutParams) {
 
-        if (functionsClassLegacy.splashReveal()) {
+        if (functionsClassLegacy.canLaunch(packageName)) {
 
-            val splashReveal = Intent(context, FloatingSplash::class.java).apply {
-                putExtra("PackageName", packageName)
-                putExtra("ClassName", className)
+            if (functionsClassLegacy.splashReveal()) {
 
-                putExtra("X", layoutParams.x)
-                putExtra("Y", layoutParams.y)
+                val splashReveal = Intent(context, FloatingSplash::class.java).apply {
+                    putExtra("PackageName", packageName)
+                    putExtra("ClassName", className)
 
-                putExtra("HW", layoutParams.width)
-            }
+                    putExtra("X", layoutParams.x)
+                    putExtra("Y", layoutParams.y)
 
-            context.startService(splashReveal)
+                    putExtra("HW", layoutParams.width)
+                }
 
-        } else {
+                context.startService(splashReveal)
 
-            if (functionsClassLegacy.FreeForm()) {
-                Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Free Form")
+            } else {
 
-                functionsClassLegacy.openApplicationFreeForm(
+                if (functionsClassLegacy.FreeForm()) {
+                    Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Free Form")
+
+                    functionsClassLegacy.openApplicationFreeForm(
                         packageName,
                         className,
                         layoutParams.x,
                         functionsClassLegacy.displayX() / 2,
                         layoutParams.y,
                         functionsClassLegacy.displayY() / 2
-                )
-            } else {
-                Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Normal")
+                    )
+                } else {
+                    Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Normal")
 
-                functionsClassLegacy
+                    functionsClassLegacy
                         .appsLaunchPad(packageName, className)
+                }
             }
+
         }
+
     }
 
     fun startProcess(packageName: String, className: String, freeform: Boolean,
                      layoutParams: WindowManager.LayoutParams) {
 
-        if (functionsClassLegacy.splashReveal()) {
+        if (functionsClassLegacy.canLaunch(packageName)) {
 
-            val splashReveal = Intent(context, FloatingSplash::class.java).apply {
-                putExtra("PackageName", packageName)
-                putExtra("ClassName", className)
+            if (functionsClassLegacy.splashReveal()) {
 
-                putExtra("X", layoutParams.x)
-                putExtra("Y", layoutParams.y)
+                val splashReveal = Intent(context, FloatingSplash::class.java).apply {
+                    putExtra("PackageName", packageName)
+                    putExtra("ClassName", className)
 
-                putExtra("HW", layoutParams.width)
-            }
+                    putExtra("X", layoutParams.x)
+                    putExtra("Y", layoutParams.y)
 
-            context.startService(splashReveal)
+                    putExtra("HW", layoutParams.width)
+                }
 
-        } else {
+                context.startService(splashReveal)
 
-            if (functionsClassLegacy.FreeForm()
-                || freeform) {
-                Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Free Form")
-
-                functionsClassLegacy.openApplicationFreeForm(
-                    packageName,
-                    className,
-                    layoutParams.x,
-                    functionsClassLegacy.displayX() / 2,
-                    layoutParams.y,
-                    functionsClassLegacy.displayY() / 2
-                )
             } else {
-                Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Normal")
 
-                functionsClassLegacy
-                    .appsLaunchPad(packageName, className)
+                if (functionsClassLegacy.FreeForm()
+                    || freeform) {
+                    Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Free Form")
+
+                    functionsClassLegacy.openApplicationFreeForm(
+                        packageName,
+                        className,
+                        layoutParams.x,
+                        functionsClassLegacy.displayX() / 2,
+                        layoutParams.y,
+                        functionsClassLegacy.displayY() / 2
+                    )
+                } else {
+                    Log.d(this@OpenActions.javaClass.simpleName, "Open Action: Normal")
+
+                    functionsClassLegacy
+                        .appsLaunchPad(packageName, className)
+                }
             }
+
         }
+
     }
 
     fun startProcess(packageName: String,
                      layoutParams: WindowManager.LayoutParams) {
 
-        if (functionsClassLegacy.splashReveal()) {
+        if (functionsClassLegacy.canLaunch(packageName)) {
 
-            val splashReveal = Intent(context, FloatingSplash::class.java).apply {
-                putExtra("PackageName", packageName)
+            if (functionsClassLegacy.splashReveal()) {
 
-                putExtra("X", layoutParams.x)
-                putExtra("Y", layoutParams.y)
+                val splashReveal = Intent(context, FloatingSplash::class.java).apply {
+                    putExtra("PackageName", packageName)
 
-                putExtra("HW", layoutParams.width)
-            }
+                    putExtra("X", layoutParams.x)
+                    putExtra("Y", layoutParams.y)
 
-            context.startService(splashReveal)
+                    putExtra("HW", layoutParams.width)
+                }
 
-        } else {
+                context.startService(splashReveal)
 
-            if (functionsClassLegacy.FreeForm()) {
+            } else {
 
-                functionsClassLegacy.openApplicationFreeForm(
+                if (functionsClassLegacy.FreeForm()) {
+
+                    functionsClassLegacy.openApplicationFreeForm(
                         packageName,
                         layoutParams.x,
                         functionsClassLegacy.displayX() / 2,
                         layoutParams.y,
                         functionsClassLegacy.displayY() / 2
-                )
-            } else {
+                    )
+                } else {
 
-                functionsClassLegacy
+                    functionsClassLegacy
                         .appsLaunchPad(packageName)
+                }
             }
+
         }
+
     }
 
     fun startProcess(packageName: String, className: String,
                      xPosition: Int, yPosition: Int, HW: Int) {
 
-        if (functionsClassLegacy.splashReveal()) {
+        if (functionsClassLegacy.canLaunch(packageName)) {
 
-            val splashReveal = Intent(context, FloatingSplash::class.java).apply {
-                putExtra("PackageName", packageName)
-                putExtra("ClassName", className)
+            if (functionsClassLegacy.splashReveal()) {
 
-                putExtra("X", xPosition)
-                putExtra("Y", yPosition)
+                val splashReveal = Intent(context, FloatingSplash::class.java).apply {
+                    putExtra("PackageName", packageName)
+                    putExtra("ClassName", className)
 
-                putExtra("HW", HW)
-            }
+                    putExtra("X", xPosition)
+                    putExtra("Y", yPosition)
 
-            context.startService(splashReveal)
+                    putExtra("HW", HW)
+                }
 
-        } else {
+                context.startService(splashReveal)
 
-            if (functionsClassLegacy.FreeForm()) {
-
-                functionsClassLegacy.openApplicationFreeForm(
-                    packageName,
-                    className,
-                    xPosition,
-                    functionsClassLegacy.displayX() / 2,
-                    yPosition,
-                    functionsClassLegacy.displayY() / 2
-                )
             } else {
 
-                functionsClassLegacy
-                    .appsLaunchPad(packageName, className)
+                if (functionsClassLegacy.FreeForm()) {
 
+                    functionsClassLegacy.openApplicationFreeForm(
+                        packageName,
+                        className,
+                        xPosition,
+                        functionsClassLegacy.displayX() / 2,
+                        yPosition,
+                        functionsClassLegacy.displayY() / 2
+                    )
+                } else {
+
+                    functionsClassLegacy
+                        .appsLaunchPad(packageName, className)
+
+                }
             }
+
         }
+
     }
 
     fun startProcess(packageName: String,
                      xPosition: Int, yPosition: Int, HW: Int) {
 
-        if (functionsClassLegacy.splashReveal()) {
+        if (functionsClassLegacy.canLaunch(packageName)) {
 
-            val splashReveal = Intent(context, FloatingSplash::class.java).apply {
-                putExtra("PackageName", packageName)
+            if (functionsClassLegacy.splashReveal()) {
 
-                putExtra("X", xPosition)
-                putExtra("Y", yPosition)
+                val splashReveal = Intent(context, FloatingSplash::class.java).apply {
+                    putExtra("PackageName", packageName)
 
-                putExtra("HW", HW)
-            }
+                    putExtra("X", xPosition)
+                    putExtra("Y", yPosition)
 
-            context.startService(splashReveal)
+                    putExtra("HW", HW)
+                }
 
-        } else {
+                context.startService(splashReveal)
 
-            if (functionsClassLegacy.FreeForm()) {
-
-                functionsClassLegacy.openApplicationFreeForm(
-                    packageName,
-                    xPosition,
-                    functionsClassLegacy.displayX() / 2,
-                    yPosition,
-                    functionsClassLegacy.displayY() / 2
-                )
             } else {
 
-                functionsClassLegacy
-                    .appsLaunchPad(packageName)
+                if (functionsClassLegacy.FreeForm()) {
 
+                    functionsClassLegacy.openApplicationFreeForm(
+                        packageName,
+                        xPosition,
+                        functionsClassLegacy.displayX() / 2,
+                        yPosition,
+                        functionsClassLegacy.displayY() / 2
+                    )
+                } else {
+
+                    functionsClassLegacy
+                        .appsLaunchPad(packageName)
+
+                }
             }
+
         }
+
     }
 
 }

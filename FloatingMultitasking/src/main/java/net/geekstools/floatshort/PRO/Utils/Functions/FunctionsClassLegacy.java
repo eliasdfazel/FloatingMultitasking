@@ -1223,7 +1223,35 @@ public class FunctionsClassLegacy {
 
     /*Open Functions*/
     public boolean canLaunch(String packageName) {
-        return (context.getPackageManager().getLaunchIntentForPackage(packageName) != null);
+
+        boolean canLaunchResult = false;
+
+        Intent openAlias = context.getPackageManager().getLaunchIntentForPackage(packageName);
+
+        if (openAlias != null
+                && openAlias.getComponent() != null) {
+
+            try {
+
+                if (context.getPackageManager().getActivityInfo(openAlias.getComponent(), PackageManager.GET_META_DATA).exported) {
+
+                    canLaunchResult = true;
+
+                } else {
+
+                    canLaunchResult = false;
+
+                }
+
+            } catch (PackageManager.NameNotFoundException e) {
+
+                canLaunchResult = false;
+
+            }
+
+        }
+
+        return canLaunchResult;
     }
 
     public void openApplicationFromActivity(Activity instanceOfActivity, String packageName) {
@@ -1349,13 +1377,14 @@ public class FunctionsClassLegacy {
                         }
                     }
 
-                    Intent openAlias = context.getPackageManager().getLaunchIntentForPackage(PackageName);
-                    if (openAlias != null) {
+                    if (canLaunch(PackageName)) {
+                        Intent openAlias = context.getPackageManager().getLaunchIntentForPackage(PackageName);
                         openAlias.setFlags(
                                 Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
                                         Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(openAlias, activityOptions.toBundle());
                     }
-                    context.startActivity(openAlias, activityOptions.toBundle());
+
                 }
             }, 3000);
         }
