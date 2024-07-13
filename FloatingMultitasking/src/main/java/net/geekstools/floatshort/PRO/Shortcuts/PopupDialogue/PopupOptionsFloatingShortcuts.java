@@ -106,7 +106,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
                 case FunctionsClassLegacy.DisplaySection.TopLeft:
                     if (functionsClassLegacy.returnAPI() < 24) {
                         if (functionsClassLegacy.UsageStatsEnabled()) {
-                            popupItems.add(getString(R.string.close));
+                            popupItems.add(getString(R.string.minimizeIt));
                         }
                         popupItems.add(getString(R.string.pin));
                         popupItems.add(getString(R.string.unpin));
@@ -117,7 +117,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
                         }
                         popupItems.add(getString(R.string.splitIt));
                         if (functionsClassLegacy.UsageStatsEnabled()) {
-                            popupItems.add(getString(R.string.close));
+                            popupItems.add(getString(R.string.minimizeIt));
                         }
                         popupItems.add(getString(R.string.pin));
                         popupItems.add(getString(R.string.unpin));
@@ -131,7 +131,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
                 case FunctionsClassLegacy.DisplaySection.TopRight:
                     if (functionsClassLegacy.returnAPI() < 24) {
                         if (functionsClassLegacy.UsageStatsEnabled()) {
-                            popupItems.add(getString(R.string.close));
+                            popupItems.add(getString(R.string.minimizeIt));
                         }
                         popupItems.add(getString(R.string.pin));
                         popupItems.add(getString(R.string.unpin));
@@ -142,7 +142,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
                         }
                         popupItems.add(getString(R.string.splitIt));
                         if (functionsClassLegacy.UsageStatsEnabled()) {
-                            popupItems.add(getString(R.string.close));
+                            popupItems.add(getString(R.string.minimizeIt));
                         }
                         popupItems.add(getString(R.string.pin));
                         popupItems.add(getString(R.string.unpin));
@@ -159,14 +159,14 @@ public class PopupOptionsFloatingShortcuts extends Service {
                         popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.pin));
                         if (functionsClassLegacy.UsageStatsEnabled()) {
-                            popupItems.add(getString(R.string.close));
+                            popupItems.add(getString(R.string.minimizeIt));
                         }
                     } else {
                         popupItems.add(getString(R.string.remove));
                         popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.pin));
                         if (functionsClassLegacy.UsageStatsEnabled()) {
-                            popupItems.add(getString(R.string.close));
+                            popupItems.add(getString(R.string.minimizeIt));
                         }
                         popupItems.add(getString(R.string.splitIt));
                         if (functionsClassLegacy.addFloatItItem()) {
@@ -184,14 +184,14 @@ public class PopupOptionsFloatingShortcuts extends Service {
                         popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.pin));
                         if (functionsClassLegacy.UsageStatsEnabled()) {
-                            popupItems.add(getString(R.string.close));
+                            popupItems.add(getString(R.string.minimizeIt));
                         }
                     } else {
                         popupItems.add(getString(R.string.remove));
                         popupItems.add(getString(R.string.unpin));
                         popupItems.add(getString(R.string.pin));
                         if (functionsClassLegacy.UsageStatsEnabled()) {
-                            popupItems.add(getString(R.string.close));
+                            popupItems.add(getString(R.string.minimizeIt));
                         }
                         popupItems.add(getString(R.string.splitIt));
                         if (functionsClassLegacy.addFloatItItem()) {
@@ -206,7 +206,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
                 default:
                     if (functionsClassLegacy.returnAPI() < 24) {
                         if (functionsClassLegacy.UsageStatsEnabled()) {
-                            popupItems.add(getString(R.string.close));
+                            popupItems.add(getString(R.string.minimizeIt));
                         }
                         popupItems.add(getString(R.string.pin));
                         popupItems.add(getString(R.string.unpin));
@@ -217,7 +217,7 @@ public class PopupOptionsFloatingShortcuts extends Service {
                         }
                         popupItems.add(getString(R.string.splitIt));
                         if (functionsClassLegacy.UsageStatsEnabled()) {
-                            popupItems.add(getString(R.string.close));
+                            popupItems.add(getString(R.string.minimizeIt));
                         }
                         popupItems.add(getString(R.string.pin));
                         popupItems.add(getString(R.string.unpin));

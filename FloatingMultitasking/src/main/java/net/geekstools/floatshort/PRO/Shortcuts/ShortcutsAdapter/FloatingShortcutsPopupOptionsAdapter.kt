@@ -11,7 +11,6 @@ package net.geekstools.floatshort.PRO.Shortcuts.ShortcutsAdapter
 
 import android.app.Activity
 import android.app.ActivityOptions
-import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
@@ -207,31 +206,14 @@ class FloatingShortcutsPopupOptionsAdapter : BaseAdapter {
 
                 context.sendBroadcast(Intent("Float_It_$classNameCommand").putExtra("startId", startId).setPackage(context.packageName))
 
-            } else if (adapterItems[position].optionItemTitle == context.getString(R.string.close)) {
+            } else if (adapterItems[position].optionItemTitle == context.getString(R.string.minimizeIt)) {
 
-                if (functionsClassLegacy.UsageStatsEnabled()) {
-                    try {
-                        val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-                        val queryUsageStats = usageStatsManager
-                                .queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
-                                        System.currentTimeMillis() - 1000 * 60,  //begin
-                                        System.currentTimeMillis()) //end
-                        queryUsageStats.sortWith(Comparator { left, right ->
+                val homeScreen = Intent(Intent.ACTION_MAIN)
+                homeScreen.addCategory(Intent.CATEGORY_HOME)
+                homeScreen.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(homeScreen,
+                    ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
 
-                            return@Comparator right.lastTimeUsed.compareTo(left.lastTimeUsed)
-                        })
-                        val inFrontPackageName = queryUsageStats[0].packageName
-                        if (inFrontPackageName.contains(packageName)) {
-                            val homeScreen = Intent(Intent.ACTION_MAIN)
-                            homeScreen.addCategory(Intent.CATEGORY_HOME)
-                            homeScreen.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            context.startActivity(homeScreen,
-                                    ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
             } else if (adapterItems[position].optionItemTitle == context.getString(R.string.remove)) {
 
                 context.sendBroadcast(Intent("Remove_App_$classNameCommand").putExtra("startId", startId).setPackage(context.packageName))
