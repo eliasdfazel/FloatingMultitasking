@@ -21,15 +21,15 @@ plugins {
 
 android {
 
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "net.geekstools.floatshort.PRO"
 
         minSdkVersion 25
-        targetSdkVersion 34
+        targetSdkVersion 35
 
-        versionCode 896
+        versionCode 897
         versionName "${majorVersion}." + getDateMonth() + "." + getDateDay() + "." + getDateYear() + ".${versionCode}"
 
     }
@@ -103,7 +103,7 @@ dependencies {
     implementation project(':ShapesCustomImageViewLibrary')
 
 
-    implementation 'com.android.billingclient:billing-ktx:7.0.0'
+    implementation 'com.android.billingclient:billing-ktx:7.1.1'
 
 
     implementation 'androidx.appcompat:appcompat:1.7.0'

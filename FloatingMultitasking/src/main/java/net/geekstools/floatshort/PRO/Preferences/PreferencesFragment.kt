@@ -50,13 +50,6 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import net.geekstools.floatshort.PRO.BindServices
 import net.geekstools.floatshort.PRO.R
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.PinPassword.PinPasswordConfigurations
@@ -124,7 +117,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     var FromWidgetsConfigurations: Boolean = false
     var currentTheme: Boolean = false
 
-    lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     var betaChangeLog: String = "net.geekstools.floatshort.PRO"
     var betaVersionCode: String = "0"
 
@@ -303,10 +295,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             true
         }
 
-        val layerDrawableAdApp = context?.getDrawable(R.drawable.ic_ad_app_layer) as LayerDrawable
-        val gradientDrawableAdApp = layerDrawableAdApp.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable
-        gradientDrawableAdApp.setTint(PublicVariable.primaryColorOpposite)
-        adApp.icon = layerDrawableAdApp
+
+        adApp.icon = activity?.getDrawable(R.drawable.arwen_ai_icon)
         adApp.title = Html.fromHtml(getString(R.string.adApp), Html.FROM_HTML_MODE_COMPACT)
         adApp.summary = Html.fromHtml(getString(R.string.adAppSummary), Html.FROM_HTML_MODE_COMPACT)
         adApp.setOnPreferenceClickListener {
@@ -789,46 +779,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             true
         }
 
-        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        firebaseRemoteConfig.fetch(0).addOnSuccessListener {
-
-            firebaseRemoteConfig.activate().addOnSuccessListener {
-
-                if (!this@PreferencesFragment.isRemoving) {
-
-                    Glide.with(requireContext())
-                        .load(firebaseRemoteConfig.getString(getString(R.string.adAppIconLink)))
-                        .transform(RoundedCorners(functionsClassLegacy.DpToInteger(99)))
-                        .addListener(object : RequestListener<Drawable?> {
-                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
-
-                                return false
-                            }
-
-                            override fun onResourceReady(resource: Drawable?, model: Any, target: Target<Drawable?>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-
-                                requireActivity().runOnUiThread {
-                                    adApp.icon = resource
-                                }
-
-                                return false
-                            }
-                        }).submit()
-                    adApp.title = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppTitle)), Html.FROM_HTML_MODE_COMPACT)
-                    adApp.summary = Html.fromHtml(firebaseRemoteConfig.getString(getString(R.string.adAppSummaries)), Html.FROM_HTML_MODE_COMPACT)
-
-                    adApp.setOnPreferenceClickListener {
-
-                        startActivity(Intent(Intent.ACTION_VIEW,
-                            Uri.parse(firebaseRemoteConfig.getString(getString(R.string.adAppLink)))))
-
-                        true
-                    }
-
-                }
-
-            }
-        }
     }
 
     override fun onResume() {
