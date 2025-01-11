@@ -66,7 +66,6 @@ class SmartFeatures {
                         .filter { packageNameUsedApplication ->
 
                             functionsClassApplicationsData.appIsInstalled(packageNameUsedApplication)
-                                    && !functionsClassApplicationsData.isSystemApplication(packageNameUsedApplication)
                                     && !functionsClassApplicationsData.isDefaultLauncher(packageNameUsedApplication)
                                     && functionsClassApplicationsData.canLaunch(packageNameUsedApplication)
                         }
