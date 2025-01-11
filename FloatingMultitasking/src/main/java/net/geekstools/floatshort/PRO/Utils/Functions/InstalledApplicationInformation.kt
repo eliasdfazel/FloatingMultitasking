@@ -41,20 +41,6 @@ class InstalledApplicationInformation(private val context: Context) {
         }
     }
 
-    fun applicationVersionName(packageName: String): String {
-
-        return try {
-            val packInfo = context.packageManager.getPackageInfo(packageName, 0)
-
-            packInfo.versionName
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-
-            "1"
-        }
-    }
-
     fun applicationVersionCode(packageName: String): Int {
 
         return try {

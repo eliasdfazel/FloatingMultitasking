@@ -151,7 +151,7 @@
 
     <PreferenceCategory android:key="adTitle" android:title="@string/geeksempire" android:summary=" ">
         <Preference
-            android:icon="@drawable/ic_ad_app_layer"
+            android:icon="@drawable/arwen_ai_icon"
             android:key="app"
             android:summary="@string/adAppSummary"
             android:title="@string/adApp"/>

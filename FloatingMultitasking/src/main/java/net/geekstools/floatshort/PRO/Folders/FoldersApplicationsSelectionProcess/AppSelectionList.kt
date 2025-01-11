@@ -127,7 +127,7 @@ class AppSelectionList : AppCompatActivity(),
         advanceAppSelectionListBinding.folderNameView.setHintTextColor(PublicVariable.colorLightDarkOpposite)
 
         val layerDrawableLoadLogo = getDrawable(R.drawable.ic_launcher_layer) as LayerDrawable?
-        val gradientDrawableLoadLogo = layerDrawableLoadLogo?.findDrawableByLayerId(R.id.ic_launcher_back_layer) as BitmapDrawable?
+        val gradientDrawableLoadLogo = layerDrawableLoadLogo?.findDrawableByLayerId(R.id.backgroundTemporary) as BitmapDrawable?
         gradientDrawableLoadLogo?.setTint(PublicVariable.primaryColor)
         advanceAppSelectionListBinding.loadingLogo.setImageDrawable(layerDrawableLoadLogo)
 

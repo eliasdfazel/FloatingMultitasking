@@ -35,23 +35,6 @@ class ApplicationsData(var context: Context) {
         }
     }
 
-    fun isSystemApplication(packageName: String): Boolean {
-        val packageManager = context.packageManager
-
-        return  try {
-            val targetPkgInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-            val sys = packageManager.getPackageInfo(
-                    "android", PackageManager.GET_SIGNATURES)
-            targetPkgInfo?.signatures != null && (sys.signatures[0] == targetPkgInfo.signatures[0])
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-            false
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
-        }
-    }
-
     fun isDefaultLauncher(packageName: String): Boolean {
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_HOME)
