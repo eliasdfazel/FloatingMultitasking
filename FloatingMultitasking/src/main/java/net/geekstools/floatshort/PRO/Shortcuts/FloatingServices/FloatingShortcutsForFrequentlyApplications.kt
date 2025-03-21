@@ -2,7 +2,7 @@
  * Copyright © 2020 By Geeks Empire.
  *
  * Created by Elias Fazel
- * Last modified 11/11/20 10:32 AM
+ * Last modified 11/11/20 10:46 AM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -14,9 +14,11 @@ import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.app.Service
 import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -28,9 +30,11 @@ import android.os.Looper
 import android.text.Html
 import android.util.Log
 import android.view.GestureDetector
+import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
@@ -47,7 +51,6 @@ import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Util
 import net.geekstools.floatshort.PRO.SecurityServices.AuthenticationProcess.Utils.SecurityInterfaceHolder
 import net.geekstools.floatshort.PRO.Shortcuts.FloatingServices.Utils.OpenActions
 import net.geekstools.floatshort.PRO.Utils.Functions.FunctionsClassLegacy
-import net.geekstools.floatshort.PRO.Utils.Functions.PreferencesIO
 import net.geekstools.floatshort.PRO.Utils.Functions.PublicVariable
 import net.geekstools.floatshort.PRO.Utils.Functions.RuntimeIO
 import net.geekstools.floatshort.PRO.Utils.InteractionObserver.InteractionObserver
@@ -62,10 +65,6 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
     private val functionsClassLegacy: FunctionsClassLegacy by lazy {
         FunctionsClassLegacy(applicationContext)
-    }
-
-    private val preferencesIO: PreferencesIO by lazy {
-        PreferencesIO(applicationContext)
     }
 
     private lateinit var securityFunctions: SecurityFunctions
@@ -93,7 +92,11 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
         var yMove: Int = 0
     }
 
+    private val activityInformation: ArrayList<ActivityInfo> = ArrayList<ActivityInfo>()
+
+
     private val packageNames: ArrayList<String> = ArrayList<String>()
+    private val classNames: ArrayList<String> = ArrayList<String>()
 
     private val appIcons: ArrayList<Drawable> = ArrayList<Drawable>()
     private val iconColors: ArrayList<Int> = ArrayList<Int>()
@@ -122,7 +125,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
     lateinit var getBackRunnable: Runnable
     lateinit var runnablePressHold: Runnable
 
-    var delayHandler = Handler(Looper.getMainLooper())
+    var delayHandler: Handler = Handler(Looper.getMainLooper())
     var getBackHandler: Handler = Handler(Looper.getMainLooper())
     var handlerPressHold: Handler = Handler(Looper.getMainLooper())
 
@@ -151,6 +154,8 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
     private val floatingShortcutsBinding: ArrayList<FloatingShortcutsBinding> = ArrayList<FloatingShortcutsBinding>()
 
+    var broadcastReceiver: BroadcastReceiver? = null
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -161,7 +166,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                     try {
                         if (floatingShortcutsBinding[J].root.isShown) {
                             layoutParams.set(J,
-                                    functionsClassLegacy.handleOrientationPortrait(packageNames[J], layoutParams[J].height))
+                                functionsClassLegacy.handleOrientationPortrait(classNames[J], layoutParams[J].height))
 
                             windowManager.updateViewLayout(floatingShortcutsBinding[J].root, layoutParams[J])
                         }
@@ -176,7 +181,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                     try {
                         if (floatingShortcutsBinding[J].root.isShown) {
                             layoutParams.set(J,
-                                    functionsClassLegacy.handleOrientationLandscape(packageNames[J], layoutParams[J].height))
+                                functionsClassLegacy.handleOrientationLandscape(classNames[J], layoutParams[J].height))
 
                             windowManager.updateViewLayout(floatingShortcutsBinding[J].root, layoutParams[J])
                         }
@@ -195,7 +200,6 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onStartCommand(intent: Intent?, flags: Int, serviceStartId: Int): Int {
-        super.onStartCommand(intent, flags, serviceStartId)
 
         intent?.run {
 
@@ -211,7 +215,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                     e.printStackTrace()
 
                                 } finally {
-                                    PublicVariable.allFloatingCounter -= 1
+                                    PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
 
                                     if (PublicVariable.allFloatingCounter == 0) {
                                         if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
@@ -221,8 +225,8 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                     }
                                 }
                             } else if (PublicVariable.allFloatingCounter == 0) {
-                                if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
-
+                                if (!PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                                        .getBoolean("stable", true)) {
                                     stopService(Intent(applicationContext, BindServices::class.java))
                                 }
                             }
@@ -231,10 +235,13 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                         }
                     }
 
+                    PublicVariable.floatingShortcutsList.clear()
+                    PublicVariable.floatingShortcutsCounter = -1
+
                     stopSelf()
                 }
 
-                return Service.START_NOT_STICKY
+                return START_NOT_STICKY
             }
 
             val startId = startIdCounter.size
@@ -244,8 +251,11 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
             if (!functionsClassLegacy.appIsInstalled(packageNames[startId])) {
 
-                return Service.START_NOT_STICKY
+                return START_NOT_STICKY
             }
+
+            classNames.add(startId, this@run.getStringExtra("ClassName")!!)
+            activityInformation.add(startId, packageManager.getActivityInfo(ComponentName(packageNames[startId], classNames[startId]), 1))
 
             floatingShortcutsBinding.add(startId, FloatingShortcutsBinding.inflate(layoutInflater))
 
@@ -271,16 +281,16 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
             RuntimeIO(applicationContext, functionsClassLegacy).updateRecoverShortcuts()
             /*Update Floating Shortcuts Database*/
 
-            appIcons.add(startId, functionsClassLegacy.shapedAppIcon(packageNames[startId]))
-            iconColors.add(startId, functionsClassLegacy.extractDominantColor(functionsClassLegacy.applicationIcon(packageNames[startId])))
+            appIcons.add(startId, functionsClassLegacy.shapedAppIcon(activityInformation[startId]))
+            iconColors.add(startId, functionsClassLegacy.extractDominantColor(functionsClassLegacy.applicationIcon(activityInformation[startId])))
 
             shapedIcons[startId].setImageDrawable(if (functionsClassLegacy.customIconsEnable()) {
-                loadCustomIcons.getDrawableIconForPackage(packageNames[startId], functionsClassLegacy.shapedAppIcon(packageNames[startId]))
+                loadCustomIcons.getDrawableIconForPackage(packageNames[startId], functionsClassLegacy.shapedAppIcon(activityInformation[startId]))
             } else {
-                functionsClassLegacy.shapedAppIcon(packageNames[startId])
+                functionsClassLegacy.shapedAppIcon(activityInformation[startId])
             })
 
-            val sharedPreferencesPosition = getSharedPreferences(packageNames[startId], Context.MODE_PRIVATE)
+            val sharedPreferencesPosition = getSharedPreferences(classNames[startId], Context.MODE_PRIVATE)
 
             XY.xInitial = XY.xInitial + 13
             XY.yInitial = XY.yInitial + 13
@@ -305,16 +315,16 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
             if (!functionsClassLegacy.litePreferencesEnabled()) {
 
                 flingAnimationX.add(startId, FlingAnimation(FloatValueHolder())
-                        .setFriction(preferencesIO.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
-                        .setMaxValue(functionsClassLegacy.displayX() - PublicVariable.floatingViewsHW.toFloat())
-                        .setMinValue(0f))
+                    .setFriction(functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
+                    .setMaxValue(functionsClassLegacy.displayX() - PublicVariable.floatingViewsHW.toFloat())
+                    .setMinValue(0f))
 
                 flingAnimationY.add(startId, FlingAnimation(FloatValueHolder())
-                        .setFriction(preferencesIO.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
-                        .setMaxValue(functionsClassLegacy.displayY() - PublicVariable.floatingViewsHW.toFloat())
-                        .setMinValue(0f))
+                    .setFriction(functionsClassLegacy.readPreference("FlingSensitivity", "FlingSensitivityValue", 3.0f))
+                    .setMaxValue(functionsClassLegacy.displayY() - PublicVariable.floatingViewsHW.toFloat())
+                    .setMinValue(0f))
 
-                simpleOnGestureListener.add(startId, object : GestureDetector.SimpleOnGestureListener() {
+                simpleOnGestureListener.add(startId, object : SimpleOnGestureListener() {
 
                     override fun onFling(motionEventFirst: MotionEvent?, motionEventLast: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
 
@@ -366,7 +376,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                 gestureDetector.add(startId, GestureDetector(applicationContext, simpleOnGestureListener[startId]))
             }
 
-            floatingShortcutsBinding[startId].root.setOnTouchListener(object : View.OnTouchListener {
+            floatingShortcutsBinding[startId].root.setOnTouchListener(object : OnTouchListener {
 
                 var initialX = 0
                 var initialY = 0
@@ -433,12 +443,13 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                             runnablePressHold = Runnable {
                                 if (touchingDelay[startId]) {
                                     functionsClassLegacy.PopupOptionShortcuts(
-                                            floatingShortcutsBinding.get(startId).root,
-                                            packageNames[startId],
-                                            this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName,
-                                            startId,
-                                            initialX,
-                                            initialY
+                                        floatingShortcutsBinding[startId].root,
+                                        packageNames[startId],
+                                        classNames[startId],
+                                        this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName,
+                                        startId,
+                                        initialX,
+                                        initialY
                                     )
                                     openPermit[startId] = false
                                 }
@@ -454,7 +465,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
                             Handler(Looper.getMainLooper()).postDelayed({
                                 openPermit[startId] = true
-                            }, 113)
+                            }, 130)
 
                             if (movePermit[startId]) {
                                 layoutParamsOnTouch.x = initialX + (motionEvent.rawX - initialTouchX).toInt()
@@ -463,7 +474,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                 XY.xMove = (layoutParamsOnTouch.x)
                                 XY.yMove = (layoutParamsOnTouch.y)
 
-                                getSharedPreferences(packageNames[startId], Context.MODE_PRIVATE).edit().apply {
+                                getSharedPreferences(classNames[startId], Context.MODE_PRIVATE).edit().apply {
                                     putInt("X", layoutParamsOnTouch.x)
                                     putInt("Y", layoutParamsOnTouch.y)
 
@@ -471,7 +482,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                 }
                             } else {
                                 if (!functionsClassLegacy.litePreferencesEnabled()) {
-                                    var initialTouchXBoundBack = getSharedPreferences(packageNames[startId], Context.MODE_PRIVATE).getInt("X", 0).toFloat()
+                                    var initialTouchXBoundBack = getSharedPreferences(classNames[startId], Context.MODE_PRIVATE).getInt("X", 0).toFloat()
 
                                     if (initialTouchXBoundBack < 0) {
                                         initialTouchXBoundBack = 0f
@@ -479,7 +490,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                         initialTouchXBoundBack = functionsClassLegacy.displayX().toFloat()
                                     }
 
-                                    var initialTouchYBoundBack = getSharedPreferences(packageNames[startId], Context.MODE_PRIVATE).getInt("Y", 0).toFloat()
+                                    var initialTouchYBoundBack = getSharedPreferences(classNames[startId], Context.MODE_PRIVATE).getInt("Y", 0).toFloat()
 
                                     if (initialTouchYBoundBack < 0) {
                                         initialTouchYBoundBack = 0f
@@ -488,21 +499,21 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                     }
 
                                     val springForceX = SpringForce()
-                                            .setFinalPosition(initialTouchXBoundBack) //EDIT HERE
-                                            .setStiffness(SpringForce.STIFFNESS_MEDIUM)
-                                            .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                                        .setFinalPosition(initialTouchXBoundBack) //EDIT HERE
+                                        .setStiffness(SpringForce.STIFFNESS_MEDIUM)
+                                        .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
                                     val springForceY = SpringForce()
-                                            .setFinalPosition(initialTouchYBoundBack) //EDIT HERE
-                                            .setStiffness(SpringForce.STIFFNESS_MEDIUM)
-                                            .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                                        .setFinalPosition(initialTouchYBoundBack) //EDIT HERE
+                                        .setStiffness(SpringForce.STIFFNESS_MEDIUM)
+                                        .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
 
                                     val springAnimationX = SpringAnimation(FloatValueHolder())
-                                            .setMinValue(0f)
-                                            .setSpring(springForceX)
+                                        .setMinValue(0f)
+                                        .setSpring(springForceX)
 
                                     val springAnimationY = SpringAnimation(FloatValueHolder())
-                                            .setMinValue(0f)
-                                            .setSpring(springForceY)
+                                        .setMinValue(0f)
+                                        .setSpring(springForceY)
 
                                     var springStartValueX = motionEvent.rawX
                                     if (springStartValueX < 0f) {
@@ -568,7 +579,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                 val difMoveY = (layoutParamsOnTouch.y - initialTouchY).toInt()
 
                                 if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
-                                        || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
+                                    || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
                                     sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()).setPackage(packageName))
 
@@ -594,7 +605,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                     val difMoveY = (layoutParamsOnTouch.y - initialTouchY).toInt()
 
                                     if (abs(difMoveX) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)
-                                            || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
+                                        || abs(difMoveY) > abs(PublicVariable.floatingViewsHW + PublicVariable.floatingViewsHW * 70 / 100)) {
 
                                         sendBroadcast(Intent("Hide_PopupListView_Shortcuts" + applicationContext.getPackageName()).setPackage(packageName))
 
@@ -628,6 +639,9 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                         } finally {
                             PublicVariable.allFloatingCounter -= 1
 
+                            PublicVariable.floatingShortcutsList.remove(packageNames[startId])
+                            PublicVariable.floatingShortcutsCounter -= 1
+
                             if (PublicVariable.allFloatingCounter == 0) {
                                 if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
 
@@ -646,43 +660,43 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                             if (!AuthenticationProcess.authenticationProcessInvoked) {
 
                                 AuthenticationProcess.authenticationProcessInvoked = true
-                                AuthenticationProcess.authenticationProcessInvokedName = functionsClassLegacy.applicationName(packageNames[startId])
+                                AuthenticationProcess.authenticationProcessInvokedName = functionsClassLegacy.activityLabel(
+                                    packageManager.getActivityInfo(ComponentName.createRelative(packageNames[startId], classNames[startId]), 0)
+                                )
 
                                 SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
                                     override fun authenticatedFloatIt() {
                                         super.authenticatedFloatIt()
-                                        Log.d(this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName, "AuthenticatedFloatingShortcuts")
 
-                                        openActions.startProcess(packageNames[startId],
-                                                if (moveDetection != null) {
-                                                    (moveDetection!!)
-                                                    (moveDetection!!)
-                                                } else {
-                                                    (layoutParams[startId])
-                                                    (layoutParams[startId])
-                                                })
+                                        openActions.startProcess(packageNames[startId], classNames[startId],
+                                            if (moveDetection != null) {
+                                                (moveDetection!!)
+                                                (moveDetection!!)
+                                            } else {
+                                                (layoutParams[startId])
+                                                (layoutParams[startId])
+                                            })
 
                                         AuthenticationProcess.authenticationProcessInvoked = false
                                     }
 
                                     override fun failedAuthenticated() {
                                         super.failedAuthenticated()
-                                        Log.d(this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName, "FailedAuthenticated")
 
                                         AuthenticationProcess.authenticationProcessInvoked = false
                                     }
 
                                     override fun invokedPinPassword() {
                                         super.invokedPinPassword()
-                                        Log.d(this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName, "InvokedPinPassword")
 
                                         AuthenticationProcess.authenticationProcessInvoked = false
                                     }
                                 }
 
                                 startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
-                                    putExtra("OtherTitle", functionsClassLegacy.applicationName(packageNames[startId]))
+                                    putExtra("PackageName", packageNames[startId])
+                                    putExtra("ClassName", classNames[startId])
                                     putExtra("PrimaryColor", iconColors[startId])
                                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                 }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
@@ -690,20 +704,20 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                             } else {
 
                                 Toast.makeText(applicationContext,
-                                        Html.fromHtml(getString(R.string.authenticationProcessInvoked, AuthenticationProcess.authenticationProcessInvokedName), Html.FROM_HTML_MODE_COMPACT),
-                                        Toast.LENGTH_LONG)
-                                        .show()
+                                    Html.fromHtml(getString(R.string.authenticationProcessInvoked, AuthenticationProcess.authenticationProcessInvokedName), Html.FROM_HTML_MODE_COMPACT),
+                                    Toast.LENGTH_LONG)
+                                    .show()
                             }
                         } else {
 
-                            openActions.startProcess(packageNames[startId],
-                                    if (moveDetection != null) {
-                                        (moveDetection!!)
-                                        (moveDetection!!)
-                                    } else {
-                                        (layoutParams[startId])
-                                        (layoutParams[startId])
-                                    })
+                            openActions.startProcess(packageNames[startId], classNames[startId],
+                                if (moveDetection != null) {
+                                    (moveDetection!!)
+                                    (moveDetection!!)
+                                } else {
+                                    (layoutParams[startId])
+                                    (layoutParams[startId])
+                                })
                         }
                     } else {
 
@@ -714,14 +728,14 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
             notificationDots[startId].setOnClickListener {
 
                 functionsClassLegacy.PopupNotificationShortcuts(
-                        floatingShortcutsBinding[startId].root,
-                        packageNames[startId],
-                        this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName,
-                        startId,
-                        iconColors[startId],
-                        XY.xMove,
-                        XY.yMove,
-                        layoutParams[startId].width
+                    floatingShortcutsBinding[startId].root,
+                    packageNames[startId],
+                    this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName,
+                    startId,
+                    iconColors[startId],
+                    XY.xMove,
+                    XY.yMove,
+                    layoutParams[startId].width
                 )
             }
 
@@ -730,9 +744,9 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                 if (functionsClassLegacy.AccessibilityServiceEnabled() && functionsClassLegacy.SettingServiceRunning(InteractionObserver::class.java)) {
 
                     functionsClassLegacy.sendInteractionObserverEvent(view,
-                            packageNames[startId],
-                            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
-                            66666)
+                        packageNames[startId],
+                        AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+                        66666)
                 } else {
                     try {
                         @SuppressLint("WrongConstant")
@@ -770,40 +784,41 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                 intentFilter.addAction("Sticky_Edge_No_${applicationContext.packageName}")
                 intentFilter.addAction("Notification_Dot_${applicationContext.packageName}")
                 intentFilter.addAction("Notification_Dot_No_${applicationContext.packageName}")
-                val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+                broadcastReceiver = object : BroadcastReceiver() {
 
                     override fun onReceive(context: Context, intent: Intent) {
+
                         if (intent.action == "Split_Apps_Single_$floatingShortcutClassInCommand" && PublicVariable.splitScreen) {
 
                             PublicVariable.splitScreen = false
+
                             Handler(Looper.getMainLooper()).postDelayed({
-                                try {
-                                    var splitSingle: Intent? = Intent()
-                                    if (PublicVariable.splitSingleClassName != null) {
-                                        splitSingle!!.setClassName(PublicVariable.splitSinglePackage, PublicVariable.splitSingleClassName)
-                                    } else {
-                                        splitSingle = packageManager.getLaunchIntentForPackage(PublicVariable.splitSinglePackage)
-                                    }
-                                    splitSingle!!.flags = Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT or
-                                            Intent.FLAG_ACTIVITY_NEW_TASK or
-                                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-                                    startActivity(splitSingle)
 
-                                    PublicVariable.splitScreen = true
-
-                                } catch (e: NullPointerException) {
-                                    e.printStackTrace()
+                                var splitSingle: Intent? = Intent()
+                                if (PublicVariable.splitSingleClassName != null) {
+                                    splitSingle?.setClassName(PublicVariable.splitSinglePackage, PublicVariable.splitSingleClassName)
+                                } else {
+                                    splitSingle = packageManager.getLaunchIntentForPackage(PublicVariable.splitSinglePackage)
                                 }
+                                splitSingle?.flags = Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT or
+                                        Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(splitSingle)
+
+                                PublicVariable.splitScreen = true
+
                             }, 200)
+
                         } else if (intent.action == "Pin_App_$floatingShortcutClassInCommand") {
 
                             try {
 
                                 movePermit[intent.getIntExtra("startId", 1)] = false
-                                var pinDrawable: Drawable = functionsClassLegacy.applicationIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
+                                var pinDrawable: Drawable = functionsClassLegacy.applicationIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
 
                                 if (functionsClassLegacy.customIconsEnable()) {
+
                                     pinDrawable = functionsClassLegacy.getAppIconDrawableCustomIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
+
                                 } else {
                                     when (functionsClassLegacy.shapesImageId()) {
                                         1 -> {
@@ -820,7 +835,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                             pinDrawable = getDrawable(R.drawable.pin_squircle_icon) as Drawable
                                         }
                                         0 -> {
-                                            pinDrawable = functionsClassLegacy.applicationIcon(packageNames[intent.getIntExtra("startId", 1)]).mutate()
+                                            pinDrawable = functionsClassLegacy.applicationIcon(activityInformation[intent.getIntExtra("startId", 1)]).mutate()
                                         }
                                     }
                                 }
@@ -855,7 +870,9 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                     if (!AuthenticationProcess.authenticationProcessInvoked) {
 
                                         AuthenticationProcess.authenticationProcessInvoked = true
-                                        AuthenticationProcess.authenticationProcessInvokedName = functionsClassLegacy.applicationName(packageNames[intent.getIntExtra("startId", 1)])
+                                        AuthenticationProcess.authenticationProcessInvokedName = functionsClassLegacy.activityLabel(
+                                            packageManager.getActivityInfo(ComponentName.createRelative(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)]), 0)
+                                        )
 
                                         SecurityInterfaceHolder.authenticationCallback = object : AuthenticationCallback {
 
@@ -865,7 +882,7 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
                                                 try {
 
-                                                    openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)],
+                                                    openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)], true,
                                                         if (moveDetection != null) {
                                                             (moveDetection!!)
                                                             (moveDetection!!)
@@ -877,12 +894,10 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                                     AuthenticationProcess.authenticationProcessInvoked = false
 
                                                 } catch (e: IndexOutOfBoundsException) {}
-
                                             }
 
                                             override fun failedAuthenticated() {
                                                 super.failedAuthenticated()
-                                                Log.d(this@FloatingShortcutsForFrequentlyApplications.javaClass.simpleName, "FailedAuthenticated")
 
                                                 AuthenticationProcess.authenticationProcessInvoked = false
                                             }
@@ -896,7 +911,8 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                         }
 
                                         startActivity(Intent(applicationContext, AuthenticationFingerprint::class.java).apply {
-                                            putExtra("OtherTitle", functionsClassLegacy.applicationName(packageNames[intent.getIntExtra("startId", 1)]))
+                                            putExtra("PackageName", packageNames[intent.getIntExtra("startId", 1)])
+                                            putExtra("ClassName", classNames[intent.getIntExtra("startId", 1)])
                                             putExtra("PrimaryColor", iconColors[intent.getIntExtra("startId", 1)])
                                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                         }, ActivityOptions.makeCustomAnimation(applicationContext, android.R.anim.fade_in, 0).toBundle())
@@ -908,9 +924,10 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                                             Toast.LENGTH_LONG)
                                             .show()
                                     }
+
                                 } else {
 
-                                    openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)],
+                                    openActions.startProcess(packageNames[intent.getIntExtra("startId", 1)], classNames[intent.getIntExtra("startId", 1)], true,
                                         if (moveDetection != null) {
                                             (moveDetection!!)
                                             (moveDetection!!)
@@ -927,17 +944,19 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
                             try {
 
-                                if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)) == null) {
-                                    return
-                                }
-
-                                if (floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root.isShown()) {
+                                if (floatingShortcutsBinding[intent.getIntExtra("startId", 1)].root.isShown) {
                                     try {
-                                        windowManager.removeView(floatingShortcutsBinding.get(intent.getIntExtra("startId", 1)).root)
+
+                                        windowManager.removeView(floatingShortcutsBinding[intent.getIntExtra("startId", 1)].root)
+
                                     } catch (e: Exception) {
                                         e.printStackTrace()
+
                                     } finally {
-                                        PublicVariable.allFloatingCounter -= 1
+                                        PublicVariable.allFloatingCounter = PublicVariable.allFloatingCounter - 1
+
+                                        PublicVariable.floatingShortcutsList.remove(packageNames[intent.getIntExtra("startId", 1)])
+                                        PublicVariable.floatingShortcutsCounter = PublicVariable.floatingShortcutsCounter - 1
 
                                         if (PublicVariable.allFloatingCounter == 0) {
                                             if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("stable", true)) {
@@ -958,16 +977,16 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
                                 stickedToEdge[stickyCounter] = true
 
-                                stickyEdgeParams.add(stickyCounter, functionsClassLegacy.moveToEdge(this@FloatingShortcutsForFrequentlyApplications.packageNames.get(stickyCounter), layoutParams[stickyCounter].height))
+                                stickyEdgeParams.add(stickyCounter, functionsClassLegacy.moveToEdge(this@FloatingShortcutsForFrequentlyApplications.classNames.get(stickyCounter), layoutParams[stickyCounter].height))
 
                                 if (floatingShortcutsBinding[stickyCounter].root.isShown
-                                        && floatingShortcutsBinding[stickyCounter] != null) {
+                                    && floatingShortcutsBinding[stickyCounter] != null) {
 
                                     try {
 
                                         windowManager
-                                                .updateViewLayout(floatingShortcutsBinding[stickyCounter].root,
-                                                        stickyEdgeParams[stickyCounter])
+                                            .updateViewLayout(floatingShortcutsBinding[stickyCounter].root,
+                                                stickyEdgeParams[stickyCounter])
 
                                     } catch (e: WindowManager.BadTokenException) {
                                         e.printStackTrace()
@@ -981,18 +1000,18 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
                                 stickedToEdge[stickyCounter] = false
 
-                                val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForFrequentlyApplications.packageNames[stickyCounter], Context.MODE_PRIVATE)
+                                val sharedPreferencesPositionBroadcast = getSharedPreferences(this@FloatingShortcutsForFrequentlyApplications.classNames[stickyCounter], Context.MODE_PRIVATE)
                                 XY.xPosition = sharedPreferencesPositionBroadcast.getInt("X", XY.xInitial)
                                 XY.yPosition = sharedPreferencesPositionBroadcast.getInt("Y", XY.yInitial)
 
                                 if (floatingShortcutsBinding.get(stickyCounter).root.isShown
-                                        && floatingShortcutsBinding[stickyCounter] != null) {
+                                    && floatingShortcutsBinding[stickyCounter] != null) {
 
                                     try {
 
                                         windowManager
-                                                .updateViewLayout(floatingShortcutsBinding[stickyCounter].root,
-                                                        functionsClassLegacy.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
+                                            .updateViewLayout(floatingShortcutsBinding[stickyCounter].root,
+                                                functionsClassLegacy.backFromEdge(layoutParams[stickyCounter].height, XY.xPosition, XY.yPosition))
 
                                     } catch (e: WindowManager.BadTokenException) {
                                         e.printStackTrace()
@@ -1068,8 +1087,10 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
                 }
             }
 
-            if (getFileStreamPath(packageNames.get(startId) + "_" + "Notification" + "Package").exists()) {
-                sendBroadcast(Intent("Notification_Dot_$packageName").putExtra("NotificationPackage", packageNames.get(startId)).setPackage(packageName))
+            if (getFileStreamPath(packageNames[startId] + "_" + "Notification" + "Package").exists()) {
+
+                sendBroadcast(Intent("Notification_Dot_$packageName")
+                    .putExtra("NotificationPackage", packageNames[startId]).setPackage(packageName))
             }
         }
 
@@ -1085,4 +1106,14 @@ class FloatingShortcutsForFrequentlyApplications : Service() {
 
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        broadcastReceiver?.let {
+            unregisterReceiver(it)
+        }
+
+    }
+
 }

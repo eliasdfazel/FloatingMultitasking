@@ -93,7 +93,7 @@ class FloatingServices(private val context: Context) {
         }
     }
 
-    fun runUnlimitedShortcutsServiceFrequently(packageName: String) {
+    fun runUnlimitedShortcutsServiceFrequently(packageName: String, className: String) {
         if (!Settings.canDrawOverlays(context)) {
             context.startActivity(Intent(context, Checkpoint::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             return
@@ -113,6 +113,7 @@ class FloatingServices(private val context: Context) {
 
         Intent(context, FloatingShortcutsForFrequentlyApplications::class.java).apply {
             putExtra("PackageName", packageName)
+            putExtra("ClassName", className)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
             context.startService(this)

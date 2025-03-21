@@ -215,8 +215,16 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
 
                                                     inAppBillingSubscriptionPurchaseViewBinding.itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigDescriptionKey()), Html.FROM_HTML_MODE_COMPACT)
 
-                                                    (inAppBillingSubscriptionPurchaseViewBinding.centerPurchaseButton.root as MaterialButton).text = productsDetailsListInApp.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[1].formattedPrice
-                                                    (inAppBillingSubscriptionPurchaseViewBinding.bottomPurchaseButton.root as MaterialButton).text = productsDetailsListInApp.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[1].formattedPrice
+                                                    (inAppBillingSubscriptionPurchaseViewBinding.centerPurchaseButton.root as MaterialButton).text = try {
+                                                        productsDetailsListInApp.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[1].formattedPrice
+                                                    } catch (e: Exception) {
+                                                        productsDetailsListInApp.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[0].formattedPrice
+                                                    }
+                                                    (inAppBillingSubscriptionPurchaseViewBinding.bottomPurchaseButton.root as MaterialButton).text = try {
+                                                        productsDetailsListInApp.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[1].formattedPrice
+                                                    } catch (e: Exception) {
+                                                        productsDetailsListInApp.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[0].formattedPrice
+                                                    }
 
                                                 }
 

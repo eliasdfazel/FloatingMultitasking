@@ -351,8 +351,12 @@ class ApplicationsViewPhone : AppCompatActivity(),
         if (view is ImageView) {
             val position = view.id
 
+            val className = packageManager.getLaunchIntentForPackage(frequentlyUsedAppsList[position])!!.resolveActivityInfo(packageManager, 0).name
+
+            println(frequentlyUsedAppsList[position] + " --- " +  className)
+
             applicationsViewPhoneDependencyInjection.floatingServices
-                    .runUnlimitedShortcutsServiceFrequently(frequentlyUsedAppsList[position])
+                    .runUnlimitedShortcutsServiceFrequently(frequentlyUsedAppsList[position], className)
         }
     }
 
