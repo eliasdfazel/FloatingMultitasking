@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.calculateNavigationBarHeight
 import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.calculateStatusBarHeight
 
 class ApplicationThemeController (private val context: Context) {
@@ -28,7 +29,7 @@ class ApplicationThemeController (private val context: Context) {
     fun setThemeColorFloating(instanceOfActivity: AppCompatActivity, rootView: View) {
 
         instanceOfActivity.enableEdgeToEdge()
-        rootView.setPadding(rootView.paddingLeft, rootView.paddingTop + calculateStatusBarHeight(instanceOfActivity), rootView.paddingLeft, rootView.paddingRight)
+        rootView.setPadding(rootView.paddingLeft, rootView.paddingTop + calculateStatusBarHeight(instanceOfActivity), rootView.paddingRight, rootView.paddingBottom + calculateNavigationBarHeight(instanceOfActivity.resources))
 
         rootView.setBackgroundColor(PublicVariable.colorLightDark)
 
@@ -50,7 +51,7 @@ class ApplicationThemeController (private val context: Context) {
     fun setThemeColorPreferences(instanceOfActivity: FragmentActivity, rootView: View, preferencesToolbar: ConstraintLayout, title: String, subTitle: String) {
 
         instanceOfActivity.enableEdgeToEdge()
-        rootView.setPadding(rootView.paddingLeft, rootView.paddingTop + calculateStatusBarHeight(instanceOfActivity), rootView.paddingLeft, rootView.paddingRight)
+        rootView.setPadding(rootView.paddingLeft, rootView.paddingTop + calculateStatusBarHeight(instanceOfActivity), rootView.paddingRight, rootView.paddingBottom + calculateNavigationBarHeight(instanceOfActivity.resources))
 
         rootView.setBackgroundColor(PublicVariable.colorLightDark)
 

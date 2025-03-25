@@ -97,16 +97,6 @@
 
     <PreferenceCategory android:summary=" " />
 
-    <PreferenceCategory android:title="@string/ui_app" android:summary=" ">
-        <ListPreference
-            android:defaultValue="2"
-            android:entries="@array/AppThemes"
-            android:entryValues="@array/AppThemesValues"
-            android:icon="@drawable/draw_pref"
-            android:key="themeColor"
-            android:title="@string/colortext"/>
-    </PreferenceCategory>
-
     <PreferenceCategory android:summary=" " />
 
     <PreferenceCategory

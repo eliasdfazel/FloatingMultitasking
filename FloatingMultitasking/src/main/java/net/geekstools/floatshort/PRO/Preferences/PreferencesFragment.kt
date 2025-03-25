@@ -87,7 +87,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
     lateinit var sharedPreferences: SharedPreferences
 
-    lateinit var themeColor: ListPreference
     lateinit var stick: ListPreference
 
     lateinit var stable: SwitchPreference
@@ -148,7 +147,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         support = findPreference("support")!!
         privacy = findPreference("privacy")!!
 
-        themeColor = findPreference("themeColor")!!
         stick = findPreference("stick")!!
 
         findPreference<PreferenceCategory>("adTitle")?.setTitle(Html.fromHtml("<span style='color: #BB00C8;'>Geeks Empire</span>", Html.FROM_HTML_MODE_COMPACT))
@@ -179,18 +177,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             }
         }
 
-        val appTheme = sharedPreferences.getString("themeColor", "2")
-        if (appTheme == "1") {
-            themeColor.summary = getString(R.string.light)
-            PublicVariable.themeLightDark = true
-        } else if (appTheme == "2") {
-            themeColor.summary = getString(R.string.dark)
-            PublicVariable.themeLightDark = false
-        } else if (appTheme == "3") {
-            functionsClassLegacy.checkLightDarkTheme()
-            themeColor.summary = getString(R.string.dynamic)
-        }
-
         delayPressHold.summary = functionsClassLegacy.readDefaultPreference("delayPressHold", 555).toString() + " " + getString(R.string.millis)
 
         stable.setOnPreferenceClickListener {
@@ -205,53 +191,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                 functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
             }
             false
-        }
-
-        themeColor.setOnPreferenceChangeListener { preference, newValue ->
-            Handler(Looper.getMainLooper()).postDelayed({
-                functionsClassLegacy.checkLightDarkTheme()
-
-                when (newValue.toString()) {
-                    "1" -> {
-                        themeColor.summary = getString(R.string.light)
-
-                        PublicVariable.forceReload = true
-                        PublicVariable.themeLightDark = true
-
-                        startActivity(Intent(context, PreferencesActivity::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        })
-
-                        functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
-                    }
-                    "2" -> {
-                        themeColor.summary = getString(R.string.dark)
-
-                        PublicVariable.forceReload = true
-                        PublicVariable.themeLightDark = false
-
-                        startActivity(Intent(context, PreferencesActivity::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        })
-
-                        functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
-                    }
-                    "3" -> {
-                        themeColor.summary = getString(R.string.dynamic)
-
-                        PublicVariable.forceReload = true
-                        functionsClassLegacy.checkLightDarkTheme()
-
-                        startActivity(Intent(context, PreferencesActivity::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        })
-
-                        functionsClassLegacy.saveDefaultPreference("LitePreferences", false)
-                    }
-                }
-            }, 357)
-
-            true
         }
 
         stick.setOnPreferenceChangeListener { preference, newValue ->
@@ -823,7 +762,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         stable.icon = drawPref
         autotrans.icon = drawPrefAutoTrans
         floatingSplash.icon = drawPref
-        themeColor.icon = drawPref
         sizes.icon = drawPref
         delayPressHold.icon = drawPref
         flingSensitivity.icon = drawPref

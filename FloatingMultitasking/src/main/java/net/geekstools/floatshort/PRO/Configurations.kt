@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -70,6 +71,13 @@ class Configurations : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(applicationContext)
+
+        PreferenceManager.getDefaultSharedPreferences(applicationContext).edit {
+            putString(
+                "themeColor",
+                "2"
+            )
+        }
 
         initializeParameterUI()
 
