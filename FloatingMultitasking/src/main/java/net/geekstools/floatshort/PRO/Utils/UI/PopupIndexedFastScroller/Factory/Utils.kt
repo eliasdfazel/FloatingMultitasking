@@ -14,6 +14,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 
 fun Float.convertToDp(context: Context) : Int {
 
@@ -23,6 +24,17 @@ fun Float.convertToDp(context: Context) : Int {
 }
 
 fun calculateStatusBarHeight(context: AppCompatActivity) : Int {
+    var statusBarHeight = 0
+
+    val resourceIdNavigationBar: Int = context.resources.getIdentifier("navigation_bar_height", "dimen", "android")
+    if (resourceIdNavigationBar > 0) {
+        statusBarHeight = context.resources.getDimensionPixelSize(resourceIdNavigationBar)
+    }
+
+    return statusBarHeight
+}
+
+fun calculateStatusBarHeight(context: FragmentActivity) : Int {
     var statusBarHeight = 0
 
     val resourceIdNavigationBar: Int = context.resources.getIdentifier("navigation_bar_height", "dimen", "android")

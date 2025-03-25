@@ -16,17 +16,19 @@ import android.text.Html
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
 import net.geekstools.floatshort.PRO.R
+import net.geekstools.floatshort.PRO.Utils.UI.PopupIndexedFastScroller.Factory.calculateStatusBarHeight
 
 class ApplicationThemeController (private val context: Context) {
 
-    private val functionsClassLegacy: FunctionsClassLegacy = FunctionsClassLegacy(context)
-
     fun setThemeColorFloating(instanceOfActivity: AppCompatActivity, rootView: View) {
 
+        instanceOfActivity.enableEdgeToEdge()
+        rootView.setPadding(rootView.paddingLeft, rootView.paddingTop + calculateStatusBarHeight(instanceOfActivity), rootView.paddingLeft, rootView.paddingRight)
 
         rootView.setBackgroundColor(PublicVariable.colorLightDark)
 
@@ -46,6 +48,9 @@ class ApplicationThemeController (private val context: Context) {
     }
 
     fun setThemeColorPreferences(instanceOfActivity: FragmentActivity, rootView: View, preferencesToolbar: ConstraintLayout, title: String, subTitle: String) {
+
+        instanceOfActivity.enableEdgeToEdge()
+        rootView.setPadding(rootView.paddingLeft, rootView.paddingTop + calculateStatusBarHeight(instanceOfActivity), rootView.paddingLeft, rootView.paddingRight)
 
         rootView.setBackgroundColor(PublicVariable.colorLightDark)
 

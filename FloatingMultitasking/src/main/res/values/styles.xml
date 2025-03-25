@@ -21,8 +21,6 @@
 
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-
-        <item name="android:windowSplashScreenBackground">@color/default_color</item>
     </style>
 
     <style name="GeeksEmpire.AppCompat" parent="Theme.AppCompat.Light.NoActionBar">
@@ -40,6 +38,9 @@
         <item name="colorPrimaryDark">@color/default_color_darker</item>
         <item name="colorAccent">@color/default_color_light</item>
 
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
@@ -54,6 +55,9 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <style name="GeeksEmpire.Preference.Dark" parent="@style/GeeksEmpire.Material">
@@ -67,6 +71,9 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <style name="GeeksEmpire.Dialogue.Light" parent="@android:style/Theme.DeviceDefault.Dialog.Alert">
@@ -97,6 +104,9 @@
         <item name="itemTextAppearance">@style/PopupTextColor.Light</item>
 
         <item name="overlapAnchor">true</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <style name="GeeksEmpire.Dialogue.Dark" parent="@android:style/Theme.DeviceDefault.Dialog.Alert">
@@ -126,6 +136,9 @@
         <item name="itemTextAppearance">@style/PopupTextColor.Dark</item>
 
         <item name="overlapAnchor">true</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <style name="GeeksEmpire.Dialogue.Category.Light" parent="@android:style/Theme.DeviceDefault.Dialog.Alert" tools:targetApi="22">
@@ -144,6 +157,9 @@
         <item name="android:overlapAnchor">true</item>
         <item name="android:dropDownVerticalOffset">0dp</item>
         <item name="android:dropDownHorizontalOffset">87dp</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <style name="GeeksEmpire.Dialogue.Category.Dark" parent="@android:style/Theme.DeviceDefault.Dialog.Alert" tools:targetApi="22">
@@ -162,6 +178,9 @@
         <item name="android:overlapAnchor">true</item>
         <item name="android:dropDownVerticalOffset">0dp</item>
         <item name="android:dropDownHorizontalOffset">87dp</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <!-- IAP -->
@@ -173,6 +192,9 @@
         <item name="android:statusBarColor">@color/dark</item>
         <item name="android:windowBackground">@color/dark</item>
         <item name="android:navigationBarColor">@color/dark</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <!-- IAP -->
@@ -188,6 +210,9 @@
         <item name="android:divider">@null</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <style name="AuthenticationTransparent" parent="@style/GeeksEmpire.Material">
@@ -196,6 +221,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <style name="PopupTextColor.Light" parent="@android:style/TextAppearance.Widget.PopupMenu.Small">

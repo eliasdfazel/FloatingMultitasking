@@ -69,7 +69,7 @@ class PreferencesActivity : AppCompatActivity() {
         functionsClassLegacy.loadSavedColor()
         functionsClassLegacy.checkLightDarkTheme()
 
-        applicationThemeController.setThemeColorPreferences(this, preferencesActivityViewBinding.fullPreferencesActivity, preferencesActivityViewBinding.preferencesToolbar, getString(R.string.settingTitle), BuildConfig.VERSION_NAME)
+        applicationThemeController.setThemeColorPreferences(this@PreferencesActivity, preferencesActivityViewBinding.fullPreferencesActivity, preferencesActivityViewBinding.preferencesToolbar, getString(R.string.settingTitle), BuildConfig.VERSION_NAME)
 
         rootLayout = this.window.decorView
         rootLayout.visibility = View.INVISIBLE
