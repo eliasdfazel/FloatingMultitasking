@@ -34,7 +34,9 @@ class RemoteRecoveryActivity : Activity() {
                 loadCustomIcons.load()
             }
 
-            functionsClassRunServices.runUnlimitedShortcutsServicePackage(packageName)
+            val className = packageManager.getLaunchIntentForPackage(packageName)!!.resolveActivityInfo(packageManager, 0).name
+
+            functionsClassRunServices.runUnlimitedShortcutsServicePackage(packageName, className)
 
         }
 

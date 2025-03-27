@@ -353,8 +353,6 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
             val className = packageManager.getLaunchIntentForPackage(frequentlyUsedAppsList[position])!!.resolveActivityInfo(packageManager, 0).name
 
-            println(frequentlyUsedAppsList[position] + " --- " +  className)
-
             applicationsViewPhoneDependencyInjection.floatingServices
                     .runUnlimitedShortcutsServiceFrequently(frequentlyUsedAppsList[position], className)
         }

@@ -84,8 +84,10 @@ class FloatIt : AppCompatActivity() {
 
             if (aClassName.isNullOrEmpty()) {
 
+                val className = packageManager.getLaunchIntentForPackage(aPackageName)!!.resolveActivityInfo(packageManager, 0).name
+
                 FloatingServices(applicationContext)
-                    .runUnlimitedShortcutsServicePackage(aPackageName)
+                    .runUnlimitedShortcutsServicePackage(aPackageName, className)
 
                 openActions.startProcess(aPackageName, xPosition, yPosition, PublicVariable.floatingViewsHW)
 
