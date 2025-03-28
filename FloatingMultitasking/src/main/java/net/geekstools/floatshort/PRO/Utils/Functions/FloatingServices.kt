@@ -79,6 +79,7 @@ class FloatingServices(private val context: Context) {
 
         Intent(context, FloatingShortcutsForFrequentlyApplications::class.java).apply {
             putExtra("PackageName", packageName)
+            putExtra("ClassName", className)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
             context.startService(this)
