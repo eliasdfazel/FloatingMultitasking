@@ -164,9 +164,17 @@ class RecoveryShortcuts : Service() {
             }
 
             if (permitOpenFloatingShortcuts) {
-                val className = packageManager.getLaunchIntentForPackage(applicationsData)!!.resolveActivityInfo(packageManager, 0).name
 
-                floatingServices.runUnlimitedShortcutsServicePackage(applicationsData, className)
+                val defaultLaunchIntent = packageManager.getLaunchIntentForPackage(applicationsData)
+
+                if (defaultLaunchIntent != null) {
+
+                    val className = defaultLaunchIntent.resolveActivityInfo(packageManager, 0).name
+
+                    floatingServices.runUnlimitedShortcutsServicePackage(applicationsData, className)
+
+                }
+
             }
         }
 
