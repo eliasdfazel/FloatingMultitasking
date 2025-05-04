@@ -133,7 +133,15 @@ class Checkpoint : Activity() {
 
         alertDialog.setPositiveButton(getString(R.string.grant)) { dialog, which ->
 
-            startService(Intent(applicationContext, BindServices::class.java))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                startForegroundService(Intent(applicationContext, BindServices::class.java))
+
+            } else {
+
+                startService(Intent(applicationContext, BindServices::class.java))
+
+            }
 
             val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:$packageName"))

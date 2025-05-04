@@ -27,6 +27,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -182,7 +183,11 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         stable.setOnPreferenceClickListener {
             if (sharedPreferences.getBoolean("stable", true)) {
                 PublicVariable.Stable = true
-                context?.startService(Intent(context, BindServices::class.java))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    requireContext().startForegroundService(Intent(context, BindServices::class.java))
+                } else {
+                    requireContext().startService(Intent(context, BindServices::class.java))
+                }
             } else if (!sharedPreferences.getBoolean("stable", true)) {
                 PublicVariable.Stable = false
                 if (PublicVariable.allFloatingCounter == 0) {

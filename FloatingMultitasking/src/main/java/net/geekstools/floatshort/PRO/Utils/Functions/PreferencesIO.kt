@@ -12,6 +12,7 @@ package net.geekstools.floatshort.PRO.Utils.Functions
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.preference.PreferenceManager
 import net.geekstools.floatshort.PRO.BindServices
 
@@ -148,7 +149,15 @@ class PreferencesIO (private val context: Context) {
 
             /*OFF Control Panel*/
             defaultSharedPreferencesEditor.putBoolean("stable", true)
-            context.startService(Intent(context, BindServices::class.java))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                context.startForegroundService(Intent(context, BindServices::class.java))
+
+            } else {
+
+                context.startService(Intent(context, BindServices::class.java))
+
+            }
 
             /*Dark App Theme*/
             defaultSharedPreferencesEditor.putString(".themeColor", "2")
