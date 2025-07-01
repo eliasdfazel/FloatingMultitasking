@@ -175,113 +175,109 @@ class SubscriptionPurchase : Fragment(), View.OnClickListener, PurchasesUpdatedL
                         }
                         BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
 
-                            if (productsDetailsListInApp != null) {
-                                if (productsDetailsListInApp.isNotEmpty()) {
+                            if (productsDetailsListInApp.productDetailsList.isNotEmpty()) {
 
-                                    purchaseFlowController?.purchaseFlowPaid(productDetails = productsDetailsListInApp[0])
-                                }
+                                purchaseFlowController?.purchaseFlowPaid(productDetails = productsDetailsListInApp.productDetailsList[0])
                             }
                         }
                         BillingClient.BillingResponseCode.OK -> {
 
-                            if (productsDetailsListInApp != null) {
-                                if (productsDetailsListInApp.isNotEmpty()) {
+                            if (productsDetailsListInApp.productDetailsList.isNotEmpty()) {
 
-                                    purchaseFlowController?.purchaseFlowSucceeded(productDetails = productsDetailsListInApp[0])
+                                purchaseFlowController?.purchaseFlowSucceeded(productDetails = productsDetailsListInApp.productDetailsList[0])
 
-                                    subscriptionPurchaseFlow(productsDetailsListInApp[0])
+                                subscriptionPurchaseFlow(productsDetailsListInApp.productDetailsList[0])
 
-                                    if (listOfItems.isNotEmpty()) {
+                                if (listOfItems.isNotEmpty()) {
 
 
-                                        val queriedProduct = QueryProductDetailsParams.Product.newBuilder()
-                                            .setProductId(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
-                                            .setProductType(BillingClient.ProductType.SUBS)
-                                            .build()
+                                    val queriedProduct = QueryProductDetailsParams.Product.newBuilder()
+                                        .setProductId(arguments?.getString(InitializeInAppBilling.Entry.ItemToPurchase) ?: InAppBillingData.SKU.InAppItemDonation)
+                                        .setProductType(BillingClient.ProductType.SUBS)
+                                        .build()
 
-                                        if (listOfItems[0] == queriedProduct) {
+                                    if (listOfItems[0] == queriedProduct) {
 
-                                            requireActivity().finish()
+                                        requireActivity().finish()
 
-                                        } else {
+                                    } else {
 
-                                            val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-                                            firebaseRemoteConfig.setConfigSettingsAsync(FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build())
-                                            firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
+                                        val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+                                        firebaseRemoteConfig.setConfigSettingsAsync(FirebaseRemoteConfigSettings.Builder().setMinimumFetchIntervalInSeconds(0).build())
+                                        firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
 
-                                                activity?.runOnUiThread {
+                                            activity?.runOnUiThread {
 
-                                                    inAppBillingSubscriptionPurchaseViewBinding.itemTitleView.text = (productsDetailsListInApp.first().productId.convertToItemTitle())
+                                                inAppBillingSubscriptionPurchaseViewBinding.itemTitleView.text = (productsDetailsListInApp.productDetailsList.first().productId.convertToItemTitle())
 
-                                                    inAppBillingSubscriptionPurchaseViewBinding.itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(productsDetailsListInApp.first().productId.convertToRemoteConfigDescriptionKey()), Html.FROM_HTML_MODE_COMPACT)
+                                                inAppBillingSubscriptionPurchaseViewBinding.itemDescriptionView.text = Html.fromHtml(firebaseRemoteConfig.getString(productsDetailsListInApp.productDetailsList.first().productId.convertToRemoteConfigDescriptionKey()), Html.FROM_HTML_MODE_COMPACT)
 
-                                                    (inAppBillingSubscriptionPurchaseViewBinding.centerPurchaseButton.root as MaterialButton).text = try {
-                                                        productsDetailsListInApp.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[1].formattedPrice
-                                                    } catch (e: Exception) {
-                                                        productsDetailsListInApp.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[0].formattedPrice
-                                                    }
-                                                    (inAppBillingSubscriptionPurchaseViewBinding.bottomPurchaseButton.root as MaterialButton).text = try {
-                                                        productsDetailsListInApp.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[1].formattedPrice
-                                                    } catch (e: Exception) {
-                                                        productsDetailsListInApp.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[0].formattedPrice
-                                                    }
-
+                                                (inAppBillingSubscriptionPurchaseViewBinding.centerPurchaseButton.root as MaterialButton).text = try {
+                                                    productsDetailsListInApp.productDetailsList.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[1].formattedPrice
+                                                } catch (e: Exception) {
+                                                    productsDetailsListInApp.productDetailsList.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[0].formattedPrice
+                                                }
+                                                (inAppBillingSubscriptionPurchaseViewBinding.bottomPurchaseButton.root as MaterialButton).text = try {
+                                                    productsDetailsListInApp.productDetailsList.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[1].formattedPrice
+                                                } catch (e: Exception) {
+                                                    productsDetailsListInApp.productDetailsList.first().subscriptionOfferDetails!!.first().pricingPhases.pricingPhaseList[0].formattedPrice
                                                 }
 
-                                                val storagePath = "/FloatingMultitasking/Assets/Images/Screenshots/${productsDetailsListInApp.first().productId.convertToStorageScreenshotsDirectory()}"
-                                                Log.d(this@SubscriptionPurchase.javaClass.simpleName, "Storage Path: ${storagePath}")
+                                            }
 
-                                                FirebaseStorage.getInstance()
-                                                    .reference
-                                                    .child(storagePath)
-                                                    .listAll().addOnSuccessListener { itemsStorageReference ->
+                                            val storagePath = "/FloatingMultitasking/Assets/Images/Screenshots/${productsDetailsListInApp.productDetailsList.first().productId.convertToStorageScreenshotsDirectory()}"
+                                            Log.d(this@SubscriptionPurchase.javaClass.simpleName, "Storage Path: ${storagePath}")
 
-                                                        screenshotsNumber = itemsStorageReference.items.size
+                                            FirebaseStorage.getInstance()
+                                                .reference
+                                                .child(storagePath)
+                                                .listAll().addOnSuccessListener { itemsStorageReference ->
 
-                                                        itemsStorageReference.items.forEachIndexed { index, storageReference ->
+                                                    screenshotsNumber = itemsStorageReference.items.size
 
-                                                            storageReference.downloadUrl.addOnSuccessListener { screenshotLink ->
+                                                    itemsStorageReference.items.forEachIndexed { index, storageReference ->
 
-                                                                requestManager
-                                                                    .load(screenshotLink)
-                                                                    .diskCacheStrategy(DiskCacheStrategy.DATA)
-                                                                    .addListener(object : RequestListener<Drawable> {
-                                                                        override fun onLoadFailed(glideException: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                                        storageReference.downloadUrl.addOnSuccessListener { screenshotLink ->
 
-                                                                            return false
+                                                            requestManager
+                                                                .load(screenshotLink)
+                                                                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                                                                .addListener(object : RequestListener<Drawable> {
+                                                                    override fun onLoadFailed(glideException: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+
+                                                                        return false
+                                                                    }
+
+                                                                    override fun onResourceReady(resource: Drawable, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                                                                        glideLoadCounter++
+
+                                                                        val beforeToken: String = screenshotLink.toString().split("?alt=media&token=")[0]
+                                                                        val drawableIndex = beforeToken[beforeToken.length - 5].toString().toInt()
+
+                                                                        mapIndexDrawable[drawableIndex] = resource
+                                                                        mapIndexURI[drawableIndex] = screenshotLink
+
+                                                                        if (glideLoadCounter == screenshotsNumber) {
+
+                                                                            setScreenshots()
                                                                         }
 
-                                                                        override fun onResourceReady(resource: Drawable, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                                                                            glideLoadCounter++
+                                                                        return false
+                                                                    }
 
-                                                                            val beforeToken: String = screenshotLink.toString().split("?alt=media&token=")[0]
-                                                                            val drawableIndex = beforeToken[beforeToken.length - 5].toString().toInt()
-
-                                                                            mapIndexDrawable[drawableIndex] = resource
-                                                                            mapIndexURI[drawableIndex] = screenshotLink
-
-                                                                            if (glideLoadCounter == screenshotsNumber) {
-
-                                                                                setScreenshots()
-                                                                            }
-
-                                                                            return false
-                                                                        }
-
-                                                                    }).submit()
-                                                            }
-
+                                                                }).submit()
                                                         }
 
                                                     }
 
-                                            }.addOnFailureListener {
+                                                }
 
-                                            }
+                                        }.addOnFailureListener {
+
                                         }
                                     }
-
                                 }
+
                             }
                         }
                     }

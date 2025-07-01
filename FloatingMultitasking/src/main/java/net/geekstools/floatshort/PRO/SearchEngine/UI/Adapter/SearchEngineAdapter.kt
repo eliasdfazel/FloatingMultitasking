@@ -134,7 +134,7 @@ class SearchEngineAdapter (val context: Context, val allSearchData: ArrayList<Ad
                         + " "
                         + context.getString(R.string.searchFolderHint), Html.FROM_HTML_MODE_COMPACT)
 
-                viewHolder.itemInitialLetter?.text = allSearchResults[position].folderName!![0].toString().toUpperCase()
+                viewHolder.itemInitialLetter?.text = allSearchResults[position].folderName!![0].toString().uppercase()
                 viewHolder.itemInitialLetter?.setTextColor(PublicVariable.colorLightDarkOpposite)
 
                 var backgroundDrawable: Drawable? = null

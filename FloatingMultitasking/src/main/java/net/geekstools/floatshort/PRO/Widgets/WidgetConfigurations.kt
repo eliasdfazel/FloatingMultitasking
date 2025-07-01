@@ -774,15 +774,15 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             val appIcon = if (widgetConfigurationsDependencyInjection.functionsClassLegacy.customIconsEnable()) loadCustomIcons.getDrawableIconForPackage(packageName, widgetConfigurationsDependencyInjection.functionsClassLegacy.shapedAppIcon(packageName)) else widgetConfigurationsDependencyInjection.functionsClassLegacy.shapedAppIcon(packageName)
                             if (widgetIndex == 0) {
                                 configuredWidgetsSections.add(WidgetSectionedConfiguredAdapter.Section(widgetIndex, newAppName, appIcon))
-                                indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
+                                indexListConfigured.add(newAppName.substring(0, 1).uppercase())
                             } else {
                                 if (oldAppName != newAppName) {
                                     configuredWidgetsSections.add(WidgetSectionedConfiguredAdapter.Section(widgetIndex, newAppName, appIcon))
-                                    indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
+                                    indexListConfigured.add(newAppName.substring(0, 1).uppercase())
                                 }
                             }
                             oldAppName = widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(packageName)
-                            indexListConfigured.add(newAppName.substring(0, 1).toUpperCase())
+                            indexListConfigured.add(newAppName.substring(0, 1).uppercase())
                             configuredWidgetsAdapterItems.add(AdapterItems(
                                     newAppName,
                                     packageName,
@@ -895,11 +895,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                                     if (widgetIndex == 0) {
                                         installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
-                                        indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                        indexListInstalled.add(newAppName.substring(0, 1).uppercase(Locale.getDefault()))
                                     } else {
                                         if (oldAppName != newAppName) {
                                             installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
-                                            indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                            indexListInstalled.add(newAppName.substring(0, 1).uppercase(Locale.getDefault()))
                                         }
                                     }
 
@@ -908,7 +908,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                                     val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
                                     val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
 
-                                    indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                    indexListInstalled.add(newAppName.substring(0, 1).uppercase(Locale.getDefault()))
                                     installedWidgetsAdapterItems.add(AdapterItems(widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName),
                                             appWidgetProviderInfo.value.provider.packageName,
                                             appWidgetProviderInfo.value.provider.className,
@@ -931,11 +931,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                             if (widgetIndex == 0) {
                                 installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
-                                indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                indexListInstalled.add(newAppName.substring(0, 1).uppercase(Locale.getDefault()))
                             } else {
                                 if (oldAppName != newAppName) {
                                     installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
-                                    indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                    indexListInstalled.add(newAppName.substring(0, 1).uppercase(Locale.getDefault()))
                                 }
                             }
 
@@ -943,7 +943,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
                             val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
 
-                            indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                            indexListInstalled.add(newAppName.substring(0, 1).uppercase(Locale.getDefault()))
                             installedWidgetsAdapterItems.add(AdapterItems(widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName),
                                     appWidgetProviderInfo.value.provider.packageName,
                                     appWidgetProviderInfo.value.provider.className,
@@ -970,11 +970,11 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
 
                             if (widgetIndex == 0) {
                                 installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
-                                indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                indexListInstalled.add(newAppName.substring(0, 1).uppercase(Locale.getDefault()))
                             } else {
                                 if (oldAppName != newAppName) {
                                     installedWidgetsSections.add(WidgetSectionedInstalledAdapter.Section(widgetIndex, newAppName, newAppIcon))
-                                    indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                                    indexListInstalled.add(newAppName.substring(0, 1).uppercase(Locale.getDefault()))
                                 }
                             }
 
@@ -982,7 +982,7 @@ class WidgetConfigurations : AppCompatActivity(), GestureListenerInterface {
                             val widgetPreviewDrawable: Drawable? = appWidgetProviderInfo.value.loadPreviewImage(applicationContext, DisplayMetrics.DENSITY_HIGH)
                             val widgetLabel: String? = appWidgetProviderInfo.value.loadLabel(packageManager)
 
-                            indexListInstalled.add(newAppName.substring(0, 1).toUpperCase(Locale.getDefault()))
+                            indexListInstalled.add(newAppName.substring(0, 1).uppercase(Locale.getDefault()))
                             installedWidgetsAdapterItems.add(AdapterItems(widgetConfigurationsDependencyInjection.functionsClassLegacy.applicationName(appWidgetProviderInfo.value.provider.packageName),
                                     appWidgetProviderInfo.value.provider.packageName,
                                     appWidgetProviderInfo.value.provider.className,

@@ -80,7 +80,7 @@ class FoldersListAdapter(private val instanceOfFoldersConfigurationsActivity: Fo
             viewHolderBinder.categoryName.setText(adapterItems[position].category)
         }
 
-        viewHolderBinder.runCategory.text = folderName[0].toString().toUpperCase(Locale.getDefault())
+        viewHolderBinder.runCategory.text = folderName[0].toString().uppercase(Locale.getDefault())
 
         if (folderName == context.packageName) {
 

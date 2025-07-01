@@ -512,7 +512,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
                     newChar = try {
 
-                        installedAppName.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"#"
+                        installedAppName.substring(0, 1)?.uppercase(Locale.getDefault())?:"#"
 
                     } catch (e: StringIndexOutOfBoundsException) {
                         e.printStackTrace()
@@ -549,7 +549,7 @@ class ApplicationsViewPhone : AppCompatActivity(),
 
                     oldChar = try {
 
-                        installedAppName?.substring(0, 1)?.toUpperCase(Locale.getDefault())?:"Z"
+                        installedAppName?.substring(0, 1)?.uppercase(Locale.getDefault())?:"Z"
 
                     } catch (e: StringIndexOutOfBoundsException) {
                         e.printStackTrace()

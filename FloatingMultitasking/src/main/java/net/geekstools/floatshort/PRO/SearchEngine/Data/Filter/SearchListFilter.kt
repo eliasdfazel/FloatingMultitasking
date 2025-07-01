@@ -21,7 +21,7 @@ class SearchListFilter(private val searchEngineAdapter: SearchEngineAdapter) : F
                 }
             }
         } else {
-            val searchStrLowerCase = prefix.toString().toLowerCase(Locale.getDefault())
+            val searchStrLowerCase = prefix.toString().lowercase(Locale.getDefault())
 
             val matchValues = ArrayList<AdapterItemsSearchEngine>()
 
@@ -31,19 +31,19 @@ class SearchListFilter(private val searchEngineAdapter: SearchEngineAdapter) : F
                     when (dataItem.searchResultType) {
                         SearchResultType.SearchShortcuts -> {
 
-                            if (dataItem.appName!!.toLowerCase(Locale.getDefault()).contains(searchStrLowerCase)) {
+                            if (dataItem.appName!!.lowercase(Locale.getDefault()).contains(searchStrLowerCase)) {
                                 matchValues.add(dataItem)
                             }
                         }
                         SearchResultType.SearchFolders -> {
 
-                            if (dataItem.folderName!!.toLowerCase(Locale.getDefault()).contains(searchStrLowerCase)) {
+                            if (dataItem.folderName!!.lowercase(Locale.getDefault()).contains(searchStrLowerCase)) {
                                 matchValues.add(dataItem)
                             }
                         }
                         SearchResultType.SearchWidgets -> {
 
-                            if (dataItem.widgetLabel!!.toLowerCase(Locale.getDefault()).contains(searchStrLowerCase)) {
+                            if (dataItem.widgetLabel!!.lowercase(Locale.getDefault()).contains(searchStrLowerCase)) {
                                 matchValues.add(dataItem)
                             }
                         }

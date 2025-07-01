@@ -53,7 +53,7 @@ fun AppSelectionList.loadInstalledAppsData() = CoroutineScope(SupervisorJob() + 
                             packageName,
                             appIcon))
 
-            listOfNewCharOfItemsForIndex.add(appName.substring(0, 1).toUpperCase(Locale.getDefault()))
+            listOfNewCharOfItemsForIndex.add(appName.substring(0, 1).uppercase(Locale.getDefault()))
         }
     }
 

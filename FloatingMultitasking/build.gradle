@@ -12,7 +12,7 @@ plugins {
     id 'com.android.application'
 
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.devtools.ksp' version '1.9.10-1.0.13'
+    id 'com.google.devtools.ksp' version '2.2.0-2.0.2'
 
     id 'com.google.gms.google-services'
 
@@ -29,7 +29,7 @@ android {
         minSdkVersion 25
         targetSdkVersion 36
 
-        versionCode 905
+        versionCode 907
         versionName "${majorVersion}." + getDateMonth() + "." + getDateDay() + "." + getDateYear() + ".${versionCode}"
 
     }
@@ -132,11 +132,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.4'
 
-    implementation('androidx.room:room-runtime:2.6.1')
-    implementation('androidx.room:room-ktx:2.6.1')
-    annotationProcessor('androidx.room:room-compiler:2.6.1')
+    implementation('androidx.room:room-runtime:2.7.2')
+    implementation('androidx.room:room-ktx:2.7.2')
+    annotationProcessor('androidx.room:room-compiler:2.7.2')
 
-    ksp('androidx.room:room-compiler:2.6.1')
+    ksp('androidx.room:room-compiler:2.7.2')
 
 
     implementation 'androidx.biometric:biometric:1.1.0'
